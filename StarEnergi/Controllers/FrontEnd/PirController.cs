@@ -760,7 +760,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
             if (Session["username"] == null)
             {
-                return RedirectToAction("LogOn", "Account", new { returnUrl = "/pir/Report" });
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/pir/Report?id_page=1" });
             }
             else
             {
