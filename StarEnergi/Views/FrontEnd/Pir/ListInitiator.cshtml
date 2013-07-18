@@ -18,12 +18,18 @@
         var row = e.row;
         var templateDefault = '<a href="/pir/Log/' + row.cells[0].innerHTML + '" class="t-button t-grid-Log" style="color: transparent;min-width: 2px;background: url(../../Content/image/iconLog.jpg) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;" title="Log" id="log">Log</a>'
         var templateDel = '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#"><span class="t-icon t-delete"></span></a>';
-
+        row.cells[1].title = dataItem.reference;
         if (dataItem.status == 'INITIATOR') { //complete
             row.cells[6].innerHTML = templateDel+templateDefault;
         } else {
             row.cells[6].innerHTML = templateDefault;
         }
+    }
+
+    function OnDataBound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        row.cells[2].title = dataItem.rca_code;
     }
 
     function OnComplete(e) {
@@ -198,6 +204,7 @@
                                 .HtmlAttributes(new { style = "color: transparent;min-width: 2px;background: url(../../Content/image/iconDelete.png) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Delete PIR", id = "delete" })
                                 .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
                                 .DataRouteValues(route => route.Add(o => o.identity).RouteKey("identity"))
+                                .Ajax(true)
                                 .Action("DeletePirNumber", "pir");
                     }).Width(90).Title("Action").HtmlAttributes(new { style = "text-align: center" });
                     columns.Bound(o => o.id).Hidden();
@@ -208,7 +215,7 @@
                 })
                 .ClientEvents(events => events
                     .OnComplete("OnComplete")
-
+                    .OnRowDataBound("OnDataBound")
                 )
                 .Pageable(p => p.PageSize(20))
                 .Sortable()
@@ -260,6 +267,7 @@
                          .Action("Log", "pir");
                 commands.Delete().ButtonType(GridButtonType.Image);
             }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.reference).Hidden();
         })
         .ClientEvents(events => events
             .OnRowSelect("onRowSelect")

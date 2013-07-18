@@ -10,6 +10,8 @@ using Telerik.Web.Mvc;
 using ReportManagement;
 using StarEnergi.Controllers.Utilities;
 using System.IO;
+using System.Web.UI.WebControls;
+using StarEnergi.Utilities;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -974,5 +976,125 @@ namespace StarEnergi.Controllers.FrontEnd
 
             return Json(new { id = id, analysis_title = i.title, cost = i.cost_estimate });
         }
+
+        public ActionResult ExportExcelTotal()
+        {
+            List<incident_report_r> result = new List<incident_report_r>();
+            List<incident_report> list_ir = db.incident_report.Where(p => p.incident_type == "Injury / Illness").ToList();
+            double total_cost = 0;
+            foreach(incident_report ir in list_ir) {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "Injury / Illness", cases = list_ir.Count, total_cost = total_cost });
+            list_ir = db.incident_report.Where(p => p.incident_type == "Environmental Loss").ToList();
+            total_cost = 0;
+            foreach (incident_report ir in list_ir)
+            {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "Environmental Loss", cases = list_ir.Count, total_cost = total_cost });
+            list_ir = db.incident_report.Where(p => p.incident_type == "Properti Damage").ToList();
+            total_cost = 0;
+            foreach (incident_report ir in list_ir)
+            {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "Properti Damage", cases = list_ir.Count, total_cost = total_cost });
+            list_ir = db.incident_report.Where(p => p.incident_type == "Process Loss / Disturb").ToList();
+            total_cost = 0;
+            foreach (incident_report ir in list_ir)
+            {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "Process Loss / Disturb", cases = list_ir.Count, total_cost = total_cost });
+            list_ir = db.incident_report.Where(p => p.incident_type == "External Relation").ToList();
+            total_cost = 0;
+            foreach (incident_report ir in list_ir)
+            {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "External Relation", cases = list_ir.Count, total_cost = total_cost });
+            list_ir = db.incident_report.Where(p => p.incident_type == "Theft / Crimes").ToList();
+            total_cost = 0;
+            foreach (incident_report ir in list_ir)
+            {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "Theft / Crimes", cases = list_ir.Count, total_cost = total_cost });
+            list_ir = db.incident_report.Where(p => p.incident_type == "Vehicular").ToList();
+            total_cost = 0;
+            foreach (incident_report ir in list_ir)
+            {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "Vehicular", cases = list_ir.Count, total_cost = total_cost });
+            list_ir = db.incident_report.Where(p => p.incident_type == "Near Miss").ToList();
+            total_cost = 0;
+            foreach (incident_report ir in list_ir)
+            {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "Near Miss", cases = list_ir.Count, total_cost = total_cost });
+            list_ir = db.incident_report.Where(p => p.incident_type != "Injury / Illness" && p.incident_type != "Environmental Loss" && p.incident_type != "Properti Damage"
+                && p.incident_type != "Process Loss / Disturb" && p.incident_type != "External Relation" && p.incident_type != "Theft / Crimes" && p.incident_type != "Vehicular" && p.incident_type != "Near Miss").ToList();
+            total_cost = 0;
+            foreach (incident_report ir in list_ir)
+            {
+                if (ir.cost_estimate != null && ir.cost_estimate != "")
+                {
+                    total_cost += double.Parse(ir.cost_estimate);
+                }
+            }
+            result.Add(new incident_report_r { type = "Other", cases = list_ir.Count, total_cost = total_cost });
+            int total_case = result.Sum(p => p.cases);
+            total_cost = result.Sum(p => p.total_cost);
+            result.Add(new incident_report_r { type = "Total", cases = total_case, total_cost = total_cost });
+            GridView gv = new GridView();
+            gv.Caption = "Incident Report";
+            gv.DataSource = result;
+            gv.DataBind();
+            gv.HeaderRow.Cells[0].Text = "Type of Incident";
+            gv.HeaderRow.Cells[1].Text = "No. of Cases";
+            gv.HeaderRow.Cells[2].Text = "Gen. Loss (USD)";
+            if (gv != null)
+            {
+                return new DownloadFileActionResult(gv, "incident report.xls");
+            }
+            else
+            {
+                return new JavaScriptResult();
+            }
+        }
+    }
+
+    class incident_report_r
+    {
+        public string type {get;set;}
+        public int cases { get; set; }
+        public double total_cost { get; set; }
     }
 }

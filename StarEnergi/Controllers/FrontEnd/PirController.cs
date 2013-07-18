@@ -112,7 +112,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.requester = requester != null ? has.Where(p => p.id == Int32.Parse(requester)).ToList().FirstOrDefault().username : null;
 
                 //add file initiator
-                string pirNumber = db.pirs.Count() == 0 ? "PIR/00000000/00000" : db.pirs.Where(x=>x.no != null).OrderByDescending(x => x.id).First().no;
+                string pirNumber = db.pirs.Count() == 0 ? "" : db.pirs.Where(x=>x.no != null).OrderByDescending(x => x.id).First().no;
                 pirNumber = MyTools.generatePirNumber(pirNumber);
                 pir pir = new pir();
                 pir.no = pirNumber;
@@ -259,7 +259,8 @@ namespace StarEnergi.Controllers.FrontEnd
                     title = x.title,
                     date_rise = x.date_rise,
                     target_completion_init = x.target_completion_init,
-                    status = x.status
+                    status = x.status,
+                    reference = x.reference
                 });
             }
 
@@ -294,7 +295,8 @@ namespace StarEnergi.Controllers.FrontEnd
                     date_rise = x.date_rise,
                     target_completion_init = x.target_completion_init,
                     initiate_by = x.initiate_by,
-                    status = x.status
+                    status = x.status,
+                    reference = x.reference
                 });
             }
 
@@ -695,15 +697,19 @@ namespace StarEnergi.Controllers.FrontEnd
             foreach (iir_recommendations x in model.ToList())
             {
                 string temp = "";
+                string reference = "";
                 if(x.pir_number != null){
-                    temp = db.pirs.Find(x.pir_number).no;
+                    pir pir = db.pirs.Find(x.pir_number);
+                    temp = pir.no;
+                    reference = pir.reference;
                 }
                 ret.Add(new RCAEntityModel
                 {
                     id = x.id,
                     description = x.description,
                     pir_number = temp,
-                    identity = 1
+                    identity = 1,
+                    rca_code = reference
                 });
             }
 

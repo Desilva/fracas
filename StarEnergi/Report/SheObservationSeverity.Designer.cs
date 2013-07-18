@@ -14,10 +14,12 @@ namespace StarEnergi.Report
             Telerik.Reporting.ReportParameter reportParameter1 = new Telerik.Reporting.ReportParameter();
             Telerik.Reporting.ReportParameter reportParameter2 = new Telerik.Reporting.ReportParameter();
             Telerik.Reporting.ReportParameter reportParameter3 = new Telerik.Reporting.ReportParameter();
+            Telerik.Reporting.ReportParameter reportParameter4 = new Telerik.Reporting.ReportParameter();
             this.sqlDataSource1 = new Telerik.Reporting.SqlDataSource();
             this.detail = new Telerik.Reporting.DetailSection();
             this.textBox1 = new Telerik.Reporting.TextBox();
             this.chart1 = new Telerik.Reporting.Chart();
+            this.sqlDataSource2 = new Telerik.Reporting.SqlDataSource();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // sqlDataSource1
@@ -91,10 +93,15 @@ namespace StarEnergi.Report
             this.chart1.PlotArea.YAxis.Appearance.MinorTick.Width = 0F;
             this.chart1.PlotArea.YAxis.Appearance.TextAppearance.TextProperties.Color = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.chart1.PlotArea.YAxis.AxisLabel.TextBlock.Appearance.TextProperties.Color = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.chart1.SeriesPalette = "Mac";
             this.chart1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.3000006675720215D), Telerik.Reporting.Drawing.Unit.Inch(4.3000001907348633D));
             this.chart1.Skin = "Mac";
             this.chart1.NeedDataSource += new System.EventHandler(this.SheObservation_NeedDataSource);
+            // 
+            // sqlDataSource2
+            // 
+            this.sqlDataSource2.ConnectionString = "starenergygeo";
+            this.sqlDataSource2.Name = "sqlDataSource2";
+            this.sqlDataSource2.SelectCommand = "select * from she_obs_sub_category";
             // 
             // SheObservationSeverity
             // 
@@ -119,7 +126,6 @@ namespace StarEnergi.Report
             reportParameter2.Type = Telerik.Reporting.ReportParameterType.DateTime;
             reportParameter2.Visible = true;
             reportParameter3.AllowNull = true;
-            reportParameter3.AutoRefresh = true;
             reportParameter3.AvailableValues.DataSource = this.sqlDataSource1;
             reportParameter3.AvailableValues.DisplayMember = "= Fields.title";
             reportParameter3.AvailableValues.ValueMember = "= Fields.id";
@@ -127,9 +133,20 @@ namespace StarEnergi.Report
             reportParameter3.Text = "Category";
             reportParameter3.Type = Telerik.Reporting.ReportParameterType.Integer;
             reportParameter3.Visible = true;
+            reportParameter4.AllowNull = true;
+            reportParameter4.AvailableValues.DataSource = this.sqlDataSource2;
+            reportParameter4.AvailableValues.DisplayMember = "= Fields.title";
+            reportParameter4.AvailableValues.Filters.AddRange(new Telerik.Reporting.Data.Filter[] {
+            new Telerik.Reporting.Data.Filter("=Fields.id_category", Telerik.Reporting.Data.FilterOperator.Equal, "=Parameters.category.Value")});
+            reportParameter4.AvailableValues.ValueMember = "= Fields.id";
+            reportParameter4.Name = "subcategory";
+            reportParameter4.Text = "Sub Category";
+            reportParameter4.Type = Telerik.Reporting.ReportParameterType.Integer;
+            reportParameter4.Visible = true;
             this.ReportParameters.Add(reportParameter1);
             this.ReportParameters.Add(reportParameter2);
             this.ReportParameters.Add(reportParameter3);
+            this.ReportParameters.Add(reportParameter4);
             this.Style.BackgroundColor = System.Drawing.Color.White;
             this.Width = Telerik.Reporting.Drawing.Unit.Inch(9.6929140090942383D);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -141,5 +158,6 @@ namespace StarEnergi.Report
         private Telerik.Reporting.TextBox textBox1;
         private Telerik.Reporting.Chart chart1;
         private Telerik.Reporting.SqlDataSource sqlDataSource1;
+        private Telerik.Reporting.SqlDataSource sqlDataSource2;
     }
 }

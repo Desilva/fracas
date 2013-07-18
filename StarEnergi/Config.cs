@@ -516,7 +516,7 @@ namespace StarEnergi
         public static string fileFracas = "Fracas_template.xls";
         public static string fileDailyLogDay = "DailyLogDay_template.xls";
         public static string fileDailyLogNight = "DailyLogNight_template.xls";
-        public static string pirNumberFormat = "PIR/" + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year + "/";
+        public static string pirNumberFormat = "W-O-SPE-PIR-" + DateTime.Now.Year + "-";
         public static string fileIR = "IR_template.xls";
         public static string filePIR = "PIR_template.xls";
     }

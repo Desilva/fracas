@@ -1,6 +1,11 @@
 ﻿@model StarEnergi.Models.she_observation
 @{
     int? id = Model.id as Nullable<Int32>;
+    List<StarEnergi.Models.EmployeeEntity> has = null;
+    if (ViewBag.user != null)
+    {
+        has = ViewBag.user as List<StarEnergi.Models.EmployeeEntity>;
+    }
 }
 <link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
 <link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
@@ -567,6 +572,29 @@
 			    <td>
                     <b>Activity:</b><br />
                     @Model.activity
+			    </td>
+		    </tr>
+            <tr>
+			    <td>
+                    <ul style="margin-left:0px;padding-left:0px;margin-bottom:0px">
+                        <li style="display:inline"><b><label for="equip_choose"><input type="radio" value="0" id="equip_choose" name="equipment_employee" disabled @(Model.equipment_employee == 0 ? "checked" : "") />Equipment</label></b></li>
+                        <li style="display:inline"><b><label for="employee_choose"><input type="radio" value="1" id="employee_choose" name="equipment_employee" disabled @(Model.equipment_employee == 1 ? "checked" : "") />Employee</label></b></li>
+                    </ul>
+                    <select id="equipment_id" @(Model.equipment_employee == 1 ? "style=display:none" : "style=display:block") disabled>
+                        <option value="">Choose One</option>
+                        @foreach (StarEnergi.Models.equipment eq in ViewBag.list_equipment as List<StarEnergi.Models.equipment>)
+                        {
+                            <option value="@eq.id" @(Model.equipment_id == eq.id ? "selected" : "")>@eq.tag_num</option>
+                        }
+                    </select>
+                    <select id="employee_id" @(Model.equipment_employee == 0 ? "style=display:none" : "style=display:block") disabled>
+                        <option value="">Choose One</option>
+                        @{has = has.OrderBy(p => p.alpha_name).ToList();}
+                        @foreach (StarEnergi.Models.EmployeeEntity em in has)
+                        {
+                            <option value="@em.id" @(Model.employee_id == em.id ? "selected" : "")>@em.alpha_name</option>
+                        }
+                    </select>
 			    </td>
 		    </tr>
             <tr>

@@ -35,32 +35,40 @@ namespace StarEnergi.Utilities
             string ret = "";
 
             if (number == "") {
-                return Config.pirNumberFormat + "00001";
+                return Config.pirNumberFormat + "0001";
             }
 
-            string[] parse = number.Split('/');
+            string[] parse = number.Split('-');
 
             int x = int.Parse(parse.Last());
+            int year = int.Parse(parse.ElementAt(4));
 
-            ret = Config.pirNumberFormat;
-
-            switch ((x++).ToString().Length){
-                case 1:
-                    ret += "0000" + (x++);
-                    break;
-                case 2:
-                    ret += "000" + (x++);
-                    break;
-                case 3:
-                    ret += "00" + (x++);
-                    break;
-                case 4:
-                    ret += "0" + (x++);
-                    break;
-                case 5:
-                    ret += (x++).ToString();
-                    break;
+            if (year != DateTime.Today.Year)
+            {
+                x = 0;
             }
+            x++;
+            ret = Config.pirNumberFormat;
+            ret += x.ToString().PadLeft(4, '0');
+
+
+            //switch ((x++).ToString().Length){
+            //    case 1:
+            //        ret += "0000" + (x++);
+            //        break;
+            //    case 2:
+            //        ret += "000" + (x++);
+            //        break;
+            //    case 3:
+            //        ret += "00" + (x++);
+            //        break;
+            //    case 4:
+            //        ret += "0" + (x++);
+            //        break;
+            //    case 5:
+            //        ret += (x++).ToString();
+            //        break;
+            //}
 
             return ret;
         }

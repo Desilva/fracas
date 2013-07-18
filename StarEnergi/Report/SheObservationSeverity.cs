@@ -26,6 +26,33 @@ namespace StarEnergi.Report
             //
             // TODO: Add any constructor code after InitializeComponent call
             //
+
+            Color[] barColors = new Color[12]{
+               Color.Purple,
+               Color.SteelBlue,
+               Color.Aqua,
+               Color.Yellow,
+               Color.Navy,
+               Color.Green,
+               Color.Blue,
+               Color.Red,
+               Color.Honeydew,
+               Color.Magenta,
+               Color.SpringGreen,
+               Color.Gold
+           };
+            //int i = 0;
+            //if (this.ReportParameters[2].Value != null)
+            //{
+            //    foreach (ChartSeriesItem item in chart1.Series[0].Items)
+            //    {
+            //        item.Appearance.FillStyle.MainColor = barColors[i++];
+            //    }
+            //}
+
+            Palette seriesPalette = new Palette("seriesPalette", barColors, true);
+            chart1.CustomPalettes.Add(seriesPalette);
+            chart1.SeriesPalette = "seriesPalette";
         }
 
         private void SheObservation_NeedDataSource(object sender, EventArgs e)
@@ -51,51 +78,118 @@ namespace StarEnergi.Report
             }
             else if ((Int64)this.ReportParameters[2].Value == 1)
             {
-                sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                if (this.ReportParameters[3].Value == null)
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
                     sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
                     sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
-                    from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2,'0') + "','" + from_day.PadLeft(2,'0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                    from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
                     WHERE num = 1 or num = 2 or num = 3 or num = 4";
+                }
+                else
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                    sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                    sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                    from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                    WHERE num = " + (Int64)this.ReportParameters[3].Value;
+                }
+                
             }
             else if ((Int64)this.ReportParameters[2].Value == 2)
             {
-                sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
-                    sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
-                    sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
-                    from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
-                    WHERE num = 5 or num = 6 or num = 7 or num = 8 or num = 9";
+                if (this.ReportParameters[3].Value == null)
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        WHERE num = 5 or num = 6 or num = 7 or num = 8 or num = 9";
+                }
+                else
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        WHERE num = " + (Int64)this.ReportParameters[3].Value;
+                }
             }
             else if ((Int64)this.ReportParameters[2].Value == 3)
             {
-                sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
-                    sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
-                    sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
-                    from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
-                    where num = 10 or num = 11 or num = 12 or num = 13 or num = 14 or num = 15";
+                if (this.ReportParameters[3].Value == null)
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        where num = 10 or num = 11 or num = 12 or num = 13 or num = 14 or num = 15";
+                }
+                else
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        WHERE num = " + (Int64)this.ReportParameters[3].Value;
+                }
             }
             else if ((Int64)this.ReportParameters[2].Value == 4)
             {
-                sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
-                    sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
-                    sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
-                    from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
-                    where num = 16 or num = 17 or num = 18 or num = 19 or num = 20 or num = 21";
+                if (this.ReportParameters[3].Value == null)
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        where num = 16 or num = 17 or num = 18 or num = 19 or num = 20 or num = 21";
+                }
+                else
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        WHERE num = " + (Int64)this.ReportParameters[3].Value;
+                }
             }
             else if ((Int64)this.ReportParameters[2].Value == 5)
             {
-                sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
-                    sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
-                    sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
-                    from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
-                    where num = 22 or num = 23 or num = 24 or num = 25 or num = 26";
+                if (this.ReportParameters[3].Value == null)
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        where num = 22 or num = 23 or num = 24 or num = 25 or num = 26";
+                }
+                else
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        WHERE num = " + (Int64)this.ReportParameters[3].Value;
+                }
             }
             else if ((Int64)this.ReportParameters[2].Value == 6)
             {
-                sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
-                    sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
-                    sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
-                    from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
-                    where num = 27 or num = 28 or num = 29";
+                if (this.ReportParameters[3].Value == null)
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        where num = 27 or num = 28 or num = 29";
+                }
+                else
+                {
+                    sql = @"select sum(major_ua) as major_ua, sum(major_uc) as major_uc, sum(major_sa) as major_sa, sum(major_sc) as major_sc, 
+                        sum(mod_ua) as mod_ua, sum(mod_uc) as mod_uc, sum(mod_sa) as mod_sa, sum(mod_sc) as mod_sc, 
+                        sum(minor_ua) as minor_ua, sum(minor_uc) as minor_uc, sum(minor_sa) as minor_sa, sum(minor_sc) as minor_sc 
+                        from observationChartSeverity('" + from_year + "','" + from_month.PadLeft(2, '0') + "','" + from_day.PadLeft(2, '0') + "','" + to_year + "','" + to_month.PadLeft(2, '0') + "','" + to_day.PadLeft(2, '0') + @"') 
+                        WHERE num = " + (Int64)this.ReportParameters[3].Value;
+                }
             }
             SqlDataAdapter adapter = new SqlDataAdapter(sql
                  , ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
@@ -108,6 +202,7 @@ namespace StarEnergi.Report
             defChart.Series.Add(series);
             series.Clear();
             series.Appearance.LegendDisplayMode = ChartSeriesLegendDisplayMode.ItemLabels;
+
             foreach (DataRow row in table.Rows)
             {
                 ChartSeriesItem item = new ChartSeriesItem();
@@ -133,62 +228,62 @@ namespace StarEnergi.Report
                 {
                     item.Name = "Serious - UA";
                     item.YValue = (int)row["major_ua"];
-                    item.Label.TextBlock.Text = "Serious - UA, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Serious - UC";
                     item.YValue = (int)row["major_uc"];
-                    item.Label.TextBlock.Text = "Serious - UC, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Serious - SA";
                     item.YValue = (int)row["major_sa"];
-                    item.Label.TextBlock.Text = "Serious - SA, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Serious - SC";
                     item.YValue = (int)row["major_sc"];
-                    item.Label.TextBlock.Text = "Serious - SC, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Moderate - UA";
                     item.YValue = (int)row["mod_ua"];
-                    item.Label.TextBlock.Text = "Moderate - UA, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Moderate - UC";
                     item.YValue = (int)row["mod_uc"];
-                    item.Label.TextBlock.Text = "Moderate - UC, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Moderate - SA";
                     item.YValue = (int)row["mod_sa"];
-                    item.Label.TextBlock.Text = "Moderate - SA, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Moderate - SC";
                     item.YValue = (int)row["mod_sc"];
-                    item.Label.TextBlock.Text = "Moderate - SC, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Minor - UA";
                     item.YValue = (int)row["minor_ua"];
-                    item.Label.TextBlock.Text = "Minor - UA, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Minor - UC";
                     item.YValue = (int)row["minor_uc"];
-                    item.Label.TextBlock.Text = "Minor - UC, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Minor - SA";
                     item.YValue = (int)row["minor_sa"];
-                    item.Label.TextBlock.Text = "Minor - SA, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                     item = new ChartSeriesItem();
                     item.Name = "Minor - SC";
                     item.YValue = (int)row["minor_sc"];
-                    item.Label.TextBlock.Text = "Minor - SC, #Y";
+                    item.Label.TextBlock.Text = "#Y";
                     series.Items.Add(item);
                 }
             }

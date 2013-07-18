@@ -12,11 +12,11 @@ using System.Collections.Generic;
 
 namespace StarEnergi.Models
 {
-    public partial class equipment_read_nav_note
+    public partial class she_obs_sub_category
     {
         public int id { get; set; }
-        public byte[] update_date { get; set; }
-        public string note { get; set; }
+        public Nullable<int> id_category { get; set; }
+        public string title { get; set; }
     }
     
 }
