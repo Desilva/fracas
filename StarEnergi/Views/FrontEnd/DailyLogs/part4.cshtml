@@ -1,0 +1,67 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    int? isApprove = ViewBag.isApprove as Nullable<byte>;
+    string username = HttpContext.Current.Session["username"] as string;
+}
+<style>
+    .t-icon.t-EditSAGS
+    {
+        background-image: url("/Content/2012.1.214/Default/sprite.png");
+        background-position: 0 -336px;
+    }
+</style>
+<script type="text/javascript">
+    function ondatabound4(e) {
+        var username = '@isApprove';
+        var dataItem = e.dataItem;
+        var row = e.row;
+        if (username == '1') {
+            row.childNodes[4].childNodes[0].style.visibility = 'hidden';
+            row.childNodes[4].childNodes[1].style.visibility = 'hidden';
+        }
+    }
+</script>
+<br />
+<b>SAGS activity</b>
+<br />
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.daily_log_sags>()
+        .Name("SAGS")
+        .HtmlAttributes(new { style = "width:980px" })
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands =>
+        {
+            if (isApprove == null || isApprove == 0) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Insert SAGS Activity" });
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxSAGS", "DailyLogs", new { id_daily_log = id })
+                .Select("_SelectAjaxSAGS", "DailyLogs", new { id = id })
+                .Insert("_InsertAjaxSAGS", "DailyLogs", new { id_daily_log = id })
+                .Update("_UpdateAjaxSAGS", "DailyLogs", new { id_daily_log = id });
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.sags_time).Width(120).Title("Time");
+            columns.Bound(o => o.sags_unit).Width(150).Title("Unit");
+            columns.Bound(o => o.sags_activity).Title("Activity");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit SAGS Activity" });
+                commands.Delete().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Delete SAGS Activity" });
+            }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(events => events.OnRowDataBound("ondatabound4"))
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height(200))
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Selectable()
+)

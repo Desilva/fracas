@@ -1,0 +1,29 @@
+﻿@model StarEnergi.Models.sub_component
+
+@{
+    ViewBag.Title = "Details";
+}
+<script type="text/javascript">
+    function edit() {
+        $('#content').load('subcomponent/edit/'+ @Model.id);
+    }
+</script>
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Sub Component</legend>
+
+    <div class="display-label">No Key Map</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.tag_number)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
+
+    <p>
+        <input type="button" value="Edit" onclick="edit()" />
+    </p>
+</fieldset>

@@ -1,0 +1,249 @@
+﻿@model StarEnergi.Models.system
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    function save() {
+        var values =
+        {
+            "id"                : $('#id').val(),
+            "id_unit"           : eval('@ViewBag.id_unit'),
+            "nama"              : $('#nama').val(),
+            "kode"              : $('#kode').val(),
+            "funct_description" : $('#funct_description').val(),
+            "failure_scenario"  : $('#failure_scenario').val(),
+            "primary_impact"    : $('#primary_impact').val(),
+            "secondary_impact"  : $('#secondary_impact').val(),
+            "cons_econ"         : $('#cons_econ').val(),
+            "cons_hs"           : $('#cons_hs').val(),
+            "cons_env"          : $('#cons_env').val(),
+            "cons_total"        : $('#cons_total').attr("title"),
+            "likelihood"        : $('#likelihood').attr("title"),
+            "crit_code"         : $('#crit_code').attr("title"),
+            "ram_crit"          : $('#ram_crit').attr("title"),
+            "exist_crit"        : $('#exist_crit').attr("title"),
+            "h"                 : $('#h').attr("title"),
+            "e"                 : $('#e').attr("title"),
+            "econ"              : $('#econ').attr("title"),
+            "prob"              : $('#prob').attr("title"),
+            "ram_crit_1"        : $('#ram_crit_1').attr("title"),
+            "ram_crit_2"        : $('#ram_crit_2').attr("title"),
+            "ram_crit_3"        : $('#ram_crit_3').attr("title")
+        }
+
+        $.post("system/edit", values, function (data) {
+        if (data != undefined) {
+            if (data["status"] == 0) {
+                var html = $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().find('img').attr('src');
+                var image = '<img class="t-image" src="' + html + '" alt="image">';
+                $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().html(image + $('#nama').val());
+                $('#content').load('System/details/' + $('#id').val());
+            } else {
+                clearError();
+                $.each(data, function (index, value) {
+                    if (index != "status") {
+                        //error render
+                        $('#' + index).next('div').html(value);
+                    }
+                });
+            }
+            } else {
+                alert('Gagal mengedit data system');
+            }
+        });
+
+    }
+
+    function clearError() {
+        var field = ["nama", "kode", "funct_description", "failure_scenario", "primary_impact", "secondary_impact", "cons_econ", "cons_hs", "cons_env", "cons_total", "likelihood", "likelihood", "crit_code", "ram_crit", "exist_crit", "h", "e", "prob", "ram_crit_1", "ram_crit_2", "ram_crit_3"];
+        $.each(field, function (index, value) {
+            $('#' + value).next('div').html('');
+        });
+    }
+</script>
+
+<div class="fieldR">* Required Field</div>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>system</legend>
+
+        @Html.HiddenFor(model => model.id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.nama)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.nama)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.kode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.kode)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.funct_description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.funct_description)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.failure_scenario)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.failure_scenario)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.primary_impact)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.primary_impact)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.secondary_impact)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.secondary_impact)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cons_econ)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cons_econ)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cons_hs)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cons_hs)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cons_env)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cons_env)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cons_total)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cons_total)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.likelihood)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.likelihood)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.crit_code)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.crit_code)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ram_crit)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ram_crit)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.exist_crit)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.exist_crit)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.h)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.h)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.e)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.e)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.econ)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.econ)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ram_crit_1)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ram_crit_1)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.prob)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.prob)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ram_crit_2)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ram_crit_2)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ram_crit_3)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ram_crit_3)
+            <div class="errorM"></div>
+        </div>
+
+        <p>
+            <input type="submit" value="Save" onclick="save()"/>
+        </p>
+    </fieldset>

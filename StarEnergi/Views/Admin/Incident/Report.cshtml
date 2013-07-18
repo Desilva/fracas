@@ -1,0 +1,195 @@
+﻿@model IEnumerable<StarEnergi.Models.incident_report>
+@{
+    ViewBag.Title = "Add Incident Report";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    List<StarEnergi.Models.EmployeeEntity> has = null;
+    if (ViewData["users"] != null)
+    {
+        has = ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>;
+    }
+    int username = has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).id;
+    
+}
+<script type="text/javascript">
+    var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.SHE)';
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var username = '@username';
+        var isCanEdit = username == dataItem.prepared_by || username == dataItem.ack_supervisor || username == dataItem.superintendent || username == dataItem.field_manager || username == dataItem.loss_control ? true : false;
+        isCanEdit = isCanEdit && dataItem.field_manager_approve == null;
+        var isApprove = dataItem.field_manager_approve != null;
+        var templateComplete = (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (dataItem.field_manager_approve == null ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>' : '')
+                                + ((isApprove) ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" onClick="openChooser(' + dataItem.id + ');" title="Add to RCA">'
+                                + '<span class="t-icon t-create"></span>'
+                                + '</a>' : '');
+        var templateUnComplete = (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="Edit Incident Report" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>' : '')
+                                + ((isApprove) ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" onClick="openChooser(' + dataItem.id + ');" title="Add to RCA">'
+                                + '<span class="t-icon t-create"></span>'
+                                + '</a>' : '');
+
+        if (dataItem.investigation == 1) { //already add IIR
+            row.cells[0].innerHTML = templateUnComplete;
+            if (dataItem.id_iir != null) row.cells[1].innerHTML = '<a onclick="editIIR(' + dataItem.id_iir + ')" style="color:blue;">IRN-' + dataItem.id_iir + '</a>';
+            row.style.background = '#cccccc';
+        } else { //uncomplete
+            row.cells[0].innerHTML = templateComplete;
+        }
+
+        row.cells[7].innerHTML = dataItem.type_of_report == 1 ? "On the job" : dataItem.type_of_report == 0 ? "Off the job" : '';
+        row.cells[11].innerHTML = dataItem.actual_loss_severity == 1 ? "Major" : dataItem.actual_loss_severity == 2 ? "Serious" : dataItem.actual_loss_severity == 3 ? "Moderate" : dataItem.actual_loss_severity == 4 ? "Minor" : "";
+        row.cells[12].innerHTML = dataItem.potential_loss_severity == 1 ? "Major" : dataItem.potential_loss_severity == 2 ? "Serious" : dataItem.potential_loss_severity == 3 ? "Moderate" : dataItem.potential_loss_severity == 4 ? "Minor" : "";
+        row.cells[13].innerHTML = dataItem.probability == 1 ? "Frequent" : dataItem.probability == 2 ? "Occasional" : dataItem.probability == 3 ? "Seldom" : dataItem.probability == 4 ? "Rare" : "";
+    }
+    
+    function Edit(id) {
+        $('#content').load('Incident/addIncident', { 'id': id });
+    }
+
+    function addIIR(id) {
+        $('#content').load('Investigation/addInvestigation', { 'id_ir': id });
+    }
+
+    function editIIR(id) {
+        $('#content').load('Investigation/addInvestigation', { 'id': id });
+    }
+
+    function deleteIIR(id_iir, id) {
+        var r = confirm("Anda yakin mau menghapus incident investigation report?");
+        var values = {
+            id: id,
+            id_iir: id_iir
+        }
+        if (r) {
+            $.post("Investigation/deleteInvestigation/", values, function (data) {
+                var grid = $('#incidentReport').data('tGrid');
+                grid.ajaxRequest();
+            });
+        }
+    }
+
+    function openChooser(id) {
+        $('#Window').data('tWindow').center().open();
+        document.getElementById('ids').value = id;
+    }
+
+    function toRcas() {
+        var radios = document.getElementsByName('choose');
+        var id = document.getElementById('ids').value;
+        var val = -1;
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val = radios[i].value;
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("getCode", "Incident")",
+            traditional: true,
+            data: { id: id },
+            success: function (data) {
+                window.location = 'RCA/addRCA?isTree=' + val + '&i=' + data.id;
+            }
+        });
+
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+    #Window .t-header {
+        background:#b9b7b7;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.incident_report>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("IncidentReport")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxIncidentReport", "Incident")
+                .Select("_SelectAjaxIncidentReport", "Incident");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id_iir).Width(225).Title("Investigation Report Number");
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.investigation).Hidden();
+            columns.Bound(o => o.facility).Width(225).Title("Business Location / Facility");
+            columns.Bound(o => o.incident_location).Width(150).Title("Incident Location");
+            columns.Bound(o => o.reference_number).Width(150).Title("Reference Number");
+            columns.Bound(o => o.type_of_report).Width(150).Title("Type of Report");
+            columns.Bound(o => o.date_incident).Width(175).Title("Date / Time Incident");
+            columns.Bound(o => o.title).Width(175).Title("Title");
+            columns.Bound(o => o.incident_type).Width(175).Title("Incident Type");
+            columns.Bound(o => o.actual_loss_severity).Width(200).Title("Actual Loss Severity");
+            columns.Bound(o => o.potential_loss_severity).Width(200).Title("Potential Loss Severity");
+            columns.Bound(o => o.probability).Width(200).Title("Probability of Reccurence");
+            columns.Bound(o => o.prepared_by).Width(150).Title("Prepared By");
+            columns.Bound(o => o.prepare_date).Width(150).Title("Prepared Date");
+            columns.Bound(o => o.ack_supervisor).Width(175).Title("ACK by Supervisor");
+            columns.Bound(o => o.ack_date).Width(200).Title("ACK by Supervisor Date");
+            columns.Bound(o => o.superintendent).Width(125).Title("Superintendent");
+            columns.Bound(o => o.superintendent_date).Width(175).Title("Superintendent Date");
+            columns.Bound(o => o.loss_control).Width(125).Title("Loss Control");
+            columns.Bound(o => o.loss_date).Width(175).Title("Loss Control Date");
+            columns.Bound(o => o.field_manager).Width(125).Title("Field Manager");
+            columns.Bound(o => o.field_manager_date).Width(175).Title("Field Manager Date");
+            columns.Bound(o => o.doms).Width(150).Title("Entry to Doms by");
+            columns.Bound(o => o.doms_date).Width(200).Title("Entry to Doms Date");
+            columns.Bound(o => o.investigation_req).Width(200).Title("Investigation Request by");
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+)
+
+@{  Html.Telerik().Window()
+        .Name("Window")
+        .Title("Choose Analysis Type")
+        .Content(@<text>
+                <input name="ids" id="ids" type="hidden" value="" />
+                <input name="choose" type="radio" value="1" checked/>Tree Diagram
+                <input name="choose" type="radio" value="0" />5 - Why
+                <input name="choose" type="radio" value="2" />Fishbone Diagram
+                <br />
+                <div class="form-actions">
+                    <input type="button" onclick="toRcas()" value="Go!" />
+                </div>
+            </text>)
+        .Width(400)
+        .Draggable(true)
+        .Modal(true)
+        .Visible(false)
+        .Render();
+}

@@ -1,0 +1,30 @@
+﻿<script type="text/javascript">
+
+    function back() {
+        $('#contentAssetRegister').load('AssetRegister/Back');
+    }
+
+</script>
+<h2>Equipment @ViewBag.nama</h2>
+@( Html.Telerik().TabStrip()
+        .Name("TabStrip")
+        .Items(parent => {
+            parent.Add()
+                .Text("Equipment Data")
+                /* this tab will be opened initially - no need to get it with ajax */
+                .LoadContentFrom("AjaxView_Equipment/"+ViewBag.id, "AssetRegister")
+                .Selected(true);
+            parent.Add()
+                .Text("Part List")
+                .LoadContentFrom("AjaxView_PartList/"+ViewBag.id, "AssetRegister");
+                
+            parent.Add()
+                .Text("History")
+                .LoadContentFrom("DetailsEquipment/"+ViewBag.id, "FracasHistory");
+            parent.Add()
+                .Text("FRACAS")
+                .LoadContentFrom("FracasEventLogAsset/" + ViewBag.id, "FracasEventLog");
+        })
+)
+<br />
+<input type="button" value="Back to List" onclick="back()"/>

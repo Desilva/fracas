@@ -1,0 +1,71 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    int? isApprove = ViewBag.isApprove as Nullable<byte>;
+    string username = HttpContext.Current.Session["username"] as string;
+}
+<style>
+    .t-icon.t-EditMaintenance
+    {
+        background-image: url("/Content/2012.1.214/Default/sprite.png");
+        background-position: 0 -336px;
+    }
+</style>
+<script type="text/javascript">
+    
+    function OnRowDataBoundEq7(e) {
+        var username = '@isApprove';
+        var dataItem = e.dataItem;
+        var row = e.row;
+        row.cells[5].innerHTML = dataItem.work_status == 0 ? "On Progress" : dataItem.work_status == 1 ? "Done" : "";
+        if (username == '1') {
+            row.childNodes[6].childNodes[0].style.visibility = 'hidden';
+            row.childNodes[6].childNodes[1].style.visibility = 'hidden';
+        }
+    }
+</script>
+<br />
+<b>Maintenance Activity:</b>
+<br />
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.daily_log_maintainence>()
+        .Name("Maintenance")
+        .HtmlAttributes(new { style = "width:980px" })
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands =>
+        {
+            if (isApprove == null || isApprove == 0) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Insert Maintenance Activity" });
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxMaintenance", "DailyLogs", new { id_daily_log = id })
+                .Select("_SelectAjaxMaintenance", "DailyLogs", new { id = id })
+                .Insert("_InsertAjaxMaintenance", "DailyLogs", new { id_daily_log = id })
+                .Update("_UpdateAjaxMaintenance", "DailyLogs", new { id_daily_log = id });
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.time).Width(120).Title("Time");
+            columns.Bound(o => o.wo_number).Width(150).Title("WO No.");
+            columns.Bound(o => o.department).Width(100).Title("Department");
+            columns.Bound(o => o.work_to_be_performed).Title("Work to be Performed");
+            columns.Bound(o => o.work_status).Width(100).Title("Work Status");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Maintenance Activity" });
+                commands.Delete().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Delete Maintenance Activity" });
+            }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(events => events.OnRowDataBound("OnRowDataBoundEq7"))
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true).Height(200))
+        .Selectable()
+)

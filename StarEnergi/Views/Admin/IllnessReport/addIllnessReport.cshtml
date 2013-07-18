@@ -1,0 +1,792 @@
+﻿@{
+    int? id = null;
+    bool isEdit = false;
+    StarEnergi.Models.she_illness_report dl = new StarEnergi.Models.she_illness_report();
+    if (ViewBag.mod != null)
+    {
+        id = ViewBag.mod as Nullable<Int32>;
+        dl = ViewBag.datas as StarEnergi.Models.she_illness_report;
+        isEdit = true;
+    }
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<script>
+    var isEdit = '@isEdit';
+    var isSave = false;
+    function setIframeHeight(sel, h) {
+        $(sel).height(h);
+    }
+
+    function changeInput(radio) {
+        if (radio.id == "ge_skin_rush") {
+            var radios = document.getElementsByName(radio.id);
+            var val = -1;
+            for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    val = radios[i].value;
+                }
+            }
+
+            if (val == 1) {
+                var td = document.getElementById("ge_skin_rush_size");
+                td.disabled = "";
+                td = document.getElementById("ge_skin_rush_colour");
+                td.disabled = "";
+                td = document.getElementById("ge_skin_rush_surface");
+                td.disabled = "";
+            } else {
+                var td = document.getElementById("ge_skin_rush_size");
+                td.disabled = "disabled";
+                td = document.getElementById("ge_skin_rush_colour");
+                td.disabled = "disabled";
+                td = document.getElementById("ge_skin_rush_surface");
+                td.disabled = "disabled";
+            }
+        } else if (radio.id == "comment_finding_no") {
+            if (radio.checked) {
+                var td = document.getElementById("comment_finding");
+                td.disabled = "disabled";
+            } else {
+                var td = document.getElementById("comment_finding");
+                td.disabled = "";
+            }
+        } else if (radio.id == "urine_testing_others") {
+            if (radio.checked) {
+                var td = document.getElementById("urine_testing_other");
+                td.disabled = "";
+            } else {
+                var td = document.getElementById("urine_testing_other");
+                td.disabled = "disabled";
+            }
+        }
+    }
+
+    function save() {
+        isSave = true;
+        var val = new Array();
+
+        var radios = document.getElementsByName("chest_injury");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[0] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("chest_tender_chest_wall");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[1] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("chest_position_windpipe_neck");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[2] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("chest_movement_breathing");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[3] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("chest_breathing_sound");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[4] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("chest_air_can_hear");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[5] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("abdo_size");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[6] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("abdo_pain_coughing");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[7] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("abdo_pain_moving");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[8] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("abdo_pain_puffing");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[9] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("abdo_area_tenderness_found");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[10] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("abdo_lumps_swelling_found");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[11] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("abdo_bowel_sound");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[12] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("ge_colour");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[13] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("ge_throat_colour");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[14] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("ge_tonsil_size");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[15] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("ge_skin_rush");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[16] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("post_designation");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[17] = radios[i].value;
+            }
+        }
+
+        if (validate()) {
+            var values = {
+                chest_injury:val[0],
+                chest_tender_chest_wall:val[1],
+                chest_position_windpipe_neck:val[2],
+                chest_movement_breathing:val[3],
+                chest_breathing_sound:val[4],
+                chest_air_can_hear:val[5],
+                abdo_size:val[6],
+                abdo_pain_coughing:val[7],
+                abdo_pain_moving:val[8],
+                abdo_pain_puffing:val[9],
+                abdo_area_tenderness_found:val[10],
+                abdo_lumps_swelling_found:val[11],
+                abdo_bowel_sound: val[12],
+                patient_name:$('#patient_name').val(),
+                ge_gland_neck_found:$('#ge_gland_neck_found').is(":checked") == true ? 1 : 0,
+                ge_gland_neck_r:$('#ge_gland_neck_r').is(":checked") == true ? 1 : 0,
+                ge_gland_neck_l:$('#ge_gland_neck_l').is(":checked") == true ? 1 : 0,
+                ge_gland_armpit_found:$('#ge_gland_armpit_found').is(":checked") == true ? 1 : 0,
+                ge_gland_armpit_r:$('#ge_gland_armpit_r').is(":checked") == true ? 1 : 0,
+                ge_gland_armpit_l:$('#ge_gland_armpit_l').is(":checked") == true ? 1 : 0,
+                ge_gland_groin_found:$('#ge_gland_groin_found').is(":checked") == true ? 1 : 0,
+                ge_gland_groin_r:$('#ge_gland_groin_r').is(":checked") == true ? 1 : 0,
+                ge_gland_groin_l:$('#ge_gland_groin_l').is(":checked") == true ? 1 : 0,
+                ge_ears:$('#ge_ears').is(":checked") == true ? 1 : 0,
+                ge_ears_r:$('#ge_ears_r').is(":checked") == true ? 1 : 0,
+                ge_ears_l:$('#ge_ears_l').is(":checked") == true ? 1 : 0,
+                ge_colour:val[13],
+                ge_eardrum_normal:$('#ge_eardrum_normal').is(":checked") == true ? 1 : 0,
+                ge_eardrum_normal_r:$('#ge_eardrum_normal_r').is(":checked") == true ? 1 : 0,
+                ge_eardrum_normal_l:$('#ge_eardrum_normal_l').is(":checked") == true ? 1 : 0,
+                ge_eardrum_wax:$('#ge_eardrum_wax').is(":checked") == true ? 1 : 0,
+                ge_eardrum_wax_r:$('#ge_eardrum_wax_r').is(":checked") == true ? 1 : 0,
+                ge_eardrum_wax_l:$('#ge_eardrum_wax_l').is(":checked") == true ? 1 : 0,
+                ge_eardrum_red:$('#ge_eardrum_red').is(":checked") == true ? 1 : 0,
+                ge_eardrum_red_r:$('#ge_eardrum_red_r').is(":checked") == true ? 1 : 0,
+                ge_eardrum_red_l:$('#ge_eardrum_red_l').is(":checked") == true ? 1 : 0,
+                ge_eardrum_perforated:$('#ge_eardrum_perforated').is(":checked") == true ? 1 : 0,
+                ge_eardrum_perforated_r:$('#ge_eardrum_perforated_r').is(":checked") == true ? 1 : 0,
+                ge_eardrum_perforated_l:$('#ge_eardrum_perforated_l').is(":checked") == true ? 1 : 0,
+                ge_throat_colour:val[14],
+                ge_tonsil_size:val[15],
+                ge_skin_rush:val[16],
+                ge_skin_rush_size:val[16] == 1 ? $('#ge_skin_rush_size').val() : '',
+                ge_skin_rush_colour:val[16] == 1 ? $('#ge_skin_rush_colour').val() : '',
+                ge_skin_rush_surface:val[16] == 1 ? $('#ge_skin_rush_surface').val() : '',
+                inves_peak:$('#inves_peak').val(),
+                urine_testing_blood:$('#urine_testing_blood').is(":checked") == true ? 1 : 0,
+                urine_testing_glucose:$('#urine_testing_glucose').is(":checked") == true ? 1 : 0,
+                urine_testing_ph:$('#urine_testing_ph').is(":checked") == true ? 1 : 0,
+                urine_testing_protein:$('#urine_testing_protein').is(":checked") == true ? 1 : 0,
+                urine_testing_sg:$('#urine_testing_sg').is(":checked") == true ? 1 : 0,
+                urine_testing_other:$('#urine_testing_others').is(":checked") == true ? $('#urine_testing_other').val() : '',
+                comment_finding:$('#comment_finding_no').is(":checked") == true ? $('#comment_finding').val() : '',
+                comment_finding_no:$('#comment_finding_no').is(":checked") == true ? 1 : 0,
+                possible_diagnosis: $('#possible_diagnosis').val(),
+                diag_name: $('#diag_name').val(),
+                post_designation:val[17],
+                treatment_date: $('#treatment_date').val()
+            }
+
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.post("IllnessReport/Add", values, function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        $('#realmod_save').css("display", "none");
+                        alert('Illness Report berhasil disimpan');
+                        back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Gagal menambahkan Illness Report');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.post("IllnessReport/Edit", values, function (data) {
+                    if (data != undefined) {
+                        $('#realmod_save').css("display", "none");
+                        alert('Illness Report berhasil diubah');
+                        back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Gagal mengubah Illness Report');
+                    }
+                });
+            }
+    }
+}
+
+function validate() {
+    return true;
+}
+</script>
+<div class="container">
+	<header>
+		<div class="page-title" style="width:980px">
+			<h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED</h1>
+		</div>
+		<div class="clearfix" style="width:768px"></div>
+		<b>Illness Report - Medical Assessment</b>
+	</header>
+    <label for="patient_name">Patient Name</label><input id="patient_name" name="patient_name" type="text" value="@(isEdit ? dl.patient_name : "")" />
+	<div class="log-part1">
+		<table class="w-border" style="width:980px">
+			<tr>
+				<td class="yellow-bg center" colspan="3"><b>Chest</b></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg center" colspan="3"><b>(bare all chest, front and back)</b></td>
+			</tr>
+			<tr>
+				<td style="width:500px">
+                    Sign of injury to chest ?
+				</td>
+                <td>
+                    <input type="radio" name="chest_injury" value="1" @(isEdit ? dl.chest_injury == 1 ? "checked" : "" : "")/>Yes
+				</td>
+                <td>
+                    <input type="radio" name="chest_injury" value="0" @(isEdit ? dl.chest_injury == 0 ? "checked" : "" : "")/>No
+				</td>
+			</tr>
+            <tr>
+				<td style="width:500px">
+                    Tender chest wall ?
+				</td>
+                <td>
+                    <input type="radio" name="chest_tender_chest_wall" value="1" @(isEdit ? dl.chest_tender_chest_wall == 1 ? "checked" : "" : "")/>Yes
+				</td>
+                <td>
+                    <input type="radio" name="chest_tender_chest_wall" value="0" @(isEdit ? dl.chest_tender_chest_wall == 0 ? "checked" : "" : "")/>No
+				</td>
+			</tr>
+            <tr>
+				<td rowspan="2" style="width:500px">
+                    Position of windpipe in neck ?
+				</td>
+                <td rowspan="2">
+                    <input type="radio" name="chest_position_windpipe_neck" value="0" @(isEdit ? dl.chest_position_windpipe_neck == 0 ? "checked" : "" : "")/>Central
+				</td>
+                <td>
+                    <input type="radio" name="chest_position_windpipe_neck" value="1" @(isEdit ? dl.chest_position_windpipe_neck == 1 ? "checked" : "" : "")/>To right
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="radio" name="chest_position_windpipe_neck" value="2" @(isEdit ? dl.chest_position_windpipe_neck == 2 ? "checked" : "" : "")/>To left
+				</td>
+			</tr>
+            <tr>
+				<td rowspan="2" style="width:500px">
+                    Chest Movement on breathing
+				</td>
+                <td>
+                    <input type="radio" name="chest_movement_breathing" value="0" @(isEdit ? dl.chest_movement_breathing == 0 ? "checked" : "" : "")/>Relaxed
+				</td>
+                <td>
+                    <input type="radio" name="chest_movement_breathing" value="1" @(isEdit ? dl.chest_movement_breathing == 1 ? "checked" : "" : "")/>Heaving
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="radio" name="chest_movement_breathing" value="2" @(isEdit ? dl.chest_movement_breathing == 2 ? "checked" : "" : "")/>Painful
+				</td>
+                <td>
+                    <input type="radio" name="chest_movement_breathing" value="3" @(isEdit ? dl.chest_movement_breathing == 3 ? "checked" : "" : "")/>Unequal
+				</td>
+			</tr>
+            <tr>
+				<td rowspan="2" style="width:500px">
+                    With your ear to the patient's mouth, their breathing sounds ?
+				</td>
+                <td rowspan="2">
+                    <input type="radio" name="chest_breathing_sound" value="0" @(isEdit ? dl.chest_breathing_sound == 0 ? "checked" : "" : "")/>Normal
+				</td>
+                <td>
+                    <input type="radio" name="chest_breathing_sound" value="1" @(isEdit ? dl.chest_breathing_sound == 1 ? "checked" : "" : "")/>Wheezy in
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="radio" name="chest_breathing_sound" value="2" @(isEdit ? dl.chest_breathing_sound == 2 ? "checked" : "" : "")/>Wheezy out
+				</td>
+			</tr>
+            <tr>
+				<td rowspan="2" style="width:500px">
+                    Using the stathoscope, air can be heard entering
+				</td>
+                <td rowspan="2">
+                    <input type="radio" name="chest_air_can_hear" value="0" @(isEdit ? dl.chest_air_can_hear == 0 ? "checked" : "" : "")/>Both sides of chest
+				</td>
+                <td>
+                    <input type="radio" name="chest_air_can_hear" value="1" @(isEdit ? dl.chest_air_can_hear == 1 ? "checked" : "" : "")/>Right side only
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="radio" name="chest_air_can_hear" value="2" @(isEdit ? dl.chest_air_can_hear == 2 ? "checked" : "" : "")/>Left side only
+				</td>
+			</tr>
+		</table>
+	</div>
+    <br />
+	<div class="log-part2">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>Abdoment (abdo)</b></td>
+		    </tr>
+		    <tr>
+			    <td class="green-bg" style="width:500px">Abdo Size</td>
+			    <td style="width:175px">
+                    <input type="radio" name="abdo_size" value="0" @(isEdit ? dl.abdo_size == 0 ? "checked" : "" : "")/>Normal
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="radio" name="abdo_size" value="1" @(isEdit ? dl.abdo_size == 1 ? "checked" : "" : "")/>Distended
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Abdo pain on coughing</td>
+			    <td style="width:175px">
+                    <input type="radio" name="abdo_pain_coughing" value="0" @(isEdit ? dl.abdo_pain_coughing == 0 ? "checked" : "" : "")/>No
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="radio" name="abdo_pain_coughing" value="1" @(isEdit ? dl.abdo_pain_coughing == 1 ? "checked" : "" : "")/>Yes
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Abdo pain on moving</td>
+			    <td style="width:175px">
+                    <input type="radio" name="abdo_pain_moving" value="1" @(isEdit ? dl.abdo_pain_moving == 1 ? "checked" : "" : "")/>Yes
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="radio" name="abdo_pain_moving" value="0" @(isEdit ? dl.abdo_pain_moving == 0 ? "checked" : "" : "")/>No
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Abdo pain on puffing out or sucking in tummy wall</td>
+			    <td style="width:175px">
+                    <input type="radio" name="abdo_pain_puffing" value="1" @(isEdit ? dl.abdo_pain_puffing == 1 ? "checked" : "" : "")/>Yes
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="radio" name="abdo_pain_puffing" value="0" @(isEdit ? dl.abdo_pain_puffing == 0 ? "checked" : "" : "")/>No
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Areas of tenderness found</td>
+			    <td style="width:175px">
+                    <input type="radio" name="abdo_area_tenderness_found" value="1" @(isEdit ? dl.abdo_area_tenderness_found == 1 ? "checked" : "" : "")/>Yes
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="radio" name="abdo_area_tenderness_found" value="0" @(isEdit ? dl.abdo_area_tenderness_found == 0 ? "checked" : "" : "")/>No
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Any lumps or swelling found</td>
+			    <td style="width:175px">
+                    <input type="radio" name="abdo_lumps_swelling_found" value="1" @(isEdit ? dl.abdo_lumps_swelling_found == 1 ? "checked" : "" : "")/>Yes
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="radio" name="abdo_lumps_swelling_found" value="0" @(isEdit ? dl.abdo_lumps_swelling_found == 0 ? "checked" : "" : "")/>No
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Bowel sounds : Use the stethoscope and place it on the tummy wall</td>
+			    <td style="width:175px">
+                    <input type="radio" name="abdo_bowel_sound" value="1" @(isEdit ? dl.abdo_bowel_sound == 1 ? "checked" : "" : "")/>Gurgling sound heard
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="radio" name="abdo_bowel_sound" value="0" @(isEdit ? dl.abdo_bowel_sound == 0 ? "checked" : "" : "")/>No sound heard
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part3">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>General Examination</b></td>
+		    </tr>
+		    <tr>
+			    <td class="green-bg no-border-btm" style="width:500px">Gland found</td>
+			    <td style="width:175px">
+                    &nbsp;
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    &nbsp;
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg no-border-btm  no-border-top" style="width:500px"> - Neck</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_neck_found" id="ge_gland_neck_found" value="1" @(isEdit ? dl.ge_gland_neck_found == 1 ? "checked" : "" : "")/>Yes / No
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_gland_neck_r" id="ge_gland_neck_r" value="1" @(isEdit ? dl.ge_gland_neck_r == 1 ? "checked" : "" : "")/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_neck_l" id="ge_gland_neck_l" value="1" @(isEdit ? dl.ge_gland_neck_l == 1 ? "checked" : "" : "")/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg no-border-btm no-border-top" style="width:500px"> - Armpit</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_armpit_found" id="ge_gland_armpit_found" value="1" @(isEdit ? dl.ge_gland_armpit_found == 1 ? "checked" : "" : "")/>Yes / No
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_gland_armpit_r" id="ge_gland_armpit_r" value="1" @(isEdit ? dl.ge_gland_armpit_r == 1 ? "checked" : "" : "")/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_armpit_l" id="ge_gland_armpit_l" value="1" @(isEdit ? dl.ge_gland_armpit_l == 1 ? "checked" : "" : "")/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px"> - Groin</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_groin_found" id="ge_gland_groin_found" value="1" @(isEdit ? dl.ge_gland_groin_found == 1 ? "checked" : "" : "")/>Yes / No
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_gland_groin_r" id="ge_gland_groin_r" value="1" @(isEdit ? dl.ge_gland_groin_r == 1 ? "checked" : "" : "")/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_groin_l" id="ge_gland_groin_l" value="1" @(isEdit ? dl.ge_gland_groin_l == 1 ? "checked" : "" : "")/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Ears, discharge ?</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_ears" id="ge_ears" value="1" @(isEdit ? dl.ge_ears == 1 ? "checked" : "" : "")/>Yes / No
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_ears_r" id="ge_ears_r" value="1" @(isEdit ? dl.ge_ears_r == 1 ? "checked" : "" : "")/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_ears_l" id="ge_ears_l" value="1" @(isEdit ? dl.ge_ears_l == 1 ? "checked" : "" : "")/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Colour of discharge</td>
+			    <td style="width:175px">
+                    <input type="radio" name="ge_colour" value="0" @(isEdit ? dl.ge_colour == 0 ? "checked" : "" : "")/>Clear
+			    </td>
+                <td>
+                    <input type="radio" name="ge_colour" value="1" @(isEdit ? dl.ge_colour == 1 ? "checked" : "" : "")/>Pus
+                </td>
+                <td style="width:175px">
+                    <input type="radio" name="ge_colour" value="2" @(isEdit ? dl.ge_colour == 2 ? "checked" : "" : "")/>Blood
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" rowspan="4" style="width:500px">Appearance of eardrum</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_normal" id="ge_eardrum_normal" value="1" @(isEdit ? dl.ge_eardrum_normal == 1 ? "checked" : "" : "")/>Normal
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_eardrum_normal_r" id="ge_eardrum_normal_r" value="1" @(isEdit ? dl.ge_eardrum_normal_r == 1 ? "checked" : "" : "")/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_normal_l" id="ge_eardrum_normal_l" value="1" @(isEdit ? dl.ge_eardrum_normal_l == 1 ? "checked" : "" : "")/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_wax" id="ge_eardrum_wax" value="1" @(isEdit ? dl.ge_eardrum_wax == 1 ? "checked" : "" : "")/>Not seen/wax
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_eardrum_wax_r" id="ge_eardrum_wax_r" value="1" @(isEdit ? dl.ge_eardrum_wax_r == 1 ? "checked" : "" : "")/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_wax_l" id="ge_eardrum_wax_l" value="1" @(isEdit ? dl.ge_eardrum_wax_l == 1 ? "checked" : "" : "")/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_red" id="ge_eardrum_red" value="1" @(isEdit ? dl.ge_eardrum_red == 1 ? "checked" : "" : "")/>Red
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_eardrum_red_r" id="ge_eardrum_red_r" value="1" @(isEdit ? dl.ge_eardrum_red_r == 1 ? "checked" : "" : "")/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_red_l" id="ge_eardrum_red_l" value="1" @(isEdit ? dl.ge_eardrum_red_l == 1 ? "checked" : "" : "")/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_perforated" id="ge_eardrum_perforated" value="1" @(isEdit ? dl.ge_eardrum_perforated == 1 ? "checked" : "" : "")/>Perforated
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_eardrum_perforated_r" id="ge_eardrum_perforated_r" value="1" @(isEdit ? dl.ge_eardrum_perforated_r == 1 ? "checked" : "" : "")/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_perforated_l" id="ge_eardrum_perforated_l" value="1" @(isEdit ? dl.ge_eardrum_perforated_l == 1 ? "checked" : "" : "")/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Throat Colour</td>
+			    <td colspan="2">
+                    <input type="radio" name="ge_throat_colour" value="0" @(isEdit ? dl.ge_throat_colour == 0 ? "checked" : "" : "")/>Normal
+			    </td>
+                <td style="width:175px">
+                    <input type="radio" name="ge_throat_colour" value="1" @(isEdit ? dl.ge_throat_colour == 1 ? "checked" : "" : "")/>Red
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Tonsil Size</td>
+			    <td colspan="2">
+                    <input type="radio" name="ge_tonsil_size" value="0" @(isEdit ? dl.ge_tonsil_size == 0 ? "checked" : "" : "")/>Normal
+			    </td>
+                <td style="width:175px">
+                    <input type="radio" name="ge_tonsil_size" value="1" @(isEdit ? dl.ge_tonsil_size == 1 ? "checked" : "" : "")/>Enlarged
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Skin rash found</td>
+			    <td colspan="2">
+                    <input type="radio" name="ge_skin_rush" value="1" id="ge_skin_rush" onchange="changeInput(this)"/>Yes
+                    <br />
+                    Size (in cm) <br />
+                    <input type="text" name="ge_skin_rush_size" id="ge_skin_rush_size" value="" />
+                    <br />
+                    Colour <br />
+                    <input type="text" name="ge_skin_rush_colour" id="ge_skin_rush_colour" value="" />
+                    <br />
+                    Surface (to touch) <br />
+                    <input type="text" name="ge_skin_rush_surface" id="ge_skin_rush_surface" value="" />
+			    </td>
+                <td style="width:175px">
+                    <input type="radio" name="ge_skin_rush" value="0" id="ge_skin_rush" onchange="changeInput(this)"/>No
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part4">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>Investigation of use at this time</b></td>
+		    </tr>
+		    <tr>
+			    <td class="green-bg" style="width:500px">Peak expiratory flow rate</td>
+			    <td style="width:175px" class="no-border-right">
+                    <input type="text" name="inves_peak" id="inves_peak" value="@(isEdit ? dl.inves_peak : "")" />
+			    </td>
+                <td colspan="2" class="no-border-left">Litres / Minutes</td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" rowspan="3" style="width:500px">Urine testing (multisticks)</td>
+			    <td colspan="2" class="no-border-btm">
+                    <input type="checkbox" name="urine_testing_blood" id="urine_testing_blood" value="1" @(isEdit ? dl.urine_testing_blood == 1 ? "checked" : "" : "")/>Blood
+			    </td>
+                <td style="width:175px" class="no-border-btm">
+                    <input type="checkbox" name="urine_testing_protein" id="urine_testing_protein" value="1" @(isEdit ? dl.urine_testing_protein == 1 ? "checked" : "" : "")/>Protein
+			    </td>
+		    </tr>
+            <tr>
+			    <td colspan="2" class="no-border-btm">
+                    <input type="checkbox" name="urine_testing_glucose" id="urine_testing_glucose" value="1" @(isEdit ? dl.urine_testing_glucose == 1 ? "checked" : "" : "")/>Glucose
+			    </td>
+                <td style="width:175px" class="no-border-btm">
+                    <input type="checkbox" name="urine_testing_sg" id="urine_testing_sg" value="1" @(isEdit ? dl.urine_testing_sg == 1 ? "checked" : "" : "")/>S.G.
+			    </td>
+		    </tr>
+            <tr>
+			    <td colspan="2">
+                    <input type="checkbox" name="urine_testing_ph" id="urine_testing_ph" value="1" @(isEdit ? dl.urine_testing_ph == 1 ? "checked" : "" : "")/>p.H
+			    </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="urine_testing_others" id="urine_testing_others" value="1" onchange="changeInput(this)"/>Other : 
+                    <input type="text" name="urine_testing_other" id="urine_testing_other" value="" />
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Any other comments of findings</td>
+			    <td colspan="2">
+                    <textarea name="comment_finding" id="comment_finding" cols="28" rows="2" style="resize:none"></textarea>
+			    </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="comment_finding_no" id="comment_finding_no" value="1" onchange="changeInput(this)"/>No
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part5">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>In my opinion a possible diagnosis is : </b></td>
+		    </tr>
+		    <tr>
+			    <td colspan="4">
+                    <textarea name="possible_diagnosis" id="possible_diagnosis" cols="118" rows="6" style="resize:none">@(isEdit ? dl.possible_diagnosis : "")</textarea>
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Name</td>
+			    <td colspan="3">
+                    <input type="text" name="diag_name" id="diag_name" value="@(isEdit ? dl.diag_name : "")" />
+			    </td>
+		    </tr>
+            <tr>
+                <td class="green-bg" rowspan="2" style="width:500px">Post / designation or training grade</td>
+			    <td style="width:175px" class="no-border-btm">
+                    <input type="radio" name="post_designation" value="0" @(isEdit ? dl.post_designation == 0 ? "checked" : "" : "")/>First Aider
+			    </td>
+                <td colspan="2" class="no-border-btm">
+                    <input type="radio" name="post_designation" value="2" @(isEdit ? dl.post_designation == 2 ? "checked" : "" : "")/>Nurse
+			    </td>
+		    </tr>
+            <tr>
+                <td style="width:175px">
+                    <input type="radio" name="post_designation" value="1" @(isEdit ? dl.post_designation == 1 ? "checked" : "" : "")/>Paramedic
+			    </td>
+			    <td colspan="2">
+                    <input type="radio" name="post_designation" value="3" @(isEdit ? dl.post_designation == 3 ? "checked" : "" : "")/>Doctor
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part6">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>Treatment to Date</b></td>
+		    </tr>
+		    <tr>
+			    <td colspan="4">
+                    <textarea name="treatment_date" id="treatment_date" cols="118" rows="5" style="resize:none">@(isEdit ? dl.treatment_date : "")</textarea>
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+</div>
+<br/>
+<div class="submit">
+	<input name="Submit" value="Simpan" type="submit" onclick="save()"/>
+    <input type="button" value="Batal" onclick="back()"/>
+    @if (isEdit) {
+            <button type="button" value="Print Illness Report">
+                @Html.ActionLink("Print Illness Report", "printIR", "IllnessReport", new {id = id},  new { target = "_blank" })
+            </button>
+        }
+</div>
+<script type="text/javascript">
+    function loadWell() {
+        if (isEdit != 'False') {
+            if ('@dl' != null) {
+                if ('@dl.ge_skin_rush' == '1') {
+                    $('input:radio[name="ge_skin_rush"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="ge_skin_rush"]').filter('[value="1"]').trigger('change');
+                    $('#ge_skin_rush_size').val('@dl.ge_skin_rush_size');
+                    $('#ge_skin_rush_colour').val('@dl.ge_skin_rush_colour');
+                    $('#ge_skin_rush_surface').val('@dl.ge_skin_rush_surface');
+                } else {
+                    $('input:radio[name="ge_skin_rush"]').filter('[value="0"]').attr('checked', true);
+                    $('input:radio[name="ge_skin_rush"]').filter('[value="0"]').trigger('change');
+                }
+
+                if ('@dl.urine_testing_other' != null && '@dl.urine_testing_other' != '') {
+                    $('#urine_testing_others').attr('checked', true);
+                    $('#urine_testing_others').trigger('change');
+                    $('#urine_testing_other').val('@dl.urine_testing_other');
+                } else {
+                    $('#urine_testing_others').attr('checked', false);
+                    $('#urine_testing_others').trigger('change');
+                }
+
+                if ('@dl.comment_finding_no' == '1') {
+                    $('#comment_finding_no').attr('checked', true);
+                    $('#comment_finding_no').trigger('change');
+                } else {
+                    $('#comment_finding_no').attr('checked', false);
+                    $('#comment_finding_no').trigger('change');
+                    $('#comment_finding').val('@dl.comment_finding');
+                }
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        //resizeIframe();
+        loadWell();
+    });
+
+    function back() {
+        $('#content').load('IllnessReport/Index');
+    }
+</script>

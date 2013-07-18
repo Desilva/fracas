@@ -1,0 +1,70 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    int? isApprove = ViewBag.isApprove as Nullable<byte>;
+    string username = HttpContext.Current.Session["username"] as string;
+}
+<style>
+    .t-icon.t-EditSAP
+    {
+        background-image: url("/Content/2012.1.214/Default/sprite.png");
+        background-position: 0 -336px;
+    }
+</style>
+<script type="text/javascript">
+
+    function OnRowDataBoundEq9(e) {
+        var username = '@isApprove';
+        var dataItem = e.dataItem;
+        var row = e.row;
+        if (username == '1') {
+            row.childNodes[6].childNodes[0].style.visibility = 'hidden';
+            row.childNodes[6].childNodes[1].style.visibility = 'hidden';
+        }
+    }
+</script>
+<br />
+<b>SAP New Notification:</b>
+<br />
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.daily_log_sap>()
+        .Name("SAP")
+        .HtmlAttributes(new { style = "width:980px" })
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands =>
+        {
+            if (isApprove == null || isApprove == 0) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Insert SAP New Notification" });
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxSAP", "DailyLogs", new { id_daily_log = id })
+                .Select("_SelectAjaxSAP", "DailyLogs", new { id = id })
+                .Insert("_InsertAjaxSAP", "DailyLogs", new { id_daily_log = id })
+                .Update("_UpdateAjaxSAP", "DailyLogs", new { id_daily_log = id });
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.sap_time).Width(120).Title("Time");
+            columns.Bound(o => o.notif_no).Width(150).Title("Notification No.");
+            columns.Bound(o => o.department).Width(100).Title("Department");
+            columns.Bound(o => o.description).Title("Description");
+            columns.Bound(o => o.notif_by).Width(100).Title("Notification By");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit SAP New Notification" });
+                commands.Delete().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Delete SAP New Notification" });
+            }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(events => events.OnRowDataBound("OnRowDataBoundEq9"))
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true).Height(200))
+        .Selectable()
+)

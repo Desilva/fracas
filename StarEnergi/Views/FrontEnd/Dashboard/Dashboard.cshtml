@@ -1,0 +1,48 @@
+﻿    <link rel="stylesheet" type="text/css" href="/Content/bootstrap.css">
+    <link href="/Content/Dashboard.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/application.js"></script>	
+
+<body>
+	<div class="primary">
+			<h3 style="color:#24525f" align="center">DASHBOARD</h3>
+		<div class="MENU">
+			<div id="top">
+				<div class="menuImage">
+					<img src="/Content/image/settings.jpg" width="64" height="64"/>
+					<br/>
+					<a href="#" class="btn" data-toggle="popover"  data-content='<a href="@Url.Action("Index", "FracasEventLog")">FRACAS Event Log</a><br/><a href="@Url.Action("Index", "FracasHistory")">Historical Data</a><br/><a href=@Url.Action("Index", "Troubleshooting")>Troubleshooting</a>' data-placement="bottom" title="FRACAS" data-original-title="Popover on top" data-html="true">FRACAS</a>
+				</div>
+				<div class="menuImage">
+					<img src="/Content/image/SAFETY_icon (1).png" width="64" height="64"/>
+					<br/>
+					<a id="SHE" href="#" class="btn" data-toggle="popover" data-placement="bottom" data-content="<a href=@Url.Action("Index", "Incident")>SHE Incident Report</a><br/><a href=@Url.Action("Index", "Investigation")>SHE Incident Investigation Report</a><br/><a href=@Url.Action("Index", "HseAuditor")>SHE Audit</a><br/><a href=@Url.Action("Index", "HseIllnessReport")>SHE Illness Report</a><br/><a href=@Url.Action("Index", "SheObservation")>SHE Observation Form</a><br/>" title="SHE" data-original-title="Popover on top" data-html="true">SHE</a>
+				</div>
+				<div class="menuImage">
+					<img src="/Content/image/info.ico" width="64" height="64"/>
+					<br/>
+					<a href=@Url.Action("Index", "DailyLogs") class="btn">Daily Log</a>
+				</div>
+			</div>
+		
+			<div id="bottom">
+				<div class="menuImage">
+					<img src="/Content/image/Custom-Icon-Design-Pretty-Office-3-Distributor-report.png" width="64" height="64"/>
+					<br/>
+					<a id="dailyReport" href=@Url.Action("Index", "EquipmentDailyreport") class="btn">Equipt. Report</a>
+				</div>
+				<div class="menuImage">
+					<img src="/Content/image/folder_add.ico" width="64" height="64"/>
+					<br/>
+				<a href="#" class="btn" data-toggle="popover" data-placement="bottom" data-content="<a href=@Url.Action("Index", "RCA", new{ isTree = 1})>Tree Diagram</a><br/><a href=@Url.Action("Index", "RCA", new{ isTree = 0})>5-Ways</a><br/><a href=@Url.Action("Index", "RCA", new{ isTree = 2})>Fishbone</a>" title="RCA" data-original-title="Popover on top" data-html="true">RCA</a>
+				</div>
+				<div class="menuImage">
+					<img src="/Content/image/process.ico" width="64" height="64"/>
+					<br/>
+					<a id="PIR" href="#" class="btn" data-toggle="popover" data-placement="bottom" data-content="<a href=@Url.Action("Index", "PIR")>PIR</a><br/><a href=@Url.Action("Report", "PIR")>PIR Report</a>" title="PIR" data-original-title="Popover on top" data-html="true">PIR</a>
+				</div>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+	</div>
+</body>

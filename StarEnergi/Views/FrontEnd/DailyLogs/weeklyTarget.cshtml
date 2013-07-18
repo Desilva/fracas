@@ -1,0 +1,167 @@
+﻿@model IEnumerable<StarEnergi.Models.daily_log_weekly_target>
+@{
+    ViewBag.Title = "Add Daily Log";
+    List<StarEnergi.Models.daily_log_weekly_target> wt = ViewBag.today as List<StarEnergi.Models.daily_log_weekly_target>;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+
+<script type="text/javascript">
+    function OnRowDataBoundEqTarget(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        row.cells[2].innerHTML = dataItem.shift == 1 ? "Siang" : dataItem.shift == 2 ? "Malam" : "" ;
+        row.cells[3].innerHTML = dataItem.target_unit_1 + " MWh";
+        row.cells[4].innerHTML = dataItem.target_unit_2 + " MWh";
+    }
+
+    function OnRowDataBoundEqTargetHis(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        if (dataItem.date < date) { if (row.childNodes[0].childNodes[0] != null) row.childNodes[0].childNodes[0].style.visibility = 'hidden'; }
+        row.cells[3].innerHTML = dataItem.shift == 1 ? "Siang" : dataItem.shift == 2 ? "Malam" : "";
+        row.cells[4].innerHTML = dataItem.target_unit_1 + " MWh";
+        row.cells[5].innerHTML = dataItem.target_unit_2 + " MWh";
+    }
+
+    function onComplete(e) {
+        if (e.name == "insert" || e.name=="update") {
+            var dat = e.response.data;
+            var date = new Date();
+            var cons_val = "";
+            for (var i in dat) {
+                var DaysDiff = Math.floor((date.getTime() - dat[i].date.getTime())/(1000*60*60*24));
+                if (DaysDiff == 0) {
+                    
+                    cons_val += "<b>"+ (dat[i].shift == 1 ? "Shift Siang" : "Shift Malam") +"</b>" +
+                        "<ul>";
+                    cons_val += "<li>Unit 1 : " + dat[i].target_unit_1 + " MWh</li>";
+                    cons_val += "<li>Unit 2 : " + dat[i].target_unit_2 + " MWh</li>";
+                    cons_val += "</ul>";
+                }
+            }
+            if (cons_val == "") cons_val = "No Target for Today";
+            $('#wtarget').html(cons_val);
+        }
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+@{ Html.Telerik().TabStrip()
+        .Name("WeeklyTargetStrip")
+        .Items(tabstrip =>
+        {
+            tabstrip.Add()
+                .Text("Today Target")
+                .Content(@<div id="wtarget">
+                    @if (wt != null && wt.Exists(p => p.date == DateTime.Now.Date))
+                    {
+                        foreach (StarEnergi.Models.daily_log_weekly_target t in wt)
+                        {
+                            <b>@(t.shift == 1 ? "Day Shift" : t.shift == 2 ? "Night Shift" : "")</b>
+                            <ul>
+                                <li>Unit 1 : @t.target_unit_1 MWh</li>
+                                <li>Unit 2 : @t.target_unit_2 MWh</li>
+                            </ul>
+                        }
+                    }
+                    else
+                    {
+                        <b>No target for today</b>
+                    }
+                    </div>
+            );
+            tabstrip.Add()
+                .Text("Weekly Target")
+                .Content(@<text>@(Html.Telerik().Grid<StarEnergi.Models.daily_log_weekly_target>()
+                    .TableHtmlAttributes(new { style = "width:950px" }).HtmlAttributes(new { style = "width:950px" })
+                    .Name("WeeklyTarget")
+                    .DataKeys(keys =>
+                    {
+                        keys.Add(p => p.id);
+                    })
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax()
+                            .Select("_SelectAjaxWeeklyTarget", "DailyLogs");
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(o => o.id).Hidden();
+                        columns.Bound(o => o.date).Width(150).Title("Date");
+                        columns.Bound(o => o.shift).Width(150).Title("Shift");
+                        columns.Bound(o => o.target_unit_1).Title("Target Unit 1");
+                        columns.Bound(o => o.target_unit_2).Title("Target Unit 2");
+                    })
+                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                    .ClientEvents(
+                        events => events
+                            .OnRowDataBound("OnRowDataBoundEqTarget")
+                    )
+                    .Pageable(p => p.PageSize(10))
+                    .Sortable()
+                    .Scrollable(c => c.Enabled(true))
+                    .Selectable()
+                    .Filterable()
+                    .Groupable()
+            )</text>);
+            tabstrip.Add()
+                .Text("History Target")
+                .Content(@<text>@(Html.Telerik().Grid<StarEnergi.Models.daily_log_weekly_target>()
+                    .TableHtmlAttributes(new { style = "width:950px" }).HtmlAttributes(new { style = "width:950px" })
+                    .Name("HistoryTarget")
+                    .DataKeys(keys =>
+                    {
+                        keys.Add(p => p.id);
+                    })
+                    .ToolBar(commands =>
+                    {
+                        if (li != null && li.Exists(p => p.role == 1) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGWEEKLYTARGET)) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Target" });
+                    })
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax()
+                            .Select("_SelectAjaxHistoryTarget", "DailyLogs")
+                            .Insert("_InsertAjaxWeeklyTarget", "DailyLogs")
+                            .Update("_UpdateAjaxWeeklyTarget", "DailyLogs");
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Command(commands =>
+                        {
+                            if (li != null && li.Exists(p => p.role == 1) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGWEEKLYTARGET)) commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Target" });
+                        }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+                        columns.Bound(o => o.id).Hidden();
+                        columns.Bound(o => o.date).Width(150).Title("Date");
+                        columns.Bound(o => o.shift).Width(150).Title("Shift");
+                        columns.Bound(o => o.target_unit_1).Title("Target Unit 1");
+                        columns.Bound(o => o.target_unit_2).Title("Target Unit 2");
+                    })
+                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                    .ClientEvents(
+                        events => events
+                            .OnRowDataBound("OnRowDataBoundEqTargetHis").OnComplete("onComplete")
+                    )
+                    .Pageable(p => p.PageSize(10))
+                    .Sortable()
+                    .Scrollable(c => c.Enabled(true))
+                    .Selectable()
+                    .Filterable()
+                    .Groupable()
+            )</text>);
+        })
+        .SelectedIndex(0)
+        .Render();
+}
+

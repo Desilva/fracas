@@ -1,0 +1,595 @@
+﻿@model StarEnergi.Models.she_observation
+@{
+    int? id = Model.id as Nullable<Int32>;
+}
+<div class="container">
+    <table>
+        <tr>
+            <td border="0.5" width="49%">
+                <table border="0">
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td width="30%">
+                                        <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="70"/>
+                                    </td>
+                                    <td width="76%" style="text-align:center;font-size:12px">
+                                        <table border="0">
+                                            <tr>
+                                                <td width="12%">&nbsp;</td>
+                                                <td style="font-size:12px"><b>WAYANG WINDU</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.she_obs == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:12px"><b>SHE OBSERVATIONS</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.she_ins == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:12px"><b>SHE INSPECTION</b></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;font-size:8px">
+                            <b>OBSERVE -> STOP -> DISCUSS -> COMMITMENT -> REPORT<br />
+                            OBSERVE -> CORRECTIVE -> PREVENT RECURRENT -> REPORT</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table border="0.5">
+			                    <tr>
+				                    <td style="text-align:left;font-size:8px">
+                                        <b>WRITE<br />UA - UNSAFE ACT<br />UC - UNSAFE COND</b>
+				                    </td>
+                                    <td style="text-align:center;font-size:8px">
+                                        <b>OBSERVATION<br />CHECKLISTS</b>
+				                    </td>
+                                    <td style="text-align:right;font-size:8px">
+                                        <b>WRITE<br />SAFE ACT - SA<br />SAFE COND - SC</b>
+				                    </td>
+			                    </tr>
+		                    </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table border="0.5">
+		                        <tr>
+			                        <td style="font-size:8px;text-align:center" bgcolor="orange" colspan="3"><b>1. SAFETY</b></td>
+		                        </tr>
+		                        <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.accident_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.accident_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px;" width="76%">Potential accident - Berpotensi kecelakaan</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.accident_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.accident_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.fire_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.fire_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Potential fire/explode - Berpotensi kebakaran/meledak</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.fire_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.fire_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.prevention_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.prevention_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Incident Prevention Program - Pencegahan kecelakaan</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.prevention_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.prevention_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.substance_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.substance_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Supervisor in locations - Pengawas berada di lokasi</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.supervisor_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.supervisor_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" bgcolor="orange" colspan="3"><b>2. HEALTH</b></td>
+		                        </tr>
+		                        <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.fit_work_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.fit_work_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Fit for work - Kondisi sehat/siap untuk kerja</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.fit_work_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.fit_work_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.psychological_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.psychological_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Psychological problem - Masalah Psikologi</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.psychological_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.psychological_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.posture_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.posture_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Posture/ergonomics - Ergonomi/posisi tubuh</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.posture_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.posture_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.substance_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.substance_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Hazardous Substance - Bahan berbahaya ke tubuh</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.substance_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.substance_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.hygiene_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.hygiene_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Hygiene & sanitation - Kebersihan & kesehatan</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.hygiene_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.hygiene_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" bgcolor="orange" colspan="3"><b>3. ENVIRONMENT</b></td>
+		                        </tr>
+		                        <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.house_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.house_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">House keeping - Kerapihan & kebersihan</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.house_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.house_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.standard_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.standard_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Standard labeling - Pemberian simbol2 standar</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.standard_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.standard_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.spill_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.spill_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Potential of Spill/emission - Berpotensi pencemaran</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.spill_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.spill_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.waste_energy_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.waste_energy_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Waste Energy/Inefficient - Boros enerji</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.waste_energy_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.waste_energy_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.containment_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.containment_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Containment adequacy - Pencegahan pencemaran</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.containment_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.containment_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.absorbent_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.absorbent_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Absorbent availability - Ketersediaan alat penyerap</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.absorbent_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.absorbent_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" bgcolor="orange" colspan="3"><b>4. DOCUMENT/PROCEDURE</b><br /><b>(availability, adequacy, understood, follow, comply)</b></td>
+		                        </tr>
+		                        <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.hira_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.hira_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">HIRA/JSA - Identifikasi bahaya & penanggulangan</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.hira_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.hira_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.ptw_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.ptw_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">PTW/ Special PTW - Dokumen ijin kerja</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.ptw_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.ptw_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.sop_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.sop_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">SOP/Guidline/working instruction - Petunjuk kerja</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.sop_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.sop_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.msds_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.msds_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">MSDS - Material Safety Data Sheets</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.msds_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.msds_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.emergency_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.emergency_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Emergency Preparedness - Siap tanggap darurat</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.emergency_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.emergency_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.certificates_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.certificates_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Certificates - sertifikat operator/perjalanan</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.certificates_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.certificates_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" bgcolor="orange" colspan="3"><b>5. TOOLS & EQUIPMENTS</b><br /><b>(wrong for the job, used incorrectly, unsafe condition)</b></td>
+		                        </tr>
+		                        <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.ppe_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.ppe_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">PPE - Alat Pelindung Diri</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.ppe_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.ppe_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.hand_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.hand_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Hand / portable tools - Alat portabel</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.hand_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.hand_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.mechanical_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.mechanical_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Mechanical - Mekanis</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.mechanical_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.mechanical_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.electrical_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.electrical_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Electrical / electronic - Listrik</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.electrical_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.electrical_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.vehicular_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.vehicular_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Vehicular / heavy equipment - kendaraan/alat berat</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.vehicular_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.vehicular_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" bgcolor="orange" colspan="3"><b>6. WORKING AREA</b></td>
+		                        </tr>
+		                        <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.substandard_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.substandard_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Substandard facilities - Fasilitas substandard</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.substandard_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.substandard_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.h2s_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.h2s_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">H2S exposure - Paparan H2S</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.h2s_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.h2s_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.workplace_health_unsafe.ElementAt(0) == '1' ? "UA" : "")@(Model.workplace_health_unsafe.ElementAt(1) == '1' ? "UC" : "")
+			                        </td>
+			                        <td style="font-size:8px" width="76%">Workplace health hazards - Potensi bahaya kesehatan<br />(Noise, dust, temperature, vibration, radiation, temperature, ventilation, illumination, slippery)</td>
+                                    <td style="font-size:8px;text-align:center" width="12%">
+                                        @(Model.workplace_health_safe.ElementAt(0) == '1' ? "SA" : "")@(Model.workplace_health_safe.ElementAt(1) == '1' ? "SC" : "")
+			                        </td>
+		                        </tr>
+	                        </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="2%">
+                &nbsp;
+            </td>
+            <td border="0.5" width="49%">
+                <table border="0">
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td width="30%">
+                                        <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="70"/>
+                                    </td>
+                                    <td width="76%" style="text-align:center;font-size:12px">
+                                        <table border="0">
+                                            <tr>
+                                                <td width="12%">&nbsp;</td>
+                                                <td style="font-size:12px"><b>WAYANG WINDU</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.she_obs == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:12px"><b>SHE OBSERVATIONS</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.she_ins == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:12px"><b>SHE INSPECTION</b></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;font-size:8px">
+                            <b>OBSERVE -> STOP -> DISCUSS -> COMMITMENT -> REPORT<br />
+                            OBSERVE -> CORRECTIVE -> PREVENT RECURRENT -> REPORT</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table border="0.5">
+		                        <tr>
+			                        <td style="font-size:8px" width="30%"><b>Date/Time</b></td>
+			                        <td style="font-size:8px" width="76%">
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px" width="30%"><b>Observer</b></td>
+			                        <td style="font-size:8px" width="76%">
+                                        @Model.observer
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px" width="30%"><b>Department</b></td>
+			                        <td style="font-size:8px" width="76%">
+                                        @Model.department
+			                        </td>
+		                        </tr>
+	                        </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table border="0.5">
+		                        <tr>
+			                        <td style="font-size:8px">
+                                        <b>Location:</b><br />
+                                        @Model.location
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px">
+                                        <b>Activity:</b><br />
+                                        @Model.activity
+			                        </td>
+		                        </tr>
+                                <tr border="0.5">
+			                        <td style="font-size:8px">
+                                        <table border="0">
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.safe_observed == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:8px">
+                                                    <b>Safe Act/Condition Observed.</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.action_encourages == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:8px;font-family:'Times New Roman';">
+                                                    <b>Action taken to encourage continued SHE performances.</b>
+                                                </td>
+                                            </tr>
+                                        </table>
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px" height="30%">
+                                        @{int countCol = 0; int countRow = 0;}
+                                        @if (Model.action_encourage != null) {
+                                            foreach (char i in Model.action_encourage){if (i == '\n'){countRow++;countCol=0;<br />}
+                                            else
+                                            {countCol++; if (countCol > 56) { countRow++; countCol = 0; }<text>@i</text>}}
+                                            if (Model.action_encourage.Length / 56 < 16 - countRow)
+                                            {
+                                                for (int i = 0; i < 13 - countRow - Model.action_encourage.Length / 56; i++)
+                                                {
+                                                    <br /><text>&nbsp;</text>
+                                                }
+                                            }
+                                        } else {
+                                            for (int i = 0; i < 13; i++)
+                                            {
+                                                <br /><text>&nbsp;</text>
+                                            }
+                                        }
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px">
+                                        <table border="0">
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.unsafe_observed == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:8px">
+                                                    <b>Unsafe Act/Conditions Observed.</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.immediate_corrective_act == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:8px">
+                                                    <b>Immediate corrective actions.</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="12%">
+                                                    @if (Model.action_prevents == 1) {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="15"/>
+                                                    } else {
+                                                        <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="15"/>
+                                                    }
+                                                </td>
+                                                <td style="font-size:8px">
+                                                    <b>Action to prevent recurrences.</b>
+                                                </td>
+                                            </tr>
+                                        </table>
+			                        </td>
+		                        </tr>
+                                <tr>
+			                        <td style="font-size:8px" height="30%">
+                                        @{countCol = 0; countRow = 0;}
+                                        @if (Model.action_prevent != null) {
+                                            foreach (char i in Model.action_prevent){if (i == '\n'){countRow++;countCol=0;<br />}
+                                            else
+                                            {countCol++; if (countCol > 56) { countRow++; countCol = 0; }<text>@i</text>}}
+                                            if (Model.action_prevent.Length / 56 < (17 - countRow))
+                                            {
+                                                for (int i = 0; i < 11 - countRow - Model.action_encourage.Length / 56; i++)
+                                                {
+                                                    <br /><text>&nbsp;</text>
+                                                }
+                                            }
+                                        } else {
+                                            for (int i = 0; i < 11; i++)
+                                                {
+                                                    <br /><text>&nbsp;</text>
+                                                }
+                                        }
+			                        </td>
+		                        </tr>
+	                        </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

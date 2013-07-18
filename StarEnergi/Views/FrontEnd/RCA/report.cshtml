@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int? id = ViewBag.ids as Nullable<Int32>;
+    List<StarEnergi.Models.rca_implementation> li = ViewData["imp"] as List<StarEnergi.Models.rca_implementation>;
+    int[,] a = new int[3,3];
+    int i = 0;
+    for (i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++)
+        {
+            a[i, j] = 0;
+        }   
+    }
+    i = 0;
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/jquery.jqplot.min.css" />
+<script type="text/javascript">
+    $(function () {
+        $.fn.jqplotToImage =
+          function (x_offset, y_offset) {
+              if ($(this).width() == 0 || $(this).height() == 0) {
+                  return null;
+              }
+              var newCanvas = document.createElement("canvas");
+              newCanvas.width = $(this).outerWidth() + Number(x_offset);
+              newCanvas.height = $(this).outerHeight() + Number(y_offset);
+
+              if (!newCanvas.getContext) return null;
+
+              var newContext = newCanvas.getContext("2d");
+              newContext.textAlign = 'left';
+              newContext.textBaseline = 'top';
+
+              function _jqpToImage(el, x_offset, y_offset) {
+                  var tagname = el.tagName.toLowerCase();
+                  var p = $(el).position();
+                  var css = getComputedStyle(el);
+                  var left = x_offset + p.left + parseInt(css.marginLeft) + parseInt(css.borderLeftWidth) + parseInt(css.paddingLeft);
+                  var top = y_offset + p.top + parseInt(css.marginTop) + parseInt(css.borderTopWidth) + parseInt(css.paddingTop);
+
+                  if ((tagname == 'div' || tagname == 'span') && !$(el).hasClass('jqplot-highlighter-tooltip')) {
+                      $(el).children().each(function () {
+                          _jqpToImage(this, left, top);
+                      });
+                      var text = $(el).childText();
+
+                      if (text) {
+                          var metrics = newContext.measureText(text);
+                          newContext.font = $(el).getComputedFontStyle();
+                          newContext.fillText(text, left, top);
+                          // For debugging.
+                          //newContext.strokeRect(left, top, $(el).width(), $(el).height());
+                      }
+                  }
+                  else if (tagname == 'canvas') {
+                      newContext.drawImage(el, left, top);
+                  }
+              }
+              $(this).children().each(function () {
+                  _jqpToImage(this, x_offset, y_offset);
+              });
+              return newCanvas;
+          };
+
+        $.fn.css2 = jQuery.fn.css;
+        $.fn.css = function () {
+            if (arguments.length) return jQuery.fn.css2.apply(this, arguments);
+            return window.getComputedStyle(this[0]);
+        };
+
+        // Returns font style as abbreviation for "font" property.
+        $.fn.getComputedFontStyle = function () {
+            var css = this.css();
+            var attr = ['font-style', 'font-weight', 'font-size', 'font-family'];
+            var style = [];
+
+            for (var i = 0; i < attr.length; ++i) {
+                var attr = String(css[attr[i]]);
+
+                if (attr && attr != 'normal') {
+                    style.push(attr);
+                }
+            }
+            return style.join(' ');
+        }
+
+        $.fn.childText =
+    function () {
+        return $(this).contents().filter(function () {
+            return this.nodeType == 3;  // Node.TEXT_NODE not defined in I7
+        }).text();
+    };
+
+    });
+
+    $(document).ready(function () {
+
+        var arr = [];
+
+        @foreach(StarEnergi.Models.rca_implementation imp in li) {
+            i++;
+            <text>var brr = [@((((a[(int)imp.dampak - 1, (int)imp.usaha - 1]) % 5) * 0.2 + 0.1) + (int)imp.usaha - 1),@((((a[(int)imp.dampak - 1, (int)imp.usaha - 1]) / 5) * 0.2 + 0.1) + (int)imp.dampak - 1), 10, "@i"];</text>
+            <text>arr.push(brr);</text>
+            a[(int)imp.dampak - 1, (int)imp.usaha - 1] += 1;
+        }
+        if (arr.length == 0) {
+            document.getElementById('chart1').style.display = "none";
+        }
+        plot1 = $.jqplot('chart1', [arr], {
+            seriesDefaults: {
+                renderer: $.jqplot.BubbleRenderer,
+                rendererOptions: {
+                    bubbleAlpha: 0.6,
+                    highlightAlpha: 0.8,
+                    autoscaleBubbles: false
+                },
+                shadow: true,
+                shadowAlpha: 0.05
+            },
+            axesDefaults: {
+                min: 0,
+                max: 3,
+                numberTicks: 4,
+                ticks: [[0, ""], [1, "low"], [2, "medium"], [3, "high"]],
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    showMark: false,
+                    show: true,
+                    showLabel: true,
+                    angle: -30,
+                    labelPosition: 'end'
+                }
+            },
+            axes: {
+                xaxis: {
+                    label: "Usaha"
+                },
+                yaxis: {
+                    label: "Dampak"
+                }
+            }
+        });
+
+
+
+        var dc = document.getElementsByClassName('jqplot-xaxis-tick');
+
+        for (var e in dc) {
+            if (dc[e].style != null) {
+                var c = parseFloat(dc[e].style.left);
+                dc[e].style.left = '' + (c - 70) + 'px';
+            }
+        }
+
+        var qw = document.getElementsByClassName('jqplot-yaxis-tick');
+
+        for (var e in qw) {
+            if (qw[e].style != null) {
+                var c = parseFloat(qw[e].style.top);
+                qw[e].style.top = '' + (c + 50) + 'px';
+            }
+        }
+        var img = $('#chart1').jqplotToImage(50, 0);
+        if (img) {
+            document.getElementById('chart1').style.display = "none";
+
+
+            var values = {
+                image: img.toDataURL(),
+                id: '@id'
+            }
+            $.post("/RCA/SavePrio", values, function (data) { });
+        } else {
+            document.getElementById('chart1').style.display = "none";
+        }
+    });</script>
+<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../excanvas.js"></script><![endif]-->
+<h2>Report</h2>
+@Html.Partial("~/Views/Shared/_ReportRCA.aspx");
+<div id="chart1" class="plot" style="width: 460px; height: 390px; display:normal"></div>
+
+    <!-- Don't touch this! -->
+
+<!-- End additional plugins -->

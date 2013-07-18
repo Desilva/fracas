@@ -1,0 +1,14 @@
+﻿@{
+    Layout = null;
+}
+<h2>PIR Key Performance Indicator</h2>
+<div>
+    <span><b>Target (not over): <div id="pir_view_target" style="display:inline;">@ViewBag.pir_target</div>% </span><br />
+    <span><b>Total PIR : <div id="view_total_pir" style="display:inline;">@ViewBag.totalPir</div></span></b><br />
+    <span><b>Total Overdue PIR : <div id="view_total_overdue" style="display:inline;">@ViewBag.totalOverdue</div></b></span><br />
+    <br />
+    <div>
+        <img src="../../../Content/image/success.png" alt="Success" width="200" id="success" @((ViewBag.success as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
+        <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="fail" @((ViewBag.success as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
+    </div>
+</div>

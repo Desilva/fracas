@@ -1,0 +1,7 @@
+﻿@model String
+           
+@(Html.Telerik().TimePicker()
+    .Value(Model)
+    .Interval(1)
+    .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" , style = "width:100px" })
+)

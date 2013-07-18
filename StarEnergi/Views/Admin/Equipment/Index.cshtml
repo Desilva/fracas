@@ -1,0 +1,183 @@
+﻿@model IEnumerable<StarEnergi.Models.equipment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            equipment_groups
+        </th>
+        <th>
+            id_category
+        </th>
+        <th>
+            tag_num
+        </th>
+        <th>
+            nama
+        </th>
+        <th>
+            pdf
+        </th>
+        <th>
+            tetha
+        </th>
+        <th>
+            beta
+        </th>
+        <th>
+            mean
+        </th>
+        <th>
+            varian
+        </th>
+        <th>
+            lamda
+        </th>
+        <th>
+            id_discipline
+        </th>
+        <th>
+            mtbf
+        </th>
+        <th>
+            mttr
+        </th>
+        <th>
+            mdt
+        </th>
+        <th>
+            status
+        </th>
+        <th>
+            method
+        </th>
+        <th>
+            econ
+        </th>
+        <th>
+            ram_crit
+        </th>
+        <th>
+            installed_date
+        </th>
+        <th>
+            obsolete_date
+        </th>
+        <th>
+            warranty
+        </th>
+        <th>
+            vendor
+        </th>
+        <th>
+            id_tag_type
+        </th>
+        <th>
+            status_read_nav
+        </th>
+        <th>
+            data_sheet_path
+        </th>
+        <th>
+            sertifikasi
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.equipment_groups.nama)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.id_category)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tag_num)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nama)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pdf)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tetha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.beta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mean)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.varian)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lamda)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.id_discipline)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mtbf)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mttr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mdt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.method)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.econ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ram_crit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.installed_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.obsolete_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.warranty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.vendor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.id_tag_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.status_read_nav)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.data_sheet_path)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sertifikasi)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

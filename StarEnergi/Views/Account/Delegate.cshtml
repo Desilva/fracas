@@ -1,0 +1,99 @@
+﻿@model StarEnergi.Models.employee
+
+@{
+    ViewBag.Title = "Delegate";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    function save() {
+        var values =
+        {
+            "Id": $('#id').val(),
+            "delagate": $('#delegate').is(':checked') == true ? 1 : 0,
+            "employee_delegate": $('#delegate').is(':checked') == true ? $('#delegate_name').val() : ""
+        }
+
+        $.post('@Url.Content("~/Account/Delegate")', values, function (data) {
+            if (data != undefined) {
+                if (data["status"] == 0) {
+                    if (values.delagate == 1)
+                        alert('You have delegated your approval');
+                    else
+                        alert('You have removed your delegation');
+                } else {
+                    clearError();
+                    $.each(data, function (index, value) {
+                        if (index != "status") {
+                            //error render
+                            $('#' + index).next('div').html(value);
+                        }
+                    });
+                }
+            } else {
+                alert('Error edited data');
+            }
+        });
+
+    }
+
+    $(document).ready(function () {
+        $(":checkbox").change(function () {
+            if ($(this).is(':checked')) {
+                $('#delegate_name').removeAttr('disabled');
+            } else {
+                $('#delegate_name').val('');
+                $('#delegate_name').attr('disabled', 'disabled');
+            }
+        });
+
+        if ($(":checkbox").is(':checked')) {
+            $('#delegate_name').removeAttr('disabled');
+        } else {
+            $('#delegate_name').val('');
+            $('#delegate_name').attr('disabled', 'disabled');
+        }
+    });
+
+    function click() {
+        if ($('#delegate').is(':checked')) {
+            alert('a');
+            $('#delegate_name').removeAttr('disabled');
+        } else {
+            alert("b");
+            $('#delegate_name').val('');
+            $('#delegate_name').attr('disabled', 'disabled');
+
+        }
+    };
+
+    function clearError() {
+        var field = ["delegate_name"];
+        $.each(field, function (index, value) {
+            $('#' + value).next('div').html('');
+        });
+    }
+</script>
+<br/><br/><br/>
+    <fieldset>
+        <legend>Delegate</legend>
+
+        @Html.HiddenFor(model => model.id)
+
+        <div class="editor-label">
+            @Html.Label("Delegate")
+        </div>
+        <div class="editor-field">
+            <input type="checkbox" id="delegate" name="delegate" value="1" @(Model.delagate == 1 ? "checked" : "") />
+        </div>
+        <div class="editor-label">
+            @Html.Label("Delegate Name")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("delegate_name")
+            <div class="errorM"></div>
+        </div>
+        <p>
+            <input type="submit" value="Save" onclick="save()"/>
+        </p>
+    </fieldset>

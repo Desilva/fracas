@@ -1,0 +1,107 @@
+﻿<script type="text/javascript">
+    function onRowSelectPart(e) {
+        var row = e.row;
+        var dataId = [
+            "vendor",
+            "warranty",
+            "sInstalled_date",
+            "mtbf",
+            "mttr",
+            "lead_time",
+            "sObsolete_date",
+            "sStatus",
+            "running_hours"
+        ];
+
+        var values =
+        {
+            "id": row.cells[0].innerHTML
+        }
+
+        $.post("AssetRegister/GetDetail", values, function (data) {
+            data = eval(data);
+            $.each(dataId, function (index, value) {
+                //console.log(value);
+                if (value != 'sStatus') {
+                    $('#' + value).html(data['partDetail'][0][value]);
+                } else {
+                    if (data['partDetail'][0][value] == 'Down')
+                        $('#' + value).html('<label style="color:Red">'+data['partDetail'][0][value]+'</label>');
+                    else
+                        $('#' + value).html(data['partDetail'][0][value]); 
+                }
+            });
+            console.log(data['partDetail']);
+        });
+
+        $('#part').show();
+        console.log(row.cells[0].innerHTML);
+    }
+</script>
+
+@(Html.Telerik().Grid<StarEnergi.Models.EquipmentPartEntity>()
+        .TableHtmlAttributes(new { style = "width:350px;" })
+        .Name("PartList")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditingPart", "AssetRegister");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.tag_num).Title("Tag Num").Width(130);
+            columns.Bound(o => o.nama).Title("Part Name");
+        })
+        .ClientEvents(events => events
+                .OnRowSelect("onRowSelectPart"))
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height(160))
+        .Selectable()
+        .Resizable(resizing => resizing.Columns(true))
+
+) 
+
+<div id="part" class="part" style="display:none">
+    <div class="partLeft">
+        <div class="display-label">Vendor</div>
+        <div id="vendor" class="display-field">kosong</div>
+
+        <div class="display-label">Warranty</div>
+        <div id="warranty" class="display-field">kosong</div>
+
+        <div class="display-label">Installed Date</div>
+        <div id="sInstalled_date" class="display-field">kosong</div>
+
+        <div class="display-label">Running Hours</div>
+        <div id="running_hours" class="display-field">kosong</div>
+
+        <div class="display-label">Running Status</div>
+        <div id="sStatus" class="display-field">kosong</div>
+
+        <div class="display-label">MTBF</div>
+        <div id="mtbf" class="display-field">kosong</div>
+
+        <div class="display-label">MTTR</div>
+        <div id="mttr" class="display-field">kosong</div>
+
+        <div class="display-label">Mean Down Time</div>
+        <div id="lead_time" class="display-field">kosong</div>
+
+    </div>
+
+    <!--<div class="partRight">
+        <div class="display-label">Obsolete Date</div>
+        <div id="sObsolete_date" class="display-field">kosong</div>
+
+        <div class="display-label">Remaining Hours</div>
+        <div id="remaining_hours" class="display-field">kosong</div>
+    </div>-->
+</div>

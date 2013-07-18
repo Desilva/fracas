@@ -1,0 +1,49 @@
+﻿@model StarEnergi.Models.equipment_part
+
+@{
+    ViewBag.Title = "Details";
+}
+<script type="text/javascript">
+    function edit() {
+        $('#content').load('subequipment/edit/'+ @Model.id);
+    }
+</script>
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Sub Equipment</legend>
+
+    <div class="display-label">No Key Map</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.part.tag_number)
+    </div>
+
+    <div class="display-label">MTBF</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.mtbf)
+    </div>
+
+    <div class="display-label">MTTR</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.mttr)
+    </div>
+
+    <div class="display-label">Status</div>
+    <div class="display-field">@ViewBag.status</div>
+
+    <div class="display-label">Installed Date</div>
+    <div class="display-field">@Html.DisplayFor(model => model.installed_date)</div>
+
+    <div class="display-label">Manufacture</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.part.vendor)
+    </div>
+
+    <div class="display-label">Warranty</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.part.warranty)
+    </div>
+    <p>
+        <input type="button" value="Edit" onclick="edit()" />
+    </p>
+</fieldset>

@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Incident Investigation Report";
+}
+<script type="text/javascript">
+
+    function addEvent() {
+        window.location = "/Investigation/addInvestigation";
+    }
+
+    function showIncidentReport() {
+        $('#gridInvestigation').load('Investigation/Report');
+    }
+
+    $(document).ready(function () {
+        showIncidentReport();
+    });
+
+</script>
+<div id="contentEventLog">
+<h2 class="adminH2">Incident Investigation Report</h2>
+
+<div>
+    <input type="button" id="addEvent" value="Add IIR" onclick="addEvent()"/>
+</div>
+<br/>
+<div id="gridInvestigation">
+</div>
+
+<br />
+</div>

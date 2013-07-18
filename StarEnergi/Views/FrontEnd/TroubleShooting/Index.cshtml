@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Trouble Shooting";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+<script type="text/javascript">
+
+    function addTroubleShooting() {
+        $('#contentEventLog').load('TroubleShooting/AddTroubleShooting');
+    }
+
+    function showTroubleShooting() {
+        $('#troubleShooting').load('TroubleShooting/Report');
+    }
+
+    $(document).ready(function () {
+        showTroubleShooting();
+    });
+
+</script>
+<div id="contentEventLog">
+<h2 class="adminH2">@ViewBag.Title</h2>
+
+<div>
+    <input type="button" id="addTroubleShooting" value="Add Trouble Shooting" onclick="addTroubleShooting()"/>
+</div>
+<br/>
+<div id="troubleShooting">
+</div>
+<br />
+</div>

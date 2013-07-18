@@ -1,0 +1,85 @@
+﻿@model StarEnergi.Models.equipment
+
+<div class="equipment">
+    <div class="equipmentLeft">
+        <div class="display-label">Discipline</div>
+        <div class="display-field">@Model.discipline.title</div>
+
+        <div class="display-label">Vendor</div>
+        <div class="display-field">@Model.vendor</div>
+
+        <div class="display-label">Warranty</div>
+        <div class="display-field">@Model.warranty</div>
+
+        <div class="display-label">Installed Date</div>
+        <div class="display-field">@Model.installed_date</div>
+
+        <div class="display-label">Running Hours</div>
+        <div class="display-field">
+            @{
+                int total =  (int)DateTime.Now.Subtract((DateTime)Model.installed_date).TotalHours; 
+                <label>@total</label>     
+            }
+            &nbsp;Hours
+        </div>
+
+        <div class="display-label">Running Status</div>
+        <div class="display-field">
+            @{
+                if(Model.status == 1){
+                    <label>Running</label>
+                }else{
+                    <label style="color:Red">Down</label>
+                }    
+            }
+        </div>
+
+        <div class="display-label">MTBF</div>
+        <div class="display-field">@Model.mtbf</div>
+
+        <div class="display-label">MTTR</div>
+        <div class="display-field">@Model.mttr</div>
+
+        <div class="display-label">Mean Down Time</div>
+        <div class="display-field">@Model.mdt</div>
+
+        <div class="display-label">Avail. Inherent</div>
+        <div class="display-field">@Model.equipment_paf.Last().avail_calculated</div>
+
+        <div class="display-label">Avail. Operational</div>
+        <div class="display-field">@Model.equipment_paf.Last().avail_measured</div>
+
+    </div>
+
+    <div class="equipmentRight">
+        <div class="display-label">Obsolete Date</div>
+        <div class="display-field">@Model.obsolete_date</div>
+
+        <div class="display-label">Remaining Hours</div>
+        <div class="display-field">
+        @{
+            int totalRemaining = 0;
+            if(Model.obsolete_date != null){
+                totalRemaining = (int)((DateTime)Model.obsolete_date).Subtract(DateTime.Now).TotalHours;
+            }
+            <label>@totalRemaining</label>
+        }
+        &nbsp;Hours
+        </div>
+
+        <div class="display-label">Data Sheet</div>
+        <div class="display-field">
+        @{
+             if (Model.data_sheet_path == null){
+                Html.Display("~");
+            }else{
+               @Html.ActionLink(Model.data_sheet_path, "Download" + "/" + Model.id, "Download")
+            }
+         }
+        
+        </div>
+
+        <div class="display-label">Sertifikasi</div>
+        <div class="display-field">@Model.sertifikasi</div>
+    </div>
+</div>

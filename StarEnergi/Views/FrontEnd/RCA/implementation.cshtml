@@ -1,0 +1,202 @@
+﻿@{
+    ViewBag.Title = "Implementation";
+    int? id = null;
+    if (ViewBag.id != null) {
+        id = Int32.Parse(ViewBag.id.ToString());
+    }
+
+    byte? add_pir = null;
+    if (ViewBag.addPir != null)
+    {
+        add_pir = Byte.Parse(ViewBag.addPir.ToString());
+    }
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+@model IEnumerable<StarEnergi.Models.rca_implementation>
+<script type="text/javascript">
+    function onCommand(e) {
+        if (e.name == "Complete") {
+            var r = confirm("Are you sure this implementation has completed?");
+            if (r == true) {
+            }
+            else {
+                e.preventDefault();
+            }
+        }
+    }
+
+    function onComplete(e) {
+        if (e.name == "Complete") {
+            var $grid = $("#implementation").data("tGrid");
+            $grid.rebind();
+        }
+    }
+
+    function ondatabound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        if (dataItem.is_complete == 1) {
+            row.childNodes[6].childNodes[0].style.visibility = 'hidden';
+            row.childNodes[6].childNodes[1].style.visibility = 'hidden';
+            row.childNodes[6].childNodes[2].style.visibility = 'hidden';
+        }
+
+        var dampak = "";
+        switch (dataItem.dampak) {
+            case 1:
+                dampak = "low";
+                break;
+            case 2:
+                dampak = "medium";
+                break;
+            case 3:
+                dampak = "high";
+                break;
+        }
+        row.childNodes[3].innerHTML = dampak;
+
+        var usaha = "";
+        switch (dataItem.usaha) {
+            case 1:
+                usaha = "low";
+                break;
+            case 2:
+                usaha = "medium";
+                break;
+            case 3:
+                usaha = "high";
+                break;
+        }
+        row.childNodes[4].innerHTML = usaha;
+    }
+
+    function onEdit(e) {
+        $(e.form).find('#Dampak').data('tDropDownList').select(function (dataItem) {
+            return dataItem.Value == e.dataItem['dampak'];
+        });
+
+        $(e.form).find('#Usaha').data('tDropDownList').select(function (dataItem) {
+            return dataItem.Value == e.dataItem['usaha'];
+        });
+    }
+
+    function status(is_complete, due_date, complete_date) {
+        var retStr = "<img alt='" + due_date + "' width='13' height='13' src='@Url.Content("~/Content/image/icon/")";
+        var now = new Date();
+        if (is_complete == 1) {
+            if (complete_date > due_date) {
+                retStr += "red.png' />";
+            } else {
+                retStr += "green.png' />";
+            }
+        } else {
+            if (due_date != null) {
+                if (now > due_date) {
+                    retStr += "red.png' />";
+                } else {
+                    retStr += "green.png' />";
+                }
+            } else {
+                retStr += "red.png' />";
+            }
+        }
+        return retStr;
+    }
+
+    function addPIR(cb) {
+        var add = cb.checked ? 1 : 0;
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("add_pir", "RCA")",
+            traditional: true,
+            data: {id: @id, add: add},
+            success: function () {
+                if (add == 1)
+                    $("#addPir").append("<input type='button' id='sendEmail' name='sendEmail' value='Send Email To Principle Analyst' onclick='sendEmail()'/>");
+                else
+                    $("#sendEmail").remove();
+            }
+        });
+    }
+
+    function sendEmail() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("sendEmailToPrinciple", "RCA")",
+            traditional: true,
+            data: {id: @id},
+            success: function () {
+                alert("Email Sent!");
+            }
+        });
+    }
+</script>
+<h2>Implementation</h2>
+<br/><br/>
+@(Html.Telerik().Grid<StarEnergi.Models.rca_implementation>(Model)
+        .Name("implementation")
+        .DataKeys(keys =>
+        {
+            keys.Add(o => o.id);
+        })
+        .ToolBar(commands =>
+        {
+            if (li.Exists(p => p.role == 2))
+            {
+                commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" });
+            }
+        }
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectImplementation", "RCA", new { ids = id })
+                .Insert("_InsertImplementation", "RCA", new { ids = id })
+                .Update("_UpdateImplementation", "RCA", new { ids = id })
+                .Delete("_DeleteImplementation", "RCA", new { ids = id });
+        })
+        .Columns(columns =>
+        {
+
+            columns.Bound(o => o.next_action).Title("Next Action");
+            columns.ForeignKey(o => o.pic, (System.Collections.IEnumerable)ViewData["users"],
+                   "id", "alpha_name").Width(100).Title("PIC");
+            columns.Bound(o => o.due_date).Width(100).Title("Due Date");
+            columns.Bound(o => o.dampak).Width(80).Title("Dampak");
+            columns.Bound(o => o.usaha).Width(80).Title("Usaha");
+            columns.Bound(o => o.id).Width(100).ClientTemplate("<#= status(is_complete,due_date,complete_date) #>").Title("Status").HtmlAttributes(new { align = "center" });
+            columns.Command(commands =>
+            {
+                if (li.Exists(p => p.role == 2))
+                {
+                    commands.Edit().ButtonType(GridButtonType.Image);
+                    commands.Delete().ButtonType(GridButtonType.Image);
+                    commands.Custom("Complete")
+                            .Text("Complete")
+                            .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/iconComplete.png) no-repeat;height: 15px;border: none;width: 15px;background-size: 80%;margin-right: -5px;", title = "Complete Implementation" })
+                            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                            .Ajax(true)
+                            .Action("complete", "RCA", new { ids = id });
+                }
+            }).Width(120).Title("Action");
+
+
+        })
+        .ClientEvents(events => events.OnCommand("onCommand").OnRowDataBound("ondatabound").OnComplete("onComplete").OnEdit("onEdit"))
+        .Pageable(p => p.PageSize(20))
+        .Sortable()
+        .Groupable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+       )
+<br/>
+<div class ="submit" style="margin-top:10px">
+    <input id="back" type="button" name="back" value="back to verification" onclick="javascript: history.go(-1)"/>
+    <input id="back2" type="button" name="back2" value="back to RCA" onclick="parent.location='@Url.Action("Index","RCA")'" />
+</div>

@@ -1,0 +1,76 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Troubleshooting";
+}
+<script type="text/javascript">
+
+    function addEvent() {
+        $('#content').load('Investigation/AddInvestigation');
+    }
+
+    function showGridEquipment(type) {
+        if (type == '0') {
+            $('#gridEquipment').load('Fracas/GridEquipment/' + type);
+        } else if (type == '1') {
+            $('#gridEquipment').load('Fracas/GridEquipment/' + type);
+        } else if (type == '2') {
+            $('#gridEquipment').load('Fracas/GridEquipment/' + type);
+        } else if (type == '3') {
+            $('#gridEquipment').load('Fracas/GridEquipment/' + type);
+        }
+    }
+
+    function showGridPart(type) {
+        if (type == '0') {
+            $('#gridPart').load('Fracas/GridPart/' + type);
+        } else if (type == '1') {
+            $('#gridPart').load('Fracas/GridPart/' + type);
+        } else if (type == '2') {
+            $('#gridPart').load('Fracas/GridPart/' + type);
+        } else if (type == '3') {
+            $('#gridPart').load('Fracas/GridPart/' + type);
+        }
+    }
+
+    $(document).ready(function () {
+        showGridEquipment('0');
+        showGridPart('0');
+    });
+
+    function bindEquipment() {
+        showGridEquipment($('#category_equipment').val());
+    }
+
+    function bindPart() {
+        showGridPart($('#category_part').val());
+    }
+
+</script>
+
+<h2 class="adminH2">Troubleshooting</h2>
+
+<div>
+    <input type="button" id="addEvent" value="Tambah Event" onclick="addEvent()"/>
+</div>
+<br/>
+<div id="gridEquipment">
+</div>
+
+<br />
+<hr />
+@using (Html.BeginForm("Index", "LoadExcel", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
+{
+    	 <p class="title">Import Data Troubleshooting</p>
+		 	 
+		 <div class="info_inside_left">Excel File (.xls) :</div> 
+		 <input type="text" id="fileName" class="file_input_textbox" readonly="readonly" />
+		 <div class="file_input_div">
+			<input type="button" value="Cari" class="file_input_button" />
+			<input type="file" class="file_input_hidden" name="userfile" onchange="javascript: document.getElementById('fileName').value = this.value" />
+		 </div>
+		 <br />
+		 <input type="button" value="Upload" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; submit();" />
+		 <input type="button" value="Download template" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.fileFracas    '" />
+}
+<br/>
+<iframe id="upload_target" name="upload_target" src="" width="715" height="350" style="border:0px solid #fff;"></iframe>

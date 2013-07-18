@@ -1,0 +1,50 @@
+﻿@{
+    List<StarEnergi.Models.incident_report_log> ir_log = ViewData["log"] as List<StarEnergi.Models.incident_report_log>;
+    string ref_number = ViewBag.ref_number as string;
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<h3>Incident Report Log</h3>
+<h4>Reference Number : @ref_number</h4>
+<table class="w-border">
+    <tr>
+        <td>
+            Date
+        </td>
+        <td>
+            Employee Name
+        </td>
+        <td>
+            Status
+        </td>
+        <td>
+            Comment, if exist
+        </td>
+    </tr>
+    @foreach (StarEnergi.Models.incident_report_log i in ir_log)
+    {
+    <tr>
+        <td>
+            @i.date
+        </td>
+        <td>
+            @i.username
+        </td>
+        <td>
+            @i.status
+        </td>
+        <td>
+            @i.comment
+        </td>
+    </tr>
+    }
+</table>
+<br />
+<div class="submit">
+    <input type="button" value="Back" onclick="back()"/>
+</div>
+<script type="text/javascript">
+    function back() {
+        window.location = "/Incident";
+    }
+</script>

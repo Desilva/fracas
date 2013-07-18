@@ -1,0 +1,199 @@
+﻿@{
+    int? id = null;
+    bool isEdit = false;
+    StarEnergi.Models.EquipmentReportEntity dl = new StarEnergi.Models.EquipmentReportEntity();
+    List<StarEnergi.Models.EquipmentTableReportEntity> etre = new List<StarEnergi.Models.EquipmentTableReportEntity>();
+    if (ViewBag.mod != null)
+    {
+        id = ViewBag.mod as Nullable<Int32>;
+        dl = ViewBag.datas as StarEnergi.Models.EquipmentReportEntity;
+        etre = dl.table;
+        isEdit = true;
+    } else {
+        etre = ViewData["etre"] as List<StarEnergi.Models.EquipmentTableReportEntity>;   
+    }
+    int i = 0;
+    List<StarEnergi.Models.EmployeeEntity> ee = ViewBag.employee as List<StarEnergi.Models.EmployeeEntity>;
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+
+<div class="container">
+	<header>
+		<div class="page-title" style="width:980px">
+			<h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED</h1>
+		</div>
+		<div class="clearfix" style="width:768px"></div>
+		<b>Power Station Daily Check Sheet</b>
+	</header>
+	<div class="log-part1">
+		<table class="w-border" style="width:980px">
+			<tr>
+				<td style="width:100px"><b>Date</b></td>
+                <td>
+                    @(Html.Telerik().DatePicker()
+                    .Name("date")
+                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                    .Value(isEdit ? dl.date : DateTime.Now))
+                </td>
+			</tr>
+            <tr>
+				<td style="width:100px"><b>Operator Name</b></td>
+                <td>
+                    <select id="operator_name" name="operator_name">
+                        @foreach (StarEnergi.Models.EmployeeEntity emp in ee)
+                        {
+                            if (dl.operator_name == emp.alpha_name) {
+                                <option value="@emp.alpha_name" selected>@emp.alpha_name</option>
+                            } else {
+                                <option value="@emp.alpha_name">@emp.alpha_name</option>
+                            } 
+                        }
+                        
+                    </select>
+                </td>
+			</tr>
+		</table>
+	</div>
+    <br />
+	<div class="log-part2">
+        <table class="w-border" style="width:980px">
+            <tr>
+				<td class="yellow-bg center" style="width:50px"><b>No.</b></td>
+                <td class="yellow-bg center" style="width:100px"><b>Tag ID</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Barcode</b></td>
+                <td class="yellow-bg center" style="width:150px"><b>Description</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Min. Limit</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Max. Limit</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Tag Value</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Unit</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Time</b></td>
+                <td class="yellow-bg center" style="width:180px"><b>Notes</b></td>
+			</tr>
+            @foreach (StarEnergi.Models.EquipmentTableReportEntity e in etre)
+            {
+                i++;
+            <tr>
+				<td class="number" style="width:50px">@i</td>
+                <td style="width:100px">@e.tag_number</td>
+                <td style="width:50px"><input type="text" id="barcode_@(e.id_equipment)" name="barcode_@(e.id_equipment)" value="@e.barcode" style="width:50px"/></td>
+                <td style="width:150px">@e.description</td>
+                <td class="number" style="width:50px"><input type="text" id="min_@(e.id_equipment)" name="min_@(e.id_equipment)" value="@e.min_limit" style="width:50px"/></td>
+                <td class="number" style="width:50px"><input type="text" id="max_@(e.id_equipment)" name="max_@(e.id_equipment)" value="@e.max_limit" style="width:50px"/></td>
+                <td class="number" style="width:50px"><input type="text" id="tag_@(e.id_equipment)" name="tag_@(e.id_equipment)" value="@e.tag_value" style="width:50px"/></td>
+                <td class="number" style="width:50px"><input type="text" id="unit_@(e.id_equipment)" name="unit_@(e.id_equipment)" value="@e.unit" style="width:50px"/></td>
+                <td style="width:50px"><input type="text" id="time_@(e.id_equipment)" name="time_@(e.id_equipment)" value="@e.time" style="width:50px"/></td>
+                <td style="width:230px"><input type="text" id="ket_@(e.id_equipment)" name="ket_@(e.id_equipment)" value="@e.keterangan" style="width:230px"/></td>
+			</tr>
+            }
+		</table>
+	</div>
+    <br />
+</div>
+<br/>
+<div class="submit">
+	<input name="Submit" value="Simpan" type="submit" onclick="save()"/>
+    <input type="button" value="Batal" onclick="back()"/>
+    @if (isEdit)
+    {
+            <button type="button" value="Print Equipment Daily Report">
+                @Html.ActionLink("Print Equipment Daily Report", "printEDR", "EquipmentDailyReport", new { id = id }, new { target = "_blank" })
+            </button>
+    }
+</div>
+<br />
+<script type="text/javascript">
+    var isEdit = '@isEdit';
+    var isSave = false;
+
+    var listEq = new Array();
+    @foreach (StarEnergi.Models.EquipmentTableReportEntity eq in etre)
+    {
+        <text>listEq.push('@eq.id_equipment');</text>   
+    }
+
+    function save() {
+        isSave = true;
+        var val = new Array();
+        var list = [];
+
+        if (validate()) {
+            for (var s in listEq) {
+                list.push({
+                        id_equipment: listEq[s],
+                        barcode: $('#barcode_' + listEq[s]).val(),
+                        min_limit: $('#min_' + listEq[s]).val(),
+                        max_limit: $('#max_' + listEq[s]).val(),
+                        tag_value: $('#tag_' + listEq[s]).val(),
+                        unit: $('#unit_' + listEq[s]).val(),
+                        time: $('#time_' + listEq[s]).val(),
+                        keterangan: $('#ket_' + listEq[s]).val()
+                });
+            }
+            var values = {
+                date: $('#date').val(),
+                operator_name: $('#operator_name').val(),
+                table: list
+            }
+            console.log(values);
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.ajax({
+                    url: "EquipmentDailyReport/Add",
+                    type: 'POST',
+                    data: JSON.stringify(values),
+                    dataType: "json",
+                    traditional: true,
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data != undefined) {
+                            isSave = true;
+                            $('#realmod_save').css("display", "none");
+                            alert('Equipment Daily Report berhasil disimpan');
+                            back();
+                        } else {
+                            $('#realmod_save').css("display", "none");
+                            alert('Gagal menambahkan Equipment Daily Report');
+                        }
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.ajax({
+                    url: "EquipmentDailyReport/Edit",
+                    type: 'POST',
+                    data: JSON.stringify(values),
+                    dataType: "json",
+                    traditional: true,
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data != undefined) {
+                            $('#realmod_save').css("display", "none");
+                            alert('Equipment Daily Report berhasil diubah');
+                            back();
+                        } else {
+                            $('#realmod_save').css("display", "none");
+                            alert('Gagal mengubah Equipment Daily Report');
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    function validate() {
+        return true;
+    }
+
+    function back() {
+        if (!isSave) {
+            $.post("EquipmentDailyReport/DeleteAllTable", function (data) { });
+        }
+        $('#content').load('EquipmentDailyReport/Index');
+    }
+
+
+</script>

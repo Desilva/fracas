@@ -1,0 +1,108 @@
+﻿<style>
+    #newspaper-a
+    {
+	    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	    font-size: 12px;
+	    margin: 0px;
+	    width: 480px;
+	    text-align: left;
+	    border-collapse: collapse;
+	    border: 1px solid #69c;
+    }
+    #newspaper-a th
+    {
+	    padding: 12px 17px 12px 17px;
+	    font-weight: normal;
+	    font-size: 14px;
+	    color: #039;
+	    border-bottom: 1px dashed #69c;
+    }
+    #newspaper-a td
+    {
+	    padding: 7px 17px 7px 17px;
+	    color: #669;
+    }
+    #newspaper-a tbody tr:hover td
+    {
+	    color: #339;
+	    background: #d0dafd;
+    }
+</style>
+
+@{
+    StarEnergi.Controllers.FrontEnd.Report r;
+    if (ViewData.Model == null)
+    {
+        r = (StarEnergi.Controllers.FrontEnd.Report)ViewData["report"];    
+    }else{
+        r = ViewData.Model["report"] as StarEnergi.Controllers.FrontEnd.Report;
+    }
+}
+<div class="container">
+    @if (ViewBag.is_page == 1) {
+        @Html.Partial("PirReport");
+    }
+    else if (ViewBag.is_page == 2)
+    {
+        @Html.Partial("PirReportInternal");
+    }
+    else if (ViewBag.is_page == 3)
+    {
+        @Html.Partial("PirReportExternal");
+    }
+@*	<h2>
+		Monthly Report PITS
+	</h2>
+    <table id="newspaper-a" >
+		<thead>
+    	    <tr>
+        	    <th scope="col">Resume</th>
+                @{
+                    foreach(string month in r.Month){
+                        <th scope="col">@(month)</th>
+                    }    
+                }
+            </tr>
+        </thead>
+        <tbody>
+    	    <tr>
+        	    <td>Closed</td>
+                @{
+                    foreach(int i in r.Closed){
+                        <td>@(i)</td>
+                    }    
+                }
+            </tr>
+            <tr>
+        	    <td>Raised</td>
+                @{
+                    foreach(int i in r.Raised){
+                        <td>@(i)</td>
+                    }    
+                }
+            </tr>
+            <tr>
+        	    <td>Open</td>
+                @{
+                    foreach(int i in r.Open){
+                        <td>@(i)</td>
+                    }    
+                }
+            </tr>
+            <tr>
+        	    <td>Overdue</td>
+                @{
+                    foreach(int i in r.Overdue){
+                        <td>@(i)</td>
+                    }    
+                }
+            </tr>
+        </tbody>
+	</table>
+    <br />
+    <div class="submit">
+        <button type="button" value="Print Report">
+            @Html.ActionLink("Print Report", "PrintReport", "Pir",new{id = 0},  new { target = "_blank" })
+    </button>
+</div>*@
+</div>

@@ -1,0 +1,48 @@
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\StarEnergi.dll
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\StarEnergi.pdb
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\EntityFramework.dll
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\Telerik.Reporting.Design.dll
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\Telerik.Reporting.dll
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\Telerik.ReportViewer.WebForms.dll
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\EntityFramework.xml
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\Telerik.Reporting.pdb
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\Telerik.Reporting.xml
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\Telerik.ReportViewer.WebForms.pdb
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\bin\Telerik.ReportViewer.WebForms.xml
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\obj\Debug\ResolveAssemblyReference.cache
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\obj\Debug\StarEnergi.dll
+D:\kerjaan\Project\4Sync\My Documents\PROJECT\ONGOING\Star Energi\star_energi\StarEnergi\obj\Debug\StarEnergi.pdb
+D:\Informatics\proyek\RCA\StarEnergi\bin\StarEnergi.dll
+D:\Informatics\proyek\RCA\StarEnergi\bin\StarEnergi.pdb
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.csprojResolveAssemblyReference.cache
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.dll
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.pdb
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.csproj.GenerateResource.Cache
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ReportRCA.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.TeamMember.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.Implementasi.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Properties.Resources.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ReportSheObservation.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummary.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.Reporttest.resources
+D:\Informatics\proyek\RCA\StarEnergi\bin\EntityFramework.xml
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryMonth.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ReportSheObservationMonth.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryDate.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ReportSheObservationDate.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryDepartment.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ReportSheObservationDepartment.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryObserver.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ReportSheObservationObserver.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryOther.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ReportSheObservationOther.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryOther1.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryOther6.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryOther5.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryOther4.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryOther3.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.ObservationSummaryOther2.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Reporting.PIR_Report.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Reporting.PIR_Report_Internal.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Reporting.PIR_Report_External.resources
+D:\Informatics\proyek\RCA\StarEnergi\obj\Debug\StarEnergi.Report.SheObservationSeverity.resources

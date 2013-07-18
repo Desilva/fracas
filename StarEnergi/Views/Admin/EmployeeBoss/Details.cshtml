@@ -1,0 +1,52 @@
+﻿@model StarEnergi.Models.employee
+
+@{
+    ViewBag.Title = "Details";
+}
+<script type="text/javascript">
+    function edit() {
+        $('#content').load('employeeBoss/edit/'+ @Model.id);
+    }
+</script>
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Employee</legend>
+
+    <div class="display-label">Employee No.</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.employee_no)
+    </div>
+
+    <div class="display-label">Alpha Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.alpha_name)
+    </div>
+
+    <div class="display-label">Position</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.position)
+    </div>
+
+    <div class="display-label">Work Location</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.work_location)
+    </div>
+
+    <div class="display-label">DOH</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.dob)
+    </div>
+    <div class="display-label">Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.email)
+    </div>
+
+    <div class="display-label">Signature</div>
+    <div class="display-field">
+        <img id="img_signature" width="100" height="100" @(Model.signature == null ? "style=display:none;" : "style=display:block;")  src="@Model.signature"/>
+    </div>
+    <p>
+        <input type="button" value="Edit" onclick="edit()" />
+    </p>
+</fieldset>

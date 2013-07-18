@@ -1,0 +1,159 @@
+﻿@model IEnumerable<StarEnergi.Models.system>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            unit
+        </th>
+        <th>
+            nama
+        </th>
+        <th>
+            kode
+        </th>
+        <th>
+            funct_description
+        </th>
+        <th>
+            failure_scenario
+        </th>
+        <th>
+            primary_impact
+        </th>
+        <th>
+            secondary_impact
+        </th>
+        <th>
+            cons_econ
+        </th>
+        <th>
+            cons_hs
+        </th>
+        <th>
+            cons_env
+        </th>
+        <th>
+            cons_total
+        </th>
+        <th>
+            likelihood
+        </th>
+        <th>
+            crit_code
+        </th>
+        <th>
+            ram_crit
+        </th>
+        <th>
+            exist_crit
+        </th>
+        <th>
+            h
+        </th>
+        <th>
+            e
+        </th>
+        <th>
+            econ
+        </th>
+        <th>
+            ram_crit_1
+        </th>
+        <th>
+            prob
+        </th>
+        <th>
+            ram_crit_2
+        </th>
+        <th>
+            ram_crit_3
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.unit.nama)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nama)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.kode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.funct_description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.failure_scenario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.primary_impact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.secondary_impact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cons_econ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cons_hs)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cons_env)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cons_total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.likelihood)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.crit_code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ram_crit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.exist_crit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.h)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.e)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.econ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ram_crit_1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.prob)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ram_crit_2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ram_crit_3)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<StarEnergi.Models.DashboardChartEntity>
+@{
+    string format = "{0:0.00}";   
+}
+
+@(Html.Telerik().Chart<StarEnergi.Models.DashboardChartEntity>()
+    .Name("chartDouble")
+    .Theme("metro")
+    .Title(title => title
+        .Text("paf")
+        .Visible(false)
+    )
+    .Legend(legend => legend
+        .Position(ChartLegendPosition.Bottom)
+        .Visible(true)
+    )
+
+    .DataBinding(dataBinding => dataBinding
+            .Ajax().Select("_SelectAjaxBindingDouble", "Dashboard")
+            
+    )
+    .Series(series =>
+    {
+        series.Line(s => s.value).Name("Actual")
+        .Labels(false);
+        series.Line(s => s.target).Name("Target")
+        .Labels(false).MissingValues(ChartLineMissingValues.Gap);
+
+    })
+    .CategoryAxis(axis => axis
+        .Categories(s => s.year).Labels(labels => labels.Rotation(-35))
+    )
+    .ValueAxis(axis => axis
+        .Numeric().Labels(labels => labels.Format(format))
+    )
+    .Tooltip(tooltip => tooltip
+        .Visible(true)
+        .Format(format)
+    )
+    .HtmlAttributes(new { style = "width: 300px; height: 230px;" })
+) 

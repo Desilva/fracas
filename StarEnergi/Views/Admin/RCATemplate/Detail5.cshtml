@@ -1,0 +1,284 @@
+﻿@using StarEnergi.Models
+@{
+    rca_template template = null;
+    string filename = "";
+    if (ViewBag.template != null) {
+        template = ViewBag.template as rca_template;
+        filename = template.name + ".xml";
+    }
+    int whyCount = 0;
+    List<String> why = null;
+    if (ViewBag.why != null)
+    {
+        why = ViewBag.why as List<String>;
+        whyCount = why.Count;
+    }
+    int i = 0;
+}
+<link href="@Url.Content("~/Content/open.css")" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+    function main() {
+        var load = '@ViewBag.load';
+        if (load == "1") {
+            document.getElementById("event").value = '@ViewBag.events.ToString()';
+	        events = '@ViewBag.events.ToString()';
+            var yCount = parseInt('@whyCount');
+	            var why = Array();
+	            @if (why != null) {
+                    foreach (string a in why)
+	                {
+                        <text>why[@i] = '@a';</text>
+                        i++;
+                    }
+                }
+	            items = why;
+	            if (yCount > 0) {
+	                document.getElementById("why1").value = why[0];
+	                if (yCount > 1) {
+	                    for (var i = 1; i < yCount; i++) {
+	                        addWhy(i,why[i]);
+	                    }
+	                }
+	            }
+	        }
+    }
+
+    $(document).ready(function () {
+        main();
+    });
+
+    function addWhy(curId, value) {
+        value = value || "";
+        var newId = curId + 1;
+        var docs = document.getElementsByClassName("OpenField")[0];
+        var root = document.createElement("div");
+        root.setAttribute("id", "ins" + newId);
+
+        var newDiv = document.createElement("div");
+        newDiv.setAttribute("class", "info_new_left");
+        newDiv.innerHTML = "Why";
+
+        root.appendChild(newDiv);
+
+        newDiv = document.createElement("div");
+        newDiv.setAttribute("class", "openinfonewinput");
+
+        var input1 = document.createElement("input");
+
+        input1.setAttribute("type", "text");
+        input1.setAttribute("id", "why" + newId);
+        input1.setAttribute("name", "why" + newId);
+        input1.setAttribute("class", "why");
+        input1.value = value;
+        input1.style.width = "400px";
+        newDiv.appendChild(input1);
+
+        var input2 = document.createElement("input");
+        input2.setAttribute("type", "button");
+        input2.setAttribute("id", "add" + newId);
+        input2.setAttribute("name", "add" + newId);
+        input2.setAttribute("value", "add");
+        input2.onclick = function () { addWhy(newId); };
+        newDiv.appendChild(input2);
+
+        var input3 = document.createElement("input");
+        input3.setAttribute("type", "button");
+        input3.setAttribute("id", "del" + newId);
+        input3.setAttribute("name", "del" + newId);
+        input3.setAttribute("value", "del");
+        input3.onclick = function () { delWhy(newId); };
+        newDiv.appendChild(input3);
+
+        root.appendChild(newDiv);
+        root.appendChild(document.createElement("br"));
+        docs.appendChild(root);
+
+        var adds = document.getElementById("add" + curId);
+        adds.style.visibility = 'hidden';
+
+        document.getElementById("total").value = newId;
+    };
+
+    function delWhy(curId) {
+        var total = parseInt(document.getElementById("total").value.toString(), 10);
+        if (total == 1) {
+            alert("Can not delete the last why!!!");
+            return;
+        }
+        if (curId == total) {
+            document.getElementsByClassName("OpenField")[0].removeChild(document.getElementById("ins" + curId));
+            document.getElementById("add" + (curId - 1)).style.visibility = 'visible';
+        } else {
+            var div = document.getElementById("ins" + curId);
+            document.getElementsByClassName("OpenField")[0].removeChild(div);
+            for (var i = curId + 1; i <= total; i++) {
+                document.getElementById("ins" + i).setAttribute("id", "ins" + (i - 1));
+                document.getElementById("why" + i).setAttribute("name", "why" + (i - 1));
+                document.getElementById("why" + i).setAttribute("id", "why" + (i - 1));
+                document.getElementById("add" + i).onclick = function () { addWhy(parseInt(this.getAttribute("id").charAt(3))); };
+                document.getElementById("add" + i).setAttribute("name", "add" + (i - 1));
+                document.getElementById("add" + i).setAttribute("id", "add" + (i - 1));
+
+                document.getElementById("del" + i).setAttribute("name", "del" + (i - 1));
+                document.getElementById("del" + i).setAttribute("id", "del" + (i - 1));
+                document.getElementById("del" + (i - 1)).onclick = function () { delWhy(parseInt(this.getAttribute("id").charAt(3))); };
+            }
+        }
+
+        document.getElementById("total").value = total - 1;
+    }
+
+    function save() {
+        var filename = $('#name').val();
+        if (filename == "") {
+            alert('Unable to save file, please insert name first.');
+            return;
+        }
+        items = [];
+        events = $("#event").val();
+        $(".why").each(function () {
+            var vals = $(this).val();
+            items.push(vals);
+        });
+        var id = '@(template != null ? template.id : 0)';
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("save5", "RCATemplate")",
+            traditional: true,
+            data: { filename: filename + '.xml', events: events, item: items, id: id },
+            success: function (data) {
+                if (data != undefined) {
+                    alert("Save successful!");
+                } else {
+                    alert('Unable to save file.');
+                }
+            }
+        });
+    };
+
+    function clickFracas(val) {
+        var d = document.getElementById("selec");
+        while (d.firstChild) d.removeChild(d.firstChild);
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("getAllFracas", "RCA")",
+            traditional: true,
+            data: {},
+            success: function (data) {
+                var opt = document.createElement("option");
+                opt.value = '';
+                opt.innerHTML = 'Choose One';
+                opt.checked = 'checked';
+                d.appendChild(opt);
+                $.each(data.pir, function (i, item) {
+                    var opt = document.createElement("option");
+                    opt.value = item.id;
+                    opt.innerHTML = item.event_description;
+                    d.appendChild(opt);
+                    d.disabled = false;
+                });
+                if (val != null) d.value = val; else document.getElementById("event").value = "";
+            }
+        });
+    }
+
+    function clickIR(val) {
+        var d = document.getElementById("selec");
+        while (d.firstChild) d.removeChild(d.firstChild);
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("getAllIr", "RCA")",
+            traditional: true,
+            data: {},
+            success: function (data) {
+                var opt = document.createElement("option");
+                opt.value = '';
+                opt.innerHTML = 'Choose One';
+                opt.checked = 'checked';
+                d.appendChild(opt);
+                $.each(data.pir, function (i, item) {
+                    var opt = document.createElement("option");
+                    opt.value = item.id;
+                    opt.innerHTML = item.title;
+                    d.appendChild(opt);
+                    d.disabled = false;
+                });
+                if (val != null) d.value = val; else document.getElementById("event").value = "";
+            }
+        });
+    }
+
+    function clickNone() {
+        var d = document.getElementById("selec");
+        while (d.firstChild) d.removeChild(d.firstChild);
+
+        var opt = document.createElement("option");
+        opt.value = '';
+        opt.innerHTML = 'Insert Description';
+        opt.checked = 'checked';
+        d.appendChild(opt);
+        d.disabled = true;
+        document.getElementById("event").value = "";
+    }
+
+    function changeSelect() {
+        var text = document.getElementById('descr');
+        var fracasir = $("input[name=fracasir]:checked").val();
+        if (fracasir != 0) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("getDescription", "RCA")",
+                traditional: true,
+                data: { id: document.getElementById('selec').value, fracasir: fracasir },
+                success: function (data) {
+                    document.getElementById('event').value = data.val;
+                }
+            });
+        }
+    }
+</script>
+<div onload="main()">
+    <br />
+    <form method="post" action="../verification" id="forms">
+        <input type="hidden" id="type" name="type" value="1" />
+        <input type="hidden" id="id" name="id" value="@(template != null ? template.id : 0)" />
+        <label for="name">Name : </label><input type="text" id="name" name="name" value="@(template != null ? template.name : "")" />
+    </form>
+    <div style="width:695px" class="Open5Why">
+            <div class="OpenField">
+                <input type="hidden" value="1" id="total"/>
+                <br />
+                <div class="info_new_left"></div>
+                <div class="openinfonewinput">
+                    <input type="radio" id="fracas_rad" name="fracasir" value="1" onclick="clickFracas()"/>from fracas
+                    <input type="radio" id="ir_rad" name="fracasir" value="2" onclick="clickIR()"/>from ir
+                    <input type="radio" id="none_rad" name="fracasir" value="0" onclick="clickNone()"/>none
+                </div>
+                <br />
+                <div class="info_new_left"></div>
+                <div class="openinfonewinput">
+                    <select id="selec" name="selec" style="width:500px" onchange="changeSelect()">
+
+                    </select>
+                </div>
+                <br />
+                <div class="info_new_left">Event</div>
+                <div class="openinfonewinput"><input id="event" type="text" name="event" value="" style="width:400px" /></div>
+                <br />
+                <div id="ins1">
+                    <div class="info_new_left">Why</div>
+                    <div class="openinfonewinput">
+                        <input class="why" id="why1" type="text" name="why1" value="" style="width:400px" />
+                        <input id="add1" type="button" name="add1" value="add" onclick="addWhy(1)"/><input id="del1" type="button" name="del1" value="del" onclick="delWhy(1)" />
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="OpenMenu">
+                <input id="saves" type="button" name="saves" value="save" onclick="save()"/>
+            </div>
+        </div>
+</div>

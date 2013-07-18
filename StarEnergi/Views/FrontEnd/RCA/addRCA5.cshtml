@@ -1,0 +1,77 @@
+﻿@{
+    int? isPublish = ViewBag.isPublish;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    if (ViewBag.types == "add")
+    {
+        ViewBag.Title = "add RCA - 5";
+    }
+    else if (ViewBag.types == "edit")
+    {
+        if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+        {
+            ViewBag.Title = "edit RCA - 5";
+        }
+        else
+        {
+            ViewBag.Title = "view RCA - 5";
+        }
+    }
+}
+<script type="text/javascript" src="../../../Scripts/jquery-1.4.4.js"></script>
+<script type="text/javascript">
+    function Charter(e) {
+        var files = e.files;
+
+        if (e.operation == "upload") {
+            document.getElementById("charter").innerHTML = e.response.cont;
+        }
+    }
+</script>
+<br />
+@using(Html.BeginForm()) {
+<div class="addContent">
+    <div class="addImage">
+        <img src="../../../Content/image/addImage.png">
+    </div>
+
+    <div class="addInfo">
+        <div class="infoAbove white">
+            <div class="up">Please State or Insert the Charter for the analysis and add any comments desired.</div>
+        </div>
+        <div class="addField blue">
+            <div class="charter">
+                <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
+                <input type="hidden" name="types" id="types" value="@ViewBag.types" />
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                {
+                <div class="center">Charter (Terminal Objective)</div>@(Html.Telerik().Upload()
+                        .Name("Charter")
+                        .ClientEvents(events => events
+                            .OnSuccess("Charter"))
+                        .Async(async => async
+                            .Save("Saves", "RCA")
+                            .AutoUpload(true)
+                        )
+                )
+                }
+                <!-- <input name="insert" id="insert" type="button" value="Insert Sample Charter"/> -->
+                <textarea name="charter" id="charter" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")>@ViewBag.charter</textarea>
+            </div>
+            <div class="comment">
+                <div class="center">Comments</div>
+                <textarea name="comment" id="comment" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")>@ViewBag.comment</textarea>
+            </div>
+            <br />
+            <div class="addSubmit">
+	            <input name="cancel" value="Cancel" type="submit"/>
+                <input type="submit" value="Previous" name="previous"/>
+                <input type="submit" value="Next" name="next"/>
+            </div>
+        </div> 
+    </div>
+</div>
+}

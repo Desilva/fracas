@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StyleSheet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StyleRule>
+    <Style>
+      <Padding Left="2pt" Right="2pt" />
+    </Style>
+    <Selectors>
+      <TypeSelector>
+        <Type>TextItemBase</Type>
+      </TypeSelector>
+      <TypeSelector>
+        <Type>HtmlTextBox</Type>
+      </TypeSelector>
+    </Selectors>
+  </StyleRule>
+  <StyleRule>
+    <Style>
+    </Style>
+    <Selectors>
+      <TypeSelector>
+        <Type>Panel</Type>
+      </TypeSelector>
+    </Selectors>
+  </StyleRule>
+</StyleSheet>

@@ -1,0 +1,393 @@
+﻿@model IEnumerable<StarEnergi.Models.MaEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+    function OnComplete(e) {
+        if (e.name == "viewDetails") {
+            var detailWindow = $("#DetailsMa").data("tWindow");
+            var ma = e.response.ma;
+            $.each(ma[0], function (index, value) {
+                $('#' + index).html(value);
+            });
+            detailWindow.center().open();
+        } else if (e.name == null) {
+            var detailWindow = $("#EditMa").data("tWindow");
+            clearField();
+            detailWindow.center().open();
+        }
+
+    }
+
+    function OnRowDataBound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        if (dataItem.status == 1) {
+            row.cells[3].innerHTML = 'Running';
+        } else {
+            row.cells[3].innerHTML = 'Down';
+            row.cells[3].style.color = 'red';
+        }
+    }
+
+    function SaveMa() {       
+        if($('#edit_ma').val() == ''){
+            alert('Nilai MA masih kosong');
+            return;
+        }
+        if ($('#edit_masd').val() == '') {
+            alert('Nilai MAsd masih kosong');
+            return;
+        }
+        var values =
+        {
+            "id_foc"            : $('#id_area').val(),
+            "type"           : $('#id_type').val(),
+            "tadd"              : $('#edit_tadd').val(),
+            "tadt_hours"        : $('#edit_tadt_hours').val(),
+            "ta_interval"       : $('#edit_ta_interval').val(),
+            "ntamdd"            : $('#edit_ntamdd').val(),
+            "study_year_ntamd"  : $('#edit_study_ntamd_hours').val(),
+            "prior_year_ntamd"  : $('#edit_prior_ntamd_hours').val(),
+            "days_in_study_year": $('#edit_days_in_study_year').val(),
+            "ntamsd"            : $('#edit_ntamsd').val(),
+            "study_year_ms"     : $('#edit_study_ms_hours').val(),
+            "prior_year_ms"     : $('#edit_prior_ms_hours').val(),
+            "masd"              : $('#edit_masd').val(),
+            "ma1"                : $('#edit_ma').val()
+        }
+
+        $('.loadSubmit').css("display", "block");
+        $.post("Ma/Create", values, function (data) {
+            $('.loadSubmit').css("display", "none");
+            alert('Data tersimpan');
+            $('#content').load('Ma/Index');
+            $("#EditMa").data("tWindow").close();
+        });
+    }
+
+
+    function clearField() { 
+            $('#edit_tadd').val('0'),
+            $('#edit_tadt_hours').val('0'),
+            $('#edit_ta_interval').val('0'),
+            $('#edit_ntamdd').val('0'),
+            $('#edit_study_ntamd_hours').val('0'),
+            $('#edit_prior_ntamd_hours').val('0'),
+            $('#edit_days_in_study_year').val('0'),
+            $('#edit_ntamsd').val('0'),
+            $('#edit_study_ms_hours').val('0'),
+            $('#edit_prior_ms_hours').val('0'),
+            $('#edit_masd').val('0'),
+            $('#edit_ma').val('0')
+    }
+
+    function calculate_tadd() {
+        var tadd = 0;
+        var tadt_hours = 0;
+        var ta_interval = 0;
+        if ($('#edit_tadt_hours').val() != '') {
+            tadt_hours = $('#edit_tadt_hours').val() / 1;
+        }
+        if ($('#edit_ta_interval').val() != '') {
+            ta_interval = $('#edit_ta_interval').val() / 1;
+        }
+
+        if ((tadt_hours != 0) && (ta_interval != 0)) {
+            tadd = tadt_hours / (ta_interval * 24);
+        }
+
+        $('#edit_tadd').val(tadd);
+    }
+
+    function calculate_ntamdd() {
+        var ntamdd = 0;
+        var study_ntamd_hours = 0;
+        var prior_ntamd_hours = 0;
+        if ($('#edit_study_ntamd_hours').val() != '') {
+            study_ntamd_hours = $('#edit_study_ntamd_hours').val() / 1;
+        }
+        if ($('#edit_prior_ntamd_hours').val() != '') {
+            prior_ntamd_hours = $('#edit_prior_ntamd_hours').val() / 1;
+        }
+
+        if ((study_ntamd_hours != 0) && (prior_ntamd_hours != 0)) {
+            ntamdd = (study_ntamd_hours + prior_ntamd_hours) / (2 * 24);
+        }
+
+        $('#edit_ntamdd').val(ntamdd);
+    }
+
+    function calculate_ntamsd() {
+        var ntamsd = 0;
+        var study_ms_hours = 0;
+        var prior_ms_hours = 0;
+        if ($('#edit_study_ms_hours').val() != '') {
+            study_ms_hours = $('#edit_study_ms_hours').val() / 1;
+        }
+        if ($('#edit_prior_ms_hours').val() != '') {
+            prior_ms_hours = $('#edit_prior_ms_hours').val() / 1;
+        }
+
+        if ((study_ms_hours != 0) && (prior_ms_hours != 0)) {
+            ntamsd = (study_ms_hours + prior_ms_hours) / (2 * 24);
+        }
+
+        $('#edit_ntamsd').val(ntamsd);
+    }
+
+    function calculate_ma() {
+        var ma = 0;
+        //var tadd = 0;
+        var ntamdd = 0;
+        var days_in_study_year = 0;
+        if ($('#edit_tadd').val() != '') {
+            tadd = $('#edit_tadd').val() / 1;
+        }
+        if ($('#edit_ntamdd').val() != '') {
+            ntamdd = $('#edit_ntamdd').val() / 1;
+        }
+
+        if ($('#edit_days_in_study_year').val() != '') {
+            days_in_study_year = $('#edit_days_in_study_year').val() / 1;
+        }
+
+        if ((ntamdd != 0) && (days_in_study_year != 0)) {
+            var temp = ntamdd;
+            ma = (1 - ((temp) / days_in_study_year)) * 100;
+        }
+
+        $('#edit_ma').val(ma);
+    }
+
+    function calculate_masd() {
+        var masd = 0;
+        //var tadd = 0;
+        var ntamdd = 0;
+        var ntamsd = 0;
+        var days_in_study_year = 0;
+        if ($('#edit_tadd').val() != '') {
+            tadd = $('#edit_tadd').val() / 1;
+        }
+        if ($('#edit_ntamdd').val() != '') {
+            ntamdd = $('#edit_ntamdd').val() / 1;
+        }
+        if ($('#edit_ntamsd').val() != '') {
+            ntamsd = $('#edit_ntamsd').val() / 1;
+        }
+        if ($('#edit_days_in_study_year').val() != '') {
+            days_in_study_year = $('#edit_days_in_study_year').val() / 1;
+        }
+        if ((ntamdd != 0) && (days_in_study_year != 0)) {
+            var temp = ntamdd + ntamsd;
+            masd = (1 - ((temp) / days_in_study_year)) * 100;
+        }
+
+        $('#edit_masd').val(masd);
+    }
+</script>
+
+<h2 class="adminH2">Mechanical Availibility</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.MaEntity>()
+        .TableHtmlAttributes(new { style = "width:768px" })
+        .Name("Ma")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "addMa" })
+            .Text("Add MA")
+            .Ajax(true)
+            .Action("addMa", "Ma")
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxEditing", "Ma")
+                .Select("_SelectAjaxEditing", "Ma");         
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.foc_name).Width(95).Title("Area");
+            columns.Bound(o => o.type).Title("Type");
+            columns.Bound(o => o.ma).Width(100).Title("MA");
+            columns.Bound(o => o.masd).Width(110).Title("MAsd");
+            columns.Bound(o => o.last_update).Width(115).Title("Date Update");
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.Text);
+                commands.Custom("viewDetails")
+                        .Text("Details")
+                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                        .Ajax(true)
+                        .Action("GetDetail", "Ma");
+
+            }).Width(100).Title("Commands").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(
+            events => events
+                .OnComplete("OnComplete")
+        )
+        .Pageable(p => p.PageSize(25))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height(270))
+        .Selectable()
+        .Groupable()
+) 
+
+@(Html.Telerik().Window()
+    .Name("DetailsMa")
+    .Visible(false)
+        .Title("Form Mechanical Availability Details")
+    .Modal(true)
+    .Width(350)
+    .Height(430)
+    .Content(@<text>
+                 <div class="info">
+		            <div class="info_inside_left">Area </div>
+                    <div class="infoField"><a  id="foc_name"></a></div>
+		
+		            <div class="info_inside_left">Type </div>
+                    <div class="infoField"><a  id="type"></a>	</div>	
+		
+                    <div class="info_inside_left">TADD</div>
+                    <div class="infoField"><a  id="tadd"></a></div>
+		
+		            <div style="padding-left: 20px;">
+                        <div class="info_inside_left">TADT Hours </div>
+		                <div class="infoField"><a id="tadt_hours" ></a></div>
+		
+		                <div class="info_inside_left">T/A Interval</div>
+		                <div class="infoField"><a id="ta_interval" ></a></div>
+                    </div>
+		
+		            <div class="info_inside_left">NTAMDD</div>
+		            <div class="infoField"><a id="ntamdd" ></a></div>
+		
+		            <div style="padding-left: 20px;">
+                        <div class="info_inside_left">Study Year NTAMD</div>
+		                <div class="infoField"><a id="study_year_ntamd" ></a> Hours</div>
+		
+		                <div class="info_inside_left">Prior Year NTAMD</div>
+		                <div class="infoField"><a id="prior_year_ntamd" ></a> Hours</div>
+                    </div>
+		
+		            <div class="info_inside_left">NTAMSD</div>
+		            <div class="infoField"><a id="ntamsd" ></a></div>
+		
+		            <div style="padding-left: 20px;">
+                        <div class="info_inside_left">Study Year MS</div>
+		                <div class="infoField"><a id="study_year_ms" ></a> Hours</div>
+
+		                <div class="info_inside_left">Prior Year MS</div>
+		                <div class="infoField"><a id="prior_year_ms" ></a> Hours</div>
+                    </div>
+		
+		            <div class="info_inside_left">Days in Study Year</div>
+		            <div class="infoField"><a id="days_in_study_year" ></a></div>
+		
+		            <div class="info_inside_left">MA</div>
+		            <div class="infoField"><a id="ma" ></a></div>
+		
+		            <div class="info_inside_left">MAsd</div>
+		            <div class="infoField"><a id="masd" ></a></div>
+	            </div>
+        </text>)
+)
+
+@(Html.Telerik().Window()
+    .Name("EditMa")
+    .Visible(false)
+    .Title("Form Mechanical Availability")
+    .Modal(true)
+    .Width(450)
+    .Content(@<text>
+                <div class="info">
+		            <div class="info_inside_left">Area </div>
+		               <div class="infoFieldinput">@Html.DropDownList("id_area", String.Empty)</div>
+		
+		                <div class="info_inside_left">Type </div>
+		                <div class="infoFieldinput">
+                            <select name="id_type" id="id_type">
+                                <option value="0" selected="selected">Primary</option>
+                                <option value="1">Secondary</option>
+                            </select>	
+                        </div>	
+		
+		                <div class="info_inside_left">TADD</div>
+		                <div class="infoFieldinput"><input id="edit_tadd" name="tadd" type="text" value="0" onchange="calculate_ma();" readonly="" /></div>
+		
+		                <div style="padding-left: 20px;">
+                            <div class="info_inside_left">TADT Hours </div>
+		                    <div class="infoFieldinput"><input id="edit_tadt_hours" name="tadt_hours" type="text" value="0" onchange="calculate_tadd();" /></div>
+		
+		                    <div class="info_inside_left">T/A Interval</div>
+		                    <div class="infoFieldinput"><input id="edit_ta_interval" name="ta_interval" type="text" value="0" onchange="calculate_tadd();" /></div>
+                        </div>
+		
+		                <div class="info_inside_left">NTAMDD</div>
+		                <div class="infoFieldinput"><input id="edit_ntamdd" name="ntamdd" type="text" value="0" onchange="calculate_ma();" readonly="" /></div>
+		
+		                <div style="padding-left: 20px;">
+                            <div class="info_inside_left">Study Year NTAMD</div>
+		                    <div class="infoFieldinput"><input id="edit_study_ntamd_hours" name="study_ntamd_hours" onchange="calculate_ntamdd();" type="text" value="0" /> Hours</div>
+
+		                    <div class="info_inside_left">Prior Year NTAMD</div>
+		                    <div class="infoFieldinput"><input id="edit_prior_ntamd_hours" name="prior_ntamd_hours" onchange="calculate_ntamdd();" type="text" value="0" /> Hours</div>
+                        </div>
+		
+		                <div class="info_inside_left">NTAMSD</div>
+		                <div class="infoFieldinput"><input id="edit_ntamsd" name="ntamsd" type="text" value="0" readonly="" /></div>
+		
+		                <div style="padding-left: 20px;">
+                            <div class="info_inside_left">Study Year MS</div>
+		                    <div class="infoFieldinput"><input id="edit_study_ms_hours" name="study_ntamd_hours" type="text" onchange="calculate_ntamsd();" value="0" /> Hours</div>
+		
+		                    <div class="info_inside_left">Prior Year MS</div>
+		                    <div class="infoFieldinput"><input id="edit_prior_ms_hours" name="prior_ntamd_hours" onchange="calculate_ntamsd();" type="text" value="0" /> Hours</div>
+                        </div>
+		
+		                <div class="info_inside_left">Days in Study Year</div>
+		                <div class="infoFieldinput"><input id="edit_days_in_study_year" name="days_in_study_year" type="text" value="0" /></div>
+
+		                <div class="info_inside_left">MA</div>
+		                <div class="infoFieldinput"><input id="edit_ma" name="ma" type="text" value="0" readonly="true" /></div>
+		                <div class="infoFieldbutton"><input name="hitung_ma" value="Hitung" type="button" onclick="calculate_ma();" /></div>
+		
+		                <div class="info_inside_left">MAsd</div>
+		                <div class="infoFieldinput"><input id="edit_masd" name="masd" type="text" value="0" readonly="true" /> </div>
+		                <div class="infoFieldbutton"><input name="hitung_ma" value="Hitung" type="button" onclick="calculate_masd();" /></div>
+		                
+	                    </div>
+                        <br/>
+                        <input name="Submit" value="Simpan" type="button" onclick="SaveMa();" />
+                        <img class="loadSubmit" src="../../../Content/image/loading.gif"/>
+        </text>)
+)
+
+<br />
+<hr />
+@using (Html.BeginForm("Index", "LoadExcel", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
+{
+    	 <p class="title">Import Data Mechanical Availibility Dari Excel</p>
+		 	 
+		 <div class="info_inside_left">Excel File (.xls) :</div> 
+		 <input type="text" id="fileName" class="file_input_textbox" readonly="readonly" />
+		 <div class="file_input_div">
+			<input type="button" value="Cari" class="file_input_button" />
+			<input type="file" class="file_input_hidden" name="userfile" onchange="javascript: document.getElementById('fileName').value = this.value" />
+		 </div>
+		 <br />
+		 <input type="button" value="Upload" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; submit();" />
+		 <input type="button" value="Download template" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.fileMA'" />
+}
+<br/>
+<iframe id="upload_target" name="upload_target" src="" width="715" height="350" style="border:0px solid #fff;"></iframe>

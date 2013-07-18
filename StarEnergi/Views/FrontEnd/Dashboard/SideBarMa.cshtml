@@ -1,0 +1,72 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#idUnit").bind("change", function () {
+            if ($('#idUnit').val() != '') {
+                //$('#realmod_checker').html('Cek basis data...');
+                $.post(
+				"Dashboard/GetMaUnit",
+				{
+				    idUnit: $('#idUnit').val()
+				},
+				function (data) {
+				    $('#ma-value').html(data[0]);
+				    $('#masd-value').html(data[1]);
+				    //$('#realmod_checker').html('');
+				}
+			    );
+            } else {
+                //$('#edit_realmod_checker').html('');
+            }
+        });
+    });
+
+    function generateGrafik(id) {
+        if ($('.select-filter').val() == 'year') {
+            var chart = $("#chartYear").data("tChart");
+            chart.rebind({ id_area: id, from: $("#fromYear").val(), to: $("#toYear").val(), filter:'year', type: 'ma' });
+            $("#chartMa").show();
+        }else{
+            var chart = $("#chartYear").data("tChart");
+            chart.rebind({ id_area: id, year: $("#year").val(), from: $("#fromMonth").val(), to: $("#toMonth").val(), filter: 'month', type: 'ma' });
+            $("#chartMa").show();
+        }  
+    }
+</script>
+<div class="ma-unit">
+	<div class="title"><b>Mechanical &amp; mechanical SD Unit</b></div>
+	<div class="row">
+		@Html.DropDownList("idUnit", "--Pilih Unit--")
+    </div>
+	<div>
+		<span>- mechanical    :&nbsp;</span><span id="ma-value"></span><br />
+		<span>- mechanical SD :&nbsp;</span><span id="masd-value"></span>
+	</div>
+</div>
+<div class="history">
+	<div class="title"><b>History</b></div>
+	<div class="form filter">
+		<div class="row">
+			<select class="select-filter" name="by" id="by" onchange="changeForm(this.options[selectedIndex].value)">
+                <option value="year">by year</option>
+                <option value="month">by month</option>
+            </select>		
+            <span class="filter-year">
+				@Html.DropDownList("fromYear")				
+                to
+				@Html.DropDownList("toYear")			
+             </span>
+			 <span class="filter-month" style="display:none;">
+				@Html.DropDownList("year")			
+                @Html.DropDownList("fromMonth")
+                to
+				@Html.DropDownList("toMonth")	
+             </span><br/>
+            <input id="buttonSub" type="submit" value="submit" onclick="generateGrafik('@(ViewBag.id)')" />
+            <div id="chartMa" style="display:none">
+                <h5 class="titleChartDashboard">Grafik Mechanical Availibility</h5>
+                @Html.Partial("ChartSingle");    
+            </div>
+            </div>
+	</div>
+</div>

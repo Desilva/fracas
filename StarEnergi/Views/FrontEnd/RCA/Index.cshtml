@@ -1,0 +1,196 @@
+﻿@{
+    ViewBag.Title = "Index";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null) {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    int? isTree = ViewBag.isTree as Nullable<Int32>;
+}
+@model IEnumerable<StarEnergi.Models.RCAEntityModel>
+<script type="text/javascript">
+    function ondatabound(e) {
+        var username = '@HttpContext.Current.Session["username"].ToString()';
+        var dataItem = e.dataItem;
+        var row = e.row;
+        row.childNodes[0].childNodes[5].style.display = 'none';
+        if (dataItem.is_publish == 1) {
+            if ('@li.Exists(p=>p.role==2)' == 'True') {
+                row.childNodes[0].childNodes[2].style.display = 'none';
+                row.childNodes[0].childNodes[3].style.display = 'none';
+                if ('@li.Exists(p=>p.role==(int)StarEnergi.Config.role.SHE)' == 'True') {
+                    row.childNodes[0].childNodes[5].style.display = 'inline-block';
+                }
+            }
+
+            if (dataItem.member_name.indexOf(username) < 0) {
+                row.childNodes[0].childNodes[5].style.display = 'none';
+            }
+        }
+
+        if (dataItem.member_name.indexOf(username) < 0) {
+            row.childNodes[0].childNodes[3].style.display = 'none';
+        }
+        if (dataItem.id_iir != null) {
+            row.cells[1].innerHTML = '<a onclick="editIIR(' + dataItem.id_iir + ')" style="color:blue;">IRN-' + dataItem.id_iir + '</a>';
+            row.childNodes[0].childNodes[5].style.display = 'none';
+        }
+    }
+
+    function editIIR(id) {
+        window.location = '/Investigation/addInvestigation/' + id;
+    }
+
+    function onComplete(e) {
+        if (e.name == "Copy" || e.name == "Publish" || e.name== "Delete") {
+            var $grid = $("#RCA").data("tGrid");
+            $grid.rebind();
+        }
+    }
+
+    function onCommand(e) {
+        if (e.name == "Publish") {
+            var r = confirm("Are you sure want to Complete this analysis?");
+            if (r == true) {
+            }
+            else {
+                e.preventDefault();
+            }
+        }
+
+        if (e.name == "Copy") {
+            var r = confirm("Are you sure want to Copy this analysis?");
+            if (r == true) {
+            }
+            else {
+                e.preventDefault();
+            }
+        }
+    }
+</script>
+<div id="contentEventLog">   
+<br/>
+<h2>Root Cause Analysis
+    <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
+</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.RCAEntityModel>(Model)
+        .Name("RCA")
+        .DataKeys(keys =>
+        {
+            keys.Add(o => o.id);
+        })
+        .ToolBar(commands =>
+                {
+                    if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
+                    {
+                        commands
+                            .Custom()
+                            .HtmlAttributes(new { id = "new" })
+                            .Text("New")
+                            .Action("addRCA", "RCA");
+                    }
+                    commands
+                        .Custom()
+                        .HtmlAttributes(new { id = "print" })
+                        .Text("Print")
+                        .Action("importExcelIndex", "RCA");
+                }
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "RCA")
+                .Insert("_InsertAjaxEditing", "RCA")
+                .Update("_SaveAjaxEditing", "RCA")
+                .Delete("_DeleteAjaxEditing", "RCA");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                if (isTree == 2)
+                {
+                    commands.Custom("Open")
+                            .Text("Open")
+                            .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Open Analysis", id = "open" })
+                            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                            .Action("test", "RCA");
+                }
+                else
+                {
+                    commands.Custom("Open")
+                            .Text("Open")
+                            .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Open Analysis", id = "open" })
+                            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                            .Action("open", "RCA");
+                }
+                
+                commands.Custom("Edit")
+                        .Text("Edit")
+                        .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconEdit.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 70%;margin-right: -5px;margin-right: -10px;", title = li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) ? "Edit Analysis" : "View Analysis" })
+                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                        .Action("addRCA", "RCA");
+                //if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
+                //{
+                //    commands.Delete().HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconDelete.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Delete Analysis" });
+                //}
+                commands.Custom("Copy")
+                        .Text("Copy")
+                        .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/iconCopy.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Copy Analysis" })
+                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                        .Ajax(true)
+                        .Action("copy", "RCA");
+                if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
+                {
+                    commands.Custom("Publish")
+                        .Text("Publish")
+                        .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/iconPublish.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Complete Analysis" })
+                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                        .Ajax(true)
+                        .Action("publish", "RCA");
+                }
+                commands.Custom("Report")
+                       .Text("Report")
+                       .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/Custom-Icon-Design-Pretty-Office-3-Distributor-report.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Report" })
+                       .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                       .Action("report", "RCA");
+                commands.Custom("To_IIR")
+                        .Text("ToIIR")
+                        .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/add_iir.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Create IIR" })
+                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id_rca"))
+                        .Action("AddInvestigation", "Investigation");
+            }).Width(200).Title("Action");
+            columns.Bound(o => o.id_iir).Width(150).Title("IIR");
+            columns.Bound(o => o.rca_code).Width(150).Title("RCA Code");
+            columns.Bound(o => o.name).Width(150).Title("Analysis Title");
+            columns.Bound(o => o.description).Width(400).Title("Analysis Description");
+            columns.Bound(o => o.type_name).Width(100).Title("Type");
+            columns.Bound(o => o.cost).Width(100).Title("Benefit");
+            columns.Bound(o => o.facility).Width(100).Title("Facility");
+            columns.Bound(o => o.division).Width(100).Title("Department");
+            columns.Bound(o => o.department).Width(100).Title("Section");
+            //columns.Bound(o => o.building).Width(100).Title("Building");
+            //columns.Bound(o => o.floor).Width(100).Title("Floor");
+            //columns.Bound(o => o.functional_location).Width(100).Title("Func. Loc. (ID)").HeaderHtmlAttributes(new { style = "white-space:normal;height:40px;overflow:hidden;vertical-align:top" });
+            columns.Bound(o => o.equipment_type).Width(100).Title("Eq, Type");
+            columns.Bound(o => o.equipment_class).Width(100).Title("Eq. Class");
+            columns.Bound(o => o.equipment_code).Width(100).Title("Eq. Code");
+            columns.Bound(o => o.other).Width(100).Title("Other");
+            columns.Bound(o => o.manufacture).Width(100).Title("Manufacture");
+            columns.Bound(o => o.charter).Width(400).Title("Charter");
+            columns.Bound(o => o.comment).Width(400).Title("Comment");
+            columns.Bound(o => o.start_date).Width(200).Title("Analysis Start Date");
+            columns.Bound(o => o.completion_date).Width(200).Title("Expedited Completion Date");
+            
+
+        })
+        .ClientEvents(events => events.OnRowDataBound("ondatabound").OnComplete("onComplete").OnCommand("onCommand"))
+        .Pageable(p => p.PageSize(20))
+        .Sortable()
+        .Groupable()
+        .Editable(editing => editing.Mode(GridEditMode.PopUp))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        )
+</div>

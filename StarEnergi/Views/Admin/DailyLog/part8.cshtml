@@ -1,0 +1,63 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    int? isApprove = ViewBag.isApprove as Nullable<byte>;
+    string username = HttpContext.Current.Session["username"] as string;
+}
+<script type="text/javascript">
+    
+    function ondatabound8(e) {
+        var username = '@isApprove';
+        var dataItem = e.dataItem;
+        var row = e.row;
+        if (username == '1') {
+            row.childNodes[2].childNodes[0].style.visibility = 'hidden';
+            row.childNodes[2].childNodes[1].style.visibility = 'hidden';
+        }
+    }
+</script>
+<style>
+    .t-icon.t-EditLastPlantStatus
+    {
+        background-image: url("/Content/2012.1.214/Default/sprite.png");
+        background-position: 0 -336px;
+    }
+</style>
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.daily_log_last_plant_status>()
+        .Name("LastPlantStatus")
+        .HtmlAttributes(new { style = "width:980px" })
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands =>
+        {
+            if (isApprove == null || isApprove == 0) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Insert Last Plant Status" });
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxLastPlantStatus", "DailyLog", new { id_daily_log = id })
+                .Select("_SelectAjaxLastPlantStatus", "DailyLog", new { id = id })
+                .Insert("_InsertAjaxLastPlantStatus", "DailyLog", new { id_daily_log = id })
+                .Update("_UpdateAjaxLastPlantStatus", "DailyLog", new { id_daily_log = id });
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.description).Title("Description");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Last Plant Status" });
+                commands.Delete().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Delete Last Plant Status" });
+            }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(events => events.OnRowDataBound("ondatabound8"))
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true).Height(200))
+        .Selectable()
+)

@@ -1,0 +1,482 @@
+﻿@model StarEnergi.Models.she_illness_report
+@{
+    int? id = Model.id as Nullable<Int32>;
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<script>
+    function setIframeHeight(sel, h) {
+        $(sel).height(h);
+    }
+</script>
+<div class="container">
+	<header>
+		<div class="page-title" style="width:980px">
+			<h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED</h1>
+		</div>
+		<div class="clearfix" style="width:768px"></div>
+		<b>Illness Report - Medical Assessment</b>
+	</header>
+	<div class="log-part1">
+		<table class="w-border" style="width:980px">
+			<tr>
+				<td class="yellow-bg center" colspan="3"><b>Chest</b></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg center" colspan="3"><b>(bare all chest, front and back)</b></td>
+			</tr>
+			<tr>
+				<td style="width:500px">
+                    Sign of injury to chest ?
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_injury" value="1" @(Model.chest_injury == 1 ? "checked" : "") disabled/>Yes
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_injury" value="0" @(Model.chest_injury == 0 ? "checked" : "") disabled/>No
+				</td>
+			</tr>
+            <tr>
+				<td style="width:500px">
+                    Tender chest wall ?
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_tender_chest_wall" value="1" @(Model.chest_tender_chest_wall == 1 ? "checked" : "") disabled/>Yes
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_tender_chest_wall" value="0" @(Model.chest_tender_chest_wall == 0 ? "checked" : "") disabled/>No
+				</td>
+			</tr>
+            <tr>
+				<td rowspan="2" style="width:500px">
+                    Position of windpipe in neck ?
+				</td>
+                <td rowspan="2">
+                    <input type="checkbox" name="chest_position_windpipe_neck" value="0" @(Model.chest_position_windpipe_neck == 0 ? "checked" : "") disabled/>Central
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_position_windpipe_neck" value="1" @(Model.chest_position_windpipe_neck == 1 ? "checked" : "") disabled/>To right
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="chest_position_windpipe_neck" value="2" @(Model.chest_position_windpipe_neck == 2 ? "checked" : "") disabled/>To left
+				</td>
+			</tr>
+            <tr>
+				<td rowspan="2" style="width:500px">
+                    Chest Movement on breathing
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_movement_breathing" value="0" @(Model.chest_movement_breathing == 0 ? "checked" : "") disabled/>Relaxed
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_movement_breathing" value="1" @(Model.chest_movement_breathing == 1 ? "checked" : "") disabled/>Heaving
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="chest_movement_breathing" value="2" @(Model.chest_movement_breathing == 2 ? "checked" : "") disabled/>Painful
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_movement_breathing" value="3" @(Model.chest_movement_breathing == 3 ? "checked" : "") disabled/>Unequal
+				</td>
+			</tr>
+            <tr>
+				<td rowspan="2" style="width:500px">
+                    With your ear to the patient's mouth, their breathing sounds ?
+				</td>
+                <td rowspan="2">
+                    <input type="checkbox" name="chest_breathing_sound" value="0" @(Model.chest_breathing_sound == 0 ? "checked" : "") disabled/>Normal
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_breathing_sound" value="1" @(Model.chest_breathing_sound == 1 ? "checked" : "") disabled/>Wheezy in
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="chest_breathing_sound" value="2" @(Model.chest_breathing_sound == 2 ? "checked" : "") disabled/>Wheezy out
+				</td>
+			</tr>
+            <tr>
+				<td rowspan="2" style="width:500px">
+                    Using the stathoscope, air can be heard entering
+				</td>
+                <td rowspan="2">
+                    <input type="checkbox" name="chest_air_can_hear" value="0" @(Model.chest_air_can_hear == 0 ? "checked" : "") disabled/>Both sides of chest
+				</td>
+                <td>
+                    <input type="checkbox" name="chest_air_can_hear" value="1" @(Model.chest_air_can_hear == 1 ? "checked" : "") disabled/>Right side only
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="chest_air_can_hear" value="2" @(Model.chest_air_can_hear == 2 ? "checked" : "") disabled/>Left side only
+				</td>
+			</tr>
+		</table>
+	</div>
+    <br />
+	<div class="log-part2">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>Abdoment (abdo)</b></td>
+		    </tr>
+		    <tr>
+			    <td class="green-bg" style="width:500px">Abdo Size</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="abdo_size" value="0" @(Model.abdo_size == 0 ? "checked" : "") disabled/>Normal
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="checkbox" name="abdo_size" value="1" @(Model.abdo_size == 1 ? "checked" : "") disabled/>Distended
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Abdo pain on coughing</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="abdo_pain_coughing" value="0" @(Model.abdo_pain_coughing == 0 ? "checked" : "") disabled/>No
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="checkbox" name="abdo_pain_coughing" value="1" @(Model.abdo_pain_coughing == 1 ? "checked" : "") disabled/>Yes
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Abdo pain on moving</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="abdo_pain_moving" value="1" @(Model.abdo_pain_moving == 1 ? "checked" : "") disabled/>Yes
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="checkbox" name="abdo_pain_moving" value="0" @(Model.abdo_pain_moving == 0 ? "checked" : "") disabled/>No
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Abdo pain on puffing out or sucking in tummy wall</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="abdo_pain_puffing" value="1" @(Model.abdo_pain_puffing == 1 ? "checked" : "") disabled/>Yes
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="checkbox" name="abdo_pain_puffing" value="0" @(Model.abdo_pain_puffing == 0 ? "checked" : "") disabled/>No
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Areas of tenderness found</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="abdo_area_tenderness_found" value="1" @(Model.abdo_area_tenderness_found == 1 ? "checked" : "") disabled/>Yes
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="checkbox" name="abdo_area_tenderness_found" value="0" @(Model.abdo_area_tenderness_found == 0 ? "checked" : "") disabled/>No
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Any lumps or swelling found</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="abdo_lumps_swelling_found" value="1" @(Model.abdo_lumps_swelling_found == 1 ? "checked" : "") disabled/>Yes
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="checkbox" name="abdo_lumps_swelling_found" value="0" @(Model.abdo_lumps_swelling_found == 0 ? "checked" : "") disabled/>No
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Bowel sounds : Use the stethoscope and place it on the tummy wall</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="abdo_bowel_sound" value="1" @(Model.abdo_bowel_sound == 1 ? "checked" : "") disabled/>Gurgling sound heard
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    <input type="checkbox" name="abdo_bowel_sound" value="0" @(Model.abdo_bowel_sound == 0 ? "checked" : "") disabled/>No sound heard
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part3">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>General Examination</b></td>
+		    </tr>
+		    <tr>
+			    <td class="green-bg no-border-btm" style="width:500px">Gland found</td>
+			    <td style="width:175px">
+                    &nbsp;
+			    </td>
+                <td>&nbsp;</td>
+                <td style="width:175px">
+                    &nbsp;
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg no-border-btm  no-border-top" style="width:500px"> - Neck</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_neck_found" id="ge_gland_neck_found" value="1" @(Model.ge_gland_neck_found == 1 ? "checked" : "") disabled/>Yes / No
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_gland_neck_r" id="ge_gland_neck_r" value="1" @(Model.ge_gland_neck_r == 1 ? "checked" : "") disabled/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_neck_l" id="ge_gland_neck_l" value="1" @(Model.ge_gland_neck_l == 1 ? "checked" : "") disabled/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg no-border-btm no-border-top" style="width:500px"> - Armpit</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_armpit_found" id="ge_gland_armpit_found" value="1" @(Model.ge_gland_armpit_found == 1 ? "checked" : "") disabled/>Yes / No
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_gland_armpit_r" id="ge_gland_armpit_r" value="1" @(Model.ge_gland_armpit_r == 1 ? "checked" : "") disabled/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_armpit_l" id="ge_gland_armpit_l" value="1" @(Model.ge_gland_armpit_l == 1 ? "checked" : "") disabled/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px"> - Groin</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_groin_found" id="ge_gland_groin_found" value="1" @(Model.ge_gland_groin_found == 1 ? "checked" : "") disabled/>Yes / No
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_gland_groin_r" id="ge_gland_groin_r" value="1" @(Model.ge_gland_groin_r == 1 ? "checked" : "") disabled/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_gland_groin_l" id="ge_gland_groin_l" value="1" @(Model.ge_gland_groin_l == 1 ? "checked" : "") disabled/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Ears, discharge ?</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_ears" id="ge_ears" value="1" @(Model.ge_ears == 1 ? "checked" : "") disabled/>Yes / No
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_ears_r" id="ge_ears_r" value="1" @(Model.ge_ears_r == 1 ? "checked" : "") disabled/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_ears_l" id="ge_ears_l" value="1" @(Model.ge_ears_l == 1 ? "checked" : "") disabled/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Colour of discharge</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_colour" value="0" @(Model.ge_colour == 0 ? "checked" : "") disabled/>Clear
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_colour" value="1" @(Model.ge_colour == 1 ? "checked" : "") disabled/>Pus
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_colour" value="2" @(Model.ge_colour == 2 ? "checked" : "") disabled/>Blood
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" rowspan="4" style="width:500px">Appearance of eardrum</td>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_normal" id="ge_eardrum_normal" value="1" @(Model.ge_eardrum_normal == 1 ? "checked" : "") disabled/>Normal
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_eardrum_normal_r" id="ge_eardrum_normal_r" value="1" @(Model.ge_eardrum_normal_r == 1 ? "checked" : "") disabled/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_normal_l" id="ge_eardrum_normal_l" value="1" @(Model.ge_eardrum_normal_l == 1 ? "checked" : "") disabled/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_wax" id="ge_eardrum_wax" value="1" @(Model.ge_eardrum_wax == 1 ? "checked" : "") disabled/>Not seen/wax
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_eardrum_wax_r" id="ge_eardrum_wax_r" value="1" @(Model.ge_eardrum_wax_r == 1 ? "checked" : "") disabled/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_wax_l" id="ge_eardrum_wax_l" value="1" @(Model.ge_eardrum_wax_l == 1 ? "checked" : "") disabled/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_red" id="ge_eardrum_red" value="1" @(Model.ge_eardrum_red == 1 ? "checked" : "") disabled/>Red
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_eardrum_red_r" id="ge_eardrum_red_r" value="1" @(Model.ge_eardrum_red_r == 1 ? "checked" : "") disabled/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_red_l" id="ge_eardrum_red_l" value="1" @(Model.ge_eardrum_red_l == 1 ? "checked" : "") disabled/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_perforated" id="ge_eardrum_perforated" value="1" @(Model.ge_eardrum_perforated == 1 ? "checked" : "") disabled/>Perforated
+			    </td>
+                <td>
+                    <input type="checkbox" name="ge_eardrum_perforated_r" id="ge_eardrum_perforated_r" value="1" @(Model.ge_eardrum_perforated_r == 1 ? "checked" : "") disabled/>R
+                </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_eardrum_perforated_l" id="ge_eardrum_perforated_l" value="1" @(Model.ge_eardrum_perforated_l == 1 ? "checked" : "") disabled/>L
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Throat Colour</td>
+			    <td colspan="2">
+                    <input type="checkbox" name="ge_throat_colour" value="0" @(Model.ge_throat_colour == 0 ? "checked" : "") disabled/>Normal
+			    </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_throat_colour" value="1" @(Model.ge_throat_colour == 1 ? "checked" : "") disabled/>Red
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Tonsil Size</td>
+			    <td colspan="2">
+                    <input type="checkbox" name="ge_tonsil_size" value="0" @(Model.ge_tonsil_size == 0 ? "checked" : "") disabled/>Normal
+			    </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_tonsil_size" value="1" @(Model.ge_tonsil_size == 1 ? "checked" : "") disabled/>Enlarged
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Skin rash found</td>
+			    <td colspan="2">
+                    <input type="checkbox" name="ge_skin_rush" value="1" @(Model.ge_skin_rush == 1 ? "checked" : "") disabled/>Yes
+                    <br />
+                    Size (in cm) <br />
+                    @Model.ge_skin_rush_size
+                    <br />
+                    Colour <br />
+                    @Model.ge_skin_rush_colour
+                    <br />
+                    Surface (to touch)  @Model.ge_skin_rush_surface
+			    </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="ge_skin_rush" value="0" @(Model.ge_skin_rush == 0 ? "checked" : "") disabled/>No
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part4">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>Investigation of use at this time</b></td>
+		    </tr>
+		    <tr>
+			    <td class="green-bg" style="width:500px">Peak expiratory flow rate</td>
+			    <td style="width:175px" class="no-border-right">
+                    @(Model.inves_peak)
+			    </td>
+                <td colspan="2" class="no-border-left">Litres / Minutes</td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" rowspan="3" style="width:500px">Urine testing (multisticks)</td>
+			    <td colspan="2" class="no-border-btm">
+                    <input type="checkbox" name="urine_testing_blood" id="urine_testing_blood" value="1" @(Model.urine_testing_blood == 1 ? "checked" : "") disabled/>Blood
+			    </td>
+                <td style="width:175px" class="no-border-btm">
+                    <input type="checkbox" name="urine_testing_protein" id="urine_testing_protein" value="1" @(Model.urine_testing_protein == 1 ? "checked" : "") disabled/>Protein
+			    </td>
+		    </tr>
+            <tr>
+			    <td colspan="2" class="no-border-btm">
+                    <input type="checkbox" name="urine_testing_glucose" id="urine_testing_glucose" value="1" @(Model.urine_testing_glucose == 1 ? "checked" : "") disabled/>Glucose
+			    </td>
+                <td style="width:175px" class="no-border-btm">
+                    <input type="checkbox" name="urine_testing_sg" id="urine_testing_sg" value="1" @(Model.urine_testing_sg == 1 ? "checked" : "") disabled/>S.G.
+			    </td>
+		    </tr>
+            <tr>
+			    <td colspan="2">
+                    <input type="checkbox" name="urine_testing_ph" id="urine_testing_ph" value="1" @(Model.urine_testing_ph == 1 ? "checked" : "") disabled/>p.H
+			    </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="urine_testing_others" id="urine_testing_others" value="1" @(Model.urine_testing_other != null && Model.urine_testing_other != "" ? "checked" : "") disabled/>Other : 
+                    @Model.urine_testing_other
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Any other comments of findings</td>
+			    <td colspan="2">
+                    @Model.comment_finding
+			    </td>
+                <td style="width:175px">
+                    <input type="checkbox" name="comment_finding_no" id="comment_finding_no" value="1" @(Model.comment_finding_no == 1 ? "checked" : "") disabled/>No
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part5">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>In my opinion a possible diagnosis is : </b></td>
+		    </tr>
+		    <tr>
+			    <td colspan="4">
+                    @if (Model.possible_diagnosis != null)
+                    {
+                        foreach (char i in Model.possible_diagnosis)
+                        {
+                            if (i == '\n')
+                            {<br />}
+                            else
+                            {<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="green-bg" style="width:500px">Name</td>
+			    <td colspan="3">
+                    @(Model.diag_name)
+			    </td>
+		    </tr>
+            <tr>
+                <td class="green-bg" rowspan="2" style="width:500px">Post / designation or training grade</td>
+			    <td style="width:175px" class="no-border-btm">
+                    <input type="checkbox" name="post_designation" value="0" @(Model.post_designation == 0 ? "checked" : "") disabled/>First Aider
+			    </td>
+                <td colspan="2" class="no-border-btm">
+                    <input type="checkbox" name="post_designation" value="2" @(Model.post_designation == 2 ? "checked" : "") disabled/>Nurse
+			    </td>
+		    </tr>
+            <tr>
+                <td style="width:175px">
+                    <input type="checkbox" name="post_designation" value="1" @(Model.post_designation == 1 ? "checked" : "") disabled/>Paramedic
+			    </td>
+			    <td colspan="2">
+                    <input type="checkbox" name="post_designation" value="3" @(Model.post_designation == 3 ? "checked" : "") disabled/>Doctor
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part6">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg center" colspan="4"><b>Treatment to Date</b></td>
+		    </tr>
+		    <tr>
+			    <td colspan="4">
+                    @if (Model.treatment_date != null)
+                    {
+                        foreach (char i in Model.treatment_date)
+                        {
+                            if (i == '\n')
+                            {<br />}
+                            else
+                            {<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+</div>
+<br/>
+<div class="submit">
+    <button type="button" value="Back">
+        @Html.ActionLink("Back", "Index", "HseIllnessReport")
+    </button>
+    <button type="button" value="Print Illness Report">
+        @Html.ActionLink("Print Illness Report", "printIllnessReport", "HseIllnessReport", new {id = id},  new { target = "_blank" })
+    </button>
+</div>

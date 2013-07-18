@@ -1,0 +1,325 @@
+﻿@model IEnumerable<StarEnergi.Models.PlantAvailibilityEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+    function OnComplete(e) {
+        if (e.name == 'viewDetails') {
+            var detailWindow = $("#DetailsPaf").data("tWindow");
+            var areaAvail = e.response.areaAvail;
+            console.log(areaAvail);
+            /*$.each(eqReadNav[0], function (index, value) {
+            $('#' + index).html(value);*/
+            detailWindow.center().open();
+        } else if (e.name == 'addPaf') {
+            cleanField();
+            var detailWindow = $("#EditPaf").data("tWindow");
+            detailWindow.center().open();
+        } else if (e.name == 'addTarget') {
+            cleanField();
+            var detailWindow = $("#AddTarget").data("tWindow");
+            detailWindow.center().open();
+        }
+
+    }
+
+    $(document).ready(function () {
+        $("#edit_id_area").bind("change", function () {
+            if ($('#edit_id_area').val() != '') {
+                $('#realmod_checker').html('Cek basis data...');
+                $.post(
+				"PlantAvailibility/GetMonth",
+				{
+				    id_area: $('#edit_id_area').val()
+				},
+				function (data) {
+				        hasil = eval(data);
+				        $("#edit_month").html("");
+				        for (var i = 0; i < hasil.length; i++) {
+				            $("<option value='" + hasil[i]['Key'] + "'>" + hasil[i]['Value'] + "</option>").appendTo("#edit_month");
+				        }
+				        $('#realmod_checker').html('');
+				    }
+			    );
+            } else {
+                $('#edit_realmod_checker').html('');
+            }
+        });
+
+        $("#target_id_area").bind("change", function () {
+            if ($('#target_id_area').val() != '') {
+                $('#realmod_checker').html('Cek basis data...');
+                $.post(
+				"PlantAvailibility/GetMonthTarget",
+				{
+				    id_area: $('#target_id_area').val()
+				},
+				function (data) {
+				    hasil = eval(data);
+				    $("#target_month").html("");
+				    for (var i = 0; i < hasil.length; i++) {
+				        $("<option value='" + hasil[i]['Key'] + "'>" + hasil[i]['Value'] + "</option>").appendTo("#target_month");
+				    }
+				    $('#realmod_checker').html('');
+				}
+			    );
+            } else {
+                $('#edit_realmod_checker').html('');
+            }
+        });
+    });
+
+
+    function addPaf() {
+        if (($('#edit_id_area').val() != '') && ($('#edit_id_area').val() != '0')) {
+            $('#addPlantLoading').css("display", "block");
+            $.post(
+				"PlantAvailibility/AddPafPost",
+				{
+				    id_area : $('#edit_id_area').val(),
+				    bulan   : $('#edit_month').val(),
+                    planned : $('#edit_downtime_planed').val(),
+                    uplanned: $('#edit_downtime_unplaned').val()
+				},
+				function (data) {
+				    $('#addPlantLoading').css("display", "none");
+                    alert('Data tersimpan');
+				    $('#content').load('PlantAvailibility/Index');
+				    $("#EditPaf").data("tWindow").close();				    
+				}
+			    );
+        } else {
+            
+            //$('#edit_realmod_checker').html('');
+        }
+    }
+
+    function addTarget() {       
+        if (($('#target_id_area').val() != '') && ($('#target_id_area').val() != '0')) {
+            $('#addTargetLoading').css("display", "block");
+            $.post(
+				"PlantAvailibility/AddTargetPost",
+				{
+				    id_foc      : $('#target_id_area').val(),
+				    bulan       : $('#target_month').val(),
+				    tahun       : $('#target_tahun').val(),
+				    target_paf  : $('#target').val()
+				},
+				function (data) {
+				    $('#addTargetLoading').css("display", "none");
+                    alert('Data tersimpan');
+                    $('#content').load('PlantAvailibility/Index');
+				    $("#AddTarget").data("tWindow").close();
+				    
+				}
+			    );
+        } else {
+
+            //$('#edit_realmod_checker').html('');
+        }
+    }
+
+    function listTarget() {
+        $('#content').load('PlantAvailibility/Targets');
+    }
+
+    function cleanField() {
+        //add plant availibility
+        $('#edit_id_area').val(0);
+        $('#edit_month').html('<option value="0">-- Pilih Area Terlebih dahulu --</option>');
+        $('#edit_downtime_planed').val(0);
+        $('#edit_downtime_unplaned').val(0);
+
+        //add target
+        $('#target_id_area').val(0);
+        $('#target_month').html('<option value="0">-- Pilih Area Terlebih dahulu --</option>');
+        $('#target').val(0);
+    }
+</script>
+
+<h2 class="adminH2">Plant Availibility</h2>
+
+<input id="listTarget" name="Submit" value="List Target Paf" type="submit" onclick = "listTarget()" />
+<br /><br />
+@(Html.Telerik().Grid<StarEnergi.Models.PlantAvailibilityEntity>()
+        .TableHtmlAttributes(new { style = "width:768px" })
+        .Name("PlantAvailibility")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "addPaf" })
+            .Text("Add Plant Availibility")
+            .Ajax(true)
+            .Action("addPaf", "PlantAvailibility")
+            .Name("addPaf")
+        )
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "addTarget" })
+            .Text("Add Target Plant")
+            .Ajax(true)
+            .Action("addTarget", "PlantAvailibility")
+            .Name("addTarget")
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxEditing", "PlantAvailibility")
+                .Select("_SelectAjaxEditing", "PlantAvailibility");         
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.foc_name).Width(60).Title("Area");
+            columns.Bound(o => o.tahun).Width(60).Title("Tahun");
+            columns.Bound(o => o.bulan).Width(85).Title("Bulan Ke-");
+            columns.Bound(o => o.op_avail).Title("POF Cumm.");
+            columns.Bound(o => o.pof_bulanan).Title("POF Bulanan");
+            columns.Bound(o => o.paf).Title("PAF Cumm.");
+            columns.Bound(o => o.paf_bulanan).Title("PAF Bulanan");
+            columns.Bound(o => o.target).Width(65).Title("Target");
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+                /*commands.Custom("viewDetails")
+                        .Text("Details")
+                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                        .Ajax(true)
+                        .Action("GetDetail", "PlantAvailibility");*/
+
+            }).Width(80).Title("Command").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(
+            events => events
+                .OnComplete("OnComplete")
+        )
+        .Pageable(p => p.PageSize(25))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height(240))
+        .Selectable()
+        .Groupable()
+) 
+
+@(Html.Telerik().Window()
+    .Name("DetailsPaf")
+    .Visible(false)
+    .Title("Details Plant Availibility")
+    .Modal(true)
+    .Width(350)
+    .Height(160)
+    .Content(@<text>
+                <div class="info">
+		            <div class="info_inside_left">Area </div>
+		            <div class="infoField"><a  id="id_area"></a></div>	
+                    <span id="realmod_checker"></span>
+		
+		            <div class="info_inside_left">Study Year </div>	
+		            <div class="infoField"><a id="datetime_install" ">2012</a></div>
+		            <div class="info_inside_left">Month </div>
+		            <div class="infoField"><a  id="month"></a></div>		
+
+		            <div class="info_inside_left">Plant DownTime planed</div>	
+		            <div class="infoField"><a id="downtime_planed" "></a>&nbsp;Hours</div>	
+		
+		            <div class="info_inside_left">Plant DownTime unplaned</div>
+		            <div class="infoField"><a id="downtime_unplaned" ></a>&nbsp;Hours</div>
+	         </div>
+        </text>)
+)
+
+@(Html.Telerik().Window()
+    .Name("EditPaf")
+    .Visible(false)
+        .Title("Add Plant Availibility")
+    .Modal(true)
+    .Width(450)
+    .Height(225)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Area </div>
+		            <div class="infoFieldinput">@Html.DropDownList("edit_id_area", "--Pilih Area--")</div>
+                    <span id="edit_realmod_checker"></span>
+		
+		            <div class="info_inside_left">Study Year </div>
+		            <div class="infoFieldinput"><input readonly="true" id="edit_datetime_install" type="text" name="datetime_install" value="2012" /></div>
+		
+		            <div class="info_inside_left">Month </div>
+		            <div class="infoFieldinput">
+                        <select name="bulan" id="edit_month">
+                            <option value="0">-- Pilih Area Terlebih dahulu --</option>
+                       </select>	
+                   </div>
+		
+		            <div class="info_inside_left">Plant DownTime planed</div>
+		            <div class="infoFieldinput"><input id="edit_downtime_planed" type="text" name="downtime_planed" value="0" />&nbsp;Hours</div>
+		
+		            <div class="info_inside_left">Plant DownTime unplaned</div>
+		            <div class="infoFieldinput"><input id="edit_downtime_unplaned" type="text" name="downtime_unplaned" value="0" />&nbsp;Hours</div>
+		
+	            <p class="submit">
+		            <input name="Submit" value="Simpan" type="submit" onclick = "addPaf()" />
+                    <img id="addPlantLoading" class="loadSubmit" src="../../../Content/image/loading.gif"/>
+	            </p>
+	         </div>
+        </text>)
+)
+
+@(Html.Telerik().Window()
+    .Name("AddTarget")
+    .Visible(false)
+        .Title("Add Target Plant")
+    .Modal(true)
+    .Width(450)
+    .Height(180)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Area </div>
+		            <div class="infoFieldinput">@Html.DropDownList("target_id_area", "--Pilih Area--")</div>
+                    <span id="target_realmod_checker"></span>
+		
+		            <div class="info_inside_left">Study Year </div>
+		            <div class="infoFieldinput"><input readonly="true" id="target_tahun" type="text" name="datetime_install" value="2012" /></div>
+		
+		            <div class="info_inside_left">Month </div>
+		            <div class="infoFieldinput">
+                        <select name="bulan" id="target_month">
+                            <option value="0">-- Pilih Area Terlebih dahulu --</option>
+                       </select>	
+                   </div>
+
+		            <div class="info_inside_left">Target</div>
+		            <div class="infoFieldinput"><input id="target" type="text" name="target" value="0" />&nbsp;%</div>
+		
+	            <p class="submit">
+		            <input name="Submit" value="Simpan" type="submit" onclick = "addTarget()" />
+                    <img id="addTargetLoading" class="loadSubmit" src="../../../Content/image/loading.gif"/>
+	            </p>
+	         </div>
+        </text>)
+)
+
+<br />
+<hr />
+@using (Html.BeginForm("Index", "LoadExcel", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
+{
+    	 <p class="title">Import Data Plant Availibility Dari Excel</p>
+		 	 
+		 <div class="info_inside_left">Excel File (.xls) :</div> 
+		 <input type="text" id="fileName" class="file_input_textbox" readonly="readonly" />
+		 <div class="file_input_div">
+			<input type="button" value="Cari" class="file_input_button" />
+			<input type="file" class="file_input_hidden" name="userfile" onchange="javascript: document.getElementById('fileName').value = this.value" />
+		 </div>
+		 <br />
+		 <input type="button" value="Upload" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; submit();" />
+		 <input type="button" value="Download template" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.filePAF'" />
+}
+<br/>
+<iframe id="upload_target" name="upload_target" src="" width="715" height="350" style="border:0px solid #fff;"></iframe>

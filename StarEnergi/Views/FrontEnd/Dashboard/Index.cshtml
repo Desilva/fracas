@@ -1,0 +1,90 @@
+﻿@using StarEnergi
+@model IEnumerable<StarEnergi.Models.plant>
+@{
+    ViewBag.Title = "Dashboard";
+}
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    function openHelp() {
+        window.open("Help/index#dashboard", "Help", "height=500,width=1000");
+    }
+
+    function selectType() {
+        if ($('#selectType').val() == 'ma') {
+            $('#btnAddMa').css("display", "block");
+            $('#speedometer').load('Dashboard/SpeedoMa');
+            $('#sidebar').html('');
+        } else if ($('#selectType').val() == 'paf') {
+            $('#btnAddMa').css("display", "none");
+            $('#speedometer').load('Dashboard/SpeedoPaf');
+            $('#sidebar').html('');
+        } else if ($('#selectType').val() == 'pof') {
+            $('#btnAddMa').css("display", "none");
+            $('#speedometer').load('Dashboard/SpeedoPof');
+            $('#sidebar').html('');
+        }
+    }
+
+    function showDetail(type, id) { 
+        if(type == 'ma'){
+            console.log(type + '- id :' + id);
+            $('#sidebar').load('Dashboard/SideBarMa/'+id);
+        }else if(type == 'paf'){
+            console.log(type + '- id :' + id);
+            $('#sidebar').load('Dashboard/SideBarPaf/' + id);
+        }else if(type == 'pof'){
+            console.log(type + '- id :' + id);
+            $('#sidebar').load('Dashboard/SideBarPof/' + id);
+        }
+    }
+
+    function changeForm($value) {
+        if ($value == 'year') {
+            $('.filter-year').show();
+            $('.filter-month').hide();
+        } else {
+            if ($value == 'month') {
+                $('.filter-year').hide();
+                $('.filter-month').show();
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        selectType();
+        if ($('#selectType').val() == '@(Config.defaultDasboard)') {
+            showDetail('@(Config.defaultDasboard)', '@(Config.defaultIdDasboard)');
+        }
+    });
+
+</script>
+<div id="dashboard">
+    <div id="topDash">
+        
+        <h2>@ViewBag.nama
+            <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
+        </h2>
+	
+        <div class="action">
+	        <div class="span-9">
+		        <span><b>Select Type&nbsp;</b></span>
+                <select id="selectType" name="type" onchange="selectType();">
+		            <option value="ma" selected="selected" >Mechanical Availability</option>
+		            <option value="paf">PAF</option>
+		            <option value="pof">POF</option>
+	            </select>
+	        </div>
+	        <div class="span-6 buttons last">
+		        <input id="btnAddMa" type="button" value="Isi Data Mechanical Availability" onclick="window.location = 'Account/LogOff'" style=" float: right;position: relative;margin-left: -15px;"/>
+	        </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+	<div id="speedometer" class="speedometer span-15">
+		
+	</div>
+	
+	<div id="sidebar" class="span-7 last right">
+		
+	</div>
+</div>

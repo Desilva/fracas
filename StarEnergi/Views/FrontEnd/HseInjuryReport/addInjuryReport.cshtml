@@ -1,0 +1,603 @@
+﻿@{
+    int? id = null;
+    bool isEdit = false;
+    StarEnergi.Models.she_injury_report dl = new StarEnergi.Models.she_injury_report();
+    if (ViewBag.mod != null)
+    {
+        id = ViewBag.mod as Nullable<Int32>;
+        dl = ViewBag.datas as StarEnergi.Models.she_injury_report;
+        isEdit = true;
+    }
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<script>
+    var isEdit = '@isEdit';
+    var isSave = false;
+    function setIframeHeight(sel, h) {
+        $(sel).height(h);
+    }
+
+    function changeInput(radio) {
+        if (radio.id == "ge_skin_rush") {
+            var radios = document.getElementsByName(radio.id);
+            var val = -1;
+            for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    val = radios[i].value;
+                }
+            }
+
+            if (val == 1) {
+                var td = document.getElementById("ge_skin_rush_size");
+                td.disabled = "";
+                td = document.getElementById("ge_skin_rush_colour");
+                td.disabled = "";
+                td = document.getElementById("ge_skin_rush_surface");
+                td.disabled = "";
+            } else {
+                var td = document.getElementById("ge_skin_rush_size");
+                td.disabled = "disabled";
+                td = document.getElementById("ge_skin_rush_colour");
+                td.disabled = "disabled";
+                td = document.getElementById("ge_skin_rush_surface");
+                td.disabled = "disabled";
+            }
+        } else if (radio.id == "comment_finding_no") {
+            if (radio.checked) {
+                var td = document.getElementById("comment_finding");
+                td.disabled = "disabled";
+            } else {
+                var td = document.getElementById("comment_finding");
+                td.disabled = "";
+            }
+        } else if (radio.id == "urine_testing_others") {
+            if (radio.checked) {
+                var td = document.getElementById("urine_testing_other");
+                td.disabled = "";
+            } else {
+                var td = document.getElementById("urine_testing_other");
+                td.disabled = "disabled";
+            }
+        }
+    }
+
+    function save() {
+        isSave = true;
+        var val = new Array();
+
+        var radios = document.getElementsByName("airway");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[0] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("c_spine");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[1] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("breathing");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[2] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("circulation");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[3] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("hmorhage");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[4] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("disability");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[5] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("eye_opening");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[6] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("verbal_response");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[7] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("motor_response");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[8] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("pm_airway");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[9] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("pm_c_spine");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[10] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("pm_breathing");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[11] = radios[i].value;
+            }
+        }
+
+        radios = document.getElementsByName("splinting");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[12] = radios[i].value;
+            }
+        }
+        if (val[12] == "other") {
+            val[12] = $('#splinting_other').val();
+        }
+
+        radios = document.getElementsByName("sex");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val[13] = radios[i].value;
+            }
+        }
+
+        if (validate()) {
+            var values = {
+                date_time: $('#date_time').val(),
+                name: $('#name').val(),
+                id_number: $('#id_number').val(),
+                dept: $('#dept').val(),
+                direct_supervisor: $('#direct_supervisor').val(),
+                cur_job_exp: $('#cur_job_exp').val(),
+                sex: val[13],
+                nation: $('#nation').val(),
+                age: $('#age').val(),
+                bod: $('#bod').val(),
+                job_title: $('#job_title').val(),
+                doh: $('#doh').val(),
+                time_start_bef_acc: $('#time_start_bef_acc').val(),
+                brief_cause: $('#brief_cause').val(),
+                gc_conscious: $('#gc_conscious').val(),
+                gc_blood: $('#gc_blood').val(),
+                gc_respiratory: $('#gc_respiratory').val(),
+                gc_temperature: $('#gc_temperature').val(),
+                gc_pulse_rate: $('#gc_pulse_rate').val(),
+                gc_oxygen: $('#gc_oxygen').val(),
+                time_survey: $('#time_survey').val(),
+                airway: val[0],
+                c_spine: val[1],
+                breathing: val[2],
+                circulation: val[3],
+                hmorhage: val[4],
+                disability: val[5],
+                eye_opening: val[6],
+                verbal_response: val[7],
+                motor_response: val[8],
+                pupils_r: $('#pupils_r').is(":checked") == true ? 1 : 0,
+                pupils_l: $('#pupils_l').is(":checked") == true ? 1 : 0,
+                pupils_size_r: $('#pupils_size_r').val(),
+                pupils_size_l: $('#pupils_size_l').val(),
+                trauma_score: $('#trauma_score').val(),
+                time_trauma: $('#time_trauma').val(),
+                pm_airway: val[9],
+                pm_c_spine: val[10],
+                pm_breathing: val[11],
+                pm_cannula_rt: $('#pm_cannula_rt').val(),
+                pm_cannula_lt: $('#pm_cannula_lt').val(),
+                pm_iv_fluid: $('#pm_iv_fluid').val(),
+                pm_iv_fluid_volume: $('#pm_iv_fluid_volume').val(),
+                pm_iv_fluid_time: $('#pm_iv_fluid_time').val(),
+                pm_h_mans: $('#pm_h_mans').is(":checked") == true ? 1 : 0,
+                pm_h_maccel: $('#pm_h_maccel').is(":checked") == true ? 1 : 0,
+                analgesia_drugs: $('#analgesia_drugs').val(),
+                splinting: val[12],
+                comments: $('#comments').val(),
+                signed: $('#signed').val(),
+                crew: $('#crew').val(),
+                respiratory_rate: $('#respiratory_rate').val(),
+                oxygen_saturation: $('#oxygen_saturation').val(),
+                blood_pressure: $('#blood_pressure').val(),
+                pulse_rate: $('#pulse_rate').val()
+            }
+
+            if (isEdit == 'False') {
+                $.post("HseInjuryReport/Add", values, function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        alert('Injury Report successfully saved');
+                        back();
+                    } else {
+                        alert('Fail to add Injury Report');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.post("HseInjuryReport/Edit", values, function (data) {
+                    if (data != undefined) {
+                        alert('Injury Report successfully updated');
+                        //back();
+                    } else {
+                        alert('Fail to update Injury Report');
+                    }
+                });
+            }
+    }
+}
+
+function validate() {
+    return true;
+}
+</script>
+<div class="container">
+	<header>
+		<div class="page-title" style="width:980px">
+			<h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED</h1>
+		</div>
+		<div class="clearfix" style="width:768px"></div>
+		<b>Injury Report - Medical Assessment</b>
+	</header>
+	<div class="log-part1">
+		<table class="w-border" style="width:980px">
+			<tr>
+				<td class="yellow-bg" colspan="2"><b>Date / Time</b></td>
+                <td colspan="3">@(Html.Telerik().DateTimePicker()
+                        .Name("date_time")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:166px" })
+                        .Value(isEdit ? dl.date_time : DateTime.Now)
+                        .Interval(1)
+                )</td>
+                <td class="yellow-bg"><b>Sex / Nation</b></td>
+                <td colspan="3"><input type="radio" name="sex" value="1" @(isEdit ? dl.sex == 1 ? "checked" : "" : "")/>L<input type="radio" name="sex" value="0" @(isEdit ? dl.sex == 0 ? "checked" : "" : "")/>P&nbsp;/&nbsp;<input type="text" id="nation" name="nation" value="@(isEdit ? dl.nation : "")" /></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg" colspan="2"><b>Name / ID Number</b></td>
+                <td colspan="3"><input type="text" id="name" name="name" value="@(isEdit ? dl.name : "")" style="width:100px" />&nbsp;/&nbsp;<input type="text" id="id_number" name="id_number" value="@(isEdit ? dl.id_number : "")" style="width:100px" /></td>
+                <td class="yellow-bg"><b>Age / BOD</b></td>
+                <td colspan="3"><input type="text" id="age" name="age" value="@(isEdit ? dl.age.ToString() : "")" style="width:100px" />&nbsp;/&nbsp;@(Html.Telerik().DatePicker()
+                        .Name("bod")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? dl.bod : DateTime.Now)
+                )</td>
+			</tr>
+			<tr>
+				<td class="yellow-bg" colspan="2"><b>Comp / Dept / Sect</b></td>
+                <td colspan="3"><input type="text" id="dept" name="dept" value="@(isEdit ? dl.dept : "")" /></td>
+                <td class="yellow-bg"><b>Job Title</b></td>
+                <td colspan="3"><input type="text" id="job_title" name="job_title" value="@(isEdit ? dl.job_title : "")" /></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg" colspan="2"><b>Direct Supervisor</b></td>
+                <td colspan="3"><input type="text" id="direct_supervisor" name="direct_supervisor" value="@(isEdit ? dl.direct_supervisor : "")" /></td>
+                <td class="yellow-bg" colspan="2"><b>Date of employment</b></td>
+                <td colspan="2">@(Html.Telerik().DatePicker()
+                        .Name("doh")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? dl.doh : DateTime.Now)
+                )</td>
+			</tr>
+            <tr>
+				<td class="yellow-bg" colspan="2"><b>Current job exp.</b></td>
+                <td colspan="3"><input type="text" id="cur_job_exp" name="cur_job_exp" value="@(isEdit ? dl.cur_job_exp : "")" /></td>
+                <td class="yellow-bg" colspan="3"><b>Time start work before incident</b></td>
+                <td>@(Html.Telerik().TimePicker()
+                        .Name("time_start_bef_acc")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? dl.time_start_bef_acc.ToString() : DateTime.Now.TimeOfDay.ToString())
+                        .Interval(1)
+                )</td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" colspan="2"><b>Brief cause</b></td>
+                <td colspan="7"><textarea cols="90" rows="3" id="brief_cause" name="brief_cause" style="resize:none">@(isEdit ? dl.brief_cause : "")</textarea></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg" colspan="2" rowspan="3"><b>General Condition</b></td>
+                <td class="yellow-bg" colspan="2"><b>Conscious</b></td>
+                <td><input type="text" id="gc_conscious" name="gc_conscious" value="@(isEdit ? dl.gc_conscious : "")" style="width:100px" /></td>
+                <td class="yellow-bg" colspan="2"><b>Temperature</b></td>
+                <td colspan="2"><input type="text" id="gc_temperature" name="gc_temperature" value="@(isEdit ? dl.gc_temperature : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" colspan="2"><b>Blood pressure</b></td>
+                <td><input type="text" id="gc_blood" name="gc_blood" value="@(isEdit ? dl.gc_blood : "")" style="width:100px" /></td>
+                <td class="yellow-bg" colspan="2"><b>Pulse rate</b></td>
+                <td colspan="2"><input type="text" id="gc_pulse_rate" name="gc_pulse_rate" value="@(isEdit ? dl.gc_pulse_rate : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg" colspan="2"><b>Respiratory rate</b></td>
+                <td><input type="text" id="gc_respiratory" name="gc_respiratory" value="@(isEdit ? dl.gc_respiratory : "")" style="width:100px" /></td>
+                <td class="yellow-bg" colspan="2"><b>Oxygen saturation</b></td>
+                <td colspan="2"><input type="text" id="gc_oxygen" name="gc_oxygen" value="@(isEdit ? dl.gc_oxygen : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" colspan="9"><b>MEDICAL CONDITIONS</b></td>
+			</tr>
+            <tr>
+				<td class="green-bg" colspan="3"><b>PRIMARY SURVEY</b></td>
+                <td class="no-border-right">Time : </td>
+                <td class="no-border-left">@(Html.Telerik().TimePicker()
+                        .Name("time_survey")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? dl.time_survey : DateTime.Now.TimeOfDay)
+                        .Interval(1)
+                )</td>
+                <td class="green-bg" colspan="4"><b>FIRST OBSERVATION</b></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg"><b>Airway</b></td>
+                <td colspan="2"><input type="radio" name="airway" value="0" @(isEdit ? dl.airway == 0 ? "checked" : "" : "")/>Clear</td>
+                <td colspan="2"><input type="radio" name="airway" value="1" @(isEdit ? dl.airway == 1 ? "checked" : "" : "")/>Obstructed</td>
+                <td class="yellow-bg" colspan="2"><b>Respiratory Rate --</b></td>
+                <td colspan="2"><input type="text" id="respiratory_rate" name="respiratory_rate" value="@(isEdit ? dl.respiratory_rate : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg"><b>C. Spine</b></td>
+                <td colspan="2"><input type="radio" name="c_spine" value="0" @(isEdit ? dl.c_spine == 0 ? "checked" : "" : "")/>Normal</td>
+                <td colspan="2"><input type="radio" name="c_spine" value="1" @(isEdit ? dl.c_spine == 1 ? "checked" : "" : "")/>Possible Injury</td>
+                <td class="yellow-bg" colspan="2"><b>Oxygen Saturation : Sa O2 %</b></td>
+                <td colspan="2"><input type="text" id="oxygen_saturation" name="oxygen_saturation" value="@(isEdit ? dl.oxygen_saturation : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg"><b>Breathing</b></td>
+                <td colspan="2"><input type="radio" name="breathing" value="0" @(isEdit ? dl.breathing == 0 ? "checked" : "" : "")/>Spontaneous</td>
+                <td colspan="2"><input type="radio" name="breathing" value="1" @(isEdit ? dl.breathing == 1 ? "checked" : "" : "")/>Problem</td>
+                <td class="yellow-bg" colspan="2"><b>Blood Pressure:</b></td>
+                <td colspan="2"><input type="text" id="blood_pressure" name="blood_pressure" value="@(isEdit ? dl.blood_pressure : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg"><b>Circulation</b></td>
+                <td colspan="2"><input type="radio" name="circulation" value="0" @(isEdit ? dl.circulation == 0 ? "checked" : "" : "")/>External</td>
+                <td colspan="2"><input type="radio" name="circulation" value="1" @(isEdit ? dl.circulation == 1 ? "checked" : "" : "")/>Possible Internal</td>
+                <td class="yellow-bg" colspan="2" rowspan="2"><b>Pulse Rate:</b></td>
+                <td colspan="2"><input type="text" id="pulse_rate" name="pulse_rate" value="@(isEdit ? dl.pulse_rate : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+				<td class="yellow-bg"><b>Hmorhage</b></td>
+                <td colspan="2"><input type="radio" name="hmorhage" value="0" @(isEdit ? dl.hmorhage == 0 ? "checked" : "" : "")/>None / slight</td>
+                <td><input type="radio" name="hmorhage" value="1" @(isEdit ? dl.hmorhage == 1 ? "checked" : "" : "")/>Moderate</td>
+                <td><input type="radio" name="hmorhage" value="2" @(isEdit ? dl.hmorhage == 2 ? "checked" : "" : "")/>Severe</td>
+                <td colspan="2">&nbsp;</td>
+			</tr>
+            <tr>
+				<td class="yellow-bg" rowspan="3"><b>Disability</b></td>
+                <td colspan="2" rowspan="3">Alert Responds to</td>
+                <td colspan="2"><input type="radio" name="disability" value="0" @(isEdit ? dl.disability == 0 ? "checked" : "" : "")/>Visual stimuli</td>
+                <td class="green-bg" colspan="4"><b>SECONDARY SURVEY</b></td>
+			</tr>
+            <tr>
+                <td colspan="2"><input type="radio" name="disability" value="1" @(isEdit ? dl.disability == 1 ? "checked" : "" : "")/>Pain</td>
+                <td class="yellow-bg" rowspan="4"><b>Eye Opening</b></td>
+                <td colspan="2">Spontaneous</td>
+                <td><input type="radio" name="eye_opening" value="4" @(isEdit ? dl.eye_opening == 4 ? "checked" : "" : "")/>4</td>
+			</tr>
+            <tr>
+                <td colspan="2"><input type="radio" name="disability" value="2" @(isEdit ? dl.disability == 2 ? "checked" : "" : "")/>Unresponsive</td>
+                <td colspan="2">To Voice</td>
+                <td><input type="radio" name="eye_opening" value="3" @(isEdit ? dl.eye_opening == 3 ? "checked" : "" : "")/>3</td>
+			</tr>
+            <tr>
+                <td colspan="5" class="no-border-btm"><b>Exposure / Injuries</b></td>
+                <td colspan="2">To Pain</td>
+                <td><input type="radio" name="eye_opening" value="2" @(isEdit ? dl.eye_opening == 2 ? "checked" : "" : "")/>2</td>
+			</tr>
+            <tr>
+                <td colspan="5" class="no-border-btm no-border-top" rowspan="11">
+                    <img src="../../../Content/image/illnessReport/injury.png" alt="injury" width="540" height="260"/>
+                </td>
+                <td colspan="2">None</td>
+                <td><input type="radio" name="eye_opening" value="1" @(isEdit ? dl.eye_opening == 1 ? "checked" : "" : "")/>1</td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" rowspan="5"><b>Best Verbal Response</b></td>
+                <td colspan="2">Oriented</td>
+                <td><input type="radio" name="verbal_response" value="5" @(isEdit ? dl.verbal_response == 5 ? "checked" : "" : "")/>5</td>
+			</tr>
+            <tr>
+                <td colspan="2">Confused</td>
+                <td><input type="radio" name="verbal_response" value="4" @(isEdit ? dl.verbal_response == 4 ? "checked" : "" : "")/>4</td>
+			</tr>
+            <tr>
+                <td colspan="2">Inappropriate</td>
+                <td><input type="radio" name="verbal_response" value="3" @(isEdit ? dl.verbal_response == 3 ? "checked" : "" : "")/>3</td>
+			</tr>
+            <tr>
+                <td colspan="2">Incomprehensible</td>
+                <td><input type="radio" name="verbal_response" value="2" @(isEdit ? dl.verbal_response == 2 ? "checked" : "" : "")/>2</td>
+			</tr>
+            <tr>
+                <td colspan="2">None</td>
+                <td><input type="radio" name="verbal_response" value="1" @(isEdit ? dl.verbal_response == 1 ? "checked" : "" : "")/>1</td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" rowspan="6"><b>Motor Response</b></td>
+                <td colspan="2">Obeys command</td>
+                <td><input type="radio" name="motor_response" value="6" @(isEdit ? dl.motor_response == 6 ? "checked" : "" : "")/>6</td>
+			</tr>
+            <tr>
+                <td colspan="2">Localizes pain</td>
+                <td><input type="radio" name="motor_response" value="5" @(isEdit ? dl.motor_response == 5 ? "checked" : "" : "")/>5</td>
+			</tr>
+            <tr>
+                <td colspan="2">Withdrawal (pain)</td>
+                <td><input type="radio" name="motor_response" value="4" @(isEdit ? dl.motor_response == 4 ? "checked" : "" : "")/>4</td>
+			</tr>
+            <tr>
+                <td colspan="2">Flexion (pain)</td>
+                <td><input type="radio" name="motor_response" value="3" @(isEdit ? dl.motor_response == 3 ? "checked" : "" : "")/>3</td>
+			</tr>
+            <tr>
+                <td colspan="2">Extension (pain)</td>
+                <td><input type="radio" name="motor_response" value="2" @(isEdit ? dl.motor_response == 2 ? "checked" : "" : "")/>2</td>
+			</tr>
+            <tr>
+                <td colspan="5" class="no-border-btm no-border-top">C # Closed Fracture</td>
+                <td colspan="2">None</td>
+                <td><input type="radio" name="motor_response" value="1" @(isEdit ? dl.motor_response == 1 ? "checked" : "" : "")/>1</td>
+			</tr>
+            <tr>
+                <td colspan="5" class="no-border-btm no-border-top">O # Open Fracture</td>
+                <td class="yellow-bg" rowspan="2"><b>Pupils</b></td>
+                <td colspan="2" rowspan="2">React</td>
+                <td><input type="checkbox" id="pupils_r" name="pupils_r" value="1" @(isEdit ? dl.pupils_r == 1 ? "checked" : "" : "")/>R</td>
+			</tr>
+            <tr>
+                <td colspan="3" class="no-border-btm no-border-top no-border-right">B = Burn (shade area)</td>
+                <td colspan="2" class="no-border-btm no-border-top no-border-left">L = Laceration</td>
+                <td><input type="checkbox" id="pupils_l" name="pupils_l" value="1" @(isEdit ? dl.pupils_l == 1 ? "checked" : "" : "")/>L</td>
+			</tr>
+            <tr>
+                <td colspan="3" class="no-border-btm no-border-top no-border-right">F = Foreign body</td>
+                <td colspan="2" class="no-border-btm no-border-top no-border-left">A = Abrasion</td>
+                <td class="yellow-bg" colspan="2"><b>1 Constricted</b></td>
+                <td>Size R</td>
+                <td><input type="text" id="pupils_size_r" name="pupils_size_r" value="@(isEdit ? dl.pupils_size_r.ToString() : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+                <td colspan="3" class="no-border-top no-border-right">&nbsp;</td>
+                <td colspan="2" class="no-border-top no-border-left">E = Ecymosis (bruising)</td>
+                <td class="yellow-bg" colspan="2"><b>2 Normal</b></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+			</tr>
+            <tr>
+                <td colspan="5" class="green-bg"><b>PRIMARY MANAGEMENT</b></td>
+                <td class="yellow-bg" colspan="2"><b>3 Dilated</b></td>
+                <td>Size L</td>
+                <td><input type="text" id="pupils_size_l" name="pupils_size_l" value="@(isEdit ? dl.pupils_size_l.ToString() : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" rowspan="2"><b>Airway</b></td>
+                <td colspan="2"><input type="radio" name="pm_airway" value="0" @(isEdit ? dl.pm_airway == 0 ? "checked" : "" : "")/>Oropharyngeal</td>
+                <td><input type="radio" name="pm_airway" value="1" @(isEdit ? dl.pm_airway == 1 ? "checked" : "" : "")/>Nasal</td>
+                <td><input type="radio" name="pm_airway" value="2" @(isEdit ? dl.pm_airway == 2 ? "checked" : "" : "")/>E Tube</td>
+                <td class="no-border-right"><b>Trauma Score:</b></td>
+                <td class="no-border-left"><input type="text" id="trauma_score" name="trauma_score" value="@(isEdit ? dl.trauma_score.ToString() : "")" style="width:100px" /></td>
+                <td>Time</td>
+                <td>@(Html.Telerik().TimePicker()
+                        .Name("time_trauma")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? dl.time_trauma : DateTime.Now.TimeOfDay)
+                        .Interval(1)
+                )</td>
+			</tr>
+            <tr>
+                <td colspan="2"><input type="radio" name="pm_airway" value="3" @(isEdit ? dl.pm_airway == 3 ? "checked" : "" : "")/>C/Thyrotomy</td>
+                <td><input type="radio" name="pm_airway" value="4" @(isEdit ? dl.pm_airway == 4 ? "checked" : "" : "")/>Oxygen</td>
+                <td><input type="radio" name="pm_airway" value="5" @(isEdit ? dl.pm_airway == 5 ? "checked" : "" : "")/>Suction</td>
+                <td class="no-border-btm" colspan="4"><b>COMMENTS</b></td>
+			</tr>
+            <tr>
+                <td class="yellow-bg"><b>C. Spine</b></td>
+                <td colspan="2"><input type="radio" name="pm_c_spine" value="0" @(isEdit ? dl.pm_c_spine == 0 ? "checked" : "" : "")/>C. Collar</td>
+                <td colspan="2"><input type="radio" name="pm_c_spine" value="1" @(isEdit ? dl.pm_c_spine == 1 ? "checked" : "" : "")/>Spine board</td>
+                <td colspan="4" rowspan="10"><textarea cols="50" rows="15" id="comments" name="comments" style="resize:none">@(isEdit ? dl.comments : "")</textarea></td>
+			</tr>
+            <tr>
+                <td class="yellow-bg"><b>Breathing</b></td>
+                <td colspan="2"><input type="radio" name="pm_breathing" value="0" @(isEdit ? dl.pm_breathing == 0 ? "checked" : "" : "")/>Ventilate</td>
+                <td colspan="2"><input type="radio" name="pm_breathing" value="1" @(isEdit ? dl.pm_breathing == 1 ? "checked" : "" : "")/>Chest drain</td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" rowspan="4"><b>Circulation</b></td>
+                <td colspan="2">Cannula size : </td>
+                <td>Rt<input type="text" id="pm_cannula_rt" name="pm_cannula_rt" value="@(isEdit ? dl.pm_cannula_rt : "")" style="width:50px" /></td>
+                <td>Lt<input type="text" id="pm_cannula_lt" name="pm_cannula_lt" value="@(isEdit ? dl.pm_cannula_lt : "")" style="width:50px" /></td>
+			</tr>
+            <tr>
+                <td>IV Fluids</td>
+                <td><input type="text" id="pm_iv_fluid" name="pm_iv_fluid" value="@(isEdit ? dl.pm_iv_fluid : "")" style="width:100px" /></td>
+                <td>Volume<input type="text" id="pm_iv_fluid_volume" name="pm_iv_fluid_volume" value="@(isEdit ? dl.pm_iv_fluid_volume : "")" style="width:50px" /></td>
+                <td>Time@(Html.Telerik().TimePicker()
+                        .Name("pm_iv_fluid_time")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? dl.pm_iv_fluid_time : DateTime.Now.TimeOfDay.ToString())
+                        .Interval(1)
+                )</td>
+			</tr>
+            <tr>
+                <td colspan="2"><input type="checkbox" id="pm_h_mans" name="pm_h_mans" value="1" @(isEdit ? dl.pm_h_mans == 1 ? "checked" : "" : "")/>H’Mans / N. Saline</td>
+                <td colspan="2">&nbsp;</td>
+			</tr>
+            <tr>
+                <td colspan="2"><input type="checkbox" id="pm_h_maccel" name="pm_h_maccel" value="1" @(isEdit ? dl.pm_h_maccel == 1 ? "checked" : "" : "")/>H’maccel / G’fusine</td>
+                <td colspan="2">&nbsp;</td>
+			</tr>
+            <tr>
+                <td colspan="5" class="green-bg"><b>SECONDARY MANAGEMENT</b></td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" rowspan="3"><b>Analgesia Drugs (specify)</b></td>
+                <td colspan="2" class="no-border-btm"><input type="text" id="analgesia_drugs" name="analgesia_drugs" value="@(isEdit ? dl.analgesia_drugs : "")" /></td>
+                <td colspan="2">Time : </td>
+			</tr>
+            <tr>
+                <td colspan="2" class="no-border-top no-border-btm">&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
+			</tr>
+            <tr>
+                <td colspan="2" class="no-border-top">&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
+			</tr>
+            <tr>
+                <td class="yellow-bg" rowspan="2"><b>Splinting</b></td>
+                <td><input type="radio" name="splinting" value="Frac Strap" @(isEdit ? dl.splinting == "Frac Strap" ? "checked" : "" : "")/>Frac Strap</td>
+                <td><input type="radio" name="splinting" value="KED" @(isEdit ? dl.splinting == "KED" ? "checked" : "" : "")/>KED</td>
+                <td colspan="2"><input type="radio" name="splinting" value="Traction" @(isEdit ? dl.splinting == "Traction" ? "checked" : "" : "")/>Traction</td>
+                <td colspan="2" class="no-border-btm"><b>Signed</b></td>
+                <td colspan="2" class="no-border-btm"><input type="text" id="signed" name="signed" value="@(isEdit ? dl.signed : "")" style="width:100px" /></td>
+			</tr>
+            <tr>
+                <td><input type="radio" name="splinting" value="Box" @(isEdit ? dl.splinting == "Box" ? "checked" : "" : "")/>Box</td>
+                <td colspan="3"><input type="radio" name="splinting" value="other" @(isEdit ? dl.splinting != "Frac Strap" && dl.splinting != "KED" && dl.splinting != "Traction" && dl.splinting != "Box" ? "checked" : "" : "")/>Other (specify) <input type="text" id="splinting_other" name="splinting_other" value="@(isEdit ? dl.splinting != "Frac Strap" && dl.splinting != "KED" && dl.splinting != "Traction" && dl.splinting != "Box" ? dl.splinting : ""  : "")" style="width:100px" /></td>
+                <td colspan="2" class="no-border-top"><b>Crew</b></td>
+                <td colspan="2" class="no-border-top"><input type="text" id="crew" name="crew" value="@(isEdit ? dl.crew : "")" style="width:100px" /></td>
+			</tr>
+		</table>
+	</div>
+    <br />
+</div>
+<div class="submit">
+	<input name="Submit" value="Save" type="submit" onclick="save()"/>
+    <input type="button" value="Cancel" onclick="back()"/>
+    @if (isEdit) {
+            <button type="button" value="Print Injury Report">
+                @Html.ActionLink("Print Injury Report", "printInjuryReport", "HseInjuryReport", new {id = id},  new { target = "_blank" })
+            </button>
+        }
+</div>
+<br />
+<script type="text/javascript">
+
+    function back() {
+        window.location = "/HseInjuryReport";
+    }
+</script>

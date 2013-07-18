@@ -1,0 +1,58 @@
+﻿@using StarEnergi
+@model StarEnergi.Models.foc_op_avail
+@{
+    String elementId = "speedo-" + Model.id_foc;
+    String lastUpdate = Config.convertMonth((int)Model.bulan);
+    String name = Model.foc.nama;
+    String valueOuter;
+    String valueInner;
+    if(Model.foc.nama == "BPP II"){        
+        valueOuter = string.Format("{0:0}",Model.paf);
+        valueInner = "0";
+        if (Model.foc.foc_target_paf.Count > 0)
+        {
+            valueInner = string.Format("{0:0}",Model.foc.foc_target_paf.Last().target_paf.ToString());
+        }
+        
+    }else{
+        valueOuter = "0";
+        valueInner = "0";
+    }
+  }
+<div>
+@{
+    if (Model.foc.nama == "BPP II")
+    {
+	    <a href="#" onclick="showDetail('paf','@(Model.id_foc)')">@(name)</a>
+    }
+    else { 
+        <a href="#" onclick="">@(name)</a>
+    }
+}
+</div>
+<div id="@(elementId)" class="speedo-double">
+	<div class="bar-big">
+		<img class="big" src="" alt="actual" />
+	</div>
+	<div class="bar-small">
+		<img class="small" src="" alt="target" />
+	</div>
+	<div class="value-big">@(valueOuter)</div>
+	<div class="value-small">@(valueInner)</div>
+	@{
+        if (lastUpdate != "")
+        {
+	    <span class="last-update" title="last update">last update @(lastUpdate)</span>
+        }
+	} 
+</div>
+<script type="text/javascript">
+$(document).ready(function(){	
+	$('#@(elementId)').speedometer({
+		category: 'double',
+		val: @(valueOuter),
+		valInner: @(valueInner),
+		base: '@Url.Content("~/")',
+	});
+});
+</script>

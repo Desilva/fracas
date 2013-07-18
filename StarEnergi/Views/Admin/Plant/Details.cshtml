@@ -1,0 +1,20 @@
+﻿@model StarEnergi.Models.plant
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>plant</legend>
+
+    <div class="display-label">nama</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nama)
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id=Model.id }) |
+    </p>
+</fieldset>
+

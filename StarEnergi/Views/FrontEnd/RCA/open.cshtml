@@ -1,0 +1,2064 @@
+﻿@model StarEnergi.Models.RCAEntityModel
+@{
+    ViewBag.Title = "open";
+    int isPublish = (int)ViewBag.isPublish;
+    int whyCount = 0;
+    List<String> why = null;
+    if (ViewBag.why != null) {
+        why = ViewBag.why as List<String>;
+        whyCount = why.Count;
+    }
+    int i = 0;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    System.Diagnostics.Debug.WriteLine(ViewBag.fracasir as Nullable<Byte>);
+    byte? fracasir = ViewBag.fracasir as Nullable<Byte>;
+    int? fracasirid = ViewBag.fracasirid as Nullable<Int32>;
+    string evv = ViewBag.events as String;
+    System.Diagnostics.Debug.WriteLine("evv = " + evv);
+
+    StarEnergi.Models.rca_template template = null;
+    bool is_template = false;
+    if (ViewBag.template != null) {
+        template = ViewBag.template as StarEnergi.Models.rca_template;
+        is_template = true;
+    }
+}
+@{
+    var htmlAttributes = new { style = "float: left;width: 120px;position: absolute; margin-left: 10px;" };    
+}
+@(
+    Html.Telerik().Menu()
+        .Name("Menu")
+        .HtmlAttributes(htmlAttributes)
+        .Orientation(MenuOrientation.Vertical)
+        .ClientEvents(events => events.OnSelect("onSelectMenuAdmin"))
+        .Items(menu =>
+        {
+            menu.Add()
+                .Text("Analisis")
+                .HtmlAttributes(new {style = "font-weight: bold;"});
+        })
+)
+
+<link href="@Url.Content("~/Content/tabs.css")" rel="stylesheet" type="text/css"/>
+<link href="@Url.Content("~/Content/open.css")" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../../Scripts/jquery-1.4.4.js"></script>
+<script type="text/javascript" src="../../../Scripts/jquery-ui.js"></script>
+<!-- Sets the basepath for the library if not in same directory -->
+<script type="text/javascript">
+	mxBasePath = '@Url.Content("~/Content/image/3graph")';
+</script>
+
+<!-- Loads and initializes the library -->
+<script type="text/javascript" src="@Url.Content("~/Scripts/mxClient.js")"></script>
+<script type="text/javascript">
+    var graph = null;
+    var editor = null;
+    var fileName = '@ViewBag.saveFile';
+    var id = '@Model.id';
+    var isTree = '@ViewBag.isTree.ToString()';
+    var items =[];
+    var events = "";
+    var isPublish = '@isPublish';
+    var pathes = [];
+    var treeNode = null;
+    var isExistRCA = '@li.Exists(p => p.role == 2)' == 'True' ? true : false;
+    isPublish = parseInt(isPublish);
+    
+    $(document).ready(function() {
+        $('#tab1').fadeIn('slow'); //tab pertama ditampilkan
+        $('ul#nav li a').click(function() { // jika link tab di klik
+            $('ul#nav li a').removeClass('active'); //menghilangkan class active (yang tampil)
+            $(this).addClass("active"); // menambahkan class active pada link yang diklik
+            $('.tab_konten').hide(); // menutup semua konten tab
+            var aktif = $(this).attr('href'); // mencari mana tab yang harus ditampilkan
+            $(aktif).fadeIn('slow'); // tab yang dipilih, ditampilkan
+            return false;
+        });
+    });
+
+    $(document).keydown(function(event) {
+        //19 for Mac Command+S
+        if (!( String.fromCharCode(event.which).toLowerCase() == 's' && event.ctrlKey) && !(event.which == 19)) return true;
+        //if (fileName == "")
+        //    var pageCount = mxUtils.prompt('Enter filename', 'analysis');
+        if (treeNode != null) {
+            if (treeNode.getAttribute('path','') != JSON.stringify(pathes)) {
+                delDesc();
+                treeNode.setAttribute('path',JSON.stringify(pathes));
+            }
+        }
+        createGraph();
+        var enc = new mxCodec(mxUtils.createXmlDocument());
+        var node = enc.encode(graph.getModel());
+        var xml = mxUtils.getXml(node);
+        var xmlString = encodeURIComponent(xml);
+        var url = '@Url.Action("save", "RCA")';
+		mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&id=' + @(Model.id) + '', function (req) {
+			if (req.getStatus() == "200")
+			    mxUtils.alert('File save successful');
+			else
+			    mxUtils.alert('Unable to save file');
+			// Process server response using req of type mxXmlRequest
+		});
+        event.preventDefault();
+        return false;
+    });
+
+    // Makes the shadow brighter
+    mxConstants.SHADOWCOLOR = '#C0C0C0';
+
+    window.onbeforeunload = function() { return mxResources.get('changesLost'); };
+		
+	// Program starts here. Creates a sample graph in the
+	// DOM node with the specified ID. This function is invoked
+	// from the onLoad event handler of the document (see below).
+	function main()
+    {
+	    if (isTree == '0') {
+	        var load = '@ViewBag.load';
+	        if (load == "1") {
+	            document.getElementById("event").value = '@ViewBag.events.ToString()';
+	            events = '@ViewBag.events.ToString()';
+	            var yCount = parseInt('@whyCount');
+	            var why = Array();
+	            @if (why != null) {
+                    foreach (string a in why)
+	                {
+                        <text>why[@i] = '@a';</text>
+                        i++;
+                    }
+                }
+	            items = why;
+	            if (yCount > 0) {
+	                document.getElementById("why1").value = why[0];
+	                if (yCount > 1) {
+	                    for (var i = 1; i < yCount; i++) {
+	                        addWhy(i,why[i]);
+	                    }
+	                }
+	            }
+	        }
+	        return;
+	    }
+		// Checks if browser is supported
+		if (!mxClient.isBrowserSupported())
+		{
+			// Displays an error message if the browser is
+			// not supported.
+			mxUtils.error('Browser is not supported!', 200, false);
+		}
+		else
+		{
+		    mxGraph.prototype.collapsedImage = new mxImage(mxClient.imageBasePath + '/collapsed.gif', 9, 9);
+		    mxGraph.prototype.expandedImage = new mxImage(mxClient.imageBasePath + '/expanded.gif', 9, 9);
+		    
+		    var cont = document.createElement('div');
+		    cont.style.position = 'relative';
+		    cont.style.overflowY = 'auto';
+		    cont.style.overflowX = 'hidden';
+		    cont.style.left = '0px';
+		    cont.style.top = '-130px';
+		    cont.style.right = '0px';
+		    cont.style.bottom = '0px';
+		    cont.style.width = '850px';
+		    cont.style.height = '400px';
+		    cont.style.border = '1px solid #000';
+
+			// Workaround for Internet Explorer ignoring certain styles
+			var container = document.createElement('div');
+			container.style.position = 'relative';
+			container.style.overflow = 'hidden';
+			container.style.left = '0px';
+			container.style.top = '0px';
+			container.style.right = '0px';
+			container.style.bottom = '0px';
+			container.style.width = '850px';
+			container.style.height = '400px';
+
+			var outline = document.getElementById('outlineContainer');
+
+			mxEvent.disableContextMenu(container);
+
+			if (mxClient.IS_IE)
+			{
+				new mxDivResizer(container);
+				new mxDivResizer(outline);
+			}
+
+			// Sets a gradient background
+			if (mxClient.IS_GC || mxClient.IS_SF)
+			{
+			    //container.style.background = '-webkit-gradient(linear, 0 0%, 0% 100%, from(#FFFFFF), to(#E7E7E7))';
+			    container.style.background = '#EFEFEF';
+			}
+			else if (mxClient.IS_NS)
+			{
+			    //container.style.background = '-moz-linear-gradient(top, #FFFFFF, #E7E7E7)';  
+			    container.style.background = '#EFEFEF';
+			}
+			else if (mxClient.IS_IE)
+			{
+			    container.style.filter = 'progid:DXImageTransform.Microsoft.Gradient('+
+			            'StartColorStr=\'#FFFFFF\', EndColorStr=\'#E7E7E7\', GradientType=0)';
+			}
+
+			cont.appendChild(container);
+			var app = document.getElementById('tab1');
+			app.appendChild(cont);
+
+		    // Creates the graph inside the given container
+			editor = new mxEditor();
+			editor.setGraphContainer(container);
+			graph = editor.graph;
+
+			mxOutline.prototype.graphRenderHint='excact';
+			// Creates the outline (navigator, overview) for moving
+			// around the graph in the top, right corner of the window.
+			var outln = new mxOutline(graph, outline);
+			outln.sizerSize = 2;
+			outln.update(false);
+			
+				
+			// Disables tooltips on touch devices
+			graph.setTooltips(!mxClient.IS_TOUCH);
+			graph.htmlLabels = true;
+
+			// Set some stylesheet options for the visual appearance of vertices
+			var style = graph.getStylesheet().getDefaultVertexStyle();
+			style[mxConstants.STYLE_SHAPE] = 'label';
+				
+			style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+			style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+			style[mxConstants.STYLE_SPACING_LEFT] = 5;
+			style[mxConstants.STYLE_SPACING_TOP] = 0;
+			style[mxConstants.STYLE_SPACING_BOTTOM] = 0;
+			style[mxConstants.STYLE_SPACING_RIGHT] = 0;
+				
+			style[mxConstants.STYLE_GRADIENTCOLOR] = '#7d85df';
+			style[mxConstants.STYLE_STROKECOLOR] = '#5d65df';
+			style[mxConstants.STYLE_FILLCOLOR] = '#adc5ff';
+				
+			style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
+			style[mxConstants.STYLE_FONTFAMILY] = 'Verdana';
+			style[mxConstants.STYLE_FONTSIZE] = '10';
+			style[mxConstants.STYLE_FONTSTYLE] = '1';
+				
+			style[mxConstants.STYLE_SHADOW] = '1';
+			style[mxConstants.STYLE_ROUNDED] = '1';
+			style[mxConstants.STYLE_GLASS] = '1';
+
+			style = new Object();
+			style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+			style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+			style[mxConstants.STYLE_IMAGE] = '/Content/image/3graph/silang.png';
+			style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
+			style[mxConstants.STYLE_IMAGE_WIDTH] = 100;
+			graph.getStylesheet().putCellStyle('image', style);
+
+			mxEdgeStyle.MyStyle = function(state, source, target, points, result)
+			{
+			    if (source != null && target != null)
+			    {
+			        var pt = new mxPoint(target.getCenterX(), source.getCenterY()+1.5*source.height);
+
+			        if (mxUtils.contains(source, pt.x, pt.y))
+			        {
+			            pt.x = source.getCenterX() + 5; 
+			        }
+
+			        result.push(pt);
+			    }
+			};
+			mxStyleRegistry.putValue('myEdgeStyle', mxEdgeStyle.MyStyle);
+
+			// Sets the default style for edges
+			style = graph.getStylesheet().getDefaultEdgeStyle();
+			style[mxConstants.STYLE_ROUNDED] = true;
+			style[mxConstants.STYLE_STROKEWIDTH] = 3;
+			style[mxConstants.STYLE_EXIT_X] = 0.5; // center
+			style[mxConstants.STYLE_EXIT_Y] = 1.0; // bottom
+			style[mxConstants.STYLE_EXIT_PERIMETER] = 0; // disabled
+			style[mxConstants.STYLE_ENTRY_X] = 0.5; // center
+			style[mxConstants.STYLE_ENTRY_Y] = 0; // top
+			style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
+				
+			// Disable the following for straight lines
+			style[mxConstants.STYLE_EDGE] = mxEdgeStyle.TopToBottom;
+				
+			// Enables automatic sizing for vertices after editing and
+			// panning by using the left mouse button.
+			graph.setCellsMovable(false);
+			graph.setAutoSizeCells(true);
+			graph.setPanning(true);
+			graph.panningHandler.useLeftButtonForPanning = true;
+
+			// Displays a popupmenu when the user clicks
+			// on a cell (using the left mouse button) but
+			// do not select the cell when the popup menu
+			// is displayed
+			graph.panningHandler.selectOnPopup = false;
+
+			// Stops editing on enter or escape keypress
+			var keyHandler = new mxKeyHandler(graph);
+
+			// Enables automatic layout on the graph and installs
+			// a tree layout for all groups who's children are
+			// being changed, added or removed.
+			var layout = new mxCompactTreeLayout(graph, false);
+			layout.useBoundingBox = false;
+			layout.edgeRouting = false;
+			layout.levelDistance = 60;
+			layout.nodeDistance = 16;
+			layout.localEdgeProcessing = 20;
+
+			// Allows the layout to move cells even though cells
+			// aren't movable in the graph
+			layout.isVertexMovable = function(cell)
+			{
+				return true;
+			};
+
+			var layoutMgr = new mxLayoutManager(graph);
+
+			layoutMgr.getLayout = function(cell)
+			{
+				if (cell.getChildCount() > 0)
+				{
+					return layout;
+				}
+			};
+
+			graph.convertValueToString = function (cell) {
+			    if (mxUtils.isNode(cell.value)) {
+			        graph.isWrapping(cell);
+			        var c = Array();
+			        c[0] = cell;
+			        if (cell.getAttribute('type', '') == "X") {
+			            graph.setCellStyle("image;",c);
+			        } else if (cell.getAttribute('type', '') == "P") {
+			            graph.setCellStyle("strokeColor=green;fillColor=green;gradientColor=white",c);
+			        } else if (cell.getAttribute('type', '') == "H") {
+			            graph.setCellStyle("strokeColor=yellow;fillColor=yellow;",c);
+			        } else if (cell.getAttribute('type', '') == "L") {
+			            graph.setCellStyle("strokeColor=yellow;fillColor=purple;",c);
+			        }
+			        return "<p style=\"margin:0px;width:115px\">&nbsp;</p>" +
+                        "<h4 style=\"margin:0px;color:#1d258f;text-align:center;\">" + cell.getAttribute('deskripsi', 'no description') + 
+                        "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" + 
+			            cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;margin:0px;color:black;\">" + 
+			            cell.getAttribute('type', '') + "</p>";
+			        //return cell.getAttribute('deskripsi', 'no description');
+			    }
+			};
+
+			var cellLabelChanged = graph.cellLabelChanged;
+			graph.cellLabelChanged = function (cell, newValue, autoSize) {
+			    if (mxUtils.isNode(cell.value)) {
+			        // Clones the value for correct undo/redo
+			        var elt = cell.value.cloneNode(true);
+			        elt.setAttribute('deskripsi', newValue);
+			        newValue = elt;
+			    }
+			    graph.updateCellSize(cell);
+			    cellLabelChanged.apply(this, arguments);
+			};
+
+
+		    // Shows a "modal" window when double clicking a vertex.
+			graph.dblClick = function (evt, cell) {
+			    // Do not fire a DOUBLE_CLICK event here as mxEditor will
+			    // consume the event and start the in-place editor.
+			    if (isPublish != 1 && isExistRCA && this.model.isVertex(cell)) {
+			        if (this.isEnabled() &&
+                        !mxEvent.isConsumed(evt) &&
+                        cell != null &&
+                        this.isCellEditable(cell)) {
+			            if (!this.isHtmlLabel(cell)) {
+			                var content = createProperties(this, cell);
+			                showModalWindow(this, 'Properties', content, 300, 200, cell);
+			            }
+			            else {
+			                var content = createProperties(this, cell);
+			                showModalWindow(this, 'Properties', content, 280, 270, cell);
+			            }
+			        }
+
+			        // Disables any default behaviour for the double click
+			        mxEvent.consume(evt);
+			    }
+			};
+
+			// Gets the default parent for inserting new cells. This
+			// is normally the first child of the root (ie. layer 0).
+			var parent = graph.getDefaultParent();
+			var doc = mxUtils.createXmlDocument();
+			var node = doc.createElement('TreeRoot');
+			node.setAttribute('deskripsi', '@evv');
+			node.setAttribute('level', '0');
+			node.setAttribute('type', 'e');
+			node.setAttribute('bobot', '1');
+			node.setAttribute('path','');
+			node.setAttribute('fracasir','@(fracasir == null ? 0 : fracasir)');
+		    node.setAttribute('sel_val','@(fracasirid == null ? "" : fracasirid.ToString())');
+
+		    if (fileName == "") {
+		        if ('@is_template' == 'True') {
+		            var name = '@(template != null ? template.name : "")' + '.xml';
+		            graph.getModel().beginUpdate();
+		            try {
+		                var xmlDoc = mxUtils.load('/Content/xml/rca_template/' + name + '?version=100010055').getXml();
+		                var node = xmlDoc.documentElement;
+		                var dec = new mxCodec(node.ownerDocument);
+		                dec.decode(node, graph.getModel());
+
+		            
+		            }
+		            finally {
+		                // Updates the display
+		                graph.getModel().endUpdate();
+		                graph.selectAll();
+		                graph.traverse(graph.getSelectionCell(), false, function (vertex, edge) {
+		                    graph.removeSelectionCell(vertex);
+		                    addOverlays(graph, vertex, vertex.getAttribute('level', '99') === '0' ? false : true, doc);
+		                });
+
+		            }
+		        } else {
+		            // Adds the root vertex of the tree
+		            graph.getModel().beginUpdate();
+		            try {
+		                var w = graph.container.offsetWidth;
+
+		                var v1 = graph.insertVertex(parent, 'TreeRoot', node, w / 2 - 60, 20, 120, 40);//graph.insertVertex(parent, 'treeRoot',
+		                //'Organization', w/6 - 15, 20, 70, 30, '');
+		                graph.updateCellSize(v1);
+		                graph.isWrapping(v1);
+		                addOverlays(graph, v1, false, doc);
+		            }
+		            finally {
+		                // Updates the display
+		                graph.getModel().endUpdate();
+
+		            }
+		        }
+		    } else {
+		        graph.getModel().beginUpdate();
+		        try {
+		            var xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=100010055').getXml();
+		            var node = xmlDoc.documentElement;
+		            var dec = new mxCodec(node.ownerDocument);
+		            dec.decode(node, graph.getModel());
+
+		            
+		        }
+		        finally {
+		            // Updates the display
+		            graph.getModel().endUpdate();
+		            graph.selectAll();
+		            graph.traverse(graph.getSelectionCell(), false, function (vertex, edge) {
+		                graph.removeSelectionCell(vertex);
+		                addOverlays(graph, vertex, vertex.getAttribute('level', '99') === '0' ? false : true, doc);
+		            });
+
+		        }
+		    }
+
+		    // Installs a popupmenu handler using local function (see below).
+		    graph.panningHandler.factoryMethod = function (menu, cell, evt, doc) {
+		        return createPopupMenu(graph, menu, cell, evt, doc);
+		    };
+
+		    // Fix for wrong preferred size
+		    var oldGetPreferredSizeForCell = graph.getPreferredSizeForCell;
+		    graph.getPreferredSizeForCell = function(cell)
+		    {
+		        var result = oldGetPreferredSizeForCell.apply(this, arguments);
+
+		        if (result != null)
+		        {
+		            result.width = Math.max(120, result.width);
+		            result.height = 40;
+		        }
+
+		        return result;
+		    };
+
+			var content = document.createElement('div');
+			content.style.padding = '4px';
+
+			var tb = new mxToolbar(content);
+
+			tb.addItem('Zoom In', '/Content/image/3graph/zoom_in32.png', function (evt)
+			{
+				graph.zoomIn();
+			});
+
+			tb.addItem('Zoom Out', '/Content/image/3graph/zoom_out32.png', function (evt)
+			{
+				graph.zoomOut();
+			});
+				
+			tb.addItem('Actual Size', '/Content/image/3graph/view_1_132.png', function (evt)
+			{
+				graph.zoomActual();
+			});
+
+			tb.addItem('Print', '/Content/image/3graph/print32.png', function (evt)
+			{
+				var preview = new mxPrintPreview(graph, 1);
+				preview.open();
+			});
+
+			if (isPublish != 1 && isExistRCA) {
+			    tb.addItem('Save', '/Content/image/3graph/save_32.png', function () {
+			        findPath(graph);
+			        if (treeNode != null) {
+			            if (treeNode.getAttribute('path','') != JSON.stringify(pathes)) {
+			                delDesc();
+			                treeNode.setAttribute('path',JSON.stringify(pathes));
+			            }
+			        }
+			        createGraph();
+			        var enc = new mxCodec(mxUtils.createXmlDocument());
+			        var node = enc.encode(graph.getModel());
+			        var xml = mxUtils.getXml(node);
+			        var xmlString = encodeURIComponent(xml);
+			        var url = '@Url.Action("save", "RCA")';
+			        var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
+			        var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
+			        mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
+			            if (req.getStatus() == "200")
+			                mxUtils.alert('File save successful');
+			            else
+			                mxUtils.alert('Unable to save file');
+			            // Process server response using req of type mxXmlRequest
+			        });
+			    });
+			}
+
+		    wnd = new mxWindow('Tools', content, 0, 0, isPublish != 1 && isExistRCA ? 200 : 160, 66, true);
+		    wnd.setVisible(true);
+		    document.getElementById("menuTool").appendChild(wnd.getElement());
+			//wnd.setMaximizable(false);
+			//wnd.setScrollable(false);
+			//wnd.setResizable(false);
+		    //
+
+		    var contents = document.createElement('div');
+		    contents.style.padding = '4px';
+
+		    var tbs = new mxToolbar(contents);
+
+		    tbs.addItem('Back', '/Content/image/3graph/back.png', function (evt)
+		    {
+		        window.location='@Url.Action("Index","RCA")';
+		    });
+
+		    if (isPublish != 1 && isExistRCA) {
+		        tbs.addItem('Find Path', '/Content/image/3graph/find path.png', function (evt)
+		        {
+		            findPath(graph);
+		        });
+		    }
+
+		    tbs.addItem('Export Image', '/Content/image/3graph/export-ico.png', function (evt)
+		    {
+		        exportImage(editor);
+		    });
+
+		    tbs.addItem('Verification', '/Content/image/3graph/verification.png', function (evt)
+		    {
+		        verify(graph);
+		    });
+
+		    wnds = new mxWindow('Options', contents, 0, 320, isPublish != 1 && isExistRCA ? 160 : 124, 66);
+		    wnds.setVisible(true);
+		    wnds.setClosable(false);
+		    document.getElementById("menuTool").appendChild(wnds.getElement());
+		}
+	};
+
+    //find path
+    function findPath(graph) {
+        var model = graph.getModel();
+        var hasil = new Array();
+        var edge = new Array();
+        var has = new Array();
+        var path = Array();
+        
+        for (var cel in model.cells) {
+            if (model.cells.hasOwnProperty(cel)) {
+                var cell = model.cells[cel];
+                if (cell.vertex == 1 && cell.id != "TreeRoot") {
+                    if (cell.edges.length == 1) {
+                        if (parseInt(cell.getAttribute('bobot','0'),10) > 0) {
+                            has.push(cell);
+                        }
+                    }
+                } else if (cell.edge == 1) {
+                    edge.push(cell);
+                } else if (cell.id == "TreeRoot") {
+                    treeNode = cell;
+                }
+            }
+        }
+
+        graph.setCellStyle("strokeColor=#5d65df;fillColor=#5d65df;",edge);
+
+
+        if (has != null) {
+            for (var c in has) {
+                var temp = new Array();
+                var hasi = has[c];
+                var notPath = false;
+                var isRoot = false;
+                var why = Array();
+                while (!isRoot && !notPath) {
+                    if (hasi.vertex == 1) {
+                        if (hasi.id != "TreeRoot" && hasi.getAttribute('bobot','0') == '1') {
+                            why.push(hasi.getAttribute('deskripsi','No Description'));
+                            for (var ed in hasi.edges) {
+                                var n = hasi.edges[ed];
+                                if (n.target != null && n.target == hasi) {
+                                    hasi = n;
+                                    break;
+                                }
+                            }
+                            temp.push(hasi);
+                            //hasi = hasi.edges[0];
+                        } else if (hasi.id == "TreeRoot") {
+                            why.push(hasi.getAttribute('deskripsi','No Description'));
+                            why.reverse();
+                            path.push(why);
+                            isRoot = true;
+                        } else {
+                            notPath = true;
+                        }
+                    } else {
+                        hasi = hasi.source;
+                    }
+                }
+                if (isRoot) {
+                    for (var t in temp) {
+                        hasil.push(temp[t]);
+                    
+                    }
+                }
+            }
+        }
+        graph.setCellStyle("strokeColor=red;fillColor=red;zIndex=4;",hasil);
+        pathes = path;
+        //treeNode.setAttribute('path',JSON.stringify(path));
+        //delDesc();
+    }
+
+    function exportImage(editor) {
+        var scale = 1;
+        var bounds = graph.getGraphBounds();
+    
+        // Creates XML node to hold output
+        var xmlDoc = mxUtils.createXmlDocument();
+        var root = xmlDoc.createElement('output');
+        xmlDoc.appendChild(root);
+
+        // Creates interface for rendering output
+        var xmlCanvas = new mxXmlCanvas2D(root);
+        xmlCanvas.scale(scale);
+        xmlCanvas.translate(Math.round(-bounds.x * scale), Math.round(-bounds.y * scale));
+    
+        // Renders output to interface
+        var imgExport = new mxImageExport();
+        imgExport.drawState(graph.getView().getState(graph.model.root), xmlCanvas);
+
+        // Puts request data together
+        var filename = 'hasil.png';
+        var format = 'png';
+        var bg = '#FFFFFF';
+        var w = Math.round((bounds.width + 4) * scale);
+        var h = Math.round((bounds.height + 4) * scale);
+        var xml = mxUtils.getXml(root);
+
+        // Compression is currently not used in this example
+        // Requires base64.js and redeflate.js
+        // xml = encodeURIComponent(Base64.encode(RawDeflate.deflate(xml), true));
+
+        new mxXmlRequest('@Url.Action("ProcessRequest", "RCA")', 'filename=' + filename +
+                '&format=' + format + '&bg=' + bg + '&w=' + w + '&h=' + h + '&xml=' +
+                encodeURIComponent(xml)).simulate(document, '_blank');
+
+        //editor.execute("exportImage");
+    }
+
+    // Function to create the entries in the popupmenu
+    function createPopupMenu(graph, menu, cell, evt, doc)
+    {
+	    var model = graph.getModel();
+
+	    if (cell != null)
+	    {
+	        if (model.isVertex(cell) && isPublish != 1 && isExistRCA)
+		    {
+		        menu.addItem('Add child', '/Content/image/3graph/images/check.png', function ()
+			    {
+				    addChild(graph, cell, doc);
+		        });
+
+		        if (cell.id != 'TreeRoot' &&
+			    model.isVertex(cell))
+		        {
+		            menu.addItem('Delete', '/Content/image/3graph/images/delete.gif', function ()
+		            {
+		                deleteSubtree(graph, cell);
+		            });
+		        }
+		    }
+
+		    menu.addSeparator();
+	    }
+
+	    menu.addItem('Fit', '/Content/image/3graph/images/zoom.gif', function ()
+	    {
+		    graph.fit();
+	    });
+
+	    menu.addItem('Actual', '/Content/image/3graph/images/zoomactual.gif', function ()
+	    {
+		    graph.zoomActual();
+	    });
+
+	    menu.addSeparator();
+
+	    menu.addItem('Print', '/Content/image/3graph/images/print.gif', function ()
+	    {
+		    var preview = new mxPrintPreview(graph, 1);
+		    preview.open();
+	    });
+
+	    if (isPublish != 1 && isExistRCA) {
+	        menu.addItem('Save', '/Content/image/3graph/images/save.gif', function () {
+	            findPath(graph);
+	            if (treeNode != null) {
+	                if (treeNode.getAttribute('path','') != JSON.stringify(pathes)) {
+	                    delDesc();
+	                    treeNode.setAttribute('path',JSON.stringify(pathes));
+	                }
+	            }
+	            createGraph();
+	            var enc = new mxCodec(mxUtils.createXmlDocument());
+	            var node = enc.encode(graph.getModel());
+	            var xml = mxUtils.getXml(node);
+	            var xmlString = encodeURIComponent(xml);
+	            var url = '@Url.Action("save", "RCA")';
+	            var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
+	            var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
+			    mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
+			        if (req.getStatus() == "200")
+			            mxUtils.alert('File save successful');
+			        else
+			            mxUtils.alert('Unable to save file');
+			        // Process server response using req of type mxXmlRequest
+			    });
+	        });
+	    }
+    };
+
+    function showModalWindow(graph, title, content, width, height, cell) {
+        var background = document.createElement('div');
+        background.style.position = 'absolute';
+        background.style.left = '0px';
+        background.style.top = '0px';
+        background.style.right = '0px';
+        background.style.bottom = '0px';
+        background.style.height = ''+document.body.scrollHeight+'px';
+        background.style.background = 'black';
+        background.id = 'fade';
+        mxUtils.setOpacity(background, 50);
+        document.body.appendChild(background);
+
+        if (mxClient.IS_IE) {
+            new mxDivResizer(background);
+        }
+
+        var x = Math.max(0, document.body.scrollWidth / 2 - width / 2);
+        var y = Math.max(0, (document.body.scrollHeight ||
+                    document.documentElement.scrollHeight) / 2 - height / 2);
+        var wnd = new mxWindow(title, content, x, y, width, height, false, true);
+        wnd.setClosable(true);
+
+        // Fades the background out after after the window has been closed
+        wnd.addListener(mxEvent.DESTROY, function (evt) {
+            graph.setEnabled(true);
+            mxEffects.fadeOut(background, 50, true,
+                10, 30, true);
+        });
+
+        graph.setEnabled(false);
+        graph.tooltipHandler.hide();
+        wnd.setVisible(true);
+    };
+
+    createProperties = function (graph, cell) {
+        var model = graph.getModel();
+        var value = model.getValue(cell);
+
+        if (mxUtils.isNode(value)) {
+            // Creates a form for the user object inside
+            // the cell
+            var form = new mxForm('properties');
+            // Creates textareas for each attribute of the
+            // user object within the cell
+            var attrs = value.attributes;
+            var texts = [];
+
+            var none_rad;
+            var ir_rad;
+            var fracas_rad;
+            var select1;
+            var radbut;
+            var iss = false;
+            for (var i = 0; i < attrs.length; i++) {
+                // Creates a textarea with more lines for
+                // the cell label
+                var val = attrs[i].nodeValue;
+                if (attrs[i].nodeName == 'deskripsi') {
+                    if (attrs[2].nodeValue == 'e') {
+                        var div = document.createElement('div');
+                        fracas_rad = document.createElement('input');
+                        fracas_rad.type = 'radio';
+                        fracas_rad.name = 'fracasir';
+                        fracas_rad.value = '1';
+                        fracas_rad.id = 'fracas_rad';
+                        fracas_rad.onclick = function() { 
+                            var d;
+                            iss = false;
+                            if (document.getElementById("selec") == null) {
+                                d = select1;
+                            } else {
+                                d = document.getElementById("selec");
+                            }
+                            while(d.firstChild) d.removeChild(d.firstChild);
+
+                            $.ajax({
+                                type: "POST",
+                                url: "@Url.Action("getAllFracas", "RCA")",
+                                traditional: true,
+                                data: {},
+                                success: function (data) {
+                                    var opt = document.createElement("option");
+                                    opt.value= '';
+                                    opt.innerHTML = 'Choose One';
+                                    opt.selected = 'selected';
+                                    opt.disabled = 'disabled';
+                                    d.appendChild(opt);
+                                    $.each(data.pir, function (i, item) {
+                                        var opt = document.createElement("option");
+                                        opt.value= item.id;
+                                        opt.innerHTML = item.event_description;
+                                        d.appendChild(opt);
+                                    });
+                                    if (!iss) {
+                                    } else {
+                                        d.value = iss;
+                                    }
+                                    d.disabled = false;
+                                    document.getElementById("descr").style.height = "0px";
+                                    document.getElementById("descr").style.minHeight = "0px";
+                                    document.getElementById("descr").parentNode.parentNode.style.visibility = "collapse";
+                                }
+                            });
+                        };
+                        div.appendChild(fracas_rad);
+                        var p = document.createTextNode('from fracas');
+                        div.appendChild(p);
+                        ir_rad = document.createElement('input');
+                        ir_rad.type = 'radio';
+                        ir_rad.name = 'fracasir';
+                        ir_rad.value = '2';
+                        ir_rad.id = 'ir_rad';
+                        ir_rad.onclick = function() {
+                            var d;
+                            if (document.getElementById("selec") == null) {
+                                d = select1;
+                            } else {
+                                d = document.getElementById("selec");
+                            }
+                            iss = false;
+                            while(d.firstChild) d.removeChild(d.firstChild);
+
+                            $.ajax({
+                                type: "POST",
+                                url: "@Url.Action("getAllIr", "RCA")",
+                                traditional: true,
+                                data: {},
+                                success: function (data) {
+                                    var opt = document.createElement("option");
+                                    opt.value= '';
+                                    opt.innerHTML = 'Choose One';
+                                    opt.selected = 'selected';
+                                    opt.disabled = 'disabled';
+                                    d.appendChild(opt);
+                                    $.each(data.pir, function (i, item) {
+                                        var opt = document.createElement("option");
+                                        opt.value= item.id;
+                                        opt.innerHTML = item.title;
+                                        d.appendChild(opt);
+                                    });
+                                    if (!iss) {
+                                    } else {
+                                        d.value = iss;
+                                    }
+                                    d.disabled = false;
+                                    document.getElementById("descr").style.height = "0px";
+                                    document.getElementById("descr").style.minHeight = "0px";
+                                    document.getElementById("descr").parentNode.parentNode.style.visibility = "collapse";
+                                }
+                            });
+                        };
+                        div.appendChild(ir_rad);
+                        var p = document.createTextNode('from ir');
+                        div.appendChild(p);
+                        none_rad = document.createElement('input');
+                        none_rad.type = 'radio';
+                        none_rad.name = 'fracasir';
+                        none_rad.value = '0';
+                        none_rad.id = 'none_rad';
+                        none_rad.onclick = function() { 
+                            var d;
+                            if (document.getElementById("selec") == null) {
+                                d = select1;
+                            } else {
+                                d = document.getElementById("selec");
+                            }
+                            while(d.firstChild) d.removeChild(d.firstChild);
+
+                            var opt = document.createElement("option");
+                            opt.value= '';
+                            opt.innerHTML = 'Insert Description';
+                            d.appendChild(opt);
+                            d.disabled = true;
+                            document.getElementById("descr").style.minHeight = "75px";
+                            document.getElementById("descr").parentNode.parentNode.style.visibility = "visible";
+                            document.getElementById('descr').value = "";
+                        };
+                        div.appendChild(none_rad);
+                        var p = document.createTextNode('none');
+                        div.appendChild(p);
+                        var c = form.addField('Deskripsi',div);
+
+                        select1 = document.createElement('select');
+                        select1.id = 'selec';
+                        select1.onchange = function() { 
+                            var text = document.getElementById('descr');
+                            var fracasir = $("input[name=fracasir]:checked").val();
+                            if (fracasir != 0) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "@Url.Action("getDescription", "RCA")",
+                                    traditional: true,
+                                    data: {id : this.value, fracasir : fracasir},
+                                    success: function (data) {
+                                        document.getElementById('descr').value = data.val;
+                                    }
+                                });
+                            }
+                        }
+                        select1.disabled = true;
+                        var c = form.addField('',select1);
+                        texts[i] = form.addTextarea('', val,4);
+                        texts[i].id = 'descr';
+                    } else {
+                        texts[i] = form.addTextarea('Deskripsi', val,4);
+                        texts[i].id = 'descr';
+                    }
+                } else if (attrs[i].nodeName == 'level') {
+                } else if (attrs[i].nodeName == 'type') {
+                    if (val == 'e' || val == 'M') {
+                        texts[i] = form.addText('Tipe', val);
+                        texts[i].readOnly = true;
+                    } else {
+                        var com = form.addCombo('Tipe', false, 1);
+                        form.addOption(com, 'physical', 'P', (val === 'P') ? true : false);
+                        form.addOption(com, 'human', 'H', (val === 'H') ? true : false);
+                        form.addOption(com, 'latent', 'L', (val === 'L') ? true : false);
+                        form.addOption(com, 'not true', 'X', (val === 'X') ? true : false);
+                        texts[i] = com;
+                    }
+                } else if (attrs[i].nodeName == 'bobot') {
+                    var com = form.addCombo('Bobot', false, 1);
+                    form.addOption(com, '0', '0', (val === '0') ? true : false);
+                    form.addOption(com, '1', '1', (val === '1') ? true : false);
+                    texts[i] = com;
+                } else if (attrs[i].nodeName == 'fracasir') {
+                    switch (val) {
+                        case "0" :
+                            radbut = 0;
+                            none_rad.checked = 'checked';
+                            break;
+                        case "1" :
+                            radbut = 1;
+                            fracas_rad.checked = 'checked';
+                            fracas_rad.click();
+                            break;
+                        case "2" :
+                            radbut = 2;
+                            ir_rad.checked = 'checked';
+                            ir_rad.click();
+                            break;
+                    }
+                } else if (attrs[i].nodeName == 'sel_val') {
+                    iss = val;
+                }
+            }
+
+            // Adds an OK and Cancel button to the dialog
+            // contents and implements the respective
+            // actions below
+
+            // Defines the function to be executed when the
+            // OK button is pressed in the dialog
+            var okFunction = mxUtils.bind(this, function () {
+                // Hides the dialog
+                // Supports undo for the changes on the underlying
+                // XML structure / XML node attribute changes.
+                model.beginUpdate();
+                try {
+
+                    // Creates an undoable change for each
+                    // attribute and executes it using the
+                    // model, which will also make the change
+                    // part of the current transaction
+                    for (var i = 0; i < attrs.length; i++) {
+                        if (attrs[i].nodeName == 'level' || attrs[i].nodeName == 'path') {
+                        } else if (attrs[i].nodeName == 'fracasir') {
+                            var val = $("input[name=fracasir]:checked").val();
+                            var edit = new mxCellAttributeChange(
+                                cell, attrs[i].nodeName,
+                                val);
+                            model.execute(edit);
+                        } else if (attrs[i].nodeName == 'sel_val') {
+                            var val = $("#selec").val();
+                            var edit = new mxCellAttributeChange(
+                                cell, attrs[i].nodeName,
+                                val);
+                            model.execute(edit);
+                        } else {
+                            var edit = new mxCellAttributeChange(
+						        cell, attrs[i].nodeName,
+						        texts[i].value);
+                            model.execute(edit);
+                        }
+                    }
+
+                    // Checks if the graph wants cells to 
+                    // be automatically sized and updates
+                    // the size as an undoable step if
+                    // the feature is enabled
+                    if (graph.isAutoSizeCell(cell)) {
+                        graph.updateCellSize(cell);
+                    }
+                }
+                finally {
+                    model.endUpdate();
+                    graph.updateCellSize(cell);
+                    hideProperties(graph);
+                }
+            });
+
+            // Defines the function to be executed when the
+            // Cancel button is pressed in the dialog
+            var cancelFunction = mxUtils.bind(this, function () {
+                // Hides the dialog
+                hideProperties(graph);
+            });
+
+            form.addButtons(okFunction, cancelFunction);
+
+            return form.table;
+        }
+
+        return null;
+    };
+
+
+    hideProperties = function (graph) {
+        if (document.getElementsByClassName('mxWindow').item(4) != null) {
+            graph.setEnabled(true);
+            mxEffects.fadeOut(document.getElementById('fade'),
+                50, true, 10, 30, true);
+            document.body.removeChild(document.getElementsByClassName('mxWindow').item(4));
+        }
+    };
+
+    function addOverlays(graph, cell, addDeleteIcon, doc)
+    {
+        if (isPublish != 1 && isExistRCA) {
+            var overlay = new mxCellOverlay(new mxImage('/Content/image/3graph/add.png', 24, 24), 'Add child');
+            overlay.cursor = 'hand';
+            overlay.align = mxConstants.ALIGN_CENTER;
+            overlay.addListener(mxEvent.CLICK, mxUtils.bind(this, function(sender, evt)
+            {
+                addChild(graph, cell, doc);
+            }));
+	
+            graph.addCellOverlay(cell, overlay);
+
+            if (addDeleteIcon)
+            {
+                overlay = new mxCellOverlay(new mxImage('/Content/image/3graph/close.png', 30, 30), 'Delete');
+                overlay.cursor = 'hand';
+                overlay.offset = new mxPoint(-4, 8);
+                overlay.align = mxConstants.ALIGN_RIGHT;
+                overlay.verticalAlign = mxConstants.ALIGN_TOP;
+                overlay.addListener(mxEvent.CLICK, mxUtils.bind(this, function(sender, evt)
+                {
+                    deleteSubtree(graph, cell);
+                }));
+	
+                graph.addCellOverlay(cell, overlay);
+            }
+        }
+    };
+
+    function addChild(graph, cell, doc, desc, dd, bobots)
+    {
+	    var model = graph.getModel();
+	    var parent = graph.getDefaultParent();
+	    var level = parseInt(cell.getAttribute('level'), 10) + 1;
+	    var desc = desc || "";
+	    var dd = dd || false;
+	    var node = doc.createElement('CellNode');
+	    node.setAttribute('deskripsi', desc);
+	    node.setAttribute('level', level);
+	    if (level == 1) {
+	        node.setAttribute('type', 'M');
+	    }  else {
+	        node.setAttribute('type', 'o');
+	    }
+	    node.setAttribute('bobot', bobots || '0');
+	    if (dd) {
+	        node.setAttribute('bobot', '');
+	        node.setAttribute('type', '');
+	    }
+	    model.beginUpdate();
+	    try
+	    {
+	        var vertex = graph.insertVertex(parent, null, node);
+		    var geometry = model.getGeometry(vertex);
+
+		    // Updates the geometry of the vertex with the
+		    // preferred size computed in the graph
+		    //var size = graph.getPreferredSizeForCell(vertex);
+		    geometry.width = 120;
+		    geometry.height = 40;
+
+		    // Adds the edge between the existing cell
+		    // and the new vertex and executes the
+	        // automatic layout on the parent
+		    if (!dd) {
+		        var edge = graph.insertEdge(parent, null, '', cell, vertex);
+		    } else {
+		        var edge = graph.insertEdge(parent, null, '', cell, vertex, "startArrow=classic;endArrow=none");
+		    }
+		    
+		    // Configures the edge label "in-place" to reside
+		    // at the end of the edge (x = 1) and with an offset
+		    // of 20 pixels in negative, vertical direction.
+		    edge.geometry.x = 1;
+		    edge.geometry.y = 0;
+		    edge.geometry.offset = new mxPoint(0, -20);
+		    
+	        //graph.isWrapping(vertex);
+		    graph.updateCellSize(vertex);
+		    addOverlays(graph, vertex, true, doc);
+	    }
+	    finally
+	    {
+		    model.endUpdate();
+	    }
+    };
+
+    function deleteSubtree(graph, cell)
+    {
+	    // Gets the subtree from cell downwards
+	    var cells = [];
+	    graph.traverse(cell, true, function(vertex)
+	    {
+		    cells.push(vertex);
+		
+		    return true;
+	    });
+
+	    graph.removeCells(cells);
+    };
+
+    function addWhy(curId,value) {
+        value = value || "";
+        var newId = curId + 1;
+        var docs = document.getElementsByClassName("OpenField")[0];
+        var root = document.createElement("div");
+        root.setAttribute("id","ins"+newId);
+
+        var newDiv = document.createElement("div");
+        newDiv.setAttribute("class","info_new_left");
+        newDiv.innerHTML="Why";
+
+        root.appendChild(newDiv);
+
+        newDiv = document.createElement("div");
+        newDiv.setAttribute("class","openinfonewinput");
+
+        var input1 = document.createElement("input");
+        
+            input1.setAttribute("type","text");
+        input1.setAttribute("id","why"+newId);
+        input1.setAttribute("name","why"+newId);
+        input1.setAttribute("class","why");
+        if (isPublish == 1 || !isExistRCA)
+            input1.setAttribute("disabled","disabled");
+        input1.value = value;
+        input1.style.width="500px";
+        newDiv.appendChild(input1);
+
+        if (isPublish != 1 && isExistRCA) {
+            var input2 = document.createElement("input");
+            input2.setAttribute("type","button");
+            input2.setAttribute("id","add"+newId);
+            input2.setAttribute("name","add"+newId);
+            input2.setAttribute("value","add");
+            input2.onclick= function() { addWhy(newId);};
+            newDiv.appendChild(input2);
+
+            var input3 = document.createElement("input");
+            input3.setAttribute("type","button");
+            input3.setAttribute("id","del"+newId);
+            input3.setAttribute("name","del"+newId);
+            input3.setAttribute("value","del");
+            input3.onclick= function() { delWhy(newId);};
+            newDiv.appendChild(input3);
+        }
+
+        root.appendChild(newDiv);
+        root.appendChild(document.createElement("br"));
+        docs.appendChild(root);
+
+        var adds = document.getElementById("add"+curId);
+        adds.style.visibility = 'hidden';
+
+        document.getElementById("total").value=newId;
+    };
+
+    function delWhy(curId) {
+        var total = parseInt(document.getElementById("total").value.toString(),10);
+        if (total == 1) {
+            alert("Can not delete the last why!!!");
+            return;
+        }
+        if (curId == total) {
+            document.getElementsByClassName("OpenField")[0].removeChild(document.getElementById("ins"+curId));
+            document.getElementById("add"+(curId-1)).style.visibility = 'visible';
+        } else {
+            var div = document.getElementById("ins"+curId);
+            document.getElementsByClassName("OpenField")[0].removeChild(div);
+            for (var i = curId+1; i <= total; i++) {
+                document.getElementById("ins"+i).setAttribute("id","ins"+(i-1));
+                document.getElementById("why"+i).setAttribute("name","why"+(i-1));
+                document.getElementById("why"+i).setAttribute("id","why"+(i-1));
+                document.getElementById("add"+i).onclick= function() {addWhy(parseInt(this.getAttribute("id").charAt(3)));};
+                document.getElementById("add"+i).setAttribute("name","add"+(i-1));
+                document.getElementById("add"+i).setAttribute("id","add"+(i-1));
+                
+                document.getElementById("del"+i).setAttribute("name","del"+(i-1));
+                document.getElementById("del"+i).setAttribute("id","del"+(i-1));
+                document.getElementById("del"+(i-1)).onclick= function() {delWhy(parseInt(this.getAttribute("id").charAt(3)));};
+            }
+        }
+
+        document.getElementById("total").value=total-1;
+    }
+
+    function save() {
+        items = [];
+        events = $("#event").val();
+        $(".why").each(function () {
+            var vals = $(this).val();
+            items.push(vals);
+        });
+        var fracasir = $("input[name=fracasir]:checked").val();
+        var fracasirid = $("#selec").val();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("saveWhy", "RCA")",
+            traditional: true,
+            data: {filename: 'analysis' + id + '.xml', events: events, item: items, id: id, fracasir : fracasir, fracasirid : fracasirid},
+                success: function () {
+                    alert("Save successful!!!");
+                }
+        });
+        createGraph();
+    };
+
+    function exPrint() {
+        items = [];
+        var yCount = parseInt('@whyCount');
+        var why = Array();
+        events = $("#event").val();
+        $(".why").each(function () {
+            var vals = $(this).val();
+            why.push(vals);
+        });
+        var container = document.createElement('div');
+        container.style.width = '850px';
+        container.style.height = '390px';
+
+        // Creates the graph inside the given container
+        editor = new mxEditor();
+        editor.setGraphContainer(container);
+        graph = editor.graph;
+				
+        // Disables tooltips on touch devices
+        graph.setTooltips(!mxClient.IS_TOUCH);
+        graph.htmlLabels = true;
+
+        // Set some stylesheet options for the visual appearance of vertices
+        var style = graph.getStylesheet().getDefaultVertexStyle();
+        style[mxConstants.STYLE_SHAPE] = 'label';
+				
+        style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
+        style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+        style[mxConstants.STYLE_SPACING_LEFT] = 5;
+        style[mxConstants.STYLE_SPACING_TOP] = 0;
+        style[mxConstants.STYLE_SPACING_BOTTOM] = 0;
+        style[mxConstants.STYLE_SPACING_RIGHT] = 0;
+        style[mxConstants.STYLE_LABEL_PADDING] = 5;
+				
+        style[mxConstants.STYLE_GRADIENTCOLOR] = '#7d85df';
+        style[mxConstants.STYLE_STROKECOLOR] = '#5d65df';
+        style[mxConstants.STYLE_FILLCOLOR] = '#adc5ff';
+				
+        style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
+        style[mxConstants.STYLE_FONTFAMILY] = 'Verdana';
+        style[mxConstants.STYLE_FONTSIZE] = '10';
+        style[mxConstants.STYLE_FONTSTYLE] = '1';
+				
+        style[mxConstants.STYLE_SHADOW] = '1';
+        style[mxConstants.STYLE_ROUNDED] = '1';
+        style[mxConstants.STYLE_GLASS] = '1';
+
+        style = new Object();
+        style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+        style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+        style[mxConstants.STYLE_IMAGE] = '/Content/image/3graph/nottrue.jpg';
+        style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
+        style[mxConstants.STYLE_IMAGE_WIDTH] = 100;
+        graph.getStylesheet().putCellStyle('image', style);
+
+        mxEdgeStyle.MyStyle = function(state, source, target, points, result)
+        {
+            if (source != null && target != null)
+            {
+                var pt = new mxPoint(target.getCenterX(), source.getCenterY()+1.5*source.height);
+
+                if (mxUtils.contains(source, pt.x, pt.y))
+                {
+                    pt.x = source.getCenterX() + 5; 
+                }
+
+                result.push(pt);
+            }
+        };
+        mxStyleRegistry.putValue('myEdgeStyle', mxEdgeStyle.MyStyle);
+
+        // Sets the default style for edges
+        style = graph.getStylesheet().getDefaultEdgeStyle();
+        style[mxConstants.STYLE_ROUNDED] = true;
+        style[mxConstants.STYLE_STROKEWIDTH] = 3;
+        style[mxConstants.STYLE_EXIT_X] = 0.5; // centSer
+        style[mxConstants.STYLE_EXIT_Y] = 1.0; // bottom
+        style[mxConstants.STYLE_EXIT_PERIMETER] = 0; // disabled
+        style[mxConstants.STYLE_ENTRY_X] = 0.5; // center
+        style[mxConstants.STYLE_ENTRY_Y] = 0; // top
+        style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
+        style[mxConstants.STYLE_STROKECOLOR] = 'red';
+				
+        // Disable the following for straight lines
+        style[mxConstants.STYLE_EDGE] = mxEdgeStyle.TopToBottom;
+				
+        // Enables automatic sizing for vertices after editing and
+        // panning by using the left mouse button.
+        graph.setCellsMovable(false);
+        graph.setAutoSizeCells(true);
+        graph.setPanning(true);
+        graph.panningHandler.useLeftButtonForPanning = true;
+
+        // Displays a popupmenu when the user clicks
+        // on a cell (using the left mouse button) but
+        // do not select the cell when the popup menu
+        // is displayed
+        graph.panningHandler.selectOnPopup = false;
+
+        // Stops editing on enter or escape keypress
+        var keyHandler = new mxKeyHandler(graph);
+
+        // Enables automatic layout on the graph and installs
+        // a tree layout for all groups who's children are
+        // being changed, added or removed.
+        var layout = new mxCompactTreeLayout(graph, false);
+        layout.useBoundingBox = false;
+        layout.edgeRouting = false;
+        layout.levelDistance = 60;
+        layout.nodeDistance = 16;
+        layout.localEdgeProcessing = 20;
+
+        // Allows the layout to move cells even though cells
+        // aren't movable in the graph
+        layout.isVertexMovable = function(cell)
+        {
+            return true;
+        };
+
+        var layoutMgr = new mxLayoutManager(graph);
+
+        layoutMgr.getLayout = function(cell)
+        {
+            if (cell.getChildCount() > 0)
+            {
+                return layout;
+            }
+        };
+
+        graph.convertValueToString = function (cell) {
+            if (mxUtils.isNode(cell.value)) {
+                graph.isWrapping(cell);
+                var c = Array();
+                c[0] = cell;
+                if (cell.getAttribute('type', 'o') == "X") {
+                    graph.setCellStyle("image;",c);
+                } else if (cell.getAttribute('type', 'o') == "P") {
+                    graph.setCellStyle("strokeColor=green;fillColor=green;",c);
+                } else if (cell.getAttribute('type', 'o') == "H") {
+                    graph.setCellStyle("strokeColor=yellow;fillColor=yellow;",c);
+                } else if (cell.getAttribute('type', 'o') == "L") {
+                    graph.setCellStyle("strokeColor=yellow;fillColor=purple;",c);
+                }
+                return "<p style=\"margin:0px;width:115px\">&nbsp;</p>" +
+                    "<h4 style=\"margin:0px;color:#1d258f;text-align:center;\">" + cell.getAttribute('deskripsi', 'no description') + 
+                    "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" + 
+                    cell.getAttribute('bobot', '0') + "</p><p style=\"text-align:right;margin:0px;color:black;\">" + 
+                    cell.getAttribute('type', '') + "</p>";
+                //return cell.getAttribute('deskripsi', 'no description');
+            }
+        };
+
+        var cellLabelChanged = graph.cellLabelChanged;
+        graph.cellLabelChanged = function (cell, newValue, autoSize) {
+            if (mxUtils.isNode(cell.value)) {
+                // Clones the value for correct undo/redo
+                var elt = cell.value.cloneNode(true);
+                elt.setAttribute('deskripsi', newValue);
+                newValue = elt;
+            }
+            graph.updateCellSize(cell);
+            cellLabelChanged.apply(this, arguments);
+        };
+
+        // Gets the default parent for inserting new cells. This
+        // is normally the first child of the root (ie. layer 0).
+        var parent = graph.getDefaultParent();
+        var doc = mxUtils.createXmlDocument();
+        var node = doc.createElement('TreeRoot');
+        node.setAttribute('deskripsi', events);
+        node.setAttribute('level', '0');
+        node.setAttribute('type', 'e');
+        node.setAttribute('bobot', '1');
+
+
+        // Adds the root vertex of the tree
+        graph.getModel().beginUpdate();
+        try {
+            var w = graph.container.offsetWidth;
+
+            var v1 = graph.insertVertex(parent, 'TreeRoot', node, w / 2 - 60, 20, 120, 40);
+            graph.updateCellSize(v1);
+            graph.isWrapping(v1);
+            addOverlays(graph, v1, false, doc);
+            var prev = v1;
+
+            for(var y in why) {
+                addChild(graph,prev,doc,why[y]);
+                if (prev.edges.length == 1) {
+                    prev = prev.getEdgeAt(0).target;
+                } else {
+                    prev = prev.getEdgeAt(1).target;
+                }
+                graph.updateCellSize(prev);
+                addOverlays(graph, prev, prev.getAttribute('level', '99') === '0' ? false : true, doc);
+            }
+        }
+        finally {
+            // Updates the display
+            graph.getModel().endUpdate();
+
+        }
+
+        // Fix for wrong preferred size
+        var oldGetPreferredSizeForCell = graph.getPreferredSizeForCell;
+        graph.getPreferredSizeForCell = function(cell)
+        {
+            var result = oldGetPreferredSizeForCell.apply(this, arguments);
+
+            if (result != null)
+            {
+                result.width = Math.max(120, result.width);
+                result.height = 40;
+            }
+
+            return result;
+        };
+
+        exportImage(editor);
+    }
+
+    function verify(graph) {
+        if (isTree == "0") {
+            var str =Array(Array());
+            str[0][0] = events;
+            var i = 1;
+            if (items.length == 0) {
+                alert("Please Insert the Data or Save First!!");
+                return;
+            }
+            for(var s in items) {
+                str[0][i] = items[s];
+                i++;
+            }
+            document.getElementById("list").value=JSON.stringify(str);
+        } else if (isTree == "1") {
+            var a = graph.getDefaultParent().getChildAt(0).getAttribute('path','');
+            if (a == '') {
+                alert("Please Find Path and Save First!!");
+                return;
+            }
+            document.getElementById("list").value=a;
+            
+        }
+        document.getElementById("id").value=id;
+        document.getElementById("forms").submit();
+    }
+
+    function delDesc() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("delDesc", "RCA")",
+            traditional: true,
+            data: {id: id},
+            success: function () {
+            }
+        });
+    }
+
+    function createGraph() {
+        var graphs = null;
+        var editors = null;
+        var yCount = 0;
+        var why = Array();
+        events = $("#event").val();
+        $(".why").each(function () {
+            var vals = $(this).val();
+            why.push(vals);
+        });
+        var container = document.createElement('div');
+        container.style.width = '850px';
+        container.style.height = '390px';
+
+        // Creates the graphs inside the given container
+        editors = new mxEditor();
+        editors.setGraphContainer(container);
+        graphs = editors.graph;
+
+        // Disables tooltips on touch devices
+        graphs.setTooltips(!mxClient.IS_TOUCH);
+        graphs.htmlLabels = true;
+
+        // Set some stylesheet options for the visual appearance of vertices
+        var style = graphs.getStylesheet().getDefaultVertexStyle();
+        style[mxConstants.STYLE_SHAPE] = 'label';
+
+        style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
+        style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+        style[mxConstants.STYLE_SPACING_LEFT] = 5;
+        style[mxConstants.STYLE_SPACING_TOP] = 0;
+        style[mxConstants.STYLE_SPACING_BOTTOM] = 0;
+        style[mxConstants.STYLE_SPACING_RIGHT] = 0;
+        style[mxConstants.STYLE_LABEL_PADDING] = 5;
+
+        style[mxConstants.STYLE_GRADIENTCOLOR] = '#7d85df';
+        style[mxConstants.STYLE_STROKECOLOR] = '#5d65df';
+        style[mxConstants.STYLE_FILLCOLOR] = '#adc5ff';
+
+        style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
+        style[mxConstants.STYLE_FONTFAMILY] = 'Verdana';
+        style[mxConstants.STYLE_FONTSIZE] = '10';
+        style[mxConstants.STYLE_FONTSTYLE] = '1';
+
+        style[mxConstants.STYLE_SHADOW] = '1';
+        style[mxConstants.STYLE_ROUNDED] = '1';
+        style[mxConstants.STYLE_GLASS] = '1';
+
+        style = new Object();
+        style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+        style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+        style[mxConstants.STYLE_IMAGE] = '/Content/image/3graph/nottrue.jpg';
+        style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
+        style[mxConstants.STYLE_IMAGE_WIDTH] = 100;
+        graphs.getStylesheet().putCellStyle('image', style);
+
+        mxEdgeStyle.MyStyle = function (state, source, target, points, result) {
+            if (source != null && target != null) {
+                var pt = new mxPoint(target.getCenterX(), source.getCenterY() + 1.5 * source.height);
+
+                if (mxUtils.contains(source, pt.x, pt.y)) {
+                    pt.x = source.getCenterX() + 5;
+                }
+
+                result.push(pt);
+            }
+        };
+        mxStyleRegistry.putValue('myEdgeStyle', mxEdgeStyle.MyStyle);
+
+        // Sets the default style for edges
+        style = graphs.getStylesheet().getDefaultEdgeStyle();
+        style[mxConstants.STYLE_ROUNDED] = true;
+        style[mxConstants.STYLE_STROKEWIDTH] = 3;
+        style[mxConstants.STYLE_EXIT_X] = 1.0; // centSer
+        style[mxConstants.STYLE_EXIT_Y] = 0.5; // bottom
+        style[mxConstants.STYLE_EXIT_PERIMETER] = 0; // disabled
+        style[mxConstants.STYLE_ENTRY_X] = 0; // center
+        style[mxConstants.STYLE_ENTRY_Y] = 0.5; // top
+        style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
+        style[mxConstants.STYLE_STROKECOLOR] = 'red';
+
+        // Disable the following for straight lines
+        style[mxConstants.STYLE_EDGE] = mxEdgeStyle.SideToSide;
+
+        // Enables automatic sizing for vertices after editing and
+        // panning by using the left mouse button.
+        graphs.setCellsMovable(false);
+        graphs.setAutoSizeCells(true);
+        graphs.setPanning(true);
+        graphs.panningHandler.useLeftButtonForPanning = true;
+
+        // Displays a popupmenu when the user clicks
+        // on a cell (using the left mouse button) but
+        // do not select the cell when the popup menu
+        // is displayed
+        graphs.panningHandler.selectOnPopup = false;
+
+        // Stops editing on enter or escape keypress
+        var keyHandler = new mxKeyHandler(graphs);
+
+        // Enables automatic layout on the graphs and installs
+        // a tree layout for all groups who's children are
+        // being changed, added or removed.
+        var layout = new mxCompactTreeLayout(graphs, true);
+        layout.useBoundingBox = false;
+        layout.edgeRouting = false;
+        layout.levelDistance = 25;
+        layout.nodeDistance = 16;
+        layout.localEdgeProcessing = 20;
+
+        // Allows the layout to move cells even though cells
+        // aren't movable in the graphs
+        layout.isVertexMovable = function (cell) {
+            return true;
+        };
+
+        var layoutMgr = new mxLayoutManager(graphs);
+
+        layoutMgr.getLayout = function (cell) {
+            if (cell.getChildCount() > 0) {
+                return layout;
+            }
+        };
+
+        graphs.convertValueToString = function (cell) {
+            if (mxUtils.isNode(cell.value)) {
+                graphs.isWrapping(cell);
+                var c = Array();
+                c[0] = cell;
+                if (cell.getAttribute('type', 'o') == "X") {
+                    graphs.setCellStyle("image;", c);
+                } else if (cell.getAttribute('type', 'o') == "P") {
+                    graphs.setCellStyle("strokeColor=green;fillColor=green;", c);
+                } else if (cell.getAttribute('type', 'o') == "H") {
+                    graphs.setCellStyle("strokeColor=yellow;fillColor=yellow;", c);
+                } else if (cell.getAttribute('type', 'o') == "L") {
+                    graphs.setCellStyle("strokeColor=yellow;fillColor=purple;", c);
+                }
+                return "<p style=\"margin:0px;width:115px\">&nbsp;</p>" +
+                    "<h4 style=\"margin:0px;color:#1d258f;text-align:center;\">" + cell.getAttribute('deskripsi', 'no description') +
+                    "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" +
+                    cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;margin:0px;color:black;\">" +
+                    cell.getAttribute('type', '') + "</p>";
+                //return cell.getAttribute('deskripsi', 'no description');
+            }
+        };
+
+        var cellLabelChanged = graphs.cellLabelChanged;
+        graphs.cellLabelChanged = function (cell, newValue, autoSize) {
+            if (mxUtils.isNode(cell.value)) {
+                // Clones the value for correct undo/redo
+                var elt = cell.value.cloneNode(true);
+                elt.setAttribute('deskripsi', newValue);
+                newValue = elt;
+            }
+            graphs.updateCellSize(cell);
+            cellLabelChanged.apply(this, arguments);
+        };
+
+        // Gets the default parent for inserting new cells. This
+        // is normally the first child of the root (ie. layer 0).
+        var parent = graphs.getDefaultParent();
+        var doc = mxUtils.createXmlDocument();
+        var node = doc.createElement('TreeRoot');
+        node.setAttribute('deskripsi', events);
+        node.setAttribute('level', '0');
+        node.setAttribute('type', 'e');
+        node.setAttribute('bobot', '1');
+
+        if (isTree == "1") {
+            if (fileName == "") {
+                // Adds the root vertex of the tree
+                graphs.getModel().beginUpdate();
+                try {
+                    var w = graphs.container.offsetWidth;
+
+                    var v1 = graphs.insertVertex(parent, 'TreeRoot', node, w / 2 - 60, 20, 120, 40);//graphs.insertVertex(parent, 'treeRoot',
+                    //'Organization', w/6 - 15, 20, 70, 30, '');
+                    graphs.updateCellSize(v1);
+                    graphs.isWrapping(v1);
+                }
+                finally {
+                    // Updates the display
+                    graphs.getModel().endUpdate();
+
+                }
+
+            } else {
+                graphs.getModel().beginUpdate();
+                try {
+                    var xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=100010055').getXml();
+                    var node = xmlDoc.documentElement;
+                    var dec = new mxCodec(node.ownerDocument);
+                    dec.decode(node, graphs.getModel());
+
+
+                }
+                finally {
+                    // Updates the display
+                    graphs.getModel().endUpdate();
+                    graphs.selectAll();
+                    graphs.traverse(graphs.getSelectionCell(), false, function (vertex, edge) {
+                        graphs.removeSelectionCell(vertex);
+                    });
+
+                }
+            }
+        } else {
+            // Adds the root vertex of the tree
+            graphs.getModel().beginUpdate();
+            try {
+                var w = graphs.container.offsetWidth;
+
+                var v1 = graphs.insertVertex(parent, 'TreeRoot', node, w / 2 - 60, 20, 120, 40);
+                graphs.updateCellSize(v1);
+                graphs.isWrapping(v1);
+                var prev = v1;
+
+                for(var y in why) {
+                    addChild(graphs,prev,doc,why[y],false,'1');
+                    if (prev.edges.length == 1) {
+                        prev = prev.getEdgeAt(0).target;
+                    } else {
+                        prev = prev.getEdgeAt(1).target;
+                    }
+                    graphs.updateCellSize(prev);
+                }
+            }
+            finally {
+                // Updates the display
+                graphs.getModel().endUpdate();
+
+            }
+        }
+
+        var model = graphs.getModel();
+        var hasil = new Array();
+        var has = new Array();
+        var treeNode;
+        for (var cel in model.cells) {
+            if (model.cells.hasOwnProperty(cel)) {
+                var cell = model.cells[cel];
+                if (cell.vertex == 1 && cell.id != "TreeRoot") {
+                    if (cell.edges.length == 1) {
+                        if (parseInt(cell.getAttribute('bobot', '0'), 10) > 0) {
+                            has.push(cell);
+                        }
+                    }
+                } else if (cell.edge == 1) {
+                } else if (cell.id == "TreeRoot") {
+                    treeNode = cell;
+                }
+            }
+        }
+
+        var s = 0;
+        for (var is in has) {
+            addChild(graphs, has[is], doc, '', true);
+            s++;
+        }
+
+        // Fix for wrong preferred size
+        var oldGetPreferredSizeForCell = graphs.getPreferredSizeForCell;
+        graphs.getPreferredSizeForCell = function (cell) {
+            var result = oldGetPreferredSizeForCell.apply(this, arguments);
+
+            if (result != null) {
+                result.width = Math.max(120, result.width);
+                result.height = 40;
+            }
+
+            return result;
+        };
+
+        exportImages(editors,graphs);
+    }
+
+    function exportImages(editor,graphs) {
+        var scale = 1;
+        var bounds = graphs.getGraphBounds();
+
+        // Creates XML node to hold output
+        var xmlDoc = mxUtils.createXmlDocument();
+        var root = xmlDoc.createElement('output');
+        xmlDoc.appendChild(root);
+
+        // Creates interface for rendering output
+        var xmlCanvas = new mxXmlCanvas2D(root);
+        xmlCanvas.scale(scale);
+        xmlCanvas.translate(Math.round(-bounds.x * scale), Math.round(-bounds.y * scale));
+
+        // Renders output to interface
+        var imgExport = new mxImageExport();
+        imgExport.drawState(graphs.getView().getState(graphs.model.root), xmlCanvas);
+
+        // Puts request data together
+        var filename = 'images'+id+'.png';
+        var format = 'png';
+        var bg = '#FFFFFF';
+        var w = Math.round((bounds.width + 4) * scale);
+        var h = Math.round((bounds.height + 4) * scale);
+        var xml = mxUtils.getXml(root);
+
+        // Compression is currently not used in this example
+        // Requires base64.js and redeflate.js
+        // xml = encodeURIComponent(Base64.encode(RawDeflate.deflate(xml), true));
+
+        new mxXmlRequest('@Url.Action("SaveFullImage", "RCA")', 'filename=' + filename +
+                '&format=' + format + '&bg=' + bg + '&w=' + w + '&h=' + h + '&xml=' +
+                encodeURIComponent(xml),'POST',true).send();
+
+        // editor.execute("exportImage");
+    }
+
+    function clickFracas(val) {
+        var d = document.getElementById("selec");
+        while(d.firstChild) d.removeChild(d.firstChild);
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("getAllFracas", "RCA")",
+            traditional: true,
+            data: {},
+            success: function (data) {
+                var opt = document.createElement("option");
+                opt.value= '';
+                opt.innerHTML = 'Choose One';
+                opt.checked = 'checked';
+                d.appendChild(opt);
+                $.each(data.pir, function (i, item) {
+                    var opt = document.createElement("option");
+                    opt.value= item.id;
+                    opt.innerHTML = item.event_description;
+                    d.appendChild(opt);
+                    d.disabled = false;
+                });
+                if (val != null) d.value = val; else document.getElementById("event").value = "";
+            }
+        });
+    }
+
+    function clickIR(val) {
+        var d = document.getElementById("selec");
+        while(d.firstChild) d.removeChild(d.firstChild);
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("getAllIr", "RCA")",
+            traditional: true,
+            data: {},
+            success: function (data) {
+                var opt = document.createElement("option");
+                opt.value= '';
+                opt.innerHTML = 'Choose One';
+                opt.checked = 'checked';
+                d.appendChild(opt);
+                $.each(data.pir, function (i, item) {
+                    var opt = document.createElement("option");
+                    opt.value= item.id;
+                    opt.innerHTML = item.title;
+                    d.appendChild(opt);
+                    d.disabled = false;
+                });
+                if (val != null) d.value = val; else document.getElementById("event").value = "";
+            }
+        });
+    }
+
+    function clickNone() {
+        var d = document.getElementById("selec");
+        while(d.firstChild) d.removeChild(d.firstChild);
+
+        var opt = document.createElement("option");
+        opt.value= '';
+        opt.innerHTML = 'Insert Description';
+        opt.checked = 'checked';
+        d.appendChild(opt);
+        d.disabled = true;
+        document.getElementById("event").value = "";
+    }
+
+    function changeSelect() {
+        var text = document.getElementById('descr');
+        var fracasir = $("input[name=fracasir]:checked").val();
+        if (fracasir != 0) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("getDescription", "RCA")",
+                traditional: true,
+                data: {id : document.getElementById('selec').value, fracasir : fracasir},
+                success: function (data) {
+                    document.getElementById('event').value = data.val;
+                }
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        if (isTree == "0") {
+            var fracasir = '@fracasir';
+            var fracasirid = '@fracasirid';
+            if (fracasir == "1") {
+                clickFracas(parseInt(fracasirid));
+            } else if (fracasir == "2") {
+                clickIR(parseInt(fracasirid));
+            } else {
+                clickNone();
+            }
+        }
+
+        if (fileName != "") {
+            $('#template').attr('disabled','disabled');
+            $('#change').css('display','none');
+        }
+    });
+
+    function use_template() {
+        var temp_id = $('#template').val();
+        window.location = "/Rca/open/" + id + "?temp=" + temp_id;
+    }
+
+</script>
+<div id="container">
+    <div style="margin-top:50px;margin-left:20px">
+        <select id="template">
+            <option value="">No Template Selected</option>
+            @foreach (StarEnergi.Models.rca_template temp in ViewBag.list_template as List<StarEnergi.Models.rca_template>)
+            {
+                if (is_template && (ViewBag.template as StarEnergi.Models.rca_template).id == temp.id)
+                {
+                    <option value="@temp.id" selected>@temp.name</option>
+                } else {
+                    <option value="@temp.id">@temp.name</option>
+                }
+            }
+        </select>
+        <input type="button" id="change" value="Use" onclick="use_template()"/>
+    </div>
+    <form method="post" action="../verification" id="forms">
+        <input type="hidden" id="list" name="list" value="" />
+        <input type="hidden" id="id" name="id" value="" />
+    </form>
+    @if (ViewBag.isTree.ToString() == "1")
+    {
+            <div style="margin-top:50px;margin-left:20px;height:400px" id="tab1">
+                <div id="outlineContainer"
+	                style="z-index:1;position:relative;overflow:hidden;top:0px;left:685px;width:160px;height:120px;background:transparent;border-style:solid;border-color:lightgray;">
+                </div>
+                <div id="menuTool"
+	                style="position:absolute;overflow:hidden;top:307px;left:275px;width:850px;height:400px;">
+                </div>
+            </div>
+    }
+    else
+    {
+        <div class="Open5Why">
+            <div class="OpenField">
+                <input type="hidden" value="1" id="total"/>
+                <br />
+                <div class="info_new_left"></div>
+                <div class="openinfonewinput">
+                    <input type="radio" id="fracas_rad" name="fracasir" value="1" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "") @(fracasir == 1 ? "checked" : "") onclick="clickFracas()"/>from fracas
+                    <input type="radio" id="ir_rad" name="fracasir" value="2" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "") @(fracasir == 2 ? "checked" : "") onclick="clickIR()"/>from ir
+                    <input type="radio" id="none_rad" name="fracasir" value="0" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "") @(fracasir == 0 || fracasir == null ? "checked" : "") onclick="clickNone()"/>none
+                </div>
+                <br />
+                <div class="info_new_left"></div>
+                <div class="openinfonewinput">
+                    <select id="selec" name="selec" style="width:500px" @(isPublish == 1 || !li.Exists(p => p.role == 2 || fracasir == null) ? "disabled" : "") onchange="changeSelect()">
+
+                    </select>
+                </div>
+                <br />
+                <div class="info_new_left">Event</div>
+                <div class="openinfonewinput"><input id="event" type="text" name="event" value="" style="width:500px" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "")/></div>
+                <br />
+                <div id="ins1">
+                    <div class="info_new_left">Why</div>
+                    <div class="openinfonewinput">
+                        <input class="why" id="why1" type="text" name="why1" value="" style="width:500px" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "")/>
+                        @if (isPublish != 1 && li.Exists(p => p.role == 2))
+                        {
+                            <input id="add1" type="button" name="add1" value="add" onclick="addWhy(1)"/><input id="del1" type="button" name="del1" value="del" onclick="delWhy(1)"/>
+                        }
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="OpenMenu">
+                <input id="back" type="button" name="back" value="back" onclick="parent.location='@Url.Action("Index", "RCA")'"/>
+                @if (isPublish != 1 && li.Exists(p => p.role == 2))
+                {
+                    <input id="saves" type="button" name="saves" value="save" onclick="save()"/>
+                }
+                <input id="print" type="button" name="print" value="print" onclick="exPrint()"/>
+                <input id="verification" type="button" name="verification" value="verification" onclick="verify()"/>
+                
+            </div>
+        </div>
+    }
+</div>

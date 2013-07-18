@@ -1,0 +1,46 @@
+﻿@using StarEnergi
+@model StarEnergi.Models.foc_op_avail
+@{  
+    
+    String elementId = "speedo-" + Model.id_foc;
+    String lastUpdate = Config.convertMonth((int)Model.bulan);
+    String value;
+    String name = Model.foc.nama;
+    if (Model.foc.nama == "BPP II")
+    {
+        value = string.Format("{0:0}", Model.op_avail);
+    }
+    else
+    {
+        value = "0";
+    }
+  }
+<div class="speedo-title">
+@{
+    if (Model.foc.nama == "BPP II"){
+    	<a href="#" onclick="showDetail('pof','@(Model.id_foc)')">@(name)</a>
+    }else{
+        <a href="#" onclick="">@(name)</a>
+    }
+}
+</div>
+<div id="@(elementId)" class="speedo-single">
+	<div class="bar-big">
+		<img class="big" src="" alt="" />
+	</div>
+	<div class="value-big">@(value)</div>
+	@{ 
+        if (lastUpdate != "")
+        {
+	        <span class="last-update" title="last update">last update @(lastUpdate)</span>
+        }
+     }
+</div>
+<script type="text/javascript">
+jQuery(document).ready(function(){	
+	jQuery('#@(elementId)').speedometer({
+		val: @(value),
+		base: '@Url.Content("~/")',
+	});
+});
+</script>

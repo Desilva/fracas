@@ -1,0 +1,156 @@
+﻿@{
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    List<StarEnergi.Models.EmployeeEntity> has = null;
+    if (ViewData["users"] != null)
+    {
+        has = ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>;
+    }
+}
+<div id="contentEventLog">
+<h2 class="adminH2">SHE Key Performance Indicator</h2>
+<div style="width:45%;float:left">
+    <h3>SHE Observation</h3>
+    <span><input type="button" id="log" value="Log" onclick="log(1)"/></span><br />
+    <span><b>Target : <div id="obs_view_target" style="display:inline;">@ViewBag.obs_target</div>%  </b><div style="display:inline;"><input type="button" id="changeTarget" value="Change Target" onclick="changeObsTarget()" @(Session["id"].ToString() == "278" ? "" : "style=display:none") /></div></span><br />
+    <span><b>Total Card (@ViewBag.last_year) : <div id="view_total_obs_bef" style="display:inline;">@ViewBag.totalAllCardBef</div></b></span><br />
+    <ul>
+        <li><span><b>Total Card (@ViewBag.start_month/@ViewBag.last_year - @ViewBag.end_month/@ViewBag.last_year) : <div id="view_total_obs_till_bef" style="display:inline;">@ViewBag.totalCardBef</div></b></span><br /></li>
+        <li><span><b>Average / month : <div id="view_total_avg_bef" style="display:inline;">@ViewBag.averageBef</div></b></span><br /></li>
+    </ul>
+    <span><b>Target (@ViewBag.current_year) : <div id="view_total_obs_aft" style="display:inline;">@ViewBag.totalAllCardAft</div></b></span><br />
+    <ul>
+        <li><span><b>Total Card (@ViewBag.start_month/@ViewBag.current_year - @ViewBag.end_month/@ViewBag.current_year) : <div id="view_total_obs_till_aft" style="display:inline;">@ViewBag.totalCardAft</div></b></span><br /></li>
+        <li><span><b>Average / month : <div id="view_total_avg_aft" style="display:inline;">@ViewBag.averageAft</div></b></span><br /></li>
+    </ul>
+    <div>
+        <img src="../../../Content/image/success.png" alt="Success" width="200" id="success" @((ViewBag.success as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
+        <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="fail" @((ViewBag.success as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
+    </div>
+    <br />
+</div>
+<div style="width:50%;float:left">
+    <h3>Incident Report</h3>
+    <span><input type="button" id="log" value="Log" onclick="log(2)"/></span><br />
+    <span><b>Target : <div id="ir_view_target" style="display:inline;">@ViewBag.ir_target</div>%  </b><div style="display:inline;"><input type="button" id="changeTarget" value="Change Target" onclick="changeIRTarget()" @(Session["id"].ToString() == "278" ? "" : "style=display:none") /></div></span><br />
+    <span><b>Total IR (@ViewBag.current_year) : <div id="view_total_ir_bef" style="display:inline;">@ViewBag.totalIRBef</div></b></span><br />
+    <span><b>Total Outstanding IR (Human Related) : <div id="view_total_ir_human" style="display:inline;">@ViewBag.totalIRHuman</div></b></span><br />
+    <span><b>Total Outstanding IR (WW Ops) : <div id="view_total_ir_ops" style="display:inline;">@ViewBag.totalIROps</div></b></span><br />
+    <br />
+    <div>
+        <img src="../../../Content/image/success.png" alt="Success" width="200" id="successIR" @((ViewBag.successIR as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
+        <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="failIR" @((ViewBag.successIR as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
+    </div>
+</div>
+<br/>
+</div>
+@(Html.Telerik().Window()
+    .Name("obs_window")
+    .Visible(false)
+    .Title("Target")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Target </div>
+		            <div class="infoFieldinput">@(Html.Telerik().Slider<double>()
+                          .Name("obs_target")
+                          .Min(0)
+                          .Max(100)
+                          .SmallStep(5)
+                          .LargeStep(10)
+                          .ShowButtons(true)
+                          .TickPlacement(SliderTickPlacement.Both)
+                    )</div>
+
+	            <p class="submit">
+		            <input name="Submit" value="Set" type="submit" onclick="setObsNewTarget();" />
+	            </p>
+	         </div>
+        </text>)
+)
+
+@(Html.Telerik().Window()
+    .Name("ir_window")
+    .Visible(false)
+    .Title("Target")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Target </div>
+		            <div class="infoFieldinput">@(Html.Telerik().Slider<double>()
+                          .Name("ir_target")
+                          .Min(0)
+                          .Max(100)
+                          .SmallStep(5)
+                          .LargeStep(10)
+                          .ShowButtons(true)
+                          .TickPlacement(SliderTickPlacement.Both)
+                    )</div>
+
+	            <p class="submit">
+		            <input name="Submit" value="Set" type="submit" onclick="setIRNewTarget();" />
+	            </p>
+	         </div>
+        </text>)
+)
+<script type="text/javascript">
+
+    function changeObsTarget() {
+        $.post("HseKPI/ObsTarget", null, function (data) {
+            $("#obs_target").data("tSlider").value(data.target);
+            $('#obs_window').data('tWindow').center().open();
+        });
+    }
+
+    function log(type) {
+        if (type == 1)
+            $('#contentEventLog').load('HseKPI/log?type=1');
+        else if (type == 2)
+            $('#contentEventLog').load('HseKPI/log?type=2');
+    }
+
+    function setObsNewTarget() {
+        var target = $("#obs_target").val();
+        $.post("HseKPI/setObsTarget", { target: target }, function (data) {
+            $('#obs_window').data('tWindow').close();
+            $("#obs_view_target").html(target);
+            if (data.successFail == true) {
+                $('#success').show();
+                $('#fail').hide();
+            } else {
+                $('#success').hide();
+                $('#fail').show();
+            }
+        });
+
+    }
+
+    function changeIRTarget() {
+        $.post("HseKPI/IRTarget", null, function (data) {
+            $("#ir_target").data("tSlider").value(data.target);
+            $('#ir_window').data('tWindow').center().open();
+        });
+    }
+
+    function setIRNewTarget() {
+        var target = $("#ir_target").val();
+        $.post("HseKPI/setIRTarget", { target: target }, function (data) {
+            $('#ir_window').data('tWindow').close();
+            $("#ir_view_target").html(target);
+            if (data.successFail == true) {
+                $('#successIR').show();
+                $('#failIR').hide();
+            } else {
+                $('#successIR').hide();
+                $('#failIR').show();
+            }
+        });
+
+    }
+
+</script>

@@ -1,0 +1,110 @@
+﻿@model StarEnergi.Models.employee
+
+@{
+    ViewBag.Title = "Edit";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    function save() {
+
+        if ($('#password').val() != $('#confirmpassword').val()) {
+            alert('Password tidak sama');
+            return;
+        }
+
+        var values =
+        {
+            "Id": $('#id').val(),
+            "employee_no": $('#employee_no').val(),
+            "password": $('#password').val(),
+            "alpha_name": $('#alpha_name').val(),
+            "position": $('#position').val(),
+            "work_location": $('#work_location').val(),
+            "dob": $('#dob').val(),
+            "email": $('#email').val(),
+            "dept_id": eval('@ViewBag.dept_id'),
+            "employee_boss": eval('@ViewBag.employee_id')
+        }
+
+        $.post('@Url.Content("~/Account/Edit")', values, function (data) {
+            if (data != undefined) {
+                if (data["status"] == 0) {
+                    alert('Data berhasil diedit');
+                } else {
+                    clearError();
+                    $.each(data, function (index, value) {
+                        if (index != "status") {
+                            //error render
+                            $('#' + index).next('div').html(value);
+                        }
+                    });
+                }
+            } else {
+                alert('Gagal mengedit data employee');
+            }
+        });
+
+    }
+
+    function clearError() {
+        var field = ["alpha_name", "employee_no", "location", "work_location", "dob", "email"];
+        $.each(field, function (index, value) {
+            $('#' + value).next('div').html('');
+        });
+    }
+</script>
+<br/><br/><br/>
+<div class="fieldR">* Required Field</div>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Edit Profile</legend>
+
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.employee_no)
+
+        <div class="editor-label">Password</div>
+		<div class="editor-field"><input id="password" type="password" name="password" value="" /></div>
+
+        <div class="editor-label">Confirm Password</div>
+		<div class="editor-field"><input id="confirmpassword" type="password" name="confirmpassword" value="" /></div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.alpha_name)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.alpha_name)
+            <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.position)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.position)
+            <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.work_location)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.work_location)
+            <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.dob)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.dob)
+            <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.email)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.email)
+            <div class="errorM"></div>
+        </div>
+        <p>
+            <input type="submit" value="Save" onclick="save()"/>
+        </p>
+    </fieldset>

@@ -1,0 +1,147 @@
+﻿@{
+    int? isPublish = ViewBag.isPublish;
+    List<StarEnergi.Models.rca_csf_conector> data = ViewData["rcaConnector"] as List<StarEnergi.Models.rca_csf_conector>;
+    int i = 0;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    if (ViewBag.types == "add")
+    {
+        ViewBag.Title = "add RCA - 4";
+    }
+    else if (ViewBag.types == "edit")
+    {
+        if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+        {
+            ViewBag.Title = "edit RCA - 4";
+        }
+        else
+        {
+            ViewBag.Title = "view RCA - 4";
+        }
+    }
+}
+<script type="text/javascript" src="../../../Scripts/jquery-1.4.4.js"></script>
+<script type="text/javascript">
+    @*$(function () {
+        $('#equipment_type').change(function () {
+            $.post('@Url.Action("getEquipmentClass", "RCA")', { selectedId: $(this).val() }, function (result) {
+                var str = '<option value="" disabled selected>Choose Equipment Class</option>';
+                if (result.count == 0) {
+                    $('#equipment_class').html('<option value="" disabled>Choose Equipment Class</option>');
+                } else {
+                    $.each(result, function () {
+                        str += '<option value="' + this.tag_num + '">' + this.tag_num + '</option>\n';
+                    });
+                    $('#equipment_class').html(str);
+                }
+            });
+        });
+    });*@
+
+    var arrayName = new Array();
+    var arrayChoose = new Array();
+
+    function main() {
+        check(document.forms[0]);
+    }
+
+    function check(form) {
+        document.getElementById("chosenList").innerHTML = "";
+        @foreach (StarEnergi.Models.rca_csf a in ViewData["csfs"] as List<StarEnergi.Models.rca_csf>)
+        {
+            <text>arrayName[@a.id] = "@a.name";</text>
+        }
+        
+        @if (data != null)
+        {
+            foreach (StarEnergi.Models.rca_csf_conector a in data)
+            {
+                <text>arrayChoose[@i] = @a.id_csf;</text>
+                i++;
+            }
+        }
+
+        for (var i = 1; i < form.length-3; i++) {
+            if (form[i].checked == true) {
+                var node=document.createElement("li");
+                var textnode=document.createTextNode(arrayName[form[i].value]);
+                node.appendChild(textnode);
+                document.getElementById("chosenList").appendChild(node);
+            }
+        }
+    }
+</script>
+<br />
+@using (Html.BeginForm())
+{
+<div class="addContent">
+    <div class="addImage">
+        <img src="../../../Content/image/addImage.png"/>
+    </div>
+
+    <div class="addInfo">
+        <div class="infoAbove white">
+            <div class="up">What are the team's Critical Success Factors (CSF)?</div>
+        </div>
+        <div class="addField blue" style="height: 200px;">
+            <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
+            <input type="hidden" name="types" id="types" value="@ViewBag.types" />
+            <div class="TA">
+                <div class="availableTA">
+                    <div class="center">Available Critical Success Factors</div>
+                    <div class="borderTA">
+                        @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                        {
+                            foreach (StarEnergi.Models.rca_csf a in ViewData["csfs"] as List<StarEnergi.Models.rca_csf>)
+                            {
+                                if (data == null)
+                                {
+                                <input name="csf" type="checkbox" value="@a.id" onclick='check(this.form);'/>@a.name<br/>
+                                }
+                                else if (data.Find(p => p.id_csf == a.id) != null)
+                                {
+                                <input name="csf" type="checkbox" checked="checked" value="@a.id" onclick='check(this.form);' />@a.name<br/>
+                                }
+                                else
+                                {
+                                <input name="csf" type="checkbox" value="@a.id" onclick='check(this.form);' />@a.name<br/>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (StarEnergi.Models.rca_csf a in ViewData["csfs"] as List<StarEnergi.Models.rca_csf>)
+                            {
+                                if (data == null)
+                                {
+                                <input name="csf" type="checkbox" value="@a.id" onclick='check(this.form);' disabled/>@a.name<br/>
+                                }
+                                else if (data.Find(p => p.id_csf == a.id) != null)
+                                {
+                                <input name="csf" type="checkbox" checked="checked" value="@a.id" onclick='check(this.form);' disabled/>@a.name<br/>
+                                }
+                                else
+                                {
+                                <input name="csf" type="checkbox" value="@a.id" onclick='check(this.form);' disabled/>@a.name<br/>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="chosenTA">
+                    <div class="center">Chosen Critical Success Factors</div>
+                    <ul id="chosenList"></ul>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="addSubmit">
+	    <input name="cancel" value="Cancel" type="submit"/>
+        <input type="submit" value="Previous" name="previous"/>
+        <input type="submit" value="Next" name="next"/>
+    </div>
+</div>
+}

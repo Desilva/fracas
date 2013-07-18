@@ -1,0 +1,81 @@
+﻿@model StarEnergi.Models.equipment_part
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    function save() {
+        var values =
+        {
+            "Id": $('#id').val(),
+            "installed_date": $('#installed_date').val(),
+            "id_equipment": '@Model.id_equipment',
+            "id_part": '@Model.id_parts'
+        }
+
+        $.post("SubEquipment/Edit", values, function (data) {
+        if (data != undefined) {
+            if (data["status"] == 0) {
+                    var html = $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().find('img').attr('src');
+                    var image = '<img class="t-image" src="' + html + '" alt="image">';
+                    $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().html(image + '@Model.part.tag_number');
+                    $('#content').load('SubEquipment/details/' + $('#id').val());
+                } else {
+                    clearError();
+                    $.each(data, function (index, value) {
+                        if (index != "status") {
+                            //error render
+                            $('#' + index).next('div').html(value);
+                        }
+                    });
+                }
+            } else {
+                alert('Gagal mengedit data equipment');
+            }
+        });
+
+    }
+
+    function clearError() {
+        var field = ["installed_date"];
+        $.each(field, function (index, value) {
+            $('#' + value).next('div').html('');
+        });
+    }
+</script>
+<div class="fieldR">* Required Field</div>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Sub Equipment</legend>
+
+        @Html.HiddenFor(model => model.id)
+
+
+        <div class="editor-label">
+            Tag Number<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @(Model.part.tag_number)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            Installed Date
+        </div>
+        <div class="editor-field">
+            @(Html.Telerik().DateTimePickerFor(model => model.installed_date)
+                  .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" })
+                  .Value(Model.installed_date)
+            )
+            <div class="errorM"></div>
+        </div>
+
+        <p>
+            <input type="submit" value="Save" onclick="save()"/>
+        </p>
+    </fieldset>

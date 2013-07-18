@@ -1,0 +1,10 @@
+﻿@model byte?
+
+@(Html.Telerik().DropDownList()
+        .Name("Shift")
+        .Items(items =>
+        {
+            items.Add().Text("Shift Siang").Value("1");
+            items.Add().Text("Shift Malam").Value("2");
+        })
+) 

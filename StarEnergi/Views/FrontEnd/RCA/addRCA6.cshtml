@@ -1,0 +1,209 @@
+﻿@{
+    int? isPublish = ViewBag.isPublish;
+    List<StarEnergi.Models.rca_team_connector> data = ViewData["teams"] as List<StarEnergi.Models.rca_team_connector>;
+    int i = 0;
+    ViewBag.isFirst = true;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    if (ViewBag.types == "add")
+    {
+        ViewBag.Title = "add RCA - 6";
+    }
+    else if (ViewBag.types == "edit")
+    {
+        if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+        {
+            ViewBag.Title = "edit RCA - 6";
+        }
+        else
+        {
+            ViewBag.Title = "view RCA - 6";
+        }
+    }
+}
+
+@model IEnumerable<StarEnergi.Models.RCATeamEmployeeModel>
+<script type="text/javascript" src="../../../Scripts/jquery-1.4.4.js"></script>
+<script>
+    var arrayChoose = new Array();
+    var arraySel = new Array();
+    var isFirst = '@(ViewBag.isFirst)';
+    var isPublish = '@(ViewBag.isPublish)';
+    function check(name) {
+        @if (data != null)
+        {
+            foreach (StarEnergi.Models.rca_team_connector a in data)
+            {
+                <text>arrayChoose[@i] = '@a.id_user';</text>
+                i++;
+            }
+        }
+
+        var isFind = false;
+        
+        if (isPublish == "0") {
+            for (var i = 0; i < arrayChoose.length && isFind == false; i++) {
+                if (arrayChoose[i] == name) {
+                    isFind = true;
+                }
+            }
+
+            if (isFind && isFirst == 'True') {
+                return "<input type='checkbox' name='checkedRecords' id='chc" + name + "' checked='checked' value='" + name + "' onclick='checkb(\""+ name + "\")'/>";
+            } else {
+                return "<input type='checkbox' name='checkedRecords' id='chc" + name + "' value='" + name + "' onclick='checkbs(\""+ name + "\")'/>";
+            }
+        } else {
+            return "";
+        }
+        
+    }
+
+    function checkb(name) {
+        if ($("[id='chc"+name+"']").is(':checked')) {
+            $("[id='sel"+name+"']").removeAttr('disabled');
+        } else {
+            $("[id='sel"+name+"']").attr('disabled', 'disabled');
+        }
+    }
+
+    function checkbs(name) {
+        if ($("[id='chc"+name+"']").is(':checked')) {
+            $("[id='sel"+name+"']").removeAttr('disabled');
+        } else {
+            $("[id='sel"+name+"']").attr('disabled', 'disabled');
+        }
+    }
+
+    function select(name) {
+        @if (data != null)
+        {
+            foreach (StarEnergi.Models.rca_team_connector a in data)
+            {
+                <text>arraySel['@a.id_user'] = '@a.rca_position';</text>
+            }
+        }
+
+        var isFind = false;
+        console.log(arrayChoose.length);
+        if (isPublish == "0") {
+            for (var i = 0; i < arrayChoose.length && isFind == false; i++) {
+                if (arraySel[name]) {
+                    isFind = true;
+                }
+            }
+
+            if (isFind && isFirst == 'True') {
+                return "<select name='select' id='sel" + name + "' value='" + arraySel[name] + "'><option value='0'>-</option><option value='1' " + (arraySel[name] == 1 ? "selected" : "") + ">Leader</option><option value='2' " + (arraySel[name] == 2 ? "selected" : "") + ">Member</option><option value='3' " + (arraySel[name] == 3 ? "selected" : "") + ">Facilitator</option></select>";
+            } else {
+                return "<select name='select' id='sel" + name + "' disabled><option value='0'>-</option><option value='1'>Leader</option><option value='2'>Member</option><option value='3'>Facilitator</option></select>";
+            }
+        } else {
+            return "";
+        }
+        
+    }
+
+    $(function () {
+        $('#analyst').change(function () {
+            $.post('@Url.Action("rend", "RCA")', { analyst: $(this).val() }, function (result) {
+                isFirst = 'False';
+                $("#Team").data("tGrid").dataBind(result);
+            });
+        });
+    });
+</script>
+<br />
+@using (Html.BeginForm())
+{
+<div class="addContent">
+    <div class="addImage">
+        <img src="../../../Content/image/addImage.png">
+    </div>
+
+    <div class="addInfo">
+        <div class="infoAbove white">
+            <div class="up">Who would you like to be on your analysis team?</div>
+        </div>
+        <div class="addField" style="height: 330px;">
+            <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
+            <input type="hidden" name="types" id="types" value="@ViewBag.types" />
+            @*<div style="float: left;">
+                <div class="info_new_left">Principal Analyst</div>
+                <div class="infonewinput">
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    {
+                    <select name="analyst" id="analyst">
+                        <option value="" disabled selected>Choose Principal Analyst</option>
+                        @foreach (StarEnergi.Models.RCATeamEmployeeModel a in ViewData["peoples"] as List<StarEnergi.Models.RCATeamEmployeeModel>)
+                        {
+                            if (ViewBag.analyst != null)
+                            {
+                                if (a.username.ToString().CompareTo(ViewBag.analyst) == 0)
+                                {
+                                    <option value="@a.username" selected="selected">@a.alpha_name</option>
+                                }
+                                else
+                                {
+                                <option value="@a.username">@a.alpha_name</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="@a.username">@a.alpha_name</option>
+                            }
+
+                        }
+                    </select>
+                    }
+                    else
+                    {
+                        <input id="analyst" type="text" name="analyst" value="@ViewBag.analyst" disabled/>   
+                    }
+                </div>
+            </div>*@
+            <br />
+             @(Html.Telerik().Grid<StarEnergi.Models.RCATeamEmployeeModel>(Model)
+                .Name("Team")
+                .HtmlAttributes(new { style = "margin-left: 8px; margin-top: 24px" })
+                .DataKeys(keys =>
+                {
+                    keys.Add(o => o.username);
+                })
+                .DataBinding(dataBinding => dataBinding.Ajax()
+                    .Select("_SelectAjaxTeam", "RCA", new {analyst = ""}))
+                .Columns(columns =>
+                {
+                    if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    {
+                        columns.Bound(o => o.username).ClientTemplate("<#= check(username) #>").
+                            Title("Choose").Width(50).HtmlAttributes(new { style = "text-align:center" });
+                    }
+                    //columns.Bound(o => o.username).Width(100).Title("Username");
+                    columns.Bound(o => o.alpha_name).Width(200).Title("Alpha Name");
+                    columns.Bound(o => o.position).Width(100).Title("Position");
+                    columns.Bound(o => o.username).ClientTemplate("<#= select(username) #>").
+                            Title("RCA Pos.").Width(100).HtmlAttributes(new { style = "text-align:center" });
+                })
+                .Pageable(o => o.PageSize(10))
+                .Sortable()
+                .Groupable()
+                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                .Scrollable(c => c.Enabled(true))
+                .Selectable()
+
+            )
+            <br />
+        </div> 
+        
+        <div class="addSubmit">
+	        <input name="cancel" value="Cancel" type="submit"/>
+            <input type="submit" value="Previous" name="previous"/>
+            <input type="submit" value="Next" name="next"/>
+        </div>
+    </div>
+</div>
+}

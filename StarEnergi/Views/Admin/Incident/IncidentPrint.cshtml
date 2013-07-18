@@ -1,0 +1,509 @@
+﻿@model StarEnergi.Models.PrintIRModel
+<table>
+    <tr>
+        <td width="20%">
+            <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+        </td>
+        <td width="80%">
+            <h2>Star Energy Geothermal (Wayang Windu) Limited.</h2>
+        </td>
+    </tr>
+</table>
+<br />
+<h2 style="text-align:center"><b>INCIDENT REPORT</b></h2>
+<div id="content-inc">
+<h3> I. General Information</h3><br />
+<table id="tabGenInfo" class="tabs" style="width:750px" cellspacing="3" cellpadding="3">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td colspan="6" class="right" style="text-align:left;font-size:9px">
+                <b>Business Unit / Facility</b><br />
+                @Model.facility
+            </td>
+            <td colspan="6" class="right" style="text-align:left;font-size:9px">
+                <b>Incident Location</b><br />
+                @Model.incident_location
+            </td>
+            <td colspan="6" style="text-align:left;font-size:9px">
+                <b>Reference Number</b><br />
+                @Model.reference_number
+            </td>
+        </tr>
+        <tr border="1">
+            <td colspan="6" class="right" style="text-align:left;font-size:9px">
+                <b>Type of Report</b><br />
+                @(Model.type_of_report == 1 ? "On the job" : "Off the job")
+            </td>
+            <td colspan="6" class="right" style="text-align:left;font-size:9px">
+                <b>Date/Time of Incident</b><br />
+                @Model.date_incident.ToString()
+            </td>
+            <td colspan="6" style="text-align:left;font-size:9px">
+                <b>Title</b><br />
+                @Model.title
+            </td>
+        </tr>
+        <tr border="1">
+            <td colspan="6" class="right" style="text-align:left;font-size:9px"><b>Incident Type</b><br /><h6>(Choose one criteria most apply)</h6></td>
+            <td colspan="12">
+                <table border="0">
+                    <tr>
+                        <td width="4%">
+                            @if (Model.incident_type == "Injury / Illness") {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            Injury / Illness
+                        </td>
+                        <td width="4%">
+                            @if (Model.incident_type == "Process Loss / Disturb") {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            Process Loss / Disturb
+                        </td>
+                        <td width="4%">
+                            @if (Model.incident_type == "Vehicular")
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            Vehicular
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="4%">
+                            @if (Model.incident_type == "Environmental Loss") {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            Environmental Loss
+                        </td>
+                        <td width="4%">
+                            @if (Model.incident_type == "External Relation") {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            External Relation
+                        </td>
+                        <td width="4%">
+                            @if (Model.incident_type == "Near Miss")
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            Near Miss
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="4%">
+                            @if (Model.incident_type == "Property Damage") {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            Property Damage
+                        </td>
+                        <td width="4%">
+                            @if (Model.incident_type == "Theft / Crimes") {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            Theft / Crimes
+                        </td>
+                        <td width="4%">
+                            @if (Model.incident_type != "Injury / Illness" && Model.incident_type != "EnvModelonmental Loss" && Model.incident_type != "Properti Damage"
+                                    && Model.incident_type != "Process Loss / Disturb" && Model.incident_type != "External Relation"
+                                    && Model.incident_type != "Theft / Crimes" && Model.incident_type != "Vehicular"
+                                    && Model.incident_type != "Near Miss")
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="29%" style="text-align:left;font-size:9px">
+                            Other : 
+                            @if (Model.incident_type != "Injury / Illness" && Model.incident_type != "EnvModelonmental Loss" && Model.incident_type != "Properti Damage"
+                                    && Model.incident_type != "Process Loss / Disturb" && Model.incident_type != "External Relation"
+                                    && Model.incident_type != "Theft / Crimes" && Model.incident_type != "Vehicular"
+                                    && Model.incident_type != "Near Miss")
+                            {
+                                <text>@Model.incident_type</text>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr border="1">
+            <td colspan="6" class="right" style="text-align:left;font-size:9px"><b>Actual Loss Severity</b></td>
+            <td colspan="12">
+                <table border="0">
+                    <tr>
+                        <td width="5%">
+                            @if (Model.actual_loss_severity == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Major
+                        </td>
+                        <td width="5%">
+                            @if (Model.actual_loss_severity == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Serious
+                        </td>
+                        <td width="5%">
+                            @if (Model.actual_loss_severity == 3) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Moderate
+                        </td>
+                        <td width="5%">
+                            @if (Model.actual_loss_severity == 4) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Minor
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr border="1">
+            <td colspan="6" class="right" style="text-align:left;font-size:9px"><b>Potential Loss Severity</b></td>
+            <td colspan="12">
+                <table border="0">
+                    <tr>
+                        <td width="5%">
+                            @if (Model.potential_loss_severity == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Major
+                        </td>
+                        <td width="5%">
+                            @if (Model.potential_loss_severity == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Serious
+                        </td>
+                        <td width="5%">
+                            @if (Model.potential_loss_severity == 3) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Moderate
+                        </td>
+                        <td width="5%">
+                            @if (Model.potential_loss_severity == 4) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Minor
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr border="1">
+            <td colspan="6" class="right" style="text-align:left;font-size:9px"><b>Probability of Recurrence</b><br /><h6>(If no corrective action taken)</h6></td>
+            <td colspan="12">
+                <table border="0">
+                    <tr>
+                        <td width="5%">
+                            @if (Model.probability == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Frequent
+                        </td>
+                        <td width="5%">
+                            @if (Model.probability == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Occasional
+                        </td>
+                        <td width="5%">
+                            @if (Model.probability == 3) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Seldom
+                        </td>
+                        <td width="5%">
+                            @if (Model.probability == 4) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td width="20%" style="text-align:left;font-size:9px">
+                            Rare
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table border="0">
+    <tr>
+        <td><h3> II. Factual Information</h3></td>
+    </tr>
+    <tr style="text-align:left;font-size:6px">
+        <td>(Describe the events and actions before, during, and after the incident (who, what, how, when, & why). Include pertinent information related to incident. Attach additional pages if necessary)</td>
+    </tr>
+</table>
+<table id="tabFacInfo" class="tabs" style="width:750px">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td style="text-align:left;font-size:9px">
+                @{int countCol = 0; int countRow = 0;}
+                @if (Model.factual_information != null) {
+                    foreach (char i in Model.factual_information){if (i == '\n'){countRow++;countCol=0;<br />}
+                    else
+                    {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@i</text>}}
+                    if (Model.factual_information.Length / 117 < 4 - countRow)
+                    {
+                        for (int i = 0; i < 4 - countRow - Model.factual_information.Length / 117; i++)
+                        {
+                            <br /><text>&nbsp;</text>
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        <br /><text>&nbsp;</text>
+                    }
+                }
+            </td>
+        </tr>
+        <tr border="1">
+            <td style="text-align:left;font-size:9px">
+                <b>Cost Estimate  </b><span style="text-align:left;font-size:7px">(Estimated cost for medical treatment, rehabilitation, damage to property, loss to process, etc.)</span><br />
+                @Model.cost_estimate
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table border="0">
+    <tr>
+        <td width="28%"><h3> III. Immediate Actions</h3></td>
+        <td style="text-align:left;font-size:6px">(to control situation)</td>
+    </tr>
+</table>
+    <table id="tabImAct" class="tabs" style="width:750px" cellspacing="3" cellpadding="3">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td style="text-align:left;font-size:9px">
+                @{countCol = 0; countRow = 0;}
+                @if (Model.immediate_action != null) {
+                    foreach (char i in Model.immediate_action){if (i == '\n'){countRow++;countCol=0;<br />}
+                    else
+                    {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@i</text>}}
+                    if (Model.immediate_action.Length / 117 < 4 - countRow)
+                    {
+                        for (int i = 0; i < 4 - countRow - Model.immediate_action.Length / 117; i++)
+                        {
+                            <br /><text>&nbsp;</text>
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        <br /><text>&nbsp;</text>
+                    }
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table id="tabImAct2" class="tabs" style="width:750px" cellspacing="3" cellpadding="3" border="1">
+    <tr>
+        <td>
+            <table border="0">
+                <tr class="borderless">
+                    <td style="text-align:left;font-size:9px"><b>Prepared by:</b></td>
+                    <td colspan="2" style="text-align:left;font-size:9px">
+                        @Model.prepared_by
+                    </td>
+                    <td style="text-align:left;font-size:9px"><b>Ack by supervisor</b></td>
+                    <td colspan="2" style="text-align:left;font-size:9px">
+                        @Model.ack_supervisor
+                    </td>
+                </tr>
+                <tr class="borderless">
+                    <td style="text-align:left;font-size:9px"><b>Job title:</b></td>
+                    <td colspan="2" style="text-align:left;font-size:9px">
+                        @Model.prepared_by_jabatan
+                    </td>
+                    <td style="text-align:left;font-size:9px"><b>Job Title:</b></td>
+                    <td colspan="2" style="text-align:left;font-size:9px">
+                        @Model.ack_supervisor_jabatan
+                    </td>
+                </tr>
+                <tr class="borderless">
+                    <td style="text-align:left;font-size:9px"><b>Date:</b></td>
+                    <td colspan="2" style="text-align:left;font-size:9px">
+                        @(Model.prepare_date.HasValue ? Model.prepare_date.Value.ToShortDateString() : "")
+                    <td style="text-align:left;font-size:9px"><b>Date:</b></td>
+                    <td colspan="2" style="text-align:left;font-size:9px">
+                        @(Model.ack_date.HasValue ? Model.ack_date.Value.ToShortDateString() : "")
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br />
+<table id="tabImAct3" class="tabs" cellspacing="3" cellpadding="3">
+    <tbody>
+        <tr border="1">
+            <td style="text-align:left;font-size:9px"><b>Approved by:</b></td>
+            <td style="width:16%;text-align:left;font-size:9px"><b>Name</b></td>
+            <td style="width:16%;text-align:left;font-size:9px"><b>Date</b></td>
+            <td style="width:16%;text-align:left;font-size:9px"><b>Approved by:</b></td>
+            <td style="width:16%;text-align:left;font-size:9px"><b>Name</b></td>
+            <td style="width:16%;text-align:left;font-size:9px"><b>Date</b></td>
+        </tr>
+        <tr border="1">
+            <td class="right" style="text-align:left;font-size:9px"><b>Superintendent</b></td>
+            <td style="width:16%;text-align:left;font-size:9px" class="right">
+                @Model.superintendent
+            </td>
+            <td style="width:16%;text-align:left;font-size:9px" class="right">
+                @(Model.superintendent_date.HasValue ? Model.superintendent_date.Value.ToShortDateString() : "")
+            </td>
+            <td style="width:16%;text-align:left;font-size:9px" class="right"><b>Field Manager</b></td>
+            <td style="width:16%;text-align:left;font-size:9px" class="right">
+                @Model.field_manager
+            </td>
+            <td style="width:16%;text-align:left;font-size:9px">
+                @(Model.field_manager_date.HasValue ? Model.field_manager_date.Value.ToShortDateString() : "")
+            </td>
+        </tr>
+        <tr border="1">
+            <td class="right" style="text-align:left;font-size:9px"><b>Loss Control</b></td>
+            <td style="width:16%;text-align:left;font-size:9px" class="right">
+                @Model.loss_control
+            </td>
+            <td style="width:16%;text-align:left;font-size:9px" class="right">
+                @(Model.loss_date.HasValue ? Model.loss_date.Value.ToShortDateString() : "")
+            </td>
+            <td style="width:16%;text-align:left;font-size:9px" class="right"><b>Enter to Doms by</b></td>
+            <td style="width:16%;text-align:left;font-size:9px" class="right">
+                @Model.doms
+            </td>
+            <td style="width:16%;text-align:left;font-size:9px">
+                @(Model.doms_date.HasValue ? Model.doms_date.Value.ToShortDateString() : "")
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table id="tabImAct4" class="tabs" style="width:750px" cellspacing="3" cellpadding="3">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td style="width:16.67%;text-align:left;font-size:9px" class="right"><b>Investigation Required?</b></td>
+            <td colspan="2" style="width:33.33%;text-align:left;font-size:9px">
+                <table border="0">
+                    <tr>
+                        <td width="10%">
+                            @if (Model.investigation == 1)
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td style="text-align:left;font-size:9px" width="40%">
+                            Yes
+                        </td>
+                        <td width="10%">
+                            @if (Model.investigation == 0)
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
+                            }
+                        </td>
+                        <td style="text-align:left;font-size:9px" width="40%">
+                            No
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:16.67%;text-align:left;font-size:9px" class="right"><b>Investigation Request by</b></td>
+            <td colspan="2" style="width:33.33%;text-align:left;font-size:9px" class="right">
+                @Model.investigation_req
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br/>
+</div>

@@ -1,0 +1,132 @@
+﻿@model IEnumerable<StarEnergi.Models.RCATemplateEntity>
+
+@{
+    ViewBag.Title = "Index";
+    List<StarEnergi.Models.user_role> ur = null;
+    if (ViewBag.roles != null) {
+        ur = ViewBag.roles as List<StarEnergi.Models.user_role>;
+    }
+    List<StarEnergi.Models.EmployeeEntity> ee = null;
+    if (ViewBag.employee != null)
+    {
+        ee = ViewBag.employee as List<StarEnergi.Models.EmployeeEntity>;
+    }
+}
+
+<script type="text/javascript">
+    var employee = [];
+    function OnRowDataBound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var has = "";
+    }
+
+    function clear() {
+        for (var i in document.getElementsByName("type")) {
+            document.getElementsByName("type")[i].checked = "";
+        }
+    }
+
+    function onRowSelect(e) {
+        var row = e.row;
+        var type = row.cells[1].innerHTML;
+        if (type == 0) {
+            $('#contentEventLog').load('RCATemplate/Detail5/' + row.cells[0].innerHTML);
+        } else if (type == 1) {
+            $('#contentEventLog').load('RCATemplate/Detail3/' + row.cells[0].innerHTML);
+        } else if (type == 2) {
+            $('#contentEventLog').load('RCATemplate/DetailFish/' + row.cells[0].innerHTML);
+        }
+    }
+
+    function addTemplate() {
+        console.log($('#CreateTemplateRCA'));
+        $('#CreateTemplateRCA').data('tWindow').center().open();
+    }
+
+    function CreateTemplate() {
+        var radios = document.getElementsByName('type');
+        var val = -1;
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val = radios[i].value;
+            }
+        }
+
+        $("#CreateTemplateRCA").data("tWindow").close();
+
+        if (val == 0) {
+            $('#contentEventLog').load('RCATemplate/Detail5');
+        } else if (val == 1) {
+            $('#contentEventLog').load('RCATemplate/Detail3');
+        } else if (val == 2) {
+            $('#contentEventLog').load('RCATemplate/DetailFish');
+        }
+
+    }
+
+</script>
+@(Html.Telerik().Window()
+    .Name("CreateTemplateRCA")
+    .Visible(false)
+    .Title("Create Template")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Type</div>
+		            <div class="infoFieldinput">
+                        <input type="radio" name="type" id="type1" value="1" />Tree Diagram<br />
+                        <input type="radio" name="type" id="type0" value="0" />5 Why's<br />
+                        <input type="radio" name="type" id="type2" value="2" />Fishbone Diagram<br />
+                    </div>
+	            <p class="submit">
+		            <input name="Submit" value="Add" type="submit" onclick="CreateTemplate();" />
+	            </p>
+	         </div>
+        </text>)
+)
+<h2>RCA Template</h2>
+<input type="button" id="addEvent" value="Add Template" onclick="addTemplate()"/>
+@(Html.Telerik().Grid<StarEnergi.Models.RCATemplateEntity>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("Template")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "RCATemplate")
+                .Delete("_DeleteAjaxEditing", "RCATemplate");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.type).Hidden();
+            columns.Bound(o => o.name).Title("Name");
+            columns.Bound(o => o.type_name).Width(225).Title("Type");
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.Text);
+
+            }).Width(100).Title("Commands").HtmlAttributes(new { style = "text-align: center" });
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBound")
+                .OnRowSelect("onRowSelect")
+        )
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.PopUp))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+)
+
+<div id="contentEventLog">
+
+</div>
+

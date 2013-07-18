@@ -1,0 +1,64 @@
+﻿@{
+    int? isPublish = ViewBag.isPublish;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    if (ViewBag.types == "add")
+    {
+        ViewBag.Title = "add RCA - 7";
+    }
+    else if (ViewBag.types == "edit")
+    {
+        if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2)) {
+            ViewBag.Title = "edit RCA - 7";
+        } else {
+            ViewBag.Title = "view RCA - 7";
+        }
+    }
+}
+@model StarEnergi.Models.RCAEntityModel
+<script type="text/javascript" src="../../../Scripts/MicrosoftAjax.js"></script>
+<script type="text/javascript" src="../../../Scripts/MicrosoftMvcValidation.js"></script>
+@{Html.EnableClientValidation();}
+<br />
+@using(Html.BeginForm()) {
+<div class="addContent">
+    <div class="addImage">
+        <img src="../../../Content/image/addImage.png">
+    </div>
+
+    <div class="addInfo">
+        <div class="infoAbove white">
+            <div class="up">What is the start date and expected end date of the analysis?</div>
+        </div>
+        <div class="addField">
+            <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
+            <input type="hidden" name="types" id="types" value="@ViewBag.types" />
+            <div class="info_inside_left">Analysis Start Date </div>
+            <div class="infoFieldinput longField">
+                    @Html.Telerik().DateTimePickerFor(o => o.start_date).Name("start_date").InputHtmlAttributes(new { id = "start_date", name = "start_date" }).Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? true : false)
+                    @Html.ValidationMessage("start_date", "*")
+                )<br />   
+            </div>
+            <br />
+            <div class="info_inside_left">Expected Completion Date </div>
+            <div class="infoFieldinput longField">
+                    @(Html.Telerik().DateTimePickerFor(o => o.completion_date)
+                    .Name("end_date")
+                    .InputHtmlAttributes(new { id = "completion_date", name="completion_date"})
+                    .Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? true : false)
+                    //.Value(ViewBag.completion_date as DateTime?)
+                )<br /> 
+            </div>
+        </div> 
+        
+        <div class="addSubmit">
+	        <input name="cancel" value="Cancel" type="submit"/>
+            <input type="submit" value="Previous" name="previous"/>
+            <input type="submit" value="Done" name="done"/>
+        </div>
+    </div>
+</div>
+}

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<StarEnergi.Models.pir_log>
+@{
+    ViewBag.Title = "Log";
+}
+
+<script type="text/javascript">
+
+</script>
+
+<h2>Log</h2>
+<b>PIR No : @Model.First().pir.no</b>
+<br/>
+<ul>
+@{
+    
+    foreach ( StarEnergi.Models.pir_log x in Model ){
+        <li>
+            <i>@x.date</i>&nbsp;&nbsp; @x.username @x.process @x.description
+        </li>   
+    }
+    
+}
+</ul>
+
+
+@Html.ActionLink("Back", "index")
+

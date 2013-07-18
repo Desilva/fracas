@@ -1,0 +1,49 @@
+﻿<div id = "panel">
+        <div id = "content"></div>
+            <script type="text/javascript">
+                function onSelectPanel(e) {
+                    var item = $(e.item);
+                    if (item.find('> .t-link').text() == 'PmComp') {
+                        $('#content').load('Kpi/PmComp');
+                    } else if (item.find('> .t-link').text() == 'SysAvailiability') {
+                        $('#content').load('Kpi/SysAvailiability');
+                    } else if (item.find('> .t-link').text() == 'MaintenanceCost') {
+                        $('#content').load('Kpi/MaintenanceCost');
+                    } else if (item.find('> .t-link').text() == 'Overtime') {
+                        $('#content').load('Kpi/Overtime');
+                    } else if (item.find('> .t-link').text() == 'PmWorkDistribution') {
+                        $('#content').load('Kpi/PmWorkDistribution');
+                    } else if (item.find('> .t-link').text() == 'ScheduleNonConformance') {
+                        $('#content').load('Kpi/ScheduleNonConformance');
+                    }
+                }
+              </script>  
+        
+@{
+    var htmlAttributes = new { style = "width: 200px;margin-left: 0px;clear : both" };    
+}
+
+
+            <h2>@ViewBag.nama</h2>
+            @(Html.Telerik().PanelBar()
+                    .Name("Menu")
+                    .ClientEvents(events => events.OnSelect("onSelectPanel"))
+                    .HtmlAttributes(htmlAttributes)
+                    .Items(panelBarItem => {
+                        panelBarItem.Add()
+                            .Text("KPI Indikator")
+                            .Items(item =>
+                                {
+                                    item.Add().Text("PmComp");
+                                    item.Add().Text("SysAvailiability");
+                                    item.Add().Text("Overtime");
+                                    item.Add().Text("PmWorkDistribution");
+                                    item.Add().Text("ScheduleNonConformance");
+                                    item.Add().Text("MaintenanceCost");
+                                })
+                                .Expanded(true);
+                     })
+         
+     
+            )
+</div>

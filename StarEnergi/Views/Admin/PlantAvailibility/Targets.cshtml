@@ -1,0 +1,65 @@
+﻿@model IEnumerable<StarEnergi.Models.TargetPafEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+    function listPaf() {
+        $('#content').load('PlantAvailibility/Index');
+    }    
+</script>
+
+<h2>Target Plant Availibility</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.TargetPafEntity>()
+        .TableHtmlAttributes(new { style = "width:768px" })
+        .Name("TargetPaf")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        /*.ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "addTarget" })
+            .Text("Add Target Plant")
+            .Ajax(true)
+            .Action("addTarget", "PlantAvailibility")
+            .Name("addTarget")
+        )*/
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteTargetAjaxEditing", "PlantAvailibility")
+                .Update("_EditTargetAjaxEditing", "PlantAvailibility")
+                .Select("_SelectTargetAjaxEditing", "PlantAvailibility");         
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.foc_name).Title("Area").ReadOnly();
+            columns.Bound(o => o.tahun).Title("Tahun").ReadOnly();
+            columns.Bound(o => o.bulan).Title("Bulan Ke-").ReadOnly();
+            columns.Bound(o => o.target_paf).Title("Target PAF (%)");
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.Image);
+                commands.Edit().ButtonType(GridButtonType.Image);
+
+            });
+
+        })
+        .ClientEvents(
+            events => events
+                .OnComplete("OnComplete")
+        )
+        .Pageable(p => p.PageSize(25))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height(230))
+        .Selectable()
+        .Groupable()
+        .Editable(x => x.Mode(GridEditMode.InLine))
+) 
+<br />
+<input id="kembali" name="Submit" value="Kembali" type="submit" onclick = "listPaf()" />

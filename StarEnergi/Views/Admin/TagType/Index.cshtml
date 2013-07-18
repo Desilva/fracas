@@ -1,0 +1,42 @@
+﻿@model IEnumerable<StarEnergi.Models.TagTypeEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Equipment Class</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.TagTypeEntity>(Model)
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("TagType")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "TagType")
+                .Insert("_InsertAjaxEditing", "TagType")
+                .Update("_SaveAjaxEditing", "TagType")
+                .Delete("_DeleteAjaxEditing", "TagType");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.title).Width(150).Title("Equipment Tag Type");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

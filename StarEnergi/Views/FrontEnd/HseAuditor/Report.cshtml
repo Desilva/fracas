@@ -1,0 +1,95 @@
+﻿@model IEnumerable<StarEnergi.Models.audit>
+@{
+    ViewBag.Title = "Add Incident Report";
+    int username = Int32.Parse(HttpContext.Current.Session["id"].ToString());
+    
+}
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var username = '@username';
+        var isCanEdit = dataItem.is_submit;
+        var isApprove = dataItem.field_manager_approve != null;// && username == dataItem.lead_name;
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="Edit SHE Audit">'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>';
+
+        row.cells[0].innerHTML = templateComplete;
+
+        row.cells[2].innerHTML = dataItem.in_ex == 0 ? "Internal" : dataItem.in_ex == 1 ? "External" : '';
+    }
+
+    function Edit(id) {
+        $('#contentEventLog').load('HseAuditor/addAudit', { 'id': id });
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+    #Window .t-header {
+        background:#b9b7b7;
+    }
+
+    .t-view {
+        background-image:url("/Content/image/add_rca.png");
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.audit>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("HseAuditor")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxHseAuditor", "HseAuditor");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.in_ex).Width(225).Title("Internal / External");
+            columns.Bound(o => o.audit_no).Title("Audit Number");
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+)
+
+@{  Html.Telerik().Window()
+        .Name("Window")
+        .Title("Choose Analysis Type")
+        .Content(@<text>
+                <input name="ids" id="ids" type="hidden" value="" />
+                <input name="choose" type="radio" value="1" checked/>Tree Diagram
+                <input name="choose" type="radio" value="0" />5 - Why
+                <input name="choose" type="radio" value="2" />Fishbone Diagram
+                <br />
+                <div class="form-actions">
+                    <input type="button" onclick="toRcas()" value="Go!" />
+                </div>
+            </text>)
+        .Width(400)
+        .Draggable(true)
+        .Modal(true)
+        .Visible(false)
+        .Render();
+}

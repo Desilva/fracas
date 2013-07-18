@@ -1,0 +1,496 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using StarEnergi.Models;
+using System.Collections.Specialized;
+using System.Diagnostics;
+
+namespace StarEnergi.Controllers.FrontEnd
+{
+    public class DashboardController : Controller
+    {
+        private relmon_star_energiEntities db = new relmon_star_energiEntities();
+        //
+        // GET: /Dasboard/
+
+        public ActionResult Index()
+        {
+            //Config.menu = Config.MenuFrontEnd.DASHBOARD;
+            //ViewBag.nama = "Dashboard";
+            //return View(db.plants);
+            return View("Dashboard");
+        }
+
+        #region speedometer
+        public ActionResult SpeedoMa()
+        {
+            List<ma> result = new List<ma>();
+
+            foreach (foc f in db.focs)
+            {
+                if (f.mas.Where(a => a.category == 1).Count() > 0)
+                {
+                    result.Add(f.mas.Where(a => a.category == 1).OrderByDescending(a => a.last_update).First());
+                }
+            }
+            return PartialView(result);
+        }
+
+        public ActionResult SpeedoPaf()
+        {
+            List<foc_op_avail> result = new List<foc_op_avail>();
+
+            foreach(foc f in db.focs){
+                if (f.foc_op_avail.Count > 0){
+                    result.Add(f.foc_op_avail.Last());    
+                }
+            }
+            
+            return PartialView(result);
+        }
+
+        public ActionResult SpeedoPof()
+        {
+            List<foc_op_avail> result = new List<foc_op_avail>();
+
+            foreach (foc f in db.focs)
+            {
+                if (f.foc_op_avail.Count > 0)
+                {
+                    result.Add(f.foc_op_avail.Last());
+                }
+            }
+            return PartialView(result);
+        }
+        #endregion
+
+        #region sidebar
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult GetMaUnit(int idUnit) {
+            string[] result = new string[2];
+
+            result[0] = string.Format("{0:0.00}", db.units.Find(idUnit).ma);
+            result[1] = string.Format("{0:0.00}", db.units.Find(idUnit).masd);
+            
+            return Json(result);    
+        }
+
+        public ActionResult SideBarMa(int id) {
+            ViewBag.idUnit = new SelectList(db.units.Where(a => a.id_foc == id).ToList(), "id", "nama");
+
+            int maxYear = db.mas.Where(a => a.id_foc == id).OrderByDescending(a => a.last_update).ToList().First().last_update.Year;
+            int minYear = db.mas.Where(a => a.id_foc == id).OrderBy(a => a.last_update).ToList().First().last_update.Year;
+
+            List<YearFilterForm> listAvailYear = new List<YearFilterForm>();
+            for (int i = minYear; i <= maxYear; i++)
+            {
+                YearFilterForm year = new YearFilterForm();
+                year.year = i;
+                listAvailYear.Add(year);
+            }
+
+
+            List<MonthFilterForm> listMonth = new List<MonthFilterForm>();
+            int iterator = 1;
+            foreach (string s in Config.Month)
+            {
+                MonthFilterForm month = new MonthFilterForm();
+                month.id = iterator;
+                month.name = Config.Month[iterator-1];
+                listMonth.Add(month);
+                iterator++;
+            }
+
+            ViewBag.fromYear = new SelectList(listAvailYear, "year", "year");
+            ViewBag.toYear = new SelectList(listAvailYear, "year", "year");
+            ViewBag.year = new SelectList(listAvailYear, "year", "year");
+
+            ViewBag.fromMonth = new SelectList(listMonth, "id", "name");
+            ViewBag.toMonth = new SelectList(listMonth, "id", "name");
+            ViewBag.id = id;
+            return PartialView();
+        }
+
+        public ActionResult SideBarPaf(int id)
+        {
+            int maxYear = (int)db.foc_op_avail.Where(a => a.id_foc == id).OrderByDescending(a => a.tahun).ToList().First().tahun;
+            int minYear = (int)db.foc_op_avail.Where(a => a.id_foc == id).OrderBy(a => a.tahun).ToList().First().tahun;
+
+            List<YearFilterForm> listAvailYear = new List<YearFilterForm>();
+            for (int i = minYear; i <= maxYear; i++)
+            {
+                YearFilterForm year = new YearFilterForm();
+                year.year = i;
+                listAvailYear.Add(year);
+            }
+
+
+            List<MonthFilterForm> listMonth = new List<MonthFilterForm>();
+            int iterator = 1;
+            foreach (string s in Config.Month)
+            {
+                MonthFilterForm month = new MonthFilterForm();
+                month.id = iterator;
+                month.name = Config.Month[iterator - 1];
+                listMonth.Add(month);
+                iterator++;
+            }
+
+            ViewBag.fromYear = new SelectList(listAvailYear, "year", "year");
+            ViewBag.toYear = new SelectList(listAvailYear, "year", "year");
+            ViewBag.year = new SelectList(listAvailYear, "year", "year");
+
+            ViewBag.fromMonth = new SelectList(listMonth, "id", "name");
+            ViewBag.toMonth = new SelectList(listMonth, "id", "name");
+            ViewBag.id = id;
+            return PartialView();
+        }
+
+        public ActionResult SideBarPof(int id)
+        {
+            int maxYear = (int)db.foc_op_avail.Where(a => a.id_foc == id).OrderByDescending(a => a.tahun).ToList().First().tahun;
+            int minYear = (int)db.foc_op_avail.Where(a => a.id_foc == id).OrderBy(a => a.tahun).ToList().First().tahun;
+
+            List<YearFilterForm> listAvailYear = new List<YearFilterForm>();
+            for (int i = minYear; i <= maxYear; i++)
+            {
+                YearFilterForm year = new YearFilterForm();
+                year.year = i;
+                listAvailYear.Add(year);
+            }
+
+
+            List<MonthFilterForm> listMonth = new List<MonthFilterForm>();
+            int iterator = 1;
+            foreach (string s in Config.Month)
+            {
+                MonthFilterForm month = new MonthFilterForm();
+                month.id = iterator;
+                month.name = Config.Month[iterator - 1];
+                listMonth.Add(month);
+                iterator++;
+            }
+
+            ViewBag.fromYear = new SelectList(listAvailYear, "year", "year");
+            ViewBag.toYear = new SelectList(listAvailYear, "year", "year");
+            ViewBag.year = new SelectList(listAvailYear, "year", "year");
+
+            ViewBag.fromMonth = new SelectList(listMonth, "id", "name");
+            ViewBag.toMonth = new SelectList(listMonth, "id", "name");
+            ViewBag.id = id;
+            return PartialView();
+        }
+
+        #endregion
+
+        #region chart
+        public ActionResult ChartSingle() {
+            return PartialView();
+        }
+
+        public ActionResult ChartDouble()
+        {
+            return PartialView();
+        }
+
+        public ActionResult _SelectAjaxBinding()
+        {
+            NameValueCollection criteria = Request.Form;
+            if (criteria.Count > 0)
+            {
+                if (criteria["filter"] == "year")
+                {
+                    return bindingYear(criteria);
+                }
+                else {
+                    return bindingMonth(criteria);
+                }
+            }
+            else {
+                return Json(false);
+            }
+            
+        }
+
+        public ActionResult _SelectAjaxBindingDouble()
+        {
+            NameValueCollection criteria = Request.Form;
+            if (criteria.Count > 0)
+            {
+                if (criteria["filter"] == "year")
+                {
+                    return bindingYearDouble(criteria);
+                }
+                else
+                {
+                    return bindingMonthDouble(criteria);
+                }
+            }
+            else
+            {
+                return Json(false);
+            }
+
+        }
+
+        private ActionResult bindingMonth(NameValueCollection criteria)
+        {
+            int id = int.Parse(criteria["id_area"]);
+            int year = int.Parse(criteria["year"]);
+            int fromMonth = int.Parse(criteria["from"]);
+            int toMonth = int.Parse(criteria["to"]);
+            string type = criteria["type"];
+
+            List<DashboardChartEntity> temp = new List<DashboardChartEntity>();
+            if (type == "ma")
+            {
+                for (int i = fromMonth; i <= toMonth; i++)
+                {
+                    var model = from o in db.mas
+                                where (o.id_foc == id) && (o.last_update.Year == year) && (o.category == 0) && (o.last_update.Month == i) 
+                                orderby (o.last_update) descending
+                                select new DashboardChartEntity
+                                {
+                                    year = o.last_update.Month,
+                                    value = o.ma1
+                                };
+
+                    if (model.ToList().Count > 0)
+                    {
+                        temp.Add(model.First());
+                    }
+                    else
+                    {
+                        DashboardChartEntity dummy = new DashboardChartEntity()
+                        {
+                            year = i,
+                            value = 0
+                        };
+                        temp.Add(dummy);
+                    }
+                }
+                return Json(temp);
+            }
+            else if (type == "pof")
+            {
+
+                for (int i = fromMonth; i <= toMonth; i++)
+                {
+                    var model = from o in db.foc_op_avail
+                                where (o.id_foc == id) && (o.tahun == year) && (o.bulan == i)
+                                select new DashboardChartEntity
+                                {
+                                    year = (int)o.bulan,
+                                    value = o.pof_bulanan
+                                };
+                    if (model.ToList().Count > 0)
+                    {
+                        temp.Add(model.First());
+                    }
+                    else
+                    {
+                        DashboardChartEntity dummy = new DashboardChartEntity()
+                        {
+                            year = i,
+                            value = 0
+                        };
+                        temp.Add(dummy);
+                    }
+
+                }
+                return Json(temp);
+            }
+            else
+            {
+                return Json(false);
+            } 
+        }
+
+        private JsonResult bindingYear(NameValueCollection criteria)
+        {
+            int id = int.Parse(criteria["id_area"]);
+            int fromYear = int.Parse(criteria["from"]);
+            int toYear = int.Parse(criteria["to"]);
+            string type = criteria["type"];
+
+            List<DashboardChartEntity> temp = new List<DashboardChartEntity>();
+            if (type == "ma")
+            {
+                for (int i = fromYear; i <= toYear; i++)
+                {
+                    var model = from o in db.mas
+                                where (o.id_foc == id) && (o.last_update.Year == i) && (o.category == 1)
+                                orderby (o.last_update) descending
+                                select new DashboardChartEntity
+                                {
+                                    year = o.last_update.Year,
+                                    value = o.ma1
+                                };
+                    if (model.ToList().Count > 0)
+                    {
+                        temp.Add(model.First());
+                    }
+                    else
+                    {
+                        DashboardChartEntity dummy = new DashboardChartEntity()
+                        {
+                            year = i,
+                            value = 0
+                        };
+                        temp.Add(dummy);
+                    }
+                }
+                return Json(temp);
+            }
+            else if (type == "pof")
+            {
+                for (int i = fromYear; i <= toYear; i++)
+                {
+                    var model = from o in db.foc_op_avail
+                                where (o.id_foc == id) && (o.tahun == i)
+                                orderby (o.bulan) descending
+                                select new DashboardChartEntity
+                                {
+                                    year = (int)o.tahun,
+                                    value = o.op_avail
+                                };
+                    if (model.ToList().Count > 0)
+                    {
+                        temp.Add(model.First());
+                    }
+                    else
+                    {
+                        DashboardChartEntity dummy = new DashboardChartEntity()
+                        {
+                            year = i,
+                            value = 0
+                        };
+                        temp.Add(dummy);
+                    }
+
+                }
+                return Json(temp);
+            }
+            else
+            {
+                return Json(false);
+            }          
+        }
+
+        private ActionResult bindingMonthDouble(NameValueCollection criteria)
+        {
+            int id = int.Parse(criteria["id_area"]);
+            int year = int.Parse(criteria["year"]);
+            int fromMonth = int.Parse(criteria["from"]);
+            int toMonth = int.Parse(criteria["to"]);
+            string type = criteria["type"];
+
+            List<DashboardChartEntity> temp = new List<DashboardChartEntity>();
+            if (type == "paf")
+            {
+                for (int i = fromMonth; i <= toMonth; i++)
+                {
+                    var model = from o in db.foc_op_avail
+                                where (o.id_foc == id) && (o.tahun == year) && (o.bulan == i)
+                                select new DashboardChartEntity
+                                {
+                                    year = (int)o.bulan,
+                                    value = o.paf_bulanan
+                                };
+                    List<DashboardChartEntity> result = model.ToList();
+                    if (result.Count > 0)
+                    {
+                        DashboardChartEntity add = result.First();
+                        List<foc_target_paf> c = db.foc_target_paf.Where(a => a.tahun == year).Where(a => a.bulan == add.year).ToList();
+                        if (c.Count > 0)
+                        {
+                            add.target = db.foc_target_paf.Where(a => a.tahun == year).Where(a => a.bulan == add.year).First().target_paf;
+                        }
+                        else
+                        {
+                            add.target = null;
+                        }
+
+                        temp.Add(add);
+                    }
+                    else
+                    {
+                        DashboardChartEntity dummy = new DashboardChartEntity()
+                        {
+                            year = i,
+                            value = 0,
+                            target = null
+                        };
+                        temp.Add(dummy);
+                    }
+
+                }
+                return Json(temp);
+            }
+            else
+            {
+                return Json(false);
+            }
+        }
+
+        private JsonResult bindingYearDouble(NameValueCollection criteria)
+        {
+            int id = int.Parse(criteria["id_area"]);
+            int fromYear = int.Parse(criteria["from"]);
+            int toYear = int.Parse(criteria["to"]);
+            string type = criteria["type"];
+
+            List<DashboardChartEntity> temp = new List<DashboardChartEntity>();
+            if (type == "paf")
+            {
+                for (int i = fromYear; i <= toYear; i++)
+                {
+                    var model = from o in db.foc_op_avail
+                                where (o.id_foc == id) && (o.tahun == i)
+                                orderby (o.bulan) descending
+                                select new DashboardChartEntity
+                                {
+                                    year = (int)o.tahun,
+                                    value = o.paf
+                                };
+                    List<DashboardChartEntity> result = model.ToList();
+                    if (result.Count > 0)
+                    {
+                        DashboardChartEntity add = result.First();
+                        List<foc_target_paf> c = db.foc_target_paf.Where(a => a.tahun == add.year).ToList();
+                        if (c.Count > 0)
+                        {
+                            add.target = db.foc_target_paf.Where(a => a.tahun == add.year).OrderByDescending(a => a.bulan).First().target_paf;
+                        }
+                        else {
+                            add.target = null;
+                        }
+
+                        temp.Add(add);
+                    }
+                    else
+                    {
+                        DashboardChartEntity dummy = new DashboardChartEntity()
+                        {
+                            year = i,
+                            value = 0,
+                            target = null
+                        };
+                        temp.Add(dummy);
+                    }
+                }
+                return Json(temp);
+            }
+            else
+            {
+                return Json(false);
+            }
+        }
+
+        #endregion
+
+    }
+}

@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "SHE Observation Form";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+<div id="contentEventLog">
+<h2 class="adminH2">SHE Observation Form</h2>
+<div>
+    <input type="button" id="addSheObservation" value="Add SHE Observation" onclick="addSheObservation()"/>
+</div>
+<br/>
+<div id="sheObservation">
+</div>
+<br />
+</div>
+<script type="text/javascript">
+
+    function addSheObservation() {
+        $('#contentEventLog').load('SheObservation/AddSheObservation');
+    }
+
+    function showSheObservation() {
+        $('#sheObservation').load('SheObservation/Report');
+    }
+
+    $(document).ready(function () {
+        showSheObservation();
+    });
+
+</script>

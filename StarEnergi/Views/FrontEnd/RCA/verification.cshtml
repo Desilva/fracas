@@ -1,0 +1,953 @@
+﻿@{
+    ViewBag.Title = "Verification";
+    string[][] list = null;
+    if (ViewBag.list != null) {
+        list = ViewBag.list as string[][];
+    }
+    int? id = null;
+    if (ViewBag.id != null) {
+         id = Int32.Parse(ViewBag.id as string);
+    }
+    List<string> descs = new List<string>();
+    int i = 0;
+    if (ViewBag.descs != null)
+    {
+        foreach (StarEnergi.Models.rca_desc r in ViewBag.descs as List<StarEnergi.Models.rca_desc>)
+        {
+            descs.Add(r.description);
+        }
+    } else {
+        descs = null;   
+    }
+    int isPublish = (int)ViewBag.isPublish;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    string equipmentCode = ViewBag.equipmentCode as String;
+}
+<style>
+    .container {
+        width:100%;
+        overflow-x:auto;
+        border:1px solid black;
+        margin-top:5px;
+    }
+    .cont 
+    {
+        
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        width:150px;
+	    background-color:#FFEEDD;
+	    border: 1px solid #FF8855;
+	    padding: 5px;
+        float:left;
+        min-height : 40px;
+        text-align:center;
+    }
+    .imgs 
+    {
+        margin-top: 5px;
+        width:75px;
+        float:left;
+        text-align:center;
+        overflow:hidden;
+    }
+        .imgs img {
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:auto;
+            margin-bottom:auto;
+            vertical-align:middle;
+        }
+
+    .left_arrow {
+        float:left;
+        width:75px;
+        height:85px;
+        overflow:hidden;
+    }
+
+    .description {
+        /*float:right;*/
+        width:150px;
+        height:85px;
+        overflow:hidden;
+    }
+    .description textarea{
+        font:normal 12px arial, verdana;
+    }
+    .lines {
+        overflow-x:auto;
+        overflow-y:hidden;
+        padding: 20px 20px 0px;
+    }
+
+    .textarea-ver {
+       min-height: 45px;
+    }
+    
+    .submit {
+        margin-top:20px;
+    }
+</style>
+<script src="../../../Scripts/jquery-1.4.4.js"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/mxClient.js")"></script>
+<script type="text/javascript">
+    var list = Array();
+    var descs = Array();
+    var id = '@id';
+    var j = 0;
+
+    var graph = null;
+    var editor = null;
+    var fileName = '@ViewBag.saveFile';
+    var isTree = '@ViewBag.isTree.ToString()';
+    var items = [];
+    var events = "";
+    var isPublish = '@isPublish';
+    var isExistRCA = '@li.Exists(p => p.role == 2)' == 'True' ? true : false;
+
+    @if (list != null) {
+        i = 0;
+        int j = 0;
+        foreach (string[] l in list) {
+            <text>var ls = Array();</text>
+            foreach(string ll in l) {
+                <text>ls.push('@ll');</text>
+                j++;       
+            }
+            <text>list.push(ls);</text>
+            j = 0;
+            i++;
+        }
+    }
+    @if (descs != null) {
+        foreach (string desc in descs) {
+            <text>descs.push('@desc');</text>
+        }
+    }
+    function main() {
+        var cont = document.createElement("div");
+        cont.setAttribute("class", "content");
+
+        j = 0;
+        for(var str in list) {
+            var conts = document.createElement("div");
+            conts.setAttribute("class", "container");
+            createLine(j,list[str],conts);
+            j++;
+            cont.appendChild(conts);
+        }
+
+        document.getElementById("container").appendChild(cont);
+    }
+
+    function createLine(lineid,str,conts) {
+        var line = document.createElement("div");
+        line.setAttribute("class","lines");
+        line.setAttribute("id", "line" + lineid);
+        line.style.width = "" + ((str.length * 225) + 225) + "px";
+        line.style.minWidth = "1000px";
+        var i = 0;
+        for (var s in str) {
+            var contss = document.createElement("div");
+            contss.setAttribute("class","cont");
+            contss.setAttribute("id","an"+lineid+i);
+            contss.innerHTML= str[i] == "" ? "No Description" : str[i];
+            i++;
+            line.appendChild(contss);
+
+            var img = document.createElement("div");
+            img.setAttribute("class","imgs");
+
+            var im = document.createElement("img");
+            if (i == str.length) {
+                im.setAttribute("src","../../Content/image/verification-arrow-kiri.png");
+                im.setAttribute("alt","-------->");
+            } else {
+                im.setAttribute("src","../../Content/image/verification-arrow-kanan.png");
+                im.setAttribute("alt","<---------");
+            }
+            img.appendChild(im);
+            line.appendChild(img);
+        }
+        var dec = document.createElement("div");
+        dec.setAttribute("class","description");
+
+        var desc = document.createElement("textarea");
+        desc.setAttribute("rows","1");
+        desc.setAttribute("cols","24");
+        desc.setAttribute("class","textarea-ver");
+        desc.setAttribute("id", "desc" + lineid);
+        if (isPublish == 1 || !isExistRCA) {
+            desc.setAttribute("disabled", "disabled");
+        }
+        desc.innerHTML = descs[lineid] || "";
+        dec.appendChild(desc);
+        line.appendChild(dec);
+        conts.appendChild(line);
+    }
+
+    function save() {
+        var desc = Array();
+        for (var i = 0; i < j; i++) {
+            desc[i] = document.getElementById("desc"+i).value;
+        }
+        createGraph(desc);
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("saveDesc", "RCA")",
+            traditional: true,
+            data: {id: id, desc: desc},
+            success: function () {
+                alert("Save successful!!!");
+            }
+        });
+    }
+
+    function implement() {
+        document.getElementById("id").value = id;
+        document.getElementById("forms").submit();
+    }
+
+    function createGraph(desc) {
+        items = [];
+        var yCount = 0;
+        var why = Array();
+        events = $("#event").val();
+        $(".why").each(function () {
+            var vals = $(this).val();
+            why.push(vals);
+        });
+        var container = document.createElement('div');
+        container.style.width = '850px';
+        container.style.height = '390px';
+
+        // Creates the graph inside the given container
+        editor = new mxEditor();
+        editor.setGraphContainer(container);
+        graph = editor.graph;
+
+        // Disables tooltips on touch devices
+        graph.setTooltips(!mxClient.IS_TOUCH);
+        graph.htmlLabels = true;
+
+        // Set some stylesheet options for the visual appearance of vertices
+        var style = graph.getStylesheet().getDefaultVertexStyle();
+        style[mxConstants.STYLE_SHAPE] = 'label';
+
+        style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+        style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+        if (isTree == '2') {
+            style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+            style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+            style[mxConstants.STYLE_SPACING_LEFT] = 5;
+            style[mxConstants.STYLE_SPACING_TOP] = 0;
+            style[mxConstants.STYLE_SPACING_BOTTOM] = 0;
+            style[mxConstants.STYLE_SPACING_RIGHT] = 0;
+        } else {
+            style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
+            style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+            style[mxConstants.STYLE_SPACING_LEFT] = 5;
+            style[mxConstants.STYLE_SPACING_TOP] = 0;
+            style[mxConstants.STYLE_SPACING_BOTTOM] = 0;
+            style[mxConstants.STYLE_SPACING_RIGHT] = 0;
+            style[mxConstants.STYLE_LABEL_PADDING] = 5;
+        }
+
+        style[mxConstants.STYLE_GRADIENTCOLOR] = '#7d85df';
+        style[mxConstants.STYLE_STROKECOLOR] = '#5d65df';
+        style[mxConstants.STYLE_FILLCOLOR] = '#adc5ff';
+
+        style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
+        style[mxConstants.STYLE_FONTFAMILY] = 'Verdana';
+        style[mxConstants.STYLE_FONTSIZE] = '10';
+        style[mxConstants.STYLE_FONTSTYLE] = '1';
+
+        style[mxConstants.STYLE_SHADOW] = '1';
+        style[mxConstants.STYLE_ROUNDED] = '1';
+        style[mxConstants.STYLE_GLASS] = '1';
+
+        style = new Object();
+        style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+        style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+        style[mxConstants.STYLE_IMAGE] = '/Content/image/3graph/silang.png';
+        style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
+        style[mxConstants.STYLE_IMAGE_WIDTH] = 100;
+        graph.getStylesheet().putCellStyle('image', style);
+
+        mxEdgeStyle.MyStyle = function (state, source, target, points, result) {
+            if (source != null && target != null) {
+                var pt = null;
+                if (parseInt(target.cell.getAttribute('level', '0')) == 1)
+                    var pt = new mxPoint(target.getCenterX() + 100, source.getCenterY());
+                else if (parseInt(target.cell.getAttribute('isDesc', '0')) == 1)
+                    var pt = new mxPoint(target.x - 2, source.getCenterY());
+                else if (parseInt(target.cell.getAttribute('level', '0')) > 1) {
+                    var eC = parseInt(target.cell.getAttribute('eC', '0'));
+                    var par = source.cell;
+                    while (par.getId() != "TreeRoot") {
+                        par = par.getEdgeAt(0).source;
+                    }
+                    var eS = findTotalLevelinRow(target.cell.getAttribute('baris', '-1'), par);
+                    var pt = new mxPoint(source.getCenterX() + (2 / (2 + eS)) * (10 + 50 * (eC) + 20), target.getCenterY());
+                } else
+                    var pt = new mxPoint(target.getCenterX() + 100, source.getCenterY());
+                if (mxUtils.contains(source, pt.x, pt.y)) {
+                    pt.x = source.getCenterX() + 5;
+                }
+
+                result.push(pt);
+            }
+        };
+        mxStyleRegistry.putValue('myEdgeStyle', mxEdgeStyle.MyStyle);
+
+        // Sets the default style for edges
+        style = graph.getStylesheet().getDefaultEdgeStyle();
+        style[mxConstants.STYLE_ROUNDED] = true;
+        style[mxConstants.STYLE_STROKEWIDTH] = 3;
+        if (isTree == '2') {
+            style[mxConstants.STYLE_EXIT_X] = 0.5; // center
+            style[mxConstants.STYLE_EXIT_Y] = 1; // bottom
+            style[mxConstants.STYLE_EXIT_PERIMETER] = 0; // disabled
+            style[mxConstants.STYLE_ENTRY_X] = 0; // center
+            style[mxConstants.STYLE_ENTRY_Y] = 0.5; // top
+            style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
+        } else {
+            style[mxConstants.STYLE_EXIT_X] = 1.0; // centSer
+            style[mxConstants.STYLE_EXIT_Y] = 0.5; // bottom
+            style[mxConstants.STYLE_EXIT_PERIMETER] = 0; // disabled
+            style[mxConstants.STYLE_ENTRY_X] = 0; // center
+            style[mxConstants.STYLE_ENTRY_Y] = 0.5; // top
+            style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
+            style[mxConstants.STYLE_STROKECOLOR] = 'red';
+        }
+
+        if (isTree == '2') {
+            // Disable the following for straight lines
+            style[mxConstants.STYLE_EDGE] = mxEdgeStyle.MyStyle;
+        } else {
+            // Disable the following for straight lines
+            style[mxConstants.STYLE_EDGE] = mxEdgeStyle.SideToSide;
+        }
+
+        // Enables automatic sizing for vertices after editing and
+        // panning by using the left mouse button.
+        graph.setCellsMovable(false);
+        graph.setAutoSizeCells(true);
+        graph.setPanning(true);
+        graph.panningHandler.useLeftButtonForPanning = true;
+
+        // Displays a popupmenu when the user clicks
+        // on a cell (using the left mouse button) but
+        // do not select the cell when the popup menu
+        // is displayed
+        graph.panningHandler.selectOnPopup = false;
+
+        // Stops editing on enter or escape keypress
+        var keyHandler = new mxKeyHandler(graph);
+
+        // Enables automatic layout on the graph and installs
+        // a tree layout for all groups who's children are
+        // being changed, added or removed.
+        var layout = new mxCompactTreeLayout(graph, true);
+        layout.useBoundingBox = false;
+        layout.edgeRouting = false;
+        if (isTree == '2') {
+            layout.levelDistance = 10;
+            layout.nodeDistance = 2;
+            layout.localEdgeProcessing = 20;
+        } else {
+            layout.levelDistance = 25;
+            layout.nodeDistance = 16;
+            layout.localEdgeProcessing = 20;
+        }
+
+        layout.isVertexMovable = function (cell) {
+            return true;
+        };
+
+        if (isTree != '2') {
+            // Allows the layout to move cells even though cells
+            // aren't movable in the graph
+            
+
+            var layoutMgr = new mxLayoutManager(graph);
+
+            layoutMgr.getLayout = function (cell) {
+                if (cell.getChildCount() > 0) {
+                    return layout;
+                }
+            };
+        }
+
+        graph.convertValueToString = function (cell) {
+            if (mxUtils.isNode(cell.value)) {
+                graph.isWrapping(cell);
+                if (isTree == '2') {
+                    return "<h4 style=\"margin:0px;color:#1d258f;text-align:center;\">&nbsp;&nbsp;&nbsp;&nbsp;" + cell.getAttribute('deskripsi', 'no description') +
+                    "&nbsp;&nbsp;&nbsp;&nbsp;</h4>";
+                } else {
+                    var c = Array();
+                    c[0] = cell;
+                    if (cell.getAttribute('type', 'o') == "X") {
+                        graph.setCellStyle("image;", c);
+                    } else if (cell.getAttribute('type', 'o') == "P") {
+                        graph.setCellStyle("strokeColor=green;fillColor=green;", c);
+                    } else if (cell.getAttribute('type', 'o') == "H") {
+                        graph.setCellStyle("strokeColor=yellow;fillColor=yellow;", c);
+                    } else if (cell.getAttribute('type', 'o') == "L") {
+                        graph.setCellStyle("strokeColor=yellow;fillColor=purple;", c);
+                    }
+                    return "<p style=\"margin:0px;width:115px\">&nbsp;</p>" +
+                        "<h4 style=\"margin:0px;color:#1d258f;text-align:center;\">" + cell.getAttribute('deskripsi', 'no description') +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" +
+                        cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;margin:0px;color:black;\">" +
+                        cell.getAttribute('type', '') + "</p>";
+                }
+                //return cell.getAttribute('deskripsi', 'no description');
+            }
+        };
+
+        var cellLabelChanged = graph.cellLabelChanged;
+        graph.cellLabelChanged = function (cell, newValue, autoSize) {
+            if (mxUtils.isNode(cell.value)) {
+                // Clones the value for correct undo/redo
+                var elt = cell.value.cloneNode(true);
+                elt.setAttribute('deskripsi', newValue);
+                newValue = elt;
+            }
+            graph.updateCellSize(cell);
+            cellLabelChanged.apply(this, arguments);
+        };
+
+        // Gets the default parent for inserting new cells. This
+        // is normally the first child of the root (ie. layer 0).
+        var parent = graph.getDefaultParent();
+        var doc = mxUtils.createXmlDocument();
+        var node = doc.createElement('TreeRoot');
+        if (isTree == '2') {
+            node.setAttribute('deskripsi', '');
+            node.setAttribute('level', '0');
+            node.setAttribute('type', 'root');
+            node.setAttribute('path', '');
+            node.setAttribute('analysis', '0');
+            node.setAttribute('eC', '0');
+            node.setAttribute('cancel', '0');
+        } else {
+            if (isTree == "0") {
+                node.setAttribute('deskripsi', list[0][0]);
+            } else {
+                node.setAttribute('deskripsi', '');
+            }
+            node.setAttribute('level', '0');
+            node.setAttribute('type', 'e');
+            node.setAttribute('bobot', '1');
+        }
+
+        if (isTree == "1") {
+            if (fileName == "") {
+                // Adds the root vertex of the tree
+                graph.getModel().beginUpdate();
+                try {
+                    var w = graph.container.offsetWidth;
+
+                    var v1 = graph.insertVertex(parent, 'TreeRoot', node, w / 2 - 60, 20, 120, 40);//graph.insertVertex(parent, 'treeRoot',
+                    //'Organization', w/6 - 15, 20, 70, 30, '');
+                    graph.updateCellSize(v1);
+                    graph.isWrapping(v1);
+                }
+                finally {
+                    // Updates the display
+                    graph.getModel().endUpdate();
+
+                }
+
+            } else {
+                graph.getModel().beginUpdate();
+                try {
+                    var xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=100010055').getXml();
+                    var node = xmlDoc.documentElement;
+                    var dec = new mxCodec(node.ownerDocument);
+                    dec.decode(node, graph.getModel());
+
+
+                }
+                finally {
+                    // Updates the display
+                    graph.getModel().endUpdate();
+                    graph.selectAll();
+                    graph.traverse(graph.getSelectionCell(), false, function (vertex, edge) {
+                        graph.removeSelectionCell(vertex);
+                    });
+
+                }
+            }
+        } else if (isTree == "0") {
+            // Adds the root vertex of the tree
+            graph.getModel().beginUpdate();
+            try {
+                var w = graph.container.offsetWidth;
+
+                var v1 = graph.insertVertex(parent, 'TreeRoot', node, w / 2 - 60, 20, 120, 40);
+                graph.updateCellSize(v1);
+                graph.isWrapping(v1);
+                var prev = v1;
+                var isFirst = true;
+                for (var y in list[0]) {
+                    if (isFirst) {
+                        isFirst = false;
+                    } else {
+                        addChild(graph, prev, doc, list[0][y], false, '1');
+                        if (prev.edges.length == 1) {
+                            prev = prev.getEdgeAt(0).target;
+                        } else {
+                            prev = prev.getEdgeAt(1).target;
+                        }
+                        graph.updateCellSize(prev);
+                    }
+                }
+            }
+            finally {
+                // Updates the display
+                graph.getModel().endUpdate();
+
+            }
+        } else {
+            if (fileName == "") {
+                // jika tidak ada save, dan tidak ada template yang ada
+                // Adds the root vertex of the tree
+                graph.getModel().beginUpdate();
+                try {
+                    var w = graph.container.offsetWidth;
+                    var h = graph.container.offsetHeight;
+                    var totalM = 6;
+                    var v1 = graph.insertVertex(null, 'TreeRoot', node, (totalM / 2 * 200) + 50, h / 2 - 20, 120, 40);
+                    graph.isWrapping(v1);
+                    var v = new Array();
+                    var edge = new Array();
+                    var node2 = new Array();
+                    for (var i = 0; i < totalM; i++) {
+                        node2.push(doc.createElement('TreeRoot'));
+                        node2[i].setAttribute('deskripsi', '');
+                        node2[i].setAttribute('level', '1');
+                        node2[i].setAttribute('type', 'vertex');
+                        node2[i].setAttribute('kolom', Math.floor(i / 2));
+                        node2[i].setAttribute('baris', i % 2);
+                        node2[i].setAttribute('eC', '0');
+                        if (i % 2 == 0) {
+                            v.push(graph.insertVertex(parent, null, node2[i], (Math.floor(i / 2) * 200) + 50, h / 2 - 140, 120, 40));
+                            edge.push(graph.insertEdge(parent, null, '', v1, v[i], "exitX=0;exitY=0.5;entryX=0.5;entryY=1;startArrow=classic;endArrow=none"));
+                        } else {
+                            v.push(graph.insertVertex(parent, null, node2[i], (Math.floor(i / 2) * 200) + 50, h / 2 + 100, 120, 40));
+                            edge.push(graph.insertEdge(parent, null, '', v1, v[i], "exitX=0;exitY=0.5;entryX=0.5;entryY=0;startArrow=classic;endArrow=none"));
+                        }
+                    }
+                    var v20 = graph.insertVertex(parent, null, null, 0, h / 2 - 20, 1, 40, "gradientColor=none;strokeColor=none;fillColor=none");
+                    var edge7 = graph.insertEdge(parent, null, 'Line', v1, v20, "exitX=0;exitY=0.5;entryX=1;entryY=0.5;startArrow=classic;endArrow=none");
+                }
+                finally {
+                    // Updates the display
+                    graph.getModel().endUpdate();
+
+                }
+
+            } else {
+                graph.getModel().beginUpdate();
+                try {
+                    var xmlDoc = null;
+                    if (fileName == "template_" + '@equipmentCode' + ".xml") {
+                        xmlDoc = mxUtils.load('/Content/xml/fishbone_template/' + fileName + '?version=100010055').getXml();
+                    } else {
+                        xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=100010055').getXml();
+                    }
+                    var node = xmlDoc.documentElement;
+                    var dec = new mxCodec(node.ownerDocument);
+                    dec.decode(node, graph.getModel());
+                }
+                finally {
+                    // Updates the display
+                    graph.getModel().endUpdate();
+                }
+            }
+        }
+
+        var model = graph.getModel();
+        var hasil = new Array();
+        var has = new Array();
+        var treeNode;
+        for (var cel in model.cells) {
+            if (model.cells.hasOwnProperty(cel)) {
+                var cell = model.cells[cel];
+                if (cell.vertex == 1 && cell.id != "TreeRoot") {
+                    if (cell.edges.length == 1) {
+                        if (isTree == '2') {
+                            if (parseInt(cell.getAttribute('cancel', '-1'), 10) == 0) {
+                                has.push(cell);
+                            }
+                        } else {
+                            if (parseInt(cell.getAttribute('bobot', '0'), 10) > 0) {
+                                has.push(cell);
+                            }
+                        }
+                    }
+                } else if (cell.id == "TreeRoot") {
+                    treeNode = cell;
+                }
+            }
+        }
+
+        var s = 0;
+        for (var is in has) {
+            addChild(graph, has[is], doc, desc[s], true);
+            s++;
+        }
+
+        // Fix for wrong preferred size
+        var oldGetPreferredSizeForCell = graph.getPreferredSizeForCell;
+        graph.getPreferredSizeForCell = function (cell) {
+            var result = oldGetPreferredSizeForCell.apply(this, arguments);
+
+            if (result != null) {
+                result.width = Math.max(120, result.width);
+                result.height = 40;
+            }
+
+            return result;
+        };
+
+        exportImage(editor);
+    }
+
+    function addChild(graph, cell, doc, desc, dd) {
+        var model = graph.getModel();
+        var parent = graph.getDefaultParent();
+        var level = parseInt(cell.getAttribute('level'), 10) + 1;
+        var desc = desc || "";
+        var dd = dd || false;
+        var node = doc.createElement('CellNode');
+        node.setAttribute('deskripsi', desc);
+        if (isTree == '2') {
+            node.setAttribute('level', level);
+            node.setAttribute('type', 'child');
+            node.setAttribute('kolom', cell.getAttribute('kolom', 0));
+            node.setAttribute('baris', cell.getAttribute('baris', 0));
+            node.setAttribute('eC', dfsCountEdge(cell));
+            node.setAttribute('cancel', '0');
+            node.setAttribute('isDesc', '1');
+            var edit = new mxCellAttributeChange(cell, 'eC', dfsCountEdge(cell));
+        } else {
+            node.setAttribute('level', level);
+            if (level == 1) {
+                node.setAttribute('type', 'M');
+            } else {
+                node.setAttribute('type', '');
+            }
+            node.setAttribute('bobot', '');
+            if (dd) {
+                node.setAttribute('bobot', '');
+                node.setAttribute('type', '');
+            }
+        }
+        model.beginUpdate();
+        try {
+            if (isTree == '2') {
+                isBone = true;
+                var edgeCount = dfsCountEdge(cell);
+                //model.execute(edit);
+                var vertex = graph.insertVertex(parent, null, node, cell.getGeometry().getCenterX() + cell.getGeometry().width, cell.getGeometry().y);
+                var geometry = model.getGeometry(vertex);
+
+                //alert(cell.getEdgeAt(0).source.getId());
+                recurseFishBone(cell, model, graph, vertex, vertex);
+            } else {
+                var vertex = graph.insertVertex(parent, null, node);
+                var geometry = model.getGeometry(vertex);
+            }
+
+            // Updates the geometry of the vertex with the
+            // preferred size computed in the graph
+            //var size = graph.getPreferredSizeForCell(vertex);
+            geometry.width = 120;
+            geometry.height = 40;
+
+            if (isTree != '2')
+                geometry.x = graph.getGraphBounds().width - 120;
+
+            // Adds the edge between the existing cell
+            // and the new vertex and executes the
+            // automatic layout on the parent
+            if (isTree == '2') {
+                if (!dd) {
+                    var edge = graph.insertEdge(parent, null, '', cell, vertex, "exitY=0;startArrow=none;endArrow=none");
+                } else {
+                    var edge = graph.insertEdge(parent, null, '', cell, vertex, "exitY=0.5;exitX=1;startArrow=classic;endArrow=none");
+                }
+            } else {
+                if (!dd) {
+                    var edge = graph.insertEdge(parent, null, '', cell, vertex);
+                } else {
+                    var edge = graph.insertEdge(parent, null, '', cell, vertex, "startArrow=classic;endArrow=none");
+                }
+            }
+
+            // Configures the edge label "in-place" to reside
+            // at the end of the edge (x = 1) and with an offset
+            // of 20 pixels in negative, vertical direction.
+            edge.geometry.x = 1;
+            edge.geometry.y = 0;
+            edge.geometry.offset = new mxPoint(0, -20);
+
+            //graph.isWrapping(vertex);
+            if (isTree != '2')
+                graph.updateCellSize(vertex);
+        }
+        finally {
+            model.endUpdate();
+        }
+    };
+
+    function recurseFishBone(cell, model, graph, vertex, prev) {
+        var par = cell;
+        if (par.getId() == 'TreeRoot' || par.getAttribute('level', '') == 0) {
+            var edges = par.edges;
+            var dfs = 0;
+            var dfss = dfsCountEdge(prev) + 1;
+            var total = findTotalLevelinRow(prev.getAttribute('baris', '-1'), par);
+            var tot = findTotalLevelinColumn(prev.getAttribute('kolom', '-1'), par);
+            var col = dfsFindDeep(prev);
+            var isAdd = false;
+            var addValue = 0;
+            if (prev.getAttribute('baris', '-1') == '0') {
+                for (var has in edges) {
+                    if (parseInt(edges[has].target.getAttribute('kolom', '-1')) == (parseInt(prev.getAttribute('kolom', '-1')) + 1) && isAdd == false) {
+                        if (vertex.getGeometry().getCenterX() + 140 > edges[has].target.getGeometry().getCenterX()) {
+                            isAdd = true;
+                            addValue = 140 - (edges[has].target.getGeometry().getCenterX() - vertex.getGeometry().getCenterX());
+                        }
+                    }
+
+                    if (isAdd && parseInt(edges[has].target.getAttribute('kolom', '-1')) > 0) {
+                        edges[has].target.getGeometry().x += addValue;
+                        dfsMoveX(edges[has].target, model, addValue);
+                    }
+
+                    var changeGeometri = new mxGeometryChange(model, edges[has].target, edges[has].target.getGeometry());
+                    model.execute(changeGeometri);
+                    if (edges[has].target == par) {
+                    } else {
+                        var edit = new mxCellAttributeChange(edges[has].target, 'eC', dfs);
+                        //model.execute(edit);
+                        dfs += dfsCountEdge(edges[has].target) + 1;
+                    }
+                }
+                var geometri = par.getGeometry();
+
+                if (isAdd == false && vertex.getGeometry().getCenterX() + 140 > par.getGeometry().getCenterX()) {
+                    isAdd = true;
+                    addValue = 140 - (par.getGeometry().getCenterX() - vertex.getGeometry().getCenterX());
+                }
+                if (isAdd) {
+                    geometri.x += addValue;
+                }
+                var changeGeometri = new mxGeometryChange(model, par, geometri);
+                model.execute(changeGeometri);
+            } else {
+                for (var has in edges) {
+                    if (parseInt(edges[has].target.getAttribute('kolom', '-1')) == (parseInt(prev.getAttribute('kolom', '-1')) + 1) && isAdd == false) {
+                        if (vertex.getGeometry().getCenterX() + 140 > edges[has].target.getGeometry().getCenterX()) {
+                            isAdd = true;
+                            addValue = 140 - (edges[has].target.getGeometry().getCenterX() - vertex.getGeometry().getCenterX());
+                        }
+                    }
+
+                    if (isAdd && parseInt(edges[has].target.getAttribute('kolom', '-1')) > 0) {
+                        edges[has].target.getGeometry().x += addValue;
+                        dfsMoveX(edges[has].target, model, addValue);
+                    }
+                    var changeGeometri = new mxGeometryChange(model, edges[has].target, edges[has].target.getGeometry());
+                    model.execute(changeGeometri);
+                    if (edges[has].target == par) {
+                    } else {
+                        var edit = new mxCellAttributeChange(edges[has].target, 'eC', dfs);
+                        //model.execute(edit);
+                        dfs += dfsCountEdge(edges[has].target) + 1;
+                    }
+                    //model.execute(edges[has].target);
+                }
+                var geometri = par.getGeometry();
+                if (isAdd == false && vertex.getGeometry().getCenterX() + 140 > par.getGeometry().getCenterX()) {
+                    isAdd = true;
+                    addValue = 140 - (par.getGeometry().getCenterX() - vertex.getGeometry().getCenterX());
+                }
+
+                if (isAdd) {
+                    geometri.x += addValue;
+                }
+                var changeGeometri = new mxGeometryChange(model, par, geometri);
+                model.execute(changeGeometri);
+            }
+        } else {
+            var isChange = false;
+            var edges = par.edges;
+            var dfs = 0;
+            var isNew = true;
+            for (var e in edges) {
+                if (edges[e].target == par) {
+                } else if (edges[e].target == prev) {
+                    var edit = new mxCellAttributeChange(edges[e].target, 'eC', dfs);
+                    //model.execute(edit);
+                    //alert("count = " + dfsCountEdge(edges[e].target) + "  " + isNew);
+                    dfs += dfsCountEdge(edges[e].target) + (isNew ? 2 : 1);
+                    isNew = false;
+                } else {
+                    var edit = new mxCellAttributeChange(edges[e].target, 'eC', dfs);
+                    //model.execute(edit);
+                    //alert("count = " + dfsCountEdge(edges[e].target) + "  " + isNew);
+                    dfs += dfsCountEdge(edges[e].target) + 1;
+                }
+            }
+            recurseFishBone(cell.getEdgeAt(0).source, model, graph, vertex, cell);
+        }
+    }
+
+    function findTotalLevelinRow(row, root) {
+        var edges = root.edges;
+        var dfs = 0;
+        var a = 0;
+        for (var has in edges) {
+            if (edges[has].target.getAttribute('baris', '-1') == row) {
+                if (dfs < (a = dfsCountEdge(edges[has].target))) {
+                    dfs = a;
+                }
+            }
+        }
+        return dfs;
+    }
+
+    function findTotalLevelinColumn(column, root) {
+        var edges = root.edges;
+        var dfs = 0;
+        var a = 0;
+        for (var has in edges) {
+            if (edges[has].target.getAttribute('kolom', '-1') == column) {
+                if (dfs < (a = dfsFindDeep(edges[has].target))) {
+                    dfs = a;
+                }
+            }
+        }
+        return dfs;
+    }
+
+    function dfsFindDeep(root) {
+        var edgeCount = 0;
+        var temp = 0;
+        var i = 0;
+        for (var e in root.edges) {
+            if (root.edges[e].target != root) {
+                i++;
+                if (root.edges[e].target.getEdgeCount() > 1) {
+                    temp = i * 50 + dfsFindDeep(root.edges[e].target) + 60;
+                    if (temp > edgeCount) {
+                        edgeCount = temp;
+                    }
+                } else {
+                    if (edgeCount < i * 50) {
+                        edgeCount = i * 50;
+                    }
+                }
+            }
+        }
+        if (temp > edgeCount) edgeCount = temp;
+        return edgeCount;
+    }
+
+    function dfsCountEdge(root) {
+        var edgeCount = 0;
+        for (var e in root.edges) {
+            if (root.edges[e].target != root) {
+                if (root.edges[e].target.getAttribute('isDesc', '-1') != "1") {
+                    if (root.edges[e].target.getEdgeCount() > 1) {
+                        edgeCount += dfsCountEdge(root.edges[e].target) + 1;
+                    } else {
+                        edgeCount += 1;
+                    }
+                }
+            }
+        }
+        return edgeCount;
+    }
+
+    function dfsMoveX(root, model, addValue) {
+        var edges = root.edges;
+        for (var e in edges) {
+            if (edges[e].target != root) {
+                if (edges[e].target.getEdgeCount() > 1) {
+                    dfsMoveX(edges[e].target, model, addValue);
+                }
+                edges[e].target.getGeometry().x += addValue;
+                var changeGeometri = new mxGeometryChange(model, edges[e].target, edges[e].target.getGeometry());
+                model.execute(changeGeometri);
+            }
+        }
+    }
+
+    function exportImage(editor) {
+        var scale = 1;
+        var bounds = graph.getGraphBounds();
+
+        // Creates XML node to hold output
+        var xmlDoc = mxUtils.createXmlDocument();
+        var root = xmlDoc.createElement('output');
+        xmlDoc.appendChild(root);
+
+        // Creates interface for rendering output
+        var xmlCanvas = new mxXmlCanvas2D(root);
+        xmlCanvas.scale(scale);
+        xmlCanvas.translate(Math.round(-bounds.x * scale), Math.round(-bounds.y * scale));
+
+        // Renders output to interface
+        var imgExport = new mxImageExport();
+        imgExport.drawState(graph.getView().getState(graph.model.root), xmlCanvas);
+
+        // Puts request data together
+        var filename = 'images'+id+'.png';
+        var format = 'png';
+        var bg = '#FFFFFF';
+        var w = Math.round((bounds.width + 4) * scale);
+        var h = Math.round((bounds.height + 4) * scale);
+        var xml = mxUtils.getXml(root);
+
+        // Compression is currently not used in this example
+        // Requires base64.js and redeflate.js
+        // xml = encodeURIComponent(Base64.encode(RawDeflate.deflate(xml), true));
+        if (isTree != '2') {
+            new mxXmlRequest('@Url.Action("SaveFullImage", "RCA")', 'filename=' + filename +
+                '&format=' + format + '&bg=' + bg + '&w=' + w + '&h=' + h + '&xml=' +
+                encodeURIComponent(xml), 'POST', true).send();
+        } else {
+            new mxXmlRequest('@Url.Action("SaveFullImage2", "RCA")', 'filename=' + filename +
+                '&format=' + format + '&bg=' + bg + '&w=' + w + '&h=' + h + '&xml=' +
+                encodeURIComponent(xml), 'POST', true).send();
+        }
+    }
+</script>
+
+<h2>Verification</h2>
+<div id="container">
+</div>
+<div class ="submit">
+    <form method="post" action="@Url.Action("implementation","RCA")" id="forms">
+        <input type="hidden" id="id" name="id" value="" />
+    </form>
+    <input id="back" type="button" name="back" value="back" onclick="javascript: history.go(-1)"/>
+    <input id="save" type="button" name="save" value="save" onclick="save()"/>
+    <input id="implementasi" type="button" name="implementasi" value="implementasi" onclick="implement()"/>
+</div>
+
+

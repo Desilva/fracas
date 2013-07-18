@@ -1,0 +1,192 @@
+﻿@model StarEnergi.Models.EquipmentEntity
+
+@{
+    ViewBag.Title = "Details";
+}
+<script type="text/javascript">
+    function edit() {
+        $('#content').load('equipment/edit/' + '@Model.equipment.id');
+    }
+
+    function OnRowDataBound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        if (dataItem.status == 1) {
+            row.cells[5].innerHTML = 'Running';
+        } else {
+            row.cells[5].innerHTML = 'Down';
+            row.cells[5].style.color = 'red';
+        }
+
+    }
+</script>
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Equipment</legend>
+
+    <div class="display-label">Tag Number</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.tag_num)
+    </div>
+
+    <div class="display-label">Nama</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.nama)
+    </div>
+
+    <div class="display-label">Econ</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.econ)
+    </div>
+
+    <div class="display-label">Ram Crit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.ram_crit)
+    </div>
+
+    <div class="display-label">PDF</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.pdf)
+    </div>
+
+    <div class="display-label">Discipline</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.discipline.title)
+    </div>
+
+    <div class="display-label">MTBF</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.mtbf)
+    </div>
+
+    <div class="display-label">MTTR</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.mttr)
+    </div>
+
+    <div class="display-label">MDT</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.mdt)
+    </div>
+
+    <div class="display-label">Status</div>
+    <div class="display-field">@ViewBag.status</div>
+
+    <div class="display-label">Installed Date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.installed_date)
+    </div>
+
+    <div class="display-label">Obsolote Date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.obsolete_date)
+    </div>
+
+    <div class="display-label">Sertifikasi</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.sertifikasi)
+    </div>
+
+    <div class="display-label">Warranty</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.warranty)
+    </div>
+
+    <div class="display-label">Manufacture</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.vendor)
+    </div>
+
+    <div class="display-label">Equipment Class</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.tag_types.title)
+    </div>
+
+    <div class="display-label">Data Sheet</div>
+    <div class="display-field">
+        @{  if (Model.equipment.data_sheet_path == null){
+                Html.Display("~");
+            }else{
+               @Html.ActionLink(Model.equipment.data_sheet_path, "Download" + "/" + Model.equipment.id, "Download")
+            }
+         }
+    </div>
+   <p>
+        <input type="button" value="Edit" onclick="edit()" />
+    </p>
+</fieldset>
+<!--
+<fieldset>
+    <legend>Sub Equipment Equipment @Model.equipment.tag_num</legend>
+    <br/>
+    @(Html.Telerik().Grid<StarEnergi.Models.EquipmentPartEntity>()
+        .TableHtmlAttributes(new { style = "width:640px" })
+        .Name("EquipmentPartDetail")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "Equipment");
+
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.ForeignKey(o => o.id_parts,
+              new SelectList((System.Collections.Generic.IEnumerable<StarEnergi.Models.part>)ViewData["parts"], "id", "tag_number")).Width(150).Title("Tag Number");
+            columns.Bound(o => o.installed_date).Width(190).Title("Installed Date");
+            columns.Bound(o => o.mtbf).Title("MTBF").ReadOnly();
+            columns.Bound(o => o.status).Title("Status").ReadOnly();
+
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBound")
+        )
+        .DetailView(details => details.ClientTemplate(
+            Html.Telerik().Grid<StarEnergi.Models.ComponentEntity>()
+                .Name("Parts_<#= id #>")
+                .Columns(columns =>
+                {
+                    columns.Bound(o => o.id_component).Hidden();
+                    columns.Bound(o => o.tag_number).Width(140).Title("Tag Number");
+                    columns.Bound(o => o.description).Width(200);
+                })
+                .DetailView(ordersDetailView => ordersDetailView.ClientTemplate(
+                    Html.Telerik().Grid<StarEnergi.Models.SubComponentEntity>()
+                        .Name("Components_<#= id_component #>")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(o => o.id_sub_component).Hidden();
+                            columns.Bound(o => o.tag_number).Width(140).Title("Tag Number");
+                            columns.Bound(o => o.description).Width(200);
+                        })
+                        .DataBinding(dataBinding => dataBinding.Ajax()
+                            .Select("_ComponentsForSubHierarchyAjax", "Equipment", new { idComponent = "<#= id_component #>"})
+                        )
+                        .Pageable()
+                        .Sortable()
+                        .ToHtmlString()
+                    ))
+                .DataBinding(dataBinding => dataBinding.Ajax()
+                    .Select("_PartsForComponentHierarchyAjax", "Equipment", new { idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
+                )
+                    
+                .Pageable()
+                .Sortable()
+                .Filterable()
+                .ToHtmlString()
+        ))
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height("250"))
+        .Selectable()
+    ) 
+</fieldset>
+-->

@@ -1,0 +1,1548 @@
+﻿@{
+    int? id = null;
+    bool isEdit = false;
+    StarEnergi.Models.daily_log dl = new StarEnergi.Models.daily_log();
+    if (ViewBag.mod != null)
+    {
+        id = ViewBag.mod as Nullable<Int32>;
+        dl = ViewBag.datas as StarEnergi.Models.daily_log;
+        isEdit = true;
+    }
+    string username = HttpContext.Current.Session["username"] as string;
+    string parseValue = "";
+    int userShift = 0;
+    if (username == dl.user_shift1)
+    {
+        userShift = 1;
+        parseValue = "sh1_";
+    }
+    else
+    {
+        if (dl.is_approve != null && dl.is_approve == 1)
+        {
+            userShift = 2;
+            parseValue = "sh2_";
+        }
+    }
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<script>
+    var isEdit = '@isEdit';
+    var isSave = false;
+    var parseValue = '@parseValue';
+    var userShift = parseInt('@userShift');
+    function setIframeHeight(sel, h) {
+        $(sel).height(h);
+    }
+
+    function changeInput(radio) {
+        var radios = document.getElementsByName(radio.id);
+        var val = -1;
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val = radios[i].value;
+            }
+        }
+        var a = "abcd";
+
+        a.su
+        if (val == 1) {
+            var td = document.getElementById(radio.id.substr(0,5));
+            td.className = "yellow-bg center";
+            td.setAttribute('colspan',"3");
+            td.innerHTML = "<input type='text' id='" + radio.id.substr(0, 5) + "_fcv' name='" + radio.id.substr(0, 5) + "_fcv' style='width:150px' />";
+            td.parentElement.removeChild(td.nextElementSibling);
+            td.parentElement.removeChild(td.nextElementSibling);
+        } else {
+            var td = document.getElementById(radio.id.substr(0, 5));
+            td.className = "gray-bg center number";
+            td.removeAttribute('colspan');
+            td.innerHTML = "<input type='text' id='" + radio.id.substr(0, 5) + "_fcv' name='" + radio.id.substr(0, 5) + "_fcv' style='width:50px' />";
+
+            var newTd = document.createElement('td');
+            newTd.className = "gray-bg center number";
+            newTd.innerHTML = "<input type='text' id='" + radio.id.substr(0, 5) + "_flow' name='" + radio.id.substr(0, 5) + "_flow' style='width:50px' />";
+            td.parentElement.insertBefore(newTd, td.nextElementSibling);
+
+            var newTd2 = document.createElement('td');
+            newTd2.className = "gray-bg center number";
+            newTd2.innerHTML = "<input type='text' id='" + radio.id.substr(0, 5) + "_whp' name='" + radio.id.substr(0, 5) + "_whp' style='width:50px' />";
+            td.parentElement.insertBefore(newTd2, td.nextElementSibling);
+        }
+    }
+
+    function save() {
+        isSave = true;
+        var val = new Array();
+
+        var radios = document.getElementsByName("wma_2_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wma_4_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wma_6_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbd_1_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbd_2_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbd_3_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbd_4_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbd_5_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wwq_1_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wwq_2_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wwq_3_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wwq_4_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wwq_5_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbe_3_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbe_4_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mba_1_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mba_2_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mba_3_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mba_4_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mba_5_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbb_1_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbb_2_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbb_3_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbb_4_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbb_5_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("mbb_6_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wwf_1_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wwf_3_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("www_1_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        radios = document.getElementsByName("wwp_1_is_text");
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val.push(radios[i].value);
+            }
+        }
+
+        if (validate()) {
+            var values = {
+                date: userShift == 2 ? $("#date").is(":disabled") ? '@dl.date' : parseValue + $('#date').val() : ($('#date').val() != null && $('#date').val() != '' ? parseValue + $('#date').val() : ''),
+                grup: userShift == 2 ? $('#grup').is(':disabled') ? '@dl.grup' : parseValue + $('#grup').val() : ($('#grup').val() != null && $('#grup').val() != '' ? parseValue + $('#grup').val() : ''),
+                production_foreman: userShift == 2 ? $('#production_foreman').is(':disabled') ? '@dl.production_foreman' : parseValue + $('#production_foreman').val() : ($('#production_foreman').val() != null && $('#production_foreman').val() != '' ? parseValue + $('#production_foreman').val() : ''),
+                production_operator_1: userShift == 2 ? $('#production_operator_1').is(':disabled') ? '@dl.production_operator_1' : parseValue + $('#production_operator_1').val() : ($('#production_operator_1').val() != null && $('#production_operator_1').val() != '' ? parseValue + $('#production_operator_1').val() : ''),
+                production_operator_2: userShift == 2 ? $('#production_operator_2').is(':disabled') ? '@dl.production_operator_2' : parseValue + $('#production_operator_2').val() : ($('#production_operator_2').val() != null && $('#production_operator_2').val() != '' ? parseValue + $('#production_operator_2').val() : ''),
+                production_operator_3: userShift == 2 ? $('#production_operator_3').is(':disabled') ? '@dl.production_operator_3' : parseValue + $('#production_operator_3').val() : ($('#production_operator_3').val() != null && $('#production_operator_3').val() != '' ? parseValue + $('#production_operator_3').val() : ''),
+                production_operator_4: userShift == 2 ? $('#production_operator_4').is(':disabled') ? '@dl.production_operator_4' : parseValue + $('#production_operator_4').val() : ($('#production_operator_4').val() != null && $('#production_operator_4').val() != '' ? parseValue + $('#production_operator_4').val() : ''),
+                production_operator_5: userShift == 2 ? $('#production_operator_5').is(':disabled') ? '@dl.production_operator_5' : parseValue + $('#production_operator_5').val() : ($('#production_operator_5').val() != null && $('#production_operator_5').val() != '' ? parseValue + $('#production_operator_5').val() : ''),
+                production_operator_6: userShift == 2 ? $('#production_operator_6').is(':disabled') ? '@dl.production_operator_6' : parseValue + $('#production_operator_6').val() : ($('#production_operator_6').val() != null && $('#production_operator_6').val() != '' ? parseValue + $('#production_operator_6').val() : ''),
+                production_operator_7: userShift == 2 ? $('#production_operator_7').is(':disabled') ? '@dl.production_operator_7' : parseValue + $('#production_operator_7').val() : ($('#production_operator_7').val() != null && $('#production_operator_7').val() != '' ? parseValue + $('#production_operator_7').val() : ''),
+                production_operator_8: userShift == 2 ? $('#production_operator_8').is(':disabled') ? '@dl.production_operator_8' : parseValue + $('#production_operator_8').val() : ($('#production_operator_8').val() != null && $('#production_operator_8').val() != '' ? parseValue + $('#production_operator_8').val() : ''),
+                time_check: $('#time_check').val() != null && $('#time_check').val() != '' ? $('#time_check').val() : '',
+                wma_2_is_text: val[0],
+                wma_4_is_text: val[1],
+                wma_6_is_text: val[2],
+                mbd_1_is_text: val[3],
+                mbd_2_is_text: val[4],
+                mbd_3_is_text: val[5],
+                mbd_4_is_text: val[6],
+                mbd_5_is_text: val[7],
+                wwq_1_is_text: val[8],
+                wwq_2_is_text: val[9],
+                wwq_3_is_text: val[10],
+                wwq_4_is_text: val[11],
+                wwq_5_is_text: val[12],
+                mbe_3_is_text: val[13],
+                mbe_4_is_text: val[14],
+                mba_1_is_text: val[15],
+                mba_2_is_text: val[16],
+                mba_3_is_text: val[17],
+                mba_4_is_text: val[18],
+                mba_5_is_text: val[19],
+                mbb_1_is_text: val[20],
+                mbb_2_is_text: val[21],
+                mbb_3_is_text: val[22],
+                mbb_4_is_text: val[23],
+                mbb_5_is_text: val[24],
+                mbb_6_is_text: val[25],
+                wwf_1_is_text: val[26],
+                wwf_3_is_text: val[27],
+                www_1_is_text: val[28],
+                wwp_1_is_text: val[29],
+                wma_2_fcv: $('#wma_2_fcv').val() != null && $('#wma_2_fcv').val() != '' ? $('#wma_2_fcv').val() : '',
+                wma_2_flow: val[0] == 0 ? $('#wma_2_flow').val() != null && $('#wma_2_flow').val() != '' ? $('#wma_2_flow').val() : '' : '',
+                wma_2_whp: val[0] == 0 ? $('#wma_2_whp').val() != null && $('#wma_2_whp').val() != '' ? $('#wma_2_whp').val() : '' : '',
+                wma_4_fcv: userShift == 2 ? $('#wma_4_fcv').is(':disabled') ? '@dl.wma_4_fcv' : parseValue + $('#wma_4_fcv').val() : ($('#wma_4_fcv').val() != null && $('#wma_4_fcv').val() != '' ? parseValue + $('#wma_4_fcv').val() : ''),
+                wma_4_flow: val[1] == 0 ? userShift == 2 ? $('#wma_4_flow').is(':disabled') ? '@dl.wma_4_flow' : parseValue + $('#wma_4_flow').val() : ($('#wma_4_flow').val() != null && $('#wma_4_flow').val() != '' ? parseValue + $('#wma_4_flow').val() : '') : '',
+                wma_4_whp: val[1] == 0 ? userShift == 2 ? $('#wma_4_whp').is(':disabled') ? '@dl.wma_4_whp' : parseValue + $('#wma_4_whp').val() : ($('#wma_4_whp').val() != null && $('#wma_4_whp').val() != '' ? parseValue + $('#wma_4_whp').val() : '') : '',
+                wma_6_fcv: userShift == 2 ? $('#wma_2_fcv').is(':disabled') ? '@dl.wma_2_fcv' : parseValue + $('#wma_2_fcv').val() : ($('#wma_2_fcv').val() != null && $('#wma_2_fcv').val() != '' ? parseValue + $('#wma_2_fcv').val() : ''),
+                wma_6_flow: val[2] == 0 ? userShift == 2 ? $('#wma_6_flow').is(':disabled') ? '@dl.wma_6_flow' : parseValue + $('#wma_6_flow').val() : ($('#wma_6_flow').val() != null && $('#wma_6_flow').val() != '' ? parseValue + $('#wma_6_flow').val() : '') : '',
+                wma_6_whp: val[2] == 0 ? userShift == 2 ? $('#wma_6_whp').is(':disabled') ? '@dl.wma_6_whp' : parseValue + $('#wma_6_whp').val() : ($('#wma_6_whp').val() != null && $('#wma_6_whp').val() != '' ? parseValue + $('#wma_6_whp').val() : '') : '',
+                mbd_1_fcv: userShift == 2 ? $('#mbd_1_fcv').is(':disabled') ? '@dl.mbd_1_fcv' : parseValue + $('#mbd_1_fcv').val() : ($('#mbd_1_fcv').val() != null && $('#mbd_1_fcv').val() != '' ? parseValue + $('#mbd_1_fcv').val() : ''),
+                mbd_1_flow: val[3] == 0 ? userShift == 2 ? $('#mbd_1_flow').is(':disabled') ? '@dl.mbd_1_flow' : parseValue + $('#mbd_1_flow').val() : ($('#mbd_1_flow').val() != null && $('#mbd_1_flow').val() != '' ? parseValue + $('#mbd_1_flow').val() : '') : '',
+                mbd_1_whp: val[3] == 0 ? userShift == 2 ? $('#mbd_1_whp').is(':disabled') ? '@dl.mbd_1_whp' : parseValue + $('#mbd_1_whp').val() : ($('#mbd_1_whp').val() != null && $('#mbd_1_whp').val() != '' ? parseValue + $('#mbd_1_whp').val() : '') : '',
+                mbd_2_fcv: userShift == 2 ? $('#mbd_2_fcv').is(':disabled') ? '@dl.mbd_2_fcv' : parseValue + $('#mbd_2_fcv').val() : ($('#mbd_2_fcv').val() != null && $('#mbd_2_fcv').val() != '' ? parseValue + $('#mbd_2_fcv').val() : ''),
+                mbd_2_flow: val[4] == 0 ? userShift == 2 ? $('#mbd_2_flow').is(':disabled') ? '@dl.mbd_2_flow' : parseValue + $('#mbd_2_flow').val() : ($('#mbd_2_flow').val() != null && $('#mbd_2_flow').val() != '' ? parseValue + $('#mbd_2_flow').val() : '') : '',
+                mbd_2_whp: val[4] == 0 ? userShift == 2 ? $('#mbd_2_whp').is(':disabled') ? '@dl.mbd_2_whp' : parseValue + $('#mbd_2_whp').val() : ($('#mbd_2_whp').val() != null && $('#mbd_2_whp').val() != '' ? parseValue + $('#mbd_2_whp').val() : '') : '',
+                mbd_3_fcv: userShift == 2 ? $('#mbd_3_fcv').is(':disabled') ? '@dl.mbd_3_fcv' : parseValue + $('#mbd_3_fcv').val() : ($('#mbd_3_fcv').val() != null && $('#mbd_3_fcv').val() != '' ? parseValue + $('#mbd_3_fcv').val() : ''),
+                mbd_3_flow: val[5] == 0 ? userShift == 2 ? $('#mbd_3_flow').is(':disabled') ? '@dl.mbd_3_flow' : parseValue + $('#mbd_3_flow').val() : ($('#mbd_3_flow').val() != null && $('#mbd_3_flow').val() != '' ? parseValue + $('#mbd_3_flow').val() : '') : '',
+                mbd_3_whp: val[5] == 0 ? userShift == 2 ? $('#mbd_3_whp').is(':disabled') ? '@dl.mbd_3_whp' : parseValue + $('#mbd_3_whp').val() : ($('#mbd_3_whp').val() != null && $('#mbd_3_whp').val() != '' ? parseValue + $('#mbd_3_whp').val() : '') : '',
+                mbd_4_fcv: userShift == 2 ? $('#mbd_4_fcv').is(':disabled') ? '@dl.mbd_4_fcv' : parseValue + $('#mbd_4_fcv').val() : ($('#mbd_4_fcv').val() != null && $('#mbd_4_fcv').val() != '' ? parseValue + $('#mbd_4_fcv').val() : ''),
+                mbd_4_flow: val[6] == 0 ? userShift == 2 ? $('#mbd_4_flow').is(':disabled') ? '@dl.mbd_4_flow' : parseValue + $('#mbd_4_flow').val() : ($('#mbd_4_flow').val() != null && $('#mbd_4_flow').val() != '' ? parseValue + $('#mbd_4_flow').val() : '') : '',
+                mbd_4_whp: val[6] == 0 ? userShift == 2 ? $('#mbd_4_whp').is(':disabled') ? '@dl.mbd_4_whp' : parseValue + $('#mbd_4_whp').val() : ($('#mbd_4_whp').val() != null && $('#mbd_4_whp').val() != '' ? parseValue + $('#mbd_4_whp').val() : '') : '',
+                mbd_5_fcv: userShift == 2 ? $('#mbd_5_fcv').is(':disabled') ? '@dl.mbd_5_fcv' : parseValue + $('#mbd_5_fcv').val() : ($('#mbd_5_fcv').val() != null && $('#mbd_5_fcv').val() != '' ? parseValue + $('#mbd_5_fcv').val() : ''),
+                mbd_5_flow: val[7] == 0 ? userShift == 2 ? $('#mbd_5_flow').is(':disabled') ? '@dl.mbd_5_flow' : parseValue + $('#mbd_5_flow').val() : ($('#mbd_5_flow').val() != null && $('#mbd_5_flow').val() != '' ? parseValue + $('#mbd_5_flow').val() : '') : '',
+                mbd_5_whp: val[7] == 0 ? userShift == 2 ? $('#mbd_5_whp').is(':disabled') ? '@dl.mbd_5_whp' : parseValue + $('#mbd_5_whp').val() : ($('#mbd_5_whp').val() != null && $('#mbd_5_whp').val() != '' ? parseValue + $('#mbd_5_whp').val() : '') : '',
+                wwq_1_fcv: userShift == 2 ? $('#wwq_1_fcv').is(':disabled') ? '@dl.wwq_1_fcv' : parseValue + $('#wwq_1_fcv').val() : ($('#wwq_1_fcv').val() != null && $('#wwq_1_fcv').val() != '' ? parseValue + $('#wwq_1_fcv').val() : ''),
+                wwq_1_flow: val[8] == 0 ? userShift == 2 ? $('#wwq_1_flow').is(':disabled') ? '@dl.wwq_1_flow' : parseValue + $('#wwq_1_flow').val() : ($('#wwq_1_flow').val() != null && $('#wwq_1_flow').val() != '' ? parseValue + $('#wwq_1_flow').val() : '') : '',
+                wwq_1_whp: val[8] == 0 ? userShift == 2 ? $('#wwq_1_whp').is(':disabled') ? '@dl.wwq_1_whp' : parseValue + $('#wwq_1_whp').val() : ($('#wwq_1_whp').val() != null && $('#wwq_1_whp').val() != '' ? parseValue + $('#wwq_1_whp').val() : '') : '',
+                wwq_2_fcv: userShift == 2 ? $('#wwq_2_fcv').is(':disabled') ? '@dl.wwq_2_fcv' : parseValue + $('#wwq_2_fcv').val() : ($('#wwq_2_fcv').val() != null && $('#wwq_2_fcv').val() != '' ? parseValue + $('#wwq_2_fcv').val() : ''),
+                wwq_2_flow: val[9] == 0 ? userShift == 2 ? $('#wwq_2_flow').is(':disabled') ? '@dl.wwq_2_flow' : parseValue + $('#wwq_2_flow').val() : ($('#wwq_2_flow').val() != null && $('#wwq_2_flow').val() != '' ? parseValue + $('#wwq_2_flow').val() : '') : '',
+                wwq_2_whp: val[9] == 0 ? userShift == 2 ? $('#wwq_2_whp').is(':disabled') ? '@dl.wwq_2_whp' : parseValue + $('#wwq_2_whp').val() : ($('#wwq_2_whp').val() != null && $('#wwq_2_whp').val() != '' ? parseValue + $('#wwq_2_whp').val() : '') : '',
+                wwq_3_fcv: userShift == 2 ? $('#wwq_3_fcv').is(':disabled') ? '@dl.wwq_3_fcv' : parseValue + $('#wwq_3_fcv').val() : ($('#wwq_3_fcv').val() != null && $('#wwq_3_fcv').val() != '' ? parseValue + $('#wwq_3_fcv').val() : ''),
+                wwq_3_flow: val[10] == 0 ? userShift == 2 ? $('#wwq_3_flow').is(':disabled') ? '@dl.wwq_3_flow' : parseValue + $('#wwq_3_flow').val() : ($('#wwq_3_flow').val() != null && $('#wwq_3_flow').val() != '' ? parseValue + $('#wwq_3_flow').val() : '') : '',
+                wwq_3_whp: val[10] == 0 ? userShift == 2 ? $('#wwq_3_whp').is(':disabled') ? '@dl.wwq_3_whp' : parseValue + $('#wwq_3_whp').val() : ($('#wwq_3_whp').val() != null && $('#wwq_3_whp').val() != '' ? parseValue + $('#wwq_3_whp').val() : '') : '',
+                wwq_4_fcv: userShift == 2 ? $('#wwq_4_fcv').is(':disabled') ? '@dl.wwq_4_fcv' : parseValue + $('#wwq_4_fcv').val() : ($('#wwq_4_fcv').val() != null && $('#wwq_4_fcv').val() != '' ? parseValue + $('#wwq_4_fcv').val() : ''),
+                wwq_4_flow: val[11] == 0 ? userShift == 2 ? $('#wwq_4_flow').is(':disabled') ? '@dl.wwq_4_flow' : parseValue + $('#wwq_4_flow').val() : ($('#wwq_4_flow').val() != null && $('#wwq_4_flow').val() != '' ? parseValue + $('#wwq_4_flow').val() : '') : '',
+                wwq_4_whp: val[11] == 0 ? userShift == 2 ? $('#wwq_4_whp').is(':disabled') ? '@dl.wwq_4_whp' : parseValue + $('#wwq_4_whp').val() : ($('#wwq_4_whp').val() != null && $('#wwq_4_whp').val() != '' ? parseValue + $('#wwq_4_whp').val() : '') : '',
+                wwq_5_fcv: userShift == 2 ? $('#wwq_5_fcv').is(':disabled') ? '@dl.wwq_5_fcv' : parseValue + $('#wwq_5_fcv').val() : ($('#wwq_5_fcv').val() != null && $('#wwq_5_fcv').val() != '' ? parseValue + $('#wwq_5_fcv').val() : ''),
+                wwq_5_flow: val[12] == 0 ? userShift == 2 ? $('#wwq_5_flow').is(':disabled') ? '@dl.wwq_5_flow' : parseValue + $('#wwq_5_flow').val() : ($('#wwq_5_flow').val() != null && $('#wwq_5_flow').val() != '' ? parseValue + $('#wwq_5_flow').val() : '') : '',
+                wwq_5_whp: val[12] == 0 ? userShift == 2 ? $('#wwq_5_whp').is(':disabled') ? '@dl.wwq_5_whp' : parseValue + $('#wwq_5_whp').val() : ($('#wwq_5_whp').val() != null && $('#wwq_5_whp').val() != '' ? parseValue + $('#wwq_5_whp').val() : '') : '',
+                mbe_3_fcv: userShift == 2 ? $('#mbe_3_fcv').is(':disabled') ? '@dl.mbe_3_fcv' : parseValue + $('#mbe_3_fcv').val() : ($('#mbe_3_fcv').val() != null && $('#mbe_3_fcv').val() != '' ? parseValue + $('#mbe_3_fcv').val() : ''),
+                mbe_3_flow: val[13] == 0 ? userShift == 2 ? $('#mbe_3_flow').is(':disabled') ? '@dl.mbe_3_flow' : parseValue + $('#mbe_3_flow').val() : ($('#mbe_3_flow').val() != null && $('#mbe_3_flow').val() != '' ? parseValue + $('#mbe_3_flow').val() : '') : '',
+                mbe_3_whp: val[13] == 0 ? userShift == 2 ? $('#mbe_3_whp').is(':disabled') ? '@dl.mbe_3_whp' : parseValue + $('#mbe_3_whp').val() : ($('#mbe_3_whp').val() != null && $('#mbe_3_whp').val() != '' ? parseValue + $('#mbe_3_whp').val() : '') : '',
+                mbe_4_fcv: userShift == 2 ? $('#mbe_4_fcv').is(':disabled') ? '@dl.mbe_4_fcv' : parseValue + $('#mbe_4_fcv').val() : ($('#mbe_4_fcv').val() != null && $('#mbe_4_fcv').val() != '' ? parseValue + $('#mbe_4_fcv').val() : ''),
+                mbe_4_flow: val[14] == 0 ? userShift == 2 ? $('#mbe_4_flow').is(':disabled') ? '@dl.mbe_4_flow' : parseValue + $('#mbe_4_flow').val() : ($('#mbe_4_flow').val() != null && $('#mbe_4_flow').val() != '' ? parseValue + $('#mbe_4_flow').val() : '') : '',
+                mbe_4_whp: val[14] == 0 ? userShift == 2 ? $('#mbe_4_whp').is(':disabled') ? '@dl.mbe_4_whp' : parseValue + $('#mbe_4_whp').val() : ($('#mbe_4_whp').val() != null && $('#mbe_4_whp').val() != '' ? parseValue + $('#mbe_4_whp').val() : '') : '',
+                mba_1_fcv: userShift == 2 ? $('#mba_1_fcv').is(':disabled') ? '@dl.mba_1_fcv' : parseValue + $('#mba_1_fcv').val() : ($('#mba_1_fcv').val() != null && $('#mba_1_fcv').val() != '' ? parseValue + $('#mba_1_fcv').val() : ''),
+                mba_1_flow: val[15] == 0 ? userShift == 2 ? $('#mba_1_flow').is(':disabled') ? '@dl.mba_1_flow' : parseValue + $('#mba_1_flow').val() : ($('#mba_1_flow').val() != null && $('#mba_1_flow').val() != '' ? parseValue + $('#mba_1_flow').val() : '') : '',
+                mba_1_whp: val[15] == 0 ? userShift == 2 ? $('#mba_1_whp').is(':disabled') ? '@dl.mba_1_whp' : parseValue + $('#mba_1_whp').val() : ($('#mba_1_whp').val() != null && $('#mba_1_whp').val() != '' ? parseValue + $('#mba_1_whp').val() : '') : '',
+                mba_2_fcv: userShift == 2 ? $('#mba_2_fcv').is(':disabled') ? '@dl.mba_2_fcv' : parseValue + $('#mba_2_fcv').val() : ($('#mba_2_fcv').val() != null && $('#mba_2_fcv').val() != '' ? parseValue + $('#mba_2_fcv').val() : ''),
+                mba_2_flow: val[16] == 0 ? userShift == 2 ? $('#mba_2_flow').is(':disabled') ? '@dl.mba_2_flow' : parseValue + $('#mba_2_flow').val() : ($('#mba_2_flow').val() != null && $('#mba_2_flow').val() != '' ? parseValue + $('#mba_2_flow').val() : '') : '',
+                mba_2_whp: val[16] == 0 ? userShift == 2 ? $('#mba_2_whp').is(':disabled') ? '@dl.mba_2_whp' : parseValue + $('#mba_2_whp').val() : ($('#mba_2_whp').val() != null && $('#mba_2_whp').val() != '' ? parseValue + $('#mba_2_whp').val() : '') : '',
+                mba_3_fcv: userShift == 2 ? $('#mba_3_fcv').is(':disabled') ? '@dl.mba_3_fcv' : parseValue + $('#mba_3_fcv').val() : ($('#mba_3_fcv').val() != null && $('#mba_3_fcv').val() != '' ? parseValue + $('#mba_3_fcv').val() : ''),
+                mba_3_flow: val[17] == 0 ? userShift == 2 ? $('#mba_3_flow').is(':disabled') ? '@dl.mba_3_flow' : parseValue + $('#mba_3_flow').val() : ($('#mba_3_flow').val() != null && $('#mba_3_flow').val() != '' ? parseValue + $('#mba_3_flow').val() : '') : '',
+                mba_3_whp: val[17] == 0 ? userShift == 2 ? $('#mba_3_whp').is(':disabled') ? '@dl.mba_3_whp' : parseValue + $('#mba_3_whp').val() : ($('#mba_3_whp').val() != null && $('#mba_3_whp').val() != '' ? parseValue + $('#mba_3_whp').val() : '') : '',
+                mba_4_fcv: userShift == 2 ? $('#mba_4_fcv').is(':disabled') ? '@dl.mba_4_fcv' : parseValue + $('#mba_4_fcv').val() : ($('#mba_4_fcv').val() != null && $('#mba_4_fcv').val() != '' ? parseValue + $('#mba_4_fcv').val() : ''),
+                mba_4_flow: val[18] == 0 ? userShift == 2 ? $('#mba_4_flow').is(':disabled') ? '@dl.mba_4_flow' : parseValue + $('#mba_4_flow').val() : ($('#mba_4_flow').val() != null && $('#mba_4_flow').val() != '' ? parseValue + $('#mba_4_flow').val() : '') : '',
+                mba_4_whp: val[18] == 0 ? userShift == 2 ? $('#mba_4_whp').is(':disabled') ? '@dl.mba_4_whp' : parseValue + $('#mba_4_whp').val() : ($('#mba_4_whp').val() != null && $('#mba_4_whp').val() != '' ? parseValue + $('#mba_4_whp').val() : '') : '',
+                mba_5_fcv: userShift == 2 ? $('#mba_5_fcv').is(':disabled') ? '@dl.mba_5_fcv' : parseValue + $('#mba_5_fcv').val() : ($('#mba_5_fcv').val() != null && $('#mba_5_fcv').val() != '' ? parseValue + $('#mba_5_fcv').val() : ''),
+                mba_5_flow: val[19] == 0 ? userShift == 2 ? $('#mba_5_flow').is(':disabled') ? '@dl.mba_5_flow' : parseValue + $('#mba_5_flow').val() : ($('#mba_5_flow').val() != null && $('#mba_5_flow').val() != '' ? parseValue + $('#mba_5_flow').val() : '') : '',
+                mba_5_whp: val[19] == 0 ? userShift == 2 ? $('#mba_5_whp').is(':disabled') ? '@dl.mba_5_whp' : parseValue + $('#mba_5_whp').val() : ($('#mba_5_whp').val() != null && $('#mba_5_whp').val() != '' ? parseValue + $('#mba_5_whp').val() : '') : '',
+                mbb_1_fcv: userShift == 2 ? $('#mbb_1_fcv').is(':disabled') ? '@dl.mbb_1_fcv' : parseValue + $('#mbb_1_fcv').val() : ($('#mbb_1_fcv').val() != null && $('#mbb_1_fcv').val() != '' ? parseValue + $('#mbb_1_fcv').val() : ''),
+                mbb_1_flow: val[20] == 0 ? userShift == 2 ? $('#mbb_1_flow').is(':disabled') ? '@dl.mbb_1_flow' : parseValue + $('#mbb_1_flow').val() : ($('#mbb_1_flow').val() != null && $('#mbb_1_flow').val() != '' ? parseValue + $('#mbb_1_flow').val() : '') : '',
+                mbb_1_whp: val[20] == 0 ? userShift == 2 ? $('#mbb_1_whp').is(':disabled') ? '@dl.mbb_1_whp' : parseValue + $('#mbb_1_whp').val() : ($('#mbb_1_whp').val() != null && $('#mbb_1_whp').val() != '' ? parseValue + $('#mbb_1_whp').val() : '') : '',
+                mbb_2_fcv: userShift == 2 ? $('#mbb_2_fcv').is(':disabled') ? '@dl.mbb_2_fcv' : parseValue + $('#mbb_2_fcv').val() : ($('#mbb_2_fcv').val() != null && $('#mbb_2_fcv').val() != '' ? parseValue + $('#mbb_2_fcv').val() : ''),
+                mbb_2_flow: val[21] == 0 ? userShift == 2 ? $('#mbb_2_flow').is(':disabled') ? '@dl.mbb_2_flow' : parseValue + $('#mbb_2_flow').val() : ($('#mbb_2_flow').val() != null && $('#mbb_2_flow').val() != '' ? parseValue + $('#mbb_2_flow').val() : '') : '',
+                mbb_2_whp: val[21] == 0 ? userShift == 2 ? $('#mbb_2_whp').is(':disabled') ? '@dl.mbb_2_whp' : parseValue + $('#mbb_2_whp').val() : ($('#mbb_2_whp').val() != null && $('#mbb_2_whp').val() != '' ? parseValue + $('#mbb_2_whp').val() : '') : '',
+                mbb_3_fcv: userShift == 2 ? $('#mbb_3_fcv').is(':disabled') ? '@dl.mbb_3_fcv' : parseValue + $('#mbb_3_fcv').val() : ($('#mbb_3_fcv').val() != null && $('#mbb_3_fcv').val() != '' ? parseValue + $('#mbb_3_fcv').val() : ''),
+                mbb_3_flow: val[22] == 0 ? userShift == 2 ? $('#mbb_3_flow').is(':disabled') ? '@dl.mbb_3_flow' : parseValue + $('#mbb_3_flow').val() : ($('#mbb_3_flow').val() != null && $('#mbb_3_flow').val() != '' ? parseValue + $('#mbb_3_flow').val() : '') : '',
+                mbb_3_whp: val[22] == 0 ? userShift == 2 ? $('#mbb_3_whp').is(':disabled') ? '@dl.mbb_3_whp' : parseValue + $('#mbb_3_whp').val() : ($('#mbb_3_whp').val() != null && $('#mbb_3_whp').val() != '' ? parseValue + $('#mbb_3_whp').val() : '') : '',
+                mbb_4_fcv: userShift == 2 ? $('#mbb_4_fcv').is(':disabled') ? '@dl.mbb_4_fcv' : parseValue + $('#mbb_4_fcv').val() : ($('#mbb_4_fcv').val() != null && $('#mbb_4_fcv').val() != '' ? parseValue + $('#mbb_4_fcv').val() : ''),
+                mbb_4_flow: val[23] == 0 ? userShift == 2 ? $('#mbb_4_flow').is(':disabled') ? '@dl.mbb_4_flow' : parseValue + $('#mbb_4_flow').val() : ($('#mbb_4_flow').val() != null && $('#mbb_4_flow').val() != '' ? parseValue + $('#mbb_4_flow').val() : '') : '',
+                mbb_4_whp: val[23] == 0 ? userShift == 2 ? $('#mbb_4_whp').is(':disabled') ? '@dl.mbb_4_whp' : parseValue + $('#mbb_4_whp').val() : ($('#mbb_4_whp').val() != null && $('#mbb_4_whp').val() != '' ? parseValue + $('#mbb_4_whp').val() : '') : '',
+                mbb_5_fcv: userShift == 2 ? $('#mbb_5_fcv').is(':disabled') ? '@dl.mbb_5_fcv' : parseValue + $('#mbb_5_fcv').val() : ($('#mbb_5_fcv').val() != null && $('#mbb_5_fcv').val() != '' ? parseValue + $('#mbb_5_fcv').val() : ''),
+                mbb_5_flow: val[24] == 0 ? userShift == 2 ? $('#mbb_5_flow').is(':disabled') ? '@dl.mbb_5_flow' : parseValue + $('#mbb_5_flow').val() : ($('#mbb_5_flow').val() != null && $('#mbb_5_flow').val() != '' ? parseValue + $('#mbb_5_flow').val() : '') : '',
+                mbb_5_whp: val[24] == 0 ? userShift == 2 ? $('#mbb_5_whp').is(':disabled') ? '@dl.mbb_5_whp' : parseValue + $('#mbb_5_whp').val() : ($('#mbb_5_whp').val() != null && $('#mbb_5_whp').val() != '' ? parseValue + $('#mbb_5_whp').val() : '') : '',
+                mbb_6_fcv: userShift == 2 ? $('#mbb_6_fcv').is(':disabled') ? '@dl.mbb_6_fcv' : parseValue + $('#mbb_6_fcv').val() : ($('#mbb_6_fcv').val() != null && $('#mbb_6_fcv').val() != '' ? parseValue + $('#mbb_6_fcv').val() : ''),
+                mbb_6_flow: val[25] == 0 ? userShift == 2 ? $('#mbb_6_flow').is(':disabled') ? '@dl.mbb_6_flow' : parseValue + $('#mbb_6_flow').val() : ($('#mbb_6_flow').val() != null && $('#mbb_6_flow').val() != '' ? parseValue + $('#mbb_6_flow').val() : '') : '',
+                mbb_6_whp: val[25] == 0 ? userShift == 2 ? $('#mbb_6_whp').is(':disabled') ? '@dl.mbb_6_whp' : parseValue + $('#mbb_6_whp').val() : ($('#mbb_6_whp').val() != null && $('#mbb_6_whp').val() != '' ? parseValue + $('#mbb_6_whp').val() : '') : '',
+                wwf_1_fcv: userShift == 2 ? $('#wwf_1_fcv').is(':disabled') ? '@dl.wwf_1_fcv' : parseValue + $('#wwf_1_fcv').val() : ($('#wwf_1_fcv').val() != null && $('#wwf_1_fcv').val() != '' ? parseValue + $('#wwf_1_fcv').val() : ''),
+                wwf_1_flow: val[26] == 0 ? userShift == 2 ? $('#wwf_1_flow').is(':disabled') ? '@dl.wwf_1_flow' : parseValue + $('#wwf_1_flow').val() : ($('#wwf_1_flow').val() != null && $('#wwf_1_flow').val() != '' ? parseValue + $('#wwf_1_flow').val() : '') : '',
+                wwf_1_whp: val[26] == 0 ? userShift == 2 ? $('#wwf_1_whp').is(':disabled') ? '@dl.wwf_1_whp' : parseValue + $('#wwf_1_whp').val() : ($('#wwf_1_whp').val() != null && $('#wwf_1_whp').val() != '' ? parseValue + $('#wwf_1_whp').val() : '') : '',
+                wwf_3_fcv: userShift == 2 ? $('#wwf_3_fcv').is(':disabled') ? '@dl.wwf_3_fcv' : parseValue + $('#wwf_3_fcv').val() : ($('#wwf_3_fcv').val() != null && $('#wwf_3_fcv').val() != '' ? parseValue + $('#wwf_3_fcv').val() : ''),
+                wwf_3_flow: val[27] == 0 ? userShift == 2 ? $('#wwf_3_flow').is(':disabled') ? '@dl.wwf_3_flow' : parseValue + $('#wwf_3_flow').val() : ($('#wwf_3_flow').val() != null && $('#wwf_3_flow').val() != '' ? parseValue + $('#wwf_3_flow').val() : '') : '',
+                wwf_3_whp: val[27] == 0 ? userShift == 2 ? $('#wwf_3_whp').is(':disabled') ? '@dl.wwf_3_whp' : parseValue + $('#wwf_3_whp').val() : ($('#wwf_3_whp').val() != null && $('#wwf_3_whp').val() != '' ? parseValue + $('#wwf_3_whp').val() : '') : '',
+                www_1_fcv: userShift == 2 ? $('#www_1_fcv').is(':disabled') ? '@dl.www_1_fcv' : parseValue + $('#www_1_fcv').val() : ($('#www_1_fcv').val() != null && $('#www_1_fcv').val() != '' ? parseValue + $('#www_1_fcv').val() : ''),
+                www_1_flow: val[28] == 0 ? userShift == 2 ? $('#www_1_flow').is(':disabled') ? '@dl.www_1_flow' : parseValue + $('#www_1_flow').val() : ($('#www_1_flow').val() != null && $('#www_1_flow').val() != '' ? parseValue + $('#www_1_flow').val() : '') : '',
+                www_1_whp: val[28] == 0 ? userShift == 2 ? $('#www_1_whp').is(':disabled') ? '@dl.www_1_whp' : parseValue + $('#www_1_whp').val() : ($('#www_1_whp').val() != null && $('#www_1_whp').val() != '' ? parseValue + $('#www_1_whp').val() : '') : '',
+                wwp_1_fcv: userShift == 2 ? $('#wwp_1_fcv').is(':disabled') ? '@dl.wwp_1_fcv' : parseValue + $('#wwp_1_fcv').val() : ($('#wwp_1_fcv').val() != null && $('#wwp_1_fcv').val() != '' ? parseValue + $('#wwp_1_fcv').val() : ''),
+                wwp_1_flow: val[29] == 0 ? userShift == 2 ? $('#wwp_1_flow').is(':disabled') ? '@dl.wwp_1_flow' : parseValue + $('#wwp_1_flow').val() : ($('#wwp_1_flow').val() != null && $('#wwp_1_flow').val() != '' ? parseValue + $('#wwp_1_flow').val() : '') : '',
+                wwp_1_whp: val[29] == 0 ? userShift == 2 ? $('#wwp_1_whp').is(':disabled') ? '@dl.wwp_1_whp' : parseValue + $('#wwp_1_whp').val() : ($('#wwp_1_whp').val() != null && $('#wwp_1_whp').val() != '' ? parseValue + $('#wwp_1_whp').val() : '') : '',
+                generator_output_1:userShift == 2 ? $('#generator_output_1').is(':disabled') ? '@dl.generator_output_1' : parseValue + $('#generator_output_1').val() : ($('#generator_output_1').val() != null && $('#generator_output_1').val() != '' ? parseValue + $('#generator_output_1').val() : ''),
+                gross_1: userShift == 2 ? $('#gross_1').is(':disabled') ? '@dl.gross_1' : parseValue + $('#gross_1').val() : ($('#gross_1').val() != null && $('#gross_1').val() != '' ? parseValue + $('#gross_1').val() : ''),
+                generator_output_counter_1: userShift == 2 ? $('#generator_output_counter_1').is(':disabled') ? '@dl.generator_output_counter_1' : parseValue + $('#generator_output_counter_1').val() : ($('#generator_output_counter_1').val() != null && $('#generator_output_counter_1').val() != '' ? parseValue + $('#generator_output_counter_1').val() : ''),
+                power_factor_1: userShift == 2 ? $('#power_factor_1').is(':disabled') ? '@dl.power_factor_1' : parseValue + $('#power_factor_1').val() : ($('#power_factor_1').val() != null && $('#power_factor_1').val() != '' ? parseValue + $('#power_factor_1').val() : ''),
+                tap_charger_1: userShift == 2 ? $('#tap_charger_1').is(':disabled') ? '@dl.tap_charger_1' : parseValue + $('#tap_charger_1').val() : ($('#tap_charger_1').val() != null && $('#tap_charger_1').val() != '' ? parseValue + $('#tap_charger_1').val() : ''),
+                pln_grid_voltage_1: userShift == 2 ? $('#pln_grid_voltage_1').is(':disabled') ? '@dl.pln_grid_voltage_1' : parseValue + $('#pln_grid_voltage_1').val() : ($('#pln_grid_voltage_1').val() != null && $('#pln_grid_voltage_1').val() != '' ? parseValue + $('#pln_grid_voltage_1').val() : ''),
+                valve_limiter_1: userShift == 2 ? $('#valve_limiter_1').is(':disabled') ? '@dl.valve_limiter_1' : parseValue + $('#valve_limiter_1').val() : ($('#valve_limiter_1').val() != null && $('#valve_limiter_1').val() != '' ? parseValue + $('#valve_limiter_1').val() : ''),
+                governor_output_1: userShift == 2 ? $('#governor_output_1').is(':disabled') ? '@dl.governor_output_1' : parseValue + $('#governor_output_1').val() : ($('#governor_output_1').val() != null && $('#governor_output_1').val() != '' ? parseValue + $('#governor_output_1').val() : ''),
+                wcp_counter_1: userShift == 2 ? $('#wcp_counter_1').is(':disabled') ? '@dl.wcp_counter_1' : parseValue + $('#wcp_counter_1').val() : ($('#wcp_counter_1').val() != null && $('#wcp_counter_1').val() != '' ? parseValue + $('#wcp_counter_1').val() : ''),
+                condenser_pressure_1: userShift == 2 ? $('#condenser_pressure_1').is(':disabled') ? '@dl.condenser_pressure_1' : parseValue + $('#condenser_pressure_1').val() : ($('#condenser_pressure_1').val() != null && $('#condenser_pressure_1').val() != '' ? parseValue + $('#condenser_pressure_1').val() : ''),
+                main_cw_flow_1: userShift == 2 ? $('#main_cw_flow_1').is(':disabled') ? '@dl.main_cw_flow_1' : parseValue + $('#main_cw_flow_1').val() : ($('#main_cw_flow_1').val() != null && $('#main_cw_flow_1').val() != '' ? parseValue + $('#main_cw_flow_1').val() : ''),
+                ppc_g_co_1: userShift == 2 ? $('#ppc_g_co_1').is(':disabled') ? '@dl.ppc_g_co_1' : parseValue + $('#ppc_g_co_1').val() : ($('#ppc_g_co_1').val() != null && $('#ppc_g_co_1').val() != '' ? parseValue + $('#ppc_g_co_1').val() : ''),
+                interface_pressure_1: userShift == 2 ? $('#interface_pressure_1').is(':disabled') ? '@dl.interface_pressure_1' : parseValue + $('#interface_pressure_1').val() : ($('#interface_pressure_1').val() != null && $('#interface_pressure_1').val() != '' ? parseValue + $('#interface_pressure_1').val() : ''),
+                vent_bias_1: userShift == 2 ? $('#vent_bias_1').is(':disabled') ? '@dl.vent_bias_1' : parseValue + $('#vent_bias_1').val() : ($('#vent_bias_1').val() != null && $('#vent_bias_1').val() != '' ? parseValue + $('#vent_bias_1').val() : ''),
+                main_cw_pressure_1: userShift == 2 ? $('#main_cw_pressure_1').is(':disabled') ? '@dl.main_cw_pressure_1' : parseValue + $('#main_cw_pressure_1').val() : ($('#main_cw_pressure_1').val() != null && $('#main_cw_pressure_1').val() != '' ? parseValue + $('#main_cw_pressure_1').val() : ''),
+                ct_basin_ph_1: userShift == 2 ? $('#ct_basin_ph_1').is(':disabled') ? '@dl.ct_basin_ph_1' : parseValue + $('#ct_basin_ph_1').val() : ($('#ct_basin_ph_1').val() != null && $('#ct_basin_ph_1').val() != '' ? parseValue + $('#ct_basin_ph_1').val() : ''),
+                condenser_cw_inlet_a_1: userShift == 2 ? $('#condenser_cw_inlet_a_1').is(':disabled') ? '@dl.condenser_cw_inlet_a_1' : parseValue + $('#condenser_cw_inlet_a_1').val() : ($('#condenser_cw_inlet_a_1').val() != null && $('#condenser_cw_inlet_a_1').val() != '' ? parseValue + $('#condenser_cw_inlet_a_1').val() : ''),
+                condenser_cw_inlet_b_1: userShift == 2 ? $('#condenser_cw_inlet_b_1').is(':disabled') ? '@dl.condenser_cw_inlet_b_1' : parseValue + $('#condenser_cw_inlet_b_1').val() : ($('#condenser_cw_inlet_b_1').val() != null && $('#condenser_cw_inlet_b_1').val() != '' ? parseValue + $('#condenser_cw_inlet_b_1').val() : ''),
+                gen_trans_winding_temp_1: userShift == 2 ? $('#gen_trans_winding_temp_1').is(':disabled') ? '@dl.gen_trans_winding_temp_1' : parseValue + $('#gen_trans_winding_temp_1').val() : ($('#gen_trans_winding_temp_1').val() != null && $('#gen_trans_winding_temp_1').val() != '' ? parseValue + $('#gen_trans_winding_temp_1').val() : ''),
+                unit_trans_winding_temp_1: userShift == 2 ? $('#unit_trans_winding_temp_1').is(':disabled') ? '@dl.unit_trans_winding_temp_1' : parseValue + $('#unit_trans_winding_temp_1').val() : ($('#unit_trans_winding_temp_1').val() != null && $('#unit_trans_winding_temp_1').val() != '' ? parseValue + $('#unit_trans_winding_temp_1').val() : ''),
+                wheel_case_pressure_1: userShift == 2 ? $('#wheel_case_pressure_1').is(':disabled') ? '@dl.wheel_case_pressure_1' : parseValue + $('#wheel_case_pressure_1').val() : ($('#wheel_case_pressure_1').val() != null && $('#wheel_case_pressure_1').val() != '' ? parseValue + $('#wheel_case_pressure_1').val() : ''),
+                generator_output_2: userShift == 2 ? $('#generator_output_2').is(':disabled') ? '@dl.generator_output_2' : parseValue + $('#generator_output_2').val() : ($('#generator_output_2').val() != null && $('#generator_output_2').val() != '' ? parseValue + $('#generator_output_2').val() : ''),
+                gross_2: userShift == 2 ? $('#gross_2').is(':disabled') ? '@dl.gross_2' : parseValue + $('#gross_2').val() : ($('#gross_2').val() != null && $('#gross_2').val() != '' ? parseValue + $('#gross_2').val() : ''),
+                generator_output_counter_2: userShift == 2 ? $('#generator_output_counter_2').is(':disabled') ? '@dl.generator_output_counter_2' : parseValue + $('#generator_output_counter_2').val() : ($('#generator_output_counter_2').val() != null && $('#generator_output_counter_2').val() != '' ? parseValue + $('#generator_output_counter_2').val() : ''),
+                power_factor_2: userShift == 2 ? $('#power_factor_2').is(':disabled') ? '@dl.power_factor_2' : parseValue + $('#power_factor_2').val() : ($('#power_factor_2').val() != null && $('#power_factor_2').val() != '' ? parseValue + $('#power_factor_2').val() : ''),
+                tap_charger_2: userShift == 2 ? $('#tap_charger_2').is(':disabled') ? '@dl.tap_charger_2' : parseValue + $('#tap_charger_2').val() : ($('#tap_charger_2').val() != null && $('#tap_charger_2').val() != '' ? parseValue + $('#tap_charger_2').val() : ''),
+                pln_grid_voltage_2: userShift == 2 ? $('#pln_grid_voltage_2').is(':disabled') ? '@dl.pln_grid_voltage_2' : parseValue + $('#pln_grid_voltage_2').val() : ($('#pln_grid_voltage_2').val() != null && $('#pln_grid_voltage_2').val() != '' ? parseValue + $('#pln_grid_voltage_2').val() : ''),
+                valve_limiter_2: userShift == 2 ? $('#valve_limiter_2').is(':disabled') ? '@dl.valve_limiter_2' : parseValue + $('#valve_limiter_2').val() : ($('#valve_limiter_2').val() != null && $('#valve_limiter_2').val() != '' ? parseValue + $('#valve_limiter_2').val() : ''),
+                governor_output_2: userShift == 2 ? $('#governor_output_2').is(':disabled') ? '@dl.governor_output_2' : parseValue + $('#governor_output_2').val() : ($('#governor_output_2').val() != null && $('#governor_output_2').val() != '' ? parseValue + $('#governor_output_2').val() : ''),
+                wcp_counter_2: userShift == 2 ? $('#wcp_counter_2').is(':disabled') ? '@dl.wcp_counter_2' : parseValue + $('#wcp_counter_2').val() : ($('#wcp_counter_2').val() != null && $('#wcp_counter_2').val() != '' ? parseValue + $('#wcp_counter_2').val() : ''),
+                condenser_pressure_2: userShift == 2 ? $('#condenser_pressure_2').is(':disabled') ? '@dl.condenser_pressure_2' : parseValue + $('#condenser_pressure_2').val() : ($('#condenser_pressure_2').val() != null && $('#condenser_pressure_2').val() != '' ? parseValue + $('#condenser_pressure_2').val() : ''),
+                main_cw_flow_2: userShift == 2 ? $('#main_cw_flow_2').is(':disabled') ? '@dl.main_cw_flow_2' : parseValue + $('#main_cw_flow_2').val() : ($('#main_cw_flow_2').val() != null && $('#main_cw_flow_2').val() != '' ? parseValue + $('#main_cw_flow_2').val() : ''),
+                ppc_g_co_2: userShift == 2 ? $('#ppc_g_co_2').is(':disabled') ? '@dl.ppc_g_co_2' : parseValue + $('#ppc_g_co_2').val() : ($('#ppc_g_co_2').val() != null && $('#ppc_g_co_2').val() != '' ? parseValue + $('#ppc_g_co_2').val() : ''),
+                interface_pressure_2: userShift == 2 ? $('#interface_pressure_2').is(':disabled') ? '@dl.interface_pressure_2' : parseValue + $('#interface_pressure_2').val() : ($('#interface_pressure_2').val() != null && $('#interface_pressure_2').val() != '' ? parseValue + $('#interface_pressure_2').val() : ''),
+                vent_bias_2: userShift == 2 ? $('#vent_bias_2').is(':disabled') ? '@dl.vent_bias_2' : parseValue + $('#vent_bias_2').val() : ($('#vent_bias_2').val() != null && $('#vent_bias_2').val() != '' ? parseValue + $('#vent_bias_2').val() : ''),
+                main_cw_pressure_2: userShift == 2 ? $('#main_cw_pressure_2').is(':disabled') ? '@dl.main_cw_pressure_2' : parseValue + $('#main_cw_pressure_2').val() : ($('#main_cw_pressure_2').val() != null && $('#main_cw_pressure_2').val() != '' ? parseValue + $('#main_cw_pressure_2').val() : ''),
+                ct_basin_ph_2: userShift == 2 ? $('#ct_basin_ph_2').is(':disabled') ? '@dl.ct_basin_ph_2' : parseValue + $('#ct_basin_ph_2').val() : ($('#ct_basin_ph_2').val() != null && $('#ct_basin_ph_2').val() != '' ? parseValue + $('#ct_basin_ph_2').val() : ''),
+                condenser_cw_inlet_a_2: userShift == 2 ? $('#condenser_cw_inlet_a_2').is(':disabled') ? '@dl.condenser_cw_inlet_a_2' : parseValue + $('#condenser_cw_inlet_a_2').val() : ($('#condenser_cw_inlet_a_2').val() != null && $('#condenser_cw_inlet_a_2').val() != '' ? parseValue + $('#condenser_cw_inlet_a_2').val() : ''),
+                condenser_cw_inlet_b_2: userShift == 2 ? $('#condenser_cw_inlet_b_2').is(':disabled') ? '@dl.condenser_cw_inlet_b_2' : parseValue + $('#condenser_cw_inlet_b_2').val() : ($('#condenser_cw_inlet_b_2').val() != null && $('#condenser_cw_inlet_b_2').val() != '' ? parseValue + $('#condenser_cw_inlet_b_2').val() : ''),
+                gen_trans_winding_temp_2: userShift == 2 ? $('#gen_trans_winding_temp_2').is(':disabled') ? '@dl.gen_trans_winding_temp_2' : parseValue + $('#gen_trans_winding_temp_2').val() : ($('#gen_trans_winding_temp_2').val() != null && $('#gen_trans_winding_temp_2').val() != '' ? parseValue + $('#gen_trans_winding_temp_2').val() : ''),
+                unit_trans_winding_temp_2: userShift == 2 ? $('#unit_trans_winding_temp_2').is(':disabled') ? '@dl.unit_trans_winding_temp_2' : parseValue + $('#unit_trans_winding_temp_2').val() : ($('#unit_trans_winding_temp_2').val() != null && $('#unit_trans_winding_temp_2').val() != '' ? parseValue + $('#unit_trans_winding_temp_2').val() : ''),
+                wheel_case_pressure_2: userShift == 2 ? $('#wheel_case_pressure_2').is(':disabled') ? '@dl.wheel_case_pressure_2' : parseValue + $('#wheel_case_pressure_2').val() : ($('#wheel_case_pressure_2').val() != null && $('#wheel_case_pressure_2').val() != '' ? parseValue + $('#wheel_case_pressure_2').val() : ''),
+                ncg_1: userShift == 2 ? $('#ncg_1').is(':disabled') ? '@dl.ncg_1' : parseValue + $('#ncg_1').val() : ($('#ncg_1').val() != null && $('#ncg_1').val() != '' ? parseValue + $('#ncg_1').val() : ''),
+                ncg_2: userShift == 2 ? $('#ncg_2').is(':disabled') ? '@dl.ncg_2' : parseValue + $('#ncg_2').val() : ($('#ncg_2').val() != null && $('#ncg_2').val() != '' ? parseValue + $('#ncg_2').val() : ''),
+                turbine_1: userShift == 2 ? $('#turbine_1').is(':disabled') ? '@dl.turbine_1' : parseValue + $('#turbine_1').val() : ($('#turbine_1').val() != null && $('#turbine_1').val() != '' ? parseValue + $('#turbine_1').val() : ''),
+                turbine_2: userShift == 2 ? $('#turbine_2').is(':disabled') ? '@dl.turbine_2' : parseValue + $('#turbine_2').val() : ($('#turbine_2').val() != null && $('#turbine_2').val() != '' ? parseValue + $('#turbine_2').val() : ''),
+                ct_temp_1: userShift == 2 ? $('#ct_temp_1').is(':disabled') ? '@dl.ct_temp_1' : parseValue + $('#ct_temp_1').val() : ($('#ct_temp_1').val() != null && $('#ct_temp_1').val() != '' ? parseValue + $('#ct_temp_1').val() : ''),
+                ct_temp_2: userShift == 2 ? $('#ct_temp_2').is(':disabled') ? '@dl.ct_temp_2' : parseValue + $('#ct_temp_2').val() : ($('#ct_temp_2').val() != null && $('#ct_temp_2').val() != '' ? parseValue + $('#ct_temp_2').val() : ''),
+                exhaust_1: userShift == 2 ? $('#exhaust_1').is(':disabled') ? '@dl.exhaust_1' : parseValue + $('#exhaust_1').val() : ($('#exhaust_1').val() != null && $('#exhaust_1').val() != '' ? parseValue + $('#exhaust_1').val() : ''),
+                exhaust_2: userShift == 2 ? $('#exhaust_2').is(':disabled') ? '@dl.exhaust_2' : parseValue + $('#exhaust_2').val() : ($('#exhaust_2').val() != null && $('#exhaust_2').val() != '' ? parseValue + $('#exhaust_2').val() : ''),
+                upper_tp_level: userShift == 2 ? $('#upper_tp_level').is(':disabled') ? '@dl.upper_tp_level' : parseValue + $('#upper_tp_level').val() : ($('#upper_tp_level').val() != null && $('#upper_tp_level').val() != '' ? parseValue + $('#upper_tp_level').val() : ''),
+                lower_tp_level: userShift == 2 ? $('#lower_tp_level').is(':disabled') ? '@dl.lower_tp_level' : parseValue + $('#lower_tp_level').val() : ($('#lower_tp_level').val() != null && $('#lower_tp_level').val() != '' ? parseValue + $('#lower_tp_level').val() : ''),
+                mv_333: userShift == 2 ? $('#mv_333').is(':disabled') ? '@dl.mv_333' : parseValue + $('#mv_333').val() : ($('#mv_333').val() != null && $('#mv_333').val() != '' ? parseValue + $('#mv_333').val() : ''),
+                mv_334: userShift == 2 ? $('#mv_334').is(':disabled') ? '@dl.mv_334' : parseValue + $('#mv_334').val() : ($('#mv_334').val() != null && $('#mv_334').val() != '' ? parseValue + $('#mv_334').val() : ''),
+                brine_level: userShift == 2 ? $('#brine_level').is(':disabled') ? '@dl.brine_level' : parseValue + $('#brine_level').val() : ($('#brine_level').val() != null && $('#brine_level').val() != '' ? parseValue + $('#brine_level').val() : ''),
+                condensate_level: userShift == 2 ? $('#condensate_level').is(':disabled') ? '@dl.condensate_level' : parseValue + $('#condensate_level').val() : ($('#condensate_level').val() != null && $('#condensate_level').val() != '' ? parseValue + $('#condensate_level').val() : ''),
+                naoh_level: userShift == 2 ? $('#naoh_level').is(':disabled') ? '@dl.naoh_level' : parseValue + $('#naoh_level').val() : ($('#naoh_level').val() != null && $('#naoh_level').val() != '' ? parseValue + $('#naoh_level').val() : ''),
+                wwd_pond_level: userShift == 2 ? $('#wwd_pond_level').is(':disabled') ? '@dl.wwd_pond_level' : parseValue + $('#wwd_pond_level').val() : ($('#wwd_pond_level').val() != null && $('#wwd_pond_level').val() != '' ? parseValue + $('#wwd_pond_level').val() : ''),
+                uti_active_1: userShift == 2 ? $('#uti_active_1').is(':disabled') ? '@dl.uti_active_1' : parseValue + $('#uti_active_1').val() : ($('#uti_active_1').val() != null && $('#uti_active_1').val() != '' ? parseValue + $('#uti_active_1').val() : ''),
+                uti_reactive_1: userShift == 2 ? $('#uti_reactive_1').is(':disabled') ? '@dl.uti_reactive_1' : parseValue + $('#uti_reactive_1').val() : ($('#uti_reactive_1').val() != null && $('#uti_reactive_1').val() != '' ? parseValue + $('#uti_reactive_1').val() : ''),
+                sc_main_1: userShift == 2 ? $('#sc_main_1').is(':disabled') ? '@dl.sc_main_1' : parseValue + $('#sc_main_1').val() : ($('#sc_main_1').val() != null && $('#sc_main_1').val() != '' ? parseValue + $('#sc_main_1').val() : ''),
+                sc_auxiliary_1: userShift == 2 ? $('#sc_auxiliary_1').is(':disabled') ? '@dl.sc_auxiliary_1' : parseValue + $('#sc_auxiliary_1').val() : ($('#sc_auxiliary_1').val() != null && $('#sc_auxiliary_1').val() != '' ? parseValue + $('#sc_auxiliary_1').val() : ''),
+                ge_active_1: userShift == 2 ? $('#ge_active_1').is(':disabled') ? '@dl.ge_active_1' : parseValue + $('#ge_active_1').val() : ($('#ge_active_1').val() != null && $('#ge_active_1').val() != '' ? parseValue + $('#ge_active_1').val() : ''),
+                ge_reactive_1: userShift == 2 ? $('#ge_reactive_1').is(':disabled') ? '@dl.ge_reactive_1' : parseValue + $('#ge_reactive_1').val() : ($('#ge_reactive_1').val() != null && $('#ge_reactive_1').val() != '' ? parseValue + $('#ge_reactive_1').val() : ''),
+                metering_segwwl_1: userShift == 2 ? $('#metering_segwwl_1').is(':disabled') ? '@dl.metering_segwwl_1' : parseValue + $('#metering_segwwl_1').val() : ($('#metering_segwwl_1').val() != null && $('#metering_segwwl_1').val() != '' ? parseValue + $('#metering_segwwl_1').val() : ''),
+                metering_pln_1: userShift == 2 ? $('#metering_pln_1').is(':disabled') ? '@dl.metering_pln_1' : parseValue + $('#metering_pln_1').val() : ($('#metering_pln_1').val() != null && $('#metering_pln_1').val() != '' ? parseValue + $('#metering_pln_1').val() : ''),
+                condensate_ps_1: userShift == 2 ? $('#condensate_ps_1').is(':disabled') ? '@dl.condensate_ps_1' : parseValue + $('#condensate_ps_1').val() : ($('#condensate_ps_1').val() != null && $('#condensate_ps_1').val() != '' ? parseValue + $('#condensate_ps_1').val() : ''),
+                segwwl_availability_1: userShift == 2 ? $('#segwwl_availability_1').is(':disabled') ? '@dl.segwwl_availability_1' : parseValue + $('#segwwl_availability_1').val() : ($('#segwwl_availability_1').val() != null && $('#segwwl_availability_1').val() != '' ? parseValue + $('#segwwl_availability_1').val() : ''),
+                pln_dispatch_1: userShift == 2 ? $('#pln_dispatch_1').is(':disabled') ? '@dl.pln_dispatch_1' : parseValue + $('#pln_dispatch_1').val() : ($('#pln_dispatch_1').val() != null && $('#pln_dispatch_1').val() != '' ? parseValue + $('#pln_dispatch_1').val() : ''),
+                pln_meter_1: userShift == 2 ? $('#pln_meter_1').is(':disabled') ? '@dl.pln_meter_1' : parseValue + $('#pln_meter_1').val() : ($('#pln_meter_1').val() != null && $('#pln_meter_1').val() != '' ? parseValue + $('#pln_meter_1').val() : ''),
+                segwwl_export_1: userShift == 2 ? $('#segwwl_export_1').is(':disabled') ? '@dl.segwwl_export_1' : parseValue + $('#segwwl_export_1').val() : ($('#segwwl_export_1').val() != null && $('#segwwl_export_1').val() != '' ? parseValue + $('#segwwl_export_1').val() : ''),
+                actual_export_1: userShift == 2 ? $('#actual_export_1').is(':disabled') ? '@dl.actual_export_1' : parseValue + $('#actual_export_1').val() : ($('#actual_export_1').val() != null && $('#actual_export_1').val() != '' ? parseValue + $('#actual_export_1').val() : ''),
+                production_excess_1: userShift == 2 ? $('#production_excess_1').is(':disabled') ? '@dl.production_excess_1' : parseValue + $('#production_excess_1').val() : ($('#production_excess_1').val() != null && $('#production_excess_1').val() != '' ? parseValue + $('#production_excess_1').val() : ''),
+                rpf_1: userShift == 2 ? $('#rpf_1').is(':disabled') ? '@dl.rpf_1' : parseValue + $('#rpf_1').val() : ($('#rpf_1').val() != null && $('#rpf_1').val() != '' ? parseValue + $('#rpf_1').val() : ''),
+                pgf_1: userShift == 2 ? $('#pgf_1').is(':disabled') ? '@dl.pgf_1' : parseValue + $('#pgf_1').val() : ($('#pgf_1').val() != null && $('#pgf_1').val() != '' ? parseValue + $('#pgf_1').val() : ''),
+                pln_1: userShift == 2 ? $('#pln_1').is(':disabled') ? '@dl.pln_1' : parseValue + $('#pln_1').val() : ($('#pln_1').val() != null && $('#pln_1').val() != '' ? parseValue + $('#pln_1').val() : ''),
+                uti_active_2: userShift == 2 ? $('#uti_active_2').is(':disabled') ? '@dl.uti_active_2' : parseValue + $('#uti_active_2').val() : ($('#uti_active_2').val() != null && $('#uti_active_2').val() != '' ? parseValue + $('#uti_active_2').val() : ''),
+                uti_reactive_2: userShift == 2 ? $('#uti_reactive_2').is(':disabled') ? '@dl.uti_reactive_2' : parseValue + $('#uti_reactive_2').val() : ($('#uti_reactive_2').val() != null && $('#uti_reactive_2').val() != '' ? parseValue + $('#uti_reactive_2').val() : ''),
+                sc_main_2: userShift == 2 ? $('#sc_main_2').is(':disabled') ? '@dl.sc_main_2' : parseValue + $('#sc_main_2').val() : ($('#sc_main_2').val() != null && $('#sc_main_2').val() != '' ? parseValue + $('#sc_main_2').val() : ''),
+                sc_auxiliary_2: userShift == 2 ? $('#sc_auxiliary_2').is(':disabled') ? '@dl.sc_auxiliary_2' : parseValue + $('#sc_auxiliary_2').val() : ($('#sc_auxiliary_2').val() != null && $('#sc_auxiliary_2').val() != '' ? parseValue + $('#sc_auxiliary_2').val() : ''),
+                ge_active_2: userShift == 2 ? $('#ge_active_2').is(':disabled') ? '@dl.ge_active_2' : parseValue + $('#ge_active_2').val() : ($('#ge_active_2').val() != null && $('#ge_active_2').val() != '' ? parseValue + $('#ge_active_2').val() : ''),
+                ge_reactive_2: userShift == 2 ? $('#ge_reactive_2').is(':disabled') ? '@dl.ge_reactive_2' : parseValue + $('#ge_reactive_2').val() : ($('#ge_reactive_2').val() != null && $('#ge_reactive_2').val() != '' ? parseValue + $('#ge_reactive_2').val() : ''),
+                metering_segwwl_2: userShift == 2 ? $('#metering_segwwl_2').is(':disabled') ? '@dl.metering_segwwl_2' : parseValue + $('#metering_segwwl_2').val() : ($('#metering_segwwl_2').val() != null && $('#metering_segwwl_2').val() != '' ? parseValue + $('#metering_segwwl_2').val() : ''),
+                metering_pln_2: userShift == 2 ? $('#metering_pln_2').is(':disabled') ? '@dl.metering_pln_2' : parseValue + $('#metering_pln_2').val() : ($('#metering_pln_2').val() != null && $('#metering_pln_2').val() != '' ? parseValue + $('#metering_pln_2').val() : ''),
+                condensate_ps_2: userShift == 2 ? $('#condensate_ps_2').is(':disabled') ? '@dl.condensate_ps_2' : parseValue + $('#condensate_ps_2').val() : ($('#condensate_ps_2').val() != null && $('#condensate_ps_2').val() != '' ? parseValue + $('#condensate_ps_2').val() : ''),
+                segwwl_availability_2: userShift == 2 ? $('#segwwl_availability_2').is(':disabled') ? '@dl.segwwl_availability_2' : parseValue + $('#segwwl_availability_2').val() : ($('#segwwl_availability_2').val() != null && $('#segwwl_availability_2').val() != '' ? parseValue + $('#segwwl_availability_2').val() : ''),
+                pln_dispatch_2: userShift == 2 ? $('#pln_dispatch_2').is(':disabled') ? '@dl.pln_dispatch_2' : parseValue + $('#pln_dispatch_2').val() : ($('#pln_dispatch_2').val() != null && $('#pln_dispatch_2').val() != '' ? parseValue + $('#pln_dispatch_2').val() : ''),
+                pln_meter_2: userShift == 2 ? $('#pln_meter_2').is(':disabled') ? '@dl.pln_meter_2' : parseValue + $('#pln_meter_2').val() : ($('#pln_meter_2').val() != null && $('#pln_meter_2').val() != '' ? parseValue + $('#pln_meter_2').val() : ''),
+                segwwl_export_2: userShift == 2 ? $('#segwwl_export_2').is(':disabled') ? '@dl.segwwl_export_2' : parseValue + $('#segwwl_export_2').val() : ($('#segwwl_export_2').val() != null && $('#segwwl_export_2').val() != '' ? parseValue + $('#segwwl_export_2').val() : ''),
+                actual_export_2: userShift == 2 ? $('#actual_export_2').is(':disabled') ? '@dl.actual_export_2' : parseValue + $('#actual_export_2').val() : ($('#actual_export_2').val() != null && $('#actual_export_2').val() != '' ? parseValue + $('#actual_export_2').val() : ''),
+                production_excess_2: userShift == 2 ? $('#production_excess_2').is(':disabled') ? '@dl.production_excess_2' : parseValue + $('#production_excess_2').val() : ($('#production_excess_2').val() != null && $('#production_excess_2').val() != '' ? parseValue + $('#production_excess_2').val() : ''),
+                rpf_2: userShift == 2 ? $('#rpf_2').is(':disabled') ? '@dl.rpf_2' : parseValue + $('#rpf_2').val() : ($('#rpf_2').val() != null && $('#rpf_2').val() != '' ? parseValue + $('#rpf_2').val() : ''),
+                pgf_2: userShift == 2 ? $('#pgf_2').is(':disabled') ? '@dl.pgf_2' : parseValue + $('#pgf_2').val() : ($('#pgf_2').val() != null && $('#pgf_2').val() != '' ? parseValue + $('#pgf_2').val() : ''),
+                pln_2: userShift == 2 ? $('#pln_2').is(':disabled') ? '@dl.pln_2' : parseValue + $('#pln_2').val() : ($('#pln_2').val() != null && $('#pln_2').val() != '' ? parseValue + $('#pln_2').val() : ''),
+                condensate_total: userShift == 2 ? $('#condensate_total').is(':disabled') ? '@dl.condensate_total' : parseValue + $('#condensate_total').val() : ($('#condensate_total').val() != null && $('#condensate_total').val() != '' ? parseValue + $('#condensate_total').val() : ''),
+                brine_total: userShift == 2 ? $('#brine_total').is(':disabled') ? '@dl.brine_total' : parseValue + $('#brine_total').val() : ($('#brine_total').val() != null && $('#brine_total').val() != '' ? parseValue + $('#brine_total').val() : ''),
+                note: userShift == 2 ? $('#note').is(':disabled') ? '@dl.note' : parseValue + $('#note').val() : ($('#note').val() != null && $('#note').val() != '' ? parseValue + $('#note').val() : ''),
+                last_plant_time: userShift == 2 ? $('#last_plant_time').is(':disabled') ? '@dl.last_plant_time' : parseValue + $('#last_plant_time').val() : ($('#last_plant_time').val() != null && $('#last_plant_time').val() != '' ? parseValue + $('#last_plant_time').val() : '')
+            }
+
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.post("DailyLog/Add", values, function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        $('#realmod_save').css("display", "none");
+                        alert('Daily Log berhasil disimpan');
+                        back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Gagal menambahkan Daily Log');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.post("DailyLog/Edit", values, function (data) {
+                    if (data != undefined) {
+                        $('#realmod_save').css("display", "none");
+                        alert('Daily Log berhasil diubah');
+                        back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Gagal mengubah Daily Log');
+                    }
+                });
+            }
+        }
+    }
+
+    function validate() {
+        return true;
+    }
+</script>
+<div class="container">
+	<header>
+		<div class="page-title" style="width:980px">
+			<h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU LIMITED)</h1>
+		</div>
+		<div class="clearfix" style="width:768px"></div>
+		<b>Wayang Windu Geothermal Power Plant</b>
+	</header>
+	<div class="log-part1">
+		<table class="w-border no-border-last-row" style="width:980px">
+			<tr>
+				<td class="yellow-bg center">Date</td>
+				<td class="yellow-bg center">Group</td>
+				<td class="yellow-bg center">Production Foreman</td>
+				<td class="yellow-bg center" colspan="4">Production Operators</td>
+			</tr>
+			<tr>
+				<td rowspan="2" class="no-border-btm center">
+                    @(Html.Telerik().DatePicker()
+                    .Name("date")
+                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                    .Value(isEdit ? dl.date : DateTime.Now)
+                    .Enable(true))
+
+				</td>
+				<td rowspan="2" class="no-border-btm center"><input type="text" id="grup" name="grup" style="width:50px" value="@(isEdit ? dl.grup.Length > 0 ? dl.grup.Remove(0,4) : "" : "")" @if (isEdit) {if (userShift == 1) {if (!dl.grup.Contains("sh1_")) {<text>disabled</text>}} else if (userShift == 2) {if (!dl.grup.Contains("sh2_")){<text>disabled</text>}}}/></td>
+				<td rowspan="2" class="no-border-btm center"><input type="text" id="production_foreman" name="production_foreman" style="width:135px" value="@(isEdit ? dl.production_foreman.Length > 0 ? dl.production_foreman.Remove(0,4) : "" : "")" @if (isEdit) {if (userShift == 1) {if (!dl.production_foreman.Contains("sh1_")) {<text>disabled</text>}} else if (userShift == 2) {if (!dl.production_foreman.Contains("sh2_")){<text>disabled</text>}}}/></td>
+				<td class="center"><input type="text" id="production_operator_1" name="production_operator_1" style="width:135px" value="@(isEdit ? dl.production_operator_1 : "")"/></td>
+				<td class="center"><input type="text" id="production_operator_3" name="production_operator_3" style="width:135px" value="@(isEdit ? dl.production_operator_3 : "")"/></td>
+				<td class="center"><input type="text" id="production_operator_5" name="production_operator_5" style="width:135px" value="@(isEdit ? dl.production_operator_5 : "")"/></td>
+				<td class="center"><input type="text" id="production_operator_7" name="production_operator_7" style="width:135px" value="@(isEdit ? dl.production_operator_7 : "")"/></td>
+			</tr>
+			<tr>
+				<td class="center"><input type="text" id="production_operator_2" name="production_operator_2" style="width:135px" value="@(isEdit ? dl.production_operator_2 : "")"/></td>
+				<td class="center"><input type="text" id="production_operator_4" name="production_operator_4" style="width:135px" value="@(isEdit ? dl.production_operator_4 : "")"/></td>
+				<td class="center"><input type="text" id="production_operator_6" name="production_operator_6" style="width:135px" value="@(isEdit ? dl.production_operator_6 : "")"/></td>
+				<td class="center"><input type="text" id="production_operator_8" name="production_operator_8" style="width:135px" value="@(isEdit ? dl.production_operator_8 : "")"/></td>
+			</tr>
+		</table>
+	</div>
+	<div class="log-part2">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="yellow-bg time no-border-btm center" rowspan="2">TIME</td>
+			    <td class="yellow-bg center" colspan="14">DESCRIPTION</td>
+		    </tr>
+		    <tr>
+			    <td class="yellow-bg center" colspan="10">PRODUCTION AND INJECTION WELLS</td>
+			    <td class="yellow-bg center" colspan="4">POWER STATION</td>
+		    </tr>
+		    <tr>
+			    <td class="time center" rowspan="22">
+                    @(Html.Telerik().TimePicker()
+                    .Name("time_check")
+                    .HtmlAttributes(new { id = "time_wrapper", style = "width:90px" })
+                    .Interval(1)
+                    .Value(isEdit ? dl.time_check : ""))
+			    </td>
+			    <td class="blue-bg center" style="width:50px">Wells</td>
+                <td class="blue-bg center" style="width:55px">Input Type</td>
+			    <td class="blue-bg center" style="width:50px">FCV (%)</td>
+			    <td class="blue-bg center" style="width:50px">Flow (kg/s)</td>
+			    <td class="blue-bg center" style="width:50px">WHP (Bar)</td>
+			    <td class="blue-bg center" style="width:50px">Wells</td>
+                <td class="blue-bg center" style="width:55px">Input Type</td>
+			    <td class="blue-bg center" style="width:50px">FCV (%)</td>
+			    <td class="blue-bg center" style="width:50px">Flow (kg/s)</td>
+			    <td class="blue-bg center" style="width:50px">WHP (Bar)</td>
+			    <td class="blue-bg center">&nbsp;</td>
+			    <td class="blue-bg center" style="width:50px">T/G Unit 1</td>
+			    <td class="blue-bg center" style="width:50px">T/G Unit 2</td>
+			    <td class="blue-bg center">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>WMA-2</td>
+                <td>
+                    <input type="radio" id="wma_2_is_text" name="wma_2_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wma_2_is_text" name="wma_2_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wma_2"><input type='text' id='wma_2_fcv' name='wma_2_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wma_2_flow' name='wma_2_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wma_2_whp' name='wma_2_whp' style='width:50px' /></td>
+			    <td>MBA-1</td>
+                <td>
+                    <input type="radio" id="mba_1_is_text" name="mba_1_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mba_1_is_text" name="mba_1_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mba_1"><input type='text' id='mba_1_fcv' name='mba_1_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_1_flow' name='mba_1_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_1_whp' name='mba_1_whp' style='width:50px' /></td>
+			    <td>Generator Output</td>
+			    <td class="gray-bg center number"><input type='text' id='generator_output_1' name='generator_output_1' style='width:50px' value="@(isEdit ? dl.generator_output_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='generator_output_2' name='generator_output_2' style='width:50px' value="@(isEdit ? dl.generator_output_2 : "")"/></td>
+			    <td>MW</td>
+		    </tr>
+		    <tr>
+			    <td>WMA-4</td>
+                <td>
+                    <input type="radio" id="wma_4_is_text" name="wma_4_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wma_4_is_text" name="wma_4_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wma_4"><input type='text' id='wma_4_fcv' name='wma_4_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wma_4_flow' name='wma_4_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wma_4_whp' name='wma_4_whp' style='width:50px' /></td>
+			    <td>MBA-2</td>
+                <td>
+                    <input type="radio" id="mba_2_is_text" name="mba_2_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mba_2_is_text" name="mba_2_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mba_2"><input type='text' id='mba_2_fcv' name='mba_2_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_2_flow' name='mba_2_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_2_whp' name='mba_2_whp' style='width:50px' /></td>
+			    <td>(gross)</td>
+			    <td class="gray-bg center number"><input type='text' id='gross_1' name='gross_1' style='width:50px' value="@(isEdit ? dl.gross_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='gross_2' name='gross_2' style='width:50px' value="@(isEdit ? dl.gross_2 : "")"/></td>
+			    <td>Mvar</td>
+		    </tr>
+		    <tr>
+			    <td>WMA-6</td>
+                <td>
+                    <input type="radio" id="wma_6_is_text" name="wma_6_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wma_6_is_text" name="wma_6_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wma_6"><input type='text' id='wma_6_fcv' name='wma_6_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wma_6_flow' name='wma_6_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wma_6_whp' name='wma_6_whp' style='width:50px' /></td>
+			    <td>MBA-3</td>
+                <td>
+                    <input type="radio" id="mba_3_is_text" name="mba_3_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mba_3_is_text" name="mba_3_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mba_3"><input type='text' id='mba_3_fcv' name='mba_3_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_3_flow' name='mba_3_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_3_whp' name='mba_3_whp' style='width:50px' /></td>
+			    <td>Generator Output Counter</td>
+			    <td class="gray-bg center number"><input type='text' id='generator_output_counter_1' name='generator_output_counter_1' style='width:50px' value="@(isEdit ? dl.generator_output_counter_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='generator_output_counter_2' name='generator_output_counter_2' style='width:50px' value="@(isEdit ? dl.generator_output_counter_2 : "")"/></td>
+			    <td>minute</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-1</td>
+                <td>
+                    <input type="radio" id="mbd_1_is_text" name="mbd_1_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbd_1_is_text" name="mbd_1_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbd_1"><input type='text' id='mbd_1_fcv' name='mbd_1_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_1_flow' name='mbd_1_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_1_whp' name='mbd_1_whp' style='width:50px' /></td>
+			    <td>MBA-4</td>
+                <td>
+                    <input type="radio" id="mba_4_is_text" name="mba_4_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mba_4_is_text" name="mba_4_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mba_4"><input type='text' id='mba_4_fcv' name='mba_4_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_4_flow' name='mba_4_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_4_whp' name='mba_4_whp' style='width:50px' /></td>
+			    <td>Power Factor</td>
+			    <td class="gray-bg center number"><input type='text' id='power_factor_1' name='power_factor_1' style='width:50px' value="@(isEdit ? dl.power_factor_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='power_factor_2' name='power_factor_2' style='width:50px' value="@(isEdit ? dl.power_factor_2 : "")"/></td>
+			    <td>&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-2</td>
+                <td>
+                    <input type="radio" id="mbd_2_is_text" name="mbd_2_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbd_2_is_text" name="mbd_2_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbd_2"><input type='text' id='mbd_2_fcv' name='mbd_2_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_2_flow' name='mbd_2_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_2_whp' name='mbd_2_whp' style='width:50px' /></td>
+			    <td>MBA-5</td>
+			    <td>
+                    <input type="radio" id="mba_5_is_text" name="mba_5_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mba_5_is_text" name="mba_5_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mba_5"><input type='text' id='mba_5_fcv' name='mba_5_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_5_flow' name='mba_5_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mba_5_whp' name='mba_5_whp' style='width:50px' /></td>
+			    <td>Tap Changer</td>
+			    <td class="gray-bg center number"><input type='text' id='tap_charger_1' name='tap_charger_1' style='width:50px' value="@(isEdit ? dl.tap_charger_1 : "")" /></td>
+			    <td class="gray-bg center number"><input type='text' id='tap_charger_2' name='tap_charger_2' style='width:50px' value="@(isEdit ? dl.tap_charger_2 : "")"/></td>
+			    <td>step</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-3</td>
+                <td>
+                    <input type="radio" id="mbd_3_is_text" name="mbd_3_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbd_3_is_text" name="mbd_3_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbd_3"><input type='text' id='mbd_3_fcv' name='mbd_3_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_3_flow' name='mbd_3_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_3_whp' name='mbd_3_whp' style='width:50px' /></td>
+			    <td>MBB-1</td>
+                <td>
+                    <input type="radio" id="mbb_1_is_text" name="mbb_1_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbb_1_is_text" name="mbb_1_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbb_1"><input type='text' id='mbb_1_fcv' name='mbb_1_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_1_flow' name='mbb_1_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_1_whp' name='mbb_1_whp' style='width:50px' /></td>
+			    <td>PLN Grid Voltage</td>
+			    <td class="gray-bg center number"><input type='text' id='pln_grid_voltage_1' name='pln_grid_voltage_1' style='width:50px' value="@(isEdit ? dl.pln_grid_voltage_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='pln_grid_voltage_2' name='pln_grid_voltage_2' style='width:50px' value="@(isEdit ? dl.pln_grid_voltage_2 : "")"/></td>
+			    <td>kV</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-4</td>
+                <td>
+                    <input type="radio" id="mbd_4_is_text" name="mbd_4_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbd_4_is_text" name="mbd_4_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbd_4"><input type='text' id='mbd_4_fcv' name='mbd_4_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_4_flow' name='mbd_4_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_4_whp' name='mbd_4_whp' style='width:50px' /></td>
+			    <td>MBB-2</td>
+                <td>
+                    <input type="radio" id="mbb_2_is_text" name="mbb_2_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbb_2_is_text" name="mbb_2_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbb_2"><input type='text' id='mbb_2_fcv' name='mbb_2_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_2_flow' name='mbb_2_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_2_whp' name='mbb_2_whp' style='width:50px' /></td>
+			    <td>Valve Limiter</td>
+			    <td class="gray-bg center number"><input type='text' id='valve_limiter_1' name='valve_limiter_1' style='width:50px' value="@(isEdit ? dl.valve_limiter_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='valve_limiter_2' name='valve_limiter_2' style='width:50px' value="@(isEdit ? dl.valve_limiter_2 : "")"/></td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-5</td>
+                <td>
+                    <input type="radio" id="mbd_5_is_text" name="mbd_5_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbd_5_is_text" name="mbd_5_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbd_5"><input type='text' id='mbd_5_fcv' name='mbd_5_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_5_flow' name='mbd_5_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbd_5_whp' name='mbd_5_whp' style='width:50px' /></td>
+			    <td>MBB-3</td>
+                <td>
+                    <input type="radio" id="mbb_3_is_text" name="mbb_3_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbb_3_is_text" name="mbb_3_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbb_3"><input type='text' id='mbb_3_fcv' name='mbb_3_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_3_flow' name='mbb_3_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_3_whp' name='mbb_3_whp' style='width:50px' /></td>
+			    <td>Governor Output</td>
+			    <td class="gray-bg center number"><input type='text' id='governor_output_1' name='governor_output_1' style='width:50px' value="@(isEdit ? dl.governor_output_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='governor_output_2' name='governor_output_2' style='width:50px' value="@(isEdit ? dl.governor_output_2 : "")"/></td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-1</td>
+                <td>
+                    <input type="radio" id="wwq_1_is_text" name="wwq_1_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wwq_1_is_text" name="wwq_1_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wwq_1"><input type='text' id='wwq_1_fcv' name='wwq_1_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_1_flow' name='wwq_1_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_1_whp' name='wwq_1_whp' style='width:50px' /></td>
+			    <td>MBB-4</td>
+                <td>
+                    <input type="radio" id="mbb_4_is_text" name="mbb_4_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbb_4_is_text" name="mbb_4_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbb_4"><input type='text' id='mbb_4_fcv' name='mbb_4_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_4_flow' name='mbb_4_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_4_whp' name='mbb_4_whp' style='width:50px' /></td>
+			    <td>WCP Counter</td>
+			    <td class="gray-bg center number"><input type='text' id='wcp_counter_1' name='wcp_counter_1' style='width:50px' value="@(isEdit ? dl.wcp_counter_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='wcp_counter_2' name='wcp_counter_2' style='width:50px' value="@(isEdit ? dl.wcp_counter_2 : "")"/></td>
+			    <td>minute</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-2</td>
+                <td>
+                    <input type="radio" id="wwq_2_is_text" name="wwq_2_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wwq_2_is_text" name="wwq_2_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wwq_2"><input type='text' id='wwq_2_fcv' name='wwq_2_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_2_flow' name='wwq_2_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_2_whp' name='wwq_2_whp' style='width:50px' /></td>
+			    <td>MBB-5</td>
+                <td>
+                    <input type="radio" id="mbb_5_is_text" name="mbb_5_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbb_5_is_text" name="mbb_5_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbb_5"><input type='text' id='mbb_5_fcv' name='mbb_5_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_5_flow' name='mbb_5_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_5_whp' name='mbb_5_whp' style='width:50px' /></td>
+			    <td>Condenser Pressure</td>
+			    <td class="gray-bg center number"><input type='text' id='condenser_pressure_1' name='condenser_pressure_1' style='width:50px' value="@(isEdit ? dl.condenser_pressure_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='condenser_pressure_2' name='condenser_pressure_2' style='width:50px' value="@(isEdit ? dl.condenser_pressure_2 : "")"/></td>
+			    <td>mBar</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-3</td>
+                <td>
+                    <input type="radio" id="wwq_3_is_text" name="wwq_3_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wwq_3_is_text" name="wwq_3_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wwq_3"><input type='text' id='wwq_3_fcv' name='wwq_3_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_3_flow' name='wwq_3_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_3_whp' name='wwq_3_whp' style='width:50px' /></td>
+			    <td>MBB-6</td>
+                <td>
+                    <input type="radio" id="mbb_6_is_text" name="mbb_6_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbb_6_is_text" name="mbb_6_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbb_6"><input type='text' id='mbb_6_fcv' name='mbb_6_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_6_flow' name='mbb_6_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbb_6_whp' name='mbb_6_whp' style='width:50px' /></td>
+			    <td>Main C/W Flow</td>
+			    <td class="gray-bg center number"><input type='text' id='main_cw_flow_1' name='main_cw_flow_1' style='width:50px' value="@(isEdit ? dl.main_cw_flow_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='main_cw_flow_2' name='main_cw_flow_2' style='width:50px' value="@(isEdit ? dl.main_cw_flow_2 : "")"/></td>
+			    <td>kg/s</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-4</td>
+                <td>
+                    <input type="radio" id="wwq_4_is_text" name="wwq_4_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wwq_4_is_text" name="wwq_4_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wwq_4"><input type='text' id='wwq_4_fcv' name='wwq_4_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_4_flow' name='wwq_4_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_4_whp' name='wwq_4_whp' style='width:50px' /></td>
+			    <td>WWF-1</td>
+                <td>
+                    <input type="radio" id="wwf_1_is_text" name="wwf_1_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wwf_1_is_text" name="wwf_1_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wwf_1"><input type='text' id='wwf_1_fcv' name='wwf_1_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwf_1_flow' name='wwf_1_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwf_1_whp' name='wwf_1_whp' style='width:50px' /></td>
+			    <td>PPC-G(CO)</td>
+			    <td class="gray-bg center number"><input type='text' id='ppc_g_co_1' name='ppc_g_co_1' style='width:50px' value="@(isEdit ? dl.ppc_g_co_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='ppc_g_co_2' name='ppc_g_co_2' style='width:50px' value="@(isEdit ? dl.ppc_g_co_2 : "")"/></td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-5</td>
+                <td>
+                    <input type="radio" id="wwq_5_is_text" name="wwq_5_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wwq_5_is_text" name="wwq_5_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wwq_5"><input type='text' id='wwq_5_fcv' name='wwq_5_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_5_flow' name='wwq_5_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwq_5_whp' name='wwq_5_whp' style='width:50px' /></td>
+			    <td>WWF-3</td>
+                <td>
+                    <input type="radio" id="wwf_3_is_text" name="wwf_3_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wwf_3_is_text" name="wwf_3_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wwf_3"><input type='text' id='wwf_3_fcv' name='wwf_3_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwf_3_flow' name='wwf_3_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwf_3_whp' name='wwf_3_whp' style='width:50px' /></td>
+			    <td>Interface Pressure (SP)</td>
+			    <td class="gray-bg center number"><input type='text' id='interface_pressure_1' name='interface_pressure_1' style='width:50px' value="@(isEdit ? dl.interface_pressure_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='interface_pressure_2' name='interface_pressure_2' style='width:50px' value="@(isEdit ? dl.interface_pressure_2 : "")"/></td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td>MBE-3</td>
+                <td>
+                    <input type="radio" id="mbe_3_is_text" name="mbe_3_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbe_3_is_text" name="mbe_3_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbe_3"><input type='text' id='mbe_3_fcv' name='mbe_3_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbe_3_flow' name='mbe_3_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbe_3_whp' name='mbe_3_whp' style='width:50px' /></td>
+			    <td>WWW-1</td>
+                <td>
+                    <input type="radio" id="www_1_is_text" name="www_1_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="www_1_is_text" name="www_1_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="www_1"><input type='text' id='www_1_fcv' name='www_1_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='www_1_flow' name='www_1_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='www_1_whp' name='www_1_whp' style='width:50px' /></td>
+			    <td>Vent Bias(SP)</td>
+			    <td class="gray-bg center number"><input type='text' id='vent_bias_1' name='vent_bias_1' style='width:50px' value="@(isEdit ? dl.vent_bias_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='vent_bias_2' name='vent_bias_2' style='width:50px' value="@(isEdit ? dl.vent_bias_2 : "")"/></td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td>MBE-4</td>
+                <td>
+                    <input type="radio" id="mbe_4_is_text" name="mbe_4_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="mbe_4_is_text" name="mbe_4_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="mbe_4"><input type='text' id='mbe_4_fcv' name='mbe_4_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbe_4_flow' name='mbe_4_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='mbe_4_whp' name='mbe_4_whp' style='width:50px' /></td>
+			    <td>WWP-1</td>
+                <td>
+                    <input type="radio" id="wwp_1_is_text" name="wwp_1_is_text" value="1" onchange="changeInput(this)"/>text
+                    <input type="radio" id="wwp_1_is_text" name="wwp_1_is_text" value="0" checked="checked" onchange="changeInput(this)" />input
+                </td>
+			    <td class="gray-bg center number" id="wwp_1"><input type='text' id='wwp_1_fcv' name='wwp_1_fcv' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwp_1_flow' name='wwp_1_flow' style='width:50px' /></td>
+			    <td class="gray-bg center number"><input type='text' id='wwp_1_whp' name='wwp_1_whp' style='width:50px' /></td>
+			    <td>Main C/W Pressure</td>
+			    <td class="gray-bg center number"><input type='text' id='main_cw_pressure_1' name='main_cw_pressure_1' style='width:50px' value="@(isEdit ? dl.main_cw_pressure_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='main_cw_pressure_2' name='main_cw_pressure_2' style='width:50px' value="@(isEdit ? dl.main_cw_pressure_2 : "")"/></td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td class="blue-bg center" rowspan="2" colspan="2">U1 NCG Flow (kg/s)</td>
+			    <td class="blue-bg center" rowspan="2">U2 NCG Flow (kg/s)</td>
+			    <td class="blue-bg center" rowspan="2">U1 Turbine Exp. (mm)</td>
+			    <td class="blue-bg center" rowspan="2">U2 Turbine Exp. (mm)</td>
+			    <td class="blue-bg center" rowspan="2" colspan="2">U1 CT Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">U2 CT Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td>CT Basin pH</td>
+			    <td class="gray-bg center number"><input type='text' id='ct_basin_ph_1' name='ct_basin_ph_1' style='width:50px' value="@(isEdit ? dl.ct_basin_ph_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='ct_basin_ph_2' name='ct_basin_ph_2' style='width:50px' value="@(isEdit ? dl.ct_basin_ph_2 : "")"/></td>
+			    <td>&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>Condenser C/W Inlet-A</td>
+			    <td class="gray-bg center number"><input type='text' id='condenser_cw_inlet_a_1' name='condenser_cw_inlet_a_1' style='width:50px' value="@(isEdit ? dl.condenser_cw_inlet_a_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='condenser_cw_inlet_a_2' name='condenser_cw_inlet_a_2' style='width:50px' value="@(isEdit ? dl.condenser_cw_inlet_a_2 : "")"/></td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td class="gray-bg center number" colspan="2"><input type='text' id='ncg_1' name='ncg_1' style='width:100px' value="@(isEdit ? dl.ncg_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='ncg_2' name='ncg_2' style='width:50px' value="@(isEdit ? dl.ncg_2 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='turbine_1' name='turbine_1' style='width:50px' value="@(isEdit ? dl.turbine_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='turbine_2' name='turbine_2' style='width:50px' value="@(isEdit ? dl.turbine_2 : "")"/></td>
+			    <td class="gray-bg center number" colspan="2"><input type='text' id='ct_temp_1' name='ct_temp_1' style='width:100px' value="@(isEdit ? dl.ct_temp_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='ct_temp_2' name='ct_temp_2' style='width:50px' value="@(isEdit ? dl.ct_temp_2 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='exhaust_1' name='exhaust_1' style='width:50px' value="@(isEdit ? dl.exhaust_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='exhaust_2' name='exhaust_2' style='width:50px' value="@(isEdit ? dl.exhaust_2 : "")"/></td>
+			    <td>Condenser C/W Inlet-B</td>
+			    <td class="gray-bg center number"><input type='text' id='condenser_cw_inlet_b_1' name='condenser_cw_inlet_b_1' style='width:50px' value="@(isEdit ? dl.condenser_cw_inlet_b_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='condenser_cw_inlet_b_2' name='condenser_cw_inlet_b_2' style='width:50px' value="@(isEdit ? dl.condenser_cw_inlet_b_2 : "")"/></td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td class="blue-bg center" rowspan="2" colspan="2">Upper TP Level (m)</td>
+			    <td class="blue-bg center" rowspan="2">Lower TP Level (m)</td>
+			    <td class="blue-bg center" rowspan="2">MV-333 Position (%)</td>
+			    <td class="blue-bg center" rowspan="2">MV-334 Position (%)</td>
+			    <td class="blue-bg center" rowspan="2" colspan="2">Brine Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">Conden-sate Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">NaOH 48% Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">WWD Pond Level (m)</td>
+			    <td>Gen. Trans. Winding Temp.</td>
+			    <td class="gray-bg center number"><input type='text' id='gen_trans_winding_temp_1' name='gen_trans_winding_temp_1' style='width:50px' value="@(isEdit ? dl.gen_trans_winding_temp_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='gen_trans_winding_temp_2' name='gen_trans_winding_temp_2' style='width:50px' value="@(isEdit ? dl.gen_trans_winding_temp_2 : "")"/></td>
+			    <td>C</td>
+		    </tr>
+		    <tr>
+			    <td>Unit Trans. Winding Temp.</td>
+			    <td class="gray-bg center number"><input type='text' id='unit_trans_winding_temp_1' name='unit_trans_winding_temp_1' style='width:50px' value="@(isEdit ? dl.unit_trans_winding_temp_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='unit_trans_winding_temp_2' name='unit_trans_winding_temp_2' style='width:50px' value="@(isEdit ? dl.unit_trans_winding_temp_2 : "")"/></td>
+			    <td>C</td>
+		    </tr>
+		    <tr>
+			    <td class="gray-bg center number" colspan="2"><input type='text' id='upper_tp_level' name='upper_tp_level' style='width:100px' value="@(isEdit ? dl.upper_tp_level : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='lower_tp_level' name='lower_tp_level' style='width:50px' value="@(isEdit ? dl.lower_tp_level : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='mv_333' name='mv_333' style='width:50px' value="@(isEdit ? dl.mv_333 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='mv_334' name='mv_334' style='width:50px' value="@(isEdit ? dl.mv_334 : "")"/></td>
+			    <td class="gray-bg center number" colspan="2"><input type='text' id='brine_level' name='brine_level' style='width:100px' value="@(isEdit ? dl.brine_level : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='condensate_level' name='condensate_level' style='width:50px' value="@(isEdit ? dl.condensate_level : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='naoh_level' name='naoh_level' style='width:50px' value="@(isEdit ? dl.naoh_level : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='wwd_pond_level' name='wwd_pond_level' style='width:50px' value="@(isEdit ? dl.wwd_pond_level : "")"/></td>
+			    <td>Wheel Case Pressure</td>
+			    <td class="gray-bg center number"><input type='text' id='wheel_case_pressure_1' name='wheel_case_pressure_1' style='width:50px' value="@(isEdit ? dl.wheel_case_pressure_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type='text' id='wheel_case_pressure_2' name='wheel_case_pressure_2' style='width:50px' value="@(isEdit ? dl.wheel_case_pressure_2 : "")"/></td>
+			    <td>Bar</td>
+		    </tr>
+	    </table>
+	</div>
+	<div class="log-part3"></div>
+	<div class="log-part4"></div>
+    <br />
+	<div class="log-part5">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="time" rowspan="14">&nbsp;</td>
+			    <td class="yellow-bg center" colspan="9">METERING AND DISPATCH</td>
+		    </tr>
+		    <tr>
+			    <td class="yellow-bg" colspan="2">&nbsp;</td>
+			    <td class="yellow-bg center">Unit-1</td>
+			    <td class="yellow-bg center">Unit-2</td>
+			    <td class="yellow-bg" colspan="2">&nbsp;</td>
+			    <td class="yellow-bg center">Unit-1</td>
+			    <td class="yellow-bg center">Unit-2</td>
+			    <td class="yellow-bg">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Unit Transformer</td>
+			    <td>Active</td>
+			    <td class="gray-bg center number"><input type="text" id="uti_active_1" name="uti_active_1" style="width:100px" value="@(isEdit ? dl.uti_active_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="uti_active_2" name="uti_active_2" style="width:100px" value="@(isEdit ? dl.uti_active_2 : "")"/></td>
+			    <td>MWh</td>
+			    <td>SEGWWL Availability</td>
+			    <td class="gray-bg center number"><input type="text" id="segwwl_availability_1" name="segwwl_availability_1" style="width:100px" value="@(isEdit ? dl.segwwl_availability_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="segwwl_availability_2" name="segwwl_availability_2" style="width:100px" value="@(isEdit ? dl.segwwl_availability_2 : "")"/></td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td>Reactive</td>
+			    <td class="gray-bg center number"><input type="text" id="uti_reactive_1" name="uti_reactive_1" style="width:100px" value="@(isEdit ? dl.uti_reactive_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="uti_reactive_2" name="uti_reactive_2" style="width:100px" value="@(isEdit ? dl.uti_reactive_2 : "")"/></td>
+			    <td>Mvarh</td>
+			    <td>PLN Dispatch</td>
+			    <td class="gray-bg center number"><input type="text" id="pln_dispatch_1" name="pln_dispatch_1" style="width:100px" value="@(isEdit ? dl.pln_dispatch_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="pln_dispatch_2" name="pln_dispatch_2" style="width:100px" value="@(isEdit ? dl.pln_dispatch_2 : "")"/></td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Steam Consumption</td>
+			    <td>Main</td>
+			    <td class="gray-bg center number"><input type="text" id="sc_main_1" name="sc_main_1" style="width:100px" value="@(isEdit ? dl.sc_main_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="sc_main_2" name="sc_main_2" style="width:100px" value="@(isEdit ? dl.sc_main_2 : "")"/></td>
+			    <td>Ton</td>
+			    <td>PLN Meter</td>
+			    <td class="gray-bg center number"><input type="text" id="pln_meter_1" name="pln_meter_1" style="width:100px" value="@(isEdit ? dl.pln_meter_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="pln_meter_2" name="pln_meter_2" style="width:100px" value="@(isEdit ? dl.pln_meter_2 : "")"/></td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td>Auxiliary</td>
+			    <td class="gray-bg center number"><input type="text" id="sc_auxiliary_1" name="sc_auxiliary_1" style="width:100px" value="@(isEdit ? dl.sc_auxiliary_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="sc_auxiliary_2" name="sc_auxiliary_2" style="width:100px" value="@(isEdit ? dl.sc_auxiliary_2 : "")"/></td>
+			    <td>Ton</td>
+			    <td>SEGWWL Export</td>
+			    <td class="gray-bg center number"><input type="text" id="segwwl_export_1" name="segwwl_export_1" style="width:100px" value="@(isEdit ? dl.segwwl_export_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="segwwl_export_2" name="segwwl_export_2" style="width:100px" value="@(isEdit ? dl.segwwl_export_2 : "")"/></td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td colspan="5" class="yellow-bg center">Production</td>
+			    <td>Actual Export</td>
+			    <td class="gray-bg center number"><input type="text" id="actual_export_1" name="actual_export_1" style="width:100px" value="@(isEdit ? dl.actual_export_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="actual_export_2" name="actual_export_2" style="width:100px" value="@(isEdit ? dl.actual_export_2 : "")"/></td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Generate Export (gross)</td>
+			    <td>Active</td>
+			    <td class="gray-bg center number"><input type="text" id="ge_active_1" name="ge_active_1" style="width:100px" value="@(isEdit ? dl.ge_active_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="ge_active_2" name="ge_active_2" style="width:100px" value="@(isEdit ? dl.ge_active_2 : "")"/></td>
+			    <td>MWh</td>
+			    <td>Production Excess</td>
+			    <td class="gray-bg center number"><input type="text" id="production_excess_1" name="production_excess_1" style="width:100px" value="@(isEdit ? dl.production_excess_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="production_excess_2" name="production_excess_2" style="width:100px" value="@(isEdit ? dl.production_excess_2 : "")"/></td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td>Reactive</td>
+			    <td class="gray-bg center number"><input type="text" id="ge_reactive_1" name="ge_reactive_1" style="width:100px" value="@(isEdit ? dl.ge_reactive_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="ge_reactive_2" name="ge_reactive_2" style="width:100px" value="@(isEdit ? dl.ge_reactive_2 : "")"/></td>
+			    <td>Mvarh</td>
+			    <td class="yellow-bg center" colspan="4">Losses</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Metering at 10:00</td>
+			    <td>SEGWWL</td>
+			    <td class="gray-bg center number"><input type="text" id="metering_segwwl_1" name="metering_segwwl_1" style="width:100px" value="@(isEdit ? dl.metering_segwwl_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="metering_segwwl_2" name="metering_segwwl_2" style="width:100px" value="@(isEdit ? dl.metering_segwwl_2 : "")"/></td>
+			    <td>MWh</td>
+			    <td>RPF</td>
+			    <td class="gray-bg center number"><input type="text" id="rpf_1" name="rpf_1" style="width:100px" value="@(isEdit ? dl.rpf_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="rpf_2" name="rpf_2" style="width:100px" value="@(isEdit ? dl.rpf_2 : "")"/></td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td>PLN</td>
+			    <td class="gray-bg center number"><input type="text" id="metering_pln_1" name="metering_pln_1" style="width:100px" value="@(isEdit ? dl.metering_pln_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="metering_pln_2" name="metering_pln_2" style="width:100px" value="@(isEdit ? dl.metering_pln_2 : "")"/></td>
+			    <td>MWh</td>
+			    <td>PGF</td>
+			    <td class="gray-bg center number"><input type="text" id="pgf_1" name="pgf_1" style="width:100px" value="@(isEdit ? dl.pgf_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="pgf_2" name="pgf_2" style="width:100px" value="@(isEdit ? dl.pgf_2 : "")"/></td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Condensate</td>
+			    <td>P/S</td>
+			    <td class="gray-bg center number"><input type="text" id="condensate_ps_1" name="condensate_ps_1" style="width:100px" value="@(isEdit ? dl.condensate_ps_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="condensate_ps_2" name="condensate_ps_2" style="width:100px" value="@(isEdit ? dl.condensate_ps_2 : "")"/></td>
+			    <td>Ton</td>
+			    <td>PLN</td>
+			    <td class="gray-bg center number"><input type="text" id="pln_1" name="pln_1" style="width:100px" value="@(isEdit ? dl.pln_1 : "")"/></td>
+			    <td class="gray-bg center number"><input type="text" id="pln_2" name="pln_2" style="width:100px" value="@(isEdit ? dl.pln_2 : "")"/></td>
+			    <td>Ton</td>
+		    </tr>
+		    <tr>
+			    <td>Total</td>
+			    <td class="gray-bg center number" colspan="2"><input type="text" id="condensate_total" name="condensate_total" style="width:210px" value="@(isEdit ? dl.condensate_total : "")"/></td>
+			    <td>Ton</td>
+			    <td rowspan="2" colspan="4"><b>Note:</b><br /><input type="text" id="note" name="note" style="width:400px" value="@(isEdit ? dl.note : "")"/></td>
+		    </tr>
+		    <tr>
+			    <td>Brine</td>
+			    <td>Total</td>
+			    <td class="gray-bg center number" colspan="2"><input type="text" id="brine_total" name="brine_total" style="width:210px" value="@(isEdit ? dl.brine_total : "")"/></td>
+			    <td>Ton</td>
+		    </tr>
+	    </table>
+	</div>	
+	<div class="log-part6"></div>	
+	<div class="log-part7"></div>
+    <br />
+    <b>Last Plant Status:</b>
+    <table class="w-border" style="width:980px">
+	    <tr>
+		    <td class="time">Time</td>
+		    <td>
+                @(Html.Telerik().TimePicker()
+                .Name("last_plant_time")
+                .HtmlAttributes(new { id = "time_wrapper", style = "width:100px" })
+                .Interval(1)
+                .Value(isEdit ? dl.last_plant_time : ""))
+		    </td>
+	    </tr>
+    </table>
+    <br />	
+	<div class="log-part8"></div>	
+</div>
+<br/>
+<div class="submit">
+	<input name="Submit" value="Simpan" type="submit" onclick="save()"/>
+    <input type="button" value="Batal" onclick="back()"/>
+</div>
+<script type="text/javascript">
+    function loadContent() {
+        $('.log-part3').load('DailyLog/part3?id=@id');
+        $('.log-part4').load('DailyLog/part4?id=@id');
+        $('.log-part6').load('DailyLog/part6?id=@id');
+        $('.log-part7').load('DailyLog/part7?id=@id');
+        $('.log-part8').load('DailyLog/part8?id=@id');
+    }
+
+    function loadWell() {
+        if (isEdit != 'False') {
+            if ('@dl' != null) {
+                if ('@dl.wma_2_is_text' == '1') {
+                    $('input:radio[name="wma_2_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wma_2_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wma_2_fcv').val('@dl.wma_2_fcv');
+                } else {
+                    $('input:radio[name="wma_2_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wma_2_fcv').val('@dl.wma_2_fcv');
+                    $('#wma_2_flow').val('@dl.wma_2_flow');
+                    $('#wma_2_fwhp').val('@dl.wma_2_whp');
+                }
+
+                if ('@dl.wma_4_is_text' == '1') {
+                    $('input:radio[name="wma_4_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wma_4_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wma_4_fcv').val('@dl.wma_4_fcv');
+                } else {
+                    $('input:radio[name="wma_4_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wma_4_fcv').val('@dl.wma_4_fcv');
+                    $('#wma_4_flow').val('@dl.wma_4_flow');
+                    $('#wma_4_fwhp').val('@dl.wma_4_whp');
+                }
+
+                if ('@dl.wma_6_is_text' == '1') {
+                    $('input:radio[name="wma_6_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wma_6_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wma_6_fcv').val('@dl.wma_6_fcv');
+                } else {
+                    $('input:radio[name="wma_6_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wma_6_fcv').val('@dl.wma_6_fcv');
+                    $('#wma_6_flow').val('@dl.wma_6_flow');
+                    $('#wma_6_fwhp').val('@dl.wma_6_whp');
+                }
+
+                if ('@dl.mbd_1_is_text' == '1') {
+                    $('input:radio[name="mbd_1_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbd_1_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbd_1_fcv').val('@dl.mbd_1_fcv');
+                } else {
+                    $('input:radio[name="mbd_1_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbd_1_fcv').val('@dl.mbd_1_fcv');
+                    $('#mbd_1_flow').val('@dl.mbd_1_flow');
+                    $('#mbd_1_fwhp').val('@dl.mbd_1_whp');
+                }
+
+                if ('@dl.mbd_2_is_text' == '1') {
+                    $('input:radio[name="mbd_2_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbd_2_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbd_2_fcv').val('@dl.mbd_2_fcv');
+                } else {
+                    $('input:radio[name="mbd_2_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbd_2_fcv').val('@dl.mbd_2_fcv');
+                    $('#mbd_2_flow').val('@dl.mbd_2_flow');
+                    $('#mbd_2_fwhp').val('@dl.mbd_2_whp');
+                }
+
+                if ('@dl.mbd_3_is_text' == '1') {
+                    $('input:radio[name="mbd_3_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbd_3_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbd_3_fcv').val('@dl.mbd_3_fcv');
+                } else {
+                    $('input:radio[name="mbd_3_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbd_3_fcv').val('@dl.mbd_3_fcv');
+                    $('#mbd_3_flow').val('@dl.mbd_3_flow');
+                    $('#mbd_3_fwhp').val('@dl.mbd_3_whp');
+                }
+
+                if ('@dl.mbd_4_is_text' == '1') {
+                    $('input:radio[name="mbd_4_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbd_4_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbd_4_fcv').val('@dl.mbd_4_fcv');
+                } else {
+                    $('input:radio[name="mbd_4_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbd_4_fcv').val('@dl.mbd_4_fcv');
+                    $('#mbd_4_flow').val('@dl.mbd_4_flow');
+                    $('#mbd_4_fwhp').val('@dl.mbd_4_whp');
+                }
+
+                if ('@dl.mbd_5_is_text' == '1') {
+                    $('input:radio[name="mbd_5_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbd_5_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbd_5_fcv').val('@dl.mbd_5_fcv');
+                } else {
+                    $('input:radio[name="mbd_5_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbd_5_fcv').val('@dl.mbd_5_fcv');
+                    $('#mbd_5_flow').val('@dl.mbd_5_flow');
+                    $('#mbd_5_fwhp').val('@dl.mbd_5_whp');
+                }
+
+                if ('@dl.wwq_1_is_text' == '1') {
+                    $('input:radio[name="wwq_1_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wwq_1_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wwq_1_fcv').val('@dl.wwq_1_fcv');
+                } else {
+                    $('input:radio[name="wwq_1_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wwq_1_fcv').val('@dl.wwq_1_fcv');
+                    $('#wwq_1_flow').val('@dl.wwq_1_flow');
+                    $('#wwq_1_fwhp').val('@dl.wwq_1_whp');
+                }
+
+                if ('@dl.wwq_2_is_text' == '1') {
+                    $('input:radio[name="wwq_2_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wwq_2_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wwq_2_fcv').val('@dl.wwq_2_fcv');
+                } else {
+                    $('input:radio[name="wwq_2_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wwq_2_fcv').val('@dl.wwq_2_fcv');
+                    $('#wwq_2_flow').val('@dl.wwq_2_flow');
+                    $('#wwq_2_fwhp').val('@dl.wwq_2_whp');
+                }
+
+                if ('@dl.wwq_3_is_text' == '1') {
+                    $('input:radio[name="wwq_3_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wwq_3_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wwq_3_fcv').val('@dl.wwq_3_fcv');
+                } else {
+                    $('input:radio[name="wwq_3_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wwq_3_fcv').val('@dl.wwq_3_fcv');
+                    $('#wwq_3_flow').val('@dl.wwq_3_flow');
+                    $('#wwq_3_fwhp').val('@dl.wwq_3_whp');
+                }
+
+                if ('@dl.wwq_4_is_text' == '1') {
+                    $('input:radio[name="wwq_4_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wwq_4_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wwq_4_fcv').val('@dl.wwq_4_fcv');
+                } else {
+                    $('input:radio[name="wwq_4_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wwq_4_fcv').val('@dl.wwq_4_fcv');
+                    $('#wwq_4_flow').val('@dl.wwq_4_flow');
+                    $('#wwq_4_fwhp').val('@dl.wwq_4_whp');
+                }
+
+                if ('@dl.wwq_5_is_text' == '1') {
+                    $('input:radio[name="wwq_5_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wwq_5_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wwq_5_fcv').val('@dl.wwq_5_fcv');
+                } else {
+                    $('input:radio[name="wwq_5_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wwq_5_fcv').val('@dl.wwq_5_fcv');
+                    $('#wwq_5_flow').val('@dl.wwq_5_flow');
+                    $('#wwq_5_fwhp').val('@dl.wwq_5_whp');
+                }
+
+                if ('@dl.mbe_3_is_text' == '1') {
+                    $('input:radio[name="mbe_3_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbe_3_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbe_3_fcv').val('@dl.mbe_3_fcv');
+                } else {
+                    $('input:radio[name="mbe_3_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbe_3_fcv').val('@dl.mbe_3_fcv');
+                    $('#mbe_3_flow').val('@dl.mbe_3_flow');
+                    $('#mbe_3_fwhp').val('@dl.mbe_3_whp');
+                }
+
+                if ('@dl.mbe_4_is_text' == '1') {
+                    $('input:radio[name="mbe_4_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbe_4_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbe_4_fcv').val('@dl.mbe_4_fcv');
+                } else {
+                    $('input:radio[name="mbe_4_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbe_4_fcv').val('@dl.mbe_4_fcv');
+                    $('#mbe_4_flow').val('@dl.mbe_4_flow');
+                    $('#mbe_4_fwhp').val('@dl.mbe_4_whp');
+                }
+
+                if ('@dl.mba_1_is_text' == '1') {
+                    $('input:radio[name="mba_1_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mba_1_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mba_1_fcv').val('@dl.mba_1_fcv');
+                } else {
+                    $('input:radio[name="mba_1_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mba_1_fcv').val('@dl.mba_1_fcv');
+                    $('#mba_1_flow').val('@dl.mba_1_flow');
+                    $('#mba_1_fwhp').val('@dl.mba_1_whp');
+                }
+
+                if ('@dl.mba_2_is_text' == '1') {
+                    $('input:radio[name="mba_2_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mba_2_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mba_2_fcv').val('@dl.mba_2_fcv');
+                } else {
+                    $('input:radio[name="mba_2_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mba_2_fcv').val('@dl.mba_2_fcv');
+                    $('#mba_2_flow').val('@dl.mba_2_flow');
+                    $('#mba_2_fwhp').val('@dl.mba_2_whp');
+                }
+
+                if ('@dl.mba_3_is_text' == '1') {
+                    $('input:radio[name="mba_3_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mba_3_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mba_3_fcv').val('@dl.mba_3_fcv');
+                } else {
+                    $('input:radio[name="mba_3_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mba_3_fcv').val('@dl.mba_3_fcv');
+                    $('#mba_3_flow').val('@dl.mba_3_flow');
+                    $('#mba_3_fwhp').val('@dl.mba_3_whp');
+                }
+
+                if ('@dl.mba_4_is_text' == '1') {
+                    $('input:radio[name="mba_4_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mba_4_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mba_4_fcv').val('@dl.mba_4_fcv');
+                } else {
+                    $('input:radio[name="mba_4_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mba_4_fcv').val('@dl.mba_4_fcv');
+                    $('#mba_4_flow').val('@dl.mba_4_flow');
+                    $('#mba_4_fwhp').val('@dl.mba_4_whp');
+                }
+
+                if ('@dl.mba_5_is_text' == '1') {
+                    $('input:radio[name="mba_5_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mba_5_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mba_5_fcv').val('@dl.mba_5_fcv');
+                } else {
+                    $('input:radio[name="mba_5_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mba_5_fcv').val('@dl.mba_5_fcv');
+                    $('#mba_5_flow').val('@dl.mba_5_flow');
+                    $('#mba_5_fwhp').val('@dl.mba_5_whp');
+                }
+
+                if ('@dl.mbb_1_is_text' == '1') {
+                    $('input:radio[name="mbb_1_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbb_1_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbb_1_fcv').val('@dl.mbb_1_fcv');
+                } else {
+                    $('input:radio[name="mbb_1_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbb_1_fcv').val('@dl.mbb_1_fcv');
+                    $('#mbb_1_flow').val('@dl.mbb_1_flow');
+                    $('#mbb_1_fwhp').val('@dl.mbb_1_whp');
+                }
+
+                if ('@dl.mbb_2_is_text' == '1') {
+                    $('input:radio[name="mbb_2_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbb_2_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbb_2_fcv').val('@dl.mbb_2_fcv');
+                } else {
+                    $('input:radio[name="mbb_2_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbb_2_fcv').val('@dl.mbb_2_fcv');
+                    $('#mbb_2_flow').val('@dl.mbb_2_flow');
+                    $('#mbb_2_fwhp').val('@dl.mbb_2_whp');
+                }
+
+                if ('@dl.mbb_3_is_text' == '1') {
+                    $('input:radio[name="mbb_3_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbb_3_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbb_3_fcv').val('@dl.mbb_3_fcv');
+                } else {
+                    $('input:radio[name="mbb_3_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbb_3_fcv').val('@dl.mbb_3_fcv');
+                    $('#mbb_3_flow').val('@dl.mbb_3_flow');
+                    $('#mbb_3_fwhp').val('@dl.mbb_3_whp');
+                }
+
+                if ('@dl.mbb_4_is_text' == '1') {
+                    $('input:radio[name="mbb_4_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbb_4_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbb_4_fcv').val('@dl.mbb_4_fcv');
+                } else {
+                    $('input:radio[name="mbb_4_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbb_4_fcv').val('@dl.mbb_4_fcv');
+                    $('#mbb_4_flow').val('@dl.mbb_4_flow');
+                    $('#mbb_4_fwhp').val('@dl.mbb_4_whp');
+                }
+
+                if ('@dl.mbb_5_is_text' == '1') {
+                    $('input:radio[name="mbb_5_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbb_5_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbb_5_fcv').val('@dl.mbb_5_fcv');
+                } else {
+                    $('input:radio[name="mbb_5_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbb_5_fcv').val('@dl.mbb_5_fcv');
+                    $('#mbb_5_flow').val('@dl.mbb_5_flow');
+                    $('#mbb_5_fwhp').val('@dl.mbb_5_whp');
+                }
+
+                if ('@dl.mbb_6_is_text' == '1') {
+                    $('input:radio[name="mbb_6_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="mbb_6_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#mbb_6_fcv').val('@dl.mbb_6_fcv');
+                } else {
+                    $('input:radio[name="mbb_6_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#mbb_6_fcv').val('@dl.mbb_6_fcv');
+                    $('#mbb_6_flow').val('@dl.mbb_6_flow');
+                    $('#mbb_6_fwhp').val('@dl.mbb_6_whp');
+                }
+
+                if ('@dl.wwf_1_is_text' == '1') {
+                    $('input:radio[name="wwf_1_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wwf_1_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wwf_1_fcv').val('@dl.wwf_1_fcv');
+                } else {
+                    $('input:radio[name="wwf_1_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wwf_1_fcv').val('@dl.wwf_1_fcv');
+                    $('#wwf_1_flow').val('@dl.wwf_1_flow');
+                    $('#wwf_1_fwhp').val('@dl.wwf_1_whp');
+                }
+
+                if ('@dl.wwf_3_is_text' == '1') {
+                    $('input:radio[name="wwf_3_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wwf_3_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wwf_3_fcv').val('@dl.wwf_3_fcv');
+                } else {
+                    $('input:radio[name="wwf_3_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wwf_3_fcv').val('@dl.wwf_3_fcv');
+                    $('#wwf_3_flow').val('@dl.wwf_3_flow');
+                    $('#wwf_3_fwhp').val('@dl.wwf_3_whp');
+                }
+
+                if ('@dl.www_1_is_text' == '1') {
+                    $('input:radio[name="www_1_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="www_1_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#www_1_fcv').val('@dl.www_1_fcv');
+                } else {
+                    $('input:radio[name="www_1_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#www_1_fcv').val('@dl.www_1_fcv');
+                    $('#www_1_flow').val('@dl.www_1_flow');
+                    $('#www_1_fwhp').val('@dl.www_1_whp');
+                }
+
+                if ('@dl.wwp_1_is_text' == '1') {
+                    $('input:radio[name="wwp_1_is_text"]').filter('[value="1"]').attr('checked', true);
+                    $('input:radio[name="wwp_1_is_text"]').filter('[value="1"]').trigger('change');
+                    $('#wwp_1_fcv').val('@dl.wwp_1_fcv');
+                } else {
+                    $('input:radio[name="wwp_1_is_text"]').filter('[value="0"]').attr('checked', true);
+                    $('#wwp_1_fcv').val('@dl.wwp_1_fcv');
+                    $('#wwp_1_flow').val('@dl.wwp_1_flow');
+                    $('#wwp_1_fwhp').val('@dl.wwp_1_whp');
+                }
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        //resizeIframe();
+        loadContent();
+        loadWell();
+    });
+
+    function back() {
+        if (!isSave) {
+            $.post("DailyLog/DeleteAllPowerStation", function (data) { });
+            $.post("DailyLog/DeleteAllSAGS", function (data) { });
+            $.post("DailyLog/DeleteAllPRO", function (data) { });
+            $.post("DailyLog/DeleteAllMaintenance", function (data) { });
+            $.post("DailyLog/DeleteAllLastPlantStatus", function (data) { });
+        }
+        $('#content').load('DailyLog/Index');
+    }
+</script>

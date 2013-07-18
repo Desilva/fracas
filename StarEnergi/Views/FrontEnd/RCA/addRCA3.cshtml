@@ -1,0 +1,193 @@
+﻿@{
+    int? isPublish = ViewBag.isPublish;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    if (ViewBag.types == "add")
+    {
+        ViewBag.Title = "add RCA - 3";
+    }
+    else if (ViewBag.types == "edit")
+    {
+        if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+        {
+            ViewBag.Title = "edit RCA - 3";
+        }
+        else
+        {
+            ViewBag.Title = "view RCA - 3";
+        }
+    }
+}
+<script type="text/javascript" src="../../../Scripts/jquery-1.4.4.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#equipment_type').change(function () {
+            $.post('@Url.Action("getEquipmentCode", "RCA")', { selectedType: $(this).val(), selectedClass: $('#equipment_class').val() }, function (result) {
+                var str = '<option value="" disabled selected>Choose Equipment Class</option>';
+                var size = 0;
+
+                $.each(result, function () {
+                    size++;
+                });
+
+                if (size == 0) {
+                    $('#equipment_code').val('Choose Equipment Type and Equipment Class');
+                } else {
+                    $('#equipment_code').val(result[0].tag_num);
+                }
+            });
+        });
+    });
+
+    $(function () {
+        $('#equipment_class').change(function () {
+            $.post('@Url.Action("getEquipmentCode", "RCA")', { selectedType: $('#equipment_type').val(), selectedClass : $(this).val() }, function (result) {
+                var str = '<option value="" disabled selected>Choose Equipment Type and Class</option>';
+                //var size = 0;
+
+                //$.each(result, function () {
+                //    size++;
+                //});
+
+                //if (size == 0) {
+                //    $('#equipment_code').val('Choose Equipment Type and Class');
+                //} else {
+                //    $('#equipment_code').val(result[0].tag_num);
+                //}
+                if (result.count == 0) {
+                    $('#equipment_code').html(str);
+                } else {
+                    $.each(result, function () {
+                        str += '<option value="' + this.tag_num + '">' + this.tag_num + '</option>\n';
+                    });
+                    $('#equipment_code').html(str);
+                }
+            });
+        });
+    });
+</script>
+<br />
+@using (Html.BeginForm())
+{
+<div class="addContent">
+    <div class="addImage">
+        <img src="../../../Content/image/addImage.png">
+    </div>
+
+    <div class="addInfo">
+        <div class="infoAbove white">
+            <div class="up">What equipment has been affected?</div>
+        </div>
+        <div class="addField">
+            <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
+            <input type="hidden" name="types" id="types" value="@ViewBag.types" />
+            <div class="info_new_left">Equipment Type</div>
+            <div class="infonewinput">
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                {
+                    <select name="equipment_type" id="equipment_type">
+                        <option value="" disabled selected>Choose Equipment Type</option>
+                        @foreach (StarEnergi.Models.tag_types a in ViewData["equipments"] as List<StarEnergi.Models.tag_types>)
+                        {
+                            if (ViewBag.id_equipment_type == null)
+                            {
+                                <option value="@a.id">@a.title</option>
+                            }
+                            else if (a.id.ToString().CompareTo(ViewBag.id_equipment_type) == 0)
+                            {
+                                <option value="@a.id" selected="selected">@a.title</option>
+                            }
+                            else
+                            {
+                                <option value="@a.id">@a.title</option>
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                        <input id="equipment_type" type="text" name="equipment_type" value="@ViewBag.equipment_type" disabled/>   
+                }
+            </div>
+            <br />
+            <div class="info_new_left">Equipment Class</div>
+            <div class="infonewinput">
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                {
+                    <select name="equipment_class" id="equipment_class">
+                        <option value="" disabled selected>Choose Equipment Class</option>
+                        @foreach (StarEnergi.Models.discipline a in ViewData["equipmentClass"] as List<StarEnergi.Models.discipline>)
+                        {
+                            if (ViewBag.id_equipment_class == null)
+                            {
+                            <option value="@a.id">@a.title</option>
+                            }
+                            else if (a.id.ToString().CompareTo(ViewBag.id_equipment_class) == 0)
+                            {
+                            <option value="@a.id" selected="selected">@a.title</option>
+                            }
+                            else
+                            {
+                            <option value="@a.id">@a.title</option>
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                        <input id="equipment_class" type="text" name="equipment_class" value="@ViewBag.equipment_class" disabled/>   
+                }
+            </div>
+            <br />
+            <div class="info_new_left">Equipment Code</div>
+            <div class="infonewinput">
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                {
+                <select name="equipment_code" id="equipment_code">
+                    <option value="" disabled selected>Choose Equipment Type and Class</option>
+                        
+                    @if (ViewData["equipmentCodes"] != null)
+                    {
+                        foreach (string a in ViewData["equipmentCodes"] as List<string>)
+                        {
+                            if (ViewBag.equipment_code == null)
+                            {
+                            <option value="@a">@a</option>
+                            }
+                            else if (a.ToString().CompareTo(ViewBag.equipment_code) == 0)
+                            {
+                            <option value="@a" selected="selected">@a</option>
+                            }
+                            else
+                            {
+                            <option value="@a">@a</option>
+                            }
+                        }
+                    }
+                </select>
+                }
+                else
+                {
+                        <input id="equipment_code" type="text" name="equipment_code" value="@ViewBag.equipment_code" disabled/>   
+                }
+            </div>
+            
+            <br />
+            <div class="info_new_left">Other</div>
+            <div class="infonewinput"><input id="other" type="text" name="other" value="@ViewBag.other" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/></div>
+            <br />
+            <div class="info_new_left">Manufacture</div>
+            <div class="infonewinput"><input id="manufacture" type="text" name="manufacture" value="@ViewBag.manufacture" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/></div>
+            <br />
+            <div class="addSubmit">
+	            <input name="cancel" value="Cancel" type="submit"/>
+                <input type="submit" value="Previous" name="previous"/>
+                <input type="submit" value="Next" name="next"/>
+            </div>
+        </div> 
+    </div>
+</div>
+}

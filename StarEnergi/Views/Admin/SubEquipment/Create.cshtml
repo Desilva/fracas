@@ -1,0 +1,89 @@
+﻿@using StarEnergi 
+@model StarEnergi.Models.equipment_part
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function addPart() {
+        $('#content').load('Part/Index/' + '@ViewBag.id_equipment');
+    }
+
+    function save() {
+        var values =
+        {
+            "id_parts": $('#id_part').val(),
+            "id_equipment": eval('@ViewBag.id_equipment'),
+            "installed_date": $('#installed_date').val()
+        }
+
+        $.post("SubEquipment/Create", values, function (data) {
+             if (data != undefined) {
+                if (data["status"] == 0) {
+                    var value = 'PART;' + data["message"];
+                    $('#content').load('subequipment/details/' + data["message"]);
+                    AppendItem($('#id_part option:selected').text(), value);
+                    DeselectNode();
+                    SelectNode(value);
+                } else if (data["status"] == 1) {
+                    clearError();
+                    $.each(data, function (index, value) {
+                        if (index != "status") {
+                            //error render
+                            $('#' + index).next('div').html(value);
+                        }
+                    });
+                } else {
+                    alert("Data sub equipment sudah terdaftar");
+                }
+            } else {
+                alert('Gagal menambahkan data sub equipment');
+            }
+        });
+
+    }
+
+    function clearError() {
+        var field = ["id_part","installed_date"];
+        $.each(field, function (index, value) {
+            $('#' + value).next('div').html('');
+        });
+    }
+</script>
+<div class="fieldR">* Required Field</div>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Sub Equipment Equipment</legend>
+        <br/>
+        <input type="button" value="Add New Part" onclick="addPart()"/>
+        <br/><br/>
+
+        <div class="editor-label">
+            Tag Number<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("id_part")
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            Installed Date
+        </div>
+        <div class="editor-field">
+            @(Html.Telerik().DateTimePickerFor(model => model.installed_date)
+                  .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" })
+                  .Value(DateTime.Now)
+            )
+            <div class="errorM"></div>
+        </div>
+
+        <p>
+            <input type="submit" value="Add" onclick="save()"/>
+        </p>
+    </fieldset>

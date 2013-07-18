@@ -1,0 +1,21 @@
+﻿@model IEnumerable<StarEnergi.Models.foc_op_avail>
+<div class="legend">
+    <b class="target">target</b> |
+    <b class="actual">actual</b>
+</div> 
+@{ 
+   int i = 0; 
+   foreach (StarEnergi.Models.foc_op_avail item in Model)
+   {
+       if((i % 3) == 0){ 
+           <div class="item span-5 last">
+	            @{Html.RenderPartial("_speedometerDouble", item);}
+            </div>
+        }else{
+            <div class="item span-5">
+	            @{Html.RenderPartial("_speedometerDouble", item);}
+            </div>
+        }
+       i++;
+   }
+}

@@ -1,0 +1,148 @@
+﻿@model StarEnergi.Models.equipment
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>equipment</legend>
+
+    <div class="display-label">equipment_groups</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment_groups.nama)
+    </div>
+
+    <div class="display-label">id_category</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.id_category)
+    </div>
+
+    <div class="display-label">tag_num</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.tag_num)
+    </div>
+
+    <div class="display-label">nama</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nama)
+    </div>
+
+    <div class="display-label">pdf</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.pdf)
+    </div>
+
+    <div class="display-label">tetha</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.tetha)
+    </div>
+
+    <div class="display-label">beta</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.beta)
+    </div>
+
+    <div class="display-label">mean</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.mean)
+    </div>
+
+    <div class="display-label">varian</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.varian)
+    </div>
+
+    <div class="display-label">lamda</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.lamda)
+    </div>
+
+    <div class="display-label">id_discipline</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.id_discipline)
+    </div>
+
+    <div class="display-label">mtbf</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.mtbf)
+    </div>
+
+    <div class="display-label">mttr</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.mttr)
+    </div>
+
+    <div class="display-label">mdt</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.mdt)
+    </div>
+
+    <div class="display-label">status</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.status)
+    </div>
+
+    <div class="display-label">method</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.method)
+    </div>
+
+    <div class="display-label">econ</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.econ)
+    </div>
+
+    <div class="display-label">ram_crit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit)
+    </div>
+
+    <div class="display-label">installed_date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.installed_date)
+    </div>
+
+    <div class="display-label">obsolete_date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.obsolete_date)
+    </div>
+
+    <div class="display-label">warranty</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.warranty)
+    </div>
+
+    <div class="display-label">vendor</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.vendor)
+    </div>
+
+    <div class="display-label">id_tag_type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.id_tag_type)
+    </div>
+
+    <div class="display-label">status_read_nav</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.status_read_nav)
+    </div>
+
+    <div class="display-label">data_sheet_path</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.data_sheet_path)
+    </div>
+
+    <div class="display-label">sertifikasi</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.sertifikasi)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        
+    </p>
+}

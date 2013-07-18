@@ -1,0 +1,686 @@
+﻿@model StarEnergi.Models.she_observation
+@{
+    int? id = Model.id as Nullable<Int32>;
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<script>
+    function setIframeHeight(sel, h) {
+        $(sel).height(h);
+    }
+</script>
+<div class="container">
+	<header>
+		<div class="page-title" style="width:980px">
+            <h4><input type="checkbox" id="she_obs" name="she_obs" @(Model.she_obs == 1 ? "checked" : "") disabled/>SHE OBSERVATIONS<br />
+            <input type="checkbox" id="she_ins" name="she_ins" @(Model.she_ins == 1 ? "checked" : "") disabled/>SHE INSPECTION</h4>
+		</div>
+		<div class="clearfix" style="width:768px"></div>
+		<b>OBSERVE -> STOP -> DISCUSS -> COMMITMENT -> REPORT<br />
+        OBSERVE -> CORRECTIVE -> PREVENT RECURRENT -> REPORT</b>
+	</header>
+	<div class="log-part1">
+		<table class="w-border" style="width:980px">
+			<tr>
+				<td class="no-border-btm"><b>WRITE</b></td>
+                <td class="center" rowspan="3"><b>OBSERVATION CHECKLIST</b></td>
+                <td class="rights no-border-btm"><b>WRITE</b></td>
+			</tr>
+            <tr>
+				<td class="no-border-btm no-border-top"><b>UA - UNSAFE ACT</b></td>
+                <td class="rights no-border-btm no-border-top"><b>SAFE ACT - SA</b></td>
+			</tr>
+			<tr>
+				<td class="no-border-top"><b>UC - UNSAFE COND</b></td>
+                <td class="rights no-border-top"><b>SAFE COND - SC</b></td>
+			</tr>
+		</table>
+	</div>
+	<div class="log-part2">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td class="orange-bg center" colspan="3"><b>1. SAFETY</b></td>
+		    </tr>
+		    <tr>
+			    <td class="" style="width:100px">
+                    <input type="checkbox" id="accident_unsafe_act" name="accident_unsafe" value="1" disabled @(Model.accident_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+                    <input type="checkbox" id="accident_unsafe_cond" name="accident_unsafe" value="1" disabled @(Model.accident_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+			    </td>
+                <td class="" style="width:250px">
+                    <input type="checkbox" id="accident_risk_fatality" name="accident_risk" value="1" disabled @(Model.accident_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+                    <input type="checkbox" id="accident_risk_major" name="accident_risk" value="1" disabled @(Model.accident_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+                    <input type="checkbox" id="accident_risk_minor" name="accident_risk" value="1" disabled @(Model.accident_risk.ElementAt(2) == '1' ? "checked" : "") />Minor
+			    </td>
+			    <td>Potential accident - Berpotensi kecelakaan</td>
+                <td style="width:100px">
+                    <input type="checkbox" id="accident_safe_act" name="accident_safe" value="1" disabled @(Model.accident_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+                    <input type="checkbox" id="accident_safe_cond" name="accident_safe" value="1" disabled @(Model.accident_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+			    </td>
+		    </tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="fire_unsafe_act" name="fire_unsafe" value="1" disabled @(Model.fire_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="fire_unsafe_cond" name="fire_unsafe" value="1" disabled @(Model.fire_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="fire_risk_fatality" name="fire_risk" value="1" disabled @(Model.fire_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="fire_risk_major" name="fire_risk" value="1" disabled @(Model.fire_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="fire_risk_minor" name="fire_risk" value="1" disabled @(Model.fire_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Potential fire/explode - Berpotensi kebakaran/meledak</td>
+				<td style="width:100px">
+					<input type="checkbox" id="fire_safe_act" name="fire_safe" value="1" disabled @(Model.fire_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="fire_safe_cond" name="fire_safe" value="1" disabled @(Model.fire_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="prevention_unsafe_act" name="prevention_unsafe" value="1" disabled @(Model.prevention_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="prevention_unsafe_cond" name="prevention_unsafe" value="1" disabled @(Model.prevention_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="prevention_risk_fatality" name="prevention_risk" value="1" disabled @(Model.prevention_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="prevention_risk_major" name="prevention_risk" value="1" disabled @(Model.prevention_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="prevention_risk_minor" name="prevention_risk" value="1" disabled @(Model.prevention_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Incident Prevention Program - Pencegahan kecelakaan</td>
+				<td style="width:100px">
+					<input type="checkbox" id="prevention_safe_act" name="prevention_safe" value="1" disabled @(Model.prevention_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="prevention_safe_cond" name="prevention_safe" value="1" disabled @(Model.prevention_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="supervisor_unsafe_act" name="supervisor_unsafe" value="1" disabled @(Model.supervisor_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="supervisor_unsafe_cond" name="supervisor_unsafe" value="1" disabled @(Model.supervisor_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="supervisor_risk_fatality" name="supervisor_risk" value="1" disabled @(Model.supervisor_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="supervisor_risk_major" name="supervisor_risk" value="1" disabled @(Model.supervisor_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="supervisor_risk_minor" name="supervisor_risk" value="1" disabled @(Model.supervisor_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Supervisor in locations - Pengawas berada di lokasi</td>
+				<td style="width:100px">
+					<input type="checkbox" id="supervisor_safe_act" name="supervisor_safe" value="1" disabled @(Model.supervisor_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="supervisor_safe_cond" name="supervisor_safe" value="1" disabled @(Model.supervisor_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+			    <td class="orange-bg center" colspan="4"><b>2. HEALTH</b></td>
+		    </tr>
+		    <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="fit_work_unsafe_act" name="fit_work_unsafe" value="1" disabled @(Model.fit_work_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="fit_work_unsafe_cond" name="fit_work_unsafe" value="1" disabled @(Model.fit_work_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="fit_work_risk_fatality" name="fit_work_risk" value="1" disabled @(Model.fit_work_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="fit_work_risk_major" name="fit_work_risk" value="1" disabled @(Model.fit_work_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="fit_work_risk_minor" name="fit_work_risk" value="1" disabled @(Model.fit_work_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Fit for work - Kondisi sehat/siap untuk kerja</td>
+				<td style="width:100px">
+					<input type="checkbox" id="fit_work_safe_act" name="fit_work_safe" value="1" disabled @(Model.fit_work_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="fit_work_safe_cond" name="fit_work_safe" value="1" disabled @(Model.fit_work_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="psychological_unsafe_act" name="psychological_unsafe" value="1" disabled @(Model.psychological_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="psychological_unsafe_cond" name="psychological_unsafe" value="1" disabled @(Model.psychological_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="psychological_risk_fatality" name="psychological_risk" value="1" disabled @(Model.psychological_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="psychological_risk_major" name="psychological_risk" value="1" disabled @(Model.psychological_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="psychological_risk_minor" name="psychological_risk" value="1" disabled @(Model.psychological_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Psychological problem - Masalah Psikologi</td>
+				<td style="width:100px">
+					<input type="checkbox" id="psychological_safe_act" name="psychological_safe" value="1" disabled @(Model.psychological_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="psychological_safe_cond" name="psychological_safe" value="1" disabled @(Model.psychological_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="posture_unsafe_act" name="posture_unsafe" value="1" disabled @(Model.posture_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="posture_unsafe_cond" name="posture_unsafe" value="1" disabled @(Model.posture_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="posture_risk_fatality" name="posture_risk" value="1" disabled @(Model.posture_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="posture_risk_major" name="posture_risk" value="1" disabled @(Model.posture_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="posture_risk_minor" name="posture_risk" value="1" disabled @(Model.posture_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Posture/ergonomics - Ergonomi/posisi tubuh</td>
+				<td style="width:100px">
+					<input type="checkbox" id="posture_safe_act" name="posture_safe" value="1" disabled @(Model.posture_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="posture_safe_cond" name="posture_safe" value="1" disabled @(Model.posture_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="substance_unsafe_act" name="substance_unsafe" value="1" disabled @(Model.substance_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="substance_unsafe_cond" name="substance_unsafe" value="1" disabled @(Model.substance_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="substance_risk_fatality" name="substance_risk" value="1" disabled @(Model.substance_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="substance_risk_major" name="substance_risk" value="1" disabled @(Model.substance_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="substance_risk_minor" name="substance_risk" value="1" disabled @(Model.substance_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Hazardous Substance - Bahan berbahaya ke tubuh</td>
+				<td style="width:100px">
+					<input type="checkbox" id="substance_safe_act" name="substance_safe" value="1" disabled @(Model.substance_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="substance_safe_cond" name="substance_safe" value="1" disabled @(Model.substance_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="hygiene_unsafe_act" name="hygiene_unsafe" value="1" disabled @(Model.hygiene_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="hygiene_unsafe_cond" name="hygiene_unsafe" value="1" disabled @(Model.hygiene_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="hygiene_risk_fatality" name="hygiene_risk" value="1" disabled @(Model.hygiene_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="hygiene_risk_major" name="hygiene_risk" value="1" disabled @(Model.hygiene_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="hygiene_risk_minor" name="hygiene_risk" value="1" disabled @(Model.hygiene_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Hygiene & sanitation - Kebersihan & kesehatan</td>
+				<td style="width:100px">
+					<input type="checkbox" id="hygiene_safe_act" name="hygiene_safe" value="1" disabled @(Model.hygiene_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="hygiene_safe_cond" name="hygiene_safe" value="1" disabled @(Model.hygiene_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+			    <td class="orange-bg center" colspan="4"><b>3. ENVIRONMENT</b></td>
+		    </tr>
+		    <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="house_unsafe_act" name="house_unsafe" value="1" disabled @(Model.house_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="house_unsafe_cond" name="house_unsafe" value="1" disabled @(Model.house_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="house_risk_fatality" name="house_risk" value="1" disabled @(Model.house_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="house_risk_major" name="house_risk" value="1" disabled @(Model.house_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="house_risk_minor" name="house_risk" value="1" disabled @(Model.house_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>House keeping - Kerapihan & kebersihan</td>
+				<td style="width:100px">
+					<input type="checkbox" id="house_safe_act" name="house_safe" value="1" disabled @(Model.house_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="house_safe_cond" name="house_safe" value="1" disabled @(Model.house_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="standard_unsafe_act" name="standard_unsafe" value="1" disabled @(Model.standard_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="standard_unsafe_cond" name="standard_unsafe" value="1" disabled @(Model.standard_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="standard_risk_fatality" name="standard_risk" value="1" disabled @(Model.standard_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="standard_risk_major" name="standard_risk" value="1" disabled @(Model.standard_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="standard_risk_minor" name="standard_risk" value="1" disabled @(Model.standard_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Standard labeling - Pemberian simbol2 standar</td>
+				<td style="width:100px">
+					<input type="checkbox" id="standard_safe_act" name="standard_safe" value="1" disabled @(Model.standard_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="standard_safe_cond" name="standard_safe" value="1" disabled @(Model.standard_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="spill_unsafe_act" name="spill_unsafe" value="1" disabled @(Model.spill_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="spill_unsafe_cond" name="spill_unsafe" value="1" disabled @(Model.spill_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="spill_risk_fatality" name="spill_risk" value="1" disabled @(Model.spill_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="spill_risk_major" name="spill_risk" value="1" disabled @(Model.spill_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="spill_risk_minor" name="spill_risk" value="1" disabled @(Model.spill_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Potential of Spill/emission - Berpotensi pencemaran</td>
+				<td style="width:100px">
+					<input type="checkbox" id="spill_safe_act" name="spill_safe" value="1" disabled @(Model.spill_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="spill_safe_cond" name="spill_safe" value="1" disabled @(Model.spill_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="waste_energy_unsafe_act" name="waste_energy_unsafe" value="1" disabled @(Model.waste_energy_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="waste_energy_unsafe_cond" name="waste_energy_unsafe" value="1" disabled @(Model.waste_energy_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="waste_energy_risk_fatality" name="waste_energy_risk" value="1" disabled @(Model.waste_energy_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="waste_energy_risk_major" name="waste_energy_risk" value="1" disabled @(Model.waste_energy_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="waste_energy_risk_minor" name="waste_energy_risk" value="1" disabled @(Model.waste_energy_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Waste Energy/Inefficient - Boros enerji</td>
+				<td style="width:100px">
+					<input type="checkbox" id="waste_energy_safe_act" name="waste_energy_safe" value="1" disabled @(Model.waste_energy_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="waste_energy_safe_cond" name="waste_energy_safe" value="1" disabled @(Model.waste_energy_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="containment_unsafe_act" name="containment_unsafe" value="1" disabled @(Model.containment_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="containment_unsafe_cond" name="containment_unsafe" value="1" disabled @(Model.containment_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="containment_risk_fatality" name="containment_risk" value="1" disabled @(Model.containment_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="containment_risk_major" name="containment_risk" value="1" disabled @(Model.containment_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="containment_risk_minor" name="containment_risk" value="1" disabled @(Model.containment_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Containment adequacy - Pencegahan pencemaran</td>
+				<td style="width:100px">
+					<input type="checkbox" id="containment_safe_act" name="containment_safe" value="1" disabled @(Model.containment_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="containment_safe_cond" name="containment_safe" value="1" disabled @(Model.containment_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="absorbent_unsafe_act" name="absorbent_unsafe" value="1" disabled @(Model.absorbent_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="absorbent_unsafe_cond" name="absorbent_unsafe" value="1" disabled @(Model.absorbent_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="absorbent_risk_fatality" name="absorbent_risk" value="1" disabled @(Model.absorbent_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="absorbent_risk_major" name="absorbent_risk" value="1" disabled @(Model.absorbent_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="absorbent_risk_minor" name="absorbent_risk" value="1" disabled @(Model.absorbent_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Absorbent availability - Ketersediaan alat penyerap</td>
+				<td style="width:100px">
+					<input type="checkbox" id="absorbent_safe_act" name="absorbent_safe" value="1" disabled @(Model.absorbent_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="absorbent_safe_cond" name="absorbent_safe" value="1" disabled @(Model.absorbent_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+			    <td class="orange-bg center" colspan="4"><b>4. DOCUMENT/PROCEDURE</b><br /><b>(availability, adequacy, understood, follow, comply)</b></td>
+		    </tr>
+		    <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="hira_unsafe_act" name="hira_unsafe" value="1" disabled @(Model.hira_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="hira_unsafe_cond" name="hira_unsafe" value="1" disabled @(Model.hira_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="hira_risk_fatality" name="hira_risk" value="1" disabled @(Model.hira_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="hira_risk_major" name="hira_risk" value="1" disabled @(Model.hira_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="hira_risk_minor" name="hira_risk" value="1" disabled @(Model.hira_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>HIRA/JSA - Identifikasi bahaya & penanggulangan</td>
+				<td style="width:100px">
+					<input type="checkbox" id="hira_safe_act" name="hira_safe" value="1" disabled @(Model.hira_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="hira_safe_cond" name="hira_safe" value="1" disabled @(Model.hira_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="ptw_unsafe_act" name="ptw_unsafe" value="1" disabled @(Model.ptw_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="ptw_unsafe_cond" name="ptw_unsafe" value="1" disabled @(Model.ptw_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="ptw_risk_fatality" name="ptw_risk" value="1" disabled @(Model.ptw_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="ptw_risk_major" name="ptw_risk" value="1" disabled @(Model.ptw_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="ptw_risk_minor" name="ptw_risk" value="1" disabled @(Model.ptw_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>PTW/ Special PTW - Dokumen ijin kerja</td>
+				<td style="width:100px">
+					<input type="checkbox" id="ptw_safe_act" name="ptw_safe" value="1" disabled @(Model.ptw_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="ptw_safe_cond" name="ptw_safe" value="1" disabled @(Model.ptw_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="sop_unsafe_act" name="sop_unsafe" value="1" disabled @(Model.sop_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="sop_unsafe_cond" name="sop_unsafe" value="1" disabled @(Model.sop_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="sop_risk_fatality" name="sop_risk" value="1" disabled @(Model.sop_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="sop_risk_major" name="sop_risk" value="1" disabled @(Model.sop_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="sop_risk_minor" name="sop_risk" value="1" disabled @(Model.sop_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>SOP/Guidline/working instruction - Petunjuk kerja</td>
+				<td style="width:100px">
+					<input type="checkbox" id="sop_safe_act" name="sop_safe" value="1" disabled @(Model.sop_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="sop_safe_cond" name="sop_safe" value="1" disabled @(Model.sop_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="msds_unsafe_act" name="msds_unsafe" value="1" disabled @(Model.msds_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="msds_unsafe_cond" name="msds_unsafe" value="1" disabled @(Model.msds_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="msds_risk_fatality" name="msds_risk" value="1" disabled @(Model.msds_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="msds_risk_major" name="msds_risk" value="1" disabled @(Model.msds_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="msds_risk_minor" name="msds_risk" value="1" disabled @(Model.msds_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>MSDS - Material Safety Data Sheets</td>
+				<td style="width:100px">
+					<input type="checkbox" id="msds_safe_act" name="msds_safe" value="1" disabled @(Model.msds_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="msds_safe_cond" name="msds_safe" value="1" disabled @(Model.msds_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="emergency_unsafe_act" name="emergency_unsafe" value="1" disabled @(Model.emergency_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="emergency_unsafe_cond" name="emergency_unsafe" value="1" disabled @(Model.emergency_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="emergency_risk_fatality" name="emergency_risk" value="1" disabled @(Model.emergency_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="emergency_risk_major" name="emergency_risk" value="1" disabled @(Model.emergency_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="emergency_risk_minor" name="emergency_risk" value="1" disabled @(Model.emergency_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Emergency Preparedness - Siap tanggap darurat</td>
+				<td style="width:100px">
+					<input type="checkbox" id="emergency_safe_act" name="emergency_safe" value="1" disabled @(Model.emergency_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="emergency_safe_cond" name="emergency_safe" value="1" disabled @(Model.emergency_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="certificates_unsafe_act" name="certificates_unsafe" value="1" disabled @(Model.certificates_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="certificates_unsafe_cond" name="certificates_unsafe" value="1" disabled @(Model.certificates_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="certificates_risk_fatality" name="certificates_risk" value="1" disabled @(Model.certificates_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="certificates_risk_major" name="certificates_risk" value="1" disabled @(Model.certificates_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="certificates_risk_minor" name="certificates_risk" value="1" disabled @(Model.certificates_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Certificates - sertifikat operator/perjalanan</td>
+				<td style="width:100px">
+					<input type="checkbox" id="certificates_safe_act" name="certificates_safe" value="1" disabled @(Model.certificates_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="certificates_safe_cond" name="certificates_safe" value="1" disabled @(Model.certificates_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+			    <td class="orange-bg center" colspan="4"><b>5. TOOLS & EQUIPMENTS</b><br /><b>(wrong for the job, used incorrectly, unsafe condition)</b></td>
+		    </tr>
+		    <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="ppe_unsafe_act" name="ppe_unsafe" value="1" disabled @(Model.ppe_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="ppe_unsafe_cond" name="ppe_unsafe" value="1" disabled @(Model.ppe_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="ppe_risk_fatality" name="ppe_risk" value="1" disabled @(Model.ppe_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="ppe_risk_major" name="ppe_risk" value="1" disabled @(Model.ppe_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="ppe_risk_minor" name="ppe_risk" value="1" disabled @(Model.ppe_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>PPE - Alat Pelindung Diri
+                    <select id="ppe_equipment" @(Model.ppe_unsafe.Contains("1") == true || Model.ppe_safe.Contains("1") == true ? "style=display:inline-block" : "style=display:none") disabled>
+                        <option value="">Choose One</option>
+                        <option value="0" @(Model.type_equipment == 0 ? "selected" : "")>Safety helmet</option>
+                        <option value="1" @(Model.type_equipment == 1 ? "selected" : "")>Safety gloves</option>
+                        <option value="2" @(Model.type_equipment == 2 ? "selected" : "")>Safety glasses</option>
+                        <option value="3" @(Model.type_equipment == 3 ? "selected" : "")>Safety shoes</option>
+                        <option value="4" @(Model.type_equipment == 4 ? "selected" : "")>Safety ear protection</option>
+                    </select>
+				</td>
+				<td style="width:100px">
+					<input type="checkbox" id="ppe_safe_act" name="ppe_safe" value="1" disabled @(Model.ppe_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="ppe_safe_cond" name="ppe_safe" value="1" disabled @(Model.ppe_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="hand_unsafe_act" name="hand_unsafe" value="1" disabled @(Model.hand_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="hand_unsafe_cond" name="hand_unsafe" value="1" disabled @(Model.hand_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="hand_risk_fatality" name="hand_risk" value="1" disabled @(Model.hand_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="hand_risk_major" name="hand_risk" value="1" disabled @(Model.hand_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="hand_risk_minor" name="hand_risk" value="1" disabled @(Model.hand_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Hand / portable tools - Alat portabel</td>
+				<td style="width:100px">
+					<input type="checkbox" id="hand_safe_act" name="hand_safe" value="1" disabled @(Model.hand_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="hand_safe_cond" name="hand_safe" value="1" disabled @(Model.hand_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="mechanical_unsafe_act" name="mechanical_unsafe" value="1" disabled @(Model.mechanical_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="mechanical_unsafe_cond" name="mechanical_unsafe" value="1" disabled @(Model.mechanical_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="mechanical_risk_fatality" name="mechanical_risk" value="1" disabled @(Model.mechanical_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="mechanical_risk_major" name="mechanical_risk" value="1" disabled @(Model.mechanical_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="mechanical_risk_minor" name="mechanical_risk" value="1" disabled @(Model.mechanical_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Mechanical - Mekanis</td>
+				<td style="width:100px">
+					<input type="checkbox" id="mechanical_safe_act" name="mechanical_safe" value="1" disabled @(Model.mechanical_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="mechanical_safe_cond" name="mechanical_safe" value="1" disabled @(Model.mechanical_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="electrical_unsafe_act" name="electrical_unsafe" value="1" disabled @(Model.electrical_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="electrical_unsafe_cond" name="electrical_unsafe" value="1" disabled @(Model.electrical_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="electrical_risk_fatality" name="electrical_risk" value="1" disabled @(Model.electrical_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="electrical_risk_major" name="electrical_risk" value="1" disabled @(Model.electrical_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="electrical_risk_minor" name="electrical_risk" value="1" disabled @(Model.electrical_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Electrical / electronic - Listrik</td>
+				<td style="width:100px">
+					<input type="checkbox" id="electrical_safe_act" name="electrical_safe" value="1" disabled @(Model.electrical_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="electrical_safe_cond" name="electrical_safe" value="1" disabled @(Model.electrical_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="vehicular_unsafe_act" name="vehicular_unsafe" value="1" disabled @(Model.vehicular_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="vehicular_unsafe_cond" name="vehicular_unsafe" value="1" disabled @(Model.vehicular_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:200px">
+					<input type="checkbox" id="vehicular_risk_fatality" name="vehicular_risk" value="1" disabled @(Model.vehicular_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="vehicular_risk_major" name="vehicular_risk" value="1" disabled @(Model.vehicular_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="vehicular_risk_minor" name="vehicular_risk" value="1" disabled @(Model.vehicular_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Vehicular / heavy equipment - kendaraan/alat berat</td>
+				<td style="width:100px">
+					<input type="checkbox" id="vehicular_safe_act" name="vehicular_safe" value="1" disabled @(Model.vehicular_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="vehicular_safe_cond" name="vehicular_safe" value="1" disabled @(Model.vehicular_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+			    <td class="orange-bg center" colspan="4"><b>6. WORKING AREA</b></td>
+		    </tr>
+		    <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="substandard_unsafe_act" name="substandard_unsafe" value="1" disabled @(Model.substandard_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="substandard_unsafe_cond" name="substandard_unsafe" value="1" disabled @(Model.substandard_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="substandard_risk_fatality" name="substandard_risk" value="1" disabled @(Model.substandard_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="substandard_risk_major" name="substandard_risk" value="1" disabled @(Model.substandard_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="substandard_risk_minor" name="substandard_risk" value="1" disabled @(Model.substandard_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Substandard facilities - Fasilitas substandard</td>
+				<td style="width:100px">
+					<input type="checkbox" id="substandard_safe_act" name="substandard_safe" value="1" disabled @(Model.substandard_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="substandard_safe_cond" name="substandard_safe" value="1" disabled @(Model.substandard_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="h2s_unsafe_act" name="h2s_unsafe" value="1" disabled @(Model.h2s_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="h2s_unsafe_cond" name="h2s_unsafe" value="1" disabled @(Model.h2s_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="h2s_risk_fatality" name="h2s_risk" value="1" disabled @(Model.h2s_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="h2s_risk_major" name="h2s_risk" value="1" disabled @(Model.h2s_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="h2s_risk_minor" name="h2s_risk" value="1" disabled @(Model.h2s_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>H2S exposure - Paparan H2S</td>
+				<td style="width:100px">
+					<input type="checkbox" id="h2s_safe_act" name="h2s_safe" value="1" disabled @(Model.h2s_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="h2s_safe_cond" name="h2s_safe" value="1" disabled @(Model.h2s_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+            <tr>
+				<td class="" style="width:100px">
+					<input type="checkbox" id="workplace_health_unsafe_act" name="workplace_health_unsafe" value="1" disabled @(Model.workplace_health_unsafe.ElementAt(0) == '1' ? "checked" : "")/>UA
+					<input type="checkbox" id="workplace_health_unsafe_cond" name="workplace_health_unsafe" value="1" disabled @(Model.workplace_health_unsafe.ElementAt(1) == '1' ? "checked" : "")/>UC
+				</td>
+				<td class="" style="width:250px">
+					<input type="checkbox" id="workplace_health_risk_fatality" name="workplace_health_risk" value="1" disabled @(Model.workplace_health_risk.ElementAt(0) == '1' ? "checked" : "")/>Serious
+					<input type="checkbox" id="workplace_health_risk_major" name="workplace_health_risk" value="1" disabled @(Model.workplace_health_risk.ElementAt(1) == '1' ? "checked" : "")/>Moderate
+					<input type="checkbox" id="workplace_health_risk_minor" name="workplace_health_risk" value="1" disabled @(Model.workplace_health_risk.ElementAt(2) == '1' ? "checked" : "")/>Minor
+				</td>
+				<td>Workplace health hazards - Potensi bahaya kesehatan<br />(Noise, dust, temperature, vibration, radiation, temperature, ventilation, illumination, slippery)</td>
+				<td style="width:100px">
+					<input type="checkbox" id="workplace_health_safe_act" name="workplace_health_safe" value="1" disabled @(Model.workplace_health_safe.ElementAt(0) == '1' ? "checked" : "")/>SA
+					<input type="checkbox" id="workplace_health_safe_cond" name="workplace_health_safe" value="1" disabled @(Model.workplace_health_safe.ElementAt(1) == '1' ? "checked" : "")/>SC
+				</td>
+			</tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part3">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td style="width:200px"><b>Date/Time</b></td>
+			    <td>
+                    @Model.date_time.Value.ToString();
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="width:200px"><b>Observer</b></td>
+			    <td>
+                    @Model.observer
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="width:200px"><b>Department</b></td>
+			    <td>
+                    @Model.department
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part4">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td>
+                    <b>Location:</b><br />
+                    @Model.location
+			    </td>
+		    </tr>
+            <tr>
+			    <td>
+                    <b>Activity:</b><br />
+                    @Model.activity
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="no-border-btm">
+                    <input type="checkbox" id="safe_observed" name="safe_observed" value="1" @(Model.safe_observed == 1 ? "checked" : "") disabled/><b>Safe Act/Condition Observed.</b>
+			    </td>
+		    </tr>
+            <tr>
+			    <td>
+                    @{int countCol = 0; int countRow = 0;}
+                    @if (Model.safe_observeds != null) {
+                        foreach (char i in Model.safe_observeds)
+                        {
+                            if (i == '\n')
+                            {
+                                countRow++; countCol = 0;<br />}
+                            else
+                            {
+                                countCol++; if (countCol > 56) { countRow++; countCol = 0; }<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="no-border-top">
+                    <input type="checkbox" id="action_encourages" name="action_encourages" value="1" @(Model.action_encourages == 1 ? "checked" : "") disabled/><b>Action taken to encourage continued SHE perfomances.</b>
+			    </td>
+		    </tr>
+            <tr>
+			    <td>
+                    @{countCol = 0; countRow = 0;}
+                    @if (Model.action_encourage != null) {
+                        foreach (char i in Model.action_encourage)
+                        {
+                            if (i == '\n')
+                            {
+                                countRow++; countCol = 0;<br />}
+                            else
+                            {
+                                countCol++; if (countCol > 56) { countRow++; countCol = 0; }<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="no-border-btm">
+                    <input type="checkbox" id="unsafe_observed" name="unsafe_observed" value="1" @(Model.unsafe_observed == 1 ? "checked" : "") disabled/><b>Unsafe Act/Conditions Observed.</b>
+			    </td>
+		    </tr>
+            <tr>
+			    <td>
+                    @{countCol = 0; countRow = 0;}
+                    @if (Model.unsafe_observeds != null) {
+                        foreach (char i in Model.unsafe_observeds)
+                        {
+                            if (i == '\n')
+                            {
+                                countRow++; countCol = 0;<br />}
+                            else
+                            {
+                                countCol++; if (countCol > 56) { countRow++; countCol = 0; }<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="no-border-btm no-border-top">
+                    <input type="checkbox" id="immediate_corrective_act" name="immediate_corrective_act" value="1"@(Model.immediate_corrective_act == 1 ? "checked" : "") disabled/><b>Immediate corrective actions.</b>
+			    </td>
+		    </tr>
+            <tr>
+			    <td>
+                    @{countCol = 0; countRow = 0;}
+                    @if (Model.immediate_corrective_acts != null) {
+                        foreach (char i in Model.immediate_corrective_acts)
+                        {
+                            if (i == '\n')
+                            {
+                                countRow++; countCol = 0;<br />}
+                            else
+                            {
+                                countCol++; if (countCol > 56) { countRow++; countCol = 0; }<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+            <tr>
+			    <td class="no-border-top">
+                    <input type="checkbox" id="action_prevents" name="action_prevents" value="1" @(Model.action_prevents == 1 ? "checked" : "") disabled/><b>Action to prevent recurrences.</b>
+			    </td>
+		    </tr>
+            <tr>
+			    <td>
+                    @{countCol = 0; countRow = 0;}
+                    @if (Model.action_prevent != null) {
+                        foreach (char i in Model.action_prevent)
+                        {
+                            if (i == '\n')
+                            {
+                                countRow++; countCol = 0;<br />}
+                            else
+                            {
+                                countCol++; if (countCol > 56) { countRow++; countCol = 0; }<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+</div>
+<br/>
+<div class="submit">
+	<button type="button" value="Back">
+        @Html.ActionLink("Back", "Index", "SheObservation")
+    </button>
+</div>

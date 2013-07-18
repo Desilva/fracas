@@ -1,0 +1,31 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    List<StarEnergi.Models.daily_log_power_stations> li = ViewBag.powerStation as List<StarEnergi.Models.daily_log_power_stations>;
+    string lastUnit = "";
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<div class="container">
+	<table>
+		<tr>
+			<td class="time">&nbsp;</td>
+			<td colspan="2"><b>Power Station activity</b></td>
+		</tr>
+        @foreach (StarEnergi.Models.daily_log_power_stations ps in li) {
+            if (lastUnit != ps.power_station_unit) {
+                lastUnit = ps.power_station_unit;
+                <tr>
+			        <td class="first-col">@ps.power_station_time</td>
+			        <td class="unit">@ps.power_station_unit -></td>
+			        <td><li>@ps.power_station_activity</li></td>
+		        </tr>
+            } else {
+                <tr>
+			        <td class="first-col">@ps.power_station_time</td>
+			        <td class="unit">&nbsp;</td>
+			        <td><li>@ps.power_station_activity</li></td>
+		        </tr>
+            }  
+        }
+	</table>
+</div>

@@ -1,0 +1,298 @@
+﻿<div id = "contentPirInitiatorList">
+<h2>@ViewBag.nama
+    <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
+</h2>
+
+<script type="text/javascript">
+    function openHelp() {
+        window.open("Help/index#fracas", "Help", "height=500,width=1000");
+    }
+
+    function onRowSelect(e) {
+        var row = e.row;
+        $('#contentPirInitiatorList').load('pir/pageInitiator/' + row.cells[0].innerHTML);
+    }
+
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateDefault = '<a href="/pir/Log/' + row.cells[0].innerHTML + '" class="t-button t-grid-Log" style="color: transparent;min-width: 2px;background: url(../../Content/image/iconLog.jpg) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;" title="Log" id="log">Log</a>'
+        var templateDel = '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#"><span class="t-icon t-delete"></span></a>';
+
+        if (dataItem.status == 'INITIATOR') { //complete
+            row.cells[6].innerHTML = templateDel+templateDefault;
+        } else {
+            row.cells[6].innerHTML = templateDefault;
+        }
+    }
+
+    function OnComplete(e) {
+        if (e.name == null) {           
+            $('#contentPirInitiatorList').load('pir/pageInitiator/');
+        } else if (e.name == "Create") {
+            $('#contentPirInitiatorList').load('pir/pageInitiator/?idRca=' + e.response[1] + '&identity='+e.response[0]);
+        }
+
+    }
+
+    function changePirTarget() {
+        $.post("Pir/PirTarget", null, function (data) {
+            $("#pir_target").data("tSlider").value(data.target);
+            $('#pir_window').data('tWindow').center().open();
+        });
+        
+    }
+
+    function setPirNewTarget() {
+        var target = $("#pir_target").val();
+        $.post("Pir/setPirTarget", { target: target }, function (data) {
+            $('#pir_window').data('tWindow').close();
+            $("#pir_view_target").html(target);
+            $("#view_total_pir").html(data.total_pir);
+            $("#view_total_overdue").html(data.total_overdue);
+            if (data.successFail == true) {
+                $('#success').show();
+                $('#fail').hide();
+            } else {
+                $('#success').hide();
+                $('#fail').show();
+            }
+        });
+
+    }
+
+    /*function OnRowDataBoundList(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateCreate = '<a href="/pir/AddInitiator/' + dataItem.id + '?identity=' + dataItem.identity + '" class="t-button t-grid-Create t-ajax" style="color: transparent;min-width: 2px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;" title="Create PIR" id="create">Create</a>';
+        var templateDelete = '<a href="/pir/AddInitiator/' + dataItem.id + '?identity=' + dataItem.identity + '" class="t-button t-grid-Create t-ajax" style="color: transparent;min-width: 2px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;" title="Create PIR" id="create">Create</a>'
+                            + '<a href="/pir/DeletePirNumber/' + dataItem.id + '?identity=' + dataItem.identity + '" class="t-button t-grid-Delete" style="color: transparent;min-width: 2px;background: url(../../Content/image/iconDelete.png) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;" title="Delete PIR" id="delete">Delete</a>';
+
+        
+        if (dataItem.pir_number == '') { //complete
+            row.cells[0].innerHTML = templateCreate;
+        } else if (dataItem.status == 0) { //uncomplete
+            row.cells[0].innerHTML = templateDelete;
+        }
+    }*/
+</script>
+<h3>Key Performance Indicator</h3>
+<div>
+    <span><b>Target (not over): <div id="pir_view_target" style="display:inline;">@ViewBag.pir_target</div>%  <div style="display:inline;"><input type="button" id="changeTarget" value="Change Target" onclick="changePirTarget()"/></div></b></span><br />
+    <span><b>Total PIR : <div id="view_total_pir" style="display:inline;">@ViewBag.totalPir</div></span></b><br />
+    <span><b>Total Overdue PIR : <div id="view_total_overdue" style="display:inline;">@ViewBag.totalOverdue</div></b></span><br />
+    <div>
+        <img src="../../../Content/image/success.png" alt="Success" width="200" id="success" @((ViewBag.success as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
+        <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="fail" @((ViewBag.success as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
+    </div>
+</div>
+<br />
+<hr />
+<h3>My Task</h3>
+@*<div id="left-content">
+    <span><b>From RCA</b></span>
+    <div class="content">
+        @(Html.Telerik().Grid<StarEnergi.Models.RCAEntityModel>()
+                .Name("pirInitiatorTask")
+                //.HtmlAttributes(new { style = "width:45%;" })
+                .DataKeys(keys =>
+                {
+                    keys.Add(p => p.id);
+                })
+                .DataBinding(dataBinding =>
+                {
+                    dataBinding.Ajax()
+                        .Select("_SelectAjaxEditingTask", "pir");
+                })
+                .Columns(columns =>
+                {
+                    columns.Command(commands =>
+                    {
+                        commands.Custom("Create")
+                                 .Text("Create")
+                                 .Ajax(true)
+                                 .HtmlAttributes(new { style = "color: transparent;min-width: 2px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Create PIR", id = "create" })
+                                 .DataRouteValues(route => route.Add(o => o.identity).RouteKey("identity"))
+                                 .Action("AddInitiator", "pir");
+                        commands.Custom("Delete")
+                                .Text("Delete")
+                                .HtmlAttributes(new { style = "color: transparent;min-width: 2px;background: url(../../Content/image/iconDelete.png) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Delete PIR", id = "delete" })
+                                .DataRouteValues(route => route.Add(o => o.identity).RouteKey("identity"))
+                                .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                                .Action("DeletePirNumber", "pir");
+                    }).Width(90).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+                    columns.Bound(o => o.id).Hidden();
+                    columns.Bound(o => o.pir_number).Title("Pir No").Width(150);
+                    columns.Bound(o => o.name).Title("RCA Name").Width(130);
+                    columns.Bound(o => o.description).Title("Description RCA").Width(300);         
+            
+                })
+                .ClientEvents(events => events
+                    .OnComplete("OnComplete")
+                )   
+                .Pageable(p => p.PageSize(20))
+                .Sortable()
+                .Filterable()
+                .Scrollable(c => c.Enabled(true))
+                .Selectable()
+                .Groupable()
+                .Resizable(resizing => resizing.Columns(true))
+
+        ) 
+    </div>
+</div>*@
+
+@*<div id="right-content">*@
+@(Html.Telerik().Window()
+    .Name("pir_window")
+    .Visible(false)
+    .Title("Set Target")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Target </div>
+		            <div class="infoFieldinput">@(Html.Telerik().Slider<double>()
+                          .Name("pir_target")
+                          .Min(0)
+                          .Max(100)
+                          .SmallStep(5)
+                          .LargeStep(10)
+                          .ShowButtons(true)
+                          .TickPlacement(SliderTickPlacement.Both)
+                    )</div>
+
+	            <p class="submit">
+		            <input name="Submit" value="Set" type="submit" onclick="setPirNewTarget();" />
+	            </p>
+	         </div>
+        </text>)
+)
+<div>
+    <span><b>From IIR</b></span>
+    <div class="content">
+        @(Html.Telerik().Grid<StarEnergi.Models.RCAEntityModel>()
+                .Name("pirInitiatorIir")
+                //.HtmlAttributes(new { style = "width:45%;" })
+                .DataKeys(keys =>
+                {
+                    keys.Add(p => p.id);
+                })
+                .DataBinding(dataBinding =>
+                {
+                    dataBinding.Ajax()
+                        .Select("_SelectAjaxEditingTaskPir", "pir");
+                })
+                .Columns(columns =>
+                {
+                    columns.Command(commands =>
+                    {
+                        commands.Custom("Create")
+                                 .Text("Create")
+                                 .Ajax(true)
+                                 .HtmlAttributes(new { style = "color: transparent;min-width: 2px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Create PIR", id = "create" })
+                                 .DataRouteValues(route => route.Add(o => o.identity).RouteKey("identity"))
+                                 .Action("AddInitiator", "pir");
+                        commands.Custom("Delete")
+                                .Text("Delete")
+                                .HtmlAttributes(new { style = "color: transparent;min-width: 2px;background: url(../../Content/image/iconDelete.png) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Delete PIR", id = "delete" })
+                                .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                                .DataRouteValues(route => route.Add(o => o.identity).RouteKey("identity"))
+                                .Action("DeletePirNumber", "pir");
+                    }).Width(90).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+                    columns.Bound(o => o.id).Hidden();
+                    columns.Bound(o => o.pir_number).Title("Pir No").Width(150);
+                    columns.Bound(o => o.description).Title("Description IIR").Width(300);
+
+
+                })
+                .ClientEvents(events => events
+                    .OnComplete("OnComplete")
+
+                )
+                .Pageable(p => p.PageSize(20))
+                .Sortable()
+                .Filterable()
+                .Scrollable(c => c.Enabled(true))
+                .Selectable()
+                .Groupable()
+                .Resizable(resizing => resizing.Columns(true))
+
+        ) 
+    </div>
+</div>
+<div>
+
+<h3>Created PIR</h3>
+@(Html.Telerik().Grid<StarEnergi.Models.PIREntity>()
+        .Name("pirInitiator")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxEditing", "pir")
+                .Select("_SelectAjaxEditing", "pir");
+        })
+        //.ToolBar(commands => commands
+        //    .Custom()
+        //    .HtmlAttributes(new { id = "addInitiator" })
+        //    .Text("Add")
+        //    .Ajax(true)
+        //    .Action("AddInitiator", "pir")
+        //)
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.no).Title("No");
+            columns.Bound(o => o.title).Title("Title");
+            columns.Bound(o => o.date_rise).Title("Date Raise");
+            columns.Bound(o => o.target_completion_init).Title("Target Completion");
+            columns.Bound(o => o.status).Title("Status");
+            columns.Command(commands =>
+            {
+                commands.Custom("Log")
+                         .Text("Log")
+                         .HtmlAttributes(new { style = "color: transparent;min-width: 2px;background: url(../../Content/image/iconLog.jpg) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Create PIR", id = "create" })
+                         .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                         .Action("Log", "pir");
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+        })
+        .ClientEvents(events => events
+            .OnRowSelect("onRowSelect")
+            .OnRowDataBound("OnRowDataBoundEq")
+            .OnComplete("OnComplete")
+        )
+        .Pageable(p => p.PageSize(20))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Groupable()
+        .Resizable(resizing => resizing.Columns(true))
+
+) 
+</div>
+    <br />
+<div>
+@using (Html.BeginForm("Index", "LoadExcel", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
+{
+    	 <h3>Import PIR Data From Excel</h3>
+		 	 
+		 <div class="info_inside_left">Excel File (.xls) :</div> 
+		 <input type="text" id="fileName" class="file_input_textbox" readonly="readonly" />
+		 <div class="file_input_div" style="width: 200px;">
+			<input type="button" value="Browse" class="file_input_button" style="width: 75px;" />
+			<input type="file" class="file_input_hidden" name="userfile" onchange="javascript: document.getElementById('fileName').value = this.value" />
+		 </div>
+		 <br />
+		 <input type="button" value="Upload" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; submit();" />
+		 <input type="button" value="Download template" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.filePIR'" />
+}
+<br />
+<iframe id="upload_target" name="upload_target" src="" width="715" style="border:0px solid #fff;"></iframe>
+</div>
+</div>

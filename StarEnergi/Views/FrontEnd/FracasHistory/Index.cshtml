@@ -1,0 +1,18 @@
+﻿@using StarEnergi
+@model IEnumerable<StarEnergi.Models.plant>
+@{
+    ViewBag.Title = "Fracas";
+}
+<script type="text/javascript">
+    function openHelp() {
+        window.open("Help/index#fracas", "Help", "height=500,width=1000");
+    }
+</script>
+
+<h2>@ViewBag.Message 
+    <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
+</h2>
+@Html.Partial("_TreeNavigationFrontEnd")
+<div id="content" style="float:left;margin-left: 300px;">
+
+</div>

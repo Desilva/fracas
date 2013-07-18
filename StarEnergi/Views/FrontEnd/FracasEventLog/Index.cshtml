@@ -1,0 +1,56 @@
+﻿<div id = "contentEventLog">
+@model IEnumerable<StarEnergi.Models.FracasEventModel>
+<h2>@ViewBag.nama
+    <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
+</h2>
+
+<script type="text/javascript">
+    function openHelp() {
+        window.open("Help/index#fracas", "Help", "height=500,width=1000");
+    }
+
+    function onRowSelect(e) {
+        var row = e.row;
+        $('#contentEventLog').load('FracasEventLog/DetailFracas/' + row.cells[0].innerHTML + '?type=eventLog' + '&part=' + row.cells[1].innerHTML);
+    }
+</script>
+
+@(Html.Telerik().Grid<StarEnergi.Models.FracasEventModel>()
+        //.HtmlAttributes(new { style = "padding:0 0 0 10px;" })
+        .Name("FracasEventLog")
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "FracasEventLog");
+        })
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "importExcel" })
+            .Text("Export")
+            .Action("importExcelIndex", "FracasEventLog")
+        )
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.part).Hidden();
+            columns.Bound(o => o.tagNumber).Width(100).Title("Tag Number");
+            columns.Bound(o => o.dateTimeStop).Title("Date/Time Stop");
+            columns.Bound(o => o.dateTimeStart).Title("Date/Time Ops");
+            columns.Bound(o => o.unitName).Title("Unit").Width(100);
+            columns.Bound(o => o.areaName).Title("Area").Width(100);
+            columns.Bound(o => o.durasi).Title("Time To Repair").Format("{0:###,##0.00}");
+            columns.Bound(o => o.downtime).Title("Downtime").Format("{0:###,##0.00}");
+        })
+        .ClientEvents(events => events
+                .OnRowSelect("onRowSelect"))
+        .Pageable(p => p.PageSize(20))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Resizable(resizing => resizing.Columns(true))
+
+) 
+
+</div>

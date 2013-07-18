@@ -1,0 +1,287 @@
+﻿@{
+    int? isPublish = ViewBag.isPublish;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    if (ViewBag.types == "add")
+    {
+        ViewBag.Title = "add RCA - 2";
+    }
+    else if (ViewBag.types == "edit")
+    {
+        if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+        {
+            ViewBag.Title = "edit RCA - 2";
+        }
+        else
+        {
+            ViewBag.Title = "view RCA - 2";
+        }
+    }
+}
+<script type="text/javascript" src="../../../Scripts/jquery-1.4.4.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#id_facility').change(function () {
+            $.post('@Url.Action("getDivision", "RCA")', { selectedFacility: $(this).val() }, function (result) {
+                var str = '<option value="" disabled selected>Choose Department</option>';
+                if (result.count == 0) {
+                    $('#id_division').html('<option value="" disabled>Choose Facility</option>');
+                } else {
+                    $.each(result, function () {
+                        str += '<option value="' + this.id_division + '">' + this.value + '</option>\n';
+                    });
+                    $('#id_division').html(str);
+                    $('#id_department').html('<option value="" disabled>Choose Department</option>');
+                    $('#id_building').html('<option value="" disabled>Choose Department</option>');
+                    $('#id_floor').html('<option value="" disabled>Choose Department</option>');
+                }
+            });
+        });
+    });
+
+    $(function () {
+        $('#id_division').change(function () {
+            $.post('@Url.Action("getDepartment", "RCA")', { selectedDivision: $(this).val() }, function (result) {
+                var str = '<option value="" disabled selected>Choose Section</option>';
+                if (result.count == 0) {
+                    $('#id_department').html('<option value="" disabled>Choose Department</option>');
+                } else {
+                    $.each(result, function () {
+                        str += '<option value="' + this.id_department + '">' + this.value + '</option>\n';
+                    });
+                    $('#id_department').html(str);
+                    $('#id_building').html('<option value="" disabled>Choose Section</option>');
+                    $('#id_floor').html('<option value="" disabled>Choose Section</option>');
+                }
+            });
+        });
+    });
+
+    $(function () {
+        $('#id_department').change(function () {
+            $.post('@Url.Action("getBuilding", "RCA")', { selectedDepartment: $(this).val() }, function (result) {
+                var str = '<option value="" disabled selected>Choose Building</option>';
+                if (result.count == 0) {
+                    $('#id_building').html('<option value="" disabled>Choose Section</option>');
+                } else {
+                    $.each(result, function () {
+                        str += '<option value="' + this.id_building + '">' + this.value + '</option>\n';
+                    });
+                    $('#id_building').html(str);
+                    $('#id_floor').html('<option value="" disabled>Choose Building</option>');
+                }
+            });
+        });
+    });
+
+    $(function () {
+        $('#id_building').change(function () {
+            $.post('@Url.Action("getFloor", "RCA")', { selectedBuilding: $(this).val() }, function (result) {
+                var str = '<option value="" disabled selected>Choose Floor</option>';
+                if (result.count == 0) {
+                    $('#id_floor').html('<option value="" disabled>Choose Building</option>');
+                } else {
+                    $.each(result, function () {
+                        str += '<option value="' + this.id_floor + '">' + this.value + '</option>\n';
+                    });
+                    $('#id_floor').html(str);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('#id_facility').change();
+    });
+</script>
+<br />
+@using (Html.BeginForm())
+{
+<div class="addContent">
+    <div class="addImage">
+        <img src="../../../Content/image/addImage.png">
+    </div>
+
+    <div class="addInfo">
+        <div class="infoAbove white">
+            <div class="up">Where is the system to be analyzed located?</div>
+        </div>
+        <div class="addField blue">
+            <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
+            <input type="hidden" name="types" id="types" value="@ViewBag.types" />
+            <div class="info_new_left">Facility</div>
+            <div class="infonewinput">
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    {
+                    <select name="id_facility" id="id_facility">
+                        <!-- <option value="" disabled selected>Choose Facility</option> -->
+                        @foreach (StarEnergi.Models.rca_facility a in ViewData["facility"] as List<StarEnergi.Models.rca_facility>)
+                        {
+                            if (ViewBag.id_facility == null)
+                            {
+                                if (a.id == 1) {
+                                    <option value="@a.id" selected>@a.name</option>
+                                } else {
+                                    <option value="@a.id">@a.name</option>
+                                }
+                            }
+                            else if (a.id.ToString().CompareTo(ViewBag.id_facility) == 0)
+                            {
+                                <option value="@a.id" selected="selected">@a.name</option>
+                            }
+                            else
+                            {
+                                <option value="@a.id">@a.name</option>
+                            }
+                        }
+                    </select>
+                    }
+                    else
+                    {
+                        <input id="id_facility" type="text" name="id_facility" value="@ViewBag.facilities" disabled/>   
+                    }
+            </div>
+            <br />
+            <div class="info_new_left">Department</div>
+            <div class="infonewinput">
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    {
+                    <select name="id_division" id="id_division">
+                        <option value="" disabled>Choose Division</option>
+                        @if (ViewBag.id_division != "")
+                        {
+                            foreach (StarEnergi.Models.rca_department a in ViewData["divisions"] as List<StarEnergi.Models.rca_department>)
+                            {
+                                if (ViewBag.id_division == null)
+                                {
+                                <option value="@a.id">@a.name</option>
+                                }
+                                else if (a.id.ToString().CompareTo(ViewBag.id_division) == 0)
+                                {
+                                <option value="@a.id" selected="selected">@a.name</option>
+                                }
+                                else
+                                {
+                                <option value="@a.id">@a.name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    }
+                    else
+                    {
+                        <input id="id_division" type="text" name="id_division" value="@ViewBag.division" disabled/>   
+                    }
+            </div>
+            <br />
+            <div class="info_new_left">Section</div>
+            <div class="infonewinput">
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                {
+                <select name="id_department" id="id_department">
+                    <option value="" disabled>Choose Department</option>
+                    @if (ViewBag.id_department != "")
+                    {
+                        foreach (StarEnergi.Models.rca_section a in ViewData["departments"] as List<StarEnergi.Models.rca_section>)
+                        {
+                            if (ViewBag.id_department == null)
+                            {
+                            <option value="@a.id">@a.name</option>
+                            }
+                            else if (a.id.ToString().CompareTo(ViewBag.id_department) == 0)
+                            {
+                            <option value="@a.id" selected="selected">@a.name</option>
+                            }
+                            else
+                            {
+                            <option value="@a.id">@a.name</option>
+                            }
+                        }
+                    }
+                </select>
+                }
+                else
+                {
+                    <input id="id_department" type="text" name="id_department" value="@ViewBag.department" disabled/>   
+                }
+            </div>
+            <br />
+            <!--<div class="info_new_left">Building</div>
+            <div class="infonewinput">
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                {
+                <select name="id_building" id="id_building">
+                    <option value="" disabled>Choose Facility</option>
+                        @if (ViewBag.id_building != "")
+                        {
+                            foreach (StarEnergi.Models.rca_building a in ViewData["buildings"] as List<StarEnergi.Models.rca_building>)
+                            {
+                                if (ViewBag.id_building == null)
+                                {
+                                <option value="@a.id">@a.name</option>
+                                }
+                                else if (a.id.ToString().CompareTo(ViewBag.id_building) == 0)
+                                {
+                                <option value="@a.id" selected="selected">@a.name</option>
+                                }
+                                else
+                                {
+                                <option value="@a.id">@a.name</option>
+                                }
+                            }
+                        }
+                </select>
+                }
+                else
+                {
+                    <input id="id_building" type="text" name="id_building" value="@ViewBag.building" disabled/>   
+                }
+            </div>
+            <br />
+            <div class="info_new_left">Floor</div>
+            <div class="infonewinput">
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                {
+                    <select name="id_floor" id="id_floor">
+                        <option value="" disabled selected>Choose Facility</option>
+                        @if (ViewBag.id_floor != "")
+                        {
+                            foreach (StarEnergi.Models.rca_floor a in ViewData["floors"] as List<StarEnergi.Models.rca_floor>)
+                            {
+                                if (ViewBag.id_floor == null)
+                                {
+                                <option value="@a.id">@a.name</option>
+                                }
+                                else if (a.id.ToString().CompareTo(ViewBag.id_floor) == 0)
+                                {
+                                <option value="@a.id" selected="selected">@a.name</option>
+                                }
+                                else
+                                {
+                                <option value="@a.id">@a.name</option>
+                                }
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <input id="id_building" type="text" name="id_building" value="@ViewBag.building" disabled/>   
+                }
+            </div>
+            <br />-->
+            <div class="info_new_left"><div>Functional Location</div><div> (ID Number)</div></div>
+            <div class="infonewinput"><input id="functional_location" type="text" name="functional_location" value="@ViewBag.functional_location" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/></div>
+            <br />
+            <div class="addSubmit">
+	            <input name="cancel" value="Cancel" type="submit"/>
+                <input type="submit" value="Previous" name="previous"/>
+                <input type="submit" value="Next" name="next"/>
+            </div>
+        </div> 
+    </div>
+</div>
+}

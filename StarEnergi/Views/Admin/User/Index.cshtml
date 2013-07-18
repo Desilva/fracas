@@ -1,0 +1,411 @@
+﻿@model IEnumerable<StarEnergi.Models.UserEntity>
+
+@{
+    ViewBag.Title = "Index";
+    List<StarEnergi.Models.user_role> ur = null;
+    if (ViewBag.roles != null) {
+        ur = ViewBag.roles as List<StarEnergi.Models.user_role>;
+    }
+    List<StarEnergi.Models.EmployeeEntity> ee = null;
+    if (ViewBag.employee != null)
+    {
+        ee = ViewBag.employee as List<StarEnergi.Models.EmployeeEntity>;
+    }
+}
+
+<script type="text/javascript">
+    var employee = [];
+    function OnRowDataBound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var has = "";
+        for (var a in dataItem.roles) {
+            switch(dataItem.roles[a].role) {
+                case 0:
+                    has += ", Admin Data Master";
+                    break;
+                case 1:
+                    has += ", Admin Data Input";
+                    break;
+                case 2:
+                    has += ", RCA";
+                    break;
+                case 3:
+                    has += ", RCA view";
+                    break;
+                case 4:
+                    has += ", PIR Initiator";
+                    break;
+                case 5:
+                    has += ", PIR Process Owner";
+                    break;
+                case 6:
+                    has += ", SHE";
+                    break;
+                case 7:
+                    has += ", Initiator IR / SHE Observation";
+                    break;
+                case 8:
+                    has += ", Daily Log Supervisor";
+                    break;
+                case 9:
+                    has += ", Admin SHE Observation";
+                    break;
+                case 10:
+                    has += ", Daily Log Weekly Target";
+                    break;
+                case 11:
+                    has += ", Full Access PIR";
+                    break;
+                case 12:
+                    has += ", Auditor";
+                    break;
+                case 13:
+                    has += ", Admin Master SHE";
+                    break;
+                case 14:
+                    has += ", Medic";
+                    break;
+                default:
+                    has += ", ";
+                    break;
+            }
+        }
+        row.cells[3].innerHTML = has.substr(2);
+    }
+
+    function OnComplete(e) {
+        if (e.name == null) {
+            clear();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("listUser", "User")",
+                traditional: true,
+                data: null,
+                success: function (data) {
+                    employee = [];
+                    $('#employee').empty();
+                    for (var a in data.employee) {
+                        employee.push(data.employee[a]);
+                        if (data.employee[a].username == null) {
+                            $('#employee').append('<option value="'+data.employee[a].id+'">'+("--------------------"+data.employee[a].alpha_name).slice(-1 * (data.employee[a].alpha_name.length + data.employee[a].level))+'</option>');
+                        }
+                    }
+                    console.log(employee);
+                }
+            });
+            var detailWindow = $("#AddUser").data("tWindow");
+            detailWindow.center().open();
+        } else {
+            if (e.name == "EditUser") {
+                clear();
+                var detailWindow = $("#EditUser").data("tWindow");
+                user = e.response;
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("listUser", "User")",
+                    traditional: true,
+                    data: null,
+                    success: function (data) {
+                        employee = [];
+                        $('#edit_employee').empty();
+                        for (var a in data.employee) {
+                            employee.push(data.employee[a]);
+                            console.log(e.response);
+                            if (data.employee[a].username == null || data.employee[a].id == e.response.employee_id) {
+                                $('#edit_employee').append('<option value="' + data.employee[a].id + '">' + ("--------------------" + data.employee[a].alpha_name).slice(-1 * (data.employee[a].alpha_name.length + data.employee[a].level)) + '</option>');
+                            }
+                        }
+                        $.each(user, function (index, value) {
+                            if (index == "roles") {
+                                for (var a in value) {
+                                    $('#edit_role' + value[a].role).prop('checked', true);
+                                }
+                            } else if (index == "employee_id") {
+                                //$('#edit_employee').prop('selected', true);
+                                $("#edit_employee").val(value);
+                            } else if (index != "password" && index != "position" && index != "fullname") {
+                                $('#edit_' + index).val(value);
+                            }
+                        });
+                        detailWindow.center().open();
+                    }
+                });
+            } 
+        }
+    }
+
+    function SaveUser() {
+
+        if ($('#username').val() == '') {
+            alert('Username masih kosong');
+            return;
+        }
+
+        if ($('#password').val() == '') {
+            alert('Password masih kosong');
+            return;
+        }
+
+        if ($('#password').val() != $('#confirmpassword').val()) {
+            alert('Password tidak sama');
+            return;
+        }
+
+        var arrRole = [];
+
+        for (var i in document.getElementsByName("role")) {
+            if (document.getElementsByName("role")[i].checked)
+                arrRole.push(document.getElementsByName("role")[i].value);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Create", "User")",
+            traditional: true,
+            data: {
+                username: $('#username').val(), 
+                password: $('#password').val(),
+                confirmpassword: $('#confirmpassword').val(),
+                employee_id: $('#employee').val(),
+                role: arrRole
+            },
+            success: function (data) {
+                alert('Data tersimpan');
+                var grid = $('#User').data('tGrid');
+                grid.ajaxRequest();
+                $("#AddUser").data("tWindow").close();
+            }
+        });
+        //$.post("User/Create", values, function (data) {
+        //    alert('Data tersimpan');
+        //    var grid = $('#User').data('tGrid');
+        //    grid.ajaxRequest();
+        //    $("#AddUser").data("tWindow").close();
+        //});
+    }
+
+    function EditUser() {
+
+        if ($('#password').val() != $('#confirmpassword').val()) {
+            alert('Password tidak sama');
+            return;
+        }
+        
+
+        var arrRole = [];
+
+        for (var i in document.getElementsByName("edit_role")) {
+            if (document.getElementsByName("edit_role")[i].checked) {
+                arrRole.push(document.getElementsByName("edit_role")[i].value);
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("update", "User")",
+            traditional: true,
+            data: {
+                username: $('#edit_username').val(),
+                password: $('#edit_password').val(),
+                confirmpassword: $('#edit_confirmpassword').val(),
+                employee_id: $('#edit_employee').val(),
+                role: arrRole
+            },
+            success: function (data) {
+                alert('Data tersimpan');
+                var grid = $('#User').data('tGrid');
+                grid.ajaxRequest();
+                $("#EditUser").data("tWindow").close();
+                clear();
+            }
+        });
+    }
+
+    function clear() {
+        $('#username').val('');
+        $('#password').val('');
+        $('#confirmpassword').val('');
+        $('#employee').val('');
+        for (var i in document.getElementsByName("role")) {
+            document.getElementsByName("role")[i].checked = "";
+        }
+        $('#edit_username').val('');
+        $('#edit_password').val('');
+        $('#edit_confirmpassword').val('');
+        $('#edit_employee').val('');
+        for (var i in document.getElementsByName("edit_role")) {
+            document.getElementsByName("edit_role")[i].checked = "";
+        }
+    }
+
+    function OnClick(check) {
+        //if (check.checked) {
+        //    if (check.id == "role6" || check.id == "role7")
+        //        document.getElementById("role1").checked = "checked";
+        //    else
+        //        document.getElementById("edit_role1").checked = "checked";
+        //} else {
+        //    if (check.id == "role6") {
+        //        if (!document.getElementById("role7").checked) {
+        //            document.getElementById("role1").checked = "";
+        //        }
+        //    } else if (check.id == "role7") {
+        //        if (!document.getElementById("role6").checked) {
+        //            document.getElementById("role1").checked = "";
+        //        }
+        //    }
+
+        //    if (check.id == "edit_role6") {
+        //        if (!document.getElementById("edit_role7").checked) {
+        //            document.getElementById("edit_role1").checked = "";
+        //        }
+        //    } else if (check.id == "edit_role7") {
+        //        if (!document.getElementById("edit_role6").checked) {
+        //            document.getElementById("edit_role1").checked = "";
+        //        }
+        //    }
+        //}
+    }
+
+</script>
+
+<h2>User Management</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.UserEntity>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("User")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.username);
+        })
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "addUser" })
+            .Text("Add User")
+            .Ajax(true)
+            .Action("addUser", "User")
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "User")
+                .Delete("_DeleteAjaxEditing", "User");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.username).Width(150).Title("Username");
+            columns.Bound(o => o.alpha_name).Title("Employee Alpha Name");
+            columns.Bound(o => o.position).Title("Position");
+            columns.Bound(o => o.roles).Title("Role");
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.Text);
+                commands.Custom("EditUser")
+                        .Text("Edit")
+                        .DataRouteValues(route => route.Add(o => o.username).RouteKey("id"))
+                        .Ajax(true)
+                        .Action("GetDetail", "User");
+
+            }).Width(100).Title("Commands").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBound")
+                .OnComplete("OnComplete")
+        )
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.PopUp))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+)
+
+@(Html.Telerik().Window()
+    .Name("AddUser")
+    .Visible(false)
+    .Title("Add User")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Username </div>
+		            <div class="infoFieldinput"><input id="username" type="text" name="username" value="" /></div>
+		
+                    <div class="info_inside_left">Password</div>
+		            <div class="infoFieldinput"><input id="password" type="password" name="password" value="" /></div>
+
+                    <div class="info_inside_left">Confirm Password</div>
+		            <div class="infoFieldinput"><input id="confirmpassword" type="password" name="confirmpassword" value="" /></div>
+
+                   <div class="info_inside_left">Employee Alpha Name</div>
+		            <div class="infoFieldinput">
+                        <select id="employee" name="employee">
+                        </select>
+                    </div>
+		
+		            <div class="info_inside_left">Role</div>
+		            <div class="infoFieldinput">
+                        @foreach (StarEnergi.Models.user_role role in ur) {
+                            if (role.id != (int)StarEnergi.Config.role.SHE && role.id != (int)StarEnergi.Config.role.INITIATORIR)
+                            {
+                                <input type="checkbox" name="role" id="role@(role.id)" value="@role.id" />@role.role<br />
+                            } else {
+                                <input type="checkbox" name="role" id="role@(role.id)" value="@role.id" onclick="OnClick(this)"/>@role.role<br />
+                            }
+                        }
+                    </div>
+
+                   
+
+	            <p class="submit">
+		            <input name="Submit" value="Add" type="submit" onclick="SaveUser();" />
+	            </p>
+	         </div>
+        </text>)
+)
+
+@(Html.Telerik().Window()
+    .Name("EditUser")
+    .Visible(false)
+    .Title("Edit User")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+
+		            <div class="info_inside_left" style="display:none">Username </div>
+		            <div class="infoFieldinput" style="display:none"><input id="edit_username" type="text" name="username" value="aan" /></div>
+		
+                    <div class="info_inside_left">Password</div>
+		            <div class="infoFieldinput"><input id="edit_password" type="password" name="password" value="" /></div>
+
+                    <div class="info_inside_left">Confirm Password</div>
+		            <div class="infoFieldinput"><input id="edit_confirmpassword" type="password" name="confirmpassword" value="" /></div>
+
+                    <div class="info_inside_left">Employee Alpha Name</div>
+		            <div class="infoFieldinput">
+                        <select id="edit_employee" name="edit_employee">
+                        </select>
+                    </div>
+		
+		            <div class="info_inside_left">Role</div>
+		            <div class="infoFieldinput">
+                        @foreach (StarEnergi.Models.user_role role in ur) {
+                            if (role.id != (int)StarEnergi.Config.role.SHE && role.id != (int)StarEnergi.Config.role.INITIATORIR)
+                            {
+                                <input type="checkbox" name="edit_role" id="edit_role@(role.id)" value="@role.id" />@role.role<br />
+                            } else {
+                                <input type="checkbox" name="edit_role" id="edit_role@(role.id)" value="@role.id" onclick="OnClick(this)"/>@role.role<br />
+                            }
+                        }
+                    </div>
+
+	            <p class="submit">
+		            <input name="Submit" value="Save" type="submit" onclick="EditUser();" />
+	            </p>
+	         </div>
+        </text>)
+)

@@ -1,0 +1,79 @@
+﻿@using StarEnergi 
+@model StarEnergi.Models.component
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function save() {
+        var values =
+        {
+            "tag_number": $('#tag_number').val(),
+            "id_equipment_part": eval('@ViewBag.id_equipment_part'),
+            "description": $('#descriptions').val()
+        }
+
+        $.post("Component/Create", values, function (data) {
+             if (data != undefined) {
+                if (data["status"] == 0) {
+                    var value = 'COMPONENT;' + data["message"];
+                    $('#content').load('component/details/' + data["message"]);
+                    AppendItem($('#tag_number').val(), value);
+                    DeselectNode();
+                    SelectNode(value);
+                } else if (data["status"] == 1) {
+                    clearError();
+                    $.each(data, function (index, value) {
+                        if (index != "status") {
+                            //error render
+                            $('#' + index).next('div').html(value);
+                        }
+                    });
+                } else {
+                    alert("Data component sudah terdaftar");
+                }
+            } else {
+                alert('Gagal menambahkan data component');
+            }
+        });
+
+    }
+
+    function clearError() {
+        var field = ["tag_number"];
+        $.each(field, function (index, value) {
+            $('#' + value).next('div').html('');
+        });
+    }
+</script>
+<div class="fieldR">* Required Field</div>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Component</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.tag_number)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.tag_number)
+            <div class="errorM"></div>
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.description)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.description, new { id = "descriptions"})
+            <div class="errorM"></div>
+        </div>
+
+        <p>
+            <input type="submit" value="Create" onclick="save()"/>
+        </p>
+    </fieldset>

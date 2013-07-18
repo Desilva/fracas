@@ -1,0 +1,38 @@
+﻿@{
+    Layout = null;
+}
+<h2 class="adminH2">SHE Key Performance Indicator</h2>
+<div style="width:100%;float:left">
+<div style="width:45%;float:left;margin:0;padding:0;border:0;vertical-align:baseline">
+    <h3>SHE Observation</h3>
+    <span><b>Target : <div id="obs_view_target" style="display:inline;">@ViewBag.obs_target</div>%  </b></span><br />
+    <span><b>Total Card (@ViewBag.last_year) : <div id="view_total_obs_bef" style="display:inline;">@ViewBag.totalAllCardBef</div></b></span><br />
+    <ul>
+        <li><span><b>Total Card (@ViewBag.start_month/@ViewBag.last_year - @ViewBag.end_month/@ViewBag.last_year) : <div id="view_total_obs_till_bef" style="display:inline;">@ViewBag.totalCardBef</div></b></span><br /></li>
+        <li><span><b>Average / month : <div id="view_total_avg_bef" style="display:inline;">@ViewBag.averageBef</div></b></span><br /></li>
+    </ul>
+    <span><b>Target (@ViewBag.current_year) : <div id="view_total_obs_aft" style="display:inline;">@ViewBag.totalAllCardAft</div></b></span><br />
+    <ul>
+        <li><span><b>Total Card (@ViewBag.start_month/@ViewBag.current_year - @ViewBag.end_month/@ViewBag.current_year) : <div id="view_total_obs_till_aft" style="display:inline;">@ViewBag.totalCardAft</div></b></span><br /></li>
+        <li><span><b>Average / month : <div id="view_total_avg_aft" style="display:inline;">@ViewBag.averageAft</div></b></span><br /></li>
+    </ul>
+    <div>
+        <img src="../../../Content/image/success.png" alt="Success" width="200" id="success" @((ViewBag.success as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
+        <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="fail" @((ViewBag.success as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
+    </div>
+    <br />
+</div>
+<div style="width:55%;float:left;margin:0;padding:0">
+    <h3>Incident Report</h3>
+    <span><b>Target : <div id="ir_view_target" style="display:inline;">@ViewBag.ir_target</div>%  </b></span><br />
+    <span><b>Total IR (@ViewBag.current_year) : <div id="view_total_ir_bef" style="display:inline;">@ViewBag.totalIRBef</div></b></span><br />
+    <span><b>Total Outstanding IR (Human Related) : <div id="view_total_ir_human" style="display:inline;">@ViewBag.totalIRHuman</div></b></span><br />
+    <span><b>Total Outstanding IR (WW Ops) : <div id="view_total_ir_ops" style="display:inline;">@ViewBag.totalIROps</div></b></span><br />
+    <br />
+    <div>
+        <img src="../../../Content/image/success.png" alt="Success" width="200" id="successIR" @((ViewBag.successIR as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
+        <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="failIR" @((ViewBag.successIR as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
+    </div>
+</div>
+</div>
+<br/>

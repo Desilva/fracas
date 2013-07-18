@@ -1,0 +1,34 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    List<StarEnergi.Models.daily_log_maintainence> li = ViewBag.maintenance as List<StarEnergi.Models.daily_log_maintainence>;
+    int i = 0;
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<div class="container">
+    <table class="w-border no-border-last-row">
+		<tr>
+			<td class="time no-border-top no-border-btm">&nbsp;</td>
+			<td colspan="5">Maintenance activity: </td>
+		</tr>
+		<tr>
+			<td class="no-border-btm no-border-top">&nbsp;</td>
+			<td class="yellow-bg center" style="width:50px">No.</td>
+			<td class="yellow-bg center" style="width:100px">WO No.</td>
+			<td class="yellow-bg center" style="width:100px">Department</td>
+			<td class="yellow-bg center">Work to be Performed</td>
+			<td class="yellow-bg center" style="width:100px">Work Status</td>
+		</tr>
+        @foreach (StarEnergi.Models.daily_log_maintainence main in li) {
+            i++;
+            <tr>
+			    <td class="no-border-btm no-border-top">@main.time</td>
+			    <td class="center">@i</td>
+			    <td>@main.wo_number</td>
+			    <td>@main.department</td>
+			    <td>@main.work_to_be_performed</td>
+			    <td class="center">@(main.work_status == 0 ? "On Progress" : main.work_status == 1 ? "Done" : "")</td>
+		    </tr>
+        }
+	</table>
+</div>

@@ -1,0 +1,1321 @@
+﻿@{
+    StarEnergi.Models.incident_report ir = null;
+    bool isEdit = false;
+    bool isView = false;
+    int? id = null;
+    List<StarEnergi.Models.EmployeeEntity> has = null;
+    if (ViewData["users"] != null)
+    {
+        has = ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>;
+    }
+    string username = HttpContext.Current.Session["username"].ToString();
+    int? dept_id = null;
+    int? superintendent_id = null;
+    int? supervisor_id = null;
+    int? superintendent_id_del = null;
+    int? supervisor_id_del = null;
+    if (ViewBag.mod != null)
+    {
+        id = ViewBag.mod as Nullable<Int32>;
+        ViewBag.Title = "Edit Incident Report";
+        ir = ViewBag.datas as StarEnergi.Models.incident_report;
+        isEdit = true;
+        isView = ir.field_manager_approve != null;
+    }
+    else
+    {
+        ViewBag.Title = "Add Incident Report";
+        dept_id = has.Find(p => p.username == username).dept_id;
+        supervisor_id = ViewBag.supervisor_id as Nullable<int>;
+        superintendent_id = ViewBag.superintendent_id as Nullable<int>;
+        supervisor_id_del = ViewBag.supervisor_id_del as Nullable<int>;
+        superintendent_id_del = ViewBag.superintendent_id_del as Nullable<int>;
+    }
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+<style>
+    h5, h6 {
+        margin-top:0px;
+        margin-bottom:0px;
+    }
+
+    h5 {
+        margin-top:0px;
+        margin-bottom:0px;
+        margin-left:5px;
+    }
+
+    small {
+        margin-left:5px;
+    }
+
+    td {
+        color:black;
+        border:0;
+    }
+
+    table.tabs {border: 1px solid black}
+    table.tabs2 {border: 1px solid black}
+    table.tabs tr td {
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+
+    .right {
+        border-right:1px solid black;
+    }
+
+    input[type=text] {
+        margin-left:5px;
+        width:310px;
+    }
+
+    tr.borderless td {
+        border-width:0;
+        margin:5px;
+    }
+
+    #content-inc
+    {
+        padding-left: 10px;
+    }
+
+    select {
+        width:166px;
+    }
+
+</style>
+<h2>@ViewBag.Title</h2>
+<div id="content-inc">
+<h3> I. General Information</h3><br />
+<table id="tabGenInfo" class="tabs" style="width:980px" cellspacing="0" cellpadding="0">
+    <tbody style="width:100%">
+        <tr>
+            <td colspan="6" class="right" style="width:33%">
+                <h5>Business Unit / Facility</h5><br />
+                <select id="bus_unit" name="bus_unit" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled")>
+                    @foreach (StarEnergi.Models.rca_facility fac in ViewBag.facility as List<StarEnergi.Models.rca_facility>)
+                    {
+                        if (isEdit && ir.facility == fac.name)
+                        {
+                            <option value="@fac.name" selected>@fac.name</option>
+                        }
+                        else if (fac.id == 1)
+                        {
+                            <option value="@fac.name" selected>@fac.name</option>
+                        }
+                        else
+                        {
+                            <option value="@fac.name">@fac.name</option>
+                        }
+                    }
+                </select>
+            </td>
+            <td colspan="6" class="right" style="width:33%">
+                <h5>Incident Location  <div id="inc_loc_req" style="display:none;color:red;overflow-x:auto">* required</div></h5><br />
+                <input type="text" id="inc_loc" name="inc_loc" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="@(isEdit ? ir.incident_location : "")"/>
+            </td>
+            <td colspan="6" style="width:33%">
+                <h5>Reference Number</h5><br />
+                <input type="text" id="ref_num" name="ref_num" disabled value="@(isEdit ? ir.reference_number : ViewBag.ir_ref as string)"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" class="right" style="width:33%">
+                <h5>Type of Report  <div id="type_report_req" style="display:none;color:red;">* required</div></h5><br />
+                <input type="radio" id="on_the_job" name="type_report" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.type_of_report == 1 ? "checked" : "" : "")/>On the job
+                <input type="radio" id="off_the_job" name="type_report" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="0" @(isEdit ? ir.type_of_report == 0 ? "checked" : "" : "")/>Off the job
+            </td>
+            <td colspan="6" class="right" style="width:33%">
+                <h5>Date/Time of Incident</h5><br />
+                @(Html.Telerik().DateTimePicker()
+                        .Name("date_incident")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:310px;margin-left:5px" })
+                        .Value(isEdit ? ir.date_incident : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? true : false)
+                )
+            </td>
+            <td colspan="6" style="width:33%">
+                <h5>Title  <div id="title_req" style="display:none;color:red;">* required</div></h5><br />
+                <input type="text" id="titles" name="title" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="@(isEdit ? ir.title : "")"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" class="right">
+                <h5>Incident Type  <div id="incident_type_req" style="display:none;color:red;">* required</div></h5>
+                <small>(Choose one criteria most apply)</small>
+            </td>
+            <td colspan="4">
+                <input type="radio" id="injury" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="Injury / Illness" @(isEdit ? ir.incident_type == "Injury / Illness" ? "checked" : "" : "") onclick="investigation();"/>Injury / Illness<br />
+                <input type="radio" id="enviro_loss" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="Environmental Loss" @(isEdit ? ir.incident_type == "Environmental Loss" ? "checked" : "" : "") onclick="investigation();"/>Environmental Loss<br />
+                <input type="radio" id="prop_dmg" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="Properti Damage" @(isEdit ? ir.incident_type == "Properti Damage" ? "checked" : "" : "") onclick="investigation();"/>Properti Damage
+            </td>
+            <td colspan="4">
+                <input type="radio" id="disturb" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="Process Loss / Disturb" @(isEdit ? ir.incident_type == "Process Loss / Disturb" ? "checked" : "" : "") onclick="investigation();"/>Process Loss / Disturb<br />
+                <input type="radio" id="ext_rel" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="External Relation" @(isEdit ? ir.incident_type == "External Relation" ? "checked" : "" : "") onclick="investigation();"/>External Relation<br />
+                <input type="radio" id="theft" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="Theft / Crimes" @(isEdit ? ir.incident_type == "Theft / Crimes" ? "checked" : "" : "") onclick="investigation();"/>Theft / Crimes
+            </td>
+            <td colspan="4">
+                <input type="radio" id="vehicular" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="Vehicular" @(isEdit ? ir.incident_type == "Vehicular" ? "checked" : "" : "") onclick="investigation();"/>Vehicular<br />
+                <input type="radio" id="near_miss" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="Near Miss" @(isEdit ? ir.incident_type == "Near Miss" ? "checked" : "" : "") onclick="investigation();"/>Near Miss<br />
+                <input type="radio" id="other" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="" @(isEdit ? ir.incident_type != "Injury / Illness" && ir.incident_type != "Environmental Loss" && ir.incident_type != "Properti Damage"
+                && ir.incident_type != "Process Loss / Disturb" && ir.incident_type != "External Relation" && ir.incident_type != "Theft / Crimes" && ir.incident_type != "Vehicular" && ir.incident_type != "Near Miss" ? "checked" : "" : "")/>Other:
+                <input type="text" id="other_text" name="other" style="width:175px" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="@(isEdit ? ir.incident_type != "Injury / Illness" && ir.incident_type != "Environmental Loss" && ir.incident_type != "Properti Damage"
+                && ir.incident_type != "Process Loss / Disturb" && ir.incident_type != "External Relation" && ir.incident_type != "Theft / Crimes" && ir.incident_type != "Vehicular" && ir.incident_type != "Near Miss" ? ir.incident_type : "" : "")" onkeyup="investigation();"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" class="right">
+                <h5>Actual Loss Severity  <div id="actual_loss_req" style="display:none;color:red;">* required</div></h5>
+            </td>
+            <td colspan="3">
+                <input type="radio" name="actual_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.actual_loss_severity == 1 ? "checked" : "" : "")/>Major
+            </td>
+            <td colspan="3">
+                <input type="radio" name="actual_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="2" @(isEdit ? ir.actual_loss_severity == 2 ? "checked" : "" : "")/>Serious
+            </td>
+            <td colspan="3">
+                <input type="radio" name="actual_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="3" @(isEdit ? ir.actual_loss_severity == 3 ? "checked" : "" : "")/>Moderate
+            </td>
+            <td colspan="3">
+                <input type="radio" name="actual_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="4" @(isEdit ? ir.actual_loss_severity == 4 ? "checked" : "" : "")/>Minor
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" class="right">
+                <h5>Potential Loss Severity  <div id="potential_loss_req" style="display:none;color:red;">* required</div></h5>
+            </td>
+            <td colspan="3">
+                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.potential_loss_severity == 1 ? "checked" : "" : "") onclick="investigation();"/>Major
+            </td>
+            <td colspan="3">
+                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="2" @(isEdit ? ir.potential_loss_severity == 2 ? "checked" : "" : "") onclick="investigation();"/>Serious
+            </td>
+            <td colspan="3">
+                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="3" @(isEdit ? ir.potential_loss_severity == 3 ? "checked" : "" : "") onclick="investigation();"/>Moderate
+            </td>
+            <td colspan="3">
+                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="4" @(isEdit ? ir.potential_loss_severity == 4 ? "checked" : "" : "") onclick="investigation();"/>Minor
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" class="right">
+                <h5>Probability of Recurrence  <div id="probability_req" style="display:none;color:red;">* required</div></h5>
+                <small>(If no corrective action taken)</small>
+            </td>
+            <td colspan="3">
+                <input type="radio" name="probability" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.probability == 1 ? "checked" : "" : "") onclick="investigation();"/>Frequent
+            </td>
+            <td colspan="3">
+                <input type="radio" name="probability" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="2" @(isEdit ? ir.probability == 2 ? "checked" : "" : "") onclick="investigation();"/>Occasional
+            </td>
+            <td colspan="3">
+                <input type="radio" name="probability" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="3" @(isEdit ? ir.probability == 3 ? "checked" : "" : "") onclick="investigation();"/>Seldom
+            </td>
+            <td colspan="3">
+                <input type="radio" name="probability" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="4" @(isEdit ? ir.probability == 4 ? "checked" : "" : "") onclick="investigation();"/>Rare
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<h3> II. Factual Information</h3>
+<small>(Describe the events and actions before, during, and after the incident (who, what, how, when, & why). Include pertinent information related to incident.</small>
+<br /><small>Attach additional pages if necessary)</small>  <div id="facts_req" style="display:none;color:red;">* required</div>
+<table id="tabFacInfo" class="tabs" style="width:980px" cellspacing="0" cellpadding="0">
+    <tbody style="width:100%">
+        <tr>
+            <td>
+                <textarea id="facts" name="facts" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled")>@(isEdit ? ir.factual_information : "")</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h5>Cost Estimate<small>(Estimated cost for medical treatment, rehabilitation, damage to property, loss to process, etc.)</small>  <div id="cost_req" style="display:none;color:red;">* required</div></h5><br />
+                &nbsp;&nbsp;$ <input type="text" id="cost" name="cost" style="width:950px" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="@(isEdit ? ir.cost_estimate : "")"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<h3> III. Immediate Actions</h3>
+<small>(to control situation)</small>  <div id="imme_req" style="display:none;color:red;">* required</div>
+<table id="tabImAct" class="tabs" style="width:980px" cellspacing="0" cellpadding="0">
+    <tbody style="width:100%">
+        <tr>
+            <td>
+                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled")>@(isEdit ? ir.immediate_action : "")</textarea>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table id="tabImAct2" class="tabs2" style="width:980px" cellspacing="0" cellpadding="0">
+    <tbody style="width:100%">
+        <tr class="borderless">
+            <td>
+                <h5>Prepared by:  <div id="prepared_req" style="display:none;color:red;">* required</h5>
+            </td>
+            <td colspan="2">
+                @if (li.Exists(p => p.role == 7) && !isView)
+                {
+                    <select id="prepared" name="prepared" onchange="bindpre()" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView ? "" : "disabled")>
+                        <option value="" selected disabled>Choose One</option>
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (!isEdit && user.username == HttpContext.Current.Session["username"].ToString())
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.prepared_by == null ? "0" : ir.prepared_by))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else
+                            {
+                                <option value="@user.id">@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <input type="text" name="prepared" id="prepared" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ir.prepared_by)).alpha_name : "")" disabled/>
+                }
+            </td>
+            <td>
+                <h5>Ack by supervisor  <div id="ack_req" style="display:none;color:red;">* required</h5>
+            </td>
+            <td colspan="2">
+                @if (li.Exists(p => p.role == 7) && !isView)
+                {
+                    <select id="ack" name="ack" onchange="bindack()" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView ? "" : "disabled")>
+                        <option value="" selected disabled>-</option>
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (user.position.ToLower().Contains("supervisor"))
+                            {
+                                if (!isEdit && supervisor_id != null && user.id == supervisor_id)
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                //else if (!isEdit && supervisor_id == null && user.dept_id == dept_id && user.position.ToLower().Contains("supervisor"))
+                                //{
+                                //    <option value="@user.id" selected>@user.alpha_name</option>
+                                //}
+                                else if (isEdit && user.id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.id">@user.alpha_name</option>
+                                }
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <input type="text" name="ack" id="ack" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ir.ack_supervisor)).alpha_name : "")" disabled/>
+                }
+            </td>
+        </tr>
+        <tr class="borderless">
+            <td>
+                <h5>Job title:</h5>
+            </td>
+            <td colspan="2" id="pre_job">
+            </td>
+            <td>
+                <h5>Job Title:</h5>
+            </td>
+            <td colspan="2" id="ack_job">
+            </td>
+        </tr>
+        <tr class="borderless">
+            <td>
+                <h5>Date:</h5>
+            </td>
+            <td colspan="2">
+                @(Html.Telerik().DatePicker()
+                        .Name("date_prepared")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:166px" })
+                        .Value(isEdit ? ir.prepare_date : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == 7) && !isView ? true : false)
+                )
+            </td>
+            <td>
+                <h5>Date:</h5>
+            </td>
+            <td colspan="2">
+                @(Html.Telerik().DatePicker()
+                        .Name("date_ack")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:166px" })
+                        .Value(isEdit ? ir.ack_date : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == 7) && !isView ? true : false)
+                )
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table id="tabImAct3" class="tabs" style="width:980px" cellspacing="0" cellpadding="0">
+    <tbody style="width:100%">
+        <tr>
+            <td style="width:16.67%" class="right">
+                <h5>Approved by:</h5>
+            </td>
+            <td style="width:20%" class="right">
+                <h5>Name</h5>
+            </td>
+            <td style="width:13.33%" class="right">
+                <h5>Date</h5>
+            </td>
+            <td style="width:16.67%" class="right">
+                <h5>Approved by:</h5>
+            </td>
+            <td style="width:20%" class="right">
+                <h5>Name</h5>
+            </td>
+            <td style="width:13.33%">
+                <h5>Date</h5>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:16.67%" class="right">
+                <h5>Initiator Superintendent  <div id="sup_req" style="display:none;color:red;">* required</h5>
+            </td>
+            <td style="width:20%" class="right">
+                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_approve == null ? true : ir.superintendent_approve.Substring(0, 1) == "a"))
+                {
+                }
+                else if (ir != null && ir.superintendent_delegate != null && (ir.superintendent_approve == null ? true : ir.superintendent_approve.Substring(0, 1) == "d"))
+                {
+                    <text>a/n </text>
+                }
+                @if (li.Exists(p => p.role == 7) && !isView)
+                {
+                    
+                    <select id="sup_name" name="sup_name" @((li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView) && (ir != null ? ir.superintendent_approve == null : true) ? "" : "disabled") onchange="selectSup()">
+                        <option value="" selected disabled>Choose One</option>
+                        @{bool sup_isDelegate = false; }
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (isEdit && user.id == Int32.Parse(ir.superintendent_delegate == null ? "0" : ir.superintendent_delegate))
+                            {
+                                sup_isDelegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (user.position.ToLower().Contains("superintendent"))
+                            {
+                                if (!isEdit && user.id == superintendent_id)
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else if (isEdit && user.id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_delegate == null || (ir.superintendent_approve == null ? false : ir.superintendent_approve.Substring(0, 1) != "d")))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else if (isEdit && user.id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_approve == null ? true : ir.superintendent_approve.Substring(0, 1) == "a"))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.id">@user.alpha_name</option>
+                                }
+                            }
+                            else if (user.id == superintendent_id_del)
+                            {
+                                sup_isDelegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                    <input type="hidden" id="sup_delegate" value="@sup_isDelegate" />
+                    <input type="hidden" id="sup_delegate_name" value="@(ir != null ? sup_isDelegate ? ir.superintendent : "" : superintendent_id_del.ToString())" />
+                    if (isEdit)
+                        {
+                            if (has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null ? "0" : ir.superintendent_delegate))
+                            {
+                                if (ir.superintendent_approve == null)
+                                {
+                                <div id="button_superintendent_approve">
+                                    <input type="button" id="approve_superintendent" onclick="approveSuperintendent('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                    <input type="button" id="reject_superintendent" onclick="reject('1')" value="Reject" />
+                                </div>
+                                }
+                            }
+                        <img id="img_approve_superintendent" width="50" height="50" @(ir.superintendent_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.superintendent_approve == null ? "" : ir.superintendent_approve.Substring(1))"/>
+                        }
+                }
+                else
+                {
+                    <input type="text" name="sup_name" id="sup_name" value="@(isEdit ? ir.superintendent == null ? "" : (ir.superintendent_approve == null ? "" : (ir.superintendent_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.superintendent)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.superintendent_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
+                    <img id="img_approve_superintendent" width="50" height="50" @(ir.superintendent_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.superintendent_approve == null ? "" : ir.superintendent_approve.Substring(1))"/>
+                }
+            </td>
+            <td style="width:13.33%" class="right">
+                @(Html.Telerik().DatePicker()
+                        .Name("date_sup")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? ir.superintendent_date : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == 7) && (!isEdit || ir.superintendent_approve == null) && !isView ? true : false)
+                )
+            </td>
+            <td style="width:16.67%" class="right">
+                <h5>SHE Superintendent</h5>
+            </td>
+            <td style="width:20%" class="right">
+                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent) && (ir.she_superintendent_approve == null ? true : ir.she_superintendent_approve.Substring(0, 1) == "a"))
+                {
+                }
+                else if (ir != null && ir.she_superintendent_delegate != null && (ir.she_superintendent_approve == null ? true : ir.she_superintendent_approve.Substring(0, 1) == "d"))
+                {
+                    <text>a/n </text>
+                }
+                @if (li.Exists(p => p.role == 7) && !isView)
+                {
+                    <select id="she_sup_name" name="she_sup_name" @(isEdit && ir.she_superintendent_approve != null ? "disabled" : "") disabled>
+                        <option value="" selected>Choose One</option>
+                        @{bool she_sup_delegate = false; string she_sup_delegate_name = ""; }
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (!isEdit && user.position.ToLower() == "she superintendent" && user.delagate != 1)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (!isEdit && user.position.ToLower() == "she superintendent" && user.delagate == 1)
+                            {
+                                she_sup_delegate = true;
+                                she_sup_delegate_name = user.employee_delegate.ToString();
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent) && (ir.she_superintendent_delegate == null || (ir.she_superintendent_approve == null ? false : ir.she_superintendent_approve.Substring(0, 1) != "d")))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent) && has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent) && (ir.she_superintendent_approve == null ? true : ir.she_superintendent_approve.Substring(0, 1) == "a"))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.she_superintendent_delegate == null ? "0" : ir.she_superintendent_delegate))
+                            {
+                                she_sup_delegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else
+                            {
+                                <option value="@user.id">@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                    <input type="hidden" id="she_sup_delegate" value="@she_sup_delegate" />
+                    <input type="hidden" id="she_sup_delegate_name" value="@(ir != null ? she_sup_delegate ? ir.she_superintendent : "" : she_sup_delegate_name.ToString())" />
+                    if (isEdit)
+                        {
+                            if (has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null ? "0" : ir.she_superintendent_delegate))
+                            {
+                                if (ir.she_superintendent_approve == null)
+                                {
+                        <div id="button_she_superintendent_approve">
+                            <input type="button" id="approve_she_superintendent" onclick="approveSS('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                            <input type="button" id="reject_she_superintendent" onclick="reject('3')" value="Reject" />
+                        </div>
+                                }
+                            }
+                        <img id="img_approve_she_superintendent" width="50" height="50" @(ir.she_superintendent_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.she_superintendent_approve == null ? "" : ir.she_superintendent_approve.Substring(1))"/>
+                        }
+                }
+                else
+                {
+                    <input type="text" name="she_sup_name" id="she_sup_name" value="@(isEdit ? ir.she_superintendent == null ? "" : (ir.she_superintendent_approve == null ? "" : (ir.she_superintendent_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.she_superintendent)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.she_superintendent_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
+                    <img id="img_approve_she_superintendent" width="50" height="50" @(ir.she_superintendent_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.she_superintendent_approve == null ? "" : ir.she_superintendent_approve.Substring(1))"/>
+                }
+            </td>
+            <td style="width:13.33%">
+                @(Html.Telerik().DatePicker()
+                        .Name("date_she_sup")
+                        .HtmlAttributes(new { id = "ddatetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? ir.she_superintendent_date : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == 7) && (!isEdit || ir.she_superintendent_approve == null) && !isView ? true : false)
+                )
+            </td>
+        </tr>
+        <tr>
+            <td style="width:16.67%" class="right">
+                <h5>Safety Supervisor</h5>
+            </td>
+            <td style="width:20%" class="right">
+                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control) && (ir.loss_control_approve == null ? true : ir.loss_control_approve.Substring(0, 1) == "a"))
+                {
+                }
+                else if (ir != null && ir.loss_control_delegate != null && (ir.loss_control_approve == null ? true : ir.loss_control_approve.Substring(0, 1) == "d"))
+                {
+                    <text>a/n </text>
+                }
+                @if (li.Exists(p => p.role == 7) && !isView)
+                {
+                    <select id="loss_control_name" name="loss_control_name" disabled>
+                        <option value="" selected>Choose One</option>
+                        @{bool loss_control_delegate = false; string loss_control_delegate_name = ""; }
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (!isEdit && user.position.ToLower() == "safety supervisor" && user.delagate != 1)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (!isEdit && user.position.ToLower() == "safety supervisor" && user.delagate == 1)
+                            {
+                                loss_control_delegate = true;
+                                loss_control_delegate_name = user.employee_delegate.ToString();
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control) && (ir.loss_control_delegate == null || (ir.loss_control_approve == null ? false : ir.loss_control_approve.Substring(0, 1) != "d")))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control) && has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control) && (ir.loss_control_approve == null ? true : ir.loss_control_approve.Substring(0, 1) == "a"))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.loss_control_delegate == null ? "0" : ir.loss_control_delegate))
+                            {
+                                loss_control_delegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else
+                            {
+                                <option value="@user.id">@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                    <input type="hidden" id="loss_control_delegate" value="@loss_control_delegate" />
+                    <input type="hidden" id="loss_control_delegate_name" value="@(ir != null ? loss_control_delegate ? ir.loss_control : "" : loss_control_delegate_name.ToString())" />
+                    if (isEdit)
+                        {
+                            if (has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null ? "0" : ir.loss_control_delegate))
+                            {
+                                if (ir.loss_control_approve == null)
+                                {
+                                <div id="button_loss_control_approve">
+                                    <input type="button" id="approve_loss_control" onclick="approveLC('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                    <input type="button" id="reject_loss_control" onclick="reject('2')" value="Reject" />
+                                </div>
+                                }
+                            }
+                        <img id="img_approve_loss_control" width="50" height="50" @(ir.loss_control_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.loss_control_approve == null ? "" : ir.loss_control_approve.Substring(1))"/>
+                        }
+                }
+                else
+                {
+                    <input type="text" name="loss_control_name" id="loss_control_name" value="@(isEdit ? ir.loss_control == null ? "" : (ir.loss_control_approve == null ? "" : (ir.loss_control_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.loss_control)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.loss_control_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
+                    <img id="img_approve_loss_control" width="50" height="50" @(ir.loss_control_approve == null ? "style='display:none;" : "style='display:block;")  src="@(ir.loss_control_approve == null ? "" : ir.loss_control_approve.Substring(1))"/>
+                }
+            </td>
+            <td style="width:13.33%" class="right">
+                @(Html.Telerik().DatePicker()
+                        .Name("date_loss_control")
+                        .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? ir.loss_date : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == 7) && (!isEdit || ir.loss_control_approve == null) && !isView ? true : false)
+                )
+            </td>
+            <td style="width:16.67%" class="right">
+                <h5>Field Manager</h5>
+            </td>
+            <td style="width:20%" class="right">
+                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager) && (ir.field_manager_approve == null ? true : ir.field_manager_approve.Substring(0, 1) == "a"))
+                {
+                }
+                else if (ir != null && ir.field_manager_delegate != null && (ir.field_manager_approve == null ? true : ir.field_manager_approve.Substring(0, 1) == "d"))
+                {
+                    <text>a/n </text>
+                }
+                @if (li.Exists(p => p.role == 7) && !isView)
+                {
+                    <select id="field_man_name" name="field_man_name" disabled>
+                        <option value="" selected>Choose One</option>
+                        @{bool field_manager_delegate = false; string field_manager_delegate_name = ""; }
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (!isEdit && user.position.ToLower().Contains("operation manager") && user.delagate != 1)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (!isEdit && user.position.ToLower().Contains("operation manager") && user.delagate == 1)
+                            {
+                                field_manager_delegate = true;
+                                field_manager_delegate_name = user.employee_delegate.ToString();
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager) && (ir.field_manager_delegate == null || (ir.field_manager_approve == null ? false : ir.field_manager_approve.Substring(0, 1) != "d")))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager) && has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager) && (ir.field_manager_approve == null ? true : ir.field_manager_approve.Substring(0, 1) == "a"))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.field_manager_delegate == null ? "0" : ir.field_manager_delegate))
+                            {
+                                field_manager_delegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else
+                            {
+                                <option value="@user.id">@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                    <input type="hidden" id="field_man_delegate" value="@field_manager_delegate" />
+                    <input type="hidden" id="field_man_delegate_name" value="@(ir != null ? field_manager_delegate ? ir.field_manager : "" : field_manager_delegate_name.ToString())" />
+                        if (isEdit)
+                        {
+                            if (has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null ? "0" : ir.field_manager_delegate))
+                            {
+                                if (ir.field_manager_approve == null)
+                                {
+                        <div id="button_field_manager_approve">
+                            <input type="button" id="approve_field_manager" onclick="approveFM('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                            <input type="button" id="reject_field_manager" onclick="reject('4')" value="Reject" />
+                        </div>
+                                }
+                            }
+                        <img id="img_approve_field_manager" width="50" height="50" @(ir.field_manager_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.field_manager_approve == null ? "" : ir.field_manager_approve.Substring(1))"/>
+                        }
+                }
+                else
+                {
+                    <input type="text" name="field_man_name" id="field_man_name" value="@(isEdit ? ir.field_manager == null ? "" : (ir.field_manager_approve == null ? "" : (ir.field_manager_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.field_manager)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.field_manager_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
+                    <img id="img_approve_field_manager" width="50" height="50" @(ir.field_manager_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.field_manager_approve == null ? "" : ir.field_manager_approve.Substring(1))"/>
+                }
+            </td>
+            <td style="width:13.33%">
+                @(Html.Telerik().DatePicker()
+                        .Name("date_field_man")
+                        .HtmlAttributes(new { id = "ddatetime_wrapper", style = "width:100px" })
+                        .Value(isEdit ? ir.field_manager_date : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == 7) && (!isEdit || ir.field_manager_approve == null) && !isView ? true : false)
+                )
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table id="tabImAct4" class="tabs" style="width:980px" cellspacing="0" cellpadding="0">
+    <tbody style="width:100%">
+        <tr>
+            <td style="width:16.67%" class="right">
+                <h5>Investigation Required?</h5>
+            </td>
+            <td style="width:8.33%">
+                <input type="radio" name="investigation" id="investigation_1" value="1" disabled @(isEdit ? ir.investigation == 1 ? "checked" : "" : "")/>yes
+            </td>
+            <td style="width:8.33%" class="right">
+                <input type="radio" name="investigation" id="investigation_0" value="0" disabled @(isEdit ? (ir.investigation == 0 || ir.investigation == null) ? "checked" : "" : "checked")/>no
+            </td>
+            <td style="width:16.67%" class="right">
+                <h5>Investigation Request by</h5>
+            </td>
+            <td style="width:16.67%" class="right">
+                <input type="hidden" name="request_name_hid" id="request_name_hid" value="@(isEdit ? ir.investigation_req == null || ir.investigation_req == "null" ? "" : ir.investigation_req : "")"/>
+                <input type="text" name="request_name" id="request_name" value="@(isEdit ? ir.investigation_req == null || ir.investigation_req == "null" ? "" : has.Find(p => p.id == Int32.Parse(ir.investigation_req)).alpha_name : "")" disabled style="width:166px"/>
+            </td>
+            <td style="width:16.67%" class="right">
+                <h5>Investigation Lead by  <div id="lead_req" style="display:none;color:red;">* required</div></h5>
+            </td>
+            <td style="width:16.67%" class="right">
+                @if (li.Exists(p => p.role == 7) && !isView)
+                {
+                    <select id="lead_name" name="lead_name" @(isEdit && ir.investigation == 1 ? "" : "disabled")>
+                        <option value="" selected disabled>Choose One</option>
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (user.level == 1 && (user.role != null ? user.role.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) : false))
+                            {
+                                if (isEdit && user.id == Int32.Parse(ir.lead_name == null ? "0" : ir.lead_name))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.id">@user.alpha_name</option>
+                                }
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <input type="text" name="lead_name" id="lead_name" value="@(isEdit ? ir.lead_name == null ? "" : has.Find(p => p.id == Int32.Parse(ir.lead_name == null ? "0" : ir.lead_name)).alpha_name : "")" disabled style="width:166px"/>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br/>
+<div class="submit">
+    @if (!isView)
+    {
+	    <input name="Submit" value="Save" type="submit" id="save" onclick="save()"/>
+    }
+        <input type="button" value="Back" onclick="back()"/>
+        @if (isEdit && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE))
+        {
+        <button type="button" value="Print Incident Report">
+            @Html.ActionLink("Print Incident Report", "printIR", "Incident", new { id = id }, new { target = "_blank", id = "link" })
+        </button>
+        }
+        <span id="realmod_save" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+        @if (!isView)
+        {
+            @(Html.Telerik().Upload()
+                .Name("attachment")
+                .Multiple(true)
+                .Async(async => async
+                    .Save("attachment", "Incident", new { id = id })
+                    .AutoUpload(true)
+                    )
+                .ClientEvents(events => events
+                    .OnSuccess("onSuccessAttachment"))
+                .ShowFileList(false)
+            )
+        }
+</div>
+<br/>
+<b>Attachment(s):</b>
+<div class="attachment" id="atch">
+
+</div>    
+<br/>
+</div>
+@(Html.Telerik().Window()
+    .Name("RejectComment")
+    .Visible(false)
+    .Title("Reject")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Comment </div>
+		            <div class="infoFieldinput"><textarea id="comment" cols="25" rows="4" name="comment"></textarea></div>
+
+	            <p class="submit">
+		            <input name="Submit" value="Reject" type="submit" onclick="reject_ajax();" />
+                    <input name="type" value="" type="hidden" id="type_reject"/>
+	            </p>
+	         </div>
+        </text>)
+)
+<script type="text/javascript">
+    var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR)';
+    var isEdit = '@isEdit';
+    var isSave = false;
+    var has = Array();
+    @foreach (StarEnergi.Models.EmployeeEntity ue in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+    {
+        <text>has["@ue.id"] = '@ue.position';</text>
+    }
+
+    function reject(type) {
+        $("#type_reject").val(type);
+        $("#comment").val("");
+        $('#RejectComment').data('tWindow').center().open();
+    }
+
+    function reject_ajax() {
+        var type = $('#type_reject').val();
+        var route = type == 1 ? "@Url.Action("rejectSuperintendent", "Incident")" : type == 2 ? "@Url.Action("rejectLossControl", "Incident")" : type == 3 ? "@Url.Action("rejectSheSuperintendent", "Incident")" : type == 4 ? "@Url.Action("rejectFieldManager", "Incident")" : "";
+        $.ajax({
+            type: "POST",
+            url: route,
+            traditional: true,
+            data: {
+                comment: $('#comment').val(), 
+                id: '@id'
+            },
+            success: function (data) {
+                $("#RejectComment").data("tWindow").close();
+            }
+        });
+    }
+
+    function approveSuperintendent(employee_id) {
+        var r = confirm("Are you sure want to Approve this incident report?");
+        if (r == true) {
+            $.post("Incident/approveSuperintendent", { id: '@id', employee_id: employee_id }, function (data) {
+                if (data.success) {
+                    var has = data.path;
+                    $('#approve_superintendent').parent().hide();
+                    $('#img_approve_superintendent').attr('src', has);
+                    $('#img_approve_superintendent').css('display', 'block');
+                    $('#sup_name').prop('disabled', true);
+                    $('#date_sup').prop('disabled', true);
+                } else {
+                    alert("You do not supply your signature");
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
+    function approveFM(employee_id) {
+        var r = confirm("Are you sure want to Approve this incident report?");
+        if (r == true) {
+            $.post("Incident/approveFieldManager", { id: '@id', employee_id: employee_id }, function (data) {
+                if (data.success) {
+                    var has = data.path;
+                    $('#approve_field_manager').parent().hide();
+                    $('#img_approve_field_manager').attr('src', has);
+                    $('#img_approve_field_manager').css('display', 'block');
+                    $('#field_man_name').prop('disabled', true);
+                    $('#date_field_man').prop('disabled', true);
+                } else {
+                    alert("You do not supply your signature");
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
+    function approveSS(employee_id) {
+        var r = confirm("Are you sure want to Approve this incident report?");
+        if (r == true) {
+            $.post("Incident/approveSheSuperintendent", { id: '@id', employee_id: employee_id }, function (data) {
+                if (data.success) {
+                    var has = data.path;
+                    $('#approve_she_superintendent').parent().hide();
+                    $('#img_approve_she_superintendent').attr('src', has);
+                    $('#img_approve_she_superintendent').css('display', 'block');
+                    $('#she_sup_name').prop('disabled', true);
+                    $('#date_she_sup').prop('disabled', true);
+                } else {
+                    alert("You do not supply your signature");
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
+    function approveLC(employee_id) {
+        var r = confirm("Are you sure want to Approve this incident report?");
+        if (r == true) {
+            $.post("Incident/approveLossControl", { id: '@id', employee_id: employee_id }, function (data) {
+                if (data.success) {
+                    var has = data.path;
+                    $('#approve_loss_control').parent().hide();
+                    $('#img_approve_loss_control').attr('src', has);
+                    $('#img_approve_loss_control').css('display', 'block');
+                    $('#loss_control_name').prop('disabled', true);
+                    $('#date_loss_control').prop('disabled', true);
+                } else {
+                    alert("You do not supply your signature");
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
+    function selectSup() {
+        var sup_id = $('#sup_name').val();
+        $.post("Incident/selectSup", { id: '@id', employee_id: sup_id }, function (data) {
+            if (data.success) {
+                $('#sup_delegate').val(data.delegates);
+                $('#sup_delegate_name').val(data.delegate_name);
+            } else {
+                alert("You do not supply your signature");
+            }
+        });
+    }
+
+    function onSuccessAttachment(data) {
+        var dat = jQuery.parseJSON(data.response);
+        var has = data.response.files.split(";;");
+        $('#atch').empty();
+        for (var f in has) {
+            if (has[f] != "") {
+                $('#atch').append('<a href="' + data.response.path + has[f] + '">' + has[f] + '</a><br/>');
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        bindpre();
+        bindack();
+        bindatch();
+        $("signature").find('span:first').text("Signature");
+    });
+
+    function bindatch() {
+        $.post("Incident/Atch", { id: '@id' }, function (data) {
+            var has = data.files.split(";;");
+            $('#atch').empty();
+            for (var f in has) {
+                if (has[f] != "") {
+                    $('#atch').append('<a href="' + data.path + has[f] + '">' + has[f] + '</a><br/>');
+                }
+            }
+        });
+    }
+
+    function investigation() {
+        var incident_type = "";
+        var checkBoxes = $("input[name='incident_type']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                incident_type = $(this).val();
+            }
+        });
+        if (incident_type == "") {
+            incident_type = $('#other_text').val();
+        }
+
+        var potential_loss = "0";
+        var checkBoxes = $("input[name='potential_loss']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                potential_loss = $(this).val();
+            }
+        });
+
+        var probability = "0";
+        var checkBoxes = $("input[name='probability']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                probability = $(this).val();
+            }
+        });
+
+
+
+        if (incident_type == "Injury / Illness") {
+            if (!$('#investigation_1').attr('checked')) {
+                $('#investigation_1').attr('checked', true);
+                $('#lead_name').removeAttr("disabled", "disabled");
+                $('#request_name').val('@has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).alpha_name');
+                $('#request_name_hid').val('@has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).id');
+                alert('Investigation required!');
+            }
+        } else {
+            if (parseInt(potential_loss) == 0 || parseInt(probability) == 0) {
+                $('#investigation_0').attr('checked', true);
+                $('#lead_name').attr('disabled', 'disabled');
+                $('#request_name').val('');
+                $('#request_name_hid').val('');
+            } else if (parseInt(potential_loss) + parseInt(probability) <= 4) {
+                if (!$('#investigation_1').attr('checked')) {
+                    $('#investigation_1').attr('checked', true);
+                    $('#lead_name').removeAttr("disabled", "disabled");
+                    $('#request_name').val('@has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).alpha_name');
+                    $('#request_name_hid').val('@has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).id');
+                    alert('Investigation required!');
+                }
+            } else {
+                $('#investigation_0').attr('checked', true);
+                $('#lead_name').attr('disabled', 'disabled');
+                $('#request_name').val('');
+                $('#request_name_hid').val('');
+            }
+    }
+}
+
+function save() {
+    if (isInv == 'True') {
+        if (validateData()) {
+            $('#save').attr('disabled','disabled');
+            var type_report;
+            var checkBoxes = $("input[name='type_report']");
+            $.each(checkBoxes, function () {
+                if ($(this).attr('checked')) {
+                    type_report = $(this).val();
+                }
+            });
+
+            var incident_type = "";
+            var checkBoxes = $("input[name='incident_type']");
+            $.each(checkBoxes, function () {
+                if ($(this).attr('checked')) {
+                    incident_type = $(this).val();
+                }
+            });
+            if (incident_type == "") {
+                incident_type = $('#other_text').val();
+            }
+
+            var actual_loss = "";
+            var checkBoxes = $("input[name='actual_loss']");
+            $.each(checkBoxes, function () {
+                if ($(this).attr('checked')) {
+                    actual_loss = $(this).val();
+                }
+            });
+
+            var potential_loss = "";
+            var checkBoxes = $("input[name='potential_loss']");
+            $.each(checkBoxes, function () {
+                if ($(this).attr('checked')) {
+                    potential_loss = $(this).val();
+                }
+            });
+
+            var probability = "";
+            var checkBoxes = $("input[name='probability']");
+            $.each(checkBoxes, function () {
+                if ($(this).attr('checked')) {
+                    probability = $(this).val();
+                }
+            });
+
+            var sup_delegate = $('#sup_delegate').val();
+            var she_sup_delegate = $('#she_sup_delegate').val();
+            var loss_control_delegate = $('#loss_control_delegate').val();
+            var field_man_delegate = $('#field_man_delegate').val();
+            var values = {
+                facility: $('#bus_unit').val(),
+                incident_location: $('#inc_loc').val(),
+                reference_number: $('#ref_num').val(),
+                type_of_report: type_report,
+                date_incident: $('#date_incident').val(),
+                title: $('#titles').val(),
+                incident_type: incident_type,
+                actual_loss_severity: actual_loss,
+                potential_loss_severity: potential_loss,
+                probability: probability,
+                factual_information: $('#facts').val(),
+                cost_estimate: $('#cost').val(),
+                immediate_action: $('#imme_action').val(),
+                prepared_by: $('#prepared').val(),
+                ack_supervisor: $('#ack').val(),
+                prepare_date: $('#date_prepared').val(),
+                ack_date: $('#date_ack').val(),
+                superintendent: isEdit == 'False' ? $('#sup_name').val() : (sup_delegate == 'True' ? $('#sup_delegate_name').val() : $('#sup_name').val()),
+                superintendent_delegate: isEdit == 'False' ? $('#sup_delegate_name').val() : (sup_delegate == 'True' ? $('#sup_name').val() : $('#sup_delegate_name').val()),
+                loss_control: isEdit == 'False' ? $('#loss_control_name').val() : (loss_control_delegate == 'True' ? $('#loss_control_delegate_name').val() : $('#loss_control_name').val()),
+                loss_control_delegate: isEdit == 'False' ? $('#loss_control_delegate_name').val() : (loss_control_delegate == 'True' ? $('#loss_control_name').val() : $('#loss_control_delegate_name').val()),
+                field_manager: isEdit == 'False' ? $('#field_man_name').val() : (field_man_delegate == 'True' ? $('#field_man_delegate_name').val() : $('#field_man_name').val()),
+                field_manager_delegate: isEdit == 'False' ? $('#field_man_delegate_name').val() : (field_man_delegate == 'True' ? $('#field_man_name').val() : $('#field_man_delegate_name').val()),
+                she_superintendent: isEdit == 'False' ? $('#she_sup_name').val() : (she_sup_delegate == 'True' ? $('#she_sup_delegate_name').val() : $('#she_sup_name').val()),
+                she_superintendent_delegate: isEdit == 'False' ? $('#she_sup_delegate_name').val() : (she_sup_delegate == 'True' ? $('#she_sup_name').val() : $('#she_sup_delegate_name').val()),
+                superintendent_date: $('#date_sup').val(),
+                loss_date: $('#date_loss_control').val(),
+                field_manager_date: $('#date_field_man').val(),
+                she_superintendent_date: $('#date_she_sup').val(),
+                investigation: $('input:radio[name=investigation]:checked').val(),
+                investigation_req: $('#request_name_hid').val(),
+                lead_name: $('#lead_name').val()
+            }
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.post("Incident/Add", values, function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        $('#realmod_save').css("display", "none");
+                        alert('incident report with reference number "' + data.ref_num + '" saved');
+                        back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Error adding incident report');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                var ids = '@id';
+                values.id = ids;
+                $.post("Incident/Edit", values, function (data) {
+                    if (data != undefined) {
+                        $('#realmod_save').css("display", "none");
+                        alert('incident report changed');
+                        back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Error changing incident report');
+                    }
+                });
+            }
+        }
+    }
+}
+    function back() {
+        if (!isSave) {
+            $.post("Incident/DeleteAtch?id=@id", function (data) {});
+        }
+        window.location = "/Incident";
+        //$('#content').load('Incident/Index');
+    }
+
+    function validateData() {
+        var validate = true;
+        var isAdminSHE = "@(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION))";
+        if ($('#inc_loc').val() == "") {
+            $('#inc_loc_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#inc_loc_req').css('display','none');
+        }
+
+        if ($('#titles').val() == "") {
+            $('#title_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#title_req').css('display','none');
+        }
+
+        if ($('#facts').val() == "") {
+            $('#facts_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#facts_req').css('display','none');
+        }
+
+        if ($('#cost').val() == "") {
+            $('#cost_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#cost_req').css('display','none');
+        }
+
+        if ($('#imme_action').val() == "") {
+            $('#imme_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#imme_req').css('display','none');
+        }
+
+        var type_report;
+        var checkBoxes = $("input[name='type_report']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                type_report = $(this).val();
+            }
+        });
+        if (type_report == null) {
+            $('#type_report_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#type_report_req').css('display','none');
+        }
+
+        var incident_type = "";
+        var checkBoxes = $("input[name='incident_type']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                incident_type = $(this).val();
+            }
+        });
+        if (incident_type == "") {
+            incident_type = $('#other_text').val();
+        }
+
+        if (incident_type == "") {
+            $('#incident_type_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#incident_type_req').css('display','none');
+        }
+
+        var actual_loss = "";
+        var checkBoxes = $("input[name='actual_loss']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                actual_loss = $(this).val();
+            }
+        });
+
+        if (actual_loss == "") {
+            $('#actual_loss_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#actual_loss_req').css('display','none');
+        }
+
+        var potential_loss = "";
+        var checkBoxes = $("input[name='potential_loss']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                potential_loss = $(this).val();
+            }
+        });
+
+        if (potential_loss == "") {
+            $('#potential_loss_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#potential_loss_req').css('display','none');
+        }
+
+        var probability = "";
+        var checkBoxes = $("input[name='probability']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                probability = $(this).val();
+            }
+        });
+        if (probability == "") {
+            $('#probability_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#probability_req').css('display','none');
+        }
+
+        if ($('input:radio[name=investigation]:checked').val() == 1) {
+            if ($('#lead_name').val() == "") {
+                $('#lead_req').css('display','inline');
+                validate = false;
+            } else {
+                $('#lead_req').css('display','none');
+            }
+        } else {
+            $('#lead_req').css('display','none');
+        }
+
+        if (isAdminSHE == "True") {
+            if ($('#prepared').val() == "") {
+                $('#prepared_req').css('display','inline');
+                validate = false;
+            } else {
+                $('#prepared_req').css('display','none');
+            }
+
+            if ($('#ack').val() == "") {
+                $('#ack_req').css('display','inline');
+                validate = false;
+            } else {
+                $('#ack_req').css('display','none');
+            }
+
+            if ($('#sup_name').val() == "") {
+                $('#sup_req').css('display','inline');
+                validate = false;
+            } else {
+                $('#sup_req').css('display','none');
+            }
+        }
+
+        if (validate == false) {
+            alert("All data must be input");
+        }
+        return validate;
+    }
+
+    function bindpre() {
+        document.getElementById('pre_job').innerHTML = has[document.getElementById('prepared').value];
+    }
+
+    function bindack() {
+        document.getElementById('ack_job').innerHTML = has[document.getElementById('ack').value];
+    }
+
+</script>

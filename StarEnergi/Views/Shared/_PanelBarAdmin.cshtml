@@ -1,0 +1,94 @@
+﻿<script type="text/javascript">
+    function onSelectPanel(e) {
+        var item = $(e.item);
+        if (item.find('> .t-link').text() == "Failure Mode") {
+            $('#content').load('FailureMode');
+        } else if (item.find('> .t-link').text() == "Immidiate Cor Action") {
+            $('#content').load('ImmediateCor');
+        } else if (item.find('> .t-link').text() == "Long Term Cor Action") {
+            $('#content').load('LongTermCor');
+        } else if (item.find('> .t-link').text() == "Equipment Class") {
+            $('#content').load('TagType');
+        } else if (item.find('> .t-link').text() == "Event Description") {
+            $('#content').load('EventDescription');
+        } else if (item.find('> .t-link').text() == "Process Owner") {
+            $('#content').load('ProcessOwner');
+        } else if (item.find('> .t-link').text() == "Equipment") {
+            $('#content').load('Reporting/EquipmentReport');
+        } else if (item.find('> .t-link').text() == "Part") {
+            $('#content').load('Reporting/PartReport');
+        } else if (item.find('> .t-link').text() == "Availibility") {
+            $('#content').load('Reporting/AvailibilityReport');
+        } else if (item.find('> .t-link').text() == "Failure Cause") {
+            $('#content').load('FailureCause');
+        } else if (item.find('> .t-link').text() == "Failure Effect") {
+            $('#content').load('FailureEffect');
+        } else if (item.find('> .t-link').text() == "Secondary Effect") {
+            $('#content').load('SecondaryEffect');
+        } else if (item.find('> .t-link').text() == "SBS") {
+            $('#content').load('LoadExcel');
+        } else if (item.find('> .t-link').text() == "Data Master") {
+            $('#content').load('LoadExcel/DataMaster');
+        } else if (item.find('> .t-link').text() == "Critical Success Factors") {
+            $('#content').load('CSF');
+        } else if (item.find('> .t-link').text() == "Facility") {
+            $('#content').load('Facility');
+        } else if (item.find('> .t-link').text() == "Department") {
+            $('#content').load('Department');
+        } else if (item.find('> .t-link').text() == "Section") {
+            $('#content').load('Section');
+        } else if (item.find('> .t-link').text() == "Analysis Type") {
+            $('#content').load('AnalysisType');
+        } else if (item.find('> .t-link').text() == "Fishbone Diagram Master") {
+            $('#content').load('Fishbone');
+        } else if (item.find('> .t-link').text() == "PIR Clause") {
+            $('#content').load('PirClause');
+        } else if (item.find('> .t-link').text() == "User Management") {
+            $('#content').load('User');
+        } else if (item.find('> .t-link').text() == "RCA Template") {
+            $('#content').load('RCATemplate');
+        }
+    }
+</script>
+
+
+@(Html.Telerik().PanelBar()
+        .Name("PanelBar")
+        .HtmlAttributes(new { style = "width: 250px; margin-bottom: 30px;clear: both;margin-left: 10px;" })
+        .ClientEvents(eventsPanel => eventsPanel
+              .OnSelect("onSelectPanel")
+        )
+        .Items(panelBarItem =>
+        {
+            panelBarItem.Add().Text("Data Master")
+                .Items(item =>
+                {
+                    item.Add().Text("Failure Mode");
+                    item.Add().Text("Failure Cause");
+                    item.Add().Text("Failure Effect");
+                    item.Add().Text("Secondary Effect");                   
+                    item.Add().Text("Immidiate Cor Action");
+                    item.Add().Text("Long Term Cor Action");
+                    item.Add().Text("Equipment Class");
+                    item.Add().Text("Event Description");
+                    item.Add().Text("Process Owner");                   
+                    item.Add().Text("Critical Success Factors");
+                    item.Add().Text("Facility");
+                    item.Add().Text("Department");
+                    item.Add().Text("Section");
+                    item.Add().Text("Analysis Type");
+                    item.Add().Text("Fishbone Diagram Master");
+                    item.Add().Text("RCA Template");
+                    item.Add().Text("PIR Clause");
+                    item.Add().Text("User Management");
+                })
+                .Expanded(true);
+            panelBarItem.Add().Text("Load Data From Excel")
+                .Items(item =>
+                {
+                    item.Add().Text("SBS");
+                    item.Add().Text("Data Master");
+                });
+        })
+        .ExpandMode(PanelBarExpandMode.Multiple)
+)

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<StarEnergi.Models.she_observation>
+@{
+    ViewBag.Title = "Add Daily Log";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.she_observation>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("SheObservation")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxSheObservation", "SheObservation")
+                .Select("_SelectAjaxSheObservation", "SheObservation");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.date_time).Width(225).Title("Date/Time");
+            columns.Bound(o => o.observer).Width(175).Title("Observer");
+            columns.Bound(o => o.department).Width(175).Title("Department");
+            columns.Bound(o => o.location).Title("Location");
+            
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+)
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="View SHE Observation" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>';
+
+        row.cells[0].innerHTML = templateComplete;
+    }
+
+    function Edit(id) {
+        $('#contentEventLog').load('SheObservation/DetailSheObservation', { 'id': id });
+    }
+
+</script>

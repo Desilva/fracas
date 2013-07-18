@@ -1,0 +1,52 @@
+﻿@using StarEnergi
+@model IEnumerable<StarEnergi.Models.FracasEventModel>
+<script type="text/javascript">
+    function onRowSelect(e) {
+        var row = e.row;
+        $('#content').load('FracasEventLog/DetailFracas/' + row.cells[0].innerHTML + '?type=history' + '&part=' + row.cells[1].innerHTML);
+    }
+</script>
+@{
+    if(Config.menu == Config.MenuFrontEnd.FRACAS){
+        <!--<h3>History Equipment <a href="AssetRegister/DetailEquipment/@ViewBag.id">@ViewBag.nama</a></h3>-->
+        <h3>History Equipment @ViewBag.nama</h3>
+    }
+}
+@(Html.Telerik().Grid<StarEnergi.Models.FracasEventModel>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("DetailsEquipment")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditingEquipment", "FracasHistory");
+        })
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "importExcel" })
+            .Text("Export")
+            .Action("importExcelEquipment", "FracasHistory")
+        )
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.part).Hidden();
+            columns.Bound(o => o.dateTimeStop).Title("Date");
+            columns.Bound(o => o.eventDesc).Title("Event");
+            columns.Bound(o => o.cause).Title("Failure Cause");
+            columns.Bound(o => o.relatedItem).Title("Related Item");
+        })
+        .ClientEvents(events => events
+                .OnRowSelect("onRowSelect"))
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Groupable()
+        .Resizable(resizing => resizing.Columns(true))
+
+) 

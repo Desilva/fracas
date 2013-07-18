@@ -1,0 +1,34 @@
+﻿<script type="text/javascript" src="@Url.Content("~/Scripts/FusionCharts.js")"></script>
+
+<div id="gauge">Gauge will load here</div>					
+<script type="text/javascript">
+    FusionCharts.setCurrentRenderer('javascript');
+    var myChart = new FusionCharts("HLInearGauge.swf",
+	"myChartId", "580", "90", "0", "1");
+
+    myChart.setXMLData('<chart bgColor="EFEFEF" bgAlpha="100" showBorder="0" lowerLimit="0" upperLimit="100" lowerLimitDisplay="Bad" upperLimitDisplay="Good" numberSuffix="%" valueAbovePointer="0">\n\
+							<colorRange>\n\
+								<color minValue="0" maxValue="75" code="00A3FF"/>\n\
+								<color minValue="75" maxValue="90" code="F6BD0F"/>\n\
+								<color minValue="90" maxValue="100" code="8BBA00"/>\n\
+							</colorRange>\n\
+							<pointers>\n\
+								<pointer value="90" radius = "7" toolText="Current Year" />\n\
+							</pointers>\n\
+							<trendpoints>\n\
+								<point startValue="60" dashed="1" dashLen="3" dashGap="3" displayValue="Last Year 60%" color="666666" thickness="2" alpha="100"/>\n\
+							</trendpoints>\n\
+							</chart>');
+    $(document).ready(function () {
+        myChart.render("gauge");
+        $('tspan').each(function () {
+            if ($(this).text() == 'FusionCharts') {
+                $(this).remove();
+            }
+        });
+    });
+</script>
+
+
+    
+   

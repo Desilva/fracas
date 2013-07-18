@@ -1,0 +1,49 @@
+﻿@model IEnumerable<StarEnergi.Models.secondary_effects>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Secondary Effects</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.secondary_effects>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("SecondaryEffect")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "importExcel" })
+            .Text("Export")
+            .Action("importExcel", "SecondaryEffect")
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "SecondaryEffect")
+                .Insert("_InsertAjaxEditing", "SecondaryEffect")
+                .Update("_SaveAjaxEditing", "SecondaryEffect")
+                .Delete("_DeleteAjaxEditing", "SecondaryEffect");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.title).Width(150).Title("Title");
+            columns.Bound(o => o.description).Title("Description");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

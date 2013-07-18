@@ -1,0 +1,340 @@
+﻿@model StarEnergi.Models.EquipmentEntity
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function save() {
+        var values =
+        {
+            "Id": $('#equipment_id').val(),
+            "Tag_num": $('#equipment_tag_num').val(),
+            "Nama": $('#equipment_nama').val(),
+            "Econ": $('#equipment_econ').val(),
+            "Ram_crit": $('#equipment_ram_crit').val(),
+            "Id_discipline": $('#id_discipline').val(),
+            "Installed_date": $('#equipment_installed_date').val(),
+            "Sertifikasi": $('#equipment_sertifikasi').val(),
+            "Warranty": $('#equipment_warranty').val(),
+            "Vendor": $('#equipment_vendor').val(),
+            "Id_tag_type": $('#id_tag_type').val(),
+            "Data_sheet_path": $('.t-filename').attr("title"),
+            "id_equipment_group": eval('@ViewBag.id_equipment_group')
+        }
+
+        $.post("Equipment/Edit", values, function (data) {
+            if (data != undefined) {
+                if (data["status"] == 0) {
+                    var html = $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().find('img').attr('src');
+                    var image = '<img class="t-image" src="' + html + '" alt="image">';
+                    $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().html(image + $('#equipment_tag_num').val());
+                    $('#content').load('Equipment/details/' + $('#equipment_id').val());
+                } else {
+                    clearError();
+                    $.each(data, function (index, value) {
+                        if (index != "status") {
+                            //error render
+                            if ((index == 'id_tag_type') || (index == 'id_discipline'))
+                                $('#' + index).next('div').html(value);
+                            else
+                                $('#equipment_' + index).next('div').html(value);
+                        }
+                    });
+                }
+            } else {
+                alert('Gagal melakukan edit equipment');
+            }
+        });
+
+    }
+
+    function clearError() {
+        var field = ["tag_num", "nama", "econ", "ram_crit", "id_discipline", "installed_date", "sertifikasi", "warranty", "vendor", "id_tag_type", "data_sheet_path"];
+        $.each(field, function (index, value) {
+            $('#' + value).next('div').html('');
+        });
+    }
+
+    function OnRowDataBound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        if(dataItem.status == 1){
+            row.cells[5].innerHTML = 'Running';
+        } else {
+            row.cells[5].innerHTML = 'Down';
+            row.cells[5].style.color = 'red';
+        }
+
+    }
+
+    function OnEdit(e) {
+        console.log(e);
+        var tag_num = e.dataItem.tag_num;
+        if (e.mode == "edit") {
+            $('div.t-widget.t-dropdown.t-header').parent().html(tag_num);
+        }
+    }
+
+    function OnSave(e) {
+        console.log(e.values);
+        var values = {
+            "id_eq"     : e.values.id,
+            "id_part"   : e.values.id_parts
+        }
+        $.post("Equipment/CheckPart", values, function (data) {
+            if (!data) {
+                alert("Part number sudah terdaftar");
+            }
+        });
+    }
+
+    function addPart() {
+        $('#content').load('Part/Index/' + $('#equipment_id').val());
+    }
+</script>
+<div class="fieldR">* Required Field</div>
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>Equipment</legend>
+
+    @Html.HiddenFor(model => model.equipment.id)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.tag_num)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.tag_num)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.nama)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.nama)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.econ)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.econ)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.ram_crit)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.ram_crit)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.id_discipline)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("id_discipline", string.Empty)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.installed_date)
+    </div>
+    <div class="editor-field">
+        @(Html.Telerik().DateTimePickerFor(model => model.equipment.installed_date)
+              .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" })
+        )
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.sertifikasi)
+    </div>
+    <div class="editor-field">
+        @(Html.Telerik().DateTimePickerFor(model => model.equipment.sertifikasi)
+              .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" })
+        )
+       <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.warranty)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.warranty)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.vendor)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.vendor)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.id_tag_type)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("id_tag_type", string.Empty)
+        <div class="errorM"></div>
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.data_sheet_path)<br />       
+    </div>
+    <div class="editor-field">
+        @{
+            if (Model.equipment.data_sheet_path == null)
+            {
+                <span>-</span>
+            }  else{
+                @Html.DisplayFor(model => model.equipment.data_sheet_path)    
+            }
+           
+         }
+    </div>
+
+    <div >       
+        @(Html.Telerik().Upload()
+            .Name("attachments")
+            .Multiple(false)
+            .Async(async => async
+                .Save("Save", "Upload")
+                .Remove("Remove", "Upload")
+                .AutoUpload(true)
+            )
+        )
+        <!--@Html.EditorFor(model => model.equipment.data_sheet_path)-->
+        <div class="errorM"></div>
+    </div>
+
+    <p>
+        <input type="submit" value="Save" onclick="save()"/>
+    </p>
+</fieldset>
+<!--
+<fieldset>
+    <legend>Sub Equipment Equipment @Model.equipment.tag_num</legend>
+    <br/>
+    <input type="button" value="Add New Part" onclick="addPart()"/>
+    <br/><br/>
+    @(Html.Telerik().Grid<StarEnergi.Models.EquipmentPartEntity>()
+        .TableHtmlAttributes(new { style = "width:640px" })
+        .Name("EquipmentPart")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "Equipment")
+                .Insert("_InsertAjaxEditing/", "Equipment")
+                .Update("_SaveAjaxEditing", "Equipment")
+                .Delete("_DeleteAjaxEditing", "Equipment");
+
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.ForeignKey(o => o.id_parts,
+              new SelectList((System.Collections.Generic.IEnumerable<StarEnergi.Models.part>)ViewData["parts"], "id", "tag_number")).Width(150).Title("Tag Number");
+            columns.Bound(o => o.installed_date).Width(190).Title("Installed Date");
+            columns.Bound(o => o.mtbf).Title("MTBF").ReadOnly();
+            columns.Bound(o => o.status).Title("Status").ReadOnly();
+            //columns.ForeignKey(o => o.id_tag_type, 
+            //  new SelectList((System.Collections.Generic.IEnumerable<StarEnergi.Models.tag_types>)ViewData["tagTypes"], "id", "title")).Width(150).Title("Tag-Type");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBound")
+                .OnEdit("OnEdit")
+                .OnSave("OnSave")
+        )      
+        .DetailView(details => details.ClientTemplate(
+            Html.Telerik().Grid<StarEnergi.Models.ComponentEntity>()
+                .Name("Parts_<#= id #>")
+                .DataKeys(keys =>
+                {
+                    keys.Add(p => p.id_component);
+                })
+                .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+                .Columns(columns =>
+                {
+                    columns.Bound(o => o.id_component).Hidden();
+                    columns.Bound(o => o.id_equipment_part).Hidden();
+                    columns.Bound(o => o.tag_number).Width(140).Title("Tag Number");
+                    columns.Bound(o => o.description).Width(200);
+                    columns.Command(commands =>
+                    {
+                        commands.Edit().ButtonType(GridButtonType.Image);
+                        commands.Delete().ButtonType(GridButtonType.Image);
+                    }).Width(80).Title("Commands");
+                })
+                .DetailView(ordersDetailView => ordersDetailView.ClientTemplate(
+                    Html.Telerik().Grid<StarEnergi.Models.SubComponentEntity>()
+                        .Name("Components_<#= id_component #>")
+                        .DataKeys(keys =>
+                        {
+                            keys.Add(p => p.id_sub_component);
+                        })
+                        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+                        .Columns(columns =>
+                        {
+                            columns.Bound(o => o.id_sub_component).Hidden();
+                            columns.Bound(o => o.id_component).Hidden();
+                            columns.Bound(o => o.tag_number).Width(140).Title("Tag Number");
+                            columns.Bound(o => o.description).Width(200);
+                            columns.Command(commands =>
+                            {
+                                commands.Edit().ButtonType(GridButtonType.Image);
+                                commands.Delete().ButtonType(GridButtonType.Image);
+                            }).Width(80).Title("Commands");
+                        })
+                        .DataBinding(dataBinding => dataBinding.Ajax()
+                            .Select("_ComponentsForSubHierarchyAjax", "Equipment", new { idComponent = "<#= id_component #>"})
+                            .Insert("_InsertSubComponentAjaxEditing", "Equipment", new { idComponent = "<#= id_component #>"})
+                            .Update("_SaveSubComponentAjaxEditing", "Equipment", new { idComponent = "<#= id_component #>"})
+                            .Delete("_DeleteSubComponentAjaxEditing", "Equipment", new { idComponent = "<#= id_component #>"})
+                        )
+                        .Pageable()
+                        .Sortable()
+                        .ToHtmlString()
+                    ))
+                .DataBinding(dataBinding => dataBinding.Ajax()
+                    .Select("_PartsForComponentHierarchyAjax", "Equipment", new { idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
+                    .Insert("_InsertComponentAjaxEditing", "Equipment", new { idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
+                    .Update("_SaveComponentAjaxEditing", "Equipment", new { idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
+                    .Delete("_DeleteComponentAjaxEditing", "Equipment", new {idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
+                )
+                    
+                .Pageable()
+                .Sortable()
+                .Filterable()
+                .ToHtmlString()
+        ))
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height("250"))
+        .Selectable()
+                    ) 
+</fieldset>
+-->

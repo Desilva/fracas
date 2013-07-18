@@ -1,0 +1,72 @@
+﻿@model StarEnergi.Models.EquipmentReportEntity
+@{
+    int? id = Model.id as Nullable<Int32>;
+    int i = 0;
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+
+<div class="container">
+	<header>
+        <table border="0">
+            <tr>
+                <td width="20%">
+                    <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+                </td>
+                <td style="font-size:8px;">
+                    <table border="0">
+                        <tr>
+                            <td style="font-size:12px;">
+                                STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:8px;">
+                                Power Station Daily Check Sheet
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:8px;">
+                                @(Model.date.Value.Year+"-"+Model.date.Value.Month.ToString().PadLeft(2,'0'))
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+	</header>
+    <br />
+	<div class="log-part2">
+        <table class="w-border" style="width:980px" border="0.5">
+            <tr>
+				<td style="font-size:5px;text-align:center;" bgcolor="yellow" width="3%"><b>No.</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="10%"><b>Tag ID</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="5%"><b>Barcode</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="17%"><b>Description</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="5%"><b>Unit</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="5%"><b>Min. Limit</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="5%"><b>Max. Limit</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="5%"><b>Tag Value</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="5%"><b>Time</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="10%"><b>Operator Name</b></td>
+                <td style="font-size:5px;text-align:center;" bgcolor="yellow" width="20%"><b>Notes</b></td>
+			</tr>
+            @foreach(StarEnergi.Models.EquipmentTableReportEntity e in Model.table) {
+                i++;
+            <tr>
+				<td style="font-size:5px;text-align:right;" width="3%">@i</td>
+                <td style="font-size:5px;" width="10%">@e.tag_number</td>
+                <td style="font-size:5px;" width="5%">@e.barcode</td>
+                <td style="font-size:5px;" width="17%">@e.description</td>
+                <td style="font-size:5px;" width="5%">@e.unit</td>
+                <td style="font-size:5px;text-align:right;" width="5%">@e.min_limit</td>
+                <td style="font-size:5px;text-align:right;" width="5%">@e.max_limit</td>
+                <td style="font-size:5px;text-align:right;" width="5%">@e.tag_value</td>
+                <td style="font-size:5px;text-align:center;" width="5%">@e.time</td>
+                <td style="font-size:5px;" width="10%">@e.name_operator</td>
+                <td style="font-size:5px;" width="20%">@e.keterangan</td>
+			</tr>
+            }
+		</table>
+	</div>
+</div>

@@ -1,0 +1,548 @@
+﻿@model StarEnergi.Models.audit
+@{
+    bool isEdit = false;
+    bool? isSubmit = false;
+    int? id = null;
+    StarEnergi.Models.audit audit = null;
+    if (ViewBag.mod != null)
+    {
+        id = ViewBag.mod as Nullable<Int32>;
+        ViewBag.Title = "Edit Audit";
+        audit = ViewBag.datas as StarEnergi.Models.audit;
+        isEdit = true;
+        isSubmit = ViewBag.isSubmit == null || ViewBag.isSubmit == 0 ? false : true;
+    }
+    else
+    {
+        ViewBag.Title = "Add Audit";
+    }
+    List<StarEnergi.Models.EmployeeEntity> ee = null;
+    if (ViewBag.employee != null)
+    {
+        ee = ViewBag.employee as List<StarEnergi.Models.EmployeeEntity>;
+    }
+    List<StarEnergi.Models.pir_clause> clauses = null;
+    if (ViewBag.list_clause != null)
+    {
+        clauses = ViewBag.list_clause as List<StarEnergi.Models.pir_clause>;
+    }
+}
+<style>
+    .t-icon.t-RaisePIR {
+        background-image:url("/Content/image/add_pir.png");
+    }
+
+    .t-icon.t-EditAuditLog
+    {
+        background-image: url("/Content/2012.1.214/Default/sprite.png");
+        background-position: 0 -336px;
+    }
+</style>
+<script type="text/javascript">
+    var isEdit = '@isEdit';
+    var isSave = false;
+
+    function OnComplete(e) {
+        if (e.name == null) {
+            clear();
+            var detailWindow = $("#AddLogs").data("tWindow");
+            detailWindow.center().open();
+        } else {
+            if (e.name == "EditAuditLog") {
+                clear();
+                var detailWindow = $("#EditLogs").data("tWindow");
+                user = e.response;
+                console.log(user);
+                $.each(user, function (index, value) {
+                    if (index == "date") {
+                        if (value != null)
+                            $('#edit_' + index).val((value.getMonth() + 1) + '/' + value.getDate() + '/' + value.getFullYear());
+                    } else if (index == "list_clauses") {
+                        for (var a in value) {
+                            $('#edit_clause' + value[a].id_pir_clause).prop('checked', true);
+                        }
+                    } else if (index != "pir" && index != "id_pir" && index != "pir_number" && index != "list_clause") {
+                        $('#edit_' + index).val(value);
+                    }
+                });
+                detailWindow.center().open();
+            } else if (e.name == "RaisePIR") {
+                clear();
+                var detailWindow = $("#RaisePIR").data("tWindow");
+                user = e.response;
+                $('#edit_ids').val(user.id);
+                detailWindow.center().open();
+            }
+        }
+    }
+
+    function onRowDataBound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var isSubmit = '@isSubmit';
+        if (isSubmit == 'True') {
+            row.childNodes[0].childNodes[0].style.display = 'none';
+        } else {
+            row.childNodes[0].childNodes[1].style.display = 'none';
+        }
+
+        if (dataItem.id_pir != null) {
+            row.childNodes[0].childNodes[1].style.display = 'none';
+            row.cells[2].innerHTML = '<a onclick="openPir('+dataItem.id_pir+')">' + dataItem.pir_number + '</a>';
+        }
+
+        
+        row.cells[3].innerHTML = dataItem.grade == 0 ? "Minor NC" : dataItem.grade == 1 ? "Major NC" : dataItem.grade == 2 ? "Observation" : "";
+        row.cells[4].innerHTML = dataItem.grade == 0 ? "New" : dataItem.grade == 1 ? "Open" : dataItem.grade == 2 ? "Closed" : "";
+
+        var clause = "";
+        for (var s in dataItem.list_clauses) {
+            clause += dataItem.list_clauses[s].clause_no + ", ";
+        }
+        row.cells[10].innerHTML = clause.substr(0, clause.length-2);
+    }
+
+    function save() {
+        var in_ex = "";
+        var checkBoxes = $("input[name='in_ex']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                in_ex = $(this).val();
+            }
+        });
+
+        if (validate()) {
+            var values = {
+                in_ex: in_ex,
+                audit_no: $('#audit_no').val()
+            }
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.post("/HseAuditor/Add", values, function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        $('#realmod_save').css("display", "none");
+                        alert('SHE Audit successfully saved');
+                        var ids = data.id;
+                        $('#contentEventLog').load('HseAuditor/addAudit/' + ids);
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to save SHE Audit');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.post("/HseAuditor/Edit", values, function (data) {
+                    if (data != undefined) {
+                        $('#realmod_save').css("display", "none");
+                        alert('SHE Audit successfully saved');
+                        $('#contentEventLog').load('HseAuditor/addAudit/' + ids);
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to save SHE Audit');
+                    }
+                });
+            }
+    }
+}
+
+    function submit() {
+        var in_ex = "";
+        var checkBoxes = $("input[name='in_ex']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                in_ex = $(this).val();
+            }
+        });
+
+        if (validate()) {
+            var values = {
+                in_ex: in_ex,
+                audit_no: $('#audit_no').val(),
+                is_submit: 1
+            }
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.post("/HseAuditor/Add", values, function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        $('#realmod_save').css("display", "none");
+                        alert('SHE Audit successfully saved');
+                        var ids = data.id;
+                        $('#contentEventLog').load('HseAuditor/addAudit/' + ids);
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to save SHE Audit');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.post("/HseAuditor/Edit", values, function (data) {
+                    if (data != undefined) {
+                        $('#realmod_save').css("display", "none");
+                        alert('SHE Audit successfully saved');
+                        $('#contentEventLog').load('HseAuditor/addAudit/' + ids);
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to save SHE Audit');
+                    }
+                });
+            }
+        }
+    }
+
+function back() {
+    if (!isSave) {
+        $.post("HseAuditor/DeleteAllLog", function (data) { });
+    }
+    window.location = "/HseAuditor";
+}
+
+function openPir(id) {
+    $('#contentEventLog').load('pir/pageInitiator/?id=' + id);
+}
+
+function validate() {
+    return true;
+}
+
+function SaveLog() {
+    var arrClauses = [];
+
+    for (var i in document.getElementsByName("clauses")) {
+        if (document.getElementsByName("clauses")[i].checked)
+            arrClauses.push(document.getElementsByName("clauses")[i].value);
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "@Url.Action("addLogs", "HseAuditor")",
+            traditional: true,
+            data: {
+                grade: $('#grade').val(),
+                status: $('#status').val(),
+                finding: $('#finding').val(),
+                process: $('#process').val(),
+                date: $('#date').val(),
+                reference: $('#reference').val(),
+                arrClauses: arrClauses,
+                id_audit: '@id'
+            },
+            success: function (data) {
+                alert('Data Saved');
+                var grid = $('#AuditLogEntity').data('tGrid');
+                grid.ajaxRequest();
+                clear();
+                $("#AddLogs").data("tWindow").close();
+                
+            }
+        });
+    }
+
+    function EditLog(id) {
+        var arrClauses = [];
+
+        for (var i in document.getElementsByName("edit_clauses")) {
+            if (document.getElementsByName("edit_clauses")[i].checked)
+                arrClauses.push(document.getElementsByName("edit_clauses")[i].value);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("editLog", "HseAuditor")",
+            traditional: true,
+            data: {
+                id: $('#edit_id').val(),
+                grade: $('#edit_grade').val(),
+                status: $('#edit_status').val(),
+                finding: $('#edit_finding').val(),
+                process: $('#edit_process').val(),
+                date: $('#edit_date').val(),
+                reference: $('#edit_reference').val(),
+                arrClauses: arrClauses,
+                id_audit: '@id'
+            },
+            success: function (data) {
+                alert('Data Saved');
+                var grid = $('#AuditLogEntity').data('tGrid');
+                grid.ajaxRequest();
+                $("#EditLogs").data("tWindow").close();
+            }
+        });
+    }
+
+    function raisePir() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("raisePIRs", "HseAuditor")",
+            traditional: true,
+            data: {
+                id: $('#edit_ids').val(),
+                requester: $('#requester').val()
+            },
+            success: function (data) {
+                $("#RaisePIR").data("tWindow").close();
+                $('#contentEventLog').load('pir/pageInitiator/?idRca=' + $('#edit_ids').val() + '&identity=' + (parseInt(data.in_ex) + 2) + '&requester=' + $('#requester').val() + '&reference=' + data.reference);
+                
+            }
+        });
+    }
+
+    function clear() {
+        $('#grade').val('');
+        $('#status').val('');
+        $('#finding').val('');
+        $('#process').val('');
+        var now = new Date();
+        $('#date').val('' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear());
+        $('#reference').val('');
+        for (var i in document.getElementsByName("clauses")) {
+            document.getElementsByName("clauses")[i].checked = "";
+        }
+        $('#edit_grade').val('');
+        $('#edit_status').val('');
+        $('#edit_finding').val('');
+        $('#edit_process').val('');
+        var now = new Date();
+        $('#edit_date').val('' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear());
+        $('#edit_reference').val('');
+        for (var i in document.getElementsByName("edit_clauses")) {
+            document.getElementsByName("edit_clauses")[i].checked = "";
+        }
+
+        $('#requester').val();
+    }
+
+    $(document).ready(function () {
+
+    });
+</script>
+<h2>@ViewBag.Title</h2>
+<input type="radio" id="in_ex_1" name="in_ex" value="0" @(audit != null ? (audit.in_ex == 0 ? "checked" : "") : "") @(audit != null ? (audit.is_submit == 1 ? "disabled" : "") : "")/>Internal
+<input type="radio" id="in_ex_2" name="in_ex" value="1" @(audit != null ? (audit.in_ex == 1 ? "checked" : "") : "") @(audit != null ? (audit.is_submit == 1 ? "disabled" : "") : "")/>External
+<br />
+@Html.Label("audit_no","Audit No.")<input type="text" id="audit_no" name="audit_no" value="@(audit != null ? audit.audit_no : "")" @(audit != null ? (audit.is_submit == 1 ? "disabled" : "") : "")/>
+<div id="content-inc">
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.AuditLogEntity>()
+        .TableHtmlAttributes(new { style = "width:980px" })
+        .Name("AuditLogEntity")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+            .ToolBar(commands =>
+            {
+                if (!isSubmit.Value)
+                {
+                    commands
+                        .Custom()
+                        .HtmlAttributes(new { id = "addLog" })
+                        .Text("Add Log")
+                        .Ajax(true)
+                        .Action("addLog", "HseAuditor", new { id = id });
+                }
+            }
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxAuditLog", "HseAuditor", new { id = id });
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Custom("EditAuditLog")
+                    .ButtonType(GridButtonType.Image).ImageHtmlAttributes(new { @class = "t-icon t-edit" })
+                    .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                    .HtmlAttributes(new { title = "Edit Audit Log" })
+                    .Ajax(true)
+                    .Action("GetLog", "HseAuditor");
+                commands.Custom("RaisePIR")
+                    .ButtonType(GridButtonType.Image).ImageHtmlAttributes(new { @class = "t-icon t-edit" })
+                    .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                    .HtmlAttributes(new { title = "Raise PIR" })
+                    .Ajax(true)
+                    .Action("RaisePIR", "HseAuditor");
+            }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.pir_number).Width(150).Title("PIR Number");
+            columns.Bound(o => o.grade).Width(100).Title("Grade");
+            columns.Bound(o => o.status).Width(100).Title("Status");
+            columns.Bound(o => o.finding).Width(250).Title("Finding");
+            columns.Bound(o => o.requester).Width(150).Title("Requester");
+            columns.Bound(o => o.process).Width(150).Title("Process / aspect");
+            columns.Bound(o => o.date).Width(80).Title("Date");
+            columns.Bound(o => o.reference).Width(100).Title("Reference");
+            columns.Bound(o => o.reference).Width(100).Title("Clause");
+        })
+        .ClientEvents(events => events.OnComplete("OnComplete").OnRowDataBound("onRowDataBound"))
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height(200))
+        .Selectable()
+)
+<br />
+<div class="submit">
+	<input name="Submit" value="Save as Draft" type="submit" onclick="save()"/>
+    <input type="button" value="Submit" onclick="submit()"/>
+    <input type="button" value="Back" onclick="back()"/>
+    <span id="realmod_save" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+</div>
+<br/>
+</div>
+
+@(Html.Telerik().Window()
+    .Name("AddLogs")
+    .Visible(false)
+    .Title("Add Audit Log")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		        <div class="info_inside_left">Grade </div>
+		        <div class="infoFieldinput">
+                    <select id="grade" name="grade">
+                        <option value="">Choose one</option>
+		                <option value="0">Minor NC</option>
+                        <option value="1">Major NC</option>
+                        <option value="2">Observation</option>
+                    </select>
+		        </div>
+		        <div class="info_inside_left">Status </div>
+		        <div class="infoFieldinput">
+                    <select id="status" name="status">
+                        <option value="">Choose one</option>
+		                <option value="0">New</option>
+                        <option value="1">Open</option>
+                        <option value="2">Closed</option>
+                    </select>
+		        </div>
+                <div class="info_inside_left">Finding </div>
+		        <div class="infoFieldinput"><textarea id="finding" name="finding" rows="3" cols="25"></textarea></div>
+                <div class="info_inside_left">Process / aspect </div>
+		        <div class="infoFieldinput"><textarea id="process" name="process" rows="2" cols="25"></textarea></div>
+                <div class="info_inside_left">Date </div>
+		        <div class="infoFieldinput">@(Html.Telerik().DatePicker()
+                    .Name("date")
+                    .HtmlAttributes(new { id = "datetime_wrapper" })
+                    .Value(DateTime.Now)
+                    .Enable(true)
+                )
+                </div>
+                <div class="info_inside_left">Reference </div>
+		        <div class="infoFieldinput"><input type="text" id="reference" name="reference" /></div>
+		        @*<div class="infoFieldinput"><select id="requester" name="requester">
+                    <option value="" selected disabled>Choose One</option>
+                    @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                    {
+                        <option value="@user.id">@user.alpha_name</option>
+                    }
+                </select></div>*@
+		        <div class="info_inside_left">Clause </div>
+		        <div class="infoFieldinput">
+                    @foreach (StarEnergi.Models.pir_clause clause in clauses)
+                    {
+                        <input id="clause@(clause.id)" type="checkbox" name="clauses" value="@(clause.id)" />@clause.clause_no @clause.clause<br />
+                    }
+		        </div>
+		            
+	            <p class="submit">
+		            <input name="Submit" value="Add" type="submit" onclick="SaveLog();" />
+	            </p>
+	         </div>
+        </text>)
+                        )
+
+@(Html.Telerik().Window()
+    .Name("EditLogs")
+    .Visible(false)
+    .Title("Edit Audit Log")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		        <div class="info_inside_left">Grade </div>
+		        <div class="infoFieldinput">
+                    <select id="edit_grade" name="edit_grade">
+                        <option value="">Choose one</option>
+		                <option value="0">Minor NC</option>
+                        <option value="1">Major NC</option>
+                        <option value="2">Observation</option>
+                    </select>
+		        </div>
+		        <div class="info_inside_left">Status </div>
+		        <div class="infoFieldinput">
+                    <select id="edit_status" name="edit_status">
+                        <option value="">Choose one</option>
+		                <option value="0">New</option>
+                        <option value="1">Open</option>
+                        <option value="2">Closed</option>
+                    </select>
+		        </div>
+                <div class="info_inside_left">Finding </div>
+		        <div class="infoFieldinput"><textarea id="edit_finding" name="edit_finding" rows="3" cols="25"></textarea></div>
+                <div class="info_inside_left">Process / aspect </div>
+		        <div class="infoFieldinput"><textarea id="edit_process" name="edit_process" rows="2" cols="25"></textarea></div>
+                <div class="info_inside_left">Date </div>
+		        <div class="infoFieldinput">@(Html.Telerik().DatePicker()
+                    .Name("edit_date")
+                    .HtmlAttributes(new { id = "datetime_wrapper" })
+                    .Value(DateTime.Now)
+                    .Enable(true)
+                )
+                </div>
+                <div class="info_inside_left">Reference </div>
+		        <div class="infoFieldinput"><input type="text" id="edit_reference" name="edit_reference" /></div>
+		        @*<div class="infoFieldinput"><select id="requester" name="requester">
+                    <option value="" selected disabled>Choose One</option>
+                    @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                    {
+                        <option value="@user.id">@user.alpha_name</option>
+                    }
+                </select></div>*@
+		        <div class="info_inside_left">Clause </div>
+		        <div class="infoFieldinput">
+                    @foreach (StarEnergi.Models.pir_clause clause in clauses)
+                    {
+                        <input id="edit_clause@(clause.id)" type="checkbox" name="edit_clauses" value="@(clause.id)" />@clause.clause_no @clause.clause<br />
+                    }
+		        </div>
+		            
+	            <p class="submit">
+                    <input id="edit_id" type="hidden" name="edit_id" value="" />
+		            <input name="Submit" value="Edit" type="submit" onclick="EditLog(id);" />
+	            </p>
+	         </div>
+        </text>)
+)
+@(Html.Telerik().Window()
+    .Name("RaisePIR")
+    .Visible(false)
+    .Title("Raise PIR")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+                <div class="info_inside_left">Requester </div>
+		        <div class="infoFieldinput"><select id="requester" name="requester">
+                    <option value="" selected disabled>Choose One</option>
+                    @foreach (StarEnergi.Models.EmployeeEntity e in ee)
+                    {
+                        <option value="@e.id">@e.alpha_name</option>
+                    }
+                </select></div>
+		            
+	            <p class="submit">
+                    <input id="edit_ids" type="hidden" name="edit_id" value="" />
+		            <input name="Submit" value="Raise" type="submit" onclick="raisePir();" />
+	            </p>
+	         </div>
+        </text>)
+)

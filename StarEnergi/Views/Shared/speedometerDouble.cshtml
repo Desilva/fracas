@@ -1,0 +1,37 @@
+﻿@{
+    String elementId = "speedo-2";
+    String lastUpdate = "";
+    String valueOuter = "80";
+    String valueInner = "70";
+    String name = "RCC";
+  }
+<div>
+	@Html.ActionLink(name, "../Admin")
+</div>
+<div id="@(elementId)" class="speedo-double">
+	<div class="bar-big">
+		<img class="big" src="" />
+	</div>
+	<div class="bar-small">
+		<img class="small" src="" alt="" />
+	</div>
+	<div class="value-big">@(valueOuter)</div>
+	<div class="value-small">@(valueInner)</div>
+	@{
+        if (lastUpdate != "")
+        {
+	    <span class="last-update" title="last update">last update @(lastUpdate)</span>
+        }
+	} 
+</div>
+<div id="test"></div>
+<script type="text/javascript">
+$(document).ready(function(){	
+	$('#@(elementId)').speedometer({
+		category: 'double',
+		val: @(valueOuter),
+		valInner: @(valueInner),
+		base: '@Url.Content("~/")',
+	});
+});
+</script>

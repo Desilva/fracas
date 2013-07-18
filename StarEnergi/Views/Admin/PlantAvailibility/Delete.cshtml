@@ -1,0 +1,78 @@
+﻿@model StarEnergi.Models.foc_op_avail
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>foc_op_avail</legend>
+
+    <div class="display-label">foc</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.foc.nama)
+    </div>
+
+    <div class="display-label">op_avail</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.op_avail)
+    </div>
+
+    <div class="display-label">plant_down</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.plant_down)
+    </div>
+
+    <div class="display-label">plant_up</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.plant_up)
+    </div>
+
+    <div class="display-label">selisih</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.selisih)
+    </div>
+
+    <div class="display-label">selisih_paf</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.selisih_paf)
+    </div>
+
+    <div class="display-label">pof_bulanan</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.pof_bulanan)
+    </div>
+
+    <div class="display-label">paf_bulanan</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.paf_bulanan)
+    </div>
+
+    <div class="display-label">paf</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.paf)
+    </div>
+
+    <div class="display-label">bulan</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.bulan)
+    </div>
+
+    <div class="display-label">tahun</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.tahun)
+    </div>
+
+    <div class="display-label">tipe</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.tipe)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

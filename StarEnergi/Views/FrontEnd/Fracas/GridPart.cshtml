@@ -1,0 +1,110 @@
+﻿@model IEnumerable<StarEnergi.Models.FracasEventModel>
+   
+<script type="text/javascript">
+    function openChooser(id) {
+        $('#Window').data('tWindow').center().open();
+        document.getElementById('ids').value = id;
+    }
+
+    function OnRowDataBoundP(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateComplete = '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#"><span class="t-icon t-delete"></span></a>';
+        var templateUnComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="EditP(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>'
+                               //+ '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#">'
+                               //+ '<span class="t-icon t-delete"></span>'
+                               //+ '</a>'
+                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" onClick="CompleteP(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-complete"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" onClick="Complete(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-create"></span>'
+                                + '</a>'
+        var templateRepair = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="EditP(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>'
+                                //+ '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#">'
+                                //+ '<span class="t-icon t-delete"></span>'
+                                //+ '</a>';
+
+        if (dataItem.status == 1) {
+            row.cells[8].innerHTML = '';
+        } else {
+            row.cells[8].innerHTML = templateUnComplete;
+        }
+
+        if (dataItem.dateTimeStart == null) {
+            row.cells[8].innerHTML = templateRepair;
+        }
+
+    }
+
+    function toRcass() {
+        var radios = document.getElementsByName('choose');
+        var val = -1;
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val = radios[i].value;
+            }
+        }
+        window.location = 'RCA/addRCA?isTree=' + val;
+    }
+
+    function CompleteP(id) {
+        var r = confirm("Anda yakin event sudah selesai?");
+        if (r) {
+            $.post("Fracas/CompleteP/" + id, function (data) {
+                var grid = $('#fracasPart').data('tGrid');
+                grid.ajaxRequest();
+            });
+        }
+    }
+
+    function EditP(id) {
+        $('#content').load('Fracas/EditEventP', { 'id': id });
+    }
+</script>   
+           
+@(Html.Telerik().Grid<StarEnergi.Models.FracasEventModel>()
+        .HtmlAttributes(new { style = "width:980px" })
+        .Name("fracasPart")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxEditingPart", "Fracas")
+                .Update("_UpdateAjaxEditingPart", "Fracas")
+                .Select("_SelectAjaxEditingPart", "Fracas");         
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.status).Hidden();
+            columns.Bound(o => o.dateTimeStop).Title("Date/Time Stop");
+            columns.Bound(o => o.dateTimeStart).Title("Date/Time Ops");
+            columns.Bound(o => o.durasi).Width(80).Title("Durasi");
+            columns.Bound(o => o.downtime).Width(80).Title("Downtime");
+            columns.Bound(o => o.tagNumber).Width(115).Title("Part Num");
+            columns.Bound(o => o.failureMode).Width(115).Title("Failure Mode");
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+
+            }).Width(120).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundP")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height(200))
+        .Selectable()
+) 

@@ -1,0 +1,335 @@
+﻿@model StarEnergi.Models.pir
+<table class="pir">
+    <tr border="0.5">
+        <td rowspan="2">
+            <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+        </td>
+         <td rowspan="2" style="text-align:center;font-size:12px;font-weight:bold">
+            PERFORMANCE IMPROVEMENT REQUEST
+        </td>
+        <td style="text-align:center;font-size:10px;font-weight:bold">
+            PIR No.
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td style="text-align:center;font-size:10px"><u>@Model.no</u></td>
+    </tr>
+    <tr>
+        <td width="20%">&nbsp;</td>
+        <td width="60%">&nbsp;</td>
+        <td width="20%">&nbsp;</td>
+    </tr>
+</table>
+<table class="pir">
+    <tr border="0.5">
+        <td bgcolor="#d1d9dc" style="font-size:10px;font-weight:bold;text-align:center" rowspan="8" width="10%">I
+            <br />N<br />I<br />T<br />I<br />A<br />T<br />O<br />R</td>
+        <td colspan="4" bgcolor="#d1d9dc" width="80%" style="font-size:10px;font-weight:bold">
+                PART A - IMPROVEMENT REQUEST
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td rowspan="5" colspan="2" width="45%" style="font-size:10px">
+                @Model.improvement_request
+        </td>
+        <td width="22.5%" bgcolor="#e7f1f3" style="font-size:10px">
+            Date Raise
+        </td>
+        <td width="22.5%" style="font-size:10px">
+            @Model.date_rise.Value.ToString("dd MMMM yyy")
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td width="22.5%" bgcolor="#e7f1f3" style="font-size:10px">
+            Initiate by
+        </td>
+        <td width="22.5%" style="font-size:10px">
+            @Model.initiate_by
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td width="22.5%" bgcolor="#e7f1f3" style="font-size:10px">
+            PIR Title 
+        </td>
+        <td width="22.5%" style="font-size:10px">
+            @Model.title
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td width="22.5%" bgcolor="#e7f1f3" style="font-size:10px">
+            Reference
+        </td>
+        <td width="22.5%" style="font-size:10px">
+            @Model.reference
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td width="22.5%" bgcolor="#e7f1f3" style="font-size:10px">
+            Procedure Reference
+        </td>
+        <td width="22.5%" style="font-size:10px">
+            @Model.procedure_reference
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td width="22.5%" bgcolor="#e7f1f3" style="font-size:10px">
+            Initiator Sign & Date
+        </td>
+        <td width="22.5%" bgcolor="#e7f1f3" style="font-size:10px">
+            KBPO Sign & Date
+        </td>
+        <td colspan="2" bgcolor="#e7f1f3" style="font-size:10px" width="45%">
+            Agree Target Completion Date
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td width="22.5%" style="font-size:10px">
+            @Model.initiate_by, @Model.initiator_sign_date.Value.ToString("dd MMMM yyy")
+        </td>
+        <td width="22.5%" style="font-size:10px">
+            @Model.kpbo_sign_date_init.Value.ToString("dd MMMM yyy")
+        </td>
+        <td colspan="2" style="font-size:10px" width="45%">
+            @Model.target_completion_init.Value.ToString("dd MMMM yyy")
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td bgcolor="#d1d9dc" style="font-size:10px;font-weight:bold;text-align:center" width="10%" rowspan="17">P<br />R<br />O<br />C<br />E<br />S<br />S<br /> <br />O<br />W<br />N<br />E<br />R</td>
+        <td colspan="4" bgcolor="#d1d9dc" width="80%" style="font-size:10px;font-weight:bold">
+                PART B - RECORD INVESTIGATION INTO ROOT CAUSE. Describe extend of the problem
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td colspan="4" style="font-size:10px">
+            @Model.desc_prob
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td colspan="2" bgcolor="#e7f1f3" style="font-size:10px">
+                Investigator Sign
+        </td>
+        <td colspan="2" bgcolor="#e7f1f3" style="font-size:10px">
+            Date
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td colspan="2" style="font-size:10px">
+            
+        </td>
+        <td colspan="2" bgcolor="#e7f1f3" style="font-size:10px">
+            @Model.investigator_date
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td colspan="4" bgcolor="#d1d9dc" width="80%" style="font-size:10px;font-weight:bold">
+                PART C - IMPROVEMENT PLAN
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td rowspan="6" colspan="2" style="font-size:10px">
+            @Model.improvement_plant
+        </td>
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Start implement date
+        </td>
+        <td style="font-size:10px">
+            @Model.start_implement_date
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Process Owner
+        </td>
+        <td style="font-size:10px">
+            @Model.process_owner
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td  bgcolor="#e7f1f3" style="font-size:10px">
+            Target Completion 
+        </td>
+        <td style="font-size:10px">
+            @Model.target_completion_process
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Action by 
+        </td>
+        <td style="font-size:10px">
+            @Model.action_by
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Require document changes? (Y/N)
+        </td>
+        <td style="font-size:10px">
+            @Model.require_dokument
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Hire require? Y/N
+        </td>
+        <td style="font-size:10px">
+            @Model.hira_require
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            KBPO Sign
+        </td>
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Date
+        </td>
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Review by Initiator
+        </td>
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Date
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td style="font-size:10px">
+            
+        </td>
+        <td style="font-size:10px">
+            @Model.kpbo_sign_date_process
+        </td>
+        <td style="font-size:10px">
+            @Model.initiate_by
+        </td>
+        <td style="font-size:10px">
+            
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td colspan="4" bgcolor="#d1d9dc" width="80%" style="font-size:10px;font-weight:bold">
+                PART D - RESULTS OF ACTION TAKEN
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td colspan="4" style="font-size:10px">
+                @Model.result_of_action
+        </td>
+    </tr><tr border="0.5">
+        <td colspan="2" bgcolor="#e7f1f3" style="font-size:10px">
+            KBPO Sign
+        </td>
+        <td colspan="2" bgcolor="#e7f1f3" style="font-size:10px">
+            Date
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td colspan="2" style="font-size:10px">
+            
+        </td>
+        <td colspan="2" style="font-size:10px">
+            @Model.kpbo_sign_date_process_result
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td bgcolor="#d1d9dc" width="5%" style="font-size:10px;font-weight:bold;text-align:center" rowspan="4">I<br />N<br />I<br />T<br />I<br />A<br />T<br />O<br />R</td>
+        <td colspan="4" bgcolor="#d1d9dc" width="5%" style="font-size:10px;font-weight:bold">
+                PART E - VERIFIED BY INITIATOR
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td colspan="4" style="font-size:10px">
+            @Model.verified_desc
+            <br /><br /><br /><br />
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Initiator Sign
+        </td>
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Date
+        </td>
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Review by Mgmt.Rep.(Audit Only) 
+        </td>
+        <td bgcolor="#e7f1f3" style="font-size:10px">
+            Date
+        </td>
+    </tr>
+    <tr border="0.5">
+        <td style="font-size:10px">
+            
+        </td>
+        <td style="font-size:10px">
+            @{if (@Model.initiator_sign_date != null)
+              {
+                    @Model.initiator_sign_date.Value.ToShortDateString()
+                }
+            }
+        </td>
+        <td style="font-size:10px">
+            
+        </td>
+        <td style="font-size:10px">
+            @Model.review_date 
+        </td>
+    </tr>
+    <tr>
+        <td style="font-size:10px;font-weight:bold;text-align:center" rowspan="9" width="5%">&nbsp;</td>
+        <td width="25%" style="font-size:10px;font-weight:bold">&nbsp;</td>
+        <td width="25%" style="font-size:10px;font-weight:bold">&nbsp;</td>
+        <td width="22.5%" style="font-size:10px;font-weight:bold">&nbsp;</td>
+        <td width="22.5%" style="font-size:10px;font-weight:bold">&nbsp;</td>
+    </tr>
+</table>
+<b style="font-size:10px">Note</b>
+<table>
+    <tr>
+        <td>
+            &nbsp;
+        </td>
+    </tr>
+    <tr border="0.5" style="font-size:10px">
+        <td>
+            @Model.description
+        </td>
+    </tr>
+</table>
+<np/>
+<table>
+    <tr>
+        <td style="font-size:10px">
+            Attachment(s):
+        </td>
+    </tr>
+    @foreach (string s in Model.attach)
+    {
+        if (s.Substring(s.LastIndexOf('.') + 1) == "pdf")
+        {
+            @*<tr style="font-size:10px">
+            <td>
+                @s
+            </td>
+            </tr>
+            <tr style="font-size:10px">
+                <td>
+                    @StarEnergi.Controllers.FrontEnd.PirController.readPdf(Server.MapPath("~/Attachment/pir/" + Model.id + "/" + s),
+                    Server.MapPath("~/Attachment/pdf_print/output.htm"),Server.MapPath("~/Content/image/atch/pdftotext.exe"));
+                </td>
+            </tr>*@
+        }
+        else
+        {
+            <tr style="font-size:10px">
+            <td>
+                @s
+            </td>
+            </tr>
+            <tr style="font-size:10px">
+                <td>
+                    <img src="@Server.MapPath("~/Attachment/pir/" + Model.id + "/" + s)" width="500"/>
+                </td>
+            </tr>
+        }
+        
+    }
+</table>

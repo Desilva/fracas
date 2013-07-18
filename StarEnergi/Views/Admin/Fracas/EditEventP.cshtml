@@ -1,0 +1,228 @@
+﻿@model StarEnergi.Models.part_unit_event
+@{
+    ViewBag.Title = "Add Event";
+}
+
+<h2 class="adminH2">Edit Event FRACAS</h2>
+
+<script src="@Url.Content("~/Scripts/fracas.js")" type="text/javascript"></script>
+
+<div class="info_inside_left">Plant </div>
+<div class="infoField">
+    : @(Model.equipment_part.equipment.equipment_groups.system.unit.foc.nama)
+</div>
+<br />
+		
+<div class="info_inside_left">Unit </div>
+<div class="infoField">
+    : @(Model.equipment_part.equipment.equipment_groups.system.unit.nama)
+</div> 
+<br />
+
+<div class="info_inside_left">System </div>
+<div class="infoField">
+    : @(Model.equipment_part.equipment.equipment_groups.system.nama)
+</div> 
+<br />
+
+<div class="info_inside_left">Equipment </div>
+<div class="infoField">
+    : @(Model.equipment_part.equipment.tag_num)
+</div> 
+<br />
+
+<div class="info_inside_left">Part </div>
+<div class="infoField">
+    : @(Model.equipment_part.part.tag_number)
+</div> 
+<br />
+
+<div class="line" id="lineFracas"/>
+<br />
+    <div id="fracasLeft">
+        <div class="info_inside_left">Last Operation </div>
+        <div class="infoFieldinput"><input id="last_operation" type="text" name="last_operation" value="@ViewBag.last_operation" readonly="readonly"/></div>
+        <br />
+		
+        <div class="info_inside_left">Date/Time Stop </div>
+        <div class="infoFieldinput">
+            @(Html.Telerik().DateTimePicker()
+                .Name("datetime_stop")
+                .Value(@Model.datetime_stop)
+                .InputHtmlAttributes(new { id = "datetime_stop", onchange="calculate_downtime();" })
+                .ClientEvents(o => o.OnChange("calculate_downtime"))
+            )<br /><div id="realmod_date_stop" style="margin-top:10px;"></div>       
+        </div>
+
+        <br />
+		
+        <div class="info_inside_left">Date/Time Ops </div>
+        <div class="infoFieldinput">
+                @(Html.Telerik().DateTimePicker()
+                .Name("datetime_ops")
+                .Value(@Model.datetime_ops)
+                .InputHtmlAttributes(new { id = "datetime_ops"})
+                .ClientEvents(o => o.OnChange("calculate_downtime"))
+            )<br /><div id="realmod_date_ops" style="margin-top:10px;"></div>     
+        </div>
+
+
+        <br />
+		
+        <div class="info_inside_left">Durasi Perbaikan</div>
+        <div class="infoFieldinput">
+            @(Html.Telerik().IntegerTextBox()
+                .Name("durasi")
+                .Value((int?)@Model.durasi)
+                .InputHtmlAttributes(new { id = "durasi" })
+            )&nbsp;Hours
+        </div>
+		
+        <br />
+        <div class="info_inside_left">Downtime </div>
+        <div class="infoFieldinput">
+            <input id="downtime" name="downtime" type="text" value="@Model.downtime" readonly="true"/>&nbsp;Hours
+         </div>
+		
+        <br />
+        <div id="mode">
+	        <div class="info_inside_left">Failure Mode </div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_failure_mode", "-- Pilih Failure Mode --")
+                <input name="Submit" value="+" type="button" onclick="addFailure();"/>
+            </div>
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_failure_mode" class="taFracas" rows="5">@(Model.failure_mode)</textarea>
+            </div> 	
+        </div>
+		
+        <br />
+        <div id="cause">
+            <div class="info_inside_left">Failure Cause </div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_failure_cause", "-- Pilih Failure Cause --")
+                <input name="Submit" value="+" type="button"  onclick="addCause();"/>
+            </div> 	   
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_failure_cause" class="taFracas" rows=5 >@(Model.failure_cause)</textarea>
+            </div>
+        </div>
+		
+        <br />
+        <div id="effect">
+        <div class="info_inside_left">Failure Effect</div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_failure_effect", "-- Pilih Failure Effect --")
+                <input name="Submit" value="+" type="button"  onclick="addEffect();"/>
+            </div> 	
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_failure_effect" class="taFracas" rows=5>@(Model.failure_effect)</textarea>
+            </div> 
+        </div>
+		
+        <br />
+        <div id="secondaryeffect">
+        <div class="info_inside_left">Secondary Effect</div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_secondary_effect", "-- Pilih Failure Cause --")
+                <input name="Submit" value="+" type="button"  onclick="addSecondaryEffect();"/>
+            </div> 	
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_secondary_effect" class="taFracas" rows=5>@(Model.secondary_effect)</textarea>
+            </div>   
+        </div>
+    </div>
+    <div id="fracasRightEdit">
+        <div class="info_inside_left">Failure Severity</div>
+        <div class="infoFieldinput">
+            <select name="id_severity" id="id_severity">
+                <option value="CATASTROPHIC">CATASTROPHIC</option>
+                <option value="DEGRADED">DEGRADED</option>
+                <option value="INSIPIEN">INSIPIEN</option>
+            </select>
+        </div>
+		
+        <br />
+        <div class="info_inside_left">Failure CLSSS</div>
+        <div class="infoFieldinput">
+            <select name="id_clsss" id="id_clsss">
+                <option value="PRIMARY">PRIMARY</option>
+                <option value="SECONDARY">SECONDARY</option>
+            </select>
+        </div>	
+    	
+        <br />
+        <div id="immidiate">
+        <div class="info_inside_left">Immidiate Cor. Action</div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_immidiate", "-- Pilih Immidiate Cor. Action --")
+                <input name="Submit" value="+" type="button"  onclick="addImmidiate();"/>
+            </div> 
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_immidiate" class="taFracas" rows=5>@(Model.immediate_act)</textarea>
+            </div>
+        </div>
+
+        <br />
+        <div id="longterm">
+            <div class="info_inside_left">Long Term Cor. Action</div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_long_term", "-- Pilih Long Term Cor. Action --")
+                <input name="Submit" value="+" type="button"  onclick="addLongTerm();"/>
+            </div> 	  
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_long_term" class="taFracas" rows=5>@(Model.long_term_act)</textarea>
+            </div> 
+        </div>
+
+        <br />		
+        <div class="info_inside_left">Repair Cost</div>
+         <div class="infoFieldinput">
+         @(Html.Telerik().IntegerTextBox()
+                    .Name("repair_cost")
+                    .Value((int?)@Model.repair_cost)
+                    .InputHtmlAttributes(new { id = "repair_cost" })
+            )
+         </div>
+		
+        <br />		
+        <div class="info_inside_left">Finacial Cost </div>
+        <div class="infoFieldinput">
+         @(Html.Telerik().IntegerTextBox()
+                        .Name("financial_cost")
+                        .Value((int?)@Model.financial_cost)
+                        .InputHtmlAttributes(new { id = "financial_cost" })
+            )
+        </div>
+		
+			
+        <br />
+        <div class="info_inside_left">Person in charge</div>
+        <div class="infoFieldinput"><input id="engineer" name="engineer" type="text" value="@(Model.engineer)"/></div>
+
+        <br />		
+        <div id="eventdesc">
+            <div class="info_inside_left">Event Description</div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_event_desc", "-- Pilih Event Description --")
+                <input name="Submit" value="+" type="button"  onclick="addEventDesc();"/>
+            </div> 		
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_event_desc" class="taFracas" rows=5>@(Model.event_description)</textarea>
+            </div>    
+        </div>
+    </div>
+    <div class="lineLeft edit"></div>
+    <br />
+    <div class="submit">
+	    <input name="Submit" value="Simpan" type="submit" onclick="saveFracasEditP(@(Model.id),@(Model.id_equipment_part));"/>
+        <input type="button" value="Batal" onclick="back()"/>
+        <span id="realmod_save" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+    </div>

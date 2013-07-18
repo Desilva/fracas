@@ -1,0 +1,103 @@
+﻿@model IEnumerable<StarEnergi.Models.rca_analisys_type>
+@{
+    int? isPublish = ViewBag.isPublish;
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    if (ViewBag.types == "add")
+    {
+        ViewBag.Title = "add RCA - 1";
+    }
+    else if (ViewBag.types == "edit")
+    {
+        if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
+        {
+            ViewBag.Title = "edit RCA - 1";
+        }
+        else
+        {
+            ViewBag.Title = "view RCA - 1";
+        }
+    }
+
+    int? id_eq = null;
+    if (ViewBag.id_eq != null) {
+        id_eq = ViewBag.id_eq as Nullable<Int32>;    
+    }
+
+    int? i = null;
+    if (ViewBag.i != null)
+    {
+        i = ViewBag.i as Nullable<Int32>;
+    }
+}
+
+
+<br />
+@using(Html.BeginForm()) {
+    <div class="addContent">
+        <div class="addImage">
+            <img src="../../../Content/image/addImage.png">
+        </div>
+        <div class="addInfo">
+            <div class="infoAbove grey">
+                <div class="up">Create a new Analysis by entering all the information you know. Some fields are pre-populated from your</div>
+                <div class="down">Administration dashboard, if your administrator has filled this in.</div>
+            </div>
+            <div class="addField">
+                <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
+                <input type="hidden" name="types" id="types" value="@ViewBag.types" />
+                <input type="hidden" name="types" id="id_eq" value="@id_eq" />
+                <input type="hidden" name="types" id="i" value="@i" />
+                <div class="info_new_left">Analysis Title</div>
+                <div class="infonewinput"><input id="analysisName" type="text" name="analysis_Name" value="@(ViewBag.a != null ? ViewBag.a : ViewBag.analysis_Name)" @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.a == null)
+                                                                                                                                   { <text></text> } else { <text>disabled</text> }/>@if (ViewBag.a != null){<input id="analysisNameHidden" type="hidden" name="analysis_Name" value="@ViewBag.a" />}</div>
+                <br />
+                <div class="info_new_left">Analysis Description</div>
+                <div class="infonewinput"><textarea rows="5" cols="22" id="analysisDescription" name="analysis_Description" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")>@ViewBag.analysis_Description</textarea></div>
+                <br />
+                <div class="info_new_left">Analysis Type</div>
+                <div class="infonewinput">
+                        @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                        {
+                        <select name="id_type" id="id_type">
+                            @foreach (StarEnergi.Models.rca_analisys_type a in Model) {
+                                if (ViewBag.id_type == null)
+                                {
+                                    <option value="@a.id">@a.name</option>
+                                }
+                                else if (a.id.ToString().CompareTo(ViewBag.id_type.ToString()) == 0)
+                                {
+                                    <option value="@a.id" selected="selected">@a.name</option>
+                                } else {
+                                    <option value="@a.id">@a.name</option>
+                                }
+                            }
+                        </select>
+                        } else {
+                            <input id="id_type" type="text" name="id_type" value="@ViewBag.type_name" disabled/>   
+                        }
+                </div>
+                <br />
+                <div class="info_new_left">Estimated Annual Cost of Event (Benefit)</div>
+                <div class="infonewinput">
+                    @(Html.Telerik().NumericTextBox()
+                        .Name("benefit")
+                        .InputHtmlAttributes(new { id = "benefit" })
+                        .HtmlAttributes(new { style = "margin-left:100px" })
+                        .Spinners(false)
+                        .MinValue(0)
+                        .MaxValue(100000000).Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                        .Value(ViewBag.c != null ? Double.Parse(ViewBag.c) : ViewBag.benefit == null ? 0 : Double.Parse(ViewBag.benefit))
+                    )&nbsp;USD</div>
+                <br />
+                <div class="addSubmit">
+	                <input name="cancel" value="Cancel" type="submit"/>
+                    <input type="submit" value="Next" name="next"/>
+                </div>
+            </div> 
+        </div>
+    </div>
+}

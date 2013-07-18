@@ -1,0 +1,1759 @@
+﻿@model StarEnergi.Models.daily_log
+@{
+    int? id = Model.id as Nullable<Int32>;
+}
+<div class="container">
+    <table border="0">
+        <tr>
+            <td width="20%">
+                <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+            </td>
+            <td width="80%">
+                <h3>STAR ENERGY GEOTHERMAL (WAYANG WINDU LIMITED)</h3>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <u><b style="font-size:8px">Wayang Windu Geothermal Power Plant</b></u><p style="font-size:8px">Control Room Log Book</p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <b style="font-size:8px">Day Shift</b>
+            </td>
+        </tr>
+    </table>
+	<table>
+		<tr border="0.5" bgcolor="yellow">
+			<td style="font-size:5px;text-align:center;">Date</td>
+			<td style="font-size:5px;text-align:center;">Group</td>
+			<td style="font-size:5px;text-align:center;">Production Foreman</td>
+			<td colspan="4" style="font-size:5px;text-align:center;">Production Operators</td>
+		</tr>
+		<tr border="0.5">
+			<td rowspan="2" style="font-size:5px;text-align:center;" border="0.5">@(Model.date != null ? Model.date.Value.ToLongDateString() : "")</td>
+			<td rowspan="2" style="font-size:5px;text-align:center;">@Model.grup</td>
+			<td rowspan="2" style="font-size:5px;text-align:center;">@Model.production_foreman</td>
+			<td style="font-size:5px;text-align:center;">@(Model.production_operator_1)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.production_operator_3)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.production_operator_5)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.production_operator_7)&nbsp;</td>
+		</tr>
+		<tr border="0.5">
+			<td style="font-size:5px;text-align:center;">@(Model.production_operator_2)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.production_operator_4)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.production_operator_6)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.production_operator_8)&nbsp;</td>
+		</tr>
+	</table>
+    <div class="log-part2">
+        <table>
+		    <tr border="0.5"  bgcolor="yellow">
+			    <td style="font-size:5px;text-align:center;" rowspan="2">TIME</td>
+			    <td style="font-size:5px;text-align:center;" colspan="12">DESCRIPTION</td>
+		    </tr>
+		    <tr border="0.5" bgcolor="yellow">
+			    <td style="font-size:5px;text-align:center;" colspan="8">PRODUCTION AND INJECTION WELLS</td>
+			    <td style="font-size:5px;text-align:center;" colspan="4">POWER STATION</td>
+		    </tr>
+		    <tr>
+			    <td style="font-size:5px" align="center" rowspan="22" width="8%" border="0.5">
+                    @Model.time_check
+			    </td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">Wells</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">FCV (%)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">Flow (kg/s)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">WHP (Bar)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">Wells</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">FCV (%)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">Flow (kg/s)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">WHP (Bar)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" width="14%" border="0.5">&nbsp;</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">T/G Unit 1</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">T/G Unit 2</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" width="5%" border="0.5">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td style="font-size:5px" border="0.5">WWA-2</td>
+                @if (Model.wma_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.wma_2_fcv</td>
+                }
+                else
+                {
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.wma_2_fcv</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.wma_2_flow</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.wma_2_whp</td>
+                }
+			    <td style="font-size:5px" border="0.5">MBA-1</td>
+			    @if (Model.mba_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.mba_1_fcv</td>
+                }
+                else
+                {
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.mba_1_fcv</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.mba_1_flow</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.mba_1_whp</td>
+                }
+			    <td style="font-size:5px" border="0.5">Generator Output</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.generator_output_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.generator_output_2</td>
+			    <td style="font-size:5px" border="0.5">MW</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWA-4</td>
+                @if (Model.wma_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.wma_4_fcv</td>
+                }
+                else
+                {
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_4">@Model.wma_4_fcv</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wma_4_flow</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wma_4_whp</td>
+                }
+			    <td style="font-size:5px">MBA-2</td>
+                @if (Model.mba_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.mba_2_fcv</td>
+                }
+                else
+                {
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_2">@Model.mba_2_fcv</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_2_flow</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_2_whp</td>
+                }
+			    <td style="font-size:5px">(gross)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.gross_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.gross_2</td>
+			    <td style="font-size:5px">Mvar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWA-6</td>
+                @if (Model.wma_6_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.wma_6_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_6">@Model.wma_6_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wma_6_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wma_6_whp</td>
+                }
+			    <td style="font-size:5px">MBA-3</td>
+                @if (Model.mba_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.mba_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_3">@Model.mba_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_3_whp</td>
+                }
+			    <td style="font-size:5px">Generator Output Counter</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.generator_output_counter_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.generator_output_counter_2</td>
+			    <td style="font-size:5px">minute</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-1</td>
+                @if (Model.mbd_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_1">@Model.mbd_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_1_whp</td>
+                }
+			    <td style="font-size:5px">MBA-4</td>
+                @if (Model.mba_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mba_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_4">@Model.mba_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_4_whp</td>
+                }
+			    <td style="font-size:5px">Power Factor</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.power_factor_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.power_factor_2</td>
+			    <td style="font-size:5px">&nbsp;</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-2</td>
+                @if (Model.mbd_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_2_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_2">@Model.mbd_2_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_2_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_2_whp</td>
+                }
+			    <td style="font-size:5px">MBA-5</td>
+                @if (Model.mba_5_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mba_5_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_5">@Model.mba_5_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_5_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_5_whp</td>
+                }
+			    <td style="font-size:5px">Tap Changer</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.tap_charger_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.tap_charger_2</td>
+			    <td style="font-size:5px">step</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-3</td>
+                @if (Model.mbd_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_3">@Model.mbd_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_3_whp</td>
+                }
+			    <td style="font-size:5px">MBB-1</td>
+                @if (Model.mbb_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_1">@Model.mbb_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_1_whp</td>
+                }
+			    <td style="font-size:5px">PLN Grid Voltage</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_grid_voltage_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_grid_voltage_2</td>
+			    <td style="font-size:5px">kV</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-4</td>
+                @if (Model.mbd_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_4">@Model.mbd_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_4_whp</td>
+                }
+			    <td style="font-size:5px">MBB-2</td>
+                @if (Model.mbb_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_2_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_2">@Model.mbb_2_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_2_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_2_whp</td>
+                }
+			    <td style="font-size:5px">Valve Limiter</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.valve_limiter_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.valve_limiter_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-5</td>
+                @if (Model.mbd_5_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_5_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_5">@Model.mbd_5_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_5_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_5_whp</td>
+                }
+			    <td style="font-size:5px">MBB-3</td>
+                @if (Model.mbb_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_3">@Model.mbb_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_3_whp</td>
+                }
+			    <td style="font-size:5px">Governor Output</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.governor_output_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.governor_output_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-1</td>
+                @if (Model.wwq_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_1">@Model.wwq_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_1_whp</td>
+                }
+			    <td style="font-size:5px">MBB-4</td>
+                @if (Model.mbb_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_4">@Model.mbb_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_4_whp</td>
+                }
+			    <td style="font-size:5px">WCP Counter</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wcp_counter_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wcp_counter_2</td>
+			    <td style="font-size:5px">minute</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-2</td>
+                @if (Model.wwq_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_2_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_2">@Model.wwq_2_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_2_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_2_whp</td>
+                }
+			    <td style="font-size:5px">MBB-5</td>
+                @if (Model.mbb_5_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_5_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_5">@Model.mbb_5_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_5_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_5_whp</td>
+                }
+			    <td style="font-size:5px">Condenser Pressure</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_pressure_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_pressure_2</td>
+			    <td style="font-size:5px">mBar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-3</td>
+                @if (Model.wwq_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_3">@Model.wwq_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_3_whp</td>
+                }
+			    <td style="font-size:5px">MBB-6</td>
+                @if (Model.mbb_6_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_6_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_6">@Model.mbb_6_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_6_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_6_whp</td>
+                }
+			    <td style="font-size:5px">Main C/W Flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.main_cw_flow_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.main_cw_flow_2</td>
+			    <td style="font-size:5px">kg/s</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-4</td>
+                @if (Model.wwq_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_4">@Model.wwq_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_4_whp</td>
+                }
+			    <td style="font-size:5px">WWF-1</td>
+                @if (Model.wwf_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwf_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_1">@Model.wwf_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwf_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwf_1_whp</td>
+                }
+			    <td style="font-size:5px">PPC-G(CO)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ppc_g_co_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ppc_g_co_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-5</td>
+                @if (Model.wwq_5_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_5_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_5">@Model.wwq_5_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_5_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_5_whp</td>
+                }
+			    <td style="font-size:5px">WWF-3</td>
+                @if (Model.wwf_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwf_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_3">@Model.wwf_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwf_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwf_3_whp</td>
+                }
+			    <td style="font-size:5px">Interface Pressure (SP)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.interface_pressure_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.interface_pressure_2</td>
+			    <td style="font-size:5px">Bar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBE-3</td>
+                @if (Model.mbe_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbe_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_3">@Model.mbe_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbe_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbe_3_whp</td>
+                }
+			    <td style="font-size:5px">WWW-1</td>
+                @if (Model.www_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.www_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="www_1">@Model.www_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.www_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.www_1_whp</td>
+                }
+			    <td style="font-size:5px">Vent Bias(SP)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.vent_bias_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.vent_bias_2</td>
+			    <td style="font-size:5px">Bar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBE-4</td>
+                @if (Model.mbe_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbe_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_4">@Model.mbe_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbe_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbe_4_whp</td>
+                }
+			    <td style="font-size:5px">WWP-1</td>
+                @if (Model.wwp_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwp_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwp_1">@Model.wwp_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwp_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwp_1_whp</td>
+                }
+			    <td style="font-size:5px">Main C/W Pressure</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.main_cw_pressure_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.main_cw_pressure_2</td>
+			    <td style="font-size:5px">Bar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U1 NCG Flow (kg/s)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U2 NCG Flow (kg/s)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U1 Turbine Exp. (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U2 Turbine Exp. (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U1 CT Temp. (C)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U2 CT Temp. (C)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td style="font-size:5px">CT Basin pH</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ct_basin_ph_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ct_basin_ph_2</td>
+			    <td style="font-size:5px">&nbsp;</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Condenser C/W Inlet-A</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_cw_inlet_a_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_cw_inlet_a_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ncg_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ncg_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.turbine_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.turbine_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ct_temp_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ct_temp_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.exhaust_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.exhaust_2</td>
+			    <td style="font-size:5px">Condenser C/W Inlet-B</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_cw_inlet_b_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_cw_inlet_b_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">Upper TP Level (m)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">Lower TP Level (m)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">MV-333 Position (%)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">MV-334 Position (%)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">Brine Level (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">Condensate Level (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">NaOH 48% Level (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">WWD Pond Level (m)</td>
+			    <td style="font-size:5px">Gen. Trans. Winding Temp.</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.gen_trans_winding_temp_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.gen_trans_winding_temp_2</td>
+			    <td style="font-size:5px">C</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Unit Trans. Winding Temp.</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.unit_trans_winding_temp_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.unit_trans_winding_temp_2</td>
+			    <td style="font-size:5px">C</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.upper_tp_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.lower_tp_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mv_333</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mv_334</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.brine_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condensate_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.naoh_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwd_pond_level</td>
+			    <td style="font-size:5px">Wheel Case Pressure</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wheel_case_pressure_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wheel_case_pressure_2</td>
+			    <td style="font-size:5px">Bar</td>
+		    </tr>
+	    </table>
+	</div>
+	<div class="log-part3">
+        <table>
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td colspan="4">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="4"><u><b>Power Station activity</b></u></td>
+		    </tr>
+            @{
+                var lastUnit = "";
+            }
+            @foreach (StarEnergi.Models.daily_log_power_stations ps in Model.list_daily_log_power_stations.ToList()) {
+                if (lastUnit != ps.power_station_unit) {
+                    if (lastUnit != "")
+                    {
+                        <tr>
+			                <td colspan="5">&nbsp;</td>
+		                </tr>
+                    }
+                    lastUnit = ps.power_station_unit;
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@ps.power_station_time</td>
+			            <td style="font-size:5px" width="8%"><b>@ps.power_station_unit</b></td>
+                        <td style="font-size:5px" width="2%"><b>-></b></td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">@ps.power_station_activity</td>
+		            </tr>
+                } else {
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@ps.power_station_time</td>
+			            <td style="font-size:5px" width="8%">&nbsp;</td>
+                        <td style="font-size:5px" width="2%">&nbsp;</td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">o @ps.power_station_activity</td>
+		            </tr>
+                }  
+            }
+	    </table>
+	</div>
+    <br />
+	<div class="log-part4">
+        <table class="no-border-last-row">
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="4" width="92%"><u><b>SAGS activity</b></u></td>
+		    </tr>
+            @{
+                lastUnit = "";
+            }
+            @foreach (StarEnergi.Models.daily_log_sags sags in Model.list_daily_log_sags.ToList())
+            {
+                if (lastUnit != sags.sags_unit) {
+                    if (lastUnit != "")
+                    {
+                        <tr>
+			                <td colspan="5">&nbsp;</td>
+		                </tr>
+                    }
+                    lastUnit = sags.sags_unit;
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@sags.sags_time</td>
+			            <td style="font-size:5px" width="8%"><b>@sags.sags_unit</b></td>
+                        <td style="font-size:5px" width="2%"><b>-></b></td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">@sags.sags_activity</td>
+		            </tr>
+                } else {
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@sags.sags_time</td>
+			            <td style="font-size:5px" width="8%">&nbsp;</td>
+                        <td style="font-size:5px" width="2%">&nbsp;</td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">o @sags.sags_activity</td>
+		            </tr>
+                } 
+            }
+            <tr>
+			    <td width="8%" style="font-size:5px" align="center">&nbsp;</td>
+			    <td style="font-size:5px" width="8%">&nbsp;</td>
+                <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="1%">&nbsp;</td>
+			    <td style="font-size:5px">&nbsp;</td>
+		    </tr>
+	    </table>
+	</div>
+	<div class="log-part5">
+        <table>
+            <tr>
+			    <td width="8%" style="font-size:5px">&nbsp;</td>
+			    <td width="11%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+			    <td width="11%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td style="font-size:5px" rowspan="14">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="9" border="0.5">METERING AND DISPATCH</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="2">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">Unit-1</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">Unit-2</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="2">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">Unit-1</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">Unit-2</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">&nbsp;</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Unit Transformer</td>
+			    <td style="font-size:5px">Active</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.uti_active_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.uti_active_2</td>
+			    <td style="font-size:5px">MWh</td>
+			    <td style="font-size:5px">SEGWWL Availability</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.segwwl_availability_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.segwwl_availability_2</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Reactive</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.uti_reactive_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.uti_reactive_2</td>
+			    <td style="font-size:5px">Mvarh</td>
+			    <td style="font-size:5px">PLN Dispatch</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_dispatch_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_dispatch_2</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Steam Consumption</td>
+			    <td style="font-size:5px">Main</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.sc_main_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.sc_main_2</td>
+			    <td style="font-size:5px">Ton</td>
+			    <td style="font-size:5px">PLN Meter</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_meter_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_meter_2</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Auxiliary</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.sc_auxiliary_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.sc_auxiliary_2</td>
+			    <td style="font-size:5px">Ton</td>
+			    <td style="font-size:5px">SEGWWL Export</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.segwwl_export_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.segwwl_export_2</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td colspan="5" style="font-size:5px" align="center" bgcolor="yellow">Production</td>
+			    <td style="font-size:5px">Actual Export</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.actual_export_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.actual_export_2</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Generate Export (gross)</td>
+			    <td style="font-size:5px">Active</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ge_active_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ge_active_2</td>
+			    <td style="font-size:5px">MWh</td>
+			    <td style="font-size:5px">Production Excess</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.production_excess_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.production_excess_2</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Reactive</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ge_reactive_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ge_reactive_2</td>
+			    <td style="font-size:5px">Mvarh</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="4">Losses</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Metering at 10:00</td>
+			    <td style="font-size:5px">SEGWWL</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.metering_segwwl_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.metering_segwwl_2</td>
+			    <td style="font-size:5px">MWh</td>
+			    <td style="font-size:5px">RPF</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.rpf_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.rpf_2</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">PLN</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.metering_pln_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.metering_pln_2</td>
+			    <td style="font-size:5px">MWh</td>
+			    <td style="font-size:5px">PGF</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pgf_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pgf_2</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Condensate</td>
+			    <td style="font-size:5px">P/S</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condensate_ps_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condensate_ps_2</td>
+			    <td style="font-size:5px">Ton</td>
+			    <td style="font-size:5px">PLN</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_2</td>
+			    <td style="font-size:5px">Ton</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Total</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" colspan="2">@Model.condensate_total</td>
+			    <td style="font-size:5px">Ton</td>
+			    <td style="font-size:5px" rowspan="2" colspan="4"><b>Note:</b><br />@(Model.note != null && Model.note.Length > 0 ? Model.note.Remove(0,4) == "" ? "  " :  Model.note.Remove(0,4) : Model.note)&nbsp;</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Brine</td>
+			    <td style="font-size:5px">Total</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" colspan="2">@Model.brine_total</td>
+			    <td style="font-size:5px">Ton</td>
+		    </tr>
+	    </table>
+	</div>	
+	<div class="log-part6">
+        <table class="w-border no-border-last-row">
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td width="8%">&nbsp;</td>
+                <td width="15%">&nbsp;</td>
+                <td width="54%">&nbsp;</td>
+                <td width="15%">&nbsp;</td>
+		    </tr>
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="4"><u><b>PRO:</b></u></td>
+		    </tr>
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="8%">No.</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="15%">WO No.</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5">Work To Be Performed</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow"  border="0.5" width="15%">SAP status</td>
+		    </tr>
+            @{
+                int a = 0;
+            }
+            @foreach (StarEnergi.Models.daily_log_pro pro in Model.list_daily_log_pro.ToList())
+            {
+                a++;
+                <tr>
+			        <td style="font-size:5px" align="center" width="8%">@pro.pro_time</td>
+			        <td style="font-size:5px" align="center" border="0.5" width="8%">@a</td>
+			        <td style="font-size:5px" border="0.5" width="15%">@pro.wo_number</td>
+			        <td style="font-size:5px" border="0.5">@pro.work_to_be_performed</td>
+			        <td style="font-size:5px" align="center" border="0.5" width="15%">@(pro.sap_status == 0 ? "Closed" : pro.sap_status == 1 ? "Opened" : pro.sap_status == 2 ? "Cancelled" : "")</td>
+		        </tr>
+            }
+	    </table>
+	</div>	
+	<div class="log-part7">
+        <table class="w-border no-border-last-row">
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td width="8%">&nbsp;</td>
+                <td width="15%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="44%">&nbsp;</td>
+                <td width="15%">&nbsp;</td>
+		    </tr>
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="5"><u><b>Maintenance Activity:</b></u></td>
+		    </tr>
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="8%">No.</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="15%">WO No.</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="10%">Department</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="44%">Work to be Performed</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="15%">Work Status</td>
+		    </tr>
+            @{
+                a = 0;
+            }
+            @foreach (StarEnergi.Models.daily_log_maintainence main in Model.list_daily_log_maintainence.ToList())
+            {
+                a++;
+                <tr>
+			        <td style="font-size:5px" align="center" width="8%">@main.time</td>
+			        <td style="font-size:5px" align="center" border="0.5" width="8%">@a</td>
+			        <td style="font-size:5px" border="0.5" width="15%">@main.wo_number</td>
+			        <td style="font-size:5px" border="0.5" width="10%">@main.department</td>
+			        <td style="font-size:5px" border="0.5">@main.work_to_be_performed</td>
+			        <td style="font-size:5px" align="center" border="0.5" width="15%">@(main.work_status == 0 ? "On Progress" : main.work_status == 1 ? "Done" : "")</td>
+		        </tr>
+            }
+	    </table>
+	</div>
+	<div class="log-part8">
+        <table class="w-border">
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="90%">&nbsp;</td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">@Model.last_plant_time</td>
+			    <td style="font-size:5px" colspan="2">
+				    <u><b>Last plant status:</b></u>
+			    </td>
+		    </tr>
+            @foreach (StarEnergi.Models.daily_log_last_plant_status lps in Model.list_daily_log_last_plant_status.ToList())
+            {
+		        <tr>
+			        <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+                    <td style="font-size:5px" align="center" width="2%">o</td>
+			        <td style="font-size:5px">@lps.description</td>
+		        </tr>
+            }
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="90%">&nbsp;</td>
+		    </tr>
+	</table>
+	</div>
+    <np />
+<table>
+    <tr>
+        <td style="font-size:10px">
+            Attachment(s):
+        </td>
+    </tr>
+    @foreach (string s in Model.attach)
+    {
+        if (s.Substring(s.LastIndexOf('.') + 1) == "pdf")
+        {
+            @*<tr style="font-size:10px">
+            <td>
+                @s
+            </td>
+            </tr>
+            <tr style="font-size:10px">
+                <td>
+                    @StarEnergi.Controllers.FrontEnd.PirController.readPdf(Server.MapPath("~/Attachment/pir/" + Model.id + "/" + s),
+                    Server.MapPath("~/Attachment/pdf_print/output.htm"),Server.MapPath("~/Content/image/atch/pdftotext.exe"));
+                </td>
+            </tr>*@
+        }
+        else
+        {
+            <tr style="font-size:10px">
+            <td>
+                @s
+            </td>
+            </tr>
+            <tr style="font-size:10px">
+                <td>
+                    <img src="@Server.MapPath("~/Attachment/daily_log/" + Model.id + "/" + s)" width="500"/>
+                </td>
+            </tr>
+        }
+        
+    }
+</table>
+    <np />
+@if (Model.daily_log_shift2 != null)
+{
+    <table border="0">
+        <tr>
+            <td width="20%">
+                <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+            </td>
+            <td width="80%">
+                <h3>STAR ENERGY GEOTHERMAL (WAYANG WINDU LIMITED)</h3>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <u><b style="font-size:8px">Wayang Windu Geothermal Power Plant</b></u><p style="font-size:8px">Control Room Log Book</p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <b style="font-size:8px">Night Shift</b>
+            </td>
+        </tr>
+    </table>
+    <table>
+		<tr border="0.5" bgcolor="yellow">
+			<td style="font-size:5px;text-align:center;">Date</td>
+			<td style="font-size:5px;text-align:center;">Group</td>
+			<td style="font-size:5px;text-align:center;">Production Foreman</td>
+			<td colspan="4" style="font-size:5px;text-align:center;">Production Operators</td>
+		</tr>
+		<tr border="0.5">
+			<td rowspan="2" style="font-size:5px;text-align:center;" border="0.5">@(Model.daily_log_shift2.date != null ? Model.daily_log_shift2.date.Value.ToLongDateString() : "")</td>
+			<td rowspan="2" style="font-size:5px;text-align:center;">@Model.daily_log_shift2.grup</td>
+			<td rowspan="2" style="font-size:5px;text-align:center;">@Model.daily_log_shift2.production_foreman</td>
+			<td style="font-size:5px;text-align:center;">@(Model.daily_log_shift2.production_operator_1)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.daily_log_shift2.production_operator_3)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.daily_log_shift2.production_operator_5)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.daily_log_shift2.production_operator_7)&nbsp;</td>
+		</tr>
+		<tr border="0.5">
+			<td style="font-size:5px;text-align:center;">@(Model.daily_log_shift2.production_operator_2)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.daily_log_shift2.production_operator_4)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.daily_log_shift2.production_operator_6)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(Model.daily_log_shift2.production_operator_8)&nbsp;</td>
+		</tr>
+	</table>
+    <div class="log-part2">
+        <table>
+		    <tr border="0.5"  bgcolor="yellow">
+			    <td style="font-size:5px;text-align:center;" rowspan="2">TIME</td>
+			    <td style="font-size:5px;text-align:center;" colspan="12">DESCRIPTION</td>
+		    </tr>
+		    <tr border="0.5" bgcolor="yellow">
+			    <td style="font-size:5px;text-align:center;" colspan="8">PRODUCTION AND INJECTION WELLS</td>
+			    <td style="font-size:5px;text-align:center;" colspan="4">POWER STATION</td>
+		    </tr>
+		    <tr>
+			    <td style="font-size:5px" align="center" rowspan="22" width="8%" border="0.5">
+                    @Model.daily_log_shift2.time_check
+			    </td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">Wells</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">FCV (%)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">Flow (kg/s)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">WHP (Bar)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">Wells</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">FCV (%)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">Flow (kg/s)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">WHP (Bar)</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" width="14%" border="0.5">&nbsp;</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">T/G Unit 1</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" border="0.5">T/G Unit 2</td>
+			    <td style="font-size:5px;text-align:center;" bgcolor="#00ffff" width="5%" border="0.5">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td style="font-size:5px" border="0.5">WWA-2</td>
+                @if (Model.daily_log_shift2.wma_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.wma_2_fcv</td>
+                }
+                else
+                {
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.wma_2_fcv</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.wma_2_flow</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.wma_2_whp</td>
+                }
+			    <td style="font-size:5px" border="0.5">MBA-1</td>
+			    @if (Model.daily_log_shift2.mba_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.mba_1_fcv</td>
+                }
+                else
+                {
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.mba_1_fcv</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.mba_1_flow</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.mba_1_whp</td>
+                }
+			    <td style="font-size:5px" border="0.5">Generator Output</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.generator_output_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.generator_output_2</td>
+			    <td style="font-size:5px" border="0.5">MW</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWA-4</td>
+                @if (Model.daily_log_shift2.wma_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.wma_4_fcv</td>
+                }
+                else
+                {
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_4">@Model.daily_log_shift2.wma_4_fcv</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wma_4_flow</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wma_4_whp</td>
+                }
+			    <td style="font-size:5px">MBA-2</td>
+                @if (Model.daily_log_shift2.mba_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.mba_2_fcv</td>
+                }
+                else
+                {
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_2">@Model.daily_log_shift2.mba_2_fcv</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_2_flow</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_2_whp</td>
+                }
+			    <td style="font-size:5px">(gross)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.gross_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.gross_2</td>
+			    <td style="font-size:5px">Mvar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWA-6</td>
+                @if (Model.daily_log_shift2.wma_6_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.wma_6_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_6">@Model.daily_log_shift2.wma_6_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wma_6_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wma_6_whp</td>
+                }
+			    <td style="font-size:5px">MBA-3</td>
+                @if (Model.daily_log_shift2.mba_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.mba_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_3">@Model.daily_log_shift2.mba_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_3_whp</td>
+                }
+			    <td style="font-size:5px">Generator Output Counter</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.generator_output_counter_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.generator_output_counter_2</td>
+			    <td style="font-size:5px">minute</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-1</td>
+                @if (Model.daily_log_shift2.mbd_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_1">@Model.daily_log_shift2.mbd_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_1_whp</td>
+                }
+			    <td style="font-size:5px">MBA-4</td>
+                @if (Model.daily_log_shift2.mba_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mba_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_4">@Model.daily_log_shift2.mba_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_4_whp</td>
+                }
+			    <td style="font-size:5px">Power Factor</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.power_factor_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.power_factor_2</td>
+			    <td style="font-size:5px">&nbsp;</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-2</td>
+                @if (Model.daily_log_shift2.mbd_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_2_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_2">@Model.daily_log_shift2.mbd_2_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_2_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_2_whp</td>
+                }
+			    <td style="font-size:5px">MBA-5</td>
+                @if (Model.daily_log_shift2.mba_5_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mba_5_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_5">@Model.daily_log_shift2.mba_5_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_5_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_5_whp</td>
+                }
+			    <td style="font-size:5px">Tap Changer</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.tap_charger_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.tap_charger_2</td>
+			    <td style="font-size:5px">step</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-3</td>
+                @if (Model.daily_log_shift2.mbd_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_3">@Model.daily_log_shift2.mbd_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_3_whp</td>
+                }
+			    <td style="font-size:5px">MBB-1</td>
+                @if (Model.daily_log_shift2.mbb_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_1">@Model.daily_log_shift2.mbb_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_1_whp</td>
+                }
+			    <td style="font-size:5px">PLN Grid Voltage</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.pln_grid_voltage_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.pln_grid_voltage_2</td>
+			    <td style="font-size:5px">kV</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-4</td>
+                @if (Model.daily_log_shift2.mbd_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_4">@Model.daily_log_shift2.mbd_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_4_whp</td>
+                }
+			    <td style="font-size:5px">MBB-2</td>
+                @if (Model.daily_log_shift2.mbb_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_2_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_2">@Model.daily_log_shift2.mbb_2_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_2_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_2_whp</td>
+                }
+			    <td style="font-size:5px">Valve Limiter</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.valve_limiter_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.valve_limiter_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBD-5</td>
+                @if (Model.daily_log_shift2.mbd_5_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_5_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_5">@Model.daily_log_shift2.mbd_5_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_5_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_5_whp</td>
+                }
+			    <td style="font-size:5px">MBB-3</td>
+                @if (Model.daily_log_shift2.mbb_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_3">@Model.daily_log_shift2.mbb_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_3_whp</td>
+                }
+			    <td style="font-size:5px">Governor Output</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.governor_output_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.governor_output_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-1</td>
+                @if (Model.daily_log_shift2.wwq_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_1">@Model.daily_log_shift2.wwq_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_1_whp</td>
+                }
+			    <td style="font-size:5px">MBB-4</td>
+                @if (Model.daily_log_shift2.mbb_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_4">@Model.daily_log_shift2.mbb_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_4_whp</td>
+                }
+			    <td style="font-size:5px">WCP Counter</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wcp_counter_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wcp_counter_2</td>
+			    <td style="font-size:5px">minute</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-2</td>
+                @if (Model.daily_log_shift2.wwq_2_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_2_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_2">@Model.daily_log_shift2.wwq_2_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_2_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_2_whp</td>
+                }
+			    <td style="font-size:5px">MBB-5</td>
+                @if (Model.daily_log_shift2.mbb_5_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_5_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_5">@Model.daily_log_shift2.mbb_5_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_5_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_5_whp</td>
+                }
+			    <td style="font-size:5px">Condenser Pressure</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_pressure_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_pressure_2</td>
+			    <td style="font-size:5px">mBar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-3</td>
+                @if (Model.daily_log_shift2.wwq_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_3">@Model.daily_log_shift2.wwq_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_3_whp</td>
+                }
+			    <td style="font-size:5px">MBB-6</td>
+                @if (Model.daily_log_shift2.mbb_6_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_6_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_6">@Model.daily_log_shift2.mbb_6_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_6_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_6_whp</td>
+                }
+			    <td style="font-size:5px">Main C/W Flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.main_cw_flow_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.main_cw_flow_2</td>
+			    <td style="font-size:5px">kg/s</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-4</td>
+                @if (Model.daily_log_shift2.wwq_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_4">@Model.daily_log_shift2.wwq_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_4_whp</td>
+                }
+			    <td style="font-size:5px">WWF-1</td>
+                @if (Model.daily_log_shift2.wwf_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwf_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_1">@Model.daily_log_shift2.wwf_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwf_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwf_1_whp</td>
+                }
+			    <td style="font-size:5px">PPC-G(CO)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ppc_g_co_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ppc_g_co_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">WWQ-5</td>
+                @if (Model.daily_log_shift2.wwq_5_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_5_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_5">@Model.daily_log_shift2.wwq_5_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_5_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_5_whp</td>
+                }
+			    <td style="font-size:5px">WWF-3</td>
+                @if (Model.daily_log_shift2.wwf_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwf_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_3">@Model.daily_log_shift2.wwf_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwf_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwf_3_whp</td>
+                }
+			    <td style="font-size:5px">Interface Pressure (SP)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.interface_pressure_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.interface_pressure_2</td>
+			    <td style="font-size:5px">Bar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBE-3</td>
+                @if (Model.daily_log_shift2.mbe_3_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbe_3_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_3">@Model.daily_log_shift2.mbe_3_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbe_3_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbe_3_whp</td>
+                }
+			    <td style="font-size:5px">WWW-1</td>
+                @if (Model.daily_log_shift2.www_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.www_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="www_1">@Model.daily_log_shift2.www_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.www_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.www_1_whp</td>
+                }
+			    <td style="font-size:5px">Vent Bias(SP)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.vent_bias_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.vent_bias_2</td>
+			    <td style="font-size:5px">Bar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">MBE-4</td>
+                @if (Model.daily_log_shift2.mbe_4_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbe_4_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_4">@Model.daily_log_shift2.mbe_4_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbe_4_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbe_4_whp</td>
+                }
+			    <td style="font-size:5px">WWP-1</td>
+                @if (Model.daily_log_shift2.wwp_1_is_text == 1)
+                {
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwp_1_fcv</td>
+                }
+                else
+                {
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwp_1">@Model.daily_log_shift2.wwp_1_fcv</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwp_1_flow</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwp_1_whp</td>
+                }
+			    <td style="font-size:5px">Main C/W Pressure</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.main_cw_pressure_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.main_cw_pressure_2</td>
+			    <td style="font-size:5px">Bar</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U1 NCG Flow (kg/s)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U2 NCG Flow (kg/s)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U1 Turbine Exp. (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U2 Turbine Exp. (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U1 CT Temp. (C)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">U2 CT Temp. (C)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td style="font-size:5px">CT Basin pH</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ct_basin_ph_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ct_basin_ph_2</td>
+			    <td style="font-size:5px">&nbsp;</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Condenser C/W Inlet-A</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_cw_inlet_a_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_cw_inlet_a_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ncg_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ncg_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.turbine_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.turbine_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ct_temp_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ct_temp_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.exhaust_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.exhaust_2</td>
+			    <td style="font-size:5px">Condenser C/W Inlet-B</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_cw_inlet_b_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_cw_inlet_b_2</td>
+			    <td style="font-size:5px">%</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">Upper TP Level (m)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">Lower TP Level (m)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">MV-333 Position (%)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">MV-334 Position (%)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">Brine Level (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">Condensate Level (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">NaOH 48% Level (mm)</td>
+			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">WWD Pond Level (m)</td>
+			    <td style="font-size:5px">Gen. Trans. Winding Temp.</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.gen_trans_winding_temp_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.gen_trans_winding_temp_2</td>
+			    <td style="font-size:5px">C</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Unit Trans. Winding Temp.</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.unit_trans_winding_temp_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.unit_trans_winding_temp_2</td>
+			    <td style="font-size:5px">C</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.upper_tp_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.lower_tp_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mv_333</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mv_334</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.brine_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condensate_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.naoh_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwd_pond_level</td>
+			    <td style="font-size:5px">Wheel Case Pressure</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wheel_case_pressure_1</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wheel_case_pressure_2</td>
+			    <td style="font-size:5px">Bar</td>
+		    </tr>
+	    </table>
+	</div>
+	<div class="log-part3">
+        <table>
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td colspan="4">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="4"><u><b>Power Station activity</b></u></td>
+		    </tr>
+            @{
+                lastUnit = "";
+            }
+            @foreach (StarEnergi.Models.daily_log_power_stations ps in Model.daily_log_shift2.list_daily_log_power_stations.ToList()) {
+                if (lastUnit != ps.power_station_unit) {
+                    if (lastUnit != "")
+                    {
+                        <tr>
+			                <td colspan="5">&nbsp;</td>
+		                </tr>
+                    }
+                    lastUnit = ps.power_station_unit;
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@ps.power_station_time</td>
+			            <td style="font-size:5px" width="8%"><b>@ps.power_station_unit</b></td>
+                        <td style="font-size:5px" width="2%"><b>-></b></td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">@ps.power_station_activity</td>
+		            </tr>
+                } else {
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@ps.power_station_time</td>
+			            <td style="font-size:5px" width="8%">&nbsp;</td>
+                        <td style="font-size:5px" width="2%">&nbsp;</td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">o @ps.power_station_activity</td>
+		            </tr>
+                }  
+            }
+	    </table>
+	</div>
+    <br />
+	<div class="log-part4">
+        <table class="no-border-last-row">
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="4" width="92%"><u><b>SAGS activity</b></u></td>
+		    </tr>
+            @{
+                lastUnit = "";
+            }
+            @foreach (StarEnergi.Models.daily_log_sags sags in Model.daily_log_shift2.list_daily_log_sags.ToList())
+            {
+                if (lastUnit != sags.sags_unit) {
+                    if (lastUnit != "")
+                    {
+                        <tr>
+			                <td colspan="5">&nbsp;</td>
+		                </tr>
+                    }
+                    lastUnit = sags.sags_unit;
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@sags.sags_time</td>
+			            <td style="font-size:5px" width="8%"><b>@sags.sags_unit</b></td>
+                        <td style="font-size:5px" width="2%"><b>-></b></td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">@sags.sags_activity</td>
+		            </tr>
+                } else {
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@sags.sags_time</td>
+			            <td style="font-size:5px" width="8%">&nbsp;</td>
+                        <td style="font-size:5px" width="2%">&nbsp;</td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">o @sags.sags_activity</td>
+		            </tr>
+                } 
+            }
+            <tr>
+			    <td width="8%" style="font-size:5px" align="center">&nbsp;</td>
+			    <td style="font-size:5px" width="8%">&nbsp;</td>
+                <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="1%">&nbsp;</td>
+			    <td style="font-size:5px">&nbsp;</td>
+		    </tr>
+	    </table>
+	</div>
+	<div class="log-part6">
+        <table class="w-border no-border-last-row">
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td width="8%">&nbsp;</td>
+                <td width="15%">&nbsp;</td>
+                <td width="54%">&nbsp;</td>
+                <td width="15%">&nbsp;</td>
+		    </tr>
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="4"><u><b>PRO:</b></u></td>
+		    </tr>
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="8%">No.</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="15%">WO No.</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5">Work To Be Performed</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow"  border="0.5" width="15%">SAP status</td>
+		    </tr>
+            @{
+                a = 0;
+            }
+            @foreach (StarEnergi.Models.daily_log_pro pro in Model.daily_log_shift2.list_daily_log_pro.ToList())
+            {
+                a++;
+                <tr>
+			        <td style="font-size:5px" align="center" width="8%">@pro.pro_time</td>
+			        <td style="font-size:5px" align="center" border="0.5" width="8%">@a</td>
+			        <td style="font-size:5px" border="0.5" width="15%">@pro.wo_number</td>
+			        <td style="font-size:5px" border="0.5">@pro.work_to_be_performed</td>
+			        <td style="font-size:5px" align="center" border="0.5" width="15%">@(pro.sap_status == 0 ? "Closed" : pro.sap_status == 1 ? "Opened" : pro.sap_status == 2 ? "Cancelled" : "")</td>
+		        </tr>
+            }
+	    </table>
+	</div>	
+	<div class="log-part7">
+        <table class="w-border no-border-last-row">
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td width="8%">&nbsp;</td>
+                <td width="15%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="44%">&nbsp;</td>
+                <td width="15%">&nbsp;</td>
+		    </tr>
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="5"><u><b>Maintenance Activity:</b></u></td>
+		    </tr>
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="8%">No.</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="15%">WO No.</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="10%">Department</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="44%">Work to be Performed</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" width="15%">Work Status</td>
+		    </tr>
+            @{
+                a = 0;
+            }
+            @foreach (StarEnergi.Models.daily_log_maintainence main in Model.daily_log_shift2.list_daily_log_maintainence.ToList())
+            {
+                a++;
+                <tr>
+			        <td style="font-size:5px" align="center" width="8%">@main.time</td>
+			        <td style="font-size:5px" align="center" border="0.5" width="8%">@a</td>
+			        <td style="font-size:5px" border="0.5" width="15%">@main.wo_number</td>
+			        <td style="font-size:5px" border="0.5" width="10%">@main.department</td>
+			        <td style="font-size:5px" border="0.5">@main.work_to_be_performed</td>
+			        <td style="font-size:5px" align="center" border="0.5" width="15%">@(main.work_status == 0 ? "On Progress" : main.work_status == 1 ? "Done" : "")</td>
+		        </tr>
+            }
+	    </table>
+	</div>
+	<div class="log-part8">
+        <table class="w-border">
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="90%">&nbsp;</td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">@Model.daily_log_shift2.last_plant_time</td>
+			    <td style="font-size:5px" colspan="2">
+				    <u><b>Last plant status:</b></u>
+			    </td>
+		    </tr>
+            @foreach (StarEnergi.Models.daily_log_last_plant_status lps in Model.daily_log_shift2.list_daily_log_last_plant_status.ToList())
+            {
+		        <tr>
+			        <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+                    <td style="font-size:5px" align="center" width="2%">o</td>
+			        <td style="font-size:5px">@lps.description</td>
+		        </tr>
+            }
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="90%">&nbsp;</td>
+		    </tr>
+	</table>
+        <np />
+<table>
+    <tr>
+        <td style="font-size:10px">
+            Attachment(s):
+        </td>
+    </tr>
+    @foreach (string s in Model.daily_log_shift2.attach)
+    {
+        if (s.Substring(s.LastIndexOf('.') + 1) == "pdf")
+        {
+            @*<tr style="font-size:10px">
+            <td>
+                @s
+            </td>
+            </tr>
+            <tr style="font-size:10px">
+                <td>
+                    @StarEnergi.Controllers.FrontEnd.PirController.readPdf(Server.MapPath("~/Attachment/pir/" + Model.id + "/" + s),
+                    Server.MapPath("~/Attachment/pdf_print/output.htm"),Server.MapPath("~/Content/image/atch/pdftotext.exe"));
+                </td>
+            </tr>*@
+        }
+        else
+        {
+            <tr style="font-size:10px">
+            <td>
+                @s
+            </td>
+            </tr>
+            <tr style="font-size:10px">
+                <td>
+                    <img src="@Server.MapPath("~/Attachment/daily_log/" + Model.daily_log_shift2.id + "/" + s)" width="500"/>
+                </td>
+            </tr>
+        }
+        
+    }
+</table>
+	</div>
+}
+    <np />
+    <h4>Operation Memo</h4>
+    <div class="log-part4">
+        <table class="no-border-last-row" border="0.5">
+            <tr>
+			    <td width="10%" style="font-size:10px" align="center">Start Date</td>
+			    <td style="font-size:10px" width="10%" align="center">End Date</td>
+                <td style="font-size:10px" width="50%" align="center">Memo Direction</td>
+                <td style="font-size:10px" width="15%" align="center">Action Required by</td>
+			    <td style="font-size:10px" width="15%" align="center">Remark</td>
+		    </tr>
+            @foreach (StarEnergi.Models.daily_log_operation_warning ops in Model.list_daily_log_operation_warning.ToList())
+            {
+            <tr>
+			    <td width="10%" style="font-size:10px">@ops.start_date.Value.ToShortDateString()</td>
+			    <td style="font-size:10px" width="10%">@ops.end_date.Value.ToShortDateString()</td>
+                <td style="font-size:10px" width="47%">@if (ops.memo_direction != null) {
+                                    foreach (char i in ops.memo_direction)
+                                    {
+                                        if (i == '\n')
+                                        {<br />}
+                                        else
+                                        {<text>@i</text>}
+                                    }
+                                }</td>
+                <td style="font-size:10px" width="18%">@ops.action_required_by</td>
+			    <td style="font-size:10px" width="15%">@ops.remark</td>
+		    </tr>
+            }
+	    </table>
+	</div>
+</div>

@@ -1,0 +1,128 @@
+﻿@model StarEnergi.Models.system
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>system</legend>
+
+    <div class="display-label">unit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.unit.nama)
+    </div>
+
+    <div class="display-label">nama</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nama)
+    </div>
+
+    <div class="display-label">kode</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.kode)
+    </div>
+
+    <div class="display-label">funct_description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.funct_description)
+    </div>
+
+    <div class="display-label">failure_scenario</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.failure_scenario)
+    </div>
+
+    <div class="display-label">primary_impact</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.primary_impact)
+    </div>
+
+    <div class="display-label">secondary_impact</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.secondary_impact)
+    </div>
+
+    <div class="display-label">cons_econ</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.cons_econ)
+    </div>
+
+    <div class="display-label">cons_hs</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.cons_hs)
+    </div>
+
+    <div class="display-label">cons_env</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.cons_env)
+    </div>
+
+    <div class="display-label">cons_total</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.cons_total)
+    </div>
+
+    <div class="display-label">likelihood</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.likelihood)
+    </div>
+
+    <div class="display-label">crit_code</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.crit_code)
+    </div>
+
+    <div class="display-label">ram_crit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit)
+    </div>
+
+    <div class="display-label">exist_crit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.exist_crit)
+    </div>
+
+    <div class="display-label">h</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.h)
+    </div>
+
+    <div class="display-label">e</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.e)
+    </div>
+
+    <div class="display-label">econ</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.econ)
+    </div>
+
+    <div class="display-label">ram_crit_1</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit_1)
+    </div>
+
+    <div class="display-label">prob</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.prob)
+    </div>
+
+    <div class="display-label">ram_crit_2</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit_2)
+    </div>
+
+    <div class="display-label">ram_crit_3</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit_3)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+       
+    </p>
+}

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<StarEnergi.Models.PartEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+
+    function back() {
+        $('#content').load('Equipment/Edit/' + '@ViewBag.id_equipment');
+    }
+
+    /*function onSavePart(e) {
+        console.log(e);
+        if (e.mode == 'insert') {
+            var values =
+            {
+                "tagNumber": e.values.tag_number
+            }
+
+            $.post("Part/Exist", values, function (data) {
+                if (data["status"] != 0) {
+                    alert('Data part sudah terdaftar di dalam database');
+                    e.preventDefault();
+                } else {
+                    go.apply(this, e)
+                }
+            });
+            e.preventDefault();
+        }               
+    }*/
+
+</script>
+
+<h2>Parts</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.PartEntity>()
+        .TableHtmlAttributes(new { style = "width:660px" })
+        .Name("Part")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "Part")
+                .Insert("_InsertAjaxEditing", "Part")
+                .Update("_SaveAjaxEditing", "Part")
+                .Delete("_DeleteAjaxEditing", "Part");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.tag_number).Width(120).Title("Tag Number");
+            columns.Bound(o => o.key_map).Width(90).Title("Key Map");
+            columns.Bound(o => o.nama).Width(120).Title("Nama");
+            columns.Bound(o => o.vendor).Width(80).Title("Vendor");
+            columns.Bound(o => o.warranty).Width(80).Title("Warranty");
+            columns.Bound(o => o.assurance_level).Width(120).Title("Assurance Level");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        /*.ClientEvents(events => events
+            .OnSave("onSavePart"))*/
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 
+
+<br/>
+<input type="button" value="Back to Equipment" onclick="back()"/>

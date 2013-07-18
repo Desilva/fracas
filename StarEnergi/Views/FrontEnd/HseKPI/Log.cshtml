@@ -1,0 +1,81 @@
+﻿@{
+    List<StarEnergi.Models.she_obs_KPI_log> log = new List<StarEnergi.Models.she_obs_KPI_log>();
+    List<StarEnergi.Models.ir_KPI_log> logs = new List<StarEnergi.Models.ir_KPI_log>();
+    if (Request["type"] == "1")
+    {
+        log = ViewData["log"] as List<StarEnergi.Models.she_obs_KPI_log>;
+    }
+    else if (Request["type"] == "2")
+    {
+        logs = ViewData["log"] as List<StarEnergi.Models.ir_KPI_log>;
+    }
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<div id="contentEventLog">
+<h2 class="adminH2">KPI Target Log</h2>
+<table class="w-border">
+    <tr>
+        <td>
+            Date
+        </td>
+        <td>
+            Employee Name
+        </td>
+        <td>
+            From (%)
+        </td>
+        <td>
+            To (%)
+        </td>
+    </tr>
+    @if (Request["type"] == "1") {
+        foreach (StarEnergi.Models.she_obs_KPI_log i in log)
+        {
+    <tr>
+        <td>
+            @i.date
+        </td>
+        <td>
+            @i.username
+        </td>
+        <td>
+            @i.from
+        </td>
+        <td>
+            @i.to
+        </td>
+    </tr>
+        }
+    }
+    else if (Request["type"] == "2")
+    {
+        foreach (StarEnergi.Models.ir_KPI_log i in logs)
+        {
+    <tr>
+        <td>
+            @i.date
+        </td>
+        <td>
+            @i.username
+        </td>
+        <td>
+            @i.from
+        </td>
+        <td>
+            @i.to
+        </td>
+    </tr>
+        }
+    }
+</table>
+</div>
+<br />
+<div class="submit">
+    <input type="button" value="Back" onclick="back()"/>
+</div>
+<script type="text/javascript">
+    function back() {
+        window.location = "/HseKPI";
+    }
+</script>

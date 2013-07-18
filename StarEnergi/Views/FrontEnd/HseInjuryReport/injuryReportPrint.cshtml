@@ -1,0 +1,965 @@
+﻿@model StarEnergi.Models.she_injury_report
+@{
+    int? id = Model.id as Nullable<Int32>;
+}
+<div class="container">
+	<header>
+        <table>
+            <tr>
+                <td width="20%">
+                    <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="90"/>
+                </td>
+                <td style="font-size:8px;">
+                    STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED<br />
+                    INJURY REPORT - MEDICAL ASSESSMENT
+                </td>
+            </tr>
+        </table>
+	</header>
+    <table>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow" colspan="2">Date / Time</td>
+            <td colspan="3">@Model.date_time</td>
+            <td bgcolor="yellow">Sex / Nation</td>
+            <td colspan="3">@(Model.sex == 1 ? "L" : "P")&nbsp;/&nbsp;@Model.nation</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow" colspan="2">Name / ID Number</td>
+            <td colspan="3">@Model.name&nbsp;/&nbsp;@Model.id_number</td>
+            <td bgcolor="yellow">Age / BOD</td>
+            <td colspan="3">@Model.age&nbsp;/&nbsp;@Model.bod</td>
+		</tr>
+		<tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow" colspan="2">Comp / Dept / Sect</td>
+            <td colspan="3">@Model.dept</td>
+            <td bgcolor="yellow">Job Title</td>
+            <td colspan="3">@Model.job_title</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow" colspan="2">Direct Supervisor</td>
+            <td colspan="3">@Model.direct_supervisor</td>
+            <td bgcolor="yellow" colspan="2">Date of employment</td>
+            <td colspan="2">@Model.doh</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow" colspan="2">Current job exp.</td>
+            <td colspan="3">@Model.cur_job_exp</td>
+            <td bgcolor="yellow" colspan="3"><b>Time start work before incident</b></td>
+            <td>@Model.time_start_bef_acc</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" colspan="2">Brief cause</td>
+            <td colspan="7">@Model.brief_cause</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow" colspan="2" rowspan="3">General Condition</td>
+            <td bgcolor="yellow" colspan="2">Conscious</td>
+            <td>@Model.gc_conscious</td>
+            <td bgcolor="yellow" colspan="2">Temperature</td>
+            <td colspan="2">@Model.gc_temperature</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" colspan="2">Blood pressure</td>
+            <td>@Model.gc_blood</td>
+            <td bgcolor="yellow" colspan="2">Pulse rate</td>
+            <td colspan="2">@Model.gc_pulse_rate</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow" colspan="2">Respiratory rate</td>
+            <td>@Model.gc_respiratory</td>
+            <td bgcolor="yellow" colspan="2">Oxygen saturation</td>
+            <td colspan="2">@Model.gc_oxygen</td>
+		</tr>
+        <tr style="font-size:11px;" border="0.5">
+            <td bgcolor="yellow" colspan="9"><b>MEDICAL CONDITIONS</b></td>
+		</tr>
+        <tr style="font-size:8px;">
+			<td bgcolor="#CCFFCC" colspan="3" border="0.5"><b>PRIMARY SURVEY</b></td>
+            <td class="no-border-right" border="0.5" colspan="2">
+                <table>
+                    <tr border="0">
+                        <td>Time : </td>
+                        <td>@Model.time_survey</td>
+                    </tr>
+                </table>
+
+            </td>
+            <td bgcolor="#CCFFCC" colspan="4" border="0.5"><b>FIRST OBSERVATION</b></td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow">Airway</td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.airway == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Clear</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.airway == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Obstructed</td>
+                    </tr>
+                </table>
+            </td>
+            <td bgcolor="yellow" colspan="2">Respiratory Rate --</td>
+            <td colspan="2">@Model.respiratory_rate</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow">C. Spine</td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.c_spine == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Normal</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.c_spine == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Possible Injury</td>
+                    </tr>
+                </table>
+            </td>
+            <td bgcolor="yellow" colspan="2">Oxygen Saturation : Sa O2 %</td>
+            <td colspan="2">@Model.oxygen_saturation</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow">Breathing</td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.breathing == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Spontaneous</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.breathing == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Problem</td>
+                    </tr>
+                </table>
+            </td>
+            <td bgcolor="yellow" colspan="2">Blood Pressure:</td>
+            <td colspan="2">@Model.blood_pressure</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow">Circulation</td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.circulation == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>External</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.circulation == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Possible Internal</td>
+                    </tr>
+                </table>
+            </td>
+            <td bgcolor="yellow" colspan="2" rowspan="2">Pulse Rate:</td>
+            <td colspan="2">@Model.pulse_rate</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+			<td bgcolor="yellow">Hmorhage</td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.hmorhage == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>None / slight</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.hmorhage == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Moderate</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.hmorhage == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Severe</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">&nbsp;</td>
+		</tr>
+        <tr border="0.5">
+			<td bgcolor="yellow" rowspan="3" style="font-size:8px;">Disability</td>
+            <td colspan="2" rowspan="3" style="font-size:8px;">Alert Responds to</td>
+            <td colspan="2" style="font-size:8px;">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.disability == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Visual stimuli</td>
+                    </tr>
+                </table>
+            </td>
+            <td bgcolor="#CCFFCC" colspan="4" style="font-size:8px;"><b>SECONDARY SURVEY</b></td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.disability == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Pain</td>
+                    </tr>
+                </table>
+            </td>
+            <td bgcolor="yellow" rowspan="4">Eye Opening</td>
+            <td colspan="2">Spontaneous</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.eye_opening == 4) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>4</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.disability == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Unresponsive</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">To Voice</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.eye_opening == 3) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>3</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="5" class="no-border-btm" rowspan="17">
+                <table>
+                    <tr border="0">
+                        <td colspan="5">
+                            <b>Exposure / Injuries</b>
+                        </td>
+                    </tr>
+                    <tr border="0">
+                        <td colspan="5" rowspan="11">
+                            <img src="@Server.MapPath("~/Content/image/illnessReport/injury.png")" width="275"/>
+                        </td>
+                    </tr>
+                    <tr border="0">
+                        <td colspan="5">C # Closed Fracture</td>
+                    </tr>
+                    <tr border="0">
+                        <td colspan="5">O # Open Fracture</td>
+                    </tr>
+                    <tr border="0">
+                        <td colspan="3">B = Burn (shade area)</td>
+                        <td colspan="2">L = Laceration</td>
+                    </tr>
+                    <tr border="0">
+                        <td colspan="3">F = Foreign Body</td>
+                        <td colspan="2">A = Abrasion</td>
+                    </tr>
+                    <tr border="0">
+                        <td colspan="3">&nbsp;</td>
+                        <td colspan="2">E = Ecymosis (bruising)</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">To Pain</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.eye_opening == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>2</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">None</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.eye_opening == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>1</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" rowspan="5">Best Verbal Response</td>
+            <td colspan="2">Oriented</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.verbal_response == 5) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>5</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">Confused</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.verbal_response == 4) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>4</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">Inappropriate</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.verbal_response == 3) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>3</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">Incomprehensible</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.verbal_response == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>2</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">None</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.verbal_response == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>1</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" rowspan="6">Motor Response</td>
+            <td colspan="2">Obeys command</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.motor_response == 6) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>6</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">Localizes pain</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.motor_response == 5) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>5</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">Withdrawal (pain)</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.motor_response == 4) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>4</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">Flexion (pain)</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.motor_response == 3) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>3</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">Extension (pain)</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.motor_response == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>2</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">None</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.motor_response == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>1</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" rowspan="2">Pupils</td>
+            <td colspan="2" rowspan="2">React</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pupils_r == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>R</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pupils_l == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>L</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" colspan="2">1 Constricted</td>
+            <td>Size R</td>
+            <td>@Model.pupils_size_r</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" colspan="2">2 Normal</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+		</tr>
+        <tr border="0.5">
+            <td colspan="5" bgcolor="#CCFFCC" style="font-size:8px;"><b>PRIMARY MANAGEMENT</b></td>
+            <td bgcolor="yellow" colspan="2" style="font-size:8px;">3 Dilated</td>
+            <td style="font-size:8px;">Size L</td>
+            <td style="font-size:8px;">@Model.pupils_size_l</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" rowspan="2">Airway</td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_airway == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Oropharyngeal</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_airway == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Nasal</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_airway == 2) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>E Tube</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="no-border-right">Trauma Score:</td>
+            <td class="no-border-left">@Model.trauma_score</td>
+            <td>Time</td>
+            <td>@Model.time_trauma</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_airway == 3) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>C/Thyrotomy</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_airway == 4) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Oxygen</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_airway == 5) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Suction</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="4">
+                <b>COMMENTS</b>
+                
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow">C. Spine</td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_c_spine == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>C. Collar</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_c_spine == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Spine board</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="4" rowspan="10">
+                <table>
+                    <tr border="0">
+                        <td>@Model.comments</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow">Breathing</td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_breathing == 0) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Ventilate</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_breathing == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Chest drain</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" rowspan="4">Circulation</td>
+            <td colspan="2">Cannula size : </td>
+            <td>Rt: @Model.pm_cannula_rt</td>
+            <td>Lt: @Model.pm_cannula_lt</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td>IV Fluids</td>
+            <td>@Model.pm_iv_fluid</td>
+            <td>Volume @Model.pm_iv_fluid_volume</td>
+            <td>Time @Model.pm_iv_fluid_time</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_h_mans == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>H’Mans / N. Saline</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">&nbsp;</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pm_h_maccel == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>H’maccel / G’fusine</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">&nbsp;</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="5" bgcolor="#CCFFCC"><b>SECONDARY MANAGEMENT</b></td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" rowspan="3">Analgesia Drugs (specify)</td>
+            <td colspan="2" rowspan="3" class="no-border-btm">@Model.analgesia_drugs</td>
+            <td colspan="2">Time : </td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">&nbsp;</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td colspan="2">&nbsp;</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td bgcolor="yellow" rowspan="2">Splinting</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.splinting == "Frac Strap")
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Frac Strap</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.splinting == "KED")
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>KED</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.splinting == "Traction")
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Traction</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">Signed</td>
+            <td colspan="2">@Model.signed</td>
+		</tr>
+        <tr style="font-size:8px;" border="0.5">
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.splinting == "Box")
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Box</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="3">
+                <table>
+                    <tr border="0">
+                        <td width="10%">
+                            @if (Model.splinting != "Frac Strap" && Model.splinting != "KED" && Model.splinting != "Traction" && Model.splinting != "Box")
+                            {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Other (specify) @(Model.splinting != "Frac Strap" && Model.splinting != "KED" && Model.splinting != "Traction" && Model.splinting != "Box" ? Model.splinting : "")</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="2">Crew</td>
+            <td colspan="2">@Model.crew</td>
+		</tr>
+    </table>
+</div>

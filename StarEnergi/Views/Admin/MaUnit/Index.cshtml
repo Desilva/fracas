@@ -1,0 +1,262 @@
+﻿@model IEnumerable<StarEnergi.Models.MaEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#id_area").bind("change", function () {
+            if ($('#id_area').val() != '') {
+                //$('#realmod_checker').html('Cek basis data...');
+                $.post(
+				"MaUnit/GetUnit",
+				{
+				    id_area: $('#id_area').val()
+				},
+				function (data) {
+				    hasil = eval(data);
+				    $("#id_unit").html("");
+				    $('<option value="">-- Pilih Unit --</option>').appendTo("#id_unit");
+				    for (var i = 0; i < hasil.length; i++) {
+				        $("<option value='" + hasil[i]['id'] + "'>" + hasil[i]['nama'] + "</option>").appendTo("#id_unit");
+				    }
+				    //$('#realmod_checker').html('');
+				}
+			    );
+            } else {
+                //$('#edit_realmod_checker').html('');
+            }
+        });
+
+        $('#contentChart').load('PerformanceKiller/Chart');
+    });
+
+    function SaveMaUnit() {
+
+        if ($('#edit_ma').val() == '') {
+            alert('Nilai MA masih kosong');
+            return;
+        }
+
+        if ($('#edit_masd').val() == '') {
+            alert('Nilai MAsd masih kosong');
+            return;
+        }
+
+        if ($('#id_area').val() == '') {
+            alert('Area belum dipilih');
+            return;
+        }
+
+        if ($('#id_unit').val() == '') {
+            alert('Unit belum dipilih');
+            return;
+        }
+
+        var values =
+        {
+            "id": $('#id_unit').val(),
+            "masd": $('#edit_masd').val(),
+            "ma": $('#edit_ma').val()
+        }
+        $('.loadSubmit').css("display", "block");
+        $.post("MaUnit/UpdateMaUnit", values, function (data) {
+            $('.loadSubmit').css("display", "none");
+            alert('Data tersimpan');
+        });
+    }
+
+    function clearField() {
+        $('#edit_tadd').val('0'),
+            $('#edit_tadt_hours').val('0'),
+            $('#edit_ta_interval').val('0'),
+            $('#edit_ntamdd').val('0'),
+            $('#edit_study_ntamd_hours').val('0'),
+            $('#edit_prior_ntamd_hours').val('0'),
+            $('#edit_days_in_study_year').val('0'),
+            $('#edit_ntamsd').val('0'),
+            $('#edit_study_ms_hours').val('0'),
+            $('#edit_prior_ms_hours').val('0'),
+            $('#edit_masd').val('0'),
+            $('#edit_ma').val('0')
+    }
+
+    function calculate_tadd() {
+        var tadd = 0;
+        var tadt_hours = 0;
+        var ta_interval = 0;
+        if ($('#edit_tadt_hours').val() != '') {
+            tadt_hours = $('#edit_tadt_hours').val() / 1;
+        }
+        if ($('#edit_ta_interval').val() != '') {
+            ta_interval = $('#edit_ta_interval').val() / 1;
+        }
+
+        if ((tadt_hours != 0) && (ta_interval != 0)) {
+            tadd = tadt_hours / (ta_interval * 24);
+        }
+
+        $('#edit_tadd').val(tadd);
+    }
+
+    function calculate_ntamdd() {
+        var ntamdd = 0;
+        var study_ntamd_hours = 0;
+        var prior_ntamd_hours = 0;
+        if ($('#edit_study_ntamd_hours').val() != '') {
+            study_ntamd_hours = $('#edit_study_ntamd_hours').val() / 1;
+        }
+        if ($('#edit_prior_ntamd_hours').val() != '') {
+            prior_ntamd_hours = $('#edit_prior_ntamd_hours').val() / 1;
+        }
+
+        if ((study_ntamd_hours != 0) && (prior_ntamd_hours != 0)) {
+            ntamdd = (study_ntamd_hours + prior_ntamd_hours) / (2 * 24);
+        }
+
+        $('#edit_ntamdd').val(ntamdd);
+    }
+
+    function calculate_ntamsd() {
+        var ntamsd = 0;
+        var study_ms_hours = 0;
+        var prior_ms_hours = 0;
+        if ($('#edit_study_ms_hours').val() != '') {
+            study_ms_hours = $('#edit_study_ms_hours').val() / 1;
+        }
+        if ($('#edit_prior_ms_hours').val() != '') {
+            prior_ms_hours = $('#edit_prior_ms_hours').val() / 1;
+        }
+
+        if ((study_ms_hours != 0) && (prior_ms_hours != 0)) {
+            ntamsd = (study_ms_hours + prior_ms_hours) / (2 * 24);
+        }
+
+        $('#edit_ntamsd').val(ntamsd);
+    }
+
+    function calculate_ma() {
+        var ma = 0;
+        //var tadd = 0;
+        var ntamdd = 0;
+        var days_in_study_year = 0;
+        if ($('#edit_tadd').val() != '') {
+            tadd = $('#edit_tadd').val() / 1;
+        }
+        if ($('#edit_ntamdd').val() != '') {
+            ntamdd = $('#edit_ntamdd').val() / 1;
+        }
+
+        if ($('#edit_days_in_study_year').val() != '') {
+            days_in_study_year = $('#edit_days_in_study_year').val() / 1;
+        }
+
+        if ((ntamdd != 0) && (days_in_study_year != 0)) {
+            var temp = ntamdd;
+            ma = (1 - ((temp) / days_in_study_year)) * 100;
+        }
+
+        $('#edit_ma').val(ma);
+    }
+
+    function calculate_masd() {
+        var masd = 0;
+        //var tadd = 0;
+        var ntamdd = 0;
+        var ntamsd = 0;
+        var days_in_study_year = 0;
+        if ($('#edit_tadd').val() != '') {
+            tadd = $('#edit_tadd').val() / 1;
+        }
+        if ($('#edit_ntamdd').val() != '') {
+            ntamdd = $('#edit_ntamdd').val() / 1;
+        }
+        if ($('#edit_ntamsd').val() != '') {
+            ntamsd = $('#edit_ntamsd').val() / 1;
+        }
+        if ($('#edit_days_in_study_year').val() != '') {
+            days_in_study_year = $('#edit_days_in_study_year').val() / 1;
+        }
+        if ((ntamdd != 0) && (days_in_study_year != 0)) {
+            var temp = ntamdd + ntamsd;
+            masd = (1 - ((temp) / days_in_study_year)) * 100;
+        }
+
+        $('#edit_masd').val(masd);
+    }
+</script>
+
+<h2 class="adminH2">Mechanical Availibility Unit</h2>
+
+
+<div class="info">
+<div class="info_inside_left">Area </div>
+<div class="infoFieldinput">@Html.DropDownList("id_area", "-- Pilih Area --")</div>
+<br />	
+<div class="info_inside_left">Unit</div>
+<div class="infoFieldinput">
+    <select name="id_unit" id="id_unit">
+        <option value="">-- Pilih Unit --</option>
+    </select>
+</div>    	
+<br />		
+
+<div class="info_inside_left">TADD</div>
+<div class="infoFieldinput"><input id="edit_tadd" name="tadd" type="text" value="0" onchange="calculate_ma();" readonly="" /></div>
+<br />
+		
+<div style="padding-left: 20px;">
+    <div class="info_inside_left">TADT Hours </div>
+	<div class="infoFieldinput"><input id="edit_tadt_hours" name="tadt_hours" type="text" value="0" onchange="calculate_tadd();" /></div>
+		
+	<div class="info_inside_left">T/A Interval</div>
+	<div class="infoFieldinput"><input id="edit_ta_interval" name="ta_interval" type="text" value="0" onchange="calculate_tadd();" /></div>
+</div>
+<br />
+		
+<div class="info_inside_left">NTAMDD</div>
+<div class="infoFieldinput"><input id="edit_ntamdd" name="ntamdd" type="text" value="0" onchange="calculate_ma();" readonly="" /></div>
+<br />
+		
+<div style="padding-left: 20px;">
+    <div class="info_inside_left">Study Year NTAMD</div>
+	<div class="infoFieldinput"><input id="edit_study_ntamd_hours" name="study_ntamd_hours" onchange="calculate_ntamdd();" type="text" value="0" /> Hours</div>
+
+	<div class="info_inside_left">Prior Year NTAMD</div>
+	<div class="infoFieldinput"><input id="edit_prior_ntamd_hours" name="prior_ntamd_hours" onchange="calculate_ntamdd();" type="text" value="0" /> Hours</div>
+</div>
+<br />
+		
+<div class="info_inside_left">NTAMSD</div>
+<div class="infoFieldinput"><input id="edit_ntamsd" name="ntamsd" type="text" value="0" readonly="" /></div>
+<br />
+		
+<div style="padding-left: 20px;">
+    <div class="info_inside_left">Study Year MS</div>
+	<div class="infoFieldinput"><input id="edit_study_ms_hours" name="study_ntamd_hours" type="text" onchange="calculate_ntamsd();" value="0" /> Hours</div>
+		
+	<div class="info_inside_left">Prior Year MS</div>
+	<div class="infoFieldinput"><input id="edit_prior_ms_hours" name="prior_ntamd_hours" onchange="calculate_ntamsd();" type="text" value="0" /> Hours</div>
+</div>
+<br />
+		
+<div class="info_inside_left">Days in Study Year</div>
+<div class="infoFieldinput"><input id="edit_days_in_study_year" name="days_in_study_year" type="text" value="0" /></div>
+<br />
+
+<div class="info_inside_left">MA</div>
+<div class="infoFieldinput"><input id="edit_ma" name="ma" type="text" value="" readonly="true" /></div>
+<div class="infoFieldbutton"><input name="hitung_ma" value="Hitung" type="button" onclick="calculate_ma();" /></div>
+<br />
+		
+<div class="info_inside_left">MAsd</div>
+<div class="infoFieldinput"><input id="edit_masd" name="masd" type="text" value="" readonly="true" /> </div>
+<div class="infoFieldbutton"><input name="hitung_ma" value="Hitung" type="button" onclick="calculate_masd();" /></div>
+<br />
+		
+<br/>
+<input name="Submit" value="Simpan" type="button" onclick="SaveMaUnit();" />
+<img class="loadSubmit" src="../../../Content/image/loading.gif"/>
+</div>

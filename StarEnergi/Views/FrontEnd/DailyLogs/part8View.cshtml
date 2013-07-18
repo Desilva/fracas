@@ -1,0 +1,22 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    List<StarEnergi.Models.daily_log_last_plant_status> li = ViewBag.lastPlantStatus as List<StarEnergi.Models.daily_log_last_plant_status>;
+    string time = ViewBag.lastPlantTime as String;
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<div class="container">
+	<table class="w-border">
+		<tr>
+			<td class="time no-border-top">@(time != null && time.Length > 0 ? time.Remove(0,4) : time)</td>
+			<td>
+				Last plant status:<br>
+				<ul>
+                    @foreach (StarEnergi.Models.daily_log_last_plant_status lps in li) {
+                        <li>@lps.description</li>
+                    }
+				</ul>
+			</td>
+		</tr>
+	</table>
+</div>

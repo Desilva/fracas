@@ -1,0 +1,89 @@
+﻿@model IEnumerable<StarEnergi.Models.investigation_report>
+@{
+    ViewBag.Title = "Add Incident Report";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+    List<StarEnergi.Models.EmployeeEntity> has = null;
+    if (ViewData["users"] != null)
+    {
+        has = ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>;
+    }
+    int username = has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).id;
+    
+}
+<script type="text/javascript">
+    var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR)';
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var username = '@username';
+        var isCanEdit = username == dataItem.prepared_by || username == dataItem.ack_supervisor || username == dataItem.superintendent || username == dataItem.field_manager || username == dataItem.loss_control ? true : false;
+        isCanEdit = isCanEdit || username == dataItem.lead_name;
+        var isApprove = dataItem.field_manager_approve != null && username == dataItem.lead_name;
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (dataItem.field_manager_approve == null ? '"Edit Incident Investigation Report"' : '"View Incident Report"') + ' >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>';
+        var i = 0;
+        for (var a in row.cells) {
+            if (row.cells[a].className == "t-group-cell") {
+                i++;
+            }
+        }
+        row.cells[i].innerHTML = templateComplete;
+    }
+
+    function Edit(id) {
+        window.location = "/Investigation/addInvestigation/" + id;
+        //$('#contentEventLog').load('Investigation/addInvestigation', { 'id': id });
+    }
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+    #Window .t-header {
+        background:#b9b7b7;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.investigation_report>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("investigationReport")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxInvestigationReport", "Investigation")
+                .Select("_SelectAjaxInvestigationReport", "Investigation");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.reference_number).Width(150).Title("Reference Number");
+            columns.Bound(o => o.facility).Width(225).Title("Business Location / Facility");
+            columns.Bound(o => o.incident_location).Width(150).Title("Incident Location");
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+)

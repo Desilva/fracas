@@ -1,0 +1,62 @@
+﻿
+@{
+    StarEnergi.Controllers.FrontEnd.Report r;
+    if (ViewData.Model == null)
+    {
+        r = (StarEnergi.Controllers.FrontEnd.Report)ViewData["report"];    
+    }else{
+        r = ViewData.Model["report"] as StarEnergi.Controllers.FrontEnd.Report;
+    }
+}
+<div class="container">
+	<h2>
+		Monthly Report PITS
+	</h2>
+    <table id="newspaper-a" border="0.5" >
+		<thead>
+    	    <tr>
+        	    <th scope="col" style="text-align:center">Resume</th>
+                @{
+                    foreach(string month in r.Month){
+                        <th scope="col" style="text-align:center">@(month)</th>
+                    }    
+                }
+            </tr>
+        </thead>
+        <tbody>
+    	    <tr>
+        	    <td style="text-align:center">Closed</td>
+                @{
+                    foreach(int i in r.Closed){
+                        <td style="text-align:center">@(i)</td>
+                    }    
+                }
+            </tr>
+            <tr>
+        	    <td style="text-align:center">Raised</td>
+                @{
+                    foreach(int i in r.Raised){
+                        <td style="text-align:center">@(i)</td>
+                    }    
+                }
+            </tr>
+            <tr>
+        	    <td style="text-align:center">Open</td>
+                @{
+                    foreach(int i in r.Open){
+                        <td style="text-align:center">@(i)</td>
+                    }    
+                }
+            </tr>
+            <tr>
+        	    <td style="text-align:center">Overdue</td>
+                @{
+                    foreach(int i in r.Overdue){
+                        <td style="text-align:center">@(i)</td>
+                    }    
+                }
+            </tr>
+        </tbody>
+	</table>
+</div>
+</div>

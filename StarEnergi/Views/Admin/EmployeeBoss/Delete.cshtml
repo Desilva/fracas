@@ -1,0 +1,49 @@
+﻿@model StarEnergi.Models.employee
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Employee</legend>
+
+    <div class="display-label">Employee No.</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.employee_no)
+    </div>
+
+    <div class="display-label">Alpha Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.alpha_name)
+    </div>
+
+    <div class="display-label">Position</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.position)
+    </div>
+
+    <div class="display-label">Work Location</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.work_location)
+    </div>
+
+    <div class="display-label">DOB</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.dob)
+    </div>
+
+    <div class="display-label">Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.email)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+       
+    </p>
+}

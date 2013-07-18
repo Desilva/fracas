@@ -1,0 +1,124 @@
+﻿@model IEnumerable<StarEnergi.Models.daily_log_operation_warning>
+@{
+    ViewBag.Title = "Add Daily Log";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+
+<script type="text/javascript">
+    function OnRowDataBoundEqWarningHis(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+
+        row.cells[3].innerHTML = dataItem.memo_direction.replace(/\n/g, "<br />");
+    }
+
+    function OnRowDataBoundEqWarning(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+
+        row.cells[4].innerHTML = dataItem.memo_direction.replace(/\n/g, "<br />");
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+
+@{ Html.Telerik().TabStrip()
+        .Name("TabStrip")
+        .Items(tabstrip =>
+        {
+            tabstrip.Add()
+                .Text("Operation Memo")
+                .Content(@<text>@( 
+                    Html.Telerik().Grid<StarEnergi.Models.daily_log_operation_warning>()
+                    .TableHtmlAttributes(new { style = "width:950px" }).HtmlAttributes(new { style = "width:950px" })
+                    .Name("operationalWarning")
+                    .DataKeys(keys =>
+                    {
+                        keys.Add(p => p.id);
+                    })
+                    .ToolBar(commands =>
+                    {
+                        if (li != null && li.Exists(p => p.role == 1) && li.Exists(p => p.role == 8)) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Operation Warning" });
+                    })
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax()
+                            .Insert("_InsertAjaxOperationWarning", "DailyLogs")
+                            .Select("_SelectAjaxOperationWarning", "DailyLogs")
+                            .Update("_UpdateAjaxOperationWarning", "DailyLogs");
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Command(commands =>
+                        {
+                            if (li != null && li.Exists(p => p.role == 1) && li.Exists(p => p.role == 8)) commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Warning" });
+                        }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+                        columns.Bound(o => o.id).Hidden();
+                        columns.Bound(o => o.start_date).Width(150).Title("Start Date");
+                        columns.Bound(o => o.end_date).Width(150).Title("End Date");
+                        columns.Bound(o => o.memo_direction).Title("Memo Direction");
+                        columns.Bound(o => o.action_required_by).Width(175).Title("Action Required by");
+                        columns.Bound(o => o.remark).Width(125).Title("Remark");
+                    })
+                    .ClientEvents(
+                        events => events
+                            .OnRowDataBound("OnRowDataBoundEqWarning")
+                    )
+                    .Pageable(p => p.PageSize(10))
+                    .Sortable()
+                    .Groupable()
+                    .Filterable()
+                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                    .Scrollable(c => c.Enabled(true))
+                    .Selectable()
+            )</text>);
+            tabstrip.Add()
+                .Text("History")
+                .Content(@<text>@( 
+                    Html.Telerik().Grid<StarEnergi.Models.daily_log_operation_warning>()
+                    .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+                    .Name("operationalWarningHis")
+                    .DataKeys(keys =>
+                    {
+                        keys.Add(p => p.id);
+                    })
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax()
+                            .Select("_SelectAjaxOperationWarningHis", "DailyLogs");
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(o => o.id).Hidden();
+                        columns.Bound(o => o.start_date).Width(150).Title("Start Date");
+                        columns.Bound(o => o.end_date).Width(150).Title("End Date");
+                        columns.Bound(o => o.memo_direction).Title("Memo Direction");
+                        columns.Bound(o => o.action_required_by).Width(175).Title("Action Required by");
+                        columns.Bound(o => o.remark).Width(125).Title("Remark");
+                    })
+                    .ClientEvents(
+                        events => events
+                            .OnRowDataBound("OnRowDataBoundEqWarningHis")
+                    )
+                    .Pageable(p => p.PageSize(15))
+                    .Sortable()
+                    .Groupable()
+                    .Filterable()
+                    .Scrollable(c => c.Enabled(true))
+                    .Selectable()
+            )</text>);
+        })
+        .SelectedIndex(0)
+        .Render();
+}
+

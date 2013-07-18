@@ -1,0 +1,39 @@
+﻿<h2>PIR Report</h2>
+@{ Html.Telerik().TabStrip()
+        .Name("WeeklyTargetStrip")
+        .Items(tabstrip =>
+        {
+            tabstrip.Add()
+                .Text("PIR from IIR")
+                .Content(@<div>
+                    <h3>
+                        PIR Report from Incident Investigation Report
+                    </h3>
+                    @Html.Partial("~/Views/FrontEnd/FieldManagerSummary/PirReport.aspx");
+                </div>
+            );
+            tabstrip.Add()
+                .Text("PIR from Internal Audit")
+                .Content(@<div>
+                    <h3>
+                        PIR Report from Internal Audit
+                    </h3>
+                    @Html.Partial("~/Views/FrontEnd/FieldManagerSummary/PirReportInternal.aspx");
+                </div>
+            );
+            tabstrip.Add()
+                .Text("PIR from External Audit")
+                .Content(@<div>
+                    <h3>
+                        PIR Report from External Audit
+                    </h3>
+                    @Html.Partial("~/Views/FrontEnd/FieldManagerSummary/PirReportExternal.aspx");
+                </div>
+            );
+        })
+        .SelectedIndex(0)
+        .Render();
+}
+
+
+

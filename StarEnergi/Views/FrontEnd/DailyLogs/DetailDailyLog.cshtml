@@ -1,0 +1,1131 @@
+﻿@model StarEnergi.Models.daily_log
+@{
+    int? id = Model.id as Nullable<Int32>;
+    int? id2 = ViewBag.mod as Nullable<Int32>;
+    StarEnergi.Models.daily_log dl = new StarEnergi.Models.daily_log();
+    if (ViewBag.mod != null)
+    {
+        dl = ViewBag.datas as StarEnergi.Models.daily_log;
+    }
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection, print" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection, print" />
+<script>
+    
+</script>
+<div class="container">
+	<header>
+		<b>Wayang Windu Geothermal Power Plant</b>
+	</header>
+    <h4>Day Shift</h4>
+	<div class="log-part1">
+		<table class="w-border no-border-last-row">
+			<tr>
+				<td class="yellow-bg center">Date</td>
+				<td class="yellow-bg center">Group</td>
+				<td class="yellow-bg center">Production Foreman</td>
+				<td class="yellow-bg center" colspan="4">Production Operators</td>
+			</tr>
+			<tr>
+				<td rowspan="2" class="no-border-btm center">
+                    @(Model.date != null ? Model.date.Value.ToLongDateString() : "")&nbsp;
+				</td>
+				<td rowspan="2" class="no-border-btm center">@(Model.grup)&nbsp;</td>
+				<td rowspan="2" class="no-border-btm center">@(Model.production_foreman)&nbsp;</td>
+				<td class="center width-100">@(Model.production_operator_1)&nbsp;</td>
+				<td class="center width-100">@(Model.production_operator_3)&nbsp;</td>
+				<td class="center width-100">@(Model.production_operator_5)&nbsp;</td>
+				<td class="center width-100">@(Model.production_operator_7)&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="center width-100">@(Model.production_operator_2)&nbsp;</td>
+				<td class="center width-100">@(Model.production_operator_4)&nbsp;</td>
+				<td class="center width-100">@(Model.production_operator_6)&nbsp;</td>
+				<td class="center width-100">@(Model.production_operator_8)&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+	<div class="log-part2">
+        <table class="w-border">
+		    <tr>
+			    <td class="yellow-bg time no-border-btm center" rowspan="2">TIME</td>
+			    <td class="yellow-bg center" colspan="12">DESCRIPTION</td>
+		    </tr>
+		    <tr>
+			    <td class="yellow-bg center" colspan="8">PRODUCTION AND INJECTION WELLS</td>
+			    <td class="yellow-bg center" colspan="4">POWER STATION</td>
+		    </tr>
+		    <tr>
+			    <td class="time center no-border-btm" rowspan="22">
+                    @(Model.time_check)
+			    </td>
+			    <td class="blue-bg center">Wells</td>
+			    <td class="blue-bg center width-50">FCV (%)</td>
+			    <td class="blue-bg center width-50">Flow (kg/s)</td>
+			    <td class="blue-bg center width-50">WHP (Bar)</td>
+			    <td class="blue-bg center">Wells</td>
+			    <td class="blue-bg center width-50">FCV (%)</td>
+			    <td class="blue-bg center width-50">Flow (kg/s)</td>
+			    <td class="blue-bg center width-50">WHP (Bar)</td>
+			    <td class="blue-bg">&nbsp;</td>
+			    <td class="blue-bg center width-50">T/G Unit 1</td>
+			    <td class="blue-bg center width-50">T/G Unit 2</td>
+			    <td class="blue-bg">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>WWA-2</td>
+			    <td class="gray-bg numbers" id="wma_2">@(Model.wma_2_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wma_2_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wma_2_whp)</td>
+			    <td>MBA-1</td>
+			    <td class="gray-bg numbers" id="mba_1">@(Model.mba_1_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mba_1_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mba_1_whp)</td>
+			    <td>Generator Output</td>
+			    <td class="gray-bg numbers">@(Model.generator_output_1)</td>
+			    <td class="gray-bg numbers">@(Model.generator_output_2)</td>
+			    <td>MW</td>
+		    </tr>
+		    <tr>
+			    <td>WWA-4</td>
+			    <td class="gray-bg numbers" id="wma_4">@(Model.wma_4_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wma_4_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wma_4_whp)</td>
+			    <td>MBA-2</td>
+                <td class="gray-bg numbers" id="mba_2">@(Model.mba_2_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mba_2_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mba_2_whp)</td>
+			    <td>(gross)</td>
+			    <td class="gray-bg numbers">@(Model.gross_1)</td>
+			    <td class="gray-bg numbers">@(Model.gross_2)</td>
+			    <td>Mvar</td>
+		    </tr>
+		    <tr>
+			    <td>WWA-6</td>
+                <td class="gray-bg numbers" id="wma_6">@(Model.wma_6_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wma_6_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wma_6_whp)</td>
+			    <td>MBA-3</td>
+                <td class="gray-bg numbers" id="mba_3">@(Model.mba_3_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mba_3_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mba_3_whp)</td>
+			    <td>Generator Output Counter</td>
+			    <td class="gray-bg numbers">@(Model.generator_output_counter_1)</td>
+			    <td class="gray-bg numbers">@(Model.generator_output_counter_2)</td>
+			    <td>minute</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-1</td>
+                <td class="gray-bg numbers" id="mbd_1">@(Model.mbd_1_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_1_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_1_whp)</td>
+			    <td>MBA-4</td>
+                <td class="gray-bg numbers" id="mba_4">@(Model.mba_4_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mba_4_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mba_4_whp)</td>
+			    <td>Power Factor</td>
+			    <td class="gray-bg numbers">@(Model.power_factor_1)</td>
+			    <td class="gray-bg numbers">@(Model.power_factor_2)</td>
+			    <td>&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-2</td>
+                <td class="gray-bg numbers" id="mbd_2">@(Model.mbd_2_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_2_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_2_whp)</td>
+			    <td>MBA-5</td>
+                <td class="gray-bg numbers" id="mba_5">@(Model.mba_5_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mba_5_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mba_5_whp)</td>
+			    <td>Tap Changer</td>
+			    <td class="gray-bg numbers">@(Model.tap_charger_1)</td>
+			    <td class="gray-bg numbers">@(Model.tap_charger_2)</td>
+			    <td>step</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-3</td>
+                <td class="gray-bg numbers" id="mbd_3">@(Model.mbd_3_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_3_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_3_whp)</td>
+			    <td>MBB-1</td>
+                <td class="gray-bg numbers" id="mbb_1">@(Model.mbb_1_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_1_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_1_whp)</td>
+			    <td>PLN Grid Voltage</td>
+			    <td class="gray-bg numbers">@(Model.pln_grid_voltage_1)</td>
+			    <td class="gray-bg numbers">@(Model.pln_grid_voltage_2)</td>
+			    <td>kV</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-4</td>
+                <td class="gray-bg numbers" id="mbd_4">@(Model.mbd_4_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_4_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_4_whp)</td>
+			    <td>MBB-2</td>
+                <td class="gray-bg numbers" id="mbb_2">@(Model.mbb_2_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_2_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_2_whp)</td>
+			    <td>Valve Limiter</td>
+			    <td class="gray-bg numbers">@(Model.valve_limiter_1)</td>
+			    <td class="gray-bg numbers">@(Model.valve_limiter_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-5</td>
+                <td class="gray-bg numbers" id="mbd_5">@(Model.mbd_5_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_5_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbd_5_whp)</td>
+			    <td>MBB-3</td>
+                <td class="gray-bg numbers" id="mbb_3">@(Model.mbb_3_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_3_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_3_whp)</td>
+			    <td>Governor Output</td>
+			    <td class="gray-bg numbers">@(Model.governor_output_1)</td>
+			    <td class="gray-bg numbers">@(Model.governor_output_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-1</td>
+                <td class="gray-bg numbers" id="wwq_1">@(Model.wwq_1_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_1_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_1_whp)</td>
+			    <td>MBB-4</td>
+                <td class="gray-bg numbers" id="mbb_4">@(Model.mbb_4_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_4_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_4_whp)</td>
+			    <td>WCP Counter</td>
+			    <td class="gray-bg numbers">@(Model.wcp_counter_1)</td>
+			    <td class="gray-bg numbers">@(Model.wcp_counter_2)</td>
+			    <td>minute</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-2</td>
+                <td class="gray-bg numbers" id="wwq_2">@(Model.wwq_2_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_2_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_2_whp)</td>
+			    <td>MBB-5</td>
+                <td class="gray-bg numbers" id="mbb_5">@(Model.mbb_5_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_5_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_5_whp)</td>
+			    <td>Condenser Pressure</td>
+			    <td class="gray-bg numbers">@(Model.condenser_pressure_1)</td>
+			    <td class="gray-bg numbers">@(Model.condenser_pressure_2)</td>
+			    <td>mBar</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-3</td>
+                <td class="gray-bg numbers" id="wwq_3">@(Model.wwq_3_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_3_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_3_whp)</td>
+			    <td>MBB-6</td>
+                <td class="gray-bg numbers" id="mbb_6">@(Model.mbb_6_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_6_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbb_6_whp)</td>
+			    <td>Main C/W Flow</td>
+			    <td class="gray-bg numbers">@(Model.main_cw_flow_1)</td>
+			    <td class="gray-bg numbers">@(Model.main_cw_flow_2)</td>
+			    <td>kg/s</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-4</td>
+                <td class="gray-bg numbers" id="wwq_4">@(Model.wwq_4_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_4_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_4_whp)</td>
+			    <td>WWF-1</td>
+                <td class="gray-bg numbers" id="wwf_1">@(Model.wwf_1_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wwf_1_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wwf_1_whp)</td>
+			    <td>PPC-G(CO)</td>
+			    <td class="gray-bg numbers">@(Model.ppc_g_co_1)</td>
+			    <td class="gray-bg numbers">@(Model.ppc_g_co_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-5</td>
+                <td class="gray-bg numbers" id="wwq_5">@(Model.wwq_5_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_5_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wwq_5_whp)</td>
+			    <td>WWF-3</td>
+                <td class="gray-bg numbers" id="wwf_3">@(Model.wwf_3_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wwf_3_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wwf_3_whp)</td>
+			    <td>Interface Pressure (SP)</td>
+			    <td class="gray-bg numbers">@(Model.interface_pressure_1)</td>
+			    <td class="gray-bg numbers">@(Model.interface_pressure_2)</td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td>MBE-3</td>
+                <td class="gray-bg numbers" id="mbe_3">@(Model.mbe_3_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbe_3_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbe_3_whp)</td>
+			    <td>WWW-1</td>
+                <td class="gray-bg numbers" id="www_1">@(Model.www_1_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.www_1_flow)</td>
+			    <td class="gray-bg numbers">@(Model.www_1_whp)</td>
+			    <td>Vent Bias(SP)</td>
+			    <td class="gray-bg numbers">@(Model.vent_bias_1)</td>
+			    <td class="gray-bg numbers">@(Model.vent_bias_2)</td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td>MBE-4</td>
+                <td class="gray-bg numbers" id="mbe_4">@(Model.mbe_4_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.mbe_4_flow)</td>
+			    <td class="gray-bg numbers">@(Model.mbe_4_whp)</td>
+			    <td>WWP-1</td>
+                <td class="gray-bg numbers" id="wwp_1">@(Model.wwp_1_fcv)</td>
+			    <td class="gray-bg numbers">@(Model.wwp_1_flow)</td>
+			    <td class="gray-bg numbers">@(Model.wwp_1_whp)</td>
+			    <td>Main C/W Pressure</td>
+			    <td class="gray-bg numbers">@(Model.main_cw_pressure_1)</td>
+			    <td class="gray-bg numbers">@(Model.main_cw_pressure_2)</td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td class="blue-bg center" rowspan="2">U1 NCG Flow (kg/s)</td>
+			    <td class="blue-bg center" rowspan="2">U2 NCG Flow (kg/s)</td>
+			    <td class="blue-bg center" rowspan="2">U1 Turbine Exp. (mm)</td>
+			    <td class="blue-bg center" rowspan="2">U2 Turbine Exp. (mm)</td>
+			    <td class="blue-bg center" rowspan="2">U1 CT Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">U2 CT Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td>CT Basin pH</td>
+			    <td class="gray-bg numbers">@(Model.ct_basin_ph_1)</td>
+			    <td class="gray-bg numbers">@(Model.ct_basin_ph_2)</td>
+			    <td>&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>Condenser C/W Inlet-A</td>
+			    <td class="gray-bg numbers">@(Model.condenser_cw_inlet_a_1)</td>
+			    <td class="gray-bg numbers">@(Model.condenser_cw_inlet_a_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td class="gray-bg numbers">@(Model.ncg_1)</td>
+			    <td class="gray-bg numbers">@(Model.ncg_2)</td>
+			    <td class="gray-bg numbers">@(Model.turbine_1)</td>
+			    <td class="gray-bg numbers">@(Model.turbine_2)</td>
+			    <td class="gray-bg numbers">@(Model.ct_temp_1)</td>
+			    <td class="gray-bg numbers">@(Model.ct_temp_2)</td>
+			    <td class="gray-bg numbers">@(Model.exhaust_1)</td>
+			    <td class="gray-bg numbers">@(Model.exhaust_2)</td>
+			    <td>Condenser C/W Inlet-B</td>
+			    <td class="gray-bg numbers">@(Model.condenser_cw_inlet_b_1)</td>
+			    <td class="gray-bg numbers">@(Model.condenser_cw_inlet_b_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td class="blue-bg center" rowspan="2">Upper TP Level (m)</td>
+			    <td class="blue-bg center" rowspan="2">Lower TP Level (m)</td>
+			    <td class="blue-bg center" rowspan="2">MV-333 Position (%)</td>
+			    <td class="blue-bg center" rowspan="2">MV-334 Position (%)</td>
+			    <td class="blue-bg center" rowspan="2">Brine Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">Condensate Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">NaOH 48% Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">WWD Pond Level (m)</td>
+			    <td>Gen. Trans. Winding Temp.</td>
+			    <td class="gray-bg numbers">@(Model.gen_trans_winding_temp_1)</td>
+			    <td class="gray-bg numbers">@(Model.gen_trans_winding_temp_2)</td>
+			    <td>C</td>
+		    </tr>
+		    <tr>
+			    <td>Unit Trans. Winding Temp.</td>
+			    <td class="gray-bg numbers">@(Model.unit_trans_winding_temp_1)</td>
+			    <td class="gray-bg numbers">@(Model.unit_trans_winding_temp_2)</td>
+			    <td>C</td>
+		    </tr>
+		    <tr>
+			    <td class="gray-bg numbers">@(Model.upper_tp_level)</td>
+			    <td class="gray-bg numbers">@(Model.lower_tp_level)</td>
+			    <td class="gray-bg numbers">@(Model.mv_333)</td>
+			    <td class="gray-bg numbers">@(Model.mv_334)</td>
+			    <td class="gray-bg numbers">@(Model.brine_level)</td>
+			    <td class="gray-bg numbers">@(Model.condensate_level)</td>
+			    <td class="gray-bg numbers">@(Model.naoh_level)</td>
+			    <td class="gray-bg numbers">@(Model.wwd_pond_level)</td>
+			    <td>Wheel Case Pressure</td>
+			    <td class="gray-bg numbers">@(Model.wheel_case_pressure_1)</td>
+			    <td class="gray-bg numbers">@(Model.wheel_case_pressure_2)</td>
+			    <td>Bar</td>
+		    </tr>
+	    </table>
+	</div>
+	<div class="log-part3"></div>
+	<div class="log-part4"></div>
+	<div class="log-part5">
+        <table class="w-border no-border-last-row">
+		    <tr>
+			    <td class="time center no-border-top no-border-btm" rowspan="14">&nbsp;</td>
+			    <td class="yellow-bg center" colspan="9">METERING AND DISPATCH</td>
+		    </tr>
+		    <tr>
+			    <td class="yellow-bg" colspan="2">&nbsp;</td>
+			    <td class="yellow-bg center">Unit-1</td>
+			    <td class="yellow-bg center">Unit-2</td>
+			    <td class="yellow-bg" colspan="2">&nbsp;</td>
+			    <td class="yellow-bg center">Unit-1</td>
+			    <td class="yellow-bg center">Unit-2</td>
+			    <td class="yellow-bg">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Unit Transformer</td>
+			    <td>Active</td>
+			    <td class="gray-bg numbers">@(Model.uti_active_1)</td>
+			    <td class="gray-bg numbers">@(Model.uti_active_2)</td>
+			    <td>MWh</td>
+			    <td>SEGWWL Availability</td>
+			    <td class="gray-bg numbers">@(Model.segwwl_availability_1)</td>
+			    <td class="gray-bg numbers">@(Model.segwwl_availability_2)</td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td>Reactive</td>
+			    <td class="gray-bg numbers">@(Model.uti_reactive_1)</td>
+			    <td class="gray-bg numbers">@(Model.uti_reactive_2)</td>
+			    <td>Mvarh</td>
+			    <td>PLN Dispatch</td>
+			    <td class="gray-bg numbers">@(Model.pln_dispatch_1)</td>
+			    <td class="gray-bg numbers">@(Model.pln_dispatch_2)</td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Steam Consumption</td>
+			    <td>Main</td>
+			    <td class="gray-bg numbers">@(Model.sc_main_1)</td>
+			    <td class="gray-bg numbers">@(Model.sc_main_2)</td>
+			    <td>Ton</td>
+			    <td>PLN Meter</td>
+			    <td class="gray-bg numbers">@(Model.pln_meter_1)</td>
+			    <td class="gray-bg numbers">@(Model.pln_meter_2)</td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td>Auxiliary</td>
+			    <td class="gray-bg numbers">@(Model.sc_auxiliary_1)</td>
+			    <td class="gray-bg numbers">@(Model.sc_auxiliary_2)</td>
+			    <td>Ton</td>
+			    <td>SEGWWL Export</td>
+			    <td class="gray-bg numbers">@(Model.segwwl_export_1)</td>
+			    <td class="gray-bg numbers">@(Model.segwwl_export_2)</td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td colspan="5" class="yellow-bg center">Production</td>
+			    <td>Actual Export</td>
+			    <td class="gray-bg numbers">@(Model.actual_export_1)</td>
+			    <td class="gray-bg numbers">@(Model.actual_export_2)</td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Generate Export (gross)</td>
+			    <td>Active</td>
+			    <td class="gray-bg numbers">@(Model.ge_active_1)</td>
+			    <td class="gray-bg numbers">@(Model.ge_active_2)</td>
+			    <td>MWh</td>
+			    <td>Production Excess</td>
+			    <td class="gray-bg numbers">@(Model.production_excess_1)</td>
+			    <td class="gray-bg numbers">@(Model.production_excess_2)</td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td>Reactive</td>
+			    <td class="gray-bg numbers">@(Model.ge_reactive_1)</td>
+			    <td class="gray-bg numbers">@(Model.ge_reactive_2)</td>
+			    <td>Mvarh</td>
+			    <td class="yellow-bg center" colspan="4">Losses</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Metering at 10:00</td>
+			    <td>SEGWWL</td>
+			    <td class="gray-bg numbers">@(Model.metering_segwwl_1)</td>
+			    <td class="gray-bg numbers">@(Model.metering_segwwl_2)</td>
+			    <td>MWh</td>
+			    <td>RPF</td>
+			    <td class="gray-bg numbers">@(Model.rpf_1)</td>
+			    <td class="gray-bg numbers">@(Model.rpf_2)</td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td>PLN</td>
+			    <td class="gray-bg numbers">@(Model.metering_pln_1)</td>
+			    <td class="gray-bg numbers">@(Model.metering_pln_2)</td>
+			    <td>MWh</td>
+			    <td>PGF</td>
+			    <td class="gray-bg numbers">@(Model.pgf_1)</td>
+			    <td class="gray-bg numbers">@(Model.pgf_2)</td>
+			    <td>MWh</td>
+		    </tr>
+		    <tr>
+			    <td rowspan="2">Condensate</td>
+			    <td>P/S</td>
+			    <td class="gray-bg numbers">@(Model.condensate_ps_1)</td>
+			    <td class="gray-bg numbers">@(Model.condensate_ps_2)</td>
+			    <td>Ton</td>
+			    <td>PLN</td>
+			    <td class="gray-bg numbers">@(Model.pln_1)</td>
+			    <td class="gray-bg numbers">@(Model.pln_2)</td>
+			    <td>Ton</td>
+		    </tr>
+		    <tr>
+			    <td>Total</td>
+			    <td class="gray-bg numbers" colspan="2">@(Model.condensate_total)</td>
+			    <td>Ton</td>
+			    <td rowspan="2" colspan="4"><b>Note:</b><br />@(Model.note)</td>
+		    </tr>
+		    <tr>
+			    <td>Brine</td>
+			    <td>Total</td>
+			    <td class="gray-bg numbers" colspan="2">@(Model.brine_total)</td>
+			    <td>Ton</td>
+		    </tr>
+	    </table>
+	</div>	
+	<div class="log-part6"></div>	
+	<div class="log-part7"></div>
+	<div class="log-part8"></div>
+<br/>
+@if (id2 != null) {
+    <h4>Night Shift</h4>
+    <div class="log-part1">
+		<table class="w-border no-border-last-row">
+			<tr>
+				<td class="yellow-bg center">Date</td>
+				<td class="yellow-bg center">Group</td>
+				<td class="yellow-bg center">Production Foreman</td>
+				<td class="yellow-bg center" colspan="4">Production Operators</td>
+			</tr>
+			<tr>
+				<td rowspan="2" class="no-border-btm center">
+                    @(dl.date != null ? dl.date.Value.ToLongDateString() : "")&nbsp;&nbsp;
+				</td>
+				<td rowspan="2" class="no-border-btm center">@(dl.grup)&nbsp;</td>
+				<td rowspan="2" class="no-border-btm center">@(dl.production_foreman)&nbsp;</td>
+				<td class="center width-100">@(dl.production_operator_1)&nbsp;</td>
+				<td class="center width-100">@(dl.production_operator_3)&nbsp;</td>
+				<td class="center width-100">@(dl.production_operator_5)&nbsp;</td>
+				<td class="center width-100">@(dl.production_operator_7)&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="center width-100">@(dl.production_operator_2)&nbsp;</td>
+				<td class="center width-100">@(dl.production_operator_4)&nbsp;</td>
+				<td class="center width-100">@(dl.production_operator_6)&nbsp;</td>
+				<td class="center width-100">@(dl.production_operator_8)&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+	<div class="log-part2">
+        <table class="w-border">
+		    <tr>
+			    <td class="yellow-bg time no-border-btm center" rowspan="2">TIME</td>
+			    <td class="yellow-bg center" colspan="12">DESCRIPTION</td>
+		    </tr>
+		    <tr>
+			    <td class="yellow-bg center" colspan="8">PRODUCTION AND INJECTION WELLS</td>
+			    <td class="yellow-bg center" colspan="4">POWER STATION</td>
+		    </tr>
+		    <tr>
+			    <td class="time center no-border-btm" rowspan="22">
+                    @(dl.time_check)
+			    </td>
+			    <td class="blue-bg center">Wells</td>
+			    <td class="blue-bg center width-50">FCV (%)</td>
+			    <td class="blue-bg center width-50">Flow (kg/s)</td>
+			    <td class="blue-bg center width-50">WHP (Bar)</td>
+			    <td class="blue-bg center">Wells</td>
+			    <td class="blue-bg center width-50">FCV (%)</td>
+			    <td class="blue-bg center width-50">Flow (kg/s)</td>
+			    <td class="blue-bg center width-50">WHP (Bar)</td>
+			    <td class="blue-bg">&nbsp;</td>
+			    <td class="blue-bg center width-50">T/G Unit 1</td>
+			    <td class="blue-bg center width-50">T/G Unit 2</td>
+			    <td class="blue-bg">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>WWA-2</td>
+			    <td class="gray-bg numbers" id="sh2_wma_2">@(dl.wma_2_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wma_2_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wma_2_whp)</td>
+			    <td>MBA-1</td>
+			    <td class="gray-bg numbers" id="sh2_mba_1">@(dl.mba_1_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mba_1_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mba_1_whp)</td>
+			    <td>Generator Output</td>
+			    <td class="gray-bg numbers">@(dl.generator_output_1)</td>
+			    <td class="gray-bg numbers">@(dl.generator_output_2)</td>
+			    <td>MW</td>
+		    </tr>
+		    <tr>
+			    <td>WWA-4</td>
+			    <td class="gray-bg numbers" id="sh2_wma_4">@(dl.wma_4_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wma_4_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wma_4_whp)</td>
+			    <td>MBA-2</td>
+                <td class="gray-bg numbers" id="sh2_mba_2">@(dl.mba_2_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mba_2_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mba_2_whp)</td>
+			    <td>(gross)</td>
+			    <td class="gray-bg numbers">@(dl.gross_1)</td>
+			    <td class="gray-bg numbers">@(dl.gross_2)</td>
+			    <td>Mvar</td>
+		    </tr>
+		    <tr>
+			    <td>WWA-6</td>
+                <td class="gray-bg numbers" id="sh2_wma_6">@(dl.wma_6_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wma_6_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wma_6_whp)</td>
+			    <td>MBA-3</td>
+                <td class="gray-bg numbers" id="sh2_mba_3">@(dl.mba_3_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mba_3_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mba_3_whp)</td>
+			    <td>Generator Output Counter</td>
+			    <td class="gray-bg numbers">@(dl.generator_output_counter_1)</td>
+			    <td class="gray-bg numbers">@(dl.generator_output_counter_2)</td>
+			    <td>minute</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-1</td>
+                <td class="gray-bg numbers" id="sh2_mbd_1">@(dl.mbd_1_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_1_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_1_whp)</td>
+			    <td>MBA-4</td>
+                <td class="gray-bg numbers" id="sh2_mba_4">@(dl.mba_4_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mba_4_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mba_4_whp)</td>
+			    <td>Power Factor</td>
+			    <td class="gray-bg numbers">@(dl.power_factor_1)</td>
+			    <td class="gray-bg numbers">@(dl.power_factor_2)</td>
+			    <td>&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-2</td>
+                <td class="gray-bg numbers" id="sh2_mbd_2">@(dl.mbd_2_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_2_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_2_whp)</td>
+			    <td>MBA-5</td>
+                <td class="gray-bg numbers" id="sh2_mba_5">@(dl.mba_5_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mba_5_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mba_5_whp)</td>
+			    <td>Tap Changer</td>
+			    <td class="gray-bg numbers">@(dl.tap_charger_1)</td>
+			    <td class="gray-bg numbers">@(dl.tap_charger_2)</td>
+			    <td>step</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-3</td>
+                <td class="gray-bg numbers" id="sh2_mbd_3">@(dl.mbd_3_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_3_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_3_whp)</td>
+			    <td>MBB-1</td>
+                <td class="gray-bg numbers" id="sh2_mbb_1">@(dl.mbb_1_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_1_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_1_whp)</td>
+			    <td>PLN Grid Voltage</td>
+			    <td class="gray-bg numbers">@(dl.pln_grid_voltage_1)</td>
+			    <td class="gray-bg numbers">@(dl.pln_grid_voltage_2)</td>
+			    <td>kV</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-4</td>
+                <td class="gray-bg numbers" id="sh2_mbd_4">@(dl.mbd_4_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_4_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_4_whp)</td>
+			    <td>MBB-2</td>
+                <td class="gray-bg numbers" id="sh2_mbb_2">@(dl.mbb_2_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_2_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_2_whp)</td>
+			    <td>Valve Limiter</td>
+			    <td class="gray-bg numbers">@(dl.valve_limiter_1)</td>
+			    <td class="gray-bg numbers">@(dl.valve_limiter_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>MBD-5</td>
+                <td class="gray-bg numbers" id="sh2_mbd_5">@(dl.mbd_5_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_5_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbd_5_whp)</td>
+			    <td>MBB-3</td>
+                <td class="gray-bg numbers" id="sh2_mbb_3">@(dl.mbb_3_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_3_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_3_whp)</td>
+			    <td>Governor Output</td>
+			    <td class="gray-bg numbers">@(dl.governor_output_1)</td>
+			    <td class="gray-bg numbers">@(dl.governor_output_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-1</td>
+                <td class="gray-bg numbers" id="sh2_wwq_1">@(dl.wwq_1_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_1_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_1_whp)</td>
+			    <td>MBB-4</td>
+                <td class="gray-bg numbers" id="sh2_mbb_4">@(dl.mbb_4_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_4_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_4_whp)</td>
+			    <td>WCP Counter</td>
+			    <td class="gray-bg numbers">@(dl.wcp_counter_1)</td>
+			    <td class="gray-bg numbers">@(dl.wcp_counter_2)</td>
+			    <td>minute</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-2</td>
+                <td class="gray-bg numbers" id="sh2_wwq_2">@(dl.wwq_2_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_2_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_2_whp)</td>
+			    <td>MBB-5</td>
+                <td class="gray-bg numbers" id="sh2_mbb_5">@(dl.mbb_5_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_5_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_5_whp)</td>
+			    <td>Condenser Pressure</td>
+			    <td class="gray-bg numbers">@(dl.condenser_pressure_1)</td>
+			    <td class="gray-bg numbers">@(dl.condenser_pressure_2)</td>
+			    <td>mBar</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-3</td>
+                <td class="gray-bg numbers" id="sh2_wwq_3">@(dl.wwq_3_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_3_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_3_whp)</td>
+			    <td>MBB-6</td>
+                <td class="gray-bg numbers" id="sh2_mbb_6">@(dl.mbb_6_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_6_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbb_6_whp)</td>
+			    <td>Main C/W Flow</td>
+			    <td class="gray-bg numbers">@(dl.main_cw_flow_1)</td>
+			    <td class="gray-bg numbers">@(dl.main_cw_flow_2)</td>
+			    <td>kg/s</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-4</td>
+                <td class="gray-bg numbers" id="sh2_wwq_4">@(dl.wwq_4_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_4_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_4_whp)</td>
+			    <td>WWF-1</td>
+                <td class="gray-bg numbers" id="sh2_wwf_1">@(dl.wwf_1_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wwf_1_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wwf_1_whp)</td>
+			    <td>PPC-G(CO)</td>
+			    <td class="gray-bg numbers">@(dl.ppc_g_co_1)</td>
+			    <td class="gray-bg numbers">@(dl.ppc_g_co_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td>WWQ-5</td>
+                <td class="gray-bg numbers" id="sh2_wwq_5">@(dl.wwq_5_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_5_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wwq_5_whp)</td>
+			    <td>WWF-3</td>
+                <td class="gray-bg numbers" id="sh2_wwf_3">@(dl.wwf_3_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wwf_3_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wwf_3_whp)</td>
+			    <td>Interface Pressure (SP)</td>
+			    <td class="gray-bg numbers">@(dl.interface_pressure_1)</td>
+			    <td class="gray-bg numbers">@(dl.interface_pressure_2)</td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td>MBE-3</td>
+                <td class="gray-bg numbers" id="sh2_mbe_3">@(dl.mbe_3_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbe_3_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbe_3_whp)</td>
+			    <td>WWW-1</td>
+                <td class="gray-bg numbers" id="sh2_www_1">@(dl.www_1_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.www_1_flow)</td>
+			    <td class="gray-bg numbers">@(dl.www_1_whp)</td>
+			    <td>Vent Bias(SP)</td>
+			    <td class="gray-bg numbers">@(dl.vent_bias_1)</td>
+			    <td class="gray-bg numbers">@(dl.vent_bias_2)</td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td>MBE-4</td>
+                <td class="gray-bg numbers" id="sh2_mbe_4">@(dl.mbe_4_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.mbe_4_flow)</td>
+			    <td class="gray-bg numbers">@(dl.mbe_4_whp)</td>
+			    <td>WWP-1</td>
+                <td class="gray-bg numbers" id="sh2_wwp_1">@(dl.wwp_1_fcv)</td>
+			    <td class="gray-bg numbers">@(dl.wwp_1_flow)</td>
+			    <td class="gray-bg numbers">@(dl.wwp_1_whp)</td>
+			    <td>Main C/W Pressure</td>
+			    <td class="gray-bg numbers">@(dl.main_cw_pressure_1)</td>
+			    <td class="gray-bg numbers">@(dl.main_cw_pressure_2)</td>
+			    <td>Bar</td>
+		    </tr>
+		    <tr>
+			    <td class="blue-bg center" rowspan="2">U1 NCG Flow (kg/s)</td>
+			    <td class="blue-bg center" rowspan="2">U2 NCG Flow (kg/s)</td>
+			    <td class="blue-bg center" rowspan="2">U1 Turbine Exp. (mm)</td>
+			    <td class="blue-bg center" rowspan="2">U2 Turbine Exp. (mm)</td>
+			    <td class="blue-bg center" rowspan="2">U1 CT Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">U2 CT Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
+			    <td>CT Basin pH</td>
+			    <td class="gray-bg numbers">@(dl.ct_basin_ph_1)</td>
+			    <td class="gray-bg numbers">@(dl.ct_basin_ph_2)</td>
+			    <td>&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td>Condenser C/W Inlet-A</td>
+			    <td class="gray-bg numbers">@(dl.condenser_cw_inlet_a_1)</td>
+			    <td class="gray-bg numbers">@(dl.condenser_cw_inlet_a_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td class="gray-bg numbers">@(dl.ncg_1)</td>
+			    <td class="gray-bg numbers">@(dl.ncg_2)</td>
+			    <td class="gray-bg numbers">@(dl.turbine_1)</td>
+			    <td class="gray-bg numbers">@(dl.turbine_2)</td>
+			    <td class="gray-bg numbers">@(dl.ct_temp_1)</td>
+			    <td class="gray-bg numbers">@(dl.ct_temp_2)</td>
+			    <td class="gray-bg numbers">@(dl.exhaust_1)</td>
+			    <td class="gray-bg numbers">@(dl.exhaust_2)</td>
+			    <td>Condenser C/W Inlet-B</td>
+			    <td class="gray-bg numbers">@(dl.condenser_cw_inlet_b_1)</td>
+			    <td class="gray-bg numbers">@(dl.condenser_cw_inlet_b_2)</td>
+			    <td>%</td>
+		    </tr>
+		    <tr>
+			    <td class="blue-bg center" rowspan="2">Upper TP Level (m)</td>
+			    <td class="blue-bg center" rowspan="2">Lower TP Level (m)</td>
+			    <td class="blue-bg center" rowspan="2">MV-333 Position (%)</td>
+			    <td class="blue-bg center" rowspan="2">MV-334 Position (%)</td>
+			    <td class="blue-bg center" rowspan="2">Brine Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">Condensate Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">NaOH 48% Level (mm)</td>
+			    <td class="blue-bg center" rowspan="2">WWD Pond Level (m)</td>
+			    <td>Gen. Trans. Winding Temp.</td>
+			    <td class="gray-bg numbers">@(dl.gen_trans_winding_temp_1)</td>
+			    <td class="gray-bg numbers">@(dl.gen_trans_winding_temp_2)</td>
+			    <td>C</td>
+		    </tr>
+		    <tr>
+			    <td>Unit Trans. Winding Temp.</td>
+			    <td class="gray-bg numbers">@(dl.unit_trans_winding_temp_1)</td>
+			    <td class="gray-bg numbers">@(dl.unit_trans_winding_temp_2)</td>
+			    <td>C</td>
+		    </tr>
+		    <tr>
+			    <td class="gray-bg numbers">@(dl.upper_tp_level)</td>
+			    <td class="gray-bg numbers">@(dl.lower_tp_level)</td>
+			    <td class="gray-bg numbers">@(dl.mv_333)</td>
+			    <td class="gray-bg numbers">@(dl.mv_334)</td>
+			    <td class="gray-bg numbers">@(dl.brine_level)</td>
+			    <td class="gray-bg numbers">@(dl.condensate_level)</td>
+			    <td class="gray-bg numbers">@(dl.naoh_level)</td>
+			    <td class="gray-bg numbers">@(dl.wwd_pond_level)</td>
+			    <td>Wheel Case Pressure</td>
+			    <td class="gray-bg numbers">@(dl.wheel_case_pressure_1)</td>
+			    <td class="gray-bg numbers">@(dl.wheel_case_pressure_2)</td>
+			    <td>Bar</td>
+		    </tr>
+	    </table>
+	</div>
+	<div class="log-part32"></div>
+	<div class="log-part42"></div>
+	<div class="log-part62"></div>	
+	<div class="log-part72"></div>
+	<div class="log-part82"></div>	
+}
+</div>
+<br />
+<div class="submit">
+    <button type="button" value="Back" onclick="back();">
+        @Html.ActionLink("Back", "Index", "DailyLogs")
+    </button>
+    <button type="button" value="Print Daily Log">
+        @Html.ActionLink("Print Daily Log", "printDL", "DailyLogs", new {id = id},  new { target = "_blank" })
+    </button>
+</div>
+<script type="text/javascript">
+    function loadContent() {
+        $('.log-part3').load('DailyLogs/part3View?id=@id');
+        $('.log-part4').load('DailyLogs/part4View?id=@id');
+        $('.log-part6').load('DailyLogs/part6View?id=@id');
+        $('.log-part7').load('DailyLogs/part7View?id=@id');
+        $('.log-part8').load('DailyLogs/part8View?id=@id');
+        $('.log-part32').load('DailyLogs/part3View?id=@id2');
+        $('.log-part42').load('DailyLogs/part4View?id=@id2');
+        $('.log-part62').load('DailyLogs/part6View?id=@id2');
+        $('.log-part72').load('DailyLogs/part7View?id=@id2');
+        $('.log-part82').load('DailyLogs/part8View?id=@id2');
+    }
+
+    function loadWell() {
+        if ('@Model' != null) {
+            if ('@Model.wma_2_is_text' == '1') {
+                changeInput("wma_2_is_text",'@(Model.wma_2_fcv)');
+            }
+
+            if ('@Model.wma_4_is_text' == '1') {
+                changeInput("wma_4_is_text",'@(Model.wma_4_fcv)');
+            }
+
+            if ('@Model.wma_6_is_text' == '1') {
+                changeInput("wma_6_is_text",'@(Model.wma_6_fcv)');
+            }
+
+            if ('@Model.mbd_1_is_text' == '1') {
+                changeInput("mbd_1_is_text",'@(Model.mbd_1_fcv)');
+            }
+
+            if ('@Model.mbd_2_is_text' == '1') {
+                changeInput("mbd_2_is_text",'@(Model.mbd_2_fcv)');
+            }
+
+            if ('@Model.mbd_3_is_text' == '1') {
+                changeInput("mbd_3_is_text",'@(Model.mbd_3_fcv)');
+            }
+
+            if ('@Model.mbd_4_is_text' == '1') {
+                changeInput("mbd_4_is_text",'@(Model.mbd_4_fcv)');
+            }
+
+            if ('@Model.mbd_5_is_text' == '1') {
+                changeInput("mbd_5_is_text",'@(Model.mbd_5_fcv)');
+            }
+
+            if ('@Model.wwq_1_is_text' == '1') {
+                changeInput("wwq_1_is_text",'@(Model.wwq_1_fcv)');
+            }
+
+            if ('@Model.wwq_2_is_text' == '1') {
+                changeInput("wwq_2_is_text",'@(Model.wwq_2_fcv)');
+            }
+
+            if ('@Model.wwq_3_is_text' == '1') {
+                changeInput("wwq_3_is_text",'@(Model.wwq_3_fcv)');
+            }
+
+            if ('@Model.wwq_4_is_text' == '1') {
+                changeInput("wwq_4_is_text",'@(Model.wwq_4_fcv)');
+            }
+
+            if ('@Model.wwq_5_is_text' == '1') {
+                changeInput("wwq_5_is_text",'@(Model.wwq_5_fcv)');
+            }
+
+            if ('@Model.mbe_3_is_text' == '1') {
+                changeInput("mbe_3_is_text",'@(Model.mbe_3_fcv)');
+            }
+
+            if ('@Model.mbe_4_is_text' == '1') {
+                changeInput("mbe_4_is_text",'@(Model.mbe_4_fcv)');
+            }
+
+            if ('@Model.mba_1_is_text' == '1') {
+                changeInput("mba_1_is_text",'@(Model.mba_1_fcv)');
+            }
+
+            if ('@Model.mba_2_is_text' == '1') {
+                changeInput("mba_2_is_text",'@(Model.mba_2_fcv)');
+            }
+
+            if ('@Model.mba_3_is_text' == '1') {
+                changeInput("mba_3_is_text",'@(Model.mba_3_fcv)');
+            }
+
+            if ('@Model.mba_4_is_text' == '1') {
+                changeInput("mba_4_is_text",'@(Model.mba_4_fcv)');
+            }
+
+            if ('@Model.mba_5_is_text' == '1') {
+                changeInput("mba_5_is_text",'@(Model.mba_5_fcv)');
+            }
+
+            if ('@Model.mbb_1_is_text' == '1') {
+                changeInput("mbb_1_is_text",'@(Model.mbb_1_fcv)');
+            }
+
+            if ('@Model.mbb_2_is_text' == '1') {
+                changeInput("mbb_2_is_text",'@(Model.mbb_2_fcv)');
+            }
+
+            if ('@Model.mbb_3_is_text' == '1') {
+                changeInput("mbb_3_is_text",'@(Model.mbb_3_fcv)');
+            }
+
+            if ('@Model.mbb_4_is_text' == '1') {
+                changeInput("mbb_4_is_text",'@(Model.mbb_4_fcv)');
+            }
+
+            if ('@Model.mbb_5_is_text' == '1') {
+                changeInput("mbb_5_is_text",'@(Model.mbb_5_fcv)');
+            }
+
+            if ('@Model.mbb_6_is_text' == '1') {
+                changeInput("mbb_6_is_text",'@(Model.mbb_6_fcv)');
+            }
+
+            if ('@Model.wwf_1_is_text' == '1') {
+                changeInput("wwf_1_is_text",'@(Model.wwf_1_fcv)');
+            }
+
+            if ('@Model.wwf_3_is_text' == '1') {
+                changeInput("wwf_3_is_text",'@(Model.wwf_3_fcv)');
+            }
+
+            if ('@Model.www_1_is_text' == '1') {
+                changeInput("www_1_is_text",'@(Model.www_1_fcv)');
+            }
+
+            if ('@Model.wwp_1_is_text' == '1') {
+                changeInput("wwp_1_is_text",'@(Model.wwp_1_fcv)');
+            }
+        }
+        if ('@id2' != null) {
+            if ('@dl.wma_2_is_text' == '1') {
+                changeInput2("sh2_wma_2_is_text", '@(dl.wma_2_fcv)');
+            }
+
+            if ('@dl.wma_4_is_text' == '1') {
+                changeInput2("sh2_wma_4_is_text", '@(dl.wma_4_fcv)');
+            }
+
+            if ('@dl.wma_6_is_text' == '1') {
+                changeInput2("sh2_wma_6_is_text", '@(dl.wma_6_fcv)');
+            }
+
+            if ('@dl.mbd_1_is_text' == '1') {
+                changeInput2("sh2_mbd_1_is_text", '@(dl.mbd_1_fcv)');
+            }
+
+            if ('@dl.mbd_2_is_text' == '1') {
+                changeInput2("sh2_mbd_2_is_text", '@(dl.mbd_2_fcv)');
+            }
+
+            if ('@dl.mbd_3_is_text' == '1') {
+                changeInput2("sh2_mbd_3_is_text", '@(dl.mbd_3_fcv)');
+            }
+
+            if ('@dl.mbd_4_is_text' == '1') {
+                changeInput2("sh2_mbd_4_is_text", '@(dl.mbd_4_fcv)');
+            }
+
+            if ('@dl.mbd_5_is_text' == '1') {
+                changeInput2("sh2_mbd_5_is_text", '@(dl.mbd_5_fcv)');
+            }
+
+            if ('@dl.wwq_1_is_text' == '1') {
+                changeInput2("sh2_wwq_1_is_text", '@(dl.wwq_1_fcv)');
+            }
+
+            if ('@dl.wwq_2_is_text' == '1') {
+                changeInput2("sh2_wwq_2_is_text", '@(dl.wwq_2_fcv)');
+            }
+
+            if ('@dl.wwq_3_is_text' == '1') {
+                changeInput2("sh2_wwq_3_is_text", '@(dl.wwq_3_fcv)');
+            }
+
+            if ('@dl.wwq_4_is_text' == '1') {
+                changeInput2("sh2_wwq_4_is_text", '@(dl.wwq_4_fcv)');
+            }
+
+            if ('@dl.wwq_5_is_text' == '1') {
+                changeInput2("sh2_wwq_5_is_text", '@(dl.wwq_5_fcv)');
+            }
+
+            if ('@dl.mbe_3_is_text' == '1') {
+                changeInput2("sh2_mbe_3_is_text", '@(dl.mbe_3_fcv)');
+            }
+
+            if ('@dl.mbe_4_is_text' == '1') {
+                changeInput2("sh2_mbe_4_is_text", '@(dl.mbe_4_fcv)');
+            }
+
+            if ('@dl.mba_1_is_text' == '1') {
+                changeInput2("sh2_mba_1_is_text", '@(dl.mba_1_fcv)');
+            }
+
+            if ('@dl.mba_2_is_text' == '1') {
+                changeInput2("sh2_mba_2_is_text", '@(dl.mba_2_fcv)');
+            }
+
+            if ('@dl.mba_3_is_text' == '1') {
+                changeInput2("sh2_mba_3_is_text", '@(dl.mba_3_fcv)');
+            }
+
+            if ('@dl.mba_4_is_text' == '1') {
+                changeInput2("sh2_mba_4_is_text", '@(dl.mba_4_fcv)');
+            }
+
+            if ('@dl.mba_5_is_text' == '1') {
+                changeInput2("sh2_mba_5_is_text", '@(dl.mba_5_fcv)');
+            }
+
+            if ('@dl.mbb_1_is_text' == '1') {
+                changeInput2("sh2_mbb_1_is_text", '@(dl.mbb_1_fcv)');
+            }
+
+            if ('@dl.mbb_2_is_text' == '1') {
+                changeInput2("sh2_mbb_2_is_text", '@(dl.mbb_2_fcv)');
+            }
+
+            if ('@dl.mbb_3_is_text' == '1') {
+                changeInput2("sh2_mbb_3_is_text", '@(dl.mbb_3_fcv)');
+            }
+
+            if ('@dl.mbb_4_is_text' == '1') {
+                changeInput2("sh2_mbb_4_is_text", '@(dl.mbb_4_fcv)');
+            }
+
+            if ('@dl.mbb_5_is_text' == '1') {
+                changeInput2("sh2_mbb_5_is_text", '@(dl.mbb_5_fcv)');
+            }
+
+            if ('@dl.mbb_6_is_text' == '1') {
+                changeInput2("sh2_mbb_6_is_text", '@(dl.mbb_6_fcv)');
+            }
+
+            if ('@dl.wwf_1_is_text' == '1') {
+                changeInput2("sh2_wwf_1_is_text", '@(dl.wwf_1_fcv)');
+            }
+
+            if ('@dl.wwf_3_is_text' == '1') {
+                changeInput2("sh2_wwf_3_is_text", '@(dl.wwf_3_fcv)');
+            }
+
+            if ('@dl.www_1_is_text' == '1') {
+                changeInput2("sh2_www_1_is_text", '@(dl.www_1_fcv)');
+            }
+
+            if ('@dl.wwp_1_is_text' == '1') {
+                changeInput2("sh2_wwp_1_is_text", '@(dl.wwp_1_fcv)');
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        //resizeIframe();
+        loadContent();
+        loadWell();
+    });
+
+    function back() {
+        window.location = '/DailyLogs';
+    }
+
+    function setIframeHeight(sel, h) {
+        $(sel).height(h);
+    }
+
+    function changeInput(id, value) {
+        var td = document.getElementById(id.substr(0, 5));
+        td.className = "yellow-bg center";
+        td.setAttribute('colspan', "3");
+        td.innerHTML = value;
+        td.parentElement.removeChild(td.nextElementSibling);
+        td.parentElement.removeChild(td.nextElementSibling);
+    }
+
+    function changeInput2(id, value) {
+        var td = document.getElementById(id.substr(0, 9));
+        td.className = "yellow-bg center";
+        td.setAttribute('colspan', "3");
+        td.innerHTML = value;
+        td.parentElement.removeChild(td.nextElementSibling);
+        td.parentElement.removeChild(td.nextElementSibling);
+    }
+</script>

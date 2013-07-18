@@ -1,0 +1,10 @@
+﻿@model byte?
+
+@(Html.Telerik().DropDownList()
+        .Name("work_status")
+        .Items(items =>
+        {
+            items.Add().Text("On Progress").Value("0");
+            items.Add().Text("Done").Value("1");
+        })
+) 

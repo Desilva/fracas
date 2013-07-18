@@ -1,0 +1,25 @@
+﻿@model StarEnergi.Models.equipment_groups
+
+@{
+    ViewBag.Title = "Details";
+}
+<script type="text/javascript">
+    function edit() {
+        $('#content').load('EquipmentGroup/edit/'+ @Model.id);
+    }
+</script>
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Equipment Group</legend>
+
+    <div class="display-label">nama</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nama)
+    </div>
+    <p>
+        <!--@Html.ActionLink("Edit", "Edit", new { id=Model.id }) |-->
+        <input type="button" value="Edit" onclick="edit()" />
+    </p>
+</fieldset>
+

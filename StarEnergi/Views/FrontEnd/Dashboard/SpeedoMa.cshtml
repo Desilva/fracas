@@ -1,0 +1,17 @@
+﻿@model IEnumerable<StarEnergi.Models.ma>
+@{ 
+   int i = 0; 
+   foreach (StarEnergi.Models.ma item in Model)
+   {
+       if((i % 3) == 0){ 
+           <div class="item span-5 last">
+	            @{Html.RenderPartial("_speedometerSingleMa", item);}
+            </div>
+        }else{
+            <div class="item span-5">
+	            @{Html.RenderPartial("_speedometerSingleMa", item);}
+            </div>
+        }
+       i++;
+   }
+}

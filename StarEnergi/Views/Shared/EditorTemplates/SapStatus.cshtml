@@ -1,0 +1,11 @@
+﻿@model byte?
+
+@(Html.Telerik().DropDownList()
+        .Name("sap_status")
+        .Items(items =>
+        {
+            items.Add().Text("Closed").Value("0");
+            items.Add().Text("Opened").Value("1");
+            items.Add().Text("Cancelled").Value("2");
+        })
+) 

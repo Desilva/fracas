@@ -1,0 +1,68 @@
+﻿@model IEnumerable<StarEnergi.Models.daily_log_operation_warning>
+@{
+    ViewBag.Title = "Add Daily Log";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+
+        row.cells[3].innerHTML = dataItem.warning.replace(/\n/g, "<br />");
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.daily_log_operation_warning>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("operationWarning")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands =>
+        {
+            commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Operation Warning" });
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Insert("_InsertAjaxOperationWarning","DailyLog")
+                .Select("_SelectAjaxOperationWarning", "DailyLog")
+                .Update("_UpdateAjaxOperationWarning", "DailyLog");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Warning" });
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.date).Width(225).Title("Date");
+            columns.Bound(o => o.warning).Title("Warning");
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+) 

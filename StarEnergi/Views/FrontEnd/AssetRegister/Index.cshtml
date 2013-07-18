@@ -1,0 +1,58 @@
+﻿<div id = "contentAssetRegister">
+@model IEnumerable<StarEnergi.Models.AssetRegisterEntity>
+<h2>@ViewBag.nama
+    <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
+</h2>
+
+<script type="text/javascript">
+    function openHelp() {
+        window.open("Help/index#assetregister", "Help", "height=500,width=1000");
+    }
+
+    function onRowSelect(e) {
+        var row = e.row;
+        $('#contentAssetRegister').load('AssetRegister/DetailEquipment/' + row.cells[0].innerHTML);
+    }
+</script>
+
+@(Html.Telerik().Grid<StarEnergi.Models.AssetRegisterEntity>()
+        //.HtmlAttributes(new { style = "padding:0 0 0 10px;" })
+        .Name("AssetRegister")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id_equipment);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "AssetRegister");
+        })
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "importExcel" })
+            .Text("Export")
+            .Action("importExcel", "AssetRegister")
+        )
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id_equipment).Hidden();
+            columns.Bound(o => o.tag_number).Width(100).Title("Tag Number");
+            columns.Bound(o => o.unit_name).Title("Unit").Width(110);
+            columns.Bound(o => o.system_name).Title("System");
+            columns.Bound(o => o.area_name).Title("Area").Width(110);
+            columns.Bound(o => o.discipline).Title("Discipline");
+            columns.Bound(o => o.mtbf).Title("MTBF").Format("{0:###,##0.00}");
+            columns.Bound(o => o.mttr).Title("MTTR").Format("{0:###,##0.00}");
+        })
+        .ClientEvents(events => events
+                .OnRowSelect("onRowSelect"))
+        .Pageable(p => p.PageSize(20))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Resizable(resizing => resizing.Columns(true))
+
+) 
+</div>

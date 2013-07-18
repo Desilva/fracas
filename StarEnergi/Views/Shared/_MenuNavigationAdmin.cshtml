@@ -1,0 +1,39 @@
+﻿@{
+    var htmlAttributes = new { style = "float: left;width: 180px;position: absolute; margin-left: 10px;" };
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }  
+}
+@(
+    
+    Html.Telerik().Menu()
+        .Name("Menu")
+        .HtmlAttributes(htmlAttributes)
+        .Orientation(MenuOrientation.Vertical)
+        .ClientEvents(events => events.OnSelect("onSelectMenuAdmin"))
+        .Items(menu =>
+        {
+            menu.Add()
+                .Text("Fracas");
+            if (li.Exists(p => p.role == 6) || li.Exists(p => p.role == 7))
+            {
+                menu.Add()
+                    .Text("Incident Report");
+            }
+
+            menu.Add()
+                .Text("Daily Log");
+            /*menu.Add()
+                .Text("Mechanical Availibility")
+                .Items(item =>
+                {
+                    item.Add().Text("MA Area");
+                    item.Add().Text("Ma Unit");
+                });
+            menu.Add()
+                .Text("Plant Availibility");*/
+            
+        })
+)

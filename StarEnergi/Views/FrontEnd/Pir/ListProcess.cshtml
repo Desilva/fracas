@@ -1,0 +1,51 @@
+﻿<div id = "contentPirProcessList">
+@model IEnumerable<StarEnergi.Models.pir>
+<h2>@ViewBag.nama
+    <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
+</h2>
+
+<script type="text/javascript">
+    function openHelp() {
+        window.open("Help/index#fracas", "Help", "height=500,width=1000");
+    }
+
+    function onRowSelect(e) {
+        var row = e.row;
+        $('#contentPirProcessList').load('pir/pageProcess/' + row.cells[0].innerHTML);
+    }
+</script>
+
+@(Html.Telerik().Grid<StarEnergi.Models.PIREntity>()
+        .Name("pirProcess")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditingProcess", "pir");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.no).Title("No");
+            columns.Bound(o => o.title).Title("Title");
+            columns.Bound(o => o.date_rise).Title("Date Raise");
+            columns.Bound(o => o.target_completion_init).Title("Target Completion");
+            columns.Bound(o => o.initiate_by).Title("Initiate By");
+        })
+        .ClientEvents(events => events
+            .OnRowSelect("onRowSelect")
+        )     
+        .Pageable(p => p.PageSize(20))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Groupable()
+        .Resizable(resizing => resizing.Columns(true))
+
+) 
+
+</div>

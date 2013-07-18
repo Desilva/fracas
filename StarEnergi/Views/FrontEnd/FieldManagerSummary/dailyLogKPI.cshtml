@@ -1,0 +1,40 @@
+﻿@{
+    double? s = ViewBag.month_wpnb_achievement as Nullable<Double>;
+    System.Diagnostics.Debug.WriteLine(s);  
+
+}
+<h2 class="adminH2">Daily Log Key Performance Indicator</h2>
+<div style="float:none !important;width:100%">
+<table style="border-collapse:collapse;width:980px">
+    <tr>
+        <td style="border: solid 1px #000;">&nbsp;</td>
+        <td style="border: solid 1px #000;">Target</td>
+        <td style="border: solid 1px #000;">Achievement</td>
+        <td style="border: solid 1px #000;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="border: solid 1px #000;">Daily Target (@((ViewBag.date_day as Nullable<DateTime>).Value.ToShortDateString()))</td>
+        <td style="border: solid 1px #000;">@ViewBag.today_target MWh</td>
+        <td style="border: solid 1px #000;">@ViewBag.today_achievement MWh</td>
+        <td style="border: solid 1px #000;">@((ViewBag.today_achievement as Nullable<Double>).Value >= (ViewBag.today_target as Nullable<Double>).Value ? "Success" : "Fail")</td>
+    </tr>
+    <tr>
+        <td style="border: solid 1px #000;">Weekly Target (@((ViewBag.date_week_start as Nullable<DateTime>).Value.ToShortDateString()) - @((ViewBag.date_week_last as Nullable<DateTime>).Value.ToShortDateString()))</td>
+        <td style="border: solid 1px #000;">@ViewBag.week_target MWh</td>
+        <td style="border: solid 1px #000;">@ViewBag.week_achievement MWh</td>
+        <td style="border: solid 1px #000;">@((ViewBag.week_achievement as Nullable<Double>).Value >= (ViewBag.week_target as Nullable<Double>).Value ? "Success" : "Fail")</td>
+    </tr>
+    <tr>
+        <td style="border: solid 1px #000;">Monthly Target (@((ViewBag.date_month as Nullable<DateTime>).Value.Month)-@((ViewBag.date_month as Nullable<DateTime>).Value.Year))</td>
+        <td style="border: solid 1px #000;">@ViewBag.month_target MWh</td>
+        <td style="border: solid 1px #000;">@ViewBag.month_achievement MWh</td>
+        <td style="border: solid 1px #000;">@((ViewBag.month_achievement as Nullable<Double>).Value >= (ViewBag.month_target as Nullable<Double>).Value ? "Success" : "Fail")</td>
+    </tr>
+    <tr>
+        <td style="border: solid 1px #000;">Monthly WP & B (@((ViewBag.date_month as Nullable<DateTime>).Value.Month)-@((ViewBag.date_month as Nullable<DateTime>).Value.Year))</td>
+        <td id="target_view" style="border: solid 1px #000;">@ViewBag.month_wpnb_target MWh</td>
+        <td id="achievement_view" style="border: solid 1px #000;">@ViewBag.month_wpnb_achievement MWh</td>
+        <td id="result" style="border: solid 1px #000;">@((ViewBag.month_wpnb_achievement as Nullable<Double>).Value >= (ViewBag.month_wpnb_target as Nullable<Double>).Value ? "Success" : "Fail")</td>
+    </tr>
+</table>
+</div>

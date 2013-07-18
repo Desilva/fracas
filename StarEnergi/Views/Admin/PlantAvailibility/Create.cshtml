@@ -1,0 +1,121 @@
+﻿@model StarEnergi.Models.foc_op_avail
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>foc_op_avail</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.id_foc, "foc")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("id_foc", String.Empty)
+            @Html.ValidationMessageFor(model => model.id_foc)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.op_avail)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.op_avail)
+            @Html.ValidationMessageFor(model => model.op_avail)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.plant_down)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.plant_down)
+            @Html.ValidationMessageFor(model => model.plant_down)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.plant_up)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.plant_up)
+            @Html.ValidationMessageFor(model => model.plant_up)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.selisih)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.selisih)
+            @Html.ValidationMessageFor(model => model.selisih)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.selisih_paf)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.selisih_paf)
+            @Html.ValidationMessageFor(model => model.selisih_paf)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.pof_bulanan)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.pof_bulanan)
+            @Html.ValidationMessageFor(model => model.pof_bulanan)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.paf_bulanan)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.paf_bulanan)
+            @Html.ValidationMessageFor(model => model.paf_bulanan)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.paf)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.paf)
+            @Html.ValidationMessageFor(model => model.paf)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.bulan)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.bulan)
+            @Html.ValidationMessageFor(model => model.bulan)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.tahun)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.tahun)
+            @Html.ValidationMessageFor(model => model.tahun)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.tipe)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.tipe)
+            @Html.ValidationMessageFor(model => model.tipe)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

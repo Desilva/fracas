@@ -1,0 +1,34 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    List<StarEnergi.Models.daily_log_sap> li = ViewBag.SAP as List<StarEnergi.Models.daily_log_sap>;
+    int i = 0;
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<div class="container">
+    <table class="w-border no-border-last-row">
+		<tr>
+			<td class="time no-border-top no-border-btm">&nbsp;</td>
+			<td colspan="5">SAP new notification: </td>
+		</tr>
+		<tr>
+			<td class="no-border-btm no-border-top">&nbsp;</td>
+			<td class="yellow-bg center" style="width:50px">No.</td>
+			<td class="yellow-bg center" style="width:100px">Notification No.</td>
+			<td class="yellow-bg center" style="width:100px">Department</td>
+			<td class="yellow-bg center">Description</td>
+			<td class="yellow-bg center" style="width:100px">Notification by</td>
+		</tr>
+        @foreach (StarEnergi.Models.daily_log_sap main in li) {
+            i++;
+            <tr>
+			    <td class="no-border-btm no-border-top">@main.sap_time</td>
+			    <td class="center">@i</td>
+			    <td>@main.notif_no</td>
+			    <td>@main.department</td>
+			    <td>@main.description</td>
+			    <td>@main.notif_by</td>
+		    </tr>
+        }
+	</table>
+</div>

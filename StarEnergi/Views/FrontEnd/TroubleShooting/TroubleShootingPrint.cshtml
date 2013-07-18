@@ -1,0 +1,324 @@
+﻿@model StarEnergi.Models.trouble_shooting
+@{
+    int? id = Model.id as Nullable<Int32>;
+}
+<div class="container">
+	<header>
+        <table>
+            <tr>
+                <td width="20%">
+                    <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+                </td>
+                <td style="font-size:10px;">
+                    STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED<br />
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center;font-size:14px;" colspan="2">
+                    <u>TROUBLE SHOOTING/EQUIPMENT REPAIR REPORT</u>
+                </td>
+            </tr>
+        </table>
+	</header>
+    <br />
+    <table>
+        <tr  style="font-size:8px;">
+            <td width="80%">
+                <b>1. GENERAL INFORMATION</b>
+            </td>
+            <td style="font-size:8px;" width="20%" border="0.5">
+                No : @Model.no
+            </td>
+        </tr>
+    </table>
+	<div class="log-part1">
+		<table>
+			<tr border="0.5">
+                <td style="font-size:8px;">
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td width="30%">TAG/Equipment No</td>
+                            <td width="10%">:</td>
+				            <td width="60%">@Model.equipment_no</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="font-size:8px;">
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td width="30%">Equipment Desc.</td>
+                            <td width="10%">:</td>
+				            <td width="60%">@Model.equipment_description</td>
+			            </tr>
+                    </table>
+                </td>
+			</tr>
+            <tr border="0.5">
+                <td style="font-size:8px;">
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td width="30%">Date of Trouble</td>
+                            <td width="10%">:</td>
+				            <td width="60%">@(Model.date_of_trouble != null ? Model.date_of_trouble.Value.ToShortDateString() : "")</td>
+			            </tr>
+                    </table>
+                </td>
+                <td style="font-size:8px;">
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td width="30%">Time of Trouble</td>
+                            <td width="10%">:</td>
+				            <td width="60%">@Model.time_of_trouble</td>
+			            </tr>
+                    </table>
+                </td>
+			</tr>
+            <tr border="0.5">
+                <td style="font-size:8px;">
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td width="30%">Date of Repaired</td>
+                            <td width="10%">:</td>
+				            <td width="25%">@(Model.start_date_repair != null ? Model.start_date_repair.Value.ToShortDateString() : "")</td>
+                            <td width="10%">-</td>
+				            <td width="25%">@(Model.end_date_repair != null ? Model.end_date_repair.Value.ToShortDateString() : "")</td>
+			            </tr>
+                    </table>
+                </td>
+                <td style="font-size:8px;">
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td width="30%">Time of Repaired</td>
+                            <td width="10%">:</td>
+				            <td width="60%">@Model.time_repaired</td>
+			            </tr>
+                    </table>
+                </td>
+			</tr>
+			<tr border="0.5">
+                <td style="font-size:8px;">
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td width="30%">WO Number</td>
+                            <td width="10%">:</td>
+				            <td width="60%">@Model.wo_number</td>
+			            </tr>
+                    </table>
+                </td>
+                <td style="font-size:8px;">
+                    &nbsp;
+                </td>
+			</tr>
+            <tr border="0.5">
+                <td style="font-size:8px;" colspan="2">
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>Description of Trouble</td>
+			            </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                @{int countCol = 0; int countRow = 0;}
+                                @if (Model.description_trouble != null) {
+                                    foreach (char i in Model.description_trouble)
+                                    {
+                                        if (i == '\n')
+                                        {
+                                            countRow++; countCol = 0;<br />}
+                                        else
+                                        {
+                                            countCol++; countRow++; countCol = 0;<text>@i</text>}
+                                    }
+                                }
+                            </td>
+			            </tr>
+                    </table>
+                </td>
+			</tr>
+		</table>
+	</div>
+    <br />
+    <table>
+        <tr>
+            <td>
+                <b style="font-size:8px;">2. AS FOUND CONDITION   </b><i style="font-size:5px;">(Include the visual inspection, measurement data and others fact that was found at the equipment)</i>
+            </td>
+        </tr>
+    </table>
+    <div class="log-part2">
+        <table class="w-border" style="width:980px">
+		    <tr border="0.5" style="font-size:8px;">
+                @{
+                    string pattern =  "style=\"height:([0-9]+)px; width:([0-9]+)px\"";
+                    string input = Model.as_found_condition == null ? "" : Model.as_found_condition;
+                    string replacement = "height=\"$1\" width=\"$2\"";
+                    System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(pattern);
+                }
+			    <td>@Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))</td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+    <table>
+        <tr>
+            <td>
+                <b style="font-size:8px;">3. ANALYSIS   </b><i style="font-size:5px;">(Include the trouble shooting step that have been taken, measurement data and analysis base on data that have been collected)</i>
+	        </td>
+        </tr>
+    </table>
+    <div class="log-part3">
+        <table class="w-border" style="width:980px">
+		    <tr border="0.5" style="font-size:8px;">
+                @{
+                    input = Model.analysis == null ? "" : Model.analysis;
+                }
+			    <td>@Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))</td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+    <table>
+        <tr>
+            <td>
+                <b style="font-size:8px;">4. ACTION   </b><i style="font-size:5px;">(Include action that have been taken to fixed the problem, equipment condition and measurement data)</i>
+	        </td>
+        </tr>
+    </table>
+    <div class="log-part4">
+        <table class="w-border" style="width:980px">
+		    <tr border="0.5" style="font-size:8px;">
+			    <td>
+                    @if (Model.action != null) {
+                        foreach (char i in Model.action)
+                        {
+                            if (i == '\n')
+                            {<br />}
+                            else
+                            {<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+    <table>
+        <tr>
+            <td>
+                <b style="font-size:8px;">5. RECOMMENDATION   </b><i style="font-size:5px;">(Include the recommendation to prevent the problem recurrent, follow up action that needed to be taken)</i>
+	        </td>
+        </tr>
+    </table>
+    <div class="log-part5">
+        <table class="w-border" style="width:980px">
+		    <tr border="0.5" style="font-size:8px;">
+			    <td>
+                    @if (Model.recommendation != null) {
+                        foreach (char i in Model.recommendation)
+                        {
+                            if (i == '\n')
+                            {<br />}
+                            else
+                            {<text>@i</text>}
+                        }
+                    }
+			    </td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part6">
+        <table class="w-border" style="width:980px">
+		    <tr border="0.5" style="font-size:8px;">
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                Inspector Signature
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                <img width="50" height="50" @(Model.inspector_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.inspector_signature != null ? Server.MapPath("~/"+Model.inspector_signature) : Server.MapPath("~/Content/image/blank.png"))"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                Approval Signature
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                <img width="50" height="50" @(Model.approval_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.approval_signature != null ? Server.MapPath("~/"+Model.approval_signature) : Server.MapPath("~/Content/image/blank.png"))"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr border="0.5" style="font-size:8px;">
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                PRINT NAME
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                @Model.inspector_name
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                PRINT NAME
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                @Model.approval_name
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr border="0.5" style="font-size:8px;">
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                DATE
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                @(Model.inspector_date != null ? Model.inspector_date.Value.ToShortDateString() : "")
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                DATE
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                @(Model.approval_date != null ? Model.approval_date.Value.ToShortDateString() : "")
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+	    </table>
+	</div>
+</div>

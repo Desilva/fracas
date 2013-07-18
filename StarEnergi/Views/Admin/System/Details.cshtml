@@ -1,0 +1,126 @@
+﻿@model StarEnergi.Models.system
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<script type="text/javascript">
+    function edit() {
+        $('#content').load('system/edit/'+ @Model.id);
+    }
+</script>
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>System</legend>
+
+    <div class="display-label">Nama</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nama)
+    </div>
+
+    <div class="display-label">Func Code</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.kode)
+    </div>
+
+    <div class="display-label">Func Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.funct_description)
+    </div>
+
+    <div class="display-label">Failure Scenario</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.failure_scenario)
+    </div>
+
+    <div class="display-label">Primary Impact</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.primary_impact)
+    </div>
+
+    <div class="display-label">Secondary Impact</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.secondary_impact)
+    </div>
+
+    <div class="display-label">Cons Econ</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.cons_econ)
+    </div>
+
+    <div class="display-label">Cons HS</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.cons_hs)
+    </div>
+
+    <div class="display-label">Cons Env</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.cons_env)
+    </div>
+
+    <div class="display-label">Cons Total</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.cons_total)
+    </div>
+
+    <div class="display-label">Likelihood</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.likelihood)
+    </div>
+
+    <div class="display-label">Crit Code</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.crit_code)
+    </div>
+
+    <div class="display-label">Ram Crit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit)
+    </div>
+
+    <div class="display-label">Exist Crit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.exist_crit)
+    </div>
+
+    <div class="display-label">H</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.h)
+    </div>
+
+    <div class="display-label">E</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.e)
+    </div>
+
+    <div class="display-label">Econ</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.econ)
+    </div>
+
+    <div class="display-label">prob</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.prob)
+    </div>
+
+    <div class="display-label">Ram Crit 1</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit_1)
+    </div>
+
+    <div class="display-label">Ram Crit 2</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit_2)
+    </div>
+
+    <div class="display-label">Ram Crit 3</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ram_crit_3)
+    </div>
+    <p>
+        <input type="button" value="Edit" onclick="edit()" />
+    </p>
+</fieldset>
+

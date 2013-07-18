@@ -1,0 +1,704 @@
+﻿@model StarEnergi.Models.pir
+                      
+<script type="text/javascript">
+
+    function verified(type, idPir,identity) {
+        debugger;
+        if (idPir == '0') {
+            alert('Save data first');
+            return;
+        }
+
+        if ($('#verified_desc').val() == '') {
+            alert('Field in part-E still empty');
+            return;
+        }
+
+        var r = confirm("Are you sure?");
+        if (r == true) {
+            var values;
+            values =
+            {
+                "id": '@Model.id',
+                "no": $('#pir_no').html(),
+                "type": '@Model.status',
+                "improvement_request": $('#improvement_request').val(),
+                "date_rise": $('#DateRaise_wrapper').val(),
+                "initiate_by": '@(ViewBag.requester != null ? ViewBag.requester : Session["username"])',
+                "title": $('#title_initiator').val(),
+                "reference": $('#reference').val(),
+                "procedure_reference": $('#procedure_reference').val(),
+                "target_completion_init": $('#target_completion_init_wrapper').val(),
+                "verified_desc": $('#verified_desc').val(),
+                "description": $('#description').val(),
+                "idRca": '-1',
+                "identity" : identity,
+                "pir_category":$('#pir_category:checked').val(),
+                "process_user":$('#process_user').val(),
+            }
+
+            $.post("Pir/verified", values, function (data) {
+                alert('Data berhasil di verified');
+                window.location.href = "pir";
+                //$('.loadSubmit').css("display", "none");
+            });
+        }
+        else {
+            return;
+        }
+
+    }
+
+
+    function sendToProcess(type,idPir,identity) {
+        
+        if(idPir == '0'){
+            alert('Save data first');
+            return;
+        }
+
+
+        var r = confirm("Are you sure? Check again your process owner.");
+        if (r == true) {
+            var values;
+            values =
+            {
+                "id": '@Model.id',
+                "no": $('#pir_no').html(),
+                "type": '@Model.status',
+                "improvement_request": $('#improvement_request').val(),
+                "date_rise": $('#DateRaise_wrapper').val(),
+                "initiate_by": '@(ViewBag.requester != null ? ViewBag.requester : Session["username"])',
+                "title": $('#title_initiator').val(),
+                "reference": $('#reference').val(),
+                "procedure_reference": $('#procedure_reference').val(),
+                "target_completion_init": $('#target_completion_init_wrapper').val(),
+                "verified_desc": $('#verified_desc').val(),
+                "description": $('#description').val(),
+                "idRca": '-1',
+                "identity":identity,
+                "pir_category":$('#pir_category:checked').val(),
+                "process_user":$('#process_user').val(),
+            }
+
+            $.post("Pir/sendToProcess", values, function (data) {
+                alert('Data terkirim');
+                window.location.href = "pir";
+                //$('.loadSubmit').css("display", "none");
+            });
+        }
+        else {
+            return;
+        }
+        
+    }
+
+    function save(type,idRca,identity) {
+        var values;
+		if ($('#pir_category:checked').val() == null) {
+            alert('Field category must be chosen');
+            return;
+        }
+        values =
+        {
+            "id": '@Model.id',
+            "no": $('#pir_no').html(),
+            "type": '@Model.status',
+            "improvement_request": $('#improvement_request').val(),
+            "date_rise": $('#DateRaise_wrapper').val(),
+            "initiate_by": '@(ViewBag.requester != null ? ViewBag.requester : Session["username"])',
+            "title": $('#title_initiator').val(),
+            "reference": $('#reference').val(),
+            "procedure_reference": $('#procedure_reference').val(),
+            "target_completion_init": $('#target_completion_init_wrapper').val(),
+            "verified_desc": $('#verified_desc').val(),
+            "description": $('#description').val(),
+            "idRca": idRca,
+            "identity":identity,
+            "pir_category":$('#pir_category:checked').val(),
+            "process_user":$('#process_user').val(),
+        }
+
+        $('.loadSubmit').css("display", "block");
+        $.post("Pir/UpdateInitiator", values, function (data) {
+            $('.loadSubmit').css("display", "none");
+            alert('Data tersimpan');
+            if (identity > 1) {
+                $('#contentEventLog').load('pir/pageInitiator/' + data);
+            }
+            $('#contentPirInitiatorList').load('pir/pageInitiator/' + data);
+        });
+    }
+</script>
+
+<table class="pir">
+    <tr>
+        <td rowspan="2">
+            <img src="../../../Content/image/logo-01-01.png"/>
+        </td>
+         <td rowspan="2" class="bold center" style="font-size: 30px;">
+            PERFORMANCE IMPROVEMENT REQUEST
+        </td>
+        <td class="bold center">
+            PIR No.
+        </td>
+    </tr>
+    
+    <tr>
+        <td class="center underline"><label id="pir_no">@Model.no</label></td>
+    </tr>
+</table>
+@{
+    if (Model.status == "VERIFIED")
+    {
+<table class="pir">
+    <tr>
+        <td class="vertical bold blues" rowspan="9"><div class="fitRotated"><div class="rotated">INITIATOR</div></div></td>
+        <td colspan="4" class="bold blues">
+                PART A - IMPROVEMENT REQUEST
+            &nbsp; &nbsp; &nbsp;
+            <span>[Category:@Model.pir_category]</span>
+            @*@Html.RadioButton("pir_category", "Human")
+            @Html.Label("Human")
+            @Html.RadioButton("pir_category", "Asset Loss")
+            @Html.Label("Asset Loss")
+            @Html.RadioButton("pir_category", "Management System")
+            @Html.Label("Management System")
+            @Html.RadioButton("pir_category", "Failure Asset")
+            @Html.Label("Failure Asset")*@
+        </td>
+    </tr>
+    <tr>
+        <td class="tdWidth" rowspan="5" colspan="2">
+                @Model.improvement_request
+        </td>
+        <td class="bluess">
+            Date Raise
+        </td>
+        <td>
+            @Model.date_rise.Value.ToString("dd MMMM yyy")
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Initiate by
+        </td>
+        <td>
+            @Model.initiate_by
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            PIR Title 
+        </td>
+        <td>
+            @Model.title
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Reference
+        </td>
+        <td>
+            @Model.reference
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Procedure Reference
+        </td>
+        <td>
+            @Model.procedure_reference
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Initiator Sign & Date
+        </td>
+        <td class="bluess">
+            KBPO Sign & Date
+        </td>
+        <td colspan="2" class="bluess">
+            Agree Target Completion Date
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Model.initiate_by, @Model.initiator_sign_date.Value.ToString("dd MMMM yyy")
+        </td>
+        <td>
+            @Model.kpbo_sign_date_init.Value.ToString("dd MMMM yyy")
+        </td>
+        <td colspan="2">
+            @Model.target_completion_init.Value.ToString("dd MMMM yyy")
+        </td>
+    </tr>
+</table>
+    }
+    else
+    {
+<table class="pir">
+    <tr>
+        <td class="vertical bold blues" rowspan="9"><div class="fitRotated"><div class="rotated">INITIATOR</div></div></td>
+        <td colspan="4" class="bold blues">
+                PART A - IMPROVEMENT REQUEST
+            &nbsp; &nbsp; &nbsp;
+            @Html.RadioButton("pir_category", "Human")
+            @Html.Label("Human")
+            @Html.RadioButton("pir_category", "Asset Loss")
+            @Html.Label("Asset Loss")
+            @Html.RadioButton("pir_category", "Management System")
+            @Html.Label("Management System")
+            @Html.RadioButton("pir_category", "Failure Asset")
+            @Html.Label("Failure Asset")
+
+            @*<input type="button" onclick="javascript:alert($('#pir_category:checked').val())" />*@
+        </td>
+    </tr>
+    <tr>
+        <td class="tdWidth" rowspan="5" colspan="2">
+                <textarea id="improvement_request">@Model.improvement_request</textarea>
+        </td>
+        <td class="bluess">
+            Date Raise
+        </td>
+        <td>
+        @{ if (Model.date_rise != null)
+           {
+                @(Html.Telerik().DatePicker()
+                    .Name("DateRaise")
+                    .InputHtmlAttributes(new { id = "DateRaise_wrapper" })
+                    .Value(@Model.date_rise)
+                )
+           }
+           else
+           {
+                @(Html.Telerik().DatePicker()
+                    .Name("DateRaise")
+                    .InputHtmlAttributes(new { id = "DateRaise_wrapper" })
+                    .Value(DateTime.Now.Date)
+                )
+           }
+        }
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Initiate by
+        </td>
+        <td>
+            @(ViewBag.requester != null ? ViewBag.requester : (Model.initiate_by != null ? Model.initiate_by : Session["username"]))
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            PIR Title 
+        </td>
+        <td>
+            <input id="title_initiator" type="text" value="@Model.title" />
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Reference 
+        </td>
+        <td>
+            <input id="reference" type="text" value="@(ViewBag.reference != null ? ViewBag.reference : Model.reference)" />
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Procedure Reference
+        </td>
+        <td>
+            @*<input id="procedure_reference" type="text" value="@Model.procedure_reference" />*@
+            @Html.DropDownList("procedure_reference")
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Initiator Sign & Date
+        </td>
+        <td class="bluess">
+            KBPO Sign & Date
+        </td>
+        <td colspan="2" class="bluess">
+            Agree Target Completion Date
+        </td>
+    </tr>
+    <tr>
+        <td>
+           @Session["username"], @DateTime.Now.ToShortDateString()
+        </td>
+        <td>
+            @DateTime.Now.Date.ToShortDateString()
+        </td>
+        <td colspan="2">
+        @{ if (Model.target_completion_init != null)
+           {
+                @(Html.Telerik().DatePicker()
+                    .Name("target_completion_init")
+                    .InputHtmlAttributes(new { id = "target_completion_init_wrapper" })
+                    .Value(Model.target_completion_init)
+                )
+           }
+           else
+           {
+                @(Html.Telerik().DatePicker()
+                    .Name("target_completion_init")
+                    .InputHtmlAttributes(new { id = "target_completion_init_wrapper" })
+                    .Value(DateTime.Now.Date)
+                )
+           }
+        }
+        </td>
+    </tr>
+</table>
+    }
+}
+
+<table class="pir">
+    <tr>
+        <td class="vertical bold blues" rowspan="17"><div class="fitRotated"><div class="rotated">PROCESS OWNER</div></div></td>
+        <td colspan="4" class="bold blues">
+                PART B - RECORD INVESTIGATION INTO ROOT CAUSE. Describe extend of the problem
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            @Model.desc_prob
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bluess">
+                Investigator Sign
+        </td>
+        <td colspan="2" class="bluess">
+            Date
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" >
+            
+        </td>
+        <td colspan="2">
+            @Model.investigator_date
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4"  class="bold blues">
+                PART C - IMPROVEMENT PLAN
+        </td>
+    </tr>
+    <tr>
+        <td class="tdWidth" rowspan="6" colspan="2">
+            @Model.improvement_plant
+        </td>
+        <td class="bluess">
+            Start implement date
+        </td>
+        <td>
+            @Model.start_implement_date
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Process Owner
+        </td>
+        <td>
+            @Model.process_owner
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Target Completion 
+        </td>
+        <td>
+            @Model.target_completion_process
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Action by 
+        </td>
+        <td>
+            @Model.action_by
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Require document changes? (Y/N)
+        </td>
+        <td>
+            @Model.require_dokument
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            Hire require? Y/N
+        </td>
+        <td>
+            @Model.hira_require
+        </td>
+    </tr>
+    <tr>
+        <td class="bluess">
+            KBPO Sign
+        </td>
+        <td class="bluess">
+            Date
+        </td>
+        <td class="bluess">
+            Review by Initiator
+        </td>
+        <td class="bluess">
+            Date
+        </td>
+    </tr>
+    <tr>
+        <td>
+            
+        </td>
+        <td>
+            @Model.kpbo_sign_date_process
+        </td>
+        <td>
+            @Model.initiate_by
+        </td>
+        <td>
+            
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4"  class="bold blues">
+                PART D - RESULTS OF ACTION TAKEN
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4" >
+                @Model.result_of_action
+        </td>
+    </tr><tr>
+        <td colspan="2" class="bluess">
+            KBPO Sign
+        </td>
+        <td colspan="2" class="bluess">
+            Date
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            
+        </td>
+        <td colspan="2">
+            @Model.kpbo_sign_date_process_result
+        </td>
+    </tr>
+</table>
+
+@{
+    if (Model.status == "FROM PROCESS")
+    {
+<table class="pir">
+    <tr>
+        <td class="vertical bold blues" rowspan="5"><div class="fitRotated"><div class="rotated">INITIATOR</div></div></td>
+        <td colspan="4" class="bold blues">
+                PART E - VERIFIED BY INITIATOR
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <textarea id="verified_desc">@Model.verified_desc</textarea>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 260px;" class="bluess">
+            Initiator Sign
+        </td>
+        <td style="width: 260px;" class="bluess">
+            Date
+        </td>
+        <td style="width: 230px;" class="bluess">
+            Review by Mgmt.Rep.(Audit Only) 
+        </td>
+        <td style="width: 220px;" class="bluess">
+            Date
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Session["username"]
+        </td>
+        <td>
+            @{ if (Model.initiator_sign_date != null)
+               {
+                    @(Html.Telerik().DatePicker()
+                        .Name("InitiatorSignDateVerified")
+                        .InputHtmlAttributes(new { id = "InitiatorSignDateVerified_wrapper" })
+                        .Value(@Model.date_rise)
+                    )
+               }
+               else
+               {
+                    @(Html.Telerik().DatePicker()
+                        .Name("InitiatorSignDateVerified")
+                        .InputHtmlAttributes(new { id = "InitiatorSignDateVerified_wrapper" })
+                        .Value(DateTime.Now.Date)
+                    )
+               }
+            }
+        </td>
+        <td>
+            
+        </td>
+        <td>
+            @{ if (Model.review_date != null)
+                 {
+                    @(Html.Telerik().DatePicker()
+                        .Name("ReviewDateVerified")
+                        .InputHtmlAttributes(new { id = "ReviewDateVerified_wrapper" })
+                        .Value(@Model.date_rise)
+                    )
+                 }
+                 else
+                 {
+                    @(Html.Telerik().DatePicker()
+                        .Name("ReviewDateVerified")
+                        .InputHtmlAttributes(new { id = "ReviewDateVerified_wrapper" })
+                        .Value(DateTime.Now.Date)
+                    )
+                 }
+            }
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4" class="bluess">
+            Initiator send the final hard copy PIR to DCC for closing
+        </td>
+    </tr>
+</table>
+    }
+    else
+    {
+<table class="pir">
+    <tr>
+        <td class="vertical bold blues" rowspan="5"><div class="fitRotated"><div class="rotated">INITIATOR</div></div></td>
+        <td colspan="4" class="bold blues">
+                PART E - VERIFIED BY INITIATOR
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            @Model.verified_desc
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 260px;" class="bluess">
+            Initiator Sign
+        </td>
+        <td style="width: 260px;" class="bluess">
+            Date
+        </td>
+        <td style="width: 230px;" class="bluess">
+            Review by Mgmt.Rep.(Audit Only) 
+        </td>
+        <td style="width: 220px;" class="bluess">
+            Date
+        </td>
+    </tr>
+    <tr>
+        <td>
+            
+        </td>
+        <td>
+            @{if (@Model.initiator_sign_date != null)
+              {
+                    @Model.initiator_sign_date.Value.ToShortDateString()
+                }
+            }
+        </td>
+        <td>
+            
+        </td>
+        <td>
+            @Model.review_date 
+        </td>
+    </tr>
+</table> 
+    }
+}
+<p>Process Owner User: 
+@{
+    if ((Model.status == "VERIFIED") || (Model.status == "FROM PROCESS"))
+    {
+        @Html.DropDownList("process_user", null, new { disabled = "disabled"})
+    }
+    else
+    {
+        @Html.DropDownList("process_user")
+    }
+}
+</p>
+<br/> 
+<b>Note</b><br/> 
+<textarea id="description">@Model.description</textarea><br/><br/>
+@{ 
+    if (Model.status != "VERIFIED")
+    {
+<input type="button" onclick="save('@Model.status','@ViewBag.idRca','@ViewBag.identity')" value="Save" />
+<input type="button" onclick="sendToProcess('@Model.status','@Model.id','@ViewBag.identity')" value="Send to Process" />
+    }
+
+    if (Model.status == "FROM PROCESS")
+    {
+<input type="button" onclick="verified('@Model.status','@Model.id','@ViewBag.identity')" value="Verified" />
+    }
+}
+<button type="button" value="Print">
+    @Html.ActionLink("Print", "printPIR", "PIR", new {id = Model.id},  new { target = "_blank" })
+</button>
+@(Html.Telerik().Upload()
+    .Name("attachment")
+    .Multiple(true)
+    .Async(async => async
+        .Save("attachment", "pir", new { id = Model.id })
+        .AutoUpload(true)
+        )
+    .ClientEvents(events => events
+        .OnSuccess("onSuccessAttachment"))
+    .ShowFileList(false)
+)
+<br/>
+<b>Attachment(s):</b>
+<div class="attachment" id="atch">
+
+</div>    
+<br/>
+<script>
+    function onSuccessAttachment(data) {
+        var dat = jQuery.parseJSON(data.response);
+        var has = data.response.files.split(";;");
+        $('#atch').empty();
+        for (var f in has) {
+            if (has[f] != "") {
+                $('#atch').append('<a href="' + data.response.path + has[f] + '">' + has[f] + '</a><br/>');
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        bindatch();
+    });
+
+    function bindatch() {
+        $.post("pir/Atch", { id: '@Model.id' }, function (data) {
+            var has = data.files.split(";;");
+            $('#atch').empty();
+            for (var f in has) {
+                if (has[f] != "") {
+                    $('#atch').append('<a href="' + data.path + has[f] + '">' + has[f] + '</a><br/>');
+                }
+            }
+        });
+    }
+</script>

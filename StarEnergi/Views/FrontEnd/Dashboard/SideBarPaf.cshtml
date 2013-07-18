@@ -1,0 +1,39 @@
+﻿<script type="text/javascript">
+    function generateGrafik(id) {
+        var chart = $("#chartDouble").data("tChart");
+        if ($('.select-filter').val() == 'year') {
+            chart.rebind({ id_area: id, from: $("#fromYear").val(), to: $("#toYear").val(), filter: 'year', type: 'paf' });
+            $("#chartMa").show();
+        } else {           
+            chart.rebind({ id_area: id, year: $("#year").val(), from: $("#fromMonth").val(), to: $("#toMonth").val(), filter: 'month', type: 'paf' });
+            $("#chartMa").show();
+        }
+    }
+</script>
+<div class="history">
+	<div class="title"><b>History</b></div>
+	<div class="form filter">
+		<div class="row">
+			<select class="select-filter" name="by" id="by" onchange="changeForm(this.options[selectedIndex].value)">
+                <option value="year">by year</option>
+                <option value="month">by month</option>
+            </select>		
+            <span class="filter-year">
+				@Html.DropDownList("fromYear")				
+                to
+				@Html.DropDownList("toYear")			
+             </span>
+			 <span class="filter-month" style="display:none;">
+				@Html.DropDownList("year")			
+                @Html.DropDownList("fromMonth")
+                to
+				@Html.DropDownList("toMonth")	
+             </span><br/>
+            <input id="buttonSub" type="submit" value="submit" onclick="generateGrafik('@(ViewBag.id)')" />
+            <div id="chartMa" style="display:none">
+                <h5 class="titleChartDashboard">Grafik PAF</h5>
+                @Html.Partial("ChartDouble");    
+            </div>
+            </div>
+	</div>
+</div>

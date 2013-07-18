@@ -1,0 +1,57 @@
+.speedo-double
+{
+	position:relative; 
+	background: url('image/speedomtr/Untitled-3-04.png') no-repeat center transparent;
+	width:145px; 
+	height:108px;
+	margin: 0 auto;
+}
+
+.speedo-single
+{
+	position:relative; 
+	background: url('image/speedomtr/Untitled-3-03.png') no-repeat center transparent;
+	width:145px; 
+	height:108px;
+	margin: 0 auto;
+}
+
+.bar-big
+{
+	position:absolute; 
+	top:10px;
+	left:10px;
+}
+
+.bar-small
+{
+	position:absolute; 
+	top:35px;
+	left:37px;
+}
+
+.value-big
+{
+	position:absolute; 
+	width:60px;
+	text-align:center;
+	top:58px;
+	left:42px;
+	color:#fff;
+	font-size: 18px;	
+}
+
+.value-small
+{
+	position:absolute; 
+	width:32px;
+	text-align:center;
+	top:84px;
+	left:55px;
+	color:#fff;
+	font-size: 12px;	
+}
+
+.speedo-title { position: relative; }
+.last-update { font-size: 70%; color: #ccc; position: absolute; bottom: 0px; right: 10px; }
+/*.last-update { position: absolute; top: 0px; right: 0px; }*/

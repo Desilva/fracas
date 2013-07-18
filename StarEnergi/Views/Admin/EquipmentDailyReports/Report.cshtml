@@ -1,0 +1,67 @@
+﻿@model IEnumerable<StarEnergi.Models.equipment_daily_report>
+@{
+    ViewBag.Title = "Add Incident Report";
+}
+<script type="text/javascript">
+    function OnRowDataBoundEqEdr(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="EditEdr(' + dataItem.id + ');" title="Edit Equipment Daily Report" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>';
+        var d = new Date();
+        row.cells[0].innerHTML = templateComplete;
+        row.cells[1].innerHTML = dataItem.date.toDateString();
+    }
+
+    function EditEdr(id) {
+        alert('c');
+        $('#contentEventLog').load('EquipmentDailyReport/AddEquipmentDailyReport', { 'id': id });
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+    #Window .t-header {
+        background:#b9b7b7;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.EquipmentReportEntity>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("equipmentDailyReport")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxEquipmentDailyReport", "EquipmentDailyReport")
+                .Select("_SelectAjaxEquipmentDailyReport", "EquipmentDailyReport");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.date).Title("Date");
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEqEdr")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+)

@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Illness Report";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+<script type="text/javascript">
+
+    function addIllnessReport() {
+        $('#content').load('IllnessReport/AddIllnessReport');
+    }
+
+    function showIllnessReport() {
+        $('#illnessReport').load('IllnessReport/Report');
+    }
+
+    $(document).ready(function () {
+        showIllnessReport();
+    });
+
+</script>
+
+<h2 class="adminH2">Illness Report</h2>
+
+<div>
+    <input type="button" id="addIllnessReport" value="Add Illness Report" onclick="addIllnessReport()"/>
+</div>
+<br/>
+<div id="illnessReport">
+</div>
+<br />

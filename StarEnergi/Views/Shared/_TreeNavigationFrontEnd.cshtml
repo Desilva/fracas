@@ -1,0 +1,220 @@
+﻿@using StarEnergi
+@model IEnumerable<StarEnergi.Models.plant>
+<script type="text/javascript">
+    function onSelect(e) {
+        var treeview = $('#TreeSBS').data('tTreeView');
+        var value = treeview.getItemValue(e.item).split(';');
+        if ('@Config.menu' == '@Config.MenuFrontEnd.EQRELCHAR') {
+            if (value[0] == '@Config.TreeType.SYSTEM') {
+                $('#content').load('EqRelChar/Details/' + value[1]);
+            }
+        } else if ('@Config.menu' == '@Config.MenuFrontEnd.PLANTAVAILBILITY') {
+            if (value[0] == '@Config.TreeType.AREA') {
+                $('#content').load('PlantAvail/DetailsArea/' + value[1]);
+            } else if (value[0] == '@Config.TreeType.UNIT') {
+                $('#content').load('PlantAvail/DetailsUnit/' + value[1]);
+            } else if (value[0] == '@Config.TreeType.SYSTEM') {
+                $('#content').load('PlantAvail/DetailsSystem/' + value[1]);
+            }
+        } else if ('@Config.menu' == '@Config.MenuFrontEnd.READINESSNAVIGATOR') {
+            if (value[0] == '@Config.TreeType.AREA') {
+                $('#content').load('ReadinessNavigator/DetailsArea/' + value[1]);
+            } else if (value[0] == '@Config.TreeType.UNIT') {
+                $('#content').load('ReadinessNavigator/DetailsUnit/' + value[1]);
+            } else if (value[0] == '@Config.TreeType.SYSTEM') {
+                $('#content').load('ReadinessNavigator/DetailsSystem/' + value[1]);
+            }
+        } else if ('@Config.menu' == '@Config.MenuFrontEnd.ECA') {
+            if (value[0] == '@Config.TreeType.AREA') {
+                $('#content').load('Eca/DetailsArea/' + value[1]);
+            }
+        } else if ('@Config.menu' == '@Config.MenuFrontEnd.FSCA') {
+            if (value[0] == '@Config.TreeType.AREA') {
+                $('#content').load('Fsca/DetailsArea/' + value[1]);
+            }
+        } else if ('@Config.menu' == '@Config.MenuFrontEnd.FRACAS') {
+            if (value[0] == '@Config.TreeType.EQUIPMENTS') {
+                $('#content').load('FracasHistory/DetailsEquipment/' + value[1]);
+            }
+        }
+    }
+</script>
+<div id="tree" style="width:270px">
+   @(
+    Html.Telerik().TreeView()
+        .Name("TreeSBS")
+        .BindTo(Model, mappings =>
+        {
+            if ((Config.menu == Config.MenuFrontEnd.EQRELCHAR) || (Config.menu == Config.MenuFrontEnd.PLANTAVAILBILITY) || (Config.menu == Config.MenuFrontEnd.READINESSNAVIGATOR))
+            {
+                mappings.For<StarEnergi.Models.plant>(binding => binding
+                        .ItemDataBound((item, plant) =>
+                        {
+                            item.Text = plant.nama;
+                            item.Value = Config.TreeType.PLANT + ";" + plant.id.ToString();
+                            item.Expanded = true;
+                            if (plant.focs.Count != 0)
+                            {
+                                item.ImageUrl = ("~/Content/image/folder.png");
+                            }
+                            else
+                                item.ImageUrl = ("~/Content/image/file.png");
+
+                        })
+                        .Children(plant => plant.focs));
+
+                mappings.For<StarEnergi.Models.foc>(binding => binding
+                        .ItemDataBound((item, foc) =>
+                        {
+                            item.Text = foc.nama;
+                            item.Value = Config.TreeType.AREA + ";" + foc.id.ToString();
+                            if (foc.units.Count != 0)
+                            {
+                                item.ImageUrl = ("~/Content/image/folder.png");
+                            }
+                            else
+                                item.ImageUrl = ("~/Content/image/file.png");
+
+                        })
+                        .Children(foc => foc.units));
+
+                mappings.For<StarEnergi.Models.unit>(binding => binding
+                        .ItemDataBound((item, unit) =>
+                        {
+                            item.Text = unit.nama;
+                            item.Value = Config.TreeType.UNIT + ";" + unit.id.ToString();
+                            if (unit.systems.Count != 0)
+                            {
+                                item.ImageUrl = ("~/Content/image/folder.png");
+                            }
+                            else
+                                item.ImageUrl = ("~/Content/image/file.png");
+                        })
+                        .Children(unit => unit.systems));
+
+                mappings.For<StarEnergi.Models.system>(binding => binding
+                       .ItemDataBound((item, system) =>
+                       {
+                           item.Text = system.nama;
+                           item.Value = Config.TreeType.SYSTEM + ";" + system.id.ToString();
+                           item.ImageUrl = ("~/Content/image/file.png");
+                       }));
+                
+            }
+            else if ((Config.menu == Config.MenuFrontEnd.ECA) || (Config.menu == Config.MenuFrontEnd.FSCA))
+            {
+                mappings.For<StarEnergi.Models.plant>(binding => binding
+                        .ItemDataBound((item, plant) =>
+                        {
+                            item.Text = plant.nama;
+                            item.Value = Config.TreeType.PLANT + ";" + plant.id.ToString();
+                            item.Expanded = true;
+                            if (plant.focs.Count != 0)
+                            {
+                                item.ImageUrl = ("~/Content/image/folder.png");
+                            }
+                            else
+                                item.ImageUrl = ("~/Content/image/file.png");
+
+                        })
+                        .Children(plant => plant.focs));
+
+                mappings.For<StarEnergi.Models.foc>(binding => binding
+                        .ItemDataBound((item, foc) =>
+                        {
+                            item.Text = foc.nama;
+                            item.Value = Config.TreeType.AREA + ";" + foc.id.ToString();
+                            item.ImageUrl = ("~/Content/image/file.png");
+
+                        })); 
+            }
+            else
+            {
+                mappings.For<StarEnergi.Models.plant>(binding => binding
+                        .ItemDataBound((item, plant) =>
+                        {
+                            item.Text = plant.nama;
+                            item.Value = Config.TreeType.PLANT + ";" + plant.id.ToString();
+                            item.Expanded = true;
+                            if (plant.focs.Count != 0)
+                            {
+                                item.ImageUrl = ("~/Content/image/folder.png");
+                            }
+                            else
+                                item.ImageUrl = ("~/Content/image/file.png");
+
+                        })
+                        .Children(plant => plant.focs));
+
+                mappings.For<StarEnergi.Models.foc>(binding => binding
+                        .ItemDataBound((item, foc) =>
+                        {
+                            item.Text = foc.nama;
+                            item.Value = Config.TreeType.AREA + ";" + foc.id.ToString();
+                            if (foc.units.Count != 0)
+                            {
+                                item.ImageUrl = ("~/Content/image/folder.png");
+                            }
+                            else
+                                item.ImageUrl = ("~/Content/image/file.png");
+
+                        })
+                        .Children(foc => foc.units));
+
+                mappings.For<StarEnergi.Models.unit>(binding => binding
+                        .ItemDataBound((item, unit) =>
+                        {
+                            item.Text = unit.nama;
+                            item.Value = Config.TreeType.UNIT + ";" + unit.id.ToString();
+                            if (unit.systems.Count != 0)
+                            {
+                                item.ImageUrl = ("~/Content/image/folder.png");
+                            }
+                            else
+                                item.ImageUrl = ("~/Content/image/file.png");
+                        })
+                        .Children(unit => unit.systems));
+
+                mappings.For<StarEnergi.Models.system>(binding => binding
+                       .ItemDataBound((item, system) =>
+                       {
+                           item.Text = system.nama;
+                           item.Value = Config.TreeType.SYSTEM + ";" + system.id.ToString();
+                           if (system.equipment_groups.Count != 0)
+                           {
+                               item.ImageUrl = ("~/Content/image/folder.png");
+                           }
+                           else
+                               item.ImageUrl = ("~/Content/image/file.png");
+                       })
+                       .Children(system => system.equipment_groups));
+
+                mappings.For<StarEnergi.Models.equipment_groups>(binding => binding
+                      .ItemDataBound((item, equipment_groups) =>
+                      {
+                          item.Text = equipment_groups.nama;
+                          item.Value = Config.TreeType.EQUIPMENT_GROUP + ";" + equipment_groups.id.ToString();
+                          if (equipment_groups.equipments.Count != 0)
+                          {
+                              item.ImageUrl = ("~/Content/image/folder.png");
+                          }
+                          else
+                              item.ImageUrl = ("~/Content/image/file.png");
+                      })
+                      .Children(equipment_groups => equipment_groups.equipments));
+
+                mappings.For<StarEnergi.Models.equipment>(binding => binding
+                     .ItemDataBound((item, equipment) =>
+                     {
+                         item.Text = equipment.tag_num;
+                         item.Value = Config.TreeType.EQUIPMENTS + ";" + equipment.id.ToString();
+                         item.ImageUrl = ("~/Content/image/file.png");
+                     }));
+            }
+        })
+        .ClientEvents(events =>
+            events.OnSelect("onSelect")
+        )
+   )
+<div class="borderTree"></div>
+</div>

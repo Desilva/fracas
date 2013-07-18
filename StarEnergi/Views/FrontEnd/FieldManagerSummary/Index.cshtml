@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Summary";
+}
+<script type="text/javascript">
+    function showSheKPI() {
+        $('#sheKPI').load('FieldManagerSummary/sheKPI');
+    }
+
+    function showDailyLogKPI() {
+        $('#dailyLogKPI').load('FieldManagerSummary/dailyLogKPI');
+    }
+
+    function showPirKPI() {
+        $('#pirKPI').load('FieldManagerSummary/pirKPI');
+    }
+
+    function showSheObs() {
+        $('#sheObs').load('FieldManagerSummary/sheObsReport');
+    }
+
+    function showPirReport() {
+        $('#pirReport').load('FieldManagerSummary/pirReport');
+    }
+
+    $(document).ready(function () {
+        showSheKPI();
+        showDailyLogKPI();
+        showPirKPI();
+        showSheObs();
+        showPirReport();
+    });
+
+</script>
+<div id="contentEventLog">
+    <h2 class="adminH2">Summary</h2>
+    <div id="sheKPI" style="width:100%">
+    </div>
+    <br />
+    <hr />
+    <div id="dailyLogKPI" style="width:100%">
+    </div>
+    <br />
+    <hr />
+    <div id="pirKPI" style="width:100%">
+    </div>
+    <br />
+    <hr />
+    <div id="sheObs">
+    </div>
+    <br />
+    <hr />
+    <div id="pirReport">
+    </div>
+    <br />
+    <hr />
+</div>

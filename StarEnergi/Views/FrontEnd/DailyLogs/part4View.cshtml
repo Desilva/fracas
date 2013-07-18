@@ -1,0 +1,31 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    List<StarEnergi.Models.daily_log_sags> li = ViewBag.sags as List<StarEnergi.Models.daily_log_sags>;
+    string lastUnit = "";
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<div class="container">
+    <table class="no-border-last-row">
+		<tr>
+			<td class="time">&nbsp;</td>
+			<td colspan="2"><b>SAGS Activity:</b></td>
+		</tr>
+        @foreach (StarEnergi.Models.daily_log_sags sags in li) {
+            if (lastUnit != sags.sags_unit) {
+                lastUnit = sags.sags_unit;
+                <tr>
+			        <td class="first-col">@sags.sags_time</td>
+			        <td class="unit">@sags.sags_unit -></td>
+			        <td><li>@sags.sags_activity</li></td>
+		        </tr>
+            } else {
+                <tr>
+			        <td class="first-col">@sags.sags_time</td>
+			        <td class="unit">&nbsp;</td>
+			        <td><li>@sags.sags_activity</li></td>
+		        </tr>
+            }  
+        }
+	</table>
+</div>

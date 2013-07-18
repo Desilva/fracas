@@ -1,0 +1,69 @@
+﻿/* ------------------------------
+Struktur Halaman
+------------------------------ */
+#container {
+    margin:auto;
+    margin-left:150px;
+    margin-top:-40px;
+    width:900px;
+    display:block;
+}
+div.clear{
+    clear:both;
+}
+h1{
+    font-size:1.9em;
+    color:#494949;
+}
+h2{
+    font-size:1.6em;
+}
+a{
+    color:#29b8f3;
+    text-decoration:none;
+}
+a:hover{
+    color:#D65703;
+}
+#footer{
+    padding:5px 20px;
+    text-align:right;
+}
+/* ------------------------------
+Konten = Tabs + Konten Tab
+------------------------------ */
+#konten{
+    padding:20px;
+    background:#FFF;
+    color:#555;
+}
+#konten p{
+    text-indent:15px;
+    line-height:165%;
+}
+/* ------------------------------
+Navigasi Tabs
+------------------------------ */
+ul#nav {
+    padding:20px 5px 10px 0;
+}
+ul#nav li{
+    display:inline;
+    float:left;
+    position:relative;
+    margin-right:5px;
+}
+ul#nav li a{
+    background:#a5a5a5;
+    padding:10px 25px;
+    color:#FFF;
+    text-decoration:none;
+    font-weight:bold;display: block;
+}
+ul#nav li a:hover{
+    background:#29b8f3;
+}
+ul#nav li a.active, ul#nav li a.active:hover{
+    background:#FFF;
+    color:#555;
+}

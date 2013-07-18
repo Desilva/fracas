@@ -1,0 +1,386 @@
+﻿@model StarEnergi.Models.PrintIIRModel
+@{ int i = 0; }
+<table>
+    <tr>
+        <td width="20%">
+            <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+        </td>
+        <td width="80%">
+            <h2>Star Energy Geothermal (Wayang Windu) Limited.</h2>
+        </td>
+    </tr>
+</table>
+<br />
+<h2 style="text-align:center"><b>INCIDENT INVESTIGATION REPORT</b></h2>
+<div id="content-inc">
+<h3> I. General Information</h3><br />
+<table id="tabGenInfo" class="tabs" style="width:750px" cellspacing="3" cellpadding="3"  style="text-align:left;font-size:9px">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td colspan="6" class="right" style="width:33%">
+                <b>Business Unit / Facility</b><br />
+                @Model.facility
+            </td>
+            <td colspan="6" class="right" style="width:33%">
+                <b>Title</b><br />
+                @Model.title
+            </td>
+            <td colspan="6" style="width:33%">
+                <b>Reference Number</b><br />
+                @Model.reference_number
+            </td>
+        </tr>
+        <tr border="1">
+            <td colspan="6" class="right" style="width:33%">
+                <b>Date/Time of Incident</b><br />
+                @Model.date_incident.ToString()
+            </td>
+            <td colspan="6" class="right" style="width:33%">
+                <b>Incident Location</b><br />
+                @Model.incident_location
+            </td>
+            <td colspan="6" style="width:33%">
+                <b>Incident Type</b><br />
+                @Model.incident_type
+            </td>
+        </tr>
+        <tr border="1">
+            <td colspan="6" class="right" style="width:33%">
+                <b>Actual Loss Severity</b><br />
+                @Model.actual_loss
+            </td>
+            <td colspan="6" class="right" style="width:33%">
+                <b>Potential Loss Severity</b><br />
+                @Model.potential_loss
+            </td>
+            <td colspan="6" style="width:33%">
+                <b>Probability of Recurrence</b><br />
+                @Model.probability
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table border="0">
+    <tr>
+        <td><h3> II. Factual Information</h3></td>
+    </tr>
+    <tr style="text-align:left;font-size:6px">
+        <td>(Describe the events and actions before, during, and after the incident (who, what, how, when, & why). Include pertinent information related to incident. Attach additional pages if necessary)</td>
+    </tr>
+</table>
+<table id="tabFacInfo" class="tabs" style="width:750px" cellspacing="3" cellpadding="3">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td style="text-align:left;font-size:9px">
+                @{int countCol = 0; int countRow = 0;}
+                @if (Model.factual_information != null) {
+                    foreach (char a in Model.factual_information){if (a == '\n'){countRow++;countCol=0;<br />}
+                    else
+                    {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
+                    if (Model.factual_information.Length / 117 < 10 - countRow)
+                    {
+                        for (int b = 0; b < 10 - countRow - Model.factual_information.Length / 117; b++)
+                        {
+                            <br /><text>&nbsp;</text>
+                        }
+                    }
+                } else {
+                    for (int b = 0; b < 10; b++)
+                    {
+                        <br /><text>&nbsp;</text>
+                    }  
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table border="0">
+    <tr>
+        <td width="28%"><h3> III. Immediate Actions</h3></td>
+        <td style="text-align:left;font-size:6px">(to prevent recurrence)</td>
+    </tr>
+</table>
+<table id="tabImAct" class="tabs" style="width:750px" cellspacing="3" cellpadding="3">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td style="text-align:left;font-size:9px">
+                @{countCol = 0; countRow = 0;}
+                @if (Model.immediate_action != null) {
+                    foreach (char a in Model.immediate_action){if (a == '\n'){countRow++;countCol=0;<br />}
+                    else
+                    {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
+                    if (Model.immediate_action.Length / 117 < 7 - countRow)
+                    {
+                        for (int b = 0; b < 7 - countRow - Model.immediate_action.Length / 117; b++)
+                        {
+                            <br /><text>&nbsp;</text>
+                        }
+                    }
+                } else {
+                    for (int b = 0; b < 7; b++)
+                    {
+                        <br /><text>&nbsp;</text>
+                    }
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table border="0">
+    <tr>
+        <td width="28%"><h3> IV. Conclusions</h3></td>
+        <td style="text-align:left;font-size:6px">(List Immediate Causes, Basic Causes and Other Observations.)</td>
+    </tr>
+</table>
+<table id="tabConc" class="tabs" style="width:750px" cellspacing="3" cellpadding="3">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td>
+                <table border="0">
+                    <tr>
+                        <td width="25%">
+                            Immediate Causes
+                        </td>
+                        <td style="text-align:left;font-size:6px">
+                            (These include <b>acts</b> [personal actions] and/or <b>conditions</b> [jobsite circumstances]. Attach additional pages if necessary)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:left;font-size:9px">
+                            @{countCol = 0; countRow = 0;}
+                            @if (Model.immediate_causes != null) {
+                                foreach (char a in Model.immediate_causes){if (a == '\n'){countRow++;countCol=0;<br />}
+                                else
+                                {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
+                                if (Model.immediate_causes.Length / 117 < 4 - countRow)
+                                {
+                                    for (int b = 0; b < 4 - countRow - Model.immediate_causes.Length / 117; b++)
+                                    {
+                                        <br /><text>&nbsp;</text>
+                                    }
+                                }
+                            } else {
+                                for (int b = 0; b < 4; b++)
+                                {
+                                    <br /><text>&nbsp;</text>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr border="1">
+            <td>
+                <table border="0">
+                    <tr>
+                        <td width="25%">
+                            Basic Causes
+                        </td>
+                        <td style="text-align:left;font-size:6px">
+                            (These include the <b>personal factors</b> and/or <b>job factors</b> which allow the immediate causes to occur. Attach additional pages if necessary)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:left;font-size:9px">
+                            @{countCol = 0; countRow = 0;}
+                            @if (Model.basic_causes != null) {
+                                foreach (char a in Model.basic_causes){if (a == '\n'){countRow++;countCol=0;<br />}
+                                else
+                                {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
+                                if (Model.basic_causes.Length / 117 < 4 - countRow)
+                                {
+                                    for (int b = 0; b < 4 - countRow - Model.basic_causes.Length / 117; b++)
+                                    {
+                                        <br /><text>&nbsp;</text>
+                                    }
+                                }
+                            } else {
+                                for (int b = 0; b < 4; b++)
+                                {
+                                    <br /><text>&nbsp;</text>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr border="1">
+            <td>
+                <table border="0">
+                    <tr>
+                        <td width="27%">
+                            Additional Observations
+                        </td>
+                        <td style="text-align:left;font-size:6px">
+                            (List additional observations related to the incident. Attach additional pages if necessary)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:left;font-size:9px">
+                            @{countCol = 0; countRow = 0;}
+                            @if (Model.additional_observation != null) {
+                                foreach (char a in Model.additional_observation){if (a == '\n'){countRow++;countCol=0;<br />}
+                                else
+                                {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
+                                if (Model.additional_observation.Length / 117 < 4 - countRow)
+                                {
+                                    for (int b = 0; b < 4 - countRow - Model.additional_observation.Length / 117; b++)
+                                    {
+                                        <br /><text>&nbsp;</text>
+                                    }
+                                }
+                            } else {
+                                for (int b = 0; b < 4; b++)
+                                {
+                                    <br /><text>&nbsp;</text>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr border="1">
+            <td>
+                <table border="0">
+                    <tr>
+                        <td width="25%">
+                            Cost Estimate
+                        </td>
+                        <td style="text-align:left;font-size:6px">
+                            (Estimated cost for medical treatment, rehabilitation, damage to property, loss to process, etc.)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:left;font-size:9px">
+                            @{countCol = 0; countRow = 0;}
+                            @if (Model.cost_estimate != null) {
+                                foreach (char a in Model.cost_estimate){if (a == '\n'){countRow++;countCol=0;<br />}
+                                else
+                                {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
+                                if (Model.cost_estimate.Length / 117 < 4 - countRow)
+                                {
+                                    for (int b = 0; b < 4 - countRow - Model.cost_estimate.Length / 117; b++)
+                                    {
+                                        <br /><text>&nbsp;</text>
+                                    }
+                                }
+                            } else {
+                                for (int b = 0; b < 4; b++)
+                                {
+                                    <br /><text>&nbsp;</text>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table border="0">
+    <tr>
+        <td><h3> V. Recommendations</h3></td>
+    </tr>
+    <tr>
+        <td style="text-align:left;font-size:6px">(List suggested actions to address immediate and basics causes and additional observations. Who, does what, and when. Attach additional pages if necessary)</td>
+    </tr>
+</table>
+<table id="tabRec" class="tabs" style="width:750px" cellspacing="3" cellpadding="3" style="text-align:left;font-size:9px">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td width="5%">No</td>
+            <td width="55%">Description</td>
+            <td width="15%">Who / PIC / Dept / Sect</td>
+            <td width="15%">Completion Date</td>
+            <td width="10%">PIR Number</td>
+        </tr>
+        @foreach (StarEnergi.Models.iir_recommendations rec in Model.iir_recommendations)
+        {
+            <tr border="1">
+                <td>@(++i)</td>
+                <td>@rec.description</td>
+                <td>@rec.PIC</td>
+                <td>@rec.completion_date.Value.ToShortDateString()</td>
+                <td>@rec.pir_number</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<table id="tabApp" class="tabs" style="width:750px" cellspacing="3" cellpadding="3" style="text-align:left;font-size:9px">
+    <tbody style="width:100%">
+        <tr border="1">
+            <td style="width:16.67%" class="right"><b>Investigator Signature</b></td>
+            <td style="width:16.67%" class="right">
+                <table>
+                    <tr border="0">
+                        <td>
+                            @if (Model.investigator_approve != null) {
+                                <img width="50" height="50" @(Model.investigator_approve != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.investigator_approve != null ? Server.MapPath("~/"+Model.investigator_approve) : Server.MapPath("~/Content/image/blank.png"))"/>
+                            }
+                        </td>
+                    </tr>
+                    <tr border =" 0">
+                        <td style="text-align:left;font-size:9px">
+                            @Model.investigator
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:16.67%" class="right" rowspan="2"><b>Recieved by<br />Safety Supervisor</b></td>
+            <td style="width:16.67%" class="right">
+                <table>
+                    <tr border="0">
+                        <td>
+                            @if (Model.loss_control_approve != null) {
+                                <img width="50" height="50" @(Model.loss_control_approve != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.loss_control_approve != null ? Server.MapPath("~/"+Model.loss_control_approve.Substring(1)) : Server.MapPath("~/Content/image/blank.png"))"/>
+                            }
+                        </td>
+                    </tr>
+                    <tr border =" 0">
+                        <td style="text-align:left;font-size:9px">
+                            @(Model.loss_control_approve != null ? Model.loss_control_approve.Substring(0,1) != "a" ? "a/n " : "" : "")@Model.loss_control
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:16.67%" class="right" rowspan="2"><b>Approved by<br />Field Manager</b></td>
+            <td style="width:16.67%">
+                <table>
+                    <tr border="0">
+                        <td>
+                            @if (Model.field_manager_approve != null) {
+                                <img width="50" height="50" @(Model.field_manager_approve != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.field_manager_approve != null ? Server.MapPath("~/"+Model.field_manager_approve.Substring(1)) : Server.MapPath("~/Content/image/blank.png"))"/>
+                            }
+                        </td>
+                    </tr>
+                    <tr border =" 0">
+                        <td style="text-align:left;font-size:9px">
+                            @(Model.field_manager_approve != null ? Model.field_manager_approve.Substring(0,1) != "a" ? "a/n " : "" : "")@Model.field_manager
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr border="1">
+            <td style="width:16.67%" class="right"><b>Name & Date</b></td>
+            <td style="width:16.67%" class="right">
+                @Model.investigator_date.Value.ToShortDateString()
+            </td>
+            <td style="width:16.67%" class="right">
+                @Model.loss_control_date.Value.ToShortDateString()
+            </td>
+            <td style="width:16.67%" class="right">
+                @Model.field_manager_date.Value.ToShortDateString()
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>

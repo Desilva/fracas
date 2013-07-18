@@ -1,0 +1,42 @@
+﻿@model IEnumerable<StarEnergi.Models.rca_analisys_type>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Analysis Type</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.rca_analisys_type>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("AnalysisType")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "AnalysisType")
+                .Insert("_InsertAjaxEditing", "AnalysisType")
+                .Update("_SaveAjaxEditing", "AnalysisType")
+                .Delete("_DeleteAjaxEditing", "AnalysisType");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.name).Title("Analysis Type Name");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

@@ -1,0 +1,85 @@
+﻿@{
+    int? id = null;
+    StarEnergi.Models.EquipmentReportEntity dl = new StarEnergi.Models.EquipmentReportEntity();
+    List<StarEnergi.Models.EquipmentTableReportEntity> etre = new List<StarEnergi.Models.EquipmentTableReportEntity>();
+    id = ViewBag.mod as Nullable<Int32>;
+    dl = ViewBag.datas as StarEnergi.Models.EquipmentReportEntity;
+    etre = dl.table;
+    int i = 0;
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+
+<div class="container">
+	<header>
+		<div class="page-title" style="width:980px">
+			<h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED</h1>
+		</div>
+		<div class="clearfix" style="width:768px"></div>
+		<b>Power Station Daily Check Sheet</b>
+	</header>
+	<div class="log-part1">
+		<table class="w-border" style="width:980px">
+			<tr>
+				<td style="width:100px"><b>Date</b></td>
+                <td>
+                    @(dl.date != null ? dl.date.Value.ToShortDateString() : "")
+                </td>
+			</tr>
+            <tr>
+				<td style="width:100px"><b>Operator Name</b></td>
+                <td>
+                    @dl.operator_name
+                </td>
+			</tr>
+		</table>
+	</div>
+    <br />
+	<div class="log-part2">
+        <table class="w-border" style="width:980px">
+            <tr>
+				<td class="yellow-bg center" style="width:50px"><b>No.</b></td>
+                <td class="yellow-bg center" style="width:100px"><b>Tag ID</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Barcode</b></td>
+                <td class="yellow-bg center" style="width:150px"><b>Description</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Min. Limit</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Max. Limit</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Tag Value</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Unit</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Time</b></td>
+                <td class="yellow-bg center" style="width:180px"><b>Notes</b></td>
+			</tr>
+            @foreach (StarEnergi.Models.EquipmentTableReportEntity e in etre)
+            {
+                i++;
+            <tr>
+				<td class="number" style="width:50px">@i</td>
+                <td style="width:100px">@e.tag_number</td>
+                <td style="width:50px">@e.barcode</td>
+                <td style="width:150px">@e.description</td>
+                <td class="number" style="width:50px">@e.min_limit</td>
+                <td class="number" style="width:50px">@e.max_limit</td>
+                <td class="number" style="width:50px">@e.tag_value</td>
+                <td class="number" style="width:50px">@e.unit</td>
+                <td style="width:50px">@e.time</td>
+                <td style="width:230px">@e.keterangan</td>
+			</tr>
+            }
+		</table>
+	</div>
+    <br />
+</div>
+<br/>
+<div class="submit">
+    <input type="button" value="Batal" onclick="back()"/>
+    <button type="button" value="Print Equipment Daily Report">
+        @Html.ActionLink("Print Equipment Daily Report", "printEDR", "EquipmentDailyReport", new { id = id }, new { target = "_blank" })
+    </button>
+</div>
+<br />
+<script type="text/javascript">
+function back() {
+    window.location = "/EquipmentDailyReport";
+}
+</script>

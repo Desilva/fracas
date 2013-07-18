@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+
+function addEvent() {
+    $('#content').load('Fracas/AddEvent');   
+}
+
+function showGridEquipment(type) {
+    if (type == '0') {
+        $('#gridEquipment').load('Fracas/GridEquipment/' + type);
+    } else if (type == '1') {
+        $('#gridEquipment').load('Fracas/GridEquipment/' + type);
+    } else if (type == '2') {
+        $('#gridEquipment').load('Fracas/GridEquipment/' + type);
+    } else if (type == '3') {
+        $('#gridEquipment').load('Fracas/GridEquipment/' + type);
+    }
+}
+
+function showGridPart(type) {
+    if (type == '0') {
+        $('#gridPart').load('Fracas/GridPart/' + type);
+    } else if (type == '1') {
+        $('#gridPart').load('Fracas/GridPart/' + type);
+    } else if (type == '2') {
+        $('#gridPart').load('Fracas/GridPart/' + type);
+    } else if (type == '3') {
+        $('#gridPart').load('Fracas/GridPart/' + type);
+    }
+}
+
+$(document).ready(function () {
+    showGridEquipment('0');
+    showGridPart('0');
+});
+
+function bindEquipment() {
+    showGridEquipment($('#category_equipment').val());
+}
+
+function bindPart() {
+    showGridPart($('#category_part').val());
+}
+
+</script>
+
+<h2 class="adminH2">Failure Reporting and Corrective Action System</h2>
+
+<div>
+    <input type="button" id="addEvent" value="Tambah Event" onclick="addEvent()"/>
+</div>
+
+<h3>Fracas Equipment</h3>
+
+<span>Status :</span>
+<form class="status" name="status_equipment" action = "">
+    <select id="category_equipment" name="category_equipment" onchange="bindEquipment()">
+        <option value="0">Semua</option>
+        <option value="1">Selesai</option>
+        <option value="2">Belum selesai</option>
+        <option value="3">Sedang diperbaiki</option>
+    </select>				
+</form>
+
+<div id="gridEquipment">
+</div>
+
+<h3>Fracas Part</h3>
+<span>Status :</span>
+<form class="status" name="status_part" action="">
+    <select id="category_part" name="category_part" onchange="bindPart()">
+        <option value="0">Semua</option>
+        <option value="1">Selesai</option>
+        <option value="2">Belum selesai</option>
+        <option value="3">Sedang diperbaiki</option>
+    </select>				
+</form>
+
+<div id="gridPart">
+
+</div>
+<br />
+<hr />
+@using (Html.BeginForm("Index", "LoadExcel", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
+{
+    	 <p class="title">Import Data FRACAS Dari Excel</p>
+		 	 
+		 <div class="info_inside_left">Excel File (.xls) :</div> 
+		 <input type="text" id="fileName" class="file_input_textbox" readonly="readonly" />
+		 <div class="file_input_div">
+			<input type="button" value="Cari" class="file_input_button" />
+			<input type="file" class="file_input_hidden" name="userfile" onchange="javascript: document.getElementById('fileName').value = this.value" />
+		 </div>
+		 <br />
+		 <input type="button" value="Upload" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; submit();" />
+		 <input type="button" value="Download template" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.fileFracas'" />
+}
+<br/>
+<iframe id="upload_target" name="upload_target" src="" width="715" height="350" style="border:0px solid #fff;"></iframe>

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<StarEnergi.Models.plant>
+@{
+    ViewBag.Title = "Home Page";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+<h2>@ViewBag.Message</h2>
+
+@{  
+    if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMIN))
+    {
+        <div id="tree" style="width:270px">       
+            @Html.Partial("_TreeNavigationAdmin")
+            <br/>
+            @Html.Partial("_TreeNavigationAdminEmployee")
+            <br/>
+            @Html.Partial("_PanelBarAdmin")
+        </div>
+        <div id="content" style="float:left;margin-left: 290px;">
+
+        </div>
+    }
+    else if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINDATA || p.role == (int)StarEnergi.Config.role.SHE || p.role == (int)StarEnergi.Config.role.INITIATORIR))
+    {
+        @*<div id="tree1" style="width:270px">
+            @Html.Partial("_MenuNavigationAdmin")
+        </div>*@
+        <div id="content" style="float:left;margin-left:0px;">
+
+        </div>
+    }
+}  
+
+

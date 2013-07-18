@@ -1,0 +1,51 @@
+﻿@model IEnumerable<StarEnergi.Models.FailureModeEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Failure Modes</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.FailureModeEntity>(Model)
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("FailureMode")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "importExcel" })
+            .Text("Export")
+            .Action("importExcel", "FailureMode")
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "FailureMode")
+                .Insert("_InsertAjaxEditing", "FailureMode")
+                .Update("_SaveAjaxEditing", "FailureMode")
+                .Delete("_DeleteAjaxEditing", "FailureMode");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.title).Width(100).Title("Title");
+            columns.Bound(o => o.description).Title("Description");
+            columns.ForeignKey(o => o.id_tag_type, 
+                new SelectList((System.Collections.Generic.IEnumerable<StarEnergi.Models.tag_types>)ViewData["tagTypes"], "id", "title")).Width(150).Title("Tag-Type");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

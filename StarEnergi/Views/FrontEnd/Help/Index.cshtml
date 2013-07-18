@@ -1,0 +1,44 @@
+﻿<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+<!--<script type='text/javascript' src='../Scripts/firebug-lite-compressed.js'></script>-->
+@(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.webblue.css").Combined(true).Compress(true)))
+@(Html.Telerik().ScriptRegistrar().DefaultGroup(group => group.Combined(true).Compress(true)))
+<h2>Fracas Aplication Help</h2>
+<section id="fracas" class="help-section">
+	<h3>FRACAS</h3>
+	<p>Failure Report and Corrective Action System (FRACAS) adalah halaman yang menyediakan menyediakan data engineering untuk tindakan corrective action. Dengan mengolah data historical reliability performance secara otomatis seperti Mean Time Between Failures (MTBF), Mean Time To Repair (MTTR), Availability, Preventive Maintenance, dan lainnya, halaman FRACAS memiliki fungsi mengembangkan report pola kekurangan dari sistem kilang dan juga menyediakan data untuk analisis statistik.</p>
+	<h4>A. Fracas Event Log</h4>
+    <p>FRACAS Event Log ini dapat berinteraksi dengan ECA dan FSCA khususnya dalam mengidentifikasi dampak kerugian. Hasil analisa FRACAS ini dapat digunakan untuk memperbarui / meng up-date data ECA/ FSCA.</p>
+	<ul>
+		<li>Date Time Operation, merupakan informasi tanggal equipment mulai dioperasikan.</li>
+		<li>Date Time Stop, merupakan informasi tanggal equipment mengalami kerusakan.</li>
+		<li>Downtime, merupakan informasi lama rentang waktu equipment tidak beroperasi, dalam hitungan jam.</li>
+		<li>Time to Repair, merupakan informasi lama rentang waktu yang dibutuhkan untuk memperbaiki equipment yang rusak, dalam hitungan jam.</li>
+		<li>Failure Mode, merupakan informasi penyebab kerusakan sebuah equipment.</li>
+		<li>Downtime Category, merupakan informasi terhadap berhenti beroperasinya sebuah equipment apakah direncanakan (Planned) atau tidak direncanakan (Unplanned)</li>
+		<li>Immediate Action, merupakan informasi tindakan penanganan kerusakan equipment yang dapat dilakukan saat ini.</li>
+		<li>Long Term Action, merupakan informasi tindakan penanganan / pencegahan kerusakan equipment untuk waktu mendatang.</li>
+	</ul>
+
+    <h4>B. Fracas History</h4>
+    <p>
+        FRACAS History berfungsi sebagai halaman informasi log dari semua kejadian kerusakan yang pernah terjadi pada equipment.
+        Menu ini ditampilkan dengan 2 bagian utama, pada bagian kiri terdapat tree System Breakdown Structure (SBS) mulai dari Plant sampai dengan Equipment. Jika salah satu equipment diklik maka di pada sisi kanan akan ditampilkan tabel yang berisi list History Data kerusakan equipment tersebut.
+    </p>
+</section>
+
+<section id="assetregister" class="help-section">
+	<h3>Asset Register</h3>
+	<p>Pada menu ini ditampilkan list seluruh equipment pada plant. Jika salah satu equipment di klik maka akan ditampilkan detail untuk equipment yang bersesuaian. Detail data equipment ditampilkan dalam bentuk tab yang terdiri dari 4 tab, equipment data kemudian part list, history dan FRACAS.</p>
+</section>
+
+<script type="text/javascript">
+    function goToByScroll(id) {
+        $('html,body').animate({ scrollTop: $("#" + id).offset().top }, 'slow');
+    }
+
+    $(document).ready(function () {
+        if (window.location.hash != '') {
+            goToByScroll(window.location.hash.substr(1));
+        }
+    });
+</script>

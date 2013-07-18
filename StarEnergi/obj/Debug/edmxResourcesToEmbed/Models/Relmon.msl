@@ -1,0 +1,1454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="relmon_star_energiModelStoreContainer" CdmEntityContainer="relmon_star_energiEntities">
+    <EntitySetMapping Name="comms_rbi">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.comms_rbi">
+        <MappingFragment StoreEntitySet="comms_rbi">
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="filename" ColumnName="filename" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_last_plant_status">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_last_plant_status">
+        <MappingFragment StoreEntitySet="daily_log_last_plant_status">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="id_daily_log" ColumnName="id_daily_log" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_maintainence">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_maintainence">
+        <MappingFragment StoreEntitySet="daily_log_maintainence">
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="work_status" ColumnName="work_status" />
+          <ScalarProperty Name="work_to_be_performed" ColumnName="work_to_be_performed" />
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="wo_number" ColumnName="wo_number" />
+          <ScalarProperty Name="id_daily_log" ColumnName="id_daily_log" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_power_stations">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_power_stations">
+        <MappingFragment StoreEntitySet="daily_log_power_stations">
+          <ScalarProperty Name="power_station_activity" ColumnName="power_station_activity" />
+          <ScalarProperty Name="power_station_unit" ColumnName="power_station_unit" />
+          <ScalarProperty Name="power_station_time" ColumnName="power_station_time" />
+          <ScalarProperty Name="id_daily_log" ColumnName="id_daily_log" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_pro">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_pro">
+        <MappingFragment StoreEntitySet="daily_log_pro">
+          <ScalarProperty Name="pro_time" ColumnName="pro_time" />
+          <ScalarProperty Name="sap_status" ColumnName="sap_status" />
+          <ScalarProperty Name="work_to_be_performed" ColumnName="work_to_be_performed" />
+          <ScalarProperty Name="wo_number" ColumnName="wo_number" />
+          <ScalarProperty Name="id_daily_log" ColumnName="id_daily_log" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_sags">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_sags">
+        <MappingFragment StoreEntitySet="daily_log_sags">
+          <ScalarProperty Name="sags_activity" ColumnName="sags_activity" />
+          <ScalarProperty Name="sags_unit" ColumnName="sags_unit" />
+          <ScalarProperty Name="sags_time" ColumnName="sags_time" />
+          <ScalarProperty Name="id_daily_log" ColumnName="id_daily_log" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_sap">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_sap">
+        <MappingFragment StoreEntitySet="daily_log_sap">
+          <ScalarProperty Name="sap_time" ColumnName="sap_time" />
+          <ScalarProperty Name="notif_by" ColumnName="notif_by" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="notif_no" ColumnName="notif_no" />
+          <ScalarProperty Name="id_daily_log" ColumnName="id_daily_log" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="disciplines">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.discipline">
+        <MappingFragment StoreEntitySet="disciplines">
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="employee_dept">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.employee_dept">
+        <MappingFragment StoreEntitySet="employee_dept">
+          <ScalarProperty Name="plant_id" ColumnName="plant_id" />
+          <ScalarProperty Name="dept_name" ColumnName="dept_name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipment_daily_report">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_daily_report">
+        <MappingFragment StoreEntitySet="equipment_daily_report">
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipment_daily_report_table">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_daily_report_table">
+        <MappingFragment StoreEntitySet="equipment_daily_report_table">
+          <ScalarProperty Name="barcode" ColumnName="barcode" />
+          <ScalarProperty Name="keterangan" ColumnName="keterangan" />
+          <ScalarProperty Name="name_operator" ColumnName="name_operator" />
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="tag_value" ColumnName="tag_value" />
+          <ScalarProperty Name="unit" ColumnName="unit" />
+          <ScalarProperty Name="max_limit" ColumnName="max_limit" />
+          <ScalarProperty Name="min_limit" ColumnName="min_limit" />
+          <ScalarProperty Name="id_equipment" ColumnName="id_equipment" />
+          <ScalarProperty Name="id_equipment_daily_report" ColumnName="id_equipment_daily_report" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipment_event">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_event">
+        <MappingFragment StoreEntitySet="equipment_event">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="event_description" ColumnName="event_description" />
+          <ScalarProperty Name="repair_cost" ColumnName="repair_cost" />
+          <ScalarProperty Name="financial_cost" ColumnName="financial_cost" />
+          <ScalarProperty Name="engineer" ColumnName="engineer" />
+          <ScalarProperty Name="long_term_act" ColumnName="long_term_act" />
+          <ScalarProperty Name="immediate_act" ColumnName="immediate_act" />
+          <ScalarProperty Name="failure_clss" ColumnName="failure_clss" />
+          <ScalarProperty Name="failure_severity" ColumnName="failure_severity" />
+          <ScalarProperty Name="secondary_effect" ColumnName="secondary_effect" />
+          <ScalarProperty Name="failure_effect" ColumnName="failure_effect" />
+          <ScalarProperty Name="failure_cause" ColumnName="failure_cause" />
+          <ScalarProperty Name="failure_mode" ColumnName="failure_mode" />
+          <ScalarProperty Name="downtime" ColumnName="downtime" />
+          <ScalarProperty Name="durasi" ColumnName="durasi" />
+          <ScalarProperty Name="datetime_ops" ColumnName="datetime_ops" />
+          <ScalarProperty Name="datetime_stop" ColumnName="datetime_stop" />
+          <ScalarProperty Name="id_equipment" ColumnName="id_equipment" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipment_groups">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_groups">
+        <MappingFragment StoreEntitySet="equipment_groups">
+          <ScalarProperty Name="nama" ColumnName="nama" />
+          <ScalarProperty Name="id_system" ColumnName="id_system" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipment_paf">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_paf">
+        <MappingFragment StoreEntitySet="equipment_paf">
+          <ScalarProperty Name="avail_measured" ColumnName="avail_measured" />
+          <ScalarProperty Name="avail_calculated" ColumnName="avail_calculated" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="id_equipment" ColumnName="id_equipment" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipment_read_nav_note">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_read_nav_note">
+        <MappingFragment StoreEntitySet="equipment_read_nav_note">
+          <ScalarProperty Name="note" ColumnName="note" />
+          <ScalarProperty Name="update_date" ColumnName="update_date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipment_readiness_nav">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_readiness_nav">
+        <MappingFragment StoreEntitySet="equipment_readiness_nav">
+          <ScalarProperty Name="sertifikasi" ColumnName="sertifikasi" />
+          <ScalarProperty Name="quality" ColumnName="quality" />
+          <ScalarProperty Name="capacity" ColumnName="capacity" />
+          <ScalarProperty Name="score" ColumnName="score" />
+          <ScalarProperty Name="accesories" ColumnName="accesories" />
+          <ScalarProperty Name="safeguard" ColumnName="safeguard" />
+          <ScalarProperty Name="safe_operation" ColumnName="safe_operation" />
+          <ScalarProperty Name="main_act_spare" ColumnName="main_act_spare" />
+          <ScalarProperty Name="lifecycle_spare" ColumnName="lifecycle_spare" />
+          <ScalarProperty Name="spares" ColumnName="spares" />
+          <ScalarProperty Name="overhaul" ColumnName="overhaul" />
+          <ScalarProperty Name="pm_program" ColumnName="pm_program" />
+          <ScalarProperty Name="maintenance" ColumnName="maintenance" />
+          <ScalarProperty Name="cm_program" ColumnName="cm_program" />
+          <ScalarProperty Name="performance" ColumnName="performance" />
+          <ScalarProperty Name="monitoring" ColumnName="monitoring" />
+          <ScalarProperty Name="bec" ColumnName="bec" />
+          <ScalarProperty Name="boc" ColumnName="boc" />
+          <ScalarProperty Name="operation" ColumnName="operation" />
+          <ScalarProperty Name="id_equipment" ColumnName="id_equipment" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipments">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment">
+        <MappingFragment StoreEntitySet="equipments">
+          <ScalarProperty Name="sertifikasi" ColumnName="sertifikasi" />
+          <ScalarProperty Name="data_sheet_path" ColumnName="data_sheet_path" />
+          <ScalarProperty Name="status_read_nav" ColumnName="status_read_nav" />
+          <ScalarProperty Name="id_tag_type" ColumnName="id_tag_type" />
+          <ScalarProperty Name="vendor" ColumnName="vendor" />
+          <ScalarProperty Name="warranty" ColumnName="warranty" />
+          <ScalarProperty Name="obsolete_date" ColumnName="obsolete_date" />
+          <ScalarProperty Name="installed_date" ColumnName="installed_date" />
+          <ScalarProperty Name="ram_crit" ColumnName="ram_crit" />
+          <ScalarProperty Name="econ" ColumnName="econ" />
+          <ScalarProperty Name="method" ColumnName="method" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="mdt" ColumnName="mdt" />
+          <ScalarProperty Name="mttr" ColumnName="mttr" />
+          <ScalarProperty Name="mtbf" ColumnName="mtbf" />
+          <ScalarProperty Name="id_discipline" ColumnName="id_discipline" />
+          <ScalarProperty Name="lamda" ColumnName="lamda" />
+          <ScalarProperty Name="varian" ColumnName="varian" />
+          <ScalarProperty Name="mean" ColumnName="mean" />
+          <ScalarProperty Name="beta" ColumnName="beta" />
+          <ScalarProperty Name="tetha" ColumnName="tetha" />
+          <ScalarProperty Name="pdf" ColumnName="pdf" />
+          <ScalarProperty Name="id_category" ColumnName="id_category" />
+          <ScalarProperty Name="nama" ColumnName="nama" />
+          <ScalarProperty Name="tag_num" ColumnName="tag_num" />
+          <ScalarProperty Name="id_equipment_group" ColumnName="id_equipment_group" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="event_descriptions">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.event_descriptions">
+        <MappingFragment StoreEntitySet="event_descriptions">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="failure_causes">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.failure_causes">
+        <MappingFragment StoreEntitySet="failure_causes">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="failure_effects">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.failure_effects">
+        <MappingFragment StoreEntitySet="failure_effects">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="failure_modes">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.failure_modes">
+        <MappingFragment StoreEntitySet="failure_modes">
+          <ScalarProperty Name="id_tag_type" ColumnName="id_tag_type" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="foc_op_avail">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.foc_op_avail">
+        <MappingFragment StoreEntitySet="foc_op_avail">
+          <ScalarProperty Name="tipe" ColumnName="tipe" />
+          <ScalarProperty Name="tahun" ColumnName="tahun" />
+          <ScalarProperty Name="bulan" ColumnName="bulan" />
+          <ScalarProperty Name="paf" ColumnName="paf" />
+          <ScalarProperty Name="paf_bulanan" ColumnName="paf_bulanan" />
+          <ScalarProperty Name="pof_bulanan" ColumnName="pof_bulanan" />
+          <ScalarProperty Name="selisih_paf" ColumnName="selisih_paf" />
+          <ScalarProperty Name="selisih" ColumnName="selisih" />
+          <ScalarProperty Name="plant_up" ColumnName="plant_up" />
+          <ScalarProperty Name="plant_down" ColumnName="plant_down" />
+          <ScalarProperty Name="op_avail" ColumnName="op_avail" />
+          <ScalarProperty Name="id_foc" ColumnName="id_foc" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="foc_paf">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.foc_paf">
+        <MappingFragment StoreEntitySet="foc_paf">
+          <ScalarProperty Name="calculated_paf" ColumnName="calculated_paf" />
+          <ScalarProperty Name="measured_paf" ColumnName="measured_paf" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="id_foc" ColumnName="id_foc" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="foc_target_paf">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.foc_target_paf">
+        <MappingFragment StoreEntitySet="foc_target_paf">
+          <ScalarProperty Name="target_paf" ColumnName="target_paf" />
+          <ScalarProperty Name="bulan" ColumnName="bulan" />
+          <ScalarProperty Name="tahun" ColumnName="tahun" />
+          <ScalarProperty Name="id_foc" ColumnName="id_foc" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="focs">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.foc">
+        <MappingFragment StoreEntitySet="focs">
+          <ScalarProperty Name="nama" ColumnName="nama" />
+          <ScalarProperty Name="plant_id" ColumnName="plant_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="iir_recommendations">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.iir_recommendations">
+        <MappingFragment StoreEntitySet="iir_recommendations">
+          <ScalarProperty Name="has_pir" ColumnName="has_pir" />
+          <ScalarProperty Name="completion_date" ColumnName="completion_date" />
+          <ScalarProperty Name="pir_number" ColumnName="pir_number" />
+          <ScalarProperty Name="PIC" ColumnName="PIC" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="id_iir" ColumnName="id_iir" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="immediate_actions">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.immediate_actions">
+        <MappingFragment StoreEntitySet="immediate_actions">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="action" ColumnName="action" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="long_term_actions">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.long_term_actions">
+        <MappingFragment StoreEntitySet="long_term_actions">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="action" ColumnName="action" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="mas">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.ma">
+        <MappingFragment StoreEntitySet="ma">
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="ma1" ColumnName="ma" />
+          <ScalarProperty Name="masd" ColumnName="masd" />
+          <ScalarProperty Name="last_update" ColumnName="last_update" />
+          <ScalarProperty Name="days_in_study_year" ColumnName="days_in_study_year" />
+          <ScalarProperty Name="prior_year_ms" ColumnName="prior_year_ms" />
+          <ScalarProperty Name="study_year_ms" ColumnName="study_year_ms" />
+          <ScalarProperty Name="ntamsd" ColumnName="ntamsd" />
+          <ScalarProperty Name="prior_year_ntamd" ColumnName="prior_year_ntamd" />
+          <ScalarProperty Name="study_year_ntamd" ColumnName="study_year_ntamd" />
+          <ScalarProperty Name="ntamdd" ColumnName="ntamdd" />
+          <ScalarProperty Name="ta_interval" ColumnName="ta_interval" />
+          <ScalarProperty Name="tadt_hours" ColumnName="tadt_hours" />
+          <ScalarProperty Name="tadd" ColumnName="tadd" />
+          <ScalarProperty Name="id_foc" ColumnName="id_foc" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="part_unit_event">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.part_unit_event">
+        <MappingFragment StoreEntitySet="part_unit_event">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="event_description" ColumnName="event_description" />
+          <ScalarProperty Name="repair_cost" ColumnName="repair_cost" />
+          <ScalarProperty Name="financial_cost" ColumnName="financial_cost" />
+          <ScalarProperty Name="engineer" ColumnName="engineer" />
+          <ScalarProperty Name="long_term_act" ColumnName="long_term_act" />
+          <ScalarProperty Name="immediate_act" ColumnName="immediate_act" />
+          <ScalarProperty Name="failure_clss" ColumnName="failure_clss" />
+          <ScalarProperty Name="failure_severity" ColumnName="failure_severity" />
+          <ScalarProperty Name="secondary_effect" ColumnName="secondary_effect" />
+          <ScalarProperty Name="failure_effect" ColumnName="failure_effect" />
+          <ScalarProperty Name="failure_cause" ColumnName="failure_cause" />
+          <ScalarProperty Name="failure_mode" ColumnName="failure_mode" />
+          <ScalarProperty Name="downtime" ColumnName="downtime" />
+          <ScalarProperty Name="durasi" ColumnName="durasi" />
+          <ScalarProperty Name="datetime_ops" ColumnName="datetime_ops" />
+          <ScalarProperty Name="datetime_stop" ColumnName="datetime_stop" />
+          <ScalarProperty Name="id_equipment_part" ColumnName="id_equipment_part" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="parts">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.part">
+        <MappingFragment StoreEntitySet="parts">
+          <ScalarProperty Name="key_map" ColumnName="key_map" />
+          <ScalarProperty Name="warranty" ColumnName="warranty" />
+          <ScalarProperty Name="vendor" ColumnName="vendor" />
+          <ScalarProperty Name="assurance_level" ColumnName="assurance_level" />
+          <ScalarProperty Name="nama" ColumnName="nama" />
+          <ScalarProperty Name="tag_number" ColumnName="tag_number" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pir_log">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.pir_log">
+        <MappingFragment StoreEntitySet="pir_log">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="process" ColumnName="process" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id_pir" ColumnName="id_pir" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="plants">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.plant">
+        <MappingFragment StoreEntitySet="plants">
+          <ScalarProperty Name="nama" ColumnName="nama" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="process_owner">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.process_owner">
+        <MappingFragment StoreEntitySet="process_owner">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_analisys_type">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_analisys_type">
+        <MappingFragment StoreEntitySet="rca_analisys_type">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_building">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_building">
+        <MappingFragment StoreEntitySet="rca_building">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id_department" ColumnName="id_department" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_csf">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_csf">
+        <MappingFragment StoreEntitySet="rca_csf">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_csf_conector">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_csf_conector">
+        <MappingFragment StoreEntitySet="rca_csf_conector">
+          <ScalarProperty Name="id_csf" ColumnName="id_csf" />
+          <ScalarProperty Name="id_rca" ColumnName="id_rca" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_desc">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_desc">
+        <MappingFragment StoreEntitySet="rca_desc">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="id_rca" ColumnName="id_rca" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_facility">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_facility">
+        <MappingFragment StoreEntitySet="rca_facility">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_fishbone_master">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_fishbone_master">
+        <MappingFragment StoreEntitySet="rca_fishbone_master">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_floor">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_floor">
+        <MappingFragment StoreEntitySet="rca_floor">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id_building" ColumnName="id_building" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_graph_metric">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_graph_metric">
+        <MappingFragment StoreEntitySet="rca_graph_metric">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_implementation">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_implementation">
+        <MappingFragment StoreEntitySet="rca_implementation">
+          <ScalarProperty Name="usaha" ColumnName="usaha" />
+          <ScalarProperty Name="dampak" ColumnName="dampak" />
+          <ScalarProperty Name="complete_date" ColumnName="complete_date" />
+          <ScalarProperty Name="id_rca" ColumnName="id_rca" />
+          <ScalarProperty Name="is_complete" ColumnName="is_complete" />
+          <ScalarProperty Name="due_date" ColumnName="due_date" />
+          <ScalarProperty Name="pic" ColumnName="pic" />
+          <ScalarProperty Name="next_action" ColumnName="next_action" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_team_connector">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_team_connector">
+        <MappingFragment StoreEntitySet="rca_team_connector">
+          <ScalarProperty Name="rca_position" ColumnName="rca_position" />
+          <ScalarProperty Name="id_rca" ColumnName="id_rca" />
+          <ScalarProperty Name="id_user" ColumnName="id_user" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="secondary_effects">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.secondary_effects">
+        <MappingFragment StoreEntitySet="secondary_effects">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="she_illness_report">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.she_illness_report">
+        <MappingFragment StoreEntitySet="she_illness_report">
+          <ScalarProperty Name="patient_name" ColumnName="patient_name" />
+          <ScalarProperty Name="treatment_date" ColumnName="treatment_date" />
+          <ScalarProperty Name="post_designation" ColumnName="post_designation" />
+          <ScalarProperty Name="diag_name" ColumnName="diag_name" />
+          <ScalarProperty Name="possible_diagnosis" ColumnName="possible_diagnosis" />
+          <ScalarProperty Name="comment_finding_no" ColumnName="comment_finding_no" />
+          <ScalarProperty Name="comment_finding" ColumnName="comment_finding" />
+          <ScalarProperty Name="urine_testing_other" ColumnName="urine_testing_other" />
+          <ScalarProperty Name="urine_testing_sg" ColumnName="urine_testing_sg" />
+          <ScalarProperty Name="urine_testing_protein" ColumnName="urine_testing_protein" />
+          <ScalarProperty Name="urine_testing_ph" ColumnName="urine_testing_ph" />
+          <ScalarProperty Name="urine_testing_glucose" ColumnName="urine_testing_glucose" />
+          <ScalarProperty Name="urine_testing_blood" ColumnName="urine_testing_blood" />
+          <ScalarProperty Name="inves_peak" ColumnName="inves_peak" />
+          <ScalarProperty Name="ge_skin_rush_surface" ColumnName="ge_skin_rush_surface" />
+          <ScalarProperty Name="ge_skin_rush_colour" ColumnName="ge_skin_rush_colour" />
+          <ScalarProperty Name="ge_skin_rush_size" ColumnName="ge_skin_rush_size" />
+          <ScalarProperty Name="ge_skin_rush" ColumnName="ge_skin_rush" />
+          <ScalarProperty Name="ge_tonsil_size" ColumnName="ge_tonsil_size" />
+          <ScalarProperty Name="ge_throat_colour" ColumnName="ge_throat_colour" />
+          <ScalarProperty Name="ge_eardrum_perforated_l" ColumnName="ge_eardrum_perforated_l" />
+          <ScalarProperty Name="ge_eardrum_perforated_r" ColumnName="ge_eardrum_perforated_r" />
+          <ScalarProperty Name="ge_eardrum_perforated" ColumnName="ge_eardrum_perforated" />
+          <ScalarProperty Name="ge_eardrum_red_l" ColumnName="ge_eardrum_red_l" />
+          <ScalarProperty Name="ge_eardrum_red_r" ColumnName="ge_eardrum_red_r" />
+          <ScalarProperty Name="ge_eardrum_red" ColumnName="ge_eardrum_red" />
+          <ScalarProperty Name="ge_eardrum_wax_l" ColumnName="ge_eardrum_wax_l" />
+          <ScalarProperty Name="ge_eardrum_wax_r" ColumnName="ge_eardrum_wax_r" />
+          <ScalarProperty Name="ge_eardrum_wax" ColumnName="ge_eardrum_wax" />
+          <ScalarProperty Name="ge_eardrum_normal_l" ColumnName="ge_eardrum_normal_l" />
+          <ScalarProperty Name="ge_eardrum_normal_r" ColumnName="ge_eardrum_normal_r" />
+          <ScalarProperty Name="ge_eardrum_normal" ColumnName="ge_eardrum_normal" />
+          <ScalarProperty Name="ge_colour" ColumnName="ge_colour" />
+          <ScalarProperty Name="ge_ears_l" ColumnName="ge_ears_l" />
+          <ScalarProperty Name="ge_ears_r" ColumnName="ge_ears_r" />
+          <ScalarProperty Name="ge_ears" ColumnName="ge_ears" />
+          <ScalarProperty Name="ge_gland_groin_l" ColumnName="ge_gland_groin_l" />
+          <ScalarProperty Name="ge_gland_groin_r" ColumnName="ge_gland_groin_r" />
+          <ScalarProperty Name="ge_gland_groin_found" ColumnName="ge_gland_groin_found" />
+          <ScalarProperty Name="ge_gland_armpit_l" ColumnName="ge_gland_armpit_l" />
+          <ScalarProperty Name="ge_gland_armpit_r" ColumnName="ge_gland_armpit_r" />
+          <ScalarProperty Name="ge_gland_armpit_found" ColumnName="ge_gland_armpit_found" />
+          <ScalarProperty Name="ge_gland_neck_l" ColumnName="ge_gland_neck_l" />
+          <ScalarProperty Name="ge_gland_neck_r" ColumnName="ge_gland_neck_r" />
+          <ScalarProperty Name="ge_gland_neck_found" ColumnName="ge_gland_neck_found" />
+          <ScalarProperty Name="abdo_bowel_sound" ColumnName="abdo_bowel_sound" />
+          <ScalarProperty Name="abdo_lumps_swelling_found" ColumnName="abdo_lumps_swelling_found" />
+          <ScalarProperty Name="abdo_area_tenderness_found" ColumnName="abdo_area_tenderness_found" />
+          <ScalarProperty Name="abdo_pain_puffing" ColumnName="abdo_pain_puffing" />
+          <ScalarProperty Name="abdo_pain_moving" ColumnName="abdo_pain_moving" />
+          <ScalarProperty Name="abdo_pain_coughing" ColumnName="abdo_pain_coughing" />
+          <ScalarProperty Name="abdo_size" ColumnName="abdo_size" />
+          <ScalarProperty Name="chest_air_can_hear" ColumnName="chest_air_can_hear" />
+          <ScalarProperty Name="chest_breathing_sound" ColumnName="chest_breathing_sound" />
+          <ScalarProperty Name="chest_movement_breathing" ColumnName="chest_movement_breathing" />
+          <ScalarProperty Name="chest_position_windpipe_neck" ColumnName="chest_position_windpipe_neck" />
+          <ScalarProperty Name="chest_tender_chest_wall" ColumnName="chest_tender_chest_wall" />
+          <ScalarProperty Name="chest_injury" ColumnName="chest_injury" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="she_obs_category">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.she_obs_category">
+        <MappingFragment StoreEntitySet="she_obs_category">
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="she_observation">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.she_observation">
+        <MappingFragment StoreEntitySet="she_observation">
+          <ScalarProperty Name="immediate_corrective_acts" ColumnName="immediate_corrective_acts" />
+          <ScalarProperty Name="unsafe_observeds" ColumnName="unsafe_observeds" />
+          <ScalarProperty Name="safe_observeds" ColumnName="safe_observeds" />
+          <ScalarProperty Name="workplace_health_risk" ColumnName="workplace_health_risk" />
+          <ScalarProperty Name="h2s_risk" ColumnName="h2s_risk" />
+          <ScalarProperty Name="substandard_risk" ColumnName="substandard_risk" />
+          <ScalarProperty Name="vehicular_risk" ColumnName="vehicular_risk" />
+          <ScalarProperty Name="electrical_risk" ColumnName="electrical_risk" />
+          <ScalarProperty Name="mechanical_risk" ColumnName="mechanical_risk" />
+          <ScalarProperty Name="hand_risk" ColumnName="hand_risk" />
+          <ScalarProperty Name="ppe_risk" ColumnName="ppe_risk" />
+          <ScalarProperty Name="certificates_risk" ColumnName="certificates_risk" />
+          <ScalarProperty Name="emergency_risk" ColumnName="emergency_risk" />
+          <ScalarProperty Name="msds_risk" ColumnName="msds_risk" />
+          <ScalarProperty Name="sop_risk" ColumnName="sop_risk" />
+          <ScalarProperty Name="ptw_risk" ColumnName="ptw_risk" />
+          <ScalarProperty Name="hira_risk" ColumnName="hira_risk" />
+          <ScalarProperty Name="absorbent_risk" ColumnName="absorbent_risk" />
+          <ScalarProperty Name="containment_risk" ColumnName="containment_risk" />
+          <ScalarProperty Name="waste_energy_risk" ColumnName="waste_energy_risk" />
+          <ScalarProperty Name="spill_risk" ColumnName="spill_risk" />
+          <ScalarProperty Name="standard_risk" ColumnName="standard_risk" />
+          <ScalarProperty Name="house_risk" ColumnName="house_risk" />
+          <ScalarProperty Name="hygiene_risk" ColumnName="hygiene_risk" />
+          <ScalarProperty Name="substance_risk" ColumnName="substance_risk" />
+          <ScalarProperty Name="posture_risk" ColumnName="posture_risk" />
+          <ScalarProperty Name="psychological_risk" ColumnName="psychological_risk" />
+          <ScalarProperty Name="fit_work_risk" ColumnName="fit_work_risk" />
+          <ScalarProperty Name="supervisor_risk" ColumnName="supervisor_risk" />
+          <ScalarProperty Name="prevention_risk" ColumnName="prevention_risk" />
+          <ScalarProperty Name="fire_risk" ColumnName="fire_risk" />
+          <ScalarProperty Name="accident_risk" ColumnName="accident_risk" />
+          <ScalarProperty Name="action_prevent" ColumnName="action_prevent" />
+          <ScalarProperty Name="action_prevents" ColumnName="action_prevents" />
+          <ScalarProperty Name="immediate_corrective_act" ColumnName="immediate_corrective_act" />
+          <ScalarProperty Name="unsafe_observed" ColumnName="unsafe_observed" />
+          <ScalarProperty Name="action_encourage" ColumnName="action_encourage" />
+          <ScalarProperty Name="action_encourages" ColumnName="action_encourages" />
+          <ScalarProperty Name="safe_observed" ColumnName="safe_observed" />
+          <ScalarProperty Name="activity" ColumnName="activity" />
+          <ScalarProperty Name="location" ColumnName="location" />
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="observer" ColumnName="observer" />
+          <ScalarProperty Name="date_time" ColumnName="date_time" />
+          <ScalarProperty Name="workplace_health_safe" ColumnName="workplace_health_safe" />
+          <ScalarProperty Name="workplace_health_unsafe" ColumnName="workplace_health_unsafe" />
+          <ScalarProperty Name="h2s_safe" ColumnName="h2s_safe" />
+          <ScalarProperty Name="h2s_unsafe" ColumnName="h2s_unsafe" />
+          <ScalarProperty Name="substandard_safe" ColumnName="substandard_safe" />
+          <ScalarProperty Name="substandard_unsafe" ColumnName="substandard_unsafe" />
+          <ScalarProperty Name="vehicular_safe" ColumnName="vehicular_safe" />
+          <ScalarProperty Name="vehicular_unsafe" ColumnName="vehicular_unsafe" />
+          <ScalarProperty Name="electrical_safe" ColumnName="electrical_safe" />
+          <ScalarProperty Name="electrical_unsafe" ColumnName="electrical_unsafe" />
+          <ScalarProperty Name="mechanical_safe" ColumnName="mechanical_safe" />
+          <ScalarProperty Name="mechanical_unsafe" ColumnName="mechanical_unsafe" />
+          <ScalarProperty Name="hand_safe" ColumnName="hand_safe" />
+          <ScalarProperty Name="hand_unsafe" ColumnName="hand_unsafe" />
+          <ScalarProperty Name="ppe_safe" ColumnName="ppe_safe" />
+          <ScalarProperty Name="ppe_unsafe" ColumnName="ppe_unsafe" />
+          <ScalarProperty Name="certificates_safe" ColumnName="certificates_safe" />
+          <ScalarProperty Name="certificates_unsafe" ColumnName="certificates_unsafe" />
+          <ScalarProperty Name="emergency_safe" ColumnName="emergency_safe" />
+          <ScalarProperty Name="emergency_unsafe" ColumnName="emergency_unsafe" />
+          <ScalarProperty Name="msds_safe" ColumnName="msds_safe" />
+          <ScalarProperty Name="msds_unsafe" ColumnName="msds_unsafe" />
+          <ScalarProperty Name="sop_safe" ColumnName="sop_safe" />
+          <ScalarProperty Name="sop_unsafe" ColumnName="sop_unsafe" />
+          <ScalarProperty Name="ptw_safe" ColumnName="ptw_safe" />
+          <ScalarProperty Name="ptw_unsafe" ColumnName="ptw_unsafe" />
+          <ScalarProperty Name="hira_safe" ColumnName="hira_safe" />
+          <ScalarProperty Name="hira_unsafe" ColumnName="hira_unsafe" />
+          <ScalarProperty Name="absorbent_safe" ColumnName="absorbent_safe" />
+          <ScalarProperty Name="absorbent_unsafe" ColumnName="absorbent_unsafe" />
+          <ScalarProperty Name="containment_safe" ColumnName="containment_safe" />
+          <ScalarProperty Name="containment_unsafe" ColumnName="containment_unsafe" />
+          <ScalarProperty Name="waste_energy_safe" ColumnName="waste_energy_safe" />
+          <ScalarProperty Name="waste_energy_unsafe" ColumnName="waste_energy_unsafe" />
+          <ScalarProperty Name="spill_safe" ColumnName="spill_safe" />
+          <ScalarProperty Name="spill_unsafe" ColumnName="spill_unsafe" />
+          <ScalarProperty Name="standard_safe" ColumnName="standard_safe" />
+          <ScalarProperty Name="standard_unsafe" ColumnName="standard_unsafe" />
+          <ScalarProperty Name="house_safe" ColumnName="house_safe" />
+          <ScalarProperty Name="house_unsafe" ColumnName="house_unsafe" />
+          <ScalarProperty Name="hygiene_safe" ColumnName="hygiene_safe" />
+          <ScalarProperty Name="hygiene_unsafe" ColumnName="hygiene_unsafe" />
+          <ScalarProperty Name="substance_safe" ColumnName="substance_safe" />
+          <ScalarProperty Name="substance_unsafe" ColumnName="substance_unsafe" />
+          <ScalarProperty Name="posture_safe" ColumnName="posture_safe" />
+          <ScalarProperty Name="posture_unsafe" ColumnName="posture_unsafe" />
+          <ScalarProperty Name="psychological_safe" ColumnName="psychological_safe" />
+          <ScalarProperty Name="psychological_unsafe" ColumnName="psychological_unsafe" />
+          <ScalarProperty Name="fit_work_safe" ColumnName="fit_work_safe" />
+          <ScalarProperty Name="fit_work_unsafe" ColumnName="fit_work_unsafe" />
+          <ScalarProperty Name="supervisor_safe" ColumnName="supervisor_safe" />
+          <ScalarProperty Name="supervisor_unsafe" ColumnName="supervisor_unsafe" />
+          <ScalarProperty Name="prevention_safe" ColumnName="prevention_safe" />
+          <ScalarProperty Name="prevention_unsafe" ColumnName="prevention_unsafe" />
+          <ScalarProperty Name="fire_safe" ColumnName="fire_safe" />
+          <ScalarProperty Name="fire_unsafe" ColumnName="fire_unsafe" />
+          <ScalarProperty Name="accident_safe" ColumnName="accident_safe" />
+          <ScalarProperty Name="accident_unsafe" ColumnName="accident_unsafe" />
+          <ScalarProperty Name="she_ins" ColumnName="she_ins" />
+          <ScalarProperty Name="she_obs" ColumnName="she_obs" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="system_paf">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.system_paf">
+        <MappingFragment StoreEntitySet="system_paf">
+          <ScalarProperty Name="calculated_paf" ColumnName="calculated_paf" />
+          <ScalarProperty Name="measured_paf" ColumnName="measured_paf" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="id_system" ColumnName="id_system" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="systems">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.system">
+        <MappingFragment StoreEntitySet="systems">
+          <ScalarProperty Name="ram_crit_3" ColumnName="ram_crit_3" />
+          <ScalarProperty Name="ram_crit_2" ColumnName="ram_crit_2" />
+          <ScalarProperty Name="prob" ColumnName="prob" />
+          <ScalarProperty Name="ram_crit_1" ColumnName="ram_crit_1" />
+          <ScalarProperty Name="econ" ColumnName="econ" />
+          <ScalarProperty Name="e" ColumnName="e" />
+          <ScalarProperty Name="h" ColumnName="h" />
+          <ScalarProperty Name="exist_crit" ColumnName="exist_crit" />
+          <ScalarProperty Name="ram_crit" ColumnName="ram_crit" />
+          <ScalarProperty Name="crit_code" ColumnName="crit_code" />
+          <ScalarProperty Name="likelihood" ColumnName="likelihood" />
+          <ScalarProperty Name="cons_total" ColumnName="cons_total" />
+          <ScalarProperty Name="cons_env" ColumnName="cons_env" />
+          <ScalarProperty Name="cons_hs" ColumnName="cons_hs" />
+          <ScalarProperty Name="cons_econ" ColumnName="cons_econ" />
+          <ScalarProperty Name="secondary_impact" ColumnName="secondary_impact" />
+          <ScalarProperty Name="primary_impact" ColumnName="primary_impact" />
+          <ScalarProperty Name="failure_scenario" ColumnName="failure_scenario" />
+          <ScalarProperty Name="funct_description" ColumnName="funct_description" />
+          <ScalarProperty Name="kode" ColumnName="kode" />
+          <ScalarProperty Name="nama" ColumnName="nama" />
+          <ScalarProperty Name="id_unit" ColumnName="id_unit" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tag_types">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.tag_types">
+        <MappingFragment StoreEntitySet="tag_types">
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="trouble_shooting">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.trouble_shooting">
+        <MappingFragment StoreEntitySet="trouble_shooting">
+          <ScalarProperty Name="id_ir" ColumnName="id_ir" />
+          <ScalarProperty Name="approval_date" ColumnName="approval_date" />
+          <ScalarProperty Name="inspector_date" ColumnName="inspector_date" />
+          <ScalarProperty Name="approval_signature" ColumnName="approval_signature" />
+          <ScalarProperty Name="approval_name" ColumnName="approval_name" />
+          <ScalarProperty Name="inspector_signature" ColumnName="inspector_signature" />
+          <ScalarProperty Name="inspector_name" ColumnName="inspector_name" />
+          <ScalarProperty Name="recommendation" ColumnName="recommendation" />
+          <ScalarProperty Name="action" ColumnName="action" />
+          <ScalarProperty Name="analysis" ColumnName="analysis" />
+          <ScalarProperty Name="as_found_condition" ColumnName="as_found_condition" />
+          <ScalarProperty Name="description_trouble" ColumnName="description_trouble" />
+          <ScalarProperty Name="wo_number" ColumnName="wo_number" />
+          <ScalarProperty Name="time_repaired" ColumnName="time_repaired" />
+          <ScalarProperty Name="end_date_repair" ColumnName="end_date_repair" />
+          <ScalarProperty Name="start_date_repair" ColumnName="start_date_repair" />
+          <ScalarProperty Name="time_of_trouble" ColumnName="time_of_trouble" />
+          <ScalarProperty Name="date_of_trouble" ColumnName="date_of_trouble" />
+          <ScalarProperty Name="equipment_description" ColumnName="equipment_description" />
+          <ScalarProperty Name="equipment_no" ColumnName="equipment_no" />
+          <ScalarProperty Name="no" ColumnName="no" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="unit_paf">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.unit_paf">
+        <MappingFragment StoreEntitySet="unit_paf">
+          <ScalarProperty Name="calculated_paf" ColumnName="calculated_paf" />
+          <ScalarProperty Name="measured_paf" ColumnName="measured_paf" />
+          <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+          <ScalarProperty Name="id_unit" ColumnName="id_unit" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="units">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.unit">
+        <MappingFragment StoreEntitySet="units">
+          <ScalarProperty Name="masd" ColumnName="masd" />
+          <ScalarProperty Name="ma" ColumnName="ma" />
+          <ScalarProperty Name="nama" ColumnName="nama" />
+          <ScalarProperty Name="id_foc" ColumnName="id_foc" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_per_role">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.user_per_role">
+        <MappingFragment StoreEntitySet="user_per_role">
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_role">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.user_role">
+        <MappingFragment StoreEntitySet="user_role">
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.user">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+          <ScalarProperty Name="rm_role" ColumnName="rm_role" />
+          <ScalarProperty Name="create_date" ColumnName="create_date" />
+          <ScalarProperty Name="jabatan" ColumnName="jabatan" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="username" ColumnName="username" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="employees">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.employee">
+        <MappingFragment StoreEntitySet="employee">
+          <ScalarProperty Name="signature" ColumnName="signature" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="dept_id" ColumnName="dept_id" />
+          <ScalarProperty Name="employee_boss" ColumnName="employee_boss" />
+          <ScalarProperty Name="dob" ColumnName="dob" />
+          <ScalarProperty Name="employee_dept" ColumnName="employee_dept" />
+          <ScalarProperty Name="work_location" ColumnName="work_location" />
+          <ScalarProperty Name="position" ColumnName="position" />
+          <ScalarProperty Name="alpha_name" ColumnName="alpha_name" />
+          <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="incident_report_log">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.incident_report_log">
+        <MappingFragment StoreEntitySet="incident_report_log">
+          <ScalarProperty Name="comment" ColumnName="comment" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id_ir" ColumnName="id_ir" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_department">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_department">
+        <MappingFragment StoreEntitySet="rca_department">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id_facility" ColumnName="id_facility" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rca_section">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca_section">
+        <MappingFragment StoreEntitySet="rca_section">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id_department" ColumnName="id_department" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="investigation_report">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.investigation_report">
+        <MappingFragment StoreEntitySet="investigation_report">
+          <ScalarProperty Name="field_manager_approve" ColumnName="field_manager_approve" />
+          <ScalarProperty Name="loss_control_approve" ColumnName="loss_control_approve" />
+          <ScalarProperty Name="investigator_approve" ColumnName="investigator_approve" />
+          <ScalarProperty Name="field_manager_date" ColumnName="field_manager_date" />
+          <ScalarProperty Name="field_manager" ColumnName="field_manager" />
+          <ScalarProperty Name="loss_control_date" ColumnName="loss_control_date" />
+          <ScalarProperty Name="loss_control" ColumnName="loss_control" />
+          <ScalarProperty Name="investigator_date" ColumnName="investigator_date" />
+          <ScalarProperty Name="investigator" ColumnName="investigator" />
+          <ScalarProperty Name="cost_estimate" ColumnName="cost_estimate" />
+          <ScalarProperty Name="additional_observation" ColumnName="additional_observation" />
+          <ScalarProperty Name="basic_causes" ColumnName="basic_causes" />
+          <ScalarProperty Name="immediate_causes" ColumnName="immediate_causes" />
+          <ScalarProperty Name="immediate_action" ColumnName="immediate_action" />
+          <ScalarProperty Name="factual_information" ColumnName="factual_information" />
+          <ScalarProperty Name="probability" ColumnName="probability" />
+          <ScalarProperty Name="potential_loss" ColumnName="potential_loss" />
+          <ScalarProperty Name="actual_loss" ColumnName="actual_loss" />
+          <ScalarProperty Name="incident_type" ColumnName="incident_type" />
+          <ScalarProperty Name="incident_location" ColumnName="incident_location" />
+          <ScalarProperty Name="date_incident" ColumnName="date_incident" />
+          <ScalarProperty Name="reference_number" ColumnName="reference_number" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="facility" ColumnName="facility" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="she_KPI_target">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.she_KPI_target">
+        <MappingFragment StoreEntitySet="she_KPI_target">
+          <ScalarProperty Name="target" ColumnName="target" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_operation_warning">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_operation_warning">
+        <MappingFragment StoreEntitySet="daily_log_operation_warning">
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="action_required_by" ColumnName="action_required_by" />
+          <ScalarProperty Name="memo_direction" ColumnName="memo_direction" />
+          <ScalarProperty Name="end_date" ColumnName="end_date" />
+          <ScalarProperty Name="start_date" ColumnName="start_date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_weekly_target">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_weekly_target">
+        <MappingFragment StoreEntitySet="daily_log_weekly_target">
+          <ScalarProperty Name="target_unit_2" ColumnName="target_unit_2" />
+          <ScalarProperty Name="target_unit_1" ColumnName="target_unit_1" />
+          <ScalarProperty Name="shift" ColumnName="shift" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log">
+        <MappingFragment StoreEntitySet="daily_log">
+          <ScalarProperty Name="achievement_2" ColumnName="achievement_2" />
+          <ScalarProperty Name="achievement_1" ColumnName="achievement_1" />
+          <ScalarProperty Name="id_shift2" ColumnName="id_shift2" />
+          <ScalarProperty Name="is_approve" ColumnName="is_approve" />
+          <ScalarProperty Name="shift" ColumnName="shift" />
+          <ScalarProperty Name="user_shift" ColumnName="user_shift" />
+          <ScalarProperty Name="last_plant_time" ColumnName="last_plant_time" />
+          <ScalarProperty Name="note" ColumnName="note" />
+          <ScalarProperty Name="brine_total" ColumnName="brine_total" />
+          <ScalarProperty Name="condensate_total" ColumnName="condensate_total" />
+          <ScalarProperty Name="pln_2" ColumnName="pln_2" />
+          <ScalarProperty Name="pgf_2" ColumnName="pgf_2" />
+          <ScalarProperty Name="rpf_2" ColumnName="rpf_2" />
+          <ScalarProperty Name="production_excess_2" ColumnName="production_excess_2" />
+          <ScalarProperty Name="actual_export_2" ColumnName="actual_export_2" />
+          <ScalarProperty Name="segwwl_export_2" ColumnName="segwwl_export_2" />
+          <ScalarProperty Name="pln_meter_2" ColumnName="pln_meter_2" />
+          <ScalarProperty Name="pln_dispatch_2" ColumnName="pln_dispatch_2" />
+          <ScalarProperty Name="segwwl_availability_2" ColumnName="segwwl_availability_2" />
+          <ScalarProperty Name="condensate_ps_2" ColumnName="condensate_ps_2" />
+          <ScalarProperty Name="metering_pln_2" ColumnName="metering_pln_2" />
+          <ScalarProperty Name="metering_segwwl_2" ColumnName="metering_segwwl_2" />
+          <ScalarProperty Name="ge_reactive_2" ColumnName="ge_reactive_2" />
+          <ScalarProperty Name="ge_active_2" ColumnName="ge_active_2" />
+          <ScalarProperty Name="sc_auxiliary_2" ColumnName="sc_auxiliary_2" />
+          <ScalarProperty Name="sc_main_2" ColumnName="sc_main_2" />
+          <ScalarProperty Name="uti_reactive_2" ColumnName="uti_reactive_2" />
+          <ScalarProperty Name="uti_active_2" ColumnName="uti_active_2" />
+          <ScalarProperty Name="pln_1" ColumnName="pln_1" />
+          <ScalarProperty Name="pgf_1" ColumnName="pgf_1" />
+          <ScalarProperty Name="rpf_1" ColumnName="rpf_1" />
+          <ScalarProperty Name="production_excess_1" ColumnName="production_excess_1" />
+          <ScalarProperty Name="actual_export_1" ColumnName="actual_export_1" />
+          <ScalarProperty Name="segwwl_export_1" ColumnName="segwwl_export_1" />
+          <ScalarProperty Name="pln_meter_1" ColumnName="pln_meter_1" />
+          <ScalarProperty Name="pln_dispatch_1" ColumnName="pln_dispatch_1" />
+          <ScalarProperty Name="segwwl_availability_1" ColumnName="segwwl_availability_1" />
+          <ScalarProperty Name="condensate_ps_1" ColumnName="condensate_ps_1" />
+          <ScalarProperty Name="metering_pln_1" ColumnName="metering_pln_1" />
+          <ScalarProperty Name="metering_segwwl_1" ColumnName="metering_segwwl_1" />
+          <ScalarProperty Name="ge_reactive_1" ColumnName="ge_reactive_1" />
+          <ScalarProperty Name="ge_active_1" ColumnName="ge_active_1" />
+          <ScalarProperty Name="sc_auxiliary_1" ColumnName="sc_auxiliary_1" />
+          <ScalarProperty Name="sc_main_1" ColumnName="sc_main_1" />
+          <ScalarProperty Name="uti_reactive_1" ColumnName="uti_reactive_1" />
+          <ScalarProperty Name="uti_active_1" ColumnName="uti_active_1" />
+          <ScalarProperty Name="wwd_pond_level" ColumnName="wwd_pond_level" />
+          <ScalarProperty Name="naoh_level" ColumnName="naoh_level" />
+          <ScalarProperty Name="condensate_level" ColumnName="condensate_level" />
+          <ScalarProperty Name="brine_level" ColumnName="brine_level" />
+          <ScalarProperty Name="mv_334" ColumnName="mv_334" />
+          <ScalarProperty Name="mv_333" ColumnName="mv_333" />
+          <ScalarProperty Name="lower_tp_level" ColumnName="lower_tp_level" />
+          <ScalarProperty Name="upper_tp_level" ColumnName="upper_tp_level" />
+          <ScalarProperty Name="exhaust_2" ColumnName="exhaust_2" />
+          <ScalarProperty Name="exhaust_1" ColumnName="exhaust_1" />
+          <ScalarProperty Name="ct_temp_2" ColumnName="ct_temp_2" />
+          <ScalarProperty Name="ct_temp_1" ColumnName="ct_temp_1" />
+          <ScalarProperty Name="turbine_2" ColumnName="turbine_2" />
+          <ScalarProperty Name="turbine_1" ColumnName="turbine_1" />
+          <ScalarProperty Name="ncg_2" ColumnName="ncg_2" />
+          <ScalarProperty Name="ncg_1" ColumnName="ncg_1" />
+          <ScalarProperty Name="wheel_case_pressure_2" ColumnName="wheel_case_pressure_2" />
+          <ScalarProperty Name="unit_trans_winding_temp_2" ColumnName="unit_trans_winding_temp_2" />
+          <ScalarProperty Name="gen_trans_winding_temp_2" ColumnName="gen_trans_winding_temp_2" />
+          <ScalarProperty Name="condenser_cw_inlet_b_2" ColumnName="condenser_cw_inlet_b_2" />
+          <ScalarProperty Name="condenser_cw_inlet_a_2" ColumnName="condenser_cw_inlet_a_2" />
+          <ScalarProperty Name="ct_basin_ph_2" ColumnName="ct_basin_ph_2" />
+          <ScalarProperty Name="main_cw_pressure_2" ColumnName="main_cw_pressure_2" />
+          <ScalarProperty Name="vent_bias_2" ColumnName="vent_bias_2" />
+          <ScalarProperty Name="interface_pressure_2" ColumnName="interface_pressure_2" />
+          <ScalarProperty Name="ppc_g_co_2" ColumnName="ppc_g_co_2" />
+          <ScalarProperty Name="main_cw_flow_2" ColumnName="main_cw_flow_2" />
+          <ScalarProperty Name="condenser_pressure_2" ColumnName="condenser_pressure_2" />
+          <ScalarProperty Name="wcp_counter_2" ColumnName="wcp_counter_2" />
+          <ScalarProperty Name="governor_output_2" ColumnName="governor_output_2" />
+          <ScalarProperty Name="valve_limiter_2" ColumnName="valve_limiter_2" />
+          <ScalarProperty Name="pln_grid_voltage_2" ColumnName="pln_grid_voltage_2" />
+          <ScalarProperty Name="tap_charger_2" ColumnName="tap_charger_2" />
+          <ScalarProperty Name="power_factor_2" ColumnName="power_factor_2" />
+          <ScalarProperty Name="generator_output_counter_2" ColumnName="generator_output_counter_2" />
+          <ScalarProperty Name="gross_2" ColumnName="gross_2" />
+          <ScalarProperty Name="generator_output_2" ColumnName="generator_output_2" />
+          <ScalarProperty Name="wheel_case_pressure_1" ColumnName="wheel_case_pressure_1" />
+          <ScalarProperty Name="unit_trans_winding_temp_1" ColumnName="unit_trans_winding_temp_1" />
+          <ScalarProperty Name="gen_trans_winding_temp_1" ColumnName="gen_trans_winding_temp_1" />
+          <ScalarProperty Name="condenser_cw_inlet_b_1" ColumnName="condenser_cw_inlet_b_1" />
+          <ScalarProperty Name="condenser_cw_inlet_a_1" ColumnName="condenser_cw_inlet_a_1" />
+          <ScalarProperty Name="ct_basin_ph_1" ColumnName="ct_basin_ph_1" />
+          <ScalarProperty Name="main_cw_pressure_1" ColumnName="main_cw_pressure_1" />
+          <ScalarProperty Name="vent_bias_1" ColumnName="vent_bias_1" />
+          <ScalarProperty Name="interface_pressure_1" ColumnName="interface_pressure_1" />
+          <ScalarProperty Name="ppc_g_co_1" ColumnName="ppc_g_co_1" />
+          <ScalarProperty Name="main_cw_flow_1" ColumnName="main_cw_flow_1" />
+          <ScalarProperty Name="condenser_pressure_1" ColumnName="condenser_pressure_1" />
+          <ScalarProperty Name="wcp_counter_1" ColumnName="wcp_counter_1" />
+          <ScalarProperty Name="governor_output_1" ColumnName="governor_output_1" />
+          <ScalarProperty Name="valve_limiter_1" ColumnName="valve_limiter_1" />
+          <ScalarProperty Name="pln_grid_voltage_1" ColumnName="pln_grid_voltage_1" />
+          <ScalarProperty Name="tap_charger_1" ColumnName="tap_charger_1" />
+          <ScalarProperty Name="power_factor_1" ColumnName="power_factor_1" />
+          <ScalarProperty Name="generator_output_counter_1" ColumnName="generator_output_counter_1" />
+          <ScalarProperty Name="gross_1" ColumnName="gross_1" />
+          <ScalarProperty Name="generator_output_1" ColumnName="generator_output_1" />
+          <ScalarProperty Name="wwp_1_whp" ColumnName="wwp_1_whp" />
+          <ScalarProperty Name="wwp_1_flow" ColumnName="wwp_1_flow" />
+          <ScalarProperty Name="wwp_1_fcv" ColumnName="wwp_1_fcv" />
+          <ScalarProperty Name="wwp_1_is_text" ColumnName="wwp_1_is_text" />
+          <ScalarProperty Name="www_1_whp" ColumnName="www_1_whp" />
+          <ScalarProperty Name="www_1_flow" ColumnName="www_1_flow" />
+          <ScalarProperty Name="www_1_fcv" ColumnName="www_1_fcv" />
+          <ScalarProperty Name="www_1_is_text" ColumnName="www_1_is_text" />
+          <ScalarProperty Name="wwf_3_whp" ColumnName="wwf_3_whp" />
+          <ScalarProperty Name="wwf_3_flow" ColumnName="wwf_3_flow" />
+          <ScalarProperty Name="wwf_3_fcv" ColumnName="wwf_3_fcv" />
+          <ScalarProperty Name="wwf_3_is_text" ColumnName="wwf_3_is_text" />
+          <ScalarProperty Name="wwf_1_whp" ColumnName="wwf_1_whp" />
+          <ScalarProperty Name="wwf_1_flow" ColumnName="wwf_1_flow" />
+          <ScalarProperty Name="wwf_1_fcv" ColumnName="wwf_1_fcv" />
+          <ScalarProperty Name="wwf_1_is_text" ColumnName="wwf_1_is_text" />
+          <ScalarProperty Name="mbb_6_whp" ColumnName="mbb_6_whp" />
+          <ScalarProperty Name="mbb_6_flow" ColumnName="mbb_6_flow" />
+          <ScalarProperty Name="mbb_6_fcv" ColumnName="mbb_6_fcv" />
+          <ScalarProperty Name="mbb_6_is_text" ColumnName="mbb_6_is_text" />
+          <ScalarProperty Name="mbb_5_whp" ColumnName="mbb_5_whp" />
+          <ScalarProperty Name="mbb_5_flow" ColumnName="mbb_5_flow" />
+          <ScalarProperty Name="mbb_5_fcv" ColumnName="mbb_5_fcv" />
+          <ScalarProperty Name="mbb_5_is_text" ColumnName="mbb_5_is_text" />
+          <ScalarProperty Name="mbb_4_whp" ColumnName="mbb_4_whp" />
+          <ScalarProperty Name="mbb_4_flow" ColumnName="mbb_4_flow" />
+          <ScalarProperty Name="mbb_4_fcv" ColumnName="mbb_4_fcv" />
+          <ScalarProperty Name="mbb_4_is_text" ColumnName="mbb_4_is_text" />
+          <ScalarProperty Name="mbb_3_whp" ColumnName="mbb_3_whp" />
+          <ScalarProperty Name="mbb_3_flow" ColumnName="mbb_3_flow" />
+          <ScalarProperty Name="mbb_3_fcv" ColumnName="mbb_3_fcv" />
+          <ScalarProperty Name="mbb_3_is_text" ColumnName="mbb_3_is_text" />
+          <ScalarProperty Name="mbb_2_whp" ColumnName="mbb_2_whp" />
+          <ScalarProperty Name="mbb_2_flow" ColumnName="mbb_2_flow" />
+          <ScalarProperty Name="mbb_2_fcv" ColumnName="mbb_2_fcv" />
+          <ScalarProperty Name="mbb_2_is_text" ColumnName="mbb_2_is_text" />
+          <ScalarProperty Name="mbb_1_whp" ColumnName="mbb_1_whp" />
+          <ScalarProperty Name="mbb_1_flow" ColumnName="mbb_1_flow" />
+          <ScalarProperty Name="mbb_1_fcv" ColumnName="mbb_1_fcv" />
+          <ScalarProperty Name="mbb_1_is_text" ColumnName="mbb_1_is_text" />
+          <ScalarProperty Name="mba_5_whp" ColumnName="mba_5_whp" />
+          <ScalarProperty Name="mba_5_flow" ColumnName="mba_5_flow" />
+          <ScalarProperty Name="mba_5_fcv" ColumnName="mba_5_fcv" />
+          <ScalarProperty Name="mba_5_is_text" ColumnName="mba_5_is_text" />
+          <ScalarProperty Name="mba_4_whp" ColumnName="mba_4_whp" />
+          <ScalarProperty Name="mba_4_flow" ColumnName="mba_4_flow" />
+          <ScalarProperty Name="mba_4_fcv" ColumnName="mba_4_fcv" />
+          <ScalarProperty Name="mba_4_is_text" ColumnName="mba_4_is_text" />
+          <ScalarProperty Name="mba_3_whp" ColumnName="mba_3_whp" />
+          <ScalarProperty Name="mba_3_flow" ColumnName="mba_3_flow" />
+          <ScalarProperty Name="mba_3_fcv" ColumnName="mba_3_fcv" />
+          <ScalarProperty Name="mba_3_is_text" ColumnName="mba_3_is_text" />
+          <ScalarProperty Name="mba_2_whp" ColumnName="mba_2_whp" />
+          <ScalarProperty Name="mba_2_flow" ColumnName="mba_2_flow" />
+          <ScalarProperty Name="mba_2_fcv" ColumnName="mba_2_fcv" />
+          <ScalarProperty Name="mba_2_is_text" ColumnName="mba_2_is_text" />
+          <ScalarProperty Name="mba_1_whp" ColumnName="mba_1_whp" />
+          <ScalarProperty Name="mba_1_flow" ColumnName="mba_1_flow" />
+          <ScalarProperty Name="mba_1_fcv" ColumnName="mba_1_fcv" />
+          <ScalarProperty Name="mba_1_is_text" ColumnName="mba_1_is_text" />
+          <ScalarProperty Name="mbe_4_whp" ColumnName="mbe_4_whp" />
+          <ScalarProperty Name="mbe_4_flow" ColumnName="mbe_4_flow" />
+          <ScalarProperty Name="mbe_4_fcv" ColumnName="mbe_4_fcv" />
+          <ScalarProperty Name="mbe_4_is_text" ColumnName="mbe_4_is_text" />
+          <ScalarProperty Name="mbe_3_whp" ColumnName="mbe_3_whp" />
+          <ScalarProperty Name="mbe_3_flow" ColumnName="mbe_3_flow" />
+          <ScalarProperty Name="mbe_3_fcv" ColumnName="mbe_3_fcv" />
+          <ScalarProperty Name="mbe_3_is_text" ColumnName="mbe_3_is_text" />
+          <ScalarProperty Name="wwq_5_whp" ColumnName="wwq_5_whp" />
+          <ScalarProperty Name="wwq_5_flow" ColumnName="wwq_5_flow" />
+          <ScalarProperty Name="wwq_5_fcv" ColumnName="wwq_5_fcv" />
+          <ScalarProperty Name="wwq_5_is_text" ColumnName="wwq_5_is_text" />
+          <ScalarProperty Name="wwq_4_whp" ColumnName="wwq_4_whp" />
+          <ScalarProperty Name="wwq_4_flow" ColumnName="wwq_4_flow" />
+          <ScalarProperty Name="wwq_4_fcv" ColumnName="wwq_4_fcv" />
+          <ScalarProperty Name="wwq_4_is_text" ColumnName="wwq_4_is_text" />
+          <ScalarProperty Name="wwq_3_whp" ColumnName="wwq_3_whp" />
+          <ScalarProperty Name="wwq_3_flow" ColumnName="wwq_3_flow" />
+          <ScalarProperty Name="wwq_3_fcv" ColumnName="wwq_3_fcv" />
+          <ScalarProperty Name="wwq_3_is_text" ColumnName="wwq_3_is_text" />
+          <ScalarProperty Name="wwq_2_whp" ColumnName="wwq_2_whp" />
+          <ScalarProperty Name="wwq_2_flow" ColumnName="wwq_2_flow" />
+          <ScalarProperty Name="wwq_2_fcv" ColumnName="wwq_2_fcv" />
+          <ScalarProperty Name="wwq_2_is_text" ColumnName="wwq_2_is_text" />
+          <ScalarProperty Name="wwq_1_whp" ColumnName="wwq_1_whp" />
+          <ScalarProperty Name="wwq_1_flow" ColumnName="wwq_1_flow" />
+          <ScalarProperty Name="wwq_1_fcv" ColumnName="wwq_1_fcv" />
+          <ScalarProperty Name="wwq_1_is_text" ColumnName="wwq_1_is_text" />
+          <ScalarProperty Name="mbd_5_whp" ColumnName="mbd_5_whp" />
+          <ScalarProperty Name="mbd_5_flow" ColumnName="mbd_5_flow" />
+          <ScalarProperty Name="mbd_5_fcv" ColumnName="mbd_5_fcv" />
+          <ScalarProperty Name="mbd_5_is_text" ColumnName="mbd_5_is_text" />
+          <ScalarProperty Name="mbd_4_whp" ColumnName="mbd_4_whp" />
+          <ScalarProperty Name="mbd_4_flow" ColumnName="mbd_4_flow" />
+          <ScalarProperty Name="mbd_4_fcv" ColumnName="mbd_4_fcv" />
+          <ScalarProperty Name="mbd_4_is_text" ColumnName="mbd_4_is_text" />
+          <ScalarProperty Name="mbd_3_whp" ColumnName="mbd_3_whp" />
+          <ScalarProperty Name="mbd_3_flow" ColumnName="mbd_3_flow" />
+          <ScalarProperty Name="mbd_3_fcv" ColumnName="mbd_3_fcv" />
+          <ScalarProperty Name="mbd_3_is_text" ColumnName="mbd_3_is_text" />
+          <ScalarProperty Name="mbd_2_whp" ColumnName="mbd_2_whp" />
+          <ScalarProperty Name="mbd_2_flow" ColumnName="mbd_2_flow" />
+          <ScalarProperty Name="mbd_2_fcv" ColumnName="mbd_2_fcv" />
+          <ScalarProperty Name="mbd_2_is_text" ColumnName="mbd_2_is_text" />
+          <ScalarProperty Name="mbd_1_whp" ColumnName="mbd_1_whp" />
+          <ScalarProperty Name="mbd_1_flow" ColumnName="mbd_1_flow" />
+          <ScalarProperty Name="mbd_1_fcv" ColumnName="mbd_1_fcv" />
+          <ScalarProperty Name="mbd_1_is_text" ColumnName="mbd_1_is_text" />
+          <ScalarProperty Name="wma_6_whp" ColumnName="wma_6_whp" />
+          <ScalarProperty Name="wma_6_flow" ColumnName="wma_6_flow" />
+          <ScalarProperty Name="wma_6_fcv" ColumnName="wma_6_fcv" />
+          <ScalarProperty Name="wma_6_is_text" ColumnName="wma_6_is_text" />
+          <ScalarProperty Name="wma_4_whp" ColumnName="wma_4_whp" />
+          <ScalarProperty Name="wma_4_flow" ColumnName="wma_4_flow" />
+          <ScalarProperty Name="wma_4_fcv" ColumnName="wma_4_fcv" />
+          <ScalarProperty Name="wma_4_is_text" ColumnName="wma_4_is_text" />
+          <ScalarProperty Name="wma_2_whp" ColumnName="wma_2_whp" />
+          <ScalarProperty Name="wma_2_flow" ColumnName="wma_2_flow" />
+          <ScalarProperty Name="wma_2_fcv" ColumnName="wma_2_fcv" />
+          <ScalarProperty Name="wma_2_is_text" ColumnName="wma_2_is_text" />
+          <ScalarProperty Name="time_check" ColumnName="time_check" />
+          <ScalarProperty Name="production_operator_8" ColumnName="production_operator_8" />
+          <ScalarProperty Name="production_operator_7" ColumnName="production_operator_7" />
+          <ScalarProperty Name="production_operator_6" ColumnName="production_operator_6" />
+          <ScalarProperty Name="production_operator_5" ColumnName="production_operator_5" />
+          <ScalarProperty Name="production_operator_4" ColumnName="production_operator_4" />
+          <ScalarProperty Name="production_operator_3" ColumnName="production_operator_3" />
+          <ScalarProperty Name="production_operator_2" ColumnName="production_operator_2" />
+          <ScalarProperty Name="production_operator_1" ColumnName="production_operator_1" />
+          <ScalarProperty Name="production_foreman" ColumnName="production_foreman" />
+          <ScalarProperty Name="grup" ColumnName="grup" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="daily_log_wpnb">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_wpnb">
+        <MappingFragment StoreEntitySet="daily_log_wpnb">
+          <ScalarProperty Name="achievement" ColumnName="achievement" />
+          <ScalarProperty Name="target" ColumnName="target" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="month" ColumnName="month" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="audit_log_clause">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.audit_log_clause">
+        <MappingFragment StoreEntitySet="audit_log_clause">
+          <ScalarProperty Name="id_pir_clause" ColumnName="id_pir_clause" />
+          <ScalarProperty Name="id_audit_log" ColumnName="id_audit_log" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pir_clause">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.pir_clause">
+        <MappingFragment StoreEntitySet="pir_clause">
+          <ScalarProperty Name="clause" ColumnName="clause" />
+          <ScalarProperty Name="clause_no" ColumnName="clause_no" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="audits">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.audit">
+        <MappingFragment StoreEntitySet="audit">
+          <ScalarProperty Name="is_submit" ColumnName="is_submit" />
+          <ScalarProperty Name="in_ex" ColumnName="in_ex" />
+          <ScalarProperty Name="audit_no" ColumnName="audit_no" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="audit_log">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.audit_log">
+        <MappingFragment StoreEntitySet="audit_log">
+          <ScalarProperty Name="reference" ColumnName="reference" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="process" ColumnName="process" />
+          <ScalarProperty Name="id_pir" ColumnName="id_pir" />
+          <ScalarProperty Name="requester" ColumnName="requester" />
+          <ScalarProperty Name="finding" ColumnName="finding" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="grade" ColumnName="grade" />
+          <ScalarProperty Name="id_audit" ColumnName="id_audit" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pirs">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.pir">
+        <MappingFragment StoreEntitySet="pir">
+          <ScalarProperty Name="from" ColumnName="from" />
+          <ScalarProperty Name="process_user" ColumnName="process_user" />
+          <ScalarProperty Name="pir_category" ColumnName="pir_category" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="review_mgmt_verified_date" ColumnName="review_mgmt_verified_date" />
+          <ScalarProperty Name="initiator_verified_date" ColumnName="initiator_verified_date" />
+          <ScalarProperty Name="verified_desc" ColumnName="verified_desc" />
+          <ScalarProperty Name="sign_date_verified" ColumnName="sign_date_verified" />
+          <ScalarProperty Name="kpbo_sign_date_process_result" ColumnName="kpbo_sign_date_process_result" />
+          <ScalarProperty Name="result_of_action" ColumnName="result_of_action" />
+          <ScalarProperty Name="review_date" ColumnName="review_date" />
+          <ScalarProperty Name="kpbo_sign_date_process" ColumnName="kpbo_sign_date_process" />
+          <ScalarProperty Name="hira_require" ColumnName="hira_require" />
+          <ScalarProperty Name="require_dokument" ColumnName="require_dokument" />
+          <ScalarProperty Name="action_by" ColumnName="action_by" />
+          <ScalarProperty Name="target_completion_process" ColumnName="target_completion_process" />
+          <ScalarProperty Name="process_owner" ColumnName="process_owner" />
+          <ScalarProperty Name="start_implement_date" ColumnName="start_implement_date" />
+          <ScalarProperty Name="improvement_plant" ColumnName="improvement_plant" />
+          <ScalarProperty Name="investigator_date" ColumnName="investigator_date" />
+          <ScalarProperty Name="investigator" ColumnName="investigator" />
+          <ScalarProperty Name="desc_prob" ColumnName="desc_prob" />
+          <ScalarProperty Name="target_completion_init" ColumnName="target_completion_init" />
+          <ScalarProperty Name="kpbo_sign_date_init" ColumnName="kpbo_sign_date_init" />
+          <ScalarProperty Name="initiator_sign_date" ColumnName="initiator_sign_date" />
+          <ScalarProperty Name="procedure_reference" ColumnName="procedure_reference" />
+          <ScalarProperty Name="reference" ColumnName="reference" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="initiate_by" ColumnName="initiate_by" />
+          <ScalarProperty Name="date_rise" ColumnName="date_rise" />
+          <ScalarProperty Name="improvement_request" ColumnName="improvement_request" />
+          <ScalarProperty Name="no" ColumnName="no" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="she_obs_KPI_log">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.she_obs_KPI_log">
+        <MappingFragment StoreEntitySet="she_obs_KPI_log">
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="to" ColumnName="to" />
+          <ScalarProperty Name="from" ColumnName="from" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="incident_report">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.incident_report">
+        <MappingFragment StoreEntitySet="incident_report">
+          <ScalarProperty Name="lead_name" ColumnName="lead_name" />
+          <ScalarProperty Name="she_superintendent_approve" ColumnName="she_superintendent_approve" />
+          <ScalarProperty Name="loss_control_approve" ColumnName="loss_control_approve" />
+          <ScalarProperty Name="field_manager_approve" ColumnName="field_manager_approve" />
+          <ScalarProperty Name="superintendent_approve" ColumnName="superintendent_approve" />
+          <ScalarProperty Name="id_rca" ColumnName="id_rca" />
+          <ScalarProperty Name="investigation_req" ColumnName="investigation_req" />
+          <ScalarProperty Name="investigation" ColumnName="investigation" />
+          <ScalarProperty Name="she_superintendent_date" ColumnName="she_superintendent_date" />
+          <ScalarProperty Name="field_manager_date" ColumnName="field_manager_date" />
+          <ScalarProperty Name="loss_date" ColumnName="loss_date" />
+          <ScalarProperty Name="superintendent_date" ColumnName="superintendent_date" />
+          <ScalarProperty Name="she_superintendent" ColumnName="she_superintendent" />
+          <ScalarProperty Name="field_manager" ColumnName="field_manager" />
+          <ScalarProperty Name="loss_control" ColumnName="loss_control" />
+          <ScalarProperty Name="superintendent" ColumnName="superintendent" />
+          <ScalarProperty Name="ack_date" ColumnName="ack_date" />
+          <ScalarProperty Name="prepare_date" ColumnName="prepare_date" />
+          <ScalarProperty Name="ack_supervisor" ColumnName="ack_supervisor" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="immediate_action" ColumnName="immediate_action" />
+          <ScalarProperty Name="cost_estimate" ColumnName="cost_estimate" />
+          <ScalarProperty Name="factual_information" ColumnName="factual_information" />
+          <ScalarProperty Name="probability" ColumnName="probability" />
+          <ScalarProperty Name="potential_loss_severity" ColumnName="potential_loss_severity" />
+          <ScalarProperty Name="actual_loss_severity" ColumnName="actual_loss_severity" />
+          <ScalarProperty Name="incident_type" ColumnName="incident_type" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="date_incident" ColumnName="date_incident" />
+          <ScalarProperty Name="type_of_report" ColumnName="type_of_report" />
+          <ScalarProperty Name="reference_number" ColumnName="reference_number" />
+          <ScalarProperty Name="incident_location" ColumnName="incident_location" />
+          <ScalarProperty Name="facility" ColumnName="facility" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rcas">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.rca">
+        <MappingFragment StoreEntitySet="rca">
+          <ScalarProperty Name="id_ir" ColumnName="id_ir" />
+          <ScalarProperty Name="publish_date" ColumnName="publish_date" />
+          <ScalarProperty Name="id_iir" ColumnName="id_iir" />
+          <ScalarProperty Name="rca_code" ColumnName="rca_code" />
+          <ScalarProperty Name="fracas_ir_id" ColumnName="fracas_ir_id" />
+          <ScalarProperty Name="fracas_ir" ColumnName="fracas_ir" />
+          <ScalarProperty Name="has_pir" ColumnName="has_pir" />
+          <ScalarProperty Name="id_pir" ColumnName="id_pir" />
+          <ScalarProperty Name="is_tree" ColumnName="is_tree" />
+          <ScalarProperty Name="equipment_code" ColumnName="equipment_code" />
+          <ScalarProperty Name="analysis_file" ColumnName="analysis_file" />
+          <ScalarProperty Name="is_publish" ColumnName="is_publish" />
+          <ScalarProperty Name="completion_date" ColumnName="completion_date" />
+          <ScalarProperty Name="start_date" ColumnName="start_date" />
+          <ScalarProperty Name="id_team" ColumnName="id_team" />
+          <ScalarProperty Name="comment" ColumnName="comment" />
+          <ScalarProperty Name="charter" ColumnName="charter" />
+          <ScalarProperty Name="id_csf_connector" ColumnName="id_csf_connector" />
+          <ScalarProperty Name="manufacture" ColumnName="manufacture" />
+          <ScalarProperty Name="other" ColumnName="other" />
+          <ScalarProperty Name="id_equipment_class" ColumnName="id_equipment_class" />
+          <ScalarProperty Name="id_type_equipment" ColumnName="id_type_equipment" />
+          <ScalarProperty Name="functional_location" ColumnName="functional_location" />
+          <ScalarProperty Name="id_floor" ColumnName="id_floor" />
+          <ScalarProperty Name="id_building" ColumnName="id_building" />
+          <ScalarProperty Name="id_department" ColumnName="id_department" />
+          <ScalarProperty Name="id_division" ColumnName="id_division" />
+          <ScalarProperty Name="id_facility" ColumnName="id_facility" />
+          <ScalarProperty Name="cost" ColumnName="cost" />
+          <ScalarProperty Name="id_type" ColumnName="id_type" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ir_KPI_log">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.ir_KPI_log">
+        <MappingFragment StoreEntitySet="ir_KPI_log">
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="to" ColumnName="to" />
+          <ScalarProperty Name="from" ColumnName="from" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="components">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.component">
+        <MappingFragment StoreEntitySet="component">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="tag_number" ColumnName="tag_number" />
+          <ScalarProperty Name="id_equipment_part" ColumnName="id_equipment_part" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sub_component">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.sub_component">
+        <MappingFragment StoreEntitySet="sub_component">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="tag_number" ColumnName="tag_number" />
+          <ScalarProperty Name="id_component" ColumnName="id_component" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="equipment_part">
+      <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_part">
+        <MappingFragment StoreEntitySet="equipment_part">
+          <ScalarProperty Name="obsolete_date" ColumnName="obsolete_date" />
+          <ScalarProperty Name="installed_date" ColumnName="installed_date" />
+          <ScalarProperty Name="lead_time" ColumnName="lead_time" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="mttr" ColumnName="mttr" />
+          <ScalarProperty Name="mtbf" ColumnName="mtbf" />
+          <ScalarProperty Name="id_parts" ColumnName="id_parts" />
+          <ScalarProperty Name="id_equipment" ColumnName="id_equipment" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

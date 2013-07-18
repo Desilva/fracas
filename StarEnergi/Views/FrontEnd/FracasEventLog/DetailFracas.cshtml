@@ -1,0 +1,87 @@
+﻿@model StarEnergi.Models.FracasEventModel
+<script type="text/javascript">
+    function back(type, idEquipment) {
+        if (type == 'FracasEventLog') {
+            window.location = 'FracasEventLog';
+            //$('#contentEventLog').load('FracasEventLog/Index');
+        } else if (type == 'FracasHistory') {
+            $('#content').load('FracasHistory/DetailsEquipment/' + idEquipment);
+        }
+    }
+</script>
+<div id="contentDetailFracas">
+    @{
+        if (ViewBag.type == "FracasEventLog")
+        {
+            <h2>@ViewBag.nama</h2>
+        }else{
+            <h3>@ViewBag.nama</h3>
+        }
+    }
+    <div class="fracas">
+        <div class="fracasLeft @(ViewBag.css)">
+
+            <div class="display-label">Date/Time Stop</div>
+            <div class="display-field">@Model.dateTimeStop</div>
+
+            <div class="display-label">Date/Time Ops</div>
+            <div class="display-field">@Model.dateTimeStart</div>
+
+            <div class="display-label">Durasi Perbaikan</div>
+            <div class="display-field">
+                    <label>@Model.durasi</label>
+                &nbsp;Hours
+            </div>
+
+            <div class="display-label">Downtime</div>
+            <div class="display-field">
+                    <label>@Model.downtime</label>
+                &nbsp;Hours
+            </div>
+
+            <div class="display-label">Failure Mode</div>
+            <div class="display-field"><textarea disabled="disabled">@Model.failureMode</textarea></div>
+
+            <div class="display-label">Failure Cause</div>
+            <div class="display-field"><textarea disabled="disabled">@Model.cause</textarea></div>
+
+            <div class="display-label">Failure Effect</div>
+            <div class="display-field"><textarea disabled="disabled">@Model.failureEffect</textarea></div>
+
+            <div class="display-label">Secondary Effect</div>
+            <div class="display-field"><textarea disabled="disabled">@Model.secondaryEffect</textarea></div>
+
+        </div>
+
+        <div class="fracasRight @(ViewBag.css) @(ViewBag.css)Right">
+            <div class="display-label">Failure Severity</div>
+            <div class="display-field">@Model.failureSeverity</div>
+
+            <!--<div class="display-label">Failure CLSSS</div>
+            <div class="display-field">@Model.failureClss</div>-->
+
+            <div class="display-label">Immediate Cor. Action</div>
+            <div class="display-field"><textarea disabled="disabled">@Model.immediateAction</textarea></div>
+
+            <div class="display-label">Long Term Cor. Action</div>
+            <div class="display-field"><textarea disabled="disabled">@Model.longTermAction</textarea></div>
+
+            <div class="display-label">Repair Cost</div>
+            <div class="display-field">@Model.repairCost</div>
+
+            <div class="display-label">Finacial Cost</div>
+            <div class="display-field">@Model.financialCost</div>
+
+            <div class="display-label">Person in charge</div>
+            <div class="display-field">@Model.engineer</div>
+
+            <div class="display-label">Event Description</div>
+            <div class="display-field"><textarea disabled="disabled">@Model.eventDesc</textarea></div>
+        </div>
+
+    </div>
+    
+    <div>
+        <input class="buttonBack" type="button" id="backListFracas" value="Back to List" onclick="back('@(ViewBag.type)','@(ViewBag.idEquipment)')"/>
+    </div>
+</div>

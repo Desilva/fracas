@@ -1,0 +1,74 @@
+﻿@model IEnumerable<StarEnergi.Models.she_illness_report>
+@{
+    ViewBag.Title = "Add Daily Log";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="Edit Illness Report" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#" title="Delete Illness Report"><span class="t-icon t-delete"></span></a>';
+
+
+        row.cells[0].innerHTML = templateComplete;
+        row.cells[4].innerHTML = dataItem.post_designation == 0 ? "First Aider" : dataItem.post_designation == 1 ? "Paramedic" : dataItem.post_designation == 2 ? "Nurse" : dataItem.post_designation == 3 ? "Doctor" : "";
+    }
+
+    function Edit(id) {
+        $('#content').load('IllnessReport/addIllnessReport', { 'id': id });
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.she_illness_report>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("dailyLog")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxIllnessReport", "IllnessReport")
+                .Select("_SelectAjaxIllnessReport", "IllnessReport");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.patient_name).Width(225).Title("Patient Name");
+            columns.Bound(o => o.diag_name).Width(225).Title("Diagnosis Name");
+            columns.Bound(o => o.post_designation).Title("Post / designation or Training Grade");
+            
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+) 

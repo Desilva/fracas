@@ -1,0 +1,393 @@
+﻿@{
+    int? id = null;
+    bool isEdit = false;
+    StarEnergi.Models.trouble_shooting ts = new StarEnergi.Models.trouble_shooting();
+    if (ViewBag.mod != null)
+    {
+        id = ViewBag.mod as Nullable<Int32>;
+        ts = ViewBag.datas as StarEnergi.Models.trouble_shooting;
+        isEdit = true;
+    }
+
+    List<StarEnergi.Models.EmployeeEntity> has = null;
+    if (ViewData["users"] != null)
+    {
+        has = ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>;
+    }
+
+    string username = HttpContext.Current.Session["username"].ToString();
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<script>
+    var isEdit = '@isEdit';
+    var isSave = false;
+    function setIframeHeight(sel, h) {
+        $(sel).height(h);
+    }
+
+    function htmlEncode(value) {
+        //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+        //then grab the encoded contents back out.  The div never exists on the page.
+        return $('<div/>').text(value).html();
+    }
+
+    function save() {
+        isSave = true;
+
+        if (validate()) {
+            var as_found_condition = htmlEncode(CKEDITOR.instances.as_found_condition.getData());
+            var analysis = htmlEncode(CKEDITOR.instances.analysis.getData());
+            var values = {
+                no: $('#no').val(),
+                equipment_no: $('#equipment_no').val(),
+                equipment_description: $('#equipment_description').val(),
+                date_of_trouble: $('#date_of_trouble').val(),
+                time_of_trouble: $('#time_of_trouble').val(),
+                start_date_repair: $('#start_date_repair').val(),
+                end_date_repair: $('#end_date_repair').val(),
+                time_repaired: $('#time_repaired').val(),
+                wo_number: $('#wo_number').val(),
+                description_trouble: $('#description_trouble').val(),
+                as_found_condition: as_found_condition,
+                analysis: analysis,
+                action: $('#action').val(),
+                recommendation: $('#recommendation').val(),
+                inspector_name: $('#inspector_name').val(),
+                approval_name: $('#approval_name').val(),
+                inspector_date: $('#inspector_date').val(),
+                approval_date: $('#approval_date').val(),
+                inspector_signature: $('#img_inspector_signature').attr('src'),
+                id_ir: '@(ViewBag.id_ir != null ? ViewBag.id_ir as string : null)'
+            }
+
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.post("TroubleShooting/Add", values, function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        $('#realmod_save').css("display", "none");
+                        alert('Troubleshooting with number "' + data.ts_no + '" successfully saved');
+                        back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to add troubleshooting');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.post("TroubleShooting/Edit", values, function (data) {
+                    if (data != undefined) {
+                        $('#realmod_save').css("display", "none");
+                        alert('Troubleshooting successfully updated');
+                        back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to update troubleshooting');
+                    }
+                });
+            }
+    }
+}
+
+function validate() {
+    return true;
+}
+</script>
+<div class="container">
+	<header>
+		<div class="page-title" style="width:980px">
+			<h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED</h1>
+		</div>
+		<div class="clearfix" style="width:768px"></div>
+		<b><u>TROUBLE SHOOTING/EQUIPMENT REPAIR REPORT</u></b>
+	</header>
+    <br />
+    <b>1. GENERAL INFORMATION</b>
+    <div style="float:right;margin-right:-31px;">
+        <table class="w-border" style="width:100px">
+            <tr>
+                <td class="no-border-right">No</td>
+                <td class="no-border-right no-border-left">:</td>
+				<td class="no-border-left"><input type="text" name="no" id="no" value="@(isEdit ? ts.no : ViewBag.ts_no as string)" disabled/></td>
+			</tr>
+        </table>
+    </div>
+    <br />
+	<div class="log-part1">
+		<table class="w-border" style="width:980px">
+			<tr>
+                <td class="no-border-right">TAG/Equipment No</td>
+                <td class="no-border-right no-border-left">:</td>
+				<td class="no-border-left" colspan="3"><input type="text" name="equipment_no" id="equipment_no" value="@(isEdit ? ts.equipment_no : "")"/></td>
+                <td class="no-border-right">Equipment Desc.</td>
+                <td class="no-border-right no-border-left">:</td>
+				<td class="no-border-left"><input type="text" name="equipment_description" id="equipment_description" value="@(isEdit ? ts.equipment_description : "")" /></td>
+			</tr>
+            <tr>
+                <td class="no-border-right">Date of Trouble</td>
+                <td class="no-border-right no-border-left">:</td>
+				<td class="no-border-left" colspan="3">
+                    @(Html.Telerik().DatePicker()
+                    .Name("date_of_trouble")
+                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                    .Value(isEdit ? ts.date_of_trouble : null)
+                    .Enable(true))
+				</td>
+                <td class="no-border-right">Time of Trouble</td>
+                <td class="no-border-right no-border-left">:</td>
+				<td class="no-border-left">
+                    @(Html.Telerik().TimePicker()
+                    .Name("time_of_trouble")
+                    .HtmlAttributes(new { id = "time_wrapper", style = "width:90px" })
+                    .Interval(1)
+                    .Value(isEdit ? ts.time_of_trouble : null)
+                    .Enable(true))
+				</td>
+			</tr>
+            <tr>
+                <td class="no-border-right">Date of Repaired</td>
+                <td class="no-border-right no-border-left">:</td>
+				<td class="no-border-right no-border-left">
+                    @(Html.Telerik().DatePicker()
+                    .Name("start_date_repair")
+                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                    .Value(isEdit ? ts.start_date_repair : null)
+                    .Enable(true))
+				</td>
+                <td class="no-border-right no-border-left">
+                    -
+				</td>
+                <td class="no-border-left">
+                    @(Html.Telerik().DatePicker()
+                    .Name("end_date_repair")
+                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                    .Value(isEdit ? ts.end_date_repair : null)
+                    .Enable(true))
+				</td>
+                <td class="no-border-right">Time of Repaired</td>
+                <td class="no-border-right no-border-left">:</td>
+				<td class="no-border-left">
+                    <input type="text" name="time_repaired" id="time_repaired" value="@(isEdit ? ts.time_repaired : "")" />
+				</td>
+			</tr>
+			<tr>
+                <td class="no-border-right">WO Number</td>
+                <td class="no-border-right no-border-left">:</td>
+				<td class="no-border-left" colspan="3"><input type="text" name="wo_number" id="wo_number" value="@(isEdit ? ts.wo_number : "")" /></td>
+                <td colspan="3">&nbsp;</td>
+			</tr>
+            <tr>
+                <td colspan="8">
+                    Description of Trouble :
+                    <textarea name="description_trouble" id="description_trouble" cols="118" rows="5" style="resize:none">@(isEdit ? ts.description_trouble : "")</textarea>
+                </td>
+			</tr>
+		</table>
+	</div>
+    <br />
+    <b>2. AS FOUND CONDITION</b><small>(Include the visual inspection, measurement data and others fact that was found at the equipment)</small>
+	<div class="log-part2">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td><textarea cols="118" id="as_found_condition" name="as_found_condition" rows="10">@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ts.as_found_condition)).ToHtmlString() : "")</textarea></td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+    <b>3. ANALYSIS</b><small>(Include the trouble shooting step that have been taken, measurement data and analysis base on data that have been collected)</small>
+	<div class="log-part3">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td><textarea cols="118" id="analysis" name="analysis" rows="10">@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ts.analysis)).ToHtmlString() : "")</textarea></td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+    <b>4. ACTION</b><small>(Include action that have been taken to fixed the problem, equipment condition and measurement data)</small>
+	<div class="log-part4">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td><textarea cols="118" id="action" name="action" rows="5" style="resize:none">@(isEdit ? ts.action : "")</textarea></td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+    <b>5. RECOMMENDATION</b><small>(Include the recommendation to prevent the problem recurrent, follow up action that needed to be taken)</small>
+	<div class="log-part5">
+        <table class="w-border" style="width:980px">
+		    <tr>
+			    <td><textarea cols="118" id="recommendation" name="recommendation" rows="10" style="resize:none">@(isEdit ? ts.recommendation : "")</textarea></td>
+		    </tr>
+	    </table>
+	</div>
+    <br />
+	<div class="log-part6">
+        <table class="w-border" style="width:980px">
+		    <tr>
+                <td>
+                    Inspector Signature
+                    <br />
+                    @*if (!isView)
+                    {*@
+                        @if (ts != null && ts.inspector_signature == null)
+                        {
+                            @(Html.Telerik().Upload()
+                                .Name("inspector_signature")
+                                .Async(async => async
+                                    .Save("approveInspector","TroubleShooting", new { id = id })
+                                    .AutoUpload(true)
+                                    )
+                                .ClientEvents(events => events
+                                    .OnSuccess("onSuccessApproveIns"))
+                                .ShowFileList(false)
+                            )
+                        }
+                            <img id="img_inspector_signature" width="50" height="50" @(ts.inspector_signature != null ? "style=display:block;" : "style=display:none;")  src="@ts.inspector_signature"/>
+                    @*}
+                    else
+                    {
+                        <input type="text" name="inspector_name" id="inspector_name" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ts.inspector_name)).alpha_name : "")" disabled style="width:166px"/>
+                        <img id="img_inspector_signature" width="50" height="50" @(ts.inspector_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@ts.inspector_signature"/>
+                    }*@
+                </td>
+                <td>
+                    Approval Signature
+                    <br />
+                    @*if (!isView)
+                    {*@
+                        @if (isEdit) {
+                            if (has.Find(p => p.username == username).id == Int32.Parse(ts.approval_name == null ? "0" : ts.approval_name))
+                            {
+                                if (ts.approval_signature == null)
+                                {
+                                    @(Html.Telerik().Upload()
+                                        .Name("approval_signature")
+                                        .Async(async => async
+                                            .Save("approvalSignature","TroubleShooting", new { id = id })
+                                            .AutoUpload(true)
+                                            )
+                                        .ClientEvents(events => events
+                                            .OnSuccess("onSuccessApprovalSign"))
+                                        .ShowFileList(false)
+                                    )
+                                }
+                            }
+                            <img id="img_approval_signature" width="50" height="50" @(ts.approval_signature != null ? "style=display:block;" : "style=display:none;" )  src="@ts.approval_signature"/>
+                        }
+                    @*}
+                    else
+                    {
+                        <input type="text" name="inspector_name" id="inspector_name" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ts.inspector_name)).alpha_name : "")" disabled style="width:166px"/>
+                        <img id="img_inspector_signature" width="50" height="50" @(ts.inspector_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@ts.inspector_signature"/>
+                    }*@
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    PRINT NAME
+                    <br />
+                    <select id="inspector_name" name="inspector_name"  @(isEdit && ts.inspector_signature != null ? "disabled" : "")>
+                        <option value="" selected disabled>Choose One</option>
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (isEdit && user.id == Int32.Parse(ts.inspector_name == null ? "0" : ts.inspector_name))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else
+                            {
+                                <option value="@user.id">@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    PRINT NAME
+                    <br />
+                    <select id="approval_name" name="approval_name"  @(isEdit && ts.approval_signature != null ? "disabled" : "")>
+                        <option value="" selected disabled>Choose One</option>
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (isEdit && user.id == Int32.Parse(ts.approval_name == null ? "0" : ts.approval_name))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else
+                            {
+                                <option value="@user.id">@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    DATE
+                    <br />
+                    @(Html.Telerik().DatePicker()
+                    .Name("inspector_date")
+                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                    .Value(isEdit ? ts.inspector_date : null)
+                    .Enable(true))
+                </td>
+                <td>
+                    DATE
+                    <br />
+                    @(Html.Telerik().DatePicker()
+                    .Name("approval_date")
+                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                    .Value(isEdit ? ts.approval_date : null)
+                    .Enable(true))
+                </td>
+            </tr>
+	    </table>
+	</div>
+</div>
+<br/>
+<div class="submit">
+	<input name="Submit" value="Save" type="submit" onclick="save()"/>
+    <input type="button" value="Cancel" onclick="back()"/>
+    @if (isEdit) {
+    <button type="button" value="Print Troubleshooting">
+        @Html.ActionLink("Print Trouble Shooting", "printTroubleShooting", "TroubleShooting", new {id = id},  new { target = "_blank" })
+    </button>
+    }
+</div>
+<br/>
+<script type="text/javascript">
+    function onSuccessApproveIns(data) {
+        $('#inspector_signature').parent().parent().hide();
+        $('#img_inspector_signature').attr('src', data.response.path);
+        $('#img_inspector_signature').css('display', 'block');
+    }
+
+    function onSuccessApprovalSign(data) {
+        $('#approval_signature').parent().parent().hide();
+        $('#img_approval_signature').attr('src', data.response.path);
+        $('#img_approval_signature').css('display', 'block');
+    }
+
+    function back() {
+        window.location = "/TroubleShooting";
+    }
+
+    var editor_as_found_condition = CKEDITOR.replace('as_found_condition', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+
+    var editor_analysis = CKEDITOR.replace('analysis', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+</script>

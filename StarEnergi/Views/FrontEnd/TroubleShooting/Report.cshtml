@@ -1,0 +1,72 @@
+﻿@model IEnumerable<StarEnergi.Models.trouble_shooting>
+@{
+    ViewBag.Title = "Add Daily Log";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="Edit Trouble Shooting" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>';
+
+
+        row.cells[0].innerHTML = templateComplete;
+    }
+
+    function Edit(id) {
+        $('#contentEventLog').load('TroubleShooting/addTroubleShooting', { 'id': id });
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.trouble_shooting>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("troubleShooting")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxTroubleShooting", "TroubleShooting")
+                .Select("_SelectAjaxTroubleShooting", "TroubleShooting");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.no).Width(200).Title("No.");
+            columns.Bound(o => o.equipment_no).Width(200).Title("Tag/Equipment No.");
+            columns.Bound(o => o.date_of_trouble).Title("Date of Trouble");
+            
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+) 

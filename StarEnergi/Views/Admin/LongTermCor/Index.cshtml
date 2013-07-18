@@ -1,0 +1,49 @@
+﻿@model IEnumerable<StarEnergi.Models.long_term_actions>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Long Term Cor Actions </h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.long_term_actions>(Model)
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("LongTermCor")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "importExcel" })
+            .Text("Export")
+            .Action("importExcel", "LongTermCor")
+        )
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "LongTermCor")
+                .Insert("_InsertAjaxEditing", "LongTermCor")
+                .Update("_SaveAjaxEditing", "LongTermCor")
+                .Delete("_DeleteAjaxEditing", "LongTermCor");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.action).Width(150).Title("Action");
+            columns.Bound(o => o.description).Title("Description");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

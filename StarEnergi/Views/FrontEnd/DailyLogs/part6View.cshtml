@@ -1,0 +1,32 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    List<StarEnergi.Models.daily_log_pro> li = ViewBag.pro as List<StarEnergi.Models.daily_log_pro>;
+    int i = 0;
+}
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<div class="container">
+    <table class="w-border no-border-last-row">
+		<tr>
+			<td class="time no-border-top no-border-btm">&nbsp;</td>
+			<td colspan="4">PRO: </td>
+		</tr>
+		<tr>
+			<td class="no-border-btm no-border-top">&nbsp;</td>
+			<td class="yellow-bg center" style="width:50px">No.</td>
+			<td class="yellow-bg center" style="width:100px">WO No.</td>
+			<td class="yellow-bg center">Work To Be Performed</td>
+			<td class="yellow-bg center" style="width:100px">SAP status</td>
+		</tr>
+        @foreach (StarEnergi.Models.daily_log_pro pro in li) {
+            i++;
+            <tr>
+			    <td class="no-border-btm no-border-top">@pro.pro_time</td>
+			    <td class="center">@i</td>
+			    <td>@pro.wo_number</td>
+			    <td>@pro.work_to_be_performed</td>
+			    <td class="center">@(pro.sap_status == 0 ? "Closed" : pro.sap_status == 1 ? "Opened" : pro.sap_status == 2 ? "Cancelled" : "")</td>
+		    </tr>
+        }
+	</table>
+</div>

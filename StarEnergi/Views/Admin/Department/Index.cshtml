@@ -1,0 +1,44 @@
+﻿@model IEnumerable<StarEnergi.Models.rca_department>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Department</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.rca_department>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("Department")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "Department")
+                .Insert("_InsertAjaxEditing", "Department")
+                .Update("_SaveAjaxEditing", "Department")
+                .Delete("_DeleteAjaxEditing", "Department");
+        })
+        .Columns(columns =>
+        {
+            columns.ForeignKey(o => o.id_facility, (System.Collections.IEnumerable)ViewData["rca_facility"],
+                   "id", "name").Width(200).Title("Facility Name");
+            columns.Bound(o => o.name).Title("Department Name");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

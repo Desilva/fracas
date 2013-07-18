@@ -1,0 +1,23 @@
+﻿@model StarEnergi.Models.employee_dept
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Department</legend>
+
+    <div class="display-label">nama</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.dept_name)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+       
+    </p>
+}

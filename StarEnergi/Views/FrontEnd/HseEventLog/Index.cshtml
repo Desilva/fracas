@@ -1,0 +1,41 @@
+﻿<div id = "contentEventLog">
+@model IEnumerable<StarEnergi.Models.HseEventEntity>
+<h2>@ViewBag.nama
+    <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
+</h2>
+
+
+@(Html.Telerik().Grid<StarEnergi.Models.HseEventEntity>()
+        //.HtmlAttributes(new { style = "padding:0 0 0 10px;" })
+        .Name("HseEventLog")
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "HseEventLog");
+        })
+        .ToolBar(commands => commands
+            .Custom()
+            .HtmlAttributes(new { id = "importExcel" })
+            .Text("Export")
+            .Action("importExcelIndex", "HseEventLog")
+        )
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.dateTimeIncident).Title("Date/Time Incident");
+            columns.Bound(o => o.incidentType).Title("Incident Type");
+            columns.Bound(o => o.incidentLocation).Title("Incident Location").Width(150);
+            columns.Bound(o => o.factualInformation).Title("Factual Information").Width(200);
+            columns.Bound(o => o.immediateAction).Title("Immediate Actions").Width(200);
+        })
+        .Pageable(p => p.PageSize(20))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Resizable(resizing => resizing.Columns(true))
+
+) 
+
+</div>

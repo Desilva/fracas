@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Daily Log";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+<script type="text/javascript">
+
+    function addDailyLog() {
+        $('#content').load('DailyLog/AddDailyLog');
+    }
+
+    function showDailyLog() {
+        $('#dailyLog').load('DailyLog/Report');
+    }
+
+    function showOperationalWarning() {
+        $('#operationWarning').load('DailyLog/operationalWarning');
+    }
+
+    function showWeeklyTarget() {
+        $('#weeklyTarget').load('DailyLog/weeklyTarget');
+    }
+
+    $(document).ready(function () {
+        showOperationalWarning();
+        showWeeklyTarget();
+        showDailyLog();
+    });
+
+</script>
+
+<h2 class="adminH2">Daily Log</h2>
+<h3>Key Performance Indicator</h3>
+<div id="dailyLogKPI" style="height:100px">
+</div>
+<hr />
+<h3>Operation Warning</h3>
+<div id="operationWarning">
+</div>
+<hr />
+<h3>Weekly Target</h3>
+<div id="weeklyTarget">
+</div>
+<hr />
+<div>
+    <input type="button" id="addDailyLog" value="Add Daily Log" onclick="addDailyLog()"/>
+</div>
+<br/>
+<div id="dailyLog">
+</div>
+<br />

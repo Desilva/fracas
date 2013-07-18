@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Equipment Daily Report";
+}
+<script type="text/javascript">
+
+    function addEvent() {
+        $('#content').load('EquipmentDailyReport/AddEquipmentDailyReport');
+    }
+
+    function showEquipmentDailyReport() {
+        $('#equipmentDailyReport').load('EquipmentDailyReport/Report');
+    }
+
+    $(document).ready(function () {
+        showEquipmentDailyReport();
+    });
+
+</script>
+
+<h2 class="adminH2">Equipment Daily Report</h2>
+
+<div>
+    <input type="button" id="addEvent" value="Tambah Equipment Daily Report" onclick="addEvent()"/>
+</div>
+<br/>
+<div id="equipmentDailyReport">
+</div>
+
+<br />
+<hr />
+@using (Html.BeginForm("Index", "LoadExcel", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
+{
+    	 <p class="title">Import Data Equipment Daily Report Dari Excel</p>
+		 	 
+		 <div class="info_inside_left">Excel File (.xls) :</div> 
+		 <input type="text" id="fileName" class="file_input_textbox" readonly="readonly" />
+		 <div class="file_input_div">
+			<input type="button" value="Cari" class="file_input_button" />
+			<input type="file" class="file_input_hidden" name="userfile" onchange="javascript: document.getElementById('fileName').value = this.value" />
+		 </div>
+		 <br />
+		 <input type="button" value="Upload" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; submit();" />
+}
+<br/>
+<iframe id="upload_target" name="upload_target" src="" width="980" height="350" style="border:0px solid #fff;"></iframe>

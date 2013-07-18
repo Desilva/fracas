@@ -1,0 +1,11 @@
+D:\Informatics\proyek\RCA\StarEnergiTests\bin\Release\StarEnergiTests.dll
+D:\Informatics\proyek\RCA\StarEnergiTests\bin\Release\StarEnergiTests.pdb
+D:\Informatics\proyek\RCA\StarEnergiTests\bin\Release\StarEnergi.dll
+D:\Informatics\proyek\RCA\StarEnergiTests\bin\Release\EntityFramework.dll
+D:\Informatics\proyek\RCA\StarEnergiTests\bin\Release\itextsharp.dll
+D:\Informatics\proyek\RCA\StarEnergiTests\bin\Release\Telerik.Web.Mvc.dll
+D:\Informatics\proyek\RCA\StarEnergiTests\bin\Release\StarEnergi.pdb
+D:\Informatics\proyek\RCA\StarEnergiTests\bin\Release\EntityFramework.xml
+D:\Informatics\proyek\RCA\StarEnergiTests\obj\Release\StarEnergiTests.csprojResolveAssemblyReference.cache
+D:\Informatics\proyek\RCA\StarEnergiTests\obj\Release\StarEnergiTests.dll
+D:\Informatics\proyek\RCA\StarEnergiTests\obj\Release\StarEnergiTests.pdb

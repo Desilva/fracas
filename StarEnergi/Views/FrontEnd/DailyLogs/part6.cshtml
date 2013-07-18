@@ -1,0 +1,70 @@
+﻿@{
+    int? id = ViewBag.id as Nullable<Int32>;
+    int? isApprove = ViewBag.isApprove as Nullable<byte>;
+    string username = HttpContext.Current.Session["username"] as string;
+}
+<style>
+    .t-icon.t-EditPRO
+    {
+        background-image: url("/Content/2012.1.214/Default/sprite.png");
+        background-position: 0 -336px;
+    }
+</style>
+<script type="text/javascript">
+    
+    function OnRowDataBoundEq6(e) {
+        var username = '@isApprove';
+        var dataItem = e.dataItem;
+        var row = e.row;
+        row.cells[4].innerHTML = dataItem.sap_status == 0 ? "Closed" : dataItem.sap_status == 1 ? "Opened" : dataItem.sap_status == 2 ? "Cancelled" : "";
+        if (username == '1') {
+            row.childNodes[5].childNodes[0].style.visibility = 'hidden';
+            row.childNodes[5].childNodes[1].style.visibility = 'hidden';
+        }
+    }
+</script>
+<br />
+<b>PRO:</b>
+<br />
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.daily_log_pro>()
+        .Name("PRO")
+        .HtmlAttributes(new { style = "width:980px" })
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands =>
+        {
+            if (isApprove == null || isApprove == 0) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Insert PRO" });
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxPRO", "DailyLogs", new { id_daily_log = id })
+                .Select("_SelectAjaxPRO", "DailyLogs", new { id = id })
+                .Insert("_InsertAjaxPRO", "DailyLogs", new { id_daily_log = id })
+                .Update("_UpdateAjaxPRO", "DailyLogs", new { id_daily_log = id });
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.pro_time).Width(120).Title("Time");
+            columns.Bound(o => o.wo_number).Width(150).Title("WO No.");
+            columns.Bound(o => o.work_to_be_performed).Title("Work to be Performed");
+            columns.Bound(o => o.sap_status).Width(100).Title("SAP Status");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit PRO" });
+                commands.Delete().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Delete PRO" });
+            }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+
+        })
+        .ClientEvents(events => events.OnRowDataBound("OnRowDataBoundEq6"))
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true).Height(200))
+        .Selectable()
+)

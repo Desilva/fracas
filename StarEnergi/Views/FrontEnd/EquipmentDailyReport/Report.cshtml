@@ -1,0 +1,76 @@
+﻿@model IEnumerable<StarEnergi.Models.equipment_daily_report>
+@{
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var there = '@li.Exists(p => p.role == 8)';
+        var templateComplete = (there == 'True' ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="Edit Equipment Daily Report" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>' : '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="View(' + dataItem.id + ');" title="View Equipment Daily Report" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>');
+        var d = new Date();
+        row.cells[0].innerHTML = templateComplete;
+        row.cells[1].innerHTML = dataItem.date.toDateString();
+    }
+
+    function Edit(id) {
+        $('#contentEventLog').load('EquipmentDailyReport/addEquipmentDailyReport', { 'id': id });
+    }
+
+    function View(id) {
+        $('#contentEventLog').load('EquipmentDailyReport/detailEquipmentDailyReport', { 'id': id });
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+    #Window .t-header {
+        background:#b9b7b7;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.EquipmentReportEntity>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("equipmentDailyReport")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Delete("_DeleteAjaxEquipmentDailyReport", "EquipmentDailyReport")
+                .Select("_SelectAjaxEquipmentDailyReport", "EquipmentDailyReport");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.date).Title("Date");
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+)

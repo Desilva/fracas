@@ -1,0 +1,88 @@
+﻿@model IEnumerable<StarEnergi.Models.daily_log_weekly_target>
+@{
+    ViewBag.Title = "Add Daily Log";
+    List<StarEnergi.Models.daily_log_weekly_target> wt = ViewBag.today as List<StarEnergi.Models.daily_log_weekly_target>;
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+
+        row.cells[3].innerHTML = dataItem.shift == 1 ? "Siang" : dataItem.shift == 2 ? "Malam" : "" ;
+        row.cells[4].innerHTML = dataItem.target.replace(/\n/g, "<br />");
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+<h4>Today Target</h4>
+@if (wt != null) {
+    foreach (StarEnergi.Models.daily_log_weekly_target t in wt)
+    {
+        string [] sp = t.target.Split(new Char[] { '\n' });
+        <b>@(t.shift == 1 ? "Shift Siang" : t.shift == 2 ? "Shift Malam" : "")</b>
+        <ul>
+            @foreach (string s in sp)
+            {
+                <li>@s</li>
+            }
+        </ul>
+    }
+} else {
+    <b>No target for today</b>
+}
+<br />
+<br />
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.daily_log_weekly_target>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("weeklyTarget")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands =>
+        {
+            commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Target" });
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Insert("_InsertAjaxWeeklyTarget","DailyLog")
+                .Select("_SelectAjaxWeeklyTarget", "DailyLog")
+                .Update("_UpdateAjaxWeeklyTarget", "DailyLog");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Target" });
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.date).Width(150).Title("Date");
+            columns.Bound(o => o.shift).Width(150).Title("Shift");
+            columns.Bound(o => o.target).Title("Target");
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+) 
