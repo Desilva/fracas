@@ -36,6 +36,7 @@
                     doc.body.getElementsByClassName("panel7")[0].style.backgroundSize = "100%";
                     doc.body.getElementsByClassName("panel8")[0].style.backgroundSize = "100%";
                     doc.body.getElementsByClassName("panel9")[0].style.backgroundSize = "100%";
+                    doc.body.getElementsByClassName("panel11")[0].style.backgroundSize = "100%";
                     self.clearInterval(int);
                 }
             }

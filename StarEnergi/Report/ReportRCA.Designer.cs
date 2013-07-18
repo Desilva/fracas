@@ -263,7 +263,7 @@ namespace StarEnergi.Report
             this.pictureBox3.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.3993055522441864D));
             this.pictureBox3.MimeType = "";
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.1614584922790527D), Telerik.Reporting.Drawing.Unit.Inch(3.1788194179534912D));
+            this.pictureBox3.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.1614584922790527D), Telerik.Reporting.Drawing.Unit.Inch(2.9704859256744385D));
             this.pictureBox3.Sizing = Telerik.Reporting.Drawing.ImageSizeMode.ScaleProportional;
             this.pictureBox3.Value = "= ResolveUrl(\"~/Content/full_image/prio\"+Fields.id+\".png\")";
             // 
@@ -310,7 +310,7 @@ namespace StarEnergi.Report
             // 
             // textBox17
             // 
-            this.textBox17.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.201388880610466D), Telerik.Reporting.Drawing.Unit.Inch(0.0972222238779068D));
+            this.textBox17.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.22916662693023682D), Telerik.Reporting.Drawing.Unit.Inch(0.1180555671453476D));
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.6034715175628662D), Telerik.Reporting.Drawing.Unit.Inch(0.19579403102397919D));
             this.textBox17.Style.Font.Bold = true;
@@ -321,7 +321,7 @@ namespace StarEnergi.Report
             // textBox1
             // 
             this.textBox1.KeepTogether = false;
-            this.textBox1.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.32638886570930481D), Telerik.Reporting.Drawing.Unit.Inch(0.31944441795349121D));
+            this.textBox1.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.32638886570930481D), Telerik.Reporting.Drawing.Unit.Inch(0.34027773141860962D));
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.1798610687255859D), Telerik.Reporting.Drawing.Unit.Inch(0.41253939270973206D));
             this.textBox1.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.None;
