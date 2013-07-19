@@ -413,7 +413,7 @@
 		                var w = graph.container.offsetWidth;
 		                var h = graph.container.offsetHeight;
 		                var totalM = parseInt('@masterCount');
-		                var v1 = graph.insertVertex(null, 'TreeRoot', node, (totalM / 2 * 200) + 50, h/2 - 20, 120, 40);
+		                var v1 = graph.insertVertex(null, 'TreeRoot', node, ((totalM + totalM % 2) / 2 * 200) + 50, h/2 - 20, 120, 40);
 		                graph.isWrapping(v1);
 		                var v = new Array();
 		                var edge = new Array();
@@ -577,7 +577,7 @@
 			    }
 			}
 
-		    wnd = new mxWindow('Tools', content, 0, 0, isPublish != 1 && isExistRCA ? (graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? 236 : 198)
+		    wnd = new mxWindow('Tools', content, 0, 0, isPublish != 1 && isExistRCA ? (graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? 198 : 198)
                  : 160, 66, true);
 		    wnd.setVisible(true);
 		    document.getElementById("menuTool").appendChild(wnd.getElement());

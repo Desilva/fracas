@@ -34,6 +34,10 @@ namespace StarEnergi.Models
         [Required]
         public string action_required_by { get; set; }
         public string remark { get; set; }
+        public Nullable<int> initiator { get; set; }
+
+        [ReadOnly(true)]
+        public string initiator_name { get; set; }
     }
     
 }

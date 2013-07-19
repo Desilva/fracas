@@ -456,7 +456,7 @@
                 }
                 else
                 {
-                    <input type="text" name="sup_name" id="sup_name" value="@(isEdit ? ir.superintendent == null ? "" : (ir.superintendent_approve == null ? "" : (ir.superintendent_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.superintendent)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.superintendent_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
+                    <input type="text" name="sup_name" id="sup_name" value="@(isEdit ? ir.superintendent == null ? "" : (ir.superintendent_approve == null ? has.Find(p => p.id == Int32.Parse(ir.superintendent)).alpha_name : (ir.superintendent_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.superintendent)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.superintendent_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
                     <img id="img_approve_superintendent" width="50" height="50" @(ir.superintendent_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.superintendent_approve == null ? "" : ir.superintendent_approve.Substring(1))"/>
                 }
             </td>
@@ -534,7 +534,7 @@
                 }
                 else
                 {
-                    <input type="text" name="she_sup_name" id="she_sup_name" value="@(isEdit ? ir.she_superintendent == null ? "" : (ir.she_superintendent_approve == null ? "" : (ir.she_superintendent_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.she_superintendent)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.she_superintendent_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
+                    <input type="text" name="she_sup_name" id="she_sup_name" value="@(isEdit ? ir.she_superintendent == null ? "" : (ir.she_superintendent_approve == null ? has.Find(p => p.id == Int32.Parse(ir.she_superintendent)).alpha_name : (ir.she_superintendent_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.she_superintendent)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.she_superintendent_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
                     <img id="img_approve_she_superintendent" width="50" height="50" @(ir.she_superintendent_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.she_superintendent_approve == null ? "" : ir.she_superintendent_approve.Substring(1))"/>
                 }
             </td>
@@ -614,7 +614,7 @@
                 }
                 else
                 {
-                    <input type="text" name="loss_control_name" id="loss_control_name" value="@(isEdit ? ir.loss_control == null ? "" : (ir.loss_control_approve == null ? "" : (ir.loss_control_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.loss_control)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.loss_control_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
+                    <input type="text" name="loss_control_name" id="loss_control_name" value="@(isEdit ? ir.loss_control == null ? "" : (ir.loss_control_approve == null ? has.Find(p => p.id == Int32.Parse(ir.loss_control)).alpha_name : (ir.loss_control_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.loss_control)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.loss_control_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
                     <img id="img_approve_loss_control" width="50" height="50" @(ir.loss_control_approve == null ? "style='display:none;" : "style='display:block;")  src="@(ir.loss_control_approve == null ? "" : ir.loss_control_approve.Substring(1))"/>
                 }
             </td>
@@ -692,7 +692,7 @@
                 }
                 else
                 {
-                    <input type="text" name="field_man_name" id="field_man_name" value="@(isEdit ? ir.field_manager == null ? "" : (ir.field_manager_approve == null ? "" : (ir.field_manager_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.field_manager)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.field_manager_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
+                    <input type="text" name="field_man_name" id="field_man_name" value="@(isEdit ? ir.field_manager == null ? "" : (ir.field_manager_approve == null ? has.Find(p => p.id == Int32.Parse(ir.field_manager)).alpha_name : (ir.field_manager_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.field_manager)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.field_manager_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
                     <img id="img_approve_field_manager" width="50" height="50" @(ir.field_manager_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.field_manager_approve == null ? "" : ir.field_manager_approve.Substring(1))"/>
                 }
             </td>
@@ -773,6 +773,7 @@
         </button>
         }
         <span id="realmod_save" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+        <br />
         @if (!isView)
         {
             @(Html.Telerik().Upload()
@@ -783,7 +784,7 @@
                     .AutoUpload(true)
                     )
                 .ClientEvents(events => events
-                    .OnSuccess("onSuccessAttachment"))
+                    .OnSuccess("onSuccessAttachment").OnSelect("onSelectUpload"))
                 .ShowFileList(false)
             )
         }
@@ -808,6 +809,7 @@
 
 	            <p class="submit">
 		            <input name="Submit" value="Reject" type="submit" onclick="reject_ajax();" />
+                    <span id="reject_ir" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
                     <input name="type" value="" type="hidden" id="type_reject"/>
 	            </p>
 	         </div>
@@ -832,6 +834,7 @@
     function reject_ajax() {
         var type = $('#type_reject').val();
         var route = type == 1 ? "@Url.Action("rejectSuperintendent", "Incident")" : type == 2 ? "@Url.Action("rejectLossControl", "Incident")" : type == 3 ? "@Url.Action("rejectSheSuperintendent", "Incident")" : type == 4 ? "@Url.Action("rejectFieldManager", "Incident")" : "";
+        $('#reject_ir').css("display", "inline");
         $.ajax({
             type: "POST",
             url: route,
@@ -841,6 +844,8 @@
                 id: '@id'
             },
             success: function (data) {
+                $('#reject_ir').css("display", "none");
+                alert("Comment sent!");
                 $("#RejectComment").data("tWindow").close();
             }
         });

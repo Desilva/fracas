@@ -1338,7 +1338,6 @@ namespace StarEnergi.Utilities
                 daily_log dl = list_dl.First();
                 if (dl.is_approve == 1)
                 {
-
                 }
                 else
                 {

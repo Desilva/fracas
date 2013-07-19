@@ -38,13 +38,14 @@ namespace StarEnergi
             PIRPROCESS,
             SHE,
             INITIATORIR,
-            DAILYLOGSUPERVISOR,
+            DAILYLOGLEADER,
             ADMINSHEOBSERVATION,
             DAILYLOGWEEKLYTARGET,
             FULLPIR,
             AUDITOR,
             ADMINMASTERSHE,
-            MEDIC
+            MEDIC,
+            DAILYLOGSUPERVISOR
         };
 
         public enum MenuFrontEnd

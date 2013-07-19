@@ -48,7 +48,7 @@
                     })
                     .ToolBar(commands =>
                     {
-                        if (li != null && li.Exists(p => p.role == 1) && li.Exists(p => p.role == 8)) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Operation Warning" });
+                        if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINDATA) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGSUPERVISOR)) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Operation Warning" });
                     })
                     .DataBinding(dataBinding =>
                     {
@@ -61,13 +61,14 @@
                     {
                         columns.Command(commands =>
                         {
-                            if (li != null && li.Exists(p => p.role == 1) && li.Exists(p => p.role == 8)) commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Warning" });
-                        }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+                            if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINDATA) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGSUPERVISOR)) commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Warning" });
+                        }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
                         columns.Bound(o => o.id).Hidden();
                         columns.Bound(o => o.start_date).Width(150).Title("Start Date");
                         columns.Bound(o => o.end_date).Width(150).Title("End Date");
-                        columns.Bound(o => o.memo_direction).Title("Memo Direction");
+                        columns.Bound(o => o.memo_direction).Width(200).Title("Memo Direction");
                         columns.Bound(o => o.action_required_by).Width(175).Title("Action Required by");
+                        columns.Bound(o => o.initiator_name).Width(175).Title("Initiator");
                         columns.Bound(o => o.remark).Width(125).Title("Remark");
                     })
                     .ClientEvents(
@@ -102,8 +103,9 @@
                         columns.Bound(o => o.id).Hidden();
                         columns.Bound(o => o.start_date).Width(150).Title("Start Date");
                         columns.Bound(o => o.end_date).Width(150).Title("End Date");
-                        columns.Bound(o => o.memo_direction).Title("Memo Direction");
+                        columns.Bound(o => o.memo_direction).Width(200).Title("Memo Direction");
                         columns.Bound(o => o.action_required_by).Width(175).Title("Action Required by");
+                        columns.Bound(o => o.initiator_name).Width(175).Title("Initiator");
                         columns.Bound(o => o.remark).Width(125).Title("Remark");
                     })
                     .ClientEvents(

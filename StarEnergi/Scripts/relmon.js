@@ -427,3 +427,13 @@ function SelectNodeEmployee(value) {
 function DeselectNodeEmployee() {
     $('#TreeSBSEmployee .t-state-selected').removeClass("t-state-selected");
 }
+
+// Limiting file size for upload
+function onSelectUpload(e) {
+    if (e.files[0].size > 307200) {
+        alert("The file size is too large for upload (max. 300 kB).");
+        e.preventDefault();
+        return false;
+    }
+    return true;
+}

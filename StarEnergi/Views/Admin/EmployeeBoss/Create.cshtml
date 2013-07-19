@@ -27,6 +27,7 @@
             "dob": $('#dob').val(),
             "email": $('#email').val(),
             "dept_id": eval('@ViewBag.dept_id'),
+            "department": $('#department').val(),
             "employee_dept": eval('@ViewBag.dept_id'),
             "signature":$('#img_sign_src').val()
         }
@@ -81,6 +82,13 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.alpha_name)
+            <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.department)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.department)
             <div class="errorM"></div>
         </div>
         <div class="editor-label">

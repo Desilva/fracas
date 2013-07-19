@@ -54,7 +54,7 @@ namespace StarEnergi.Report
             // 
             this.sqlDataSource1.ConnectionString = "starenergygeo";
             this.sqlDataSource1.Name = "sqlDataSource1";
-            this.sqlDataSource1.SelectCommand = "select distinct observer\r\nfrom she_observation";
+            this.sqlDataSource1.SelectCommand = "select distinct observer, department\r\nfrom she_observation";
             // 
             // sqlDataSource2
             // 
@@ -273,6 +273,8 @@ namespace StarEnergi.Report
             reportParameter2.AutoRefresh = true;
             reportParameter2.AvailableValues.DataSource = this.sqlDataSource1;
             reportParameter2.AvailableValues.DisplayMember = "= Fields.observer";
+            reportParameter2.AvailableValues.Filters.AddRange(new Telerik.Reporting.Data.Filter[] {
+            new Telerik.Reporting.Data.Filter("=Fields.department", Telerik.Reporting.Data.FilterOperator.Equal, "=Parameters.department.Value")});
             reportParameter2.AvailableValues.ValueMember = "= Fields.observer";
             reportParameter2.Name = "observer";
             reportParameter2.Text = "observer";

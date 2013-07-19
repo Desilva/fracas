@@ -1610,6 +1610,13 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             List<daily_log_operation_warning> f = new List<daily_log_operation_warning>();
             f = db.daily_log_operation_warning.Where(p => p.end_date.Value.CompareTo(DateTime.Today) >= 0).ToList();
+            foreach (daily_log_operation_warning ow in f)
+            {
+                if (ow.initiator != null)
+                {
+                    ow.initiator_name = db.employees.Find(ow.initiator).alpha_name;
+                }
+            }
             return View(new GridModel<daily_log_operation_warning>
             {
                 Data = f.OrderByDescending(p => p.end_date)
@@ -1651,6 +1658,7 @@ namespace StarEnergi.Controllers.FrontEnd
         //insert data Last Plant Status
         public void create(daily_log_operation_warning lps)
         {
+            lps.initiator = int.Parse(Session["id"].ToString());
             db.daily_log_operation_warning.Add(lps);
             db.SaveChanges();
         }

@@ -59,7 +59,13 @@
                                 + '<span class="t-icon t-edit"></span>'
                                 + '</a>';
 
-        row.cells[0].innerHTML = templateComplete;
+        var i = 0;
+        for (var a in row.cells) {
+            if (row.cells[a].className == "t-group-cell") {
+                i++;
+            }
+        }
+        row.cells[i].innerHTML = templateComplete;
     }
 
     function Edit(id) {

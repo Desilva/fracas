@@ -465,7 +465,7 @@
         .AutoUpload(true)
         )
     .ClientEvents(events => events
-        .OnSuccess("onSuccessAttachment"))
+        .OnSuccess("onSuccessAttachment").OnSelect("onSelectUpload"))
     .ShowFileList(false)
 )
 <br/>

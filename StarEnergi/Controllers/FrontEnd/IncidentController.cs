@@ -108,7 +108,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.mod = id;
                 incident_report ir = db.incident_report.Find(id);
                 ViewBag.datas = ir;
-                ViewBag.superintendent_del = ir.superintendent_approve == null ? db.employees.Find(Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent)).employee_delegate : null;
+                ViewBag.superintendent_del = ir.superintendent_approve == null ? (ir.superintendent == null ? null : db.employees.Find(Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent)).employee_delegate) : null;
                 ViewBag.she_superintendent_del = ir.she_superintendent_approve == null ? db.employees.Find(Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent)).employee_delegate : null;
                 ViewBag.loss_control_del = ir.loss_control_approve == null ? db.employees.Find(Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control)).employee_delegate : null;
                 ViewBag.field_manager_del = ir.field_manager_approve == null ? db.employees.Find(Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager)).employee_delegate : null;
@@ -236,7 +236,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 i.actual_loss = i.actual_loss_severity == 1 ? "Major" : i.actual_loss_severity == 2 ? "Serious" : i.actual_loss_severity == 3 ? "Moderate" : i.actual_loss_severity == 4 ? "Minor" : "";
                 i.potential_loss = i.potential_loss_severity == 1 ? "Major" : i.potential_loss_severity == 2 ? "Serious" : i.potential_loss_severity == 3 ? "Moderate" : i.potential_loss_severity == 4 ? "Minor" : "";
                 i.probability_str = i.probability == 1 ? "Frequent" : i.probability == 2 ? "Occasional" : i.probability == 3 ? "Seldom" : i.probability == 4 ? "Rare" : "";
-                i.prepared_by = i.prepared_by != "" ? db.employees.Find(int.Parse(i.prepared_by == "" ? "0" : i.prepared_by)).alpha_name : "";
+                i.prepared_by = i.prepared_by != "" ? db.employees.Find(int.Parse((i.prepared_by == "" || i.prepared_by == null) ? "0" : i.prepared_by)).alpha_name : "";
             }
 
             return View(new GridModel<incident_report>

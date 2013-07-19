@@ -939,13 +939,13 @@ namespace StarEnergi.Controllers.FrontEnd
             List<RCATeamEmployeeModel> result;
             if (rca.is_publish == 0)
             {
-                result = RCASessionRepository.db.user_per_role.Where(p => p.role == (int)StarEnergi.Config.role.RCA).Join(RCASessionRepository.db.users,
+                result = RCASessionRepository.db.user_per_role.Join(RCASessionRepository.db.users,
                 u => u.username,
                 t => t.username,
-                (u, t) => new RCATeamModel { username = u.username, fullname = t.fullname, jabatan = t.jabatan, role = u.role, employee_id = t.employee_id }).Join(RCASessionRepository.db.employees,
+                (u, t) => new RCATeamModel { username = u.username, fullname = t.fullname, jabatan = t.jabatan, employee_id = t.employee_id }).Distinct().Join(RCASessionRepository.db.employees,
                 u => u.employee_id,
                 t => t.id,
-                (u, t) => new RCATeamEmployeeModel { username = u.username, alpha_name = t.alpha_name, position = t.position, role = u.role, employee_id = u.employee_id }).ToList();
+                (u, t) => new RCATeamEmployeeModel { username = u.username, alpha_name = t.alpha_name, position = t.position, employee_id = u.employee_id }).ToList();
             }
             else
             {
@@ -953,15 +953,15 @@ namespace StarEnergi.Controllers.FrontEnd
                     RCASessionRepository.db.user_per_role,
                     f => f.id_user,
                     d => d.username,
-                    (f, d) => d).Where(d => d.role == (int)StarEnergi.Config.role.RCA).Join(
+                    (f, d) => d).Join(
                         RCASessionRepository.db.users,
                         u => u.username,
                         r => r.username,
-                        (u, r) => new RCATeamModel { username = u.username, fullname = r.fullname, jabatan = r.jabatan, role = u.role, employee_id = r.employee_id }).Join(
+                        (u, r) => new RCATeamModel { username = u.username, fullname = r.fullname, jabatan = r.jabatan, employee_id = r.employee_id }).Distinct().Join(
                         RCASessionRepository.db.employees,
                         u => u.employee_id,
                         r => r.id,
-                        (u, r) => new RCATeamEmployeeModel { username = u.username, alpha_name = r.alpha_name, position = r.position, role = u.role, employee_id = u.employee_id }).ToList();
+                        (u, r) => new RCATeamEmployeeModel { username = u.username, alpha_name = r.alpha_name, position = r.position, employee_id = u.employee_id }).ToList();
             }
             result.RemoveAll(p => p.username == username);
             return View(new GridModel<RCATeamEmployeeModel>
@@ -974,7 +974,7 @@ namespace StarEnergi.Controllers.FrontEnd
         [GridAction]
         public ActionResult rend(string analyst)
         {
-            List<RCATeamEmployeeModel> result = RCASessionRepository.db.user_per_role.Where(p => p.role == (int)StarEnergi.Config.role.RCA && p.username != analyst).Join(RCASessionRepository.db.users,
+            List<RCATeamEmployeeModel> result = RCASessionRepository.db.user_per_role.Where(p => p.username != analyst).Join(RCASessionRepository.db.users,
                 u => u.username,
                 t => t.username,
                 (u, t) => new RCATeamModel { username = u.username, fullname = t.fullname, jabatan = t.jabatan, role = u.role, employee_id = t.employee_id }).Join(RCASessionRepository.db.employees,
