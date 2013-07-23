@@ -66,6 +66,7 @@
     isPublish = parseInt(isPublish);
     var isBone = false;
     var master = [];
+    var totalM = 0;
     @foreach (StarEnergi.Models.rca_fishbone_master fb in master) {
         <text>master.push('@fb.name');</text>
     }
@@ -412,7 +413,7 @@
 		            try {
 		                var w = graph.container.offsetWidth;
 		                var h = graph.container.offsetHeight;
-		                var totalM = parseInt('@masterCount');
+		                totalM = parseInt('@masterCount');
 		                var v1 = graph.insertVertex(null, 'TreeRoot', node, ((totalM + totalM % 2) / 2 * 200) + 50, h/2 - 20, 120, 40);
 		                graph.isWrapping(v1);
 		                var v = new Array();
@@ -1672,6 +1673,7 @@
             var col = dfsFindDeep(prev);
             var isMinus = false;
             var minusValue = 0;
+            var totalAvailColumn = 0;
             if (prev.getAttribute('baris','-1') == '0') {
                 for (var has in edges) {
                     if (totalRow > total) {
@@ -1681,6 +1683,9 @@
                                 dfsMoveDel(edges[has].target,model,true,(totalRow-total));
                             }
                         }
+                    }
+                    if (parseInt(edges[has].target.getAttribute('kolom','-1')) > totalAvailColumn) {
+                        totalAvailColumn = parseInt(edges[has].target.getAttribute('kolom','-1'));
                     }
                     if (parseInt(edges[has].target.getAttribute('kolom','-1')) == (parseInt(prev.getAttribute('kolom','-1')) + 1) && isMinus == false) {
                         if (tot + prev.getGeometry().getCenterX() + 140 < edges[has].target.getGeometry().getCenterX()) {
@@ -1714,7 +1719,16 @@
                         geometri.y -= (totalRow-total)*50;
                     }
                 }
-
+                if (parseInt(prev.getAttribute('kolom','-1')) == totalAvailColumn && isMinus == false) {
+                    if (tot + prev.getGeometry().getCenterX() + 140 < par.getGeometry().getCenterX()) {
+                        isMinus = true;
+                        if ((tot + 140) >= 200) {
+                            minusValue = par.getGeometry().getCenterX() - (tot + 140 + prev.getGeometry().getCenterX());
+                        } else {
+                            minusValue = par.getGeometry().getCenterX() - (200 + prev.getGeometry().getCenterX());
+                        }
+                    }
+                }
                 if (isMinus) {
                     geometri.x -= minusValue;
                 }
@@ -1729,6 +1743,9 @@
                                 dfsMoveDel(edges[has].target,model,true,(totalRow-total));
                             }
                         }
+                    }
+                    if (parseInt(edges[has].target.getAttribute('kolom','-1')) > totalAvailColumn) {
+                        totalAvailColumn = parseInt(edges[has].target.getAttribute('kolom','-1'));
                     }
                     if (parseInt(edges[has].target.getAttribute('kolom','-1')) == (parseInt(prev.getAttribute('kolom','-1')) + 1) && isMinus == false) {
                         if (tot + prev.getGeometry().getCenterX() + 140 < edges[has].target.getGeometry().getCenterX()) {
@@ -1761,10 +1778,20 @@
                         geometri.y += (totalRow-total)*50;
                     }
                 }
-
+                if (parseInt(prev.getAttribute('kolom','-1')) == totalAvailColumn && isMinus == false) {
+                    if (tot + prev.getGeometry().getCenterX() + 140 < par.getGeometry().getCenterX()) {
+                        isMinus = true;
+                        if ((tot + 140) >= 200) {
+                            minusValue = par.getGeometry().getCenterX() - (tot + 140 + prev.getGeometry().getCenterX());
+                        } else {
+                            minusValue = par.getGeometry().getCenterX() - (200 + prev.getGeometry().getCenterX());
+                        }
+                    }
+                }
                 if (isMinus) {
                     geometri.x -= minusValue;
                 }
+                alert("b");
                 var changeGeometri = new mxGeometryChange(model,par, geometri);
                 model.execute(changeGeometri);
             }

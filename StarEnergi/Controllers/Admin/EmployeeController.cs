@@ -196,5 +196,129 @@ namespace StarEnergi.Controllers.Admin
             return Json(new { success = true, path = currpath });
         }
 
+        #region drag & drop
+
+        public JsonResult DragDrop(int type, int value_id, int dest_id)
+        {
+            employee e = null;
+            employee dest = null;
+            switch (type)
+            {
+                case 1:
+                    e = db.employees.Find(value_id);
+                    dest = db.employees.Find(dest_id);
+
+                    e.employee_dept = dest.employee_dept;
+                    e.employee_boss = null;
+                    e.dept_id = dest.dept_id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 2:
+                    e = db.employees.Find(value_id);
+                    dest = db.employees.Find(dest_id);
+
+                    e.employee_dept = dest.employee_dept;
+                    e.employee_boss = dest.employee_boss;
+                    e.dept_id = dest.dept_id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 3:
+                    e = db.employees.Find(value_id);
+                    dest = db.employees.Find(dest_id);
+
+                    e.employee_dept = dest.employee_dept;
+                    e.employee_boss = null;
+                    e.dept_id = dest.dept_id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 4:
+                    e = db.employees.Find(value_id);
+                    dest = db.employees.Find(dest_id);
+
+                    e.employee_dept = dest.employee_dept;
+                    e.employee_boss = dest.employee_boss;
+                    e.dept_id = dest.dept_id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 5:
+                    e = db.employees.Find(value_id);
+                    dest = db.employees.Find(dest_id);
+
+                    e.employee_dept = null;
+                    e.employee_boss = dest.id;
+                    e.dept_id = dest.dept_id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 6:
+                    e = db.employees.Find(value_id);
+                    employee_dept dept = db.employee_dept.Find(dest_id);
+
+                    e.employee_dept = dept.id;
+                    e.employee_boss = null;
+                    e.dept_id = dept.id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 7:
+                    e = db.employees.Find(value_id);
+                    dest = db.employees.Find(dest_id);
+
+                    e.employee_dept = null;
+                    e.employee_boss = dest.id;
+                    e.dept_id = dest.dept_id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 8:
+                    e = db.employees.Find(value_id);
+                    employee_dept dept2 = db.employee_dept.Find(dest_id);
+
+                    e.employee_dept = dept2.id;
+                    e.employee_boss = null;
+                    e.dept_id = dept2.id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 9:
+                    e = db.employees.Find(value_id);
+                    dest = db.employees.Find(dest_id);
+
+                    e.employee_dept = null;
+                    e.employee_boss = dest.id;
+                    e.dept_id = dest.dept_id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+                case 10:
+                    e = db.employees.Find(value_id);
+                    dest = db.employees.Find(dest_id);
+
+                    e.employee_dept = null;
+                    e.employee_boss = dest.id;
+                    e.dept_id = dest.dept_id;
+
+                    db.Entry(e).State = EntityState.Modified;
+                    db.SaveChanges();
+                    break;
+            }
+            return Json(true);
+        }
+
+        #endregion
+
     }
 }

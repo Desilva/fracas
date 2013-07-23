@@ -122,7 +122,9 @@ namespace StarEnergi.Models
         public Nullable<byte> type_equipment { get; set; }
         public Nullable<byte> equipment_employee { get; set; }
         public Nullable<int> equipment_id { get; set; }
-        public Nullable<int> employee_id { get; set; }
+        public string employee_id { get; set; }
+        public Nullable<byte> is_quality { get; set; }
+        public Nullable<byte> is_review { get; set; }
     }
     
 }

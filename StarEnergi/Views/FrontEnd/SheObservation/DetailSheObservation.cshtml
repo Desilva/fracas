@@ -6,6 +6,12 @@
     {
         has = ViewBag.user as List<StarEnergi.Models.EmployeeEntity>;
     }
+
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (HttpContext.Current.Session["roles"] != null)
+    {
+        li = HttpContext.Current.Session["roles"] as List<StarEnergi.Models.user_per_role>;
+    }
 }
 <link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
 <link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
@@ -44,7 +50,7 @@
 	<div class="log-part2">
         <table class="w-border" style="width:980px">
 		    <tr>
-			    <td class="orange-bg center" colspan="3"><b>1. SAFETY</b></td>
+			    <td class="orange-bg center" colspan="4"><b>1. SAFETY</b></td>
 		    </tr>
 		    <tr>
 			    <td class="" style="width:100px">
@@ -580,21 +586,28 @@
                         <li style="display:inline"><b><label for="equip_choose"><input type="radio" value="0" id="equip_choose" name="equipment_employee" disabled @(Model.equipment_employee == 0 ? "checked" : "") />Equipment</label></b></li>
                         <li style="display:inline"><b><label for="employee_choose"><input type="radio" value="1" id="employee_choose" name="equipment_employee" disabled @(Model.equipment_employee == 1 ? "checked" : "") />Employee</label></b></li>
                     </ul>
-                    <select id="equipment_id" @(Model.equipment_employee == 1 ? "style=display:none" : "style=display:block") disabled>
+                    <select id="equipment_id" @(Model.equipment_employee == 0 ? "style=display:block" : "style=display:none") disabled>
                         <option value="">Choose One</option>
                         @foreach (StarEnergi.Models.equipment eq in ViewBag.list_equipment as List<StarEnergi.Models.equipment>)
                         {
                             <option value="@eq.id" @(Model.equipment_id == eq.id ? "selected" : "")>@eq.tag_num</option>
                         }
                     </select>
-                    <select id="employee_id" @(Model.equipment_employee == 0 ? "style=display:none" : "style=display:block") disabled>
-                        <option value="">Choose One</option>
-                        @{has = has.OrderBy(p => p.alpha_name).ToList();}
-                        @foreach (StarEnergi.Models.EmployeeEntity em in has)
-                        {
-                            <option value="@em.id" @(Model.employee_id == em.id ? "selected" : "")>@em.alpha_name</option>
-                        }
-                    </select>
+                    <div @(Model.equipment_employee == 1 ? "style=display:block" : "style=display:none")>
+                        <ul>
+                            @if (Model.employee_id != null) {
+                                has = has.OrderBy(p => p.alpha_name).ToList();
+                                foreach (StarEnergi.Models.EmployeeEntity em in has)
+                                {
+                                    List<string> emp_observe = Model.employee_id.Split(',').ToList();
+                                    if (emp_observe.Contains(em.id.ToString()))
+                                    {
+                                        <li>@em.alpha_name</li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </div>
 			    </td>
 		    </tr>
             <tr>
@@ -705,10 +718,35 @@
 	    </table>
 	</div>
     <br />
+    @if(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)) {
+        <input name="quality" id="is_quality" value="1" type="checkbox" @(Model.is_review == 1 ? "disabled" : "") @(Model.is_quality == 1 ? "checked" : "") /><text>Quality SHE Observation</text>
+    }
 </div>
 <br/>
 <div class="submit">
+    @if(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE) && Model.is_review != 1) {
+        <input name="Submit" value="Mark as Reviewed" type="submit" onclick="saveReview()"/>
+    }
 	<button type="button" value="Back">
         @Html.ActionLink("Back", "Index", "SheObservation")
     </button>
 </div>
+<script type="text/javascript">
+    function saveReview() {
+        var values = {
+            id: '@Model.id',
+            is_quality: $('#is_quality').is(":checked") == true ? 1 : 0
+        };
+
+        $.post("SheObservation/QualityReview", values, function (data) {
+            if (data != undefined) {
+                isSave = true;
+                alert('SHE Observation reviewed. You can not change it anymore.');
+                window.location = "/SheObservation";
+                $('#contentEventLog').load('SheObservation/Index');
+            } else {
+                alert('Fail to change');
+            }
+        });
+    }
+</script>

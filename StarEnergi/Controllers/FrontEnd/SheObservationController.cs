@@ -240,6 +240,8 @@ namespace StarEnergi.Controllers.FrontEnd
                            username = (ue.username == null ? String.Empty : ue.username)
                        }).ToList();
             ViewBag.user = has;
+            string username = Session["username"].ToString();
+            li = db.user_per_role.Where(p => p.username == username).ToList();
 
             ViewBag.list_equipment = db.equipments.ToList();
             ViewBag.nama = "Detail She Observation";
@@ -250,6 +252,19 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             she_observation so = db.she_observation.Find(id);
             return this.ViewPdf("", "sheObservationPrint", so);
+        }
+
+        [HttpPost]
+        public JsonResult QualityReview(int id, byte is_quality)
+        {
+            she_observation so = db.she_observation.Find(id);
+
+            so.is_quality = is_quality;
+            so.is_review = 1;
+
+            db.Entry(so).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(true);
         }
 
     }

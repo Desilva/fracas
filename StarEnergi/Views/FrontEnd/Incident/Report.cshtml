@@ -47,6 +47,30 @@
                                 + '</a>';
 
         var i = 0;
+
+        if (username == dataItem.superintendent) {
+            if (dataItem.superintendent_approve != null) {
+                row.style.background = 'orange';
+            }
+        }
+
+        if (username == dataItem.loss_control) {
+            if (dataItem.loss_control_approve != null) {
+                row.style.background = 'orange';
+            }
+        }
+
+        if (username == dataItem.she_superintendent) {
+            if (dataItem.she_superintendent_approve != null) {
+                row.style.background = 'orange';
+            }
+        }
+
+        if (username == dataItem.field_manager) {
+            if (dataItem.field_manager_approve != null) {
+                row.style.background = 'orange';
+            }
+        }
         for (var a in row.cells) {
             if (row.cells[a].className == "t-group-cell") {
                 i++;

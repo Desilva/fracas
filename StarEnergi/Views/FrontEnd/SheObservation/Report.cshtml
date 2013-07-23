@@ -66,6 +66,10 @@
             }
         }
         row.cells[i].innerHTML = templateComplete;
+
+        if (dataItem.is_review == 1) {
+            row.style.background = 'orange';
+        }
     }
 
     function Edit(id) {

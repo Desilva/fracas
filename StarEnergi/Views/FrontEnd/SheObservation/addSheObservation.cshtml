@@ -17,7 +17,6 @@
     if (HttpContext.Current.Session["roles"] != null)
     {
         li = HttpContext.Current.Session["roles"] as List<StarEnergi.Models.user_per_role>;
-
     }
 }
 
@@ -601,14 +600,19 @@
                             <option value="@eq.id">@eq.tag_num</option>
                         }
                     </select>
-                    <select id="employee_id" style="display:none">
-                        <option>Choose One</option>
-                        @{has = has.OrderBy(p => p.alpha_name).ToList();}
-                        @foreach (StarEnergi.Models.EmployeeEntity em in has)
-                        {
-                            <option value="@em.id">@em.alpha_name</option>
-                        }
-                    </select>
+                    <div id="employee_id" style="display:none">
+                        <div id="selectEmployee" style="overflow-y:scroll;height:200px;float:left;width:450px">
+                            @{has = has.OrderBy(p => p.alpha_name).ToList();}
+                            @foreach (StarEnergi.Models.EmployeeEntity em in has)
+                            {
+                                <input type="checkbox" name="employee" value="@em.id" onclick="check()" />@em.alpha_name<br />
+                            }
+                        </div>
+                        <div id="selectedEmployee" style="overflow-y:auto;height:200px;float:left;width:450px">
+                            <ul id="chosenList">
+                            </ul>
+                        </div>
+                    </div>
 			    </td>
 		    </tr>
             <tr>
@@ -1259,6 +1263,14 @@
                 equipment_employee = $(this).val();
             }
         });
+
+        var employee_id = "";
+        var checkBoxes = $("input[name='employee']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                employee_id += $(this).val()+",";
+            }
+        });
         if (validate()) {
             var values = {
                 she_obs: $('#she_obs').is(":checked") == true ? 1 : 0,
@@ -1368,7 +1380,7 @@
                 type_equipment: $('#ppe_equipment').val(),
                 equipment_employee: equipment_employee,
                 equipment_id: $('#equipment_id').val(),
-                employee_id: $('#employee_id').val()
+                employee_id: employee_id
             }
 
             $('#realmod_save').css("display", "block");
@@ -1419,4 +1431,24 @@
             $('#equipment_id').val('');
         });
     });
+    var arrayName = [];
+
+    @{has = has.OrderBy(p => p.alpha_name).ToList();}
+    @foreach (StarEnergi.Models.EmployeeEntity em in has)
+    {
+        <text>arrayName[@em.id] = "@em.alpha_name";</text>
+    }
+    function check() {
+        document.getElementById("chosenList").innerHTML = "";
+        var employee_id = "";
+        var checkBoxes = $("input[name='employee']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                var node = document.createElement("li");
+                var textnode = document.createTextNode(arrayName[$(this).val()]);
+                node.appendChild(textnode);
+                document.getElementById("chosenList").appendChild(node);
+            }
+        });
+    }
 </script>
