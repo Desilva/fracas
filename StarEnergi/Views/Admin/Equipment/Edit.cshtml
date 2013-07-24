@@ -1,4 +1,10 @@
 ﻿@model StarEnergi.Models.EquipmentEntity
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#updateBOM').load('BuildOfMAterial/RenderUpdate/?id='+'@Model.equipment.id'+'&level=5');
+    })
+
+</script>
 
 @{
     ViewBag.Title = "Edit";
@@ -197,7 +203,9 @@
             if (Model.equipment.data_sheet_path == null)
             {
                 <span>-</span>
-            }  else{
+            }
+            else
+            {
                 @Html.DisplayFor(model => model.equipment.data_sheet_path)    
             }
            
@@ -222,119 +230,6 @@
         <input type="submit" value="Save" onclick="save()"/>
     </p>
 </fieldset>
-<!--
-<fieldset>
-    <legend>Sub Equipment Equipment @Model.equipment.tag_num</legend>
-    <br/>
-    <input type="button" value="Add New Part" onclick="addPart()"/>
-    <br/><br/>
-    @(Html.Telerik().Grid<StarEnergi.Models.EquipmentPartEntity>()
-        .TableHtmlAttributes(new { style = "width:640px" })
-        .Name("EquipmentPart")
-        .DataKeys(keys =>
-        {
-            keys.Add(p => p.id);
-        })
-        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
-        .DataBinding(dataBinding =>
-        {
-            dataBinding.Ajax()
-                .Select("_SelectAjaxEditing", "Equipment")
-                .Insert("_InsertAjaxEditing/", "Equipment")
-                .Update("_SaveAjaxEditing", "Equipment")
-                .Delete("_DeleteAjaxEditing", "Equipment");
+<div id="updateBOM">
 
-        })
-        .Columns(columns =>
-        {
-            columns.Bound(o => o.id).Hidden();
-            columns.ForeignKey(o => o.id_parts,
-              new SelectList((System.Collections.Generic.IEnumerable<StarEnergi.Models.part>)ViewData["parts"], "id", "tag_number")).Width(150).Title("Tag Number");
-            columns.Bound(o => o.installed_date).Width(190).Title("Installed Date");
-            columns.Bound(o => o.mtbf).Title("MTBF").ReadOnly();
-            columns.Bound(o => o.status).Title("Status").ReadOnly();
-            //columns.ForeignKey(o => o.id_tag_type, 
-            //  new SelectList((System.Collections.Generic.IEnumerable<StarEnergi.Models.tag_types>)ViewData["tagTypes"], "id", "title")).Width(150).Title("Tag-Type");
-            columns.Command(commands =>
-            {
-                commands.Edit().ButtonType(GridButtonType.Image);
-                commands.Delete().ButtonType(GridButtonType.Image);
-            }).Width(80).Title("Commands");
-
-        })
-        .ClientEvents(
-            events => events
-                .OnRowDataBound("OnRowDataBound")
-                .OnEdit("OnEdit")
-                .OnSave("OnSave")
-        )      
-        .DetailView(details => details.ClientTemplate(
-            Html.Telerik().Grid<StarEnergi.Models.ComponentEntity>()
-                .Name("Parts_<#= id #>")
-                .DataKeys(keys =>
-                {
-                    keys.Add(p => p.id_component);
-                })
-                .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
-                .Columns(columns =>
-                {
-                    columns.Bound(o => o.id_component).Hidden();
-                    columns.Bound(o => o.id_equipment_part).Hidden();
-                    columns.Bound(o => o.tag_number).Width(140).Title("Tag Number");
-                    columns.Bound(o => o.description).Width(200);
-                    columns.Command(commands =>
-                    {
-                        commands.Edit().ButtonType(GridButtonType.Image);
-                        commands.Delete().ButtonType(GridButtonType.Image);
-                    }).Width(80).Title("Commands");
-                })
-                .DetailView(ordersDetailView => ordersDetailView.ClientTemplate(
-                    Html.Telerik().Grid<StarEnergi.Models.SubComponentEntity>()
-                        .Name("Components_<#= id_component #>")
-                        .DataKeys(keys =>
-                        {
-                            keys.Add(p => p.id_sub_component);
-                        })
-                        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
-                        .Columns(columns =>
-                        {
-                            columns.Bound(o => o.id_sub_component).Hidden();
-                            columns.Bound(o => o.id_component).Hidden();
-                            columns.Bound(o => o.tag_number).Width(140).Title("Tag Number");
-                            columns.Bound(o => o.description).Width(200);
-                            columns.Command(commands =>
-                            {
-                                commands.Edit().ButtonType(GridButtonType.Image);
-                                commands.Delete().ButtonType(GridButtonType.Image);
-                            }).Width(80).Title("Commands");
-                        })
-                        .DataBinding(dataBinding => dataBinding.Ajax()
-                            .Select("_ComponentsForSubHierarchyAjax", "Equipment", new { idComponent = "<#= id_component #>"})
-                            .Insert("_InsertSubComponentAjaxEditing", "Equipment", new { idComponent = "<#= id_component #>"})
-                            .Update("_SaveSubComponentAjaxEditing", "Equipment", new { idComponent = "<#= id_component #>"})
-                            .Delete("_DeleteSubComponentAjaxEditing", "Equipment", new { idComponent = "<#= id_component #>"})
-                        )
-                        .Pageable()
-                        .Sortable()
-                        .ToHtmlString()
-                    ))
-                .DataBinding(dataBinding => dataBinding.Ajax()
-                    .Select("_PartsForComponentHierarchyAjax", "Equipment", new { idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
-                    .Insert("_InsertComponentAjaxEditing", "Equipment", new { idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
-                    .Update("_SaveComponentAjaxEditing", "Equipment", new { idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
-                    .Delete("_DeleteComponentAjaxEditing", "Equipment", new {idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
-                )
-                    
-                .Pageable()
-                .Sortable()
-                .Filterable()
-                .ToHtmlString()
-        ))
-        .Pageable(p => p.PageSize(10))
-        .Sortable()
-        .Filterable()
-        .Scrollable(c => c.Enabled(true).Height("250"))
-        .Selectable()
-                    ) 
-</fieldset>
--->
+</div>

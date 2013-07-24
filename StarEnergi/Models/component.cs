@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
@@ -21,6 +22,8 @@ namespace StarEnergi.Models
     
         public int id { get; set; }
         public Nullable<int> id_equipment_part { get; set; }
+
+        [Display(Name = "No Key Map")]
         public string tag_number { get; set; }
         public string description { get; set; }
     

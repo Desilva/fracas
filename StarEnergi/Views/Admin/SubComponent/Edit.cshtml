@@ -1,5 +1,12 @@
 ﻿@model StarEnergi.Models.sub_component
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#updateBOM').load('BuildOfMAterial/RenderUpdate/?id=' + '@Model.id' + '&level=8');
+    })
+
+</script>
+
 @{
     ViewBag.Title = "Edit";
 }
@@ -76,3 +83,6 @@
             <input type="submit" value="Save" onclick="save()"/>
         </p>
     </fieldset>
+<div id="updateBOM">
+
+</div>

@@ -9,20 +9,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
-    public partial class sub_component
+    public partial class bom
     {
         public int id { get; set; }
-        public Nullable<int> id_component { get; set; }
-
-        [Display(Name = "No Key Map")]
-        public string tag_number { get; set; }
-        public string description { get; set; }
-    
-        public virtual component component { get; set; }
+        public Nullable<int> id_reference { get; set; }
+        public Nullable<int> level_equip { get; set; }
+        public string no_key_map { get; set; }
+        public string descrition { get; set; }
     }
     
 }

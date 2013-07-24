@@ -9,6 +9,7 @@
           <EntitySet Name="audit" EntityType="relmon_star_energiModel.Store.audit" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="audit_log" EntityType="relmon_star_energiModel.Store.audit_log" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="audit_log_clause" EntityType="relmon_star_energiModel.Store.audit_log_clause" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="bom" EntityType="relmon_star_energiModel.Store.bom" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="comms_rbi" EntityType="relmon_star_energiModel.Store.comms_rbi" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="component" EntityType="relmon_star_energiModel.Store.component" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="daily_log" EntityType="relmon_star_energiModel.Store.daily_log" store:Type="Tables" Schema="dbo" />
@@ -77,6 +78,7 @@
           <EntitySet Name="she_KPI_target" EntityType="relmon_star_energiModel.Store.she_KPI_target" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="she_obs_category" EntityType="relmon_star_energiModel.Store.she_obs_category" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="she_obs_KPI_log" EntityType="relmon_star_energiModel.Store.she_obs_KPI_log" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="she_obs_sub_category" EntityType="relmon_star_energiModel.Store.she_obs_sub_category" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="she_observation" EntityType="relmon_star_energiModel.Store.she_observation" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="sub_component" EntityType="relmon_star_energiModel.Store.sub_component" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="system_paf" EntityType="relmon_star_energiModel.Store.system_paf" store:Type="Tables" Schema="dbo" />
@@ -333,6 +335,16 @@
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="id_audit_log" Type="int" />
           <Property Name="id_pir_clause" Type="int" />
+        </EntityType>
+        <EntityType Name="bom">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_reference" Type="int" />
+          <Property Name="level_equip" Type="int" />
+          <Property Name="no_key_map" Type="varchar" MaxLength="50" />
+          <Property Name="descrition" Type="text" />
         </EntityType>
         <EntityType Name="comms_rbi">
           <Key>
@@ -1513,6 +1525,14 @@
           <Property Name="username" Type="varchar" MaxLength="255" />
           <Property Name="date" Type="datetime" />
         </EntityType>
+        <EntityType Name="she_obs_sub_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_category" Type="int" />
+          <Property Name="title" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="she_observation">
           <Key>
             <PropertyRef Name="id" />
@@ -1737,7 +1757,7 @@
           <Property Name="role" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'star_energi_geoo.dbo.user_role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="user_role">
           <Key>
@@ -2765,6 +2785,8 @@
           </AssociationSet>
           <EntitySet Name="rca_template" EntityType="relmon_star_energiModel.rca_template" />
           <EntitySet Name="she_observation" EntityType="relmon_star_energiModel.she_observation" />
+          <EntitySet Name="she_obs_sub_category" EntityType="relmon_star_energiModel.she_obs_sub_category" />
+          <EntitySet Name="boms" EntityType="relmon_star_energiModel.bom" />
           </EntityContainer>
         <EntityType Name="comms_rbi">
           <Key>
@@ -5035,6 +5057,24 @@
           <Property Type="Int32" Name="equipment_id" />
           <Property Type="Int32" Name="employee_id" />
         </EntityType>
+        <EntityType Name="she_obs_sub_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="id_category" />
+          <Property Type="String" Name="title" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="bom">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="id_reference" />
+          <Property Type="Int32" Name="level_equip" />
+          <Property Type="String" Name="no_key_map" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="descrition" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6576,6 +6616,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="she_obs_sub_category">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.she_obs_sub_category">
+              <MappingFragment StoreEntitySet="she_obs_sub_category">
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id_category" ColumnName="id_category" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="boms">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.bom">
+              <MappingFragment StoreEntitySet="bom">
+                <ScalarProperty Name="descrition" ColumnName="descrition" />
+                <ScalarProperty Name="no_key_map" ColumnName="no_key_map" />
+                <ScalarProperty Name="level_equip" ColumnName="level_equip" />
+                <ScalarProperty Name="id_reference" ColumnName="id_reference" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -6597,7 +6657,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Relmon" ZoomLevel="10">
+      <Diagram Name="Relmon" ZoomLevel="63">
         <EntityTypeShape EntityType="relmon_star_energiModel.comms_rbi" Width="1.5" PointX="3.3226540662919426" PointY="1.8742981561805578" />
         <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_last_plant_status" Width="1.5" PointX="2.7275118281727249" PointY="7.8413465655601335" />
         <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_maintainence" Width="1.5" PointX="8.9770084828962613" PointY="15.651509485976542" />
@@ -6748,6 +6808,8 @@
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_sap_daily_log" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_template" Width="1.5" PointX="5.6052351061279113" PointY="8.5893986414137284" />
         <EntityTypeShape EntityType="relmon_star_energiModel.she_observation" Width="1.5" PointX="11.043154824079551" PointY="8.4633066544604052" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_sub_category" Width="1.5" PointX="11.484321925548986" PointY="10.205246483071356" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.bom" Width="1.5" PointX="7.8899497873568674" PointY="27.24505162017655" />
         </Diagram>
     </Diagrams>
   </Designer>

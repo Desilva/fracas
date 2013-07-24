@@ -4,6 +4,10 @@
     ViewBag.Title = "Details";
 }
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('#detailsBOM').load('BuildOfMAterial/RenderDetails/?id='+'@Model.id'+'&level=8');
+    })
+
     function edit() {
         $('#content').load('subcomponent/edit/'+ @Model.id);
     }
@@ -27,3 +31,6 @@
         <input type="button" value="Edit" onclick="edit()" />
     </p>
 </fieldset>
+<div id="detailsBOM">
+
+</div>
