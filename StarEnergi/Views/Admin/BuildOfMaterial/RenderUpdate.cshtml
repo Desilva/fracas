@@ -1,0 +1,39 @@
+﻿<fieldset>
+    <legend>Build of Material @ViewBag.TagNumber</legend>
+    <br/>
+    @(Html.Telerik().Grid<StarEnergi.Models.bom>()
+        .TableHtmlAttributes(new { style = "width:640px" })
+        .Name("bom")
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataKeys(keys =>
+        {
+            keys.Add(x => x.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, level = ViewBag.level })
+                .Insert("_InsertAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, level = ViewBag.level })
+                .Update("_SaveAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, level = ViewBag.level })
+                .Delete("_DeleteAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, level = ViewBag.level });
+
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.no_key_map).Width(190).Title("No Key Map");
+            columns.Bound(o => o.descrition).Title("Description");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height("250"))
+        .Selectable()
+    ) 
+</fieldset>

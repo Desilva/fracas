@@ -1,0 +1,32 @@
+﻿<fieldset>
+    <legend>Build of Material @ViewBag.TagNumber</legend>
+    <br/>
+    @(Html.Telerik().Grid<StarEnergi.Models.bom>()
+        .TableHtmlAttributes(new { style = "width:640px" })
+        .Name("bom")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, level = ViewBag.level });
+
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.level_equip).Hidden();
+            columns.Bound(o => o.id_reference).Hidden();
+            columns.Bound(o => o.no_key_map).Width(190).Title("No Key Map");
+            columns.Bound(o => o.descrition).Title("Description");
+
+        })
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Filterable()
+        .Scrollable(c => c.Enabled(true).Height("250"))
+        .Selectable()
+    ) 
+</fieldset>

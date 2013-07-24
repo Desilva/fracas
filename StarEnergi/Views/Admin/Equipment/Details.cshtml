@@ -4,6 +4,10 @@
     ViewBag.Title = "Details";
 }
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('#detailsBOM').load('BuildOfMAterial/RenderDetails/?id='+'@Model.equipment.id'+'&level=5');
+    })
+
     function edit() {
         $('#content').load('equipment/edit/' + '@Model.equipment.id');
     }
@@ -117,76 +121,6 @@
         <input type="button" value="Edit" onclick="edit()" />
     </p>
 </fieldset>
-<!--
-<fieldset>
-    <legend>Sub Equipment Equipment @Model.equipment.tag_num</legend>
-    <br/>
-    @(Html.Telerik().Grid<StarEnergi.Models.EquipmentPartEntity>()
-        .TableHtmlAttributes(new { style = "width:640px" })
-        .Name("EquipmentPartDetail")
-        .DataKeys(keys =>
-        {
-            keys.Add(p => p.id);
-        })
-        .DataBinding(dataBinding =>
-        {
-            dataBinding.Ajax()
-                .Select("_SelectAjaxEditing", "Equipment");
+<div id="detailsBOM">
 
-        })
-        .Columns(columns =>
-        {
-            columns.Bound(o => o.id).Hidden();
-            columns.ForeignKey(o => o.id_parts,
-              new SelectList((System.Collections.Generic.IEnumerable<StarEnergi.Models.part>)ViewData["parts"], "id", "tag_number")).Width(150).Title("Tag Number");
-            columns.Bound(o => o.installed_date).Width(190).Title("Installed Date");
-            columns.Bound(o => o.mtbf).Title("MTBF").ReadOnly();
-            columns.Bound(o => o.status).Title("Status").ReadOnly();
-
-        })
-        .ClientEvents(
-            events => events
-                .OnRowDataBound("OnRowDataBound")
-        )
-        .DetailView(details => details.ClientTemplate(
-            Html.Telerik().Grid<StarEnergi.Models.ComponentEntity>()
-                .Name("Parts_<#= id #>")
-                .Columns(columns =>
-                {
-                    columns.Bound(o => o.id_component).Hidden();
-                    columns.Bound(o => o.tag_number).Width(140).Title("Tag Number");
-                    columns.Bound(o => o.description).Width(200);
-                })
-                .DetailView(ordersDetailView => ordersDetailView.ClientTemplate(
-                    Html.Telerik().Grid<StarEnergi.Models.SubComponentEntity>()
-                        .Name("Components_<#= id_component #>")
-                        .Columns(columns =>
-                        {
-                            columns.Bound(o => o.id_sub_component).Hidden();
-                            columns.Bound(o => o.tag_number).Width(140).Title("Tag Number");
-                            columns.Bound(o => o.description).Width(200);
-                        })
-                        .DataBinding(dataBinding => dataBinding.Ajax()
-                            .Select("_ComponentsForSubHierarchyAjax", "Equipment", new { idComponent = "<#= id_component #>"})
-                        )
-                        .Pageable()
-                        .Sortable()
-                        .ToHtmlString()
-                    ))
-                .DataBinding(dataBinding => dataBinding.Ajax()
-                    .Select("_PartsForComponentHierarchyAjax", "Equipment", new { idEquipment = "<#= id_equipment #>", idPart = "<#= id_parts #>" })
-                )
-                    
-                .Pageable()
-                .Sortable()
-                .Filterable()
-                .ToHtmlString()
-        ))
-        .Pageable(p => p.PageSize(10))
-        .Sortable()
-        .Filterable()
-        .Scrollable(c => c.Enabled(true).Height("250"))
-        .Selectable()
-    ) 
-</fieldset>
--->
+</div>

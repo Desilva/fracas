@@ -107,5 +107,7 @@ namespace StarEnergi.Models
         public DbSet<daily_log> daily_log { get; set; }
         public DbSet<rca_template> rca_template { get; set; }
         public DbSet<she_observation> she_observation { get; set; }
+        public DbSet<she_obs_sub_category> she_obs_sub_category { get; set; }
+        public DbSet<bom> boms { get; set; }
     }
 }
