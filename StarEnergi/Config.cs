@@ -31,20 +31,21 @@ namespace StarEnergi
         public enum role
         {
             ADMIN,
-            ADMINDATA,
+            FRACAS,
             RCA,
             RCAVIEW,
+            FULLPIR,
             PIRINITIATOR,
             PIRPROCESS,
-            SHE,
-            INITIATORIR,
-            DAILYLOGLEADER,
-            ADMINSHEOBSERVATION,
-            DAILYLOGWEEKLYTARGET,
-            FULLPIR,
             AUDITOR,
+            IIR,
+            INITIATORIR,
+            ADMINSHEOBSERVATION,
             ADMINMASTERSHE,
             MEDIC,
+            DAILYLOG,
+            DAILYLOGWEEKLYTARGET,
+            DAILYLOGLEADER,
             DAILYLOGSUPERVISOR
         };
 

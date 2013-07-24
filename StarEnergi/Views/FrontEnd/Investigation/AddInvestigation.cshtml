@@ -96,7 +96,7 @@
 <script type="text/javascript">
     var isEdit = '@isEdit';
     var isSave = false;
-    var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.SHE)';
+    var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR)';
 
     function reject(type) {
         $("#type_reject").val(type);
@@ -332,11 +332,11 @@
         <tr>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Business Unit / Facility</h5><br />
-                <input type="text" id="bus_unit" name="bus_unit" @(li.Exists(p => p.role == 6) ? "" : "disabled") value="@(isEdit ? iir.facility : "")"/>
+                <input type="text" id="bus_unit" name="bus_unit" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.facility : "")"/>
             </td>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Title</h5><br />
-                <input type="text" id="titles" name="titles" @(li.Exists(p => p.role == 6) ? "" : "disabled") value="@(isEdit ? iir.title : "")"/>
+                <input type="text" id="titles" name="titles" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.title : "")"/>
             </td>
             <td colspan="6" style="width:33%">
                 <h5>Reference Number</h5><br />
@@ -350,30 +350,30 @@
                         .Name("date_incident")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:310px;margin-left:5px" })
                         .Value(isEdit ? iir.date_incident : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 6) ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? true : false)
                 )
             </td>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Incident Location</h5><br />
-                <input type="text" id="inc_loc" name="inc_loc" @(li.Exists(p => p.role == 6) ? "" : "disabled") value="@(isEdit ? iir.incident_location : "")"/>
+                <input type="text" id="inc_loc" name="inc_loc" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.incident_location : "")"/>
             </td>
             <td colspan="6" style="width:33%">
                 <h5>Incident Type</h5><br />
-                <input type="text" id="incident_type" name="incident_type" @(li.Exists(p => p.role == 6) ? "" : "disabled") value="@(isEdit ? iir.incident_type : "")"/>
+                <input type="text" id="incident_type" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.incident_type : "")"/>
             </td>
         </tr>
         <tr>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Actual Loss Severity</h5><br />
-                <input type="text" id="actual_loss" name="actual_loss" @(li.Exists(p => p.role == 6) ? "" : "disabled") value="@(isEdit ? iir.actual_loss : "")"/>
+                <input type="text" id="actual_loss" name="actual_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.actual_loss : "")"/>
             </td>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Potential Loss Severity</h5><br />
-                <input type="text" id="potential_loss" name="potential_loss" @(li.Exists(p => p.role == 6) ? "" : "disabled") value="@(isEdit ? iir.potential_loss : "")"/>
+                <input type="text" id="potential_loss" name="potential_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.potential_loss : "")"/>
             </td>
             <td colspan="6" style="width:33%">
                 <h5>Probability of Recurrence</h5><br />
-                <input type="text" id="probability" name="probability" @(li.Exists(p => p.role == 6) ? "" : "disabled") value="@(isEdit ? iir.probability : "")"/>
+                <input type="text" id="probability" name="probability" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.probability : "")"/>
             </td>
         </tr>
     </tbody>
@@ -386,7 +386,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="facts" name="facts" rows="15" cols="119" style="resize:none" @(li.Exists(p => p.role == 6) ? "" : "disabled")>@(isEdit ? iir.factual_information : "")</textarea>
+                <textarea id="facts" name="facts" rows="15" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.factual_information : "")</textarea>
             </td>
         </tr>
     </tbody>
@@ -398,7 +398,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 6) ? "" : "disabled")>@(isEdit ? iir.immediate_action : immse)</textarea>
+                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.immediate_action : immse)</textarea>
             </td>
         </tr>
     </tbody>
@@ -411,25 +411,25 @@
         <tr>
             <td>
                 <h5>Immediate Causes</h5><small>(These include <b>acts</b> [personal actions] and/or <b>conditions</b> [jobsite circumstances]. Attach additional pages if necessary)</small><br />
-                <textarea id="imme_causes" name="imme_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 6) ? "" : "disabled")>@(isEdit ? iir.immediate_causes : "")</textarea>
+                <textarea id="imme_causes" name="imme_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.immediate_causes : "")</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Basic Causes</h5><small>(These include the <b>personal factors</b> and/or <b>job factors</b> which allow the immediate causes to occur. Attach additional pages if necessary)</small><br />
-               <textarea id="basic_causes" name="basic_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 6) ? "" : "disabled")>@(isEdit ? iir.basic_causes : "")</textarea>
+               <textarea id="basic_causes" name="basic_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.basic_causes : "")</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Additional Observations</h5><small>(List additional observations related to the incident. Attach additional pages if necessary)</small><br />
-                <textarea id="add_observation" name="add_observation" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 6) ? "" : "disabled")>@(isEdit ? iir.additional_observation : "")</textarea>
+                <textarea id="add_observation" name="add_observation" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.additional_observation : "")</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Cost Estimate</h5><small>(Estimated cost for medical treatment, rehabilitation, damage to property, loss to process, etc.)</small><br />
-                <textarea id="cost_estimate" name="cost_estimate" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 6) ? "" : "disabled")>@(isEdit ? iir.cost_estimate : "")</textarea>
+                <textarea id="cost_estimate" name="cost_estimate" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.cost_estimate : "")</textarea>
             </td>
         </tr>
     </tbody>
@@ -466,7 +466,7 @@
             columns.Bound(o => o.PIC).Width(150).Title("Who / PIC / Dept / Sect");
             columns.Bound(o => o.completion_date).Width(150).Title("Completion Date");
             columns.Bound(o => o.pir_number).Width(80).Title("PIR No.");
-            if (li.Exists(p => p.role == 6))
+            if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
             {
                 columns.Command(commands =>
                 {
@@ -496,7 +496,7 @@
                 <h5>Investigator(s) Signature</h5>
             </td>
             <td style="width:16.67%" class="right">
-                @if (li.Exists(p => p.role == 6))
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                 {
                     <select id="investigator" name="investigator"@(isEdit && iir.investigator_approve != null ? "disabled" : "")>
                         <option value="" selected disabled>Choose One</option>
@@ -532,7 +532,7 @@
                 }
                 else
                 {
-                    <input type="text" id="investigator" name="investigator" @(li.Exists(p => p.role == 6) ? "" : "disabled") value="@has.Find(p => p.id == Int32.Parse(iir.investigator)).alpha_name" style="width:100px"/>
+                    <input type="text" id="investigator" name="investigator" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@has.Find(p => p.id == Int32.Parse(iir.investigator)).alpha_name" style="width:100px"/>
                     <img id="img_approve_investigator" width="50" height="50" @(iir.investigator_approve == null ? "style=display:none;" : "style=display:block;")  src="@iir.investigator_approve"/>
                 }
             </td>
@@ -547,7 +547,7 @@
                 {
                     <text>a/n </text>
                 }
-                @if (li.Exists(p => p.role == 6))
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                 {
                     <select id="loss_control" name="loss_control" @(isEdit && iir.loss_control_approve != null ? "disabled" : "") disabled>
                         <option value="" selected disabled>Choose One</option>
@@ -612,7 +612,7 @@
                 {
                     <text>a/n </text>
                 }
-                @if (li.Exists(p => p.role == 6))
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                 {
                     <select id="field_manager" name="field_manager"@(isEdit && iir.field_manager_approve != null ? "disabled" : "") disabled>
                         <option value="" selected disabled>Choose One</option>
@@ -676,7 +676,7 @@
                         .Name("date_inves")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
                         .Value(isEdit ? iir.investigator_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 6) && (!isEdit || iir.investigator_approve == null) ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.investigator_approve == null) ? true : false)
                 )
             </td>
             <td style="width:16.67%" class="right">
@@ -684,7 +684,7 @@
                         .Name("date_loss_control")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
                         .Value(isEdit ? iir.loss_control_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 6) && (!isEdit || iir.loss_control_approve == null) ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.loss_control_approve == null) ? true : false)
                 )
             </td>
             <td style="width:16.67%" class="right">
@@ -692,7 +692,7 @@
                         .Name("date_field_manager")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
                         .Value(isEdit ? iir.field_manager_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 6) && (!isEdit || iir.field_manager_approve == null) ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.field_manager_approve == null) ? true : false)
                 )
             </td>
         </tr>
@@ -700,7 +700,7 @@
 </table>
 <br />
 <div class="submit">
-        @if (li.Exists(p => p.role == 6))
+        @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
         {
 	        <input name="Submit" value="Save" type="submit" onclick="save()"/>
         }

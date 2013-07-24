@@ -35,9 +35,11 @@ namespace StarEnergi.Controllers.Utilities
                 email.IsBodyHtml = true;
                 email.Body = message;
                 System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(ConfigurationManager.AppSettings["smtp"]);  // you need an smtp server address to send emails
-                smtp.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["smtpuser"], ConfigurationManager.AppSettings["smtppassword"]);
+                smtp.UseDefaultCredentials = false;
+                System.Net.NetworkCredential nc = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["smtpuser"], ConfigurationManager.AppSettings["smtppassword"]);
+                smtp.Credentials = (System.Net.ICredentialsByHost)nc.GetCredential(ConfigurationManager.AppSettings["smtp"], 25, "Basic");
                 smtp.Port = Int32.Parse(ConfigurationManager.AppSettings["smtpport"]);
-                smtp.EnableSsl = true;
+                //smtp.EnableSsl = true;
                 try
                 {
                     smtp.Send(email);

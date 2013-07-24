@@ -14,10 +14,10 @@
         var row = e.row;
         row.childNodes[0].childNodes[5].style.display = 'none';
         if (dataItem.is_publish == 1) {
-            if ('@li.Exists(p=>p.role==2)' == 'True') {
+            if ('@li.Exists(p=>p.role==(int)StarEnergi.Config.role.RCA)' == 'True') {
                 row.childNodes[0].childNodes[2].style.display = 'none';
                 row.childNodes[0].childNodes[3].style.display = 'none';
-                if ('@li.Exists(p=>p.role==(int)StarEnergi.Config.role.SHE)' == 'True') {
+                if ('@li.Exists(p=>p.role==(int)StarEnergi.Config.role.IIR)' == 'True') {
                     row.childNodes[0].childNodes[5].style.display = 'inline-block';
                 }
             }

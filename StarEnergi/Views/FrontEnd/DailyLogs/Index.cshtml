@@ -51,7 +51,7 @@
 </div>
 <hr />
 <h3>List of Daily Log(s)</h3>
-    @if (li != null && li.Exists(p => p.role == 1))
+    @if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG))
     {
 <div>
     <input type="button" id="addDailyLog" value="Add Daily Log" onclick="addDailyLog()"/>
@@ -62,7 +62,8 @@
 </div>
 <br />
 <hr />
-@if (li != null && li.Exists(p => p.role == 1)) {
+@if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG))
+{
 using (Html.BeginForm("LoadExcel", "DailyLogs", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
 {
     	 <p class="title">Import Daily Log Data From Excel</p>

@@ -25,26 +25,34 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/Investigation" });
             }
-            var has = (from employees in db.employees
-                       join dept in db.employee_dept on employees.dept_id equals dept.id
-                       join users in db.users on employees.id equals users.employee_id into user_employee
-                       from ue in user_employee.DefaultIfEmpty()
-                       select new EmployeeEntity
-                       {
-                           id = employees.id,
-                           alpha_name = employees.alpha_name,
-                           employee_no = employees.employee_no,
-                           position = employees.position,
-                           work_location = employees.work_location,
-                           dob = employees.dob,
-                           dept_name = dept.dept_name,
-                           username = (ue.username == null ? String.Empty : ue.username)
-                       }).ToList();
-            ViewData["users"] = has;
-            string username = (String)Session["username"].ToString();
-            li = db.user_per_role.Where(p => p.username == username).ToList();
-            ViewData["user_role"] = li;
-            return View();
+            else
+            {
+                var has = (from employees in db.employees
+                           join dept in db.employee_dept on employees.dept_id equals dept.id
+                           join users in db.users on employees.id equals users.employee_id into user_employee
+                           from ue in user_employee.DefaultIfEmpty()
+                           select new EmployeeEntity
+                           {
+                               id = employees.id,
+                               alpha_name = employees.alpha_name,
+                               employee_no = employees.employee_no,
+                               position = employees.position,
+                               work_location = employees.work_location,
+                               dob = employees.dob,
+                               dept_name = dept.dept_name,
+                               username = (ue.username == null ? String.Empty : ue.username)
+                           }).ToList();
+                ViewData["users"] = has;
+                string username = (String)Session["username"].ToString();
+                li = db.user_per_role.Where(p => p.username == username).ToList();
+                if (!li.Exists(p => p.role == (int)Config.role.IIR))
+                {
+                    return RedirectToAction("LogOn", "Account", new { returnUrl = "/Investigation" });
+                }
+                ViewData["user_role"] = li;
+                return View();
+            }
+            
         }
 
         public ActionResult report()
@@ -106,7 +114,8 @@ namespace StarEnergi.Controllers.FrontEnd
                            dept_name = dept.dept_name,
                            username = (ue.username == null ? String.Empty : ue.username),
                            delagate = employees.delagate,
-                           employee_delegate = employees.employee_delegate
+                           employee_delegate = employees.employee_delegate,
+                           approval_level = employees.approval_level
                        }).ToList();
             ViewData["users"] = has;
             var pic = (from user_per_roles in db.user_per_role

@@ -24,13 +24,21 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/EquipmentDailyReport" });
             }
-            var has = (from users in db.users
-                       select new UserEntity { username = users.username, fullname = users.fullname, jabatan = users.jabatan }).ToList();
-            ViewData["users"] = has;
-            string username = (String)Session["username"].ToString();
-            li = db.user_per_role.Where(p => p.username == username).ToList();
-            ViewData["user_role"] = li;
-            return View();
+            else
+            {
+                var has = (from users in db.users
+                           select new UserEntity { username = users.username, fullname = users.fullname, jabatan = users.jabatan }).ToList();
+                ViewData["users"] = has;
+                string username = (String)Session["username"].ToString();
+                li = db.user_per_role.Where(p => p.username == username).ToList();
+                if (!li.Exists(p => p.role == (int)Config.role.DAILYLOG))
+                {
+                    return RedirectToAction("LogOn", "Account", new { returnUrl = "/EquipmentDailyReport" });
+                }
+                ViewData["user_role"] = li;
+                return View();
+            }
+            
         }
 
         public ActionResult addEquipmentDailyReport(int? id)

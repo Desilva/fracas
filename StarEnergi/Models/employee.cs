@@ -60,6 +60,9 @@ namespace StarEnergi.Models
 
         [Display(Name = "Department")]
         public string department { get; set; }
+
+        [Display(Name = "Approval Level")]
+        public Nullable<byte> approval_level { get; set; }
     
         public virtual ICollection<employee> employee1 { get; set; }
         public virtual employee employee2 { get; set; }

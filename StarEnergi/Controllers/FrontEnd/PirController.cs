@@ -107,7 +107,8 @@ namespace StarEnergi.Controllers.FrontEnd
                                dob = employees.dob,
                                dept_name = dept.dept_name,
                                username = ue.username,
-                               employee = employees.employee2
+                               employee = employees.employee2,
+                               approval_level = employees.approval_level
                            }).ToList();
                 ViewBag.requester = requester != null ? has.Where(p => p.id == Int32.Parse(requester)).ToList().FirstOrDefault().username : null;
 

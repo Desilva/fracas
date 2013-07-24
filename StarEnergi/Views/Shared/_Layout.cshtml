@@ -95,21 +95,7 @@
                 @{
                     if (ViewBag.stat == "admin")
                     {
-                        if (li.Exists(p => p.role == (int)Config.role.ADMINDATA || p.role == (int)Config.role.SHE || p.role == (int)Config.role.INITIATORIR))
-                        {
-                            Html.Telerik().Menu()
-                                .Name("menu")
-                                .ClientEvents(events => events.OnSelect("onSelectMenuAdmin"))
-                                .Items(menu =>
-                                {
-                                    if (li != null && li.Exists(p => p.role == (int)Config.role.ADMINDATA))
-                                    {
-                                        //menu.Add().Text("Fracas");
-                                    }
-                                    menu.Add().Text("Back to Dashboard").Action("Index", "Dashboard").HtmlAttributes(new { @id = "dash" });
-                                }).Render();
-                        }
-                        else
+                        if (li.Exists(p => p.role == (int)Config.role.ADMIN))
                         {
                             Html.Telerik().Menu()
                             .Name("dash")
@@ -134,7 +120,7 @@
                                {
                                    item.Add().Text("FRACAS Event Log").Action("Index", "FracasEventLog");
                                    item.Add().Text("Historical Data").Action("Index", "FracasHistory");
-                                   if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINDATA))
+                                   if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.FRACAS))
                                    {
                                        item.Add().Text("FRACAS Input").Action("Index", "Fracas");
                                        item.Add().Text("Trouble Shooting").Action("Index", "TroubleShooting");
@@ -142,16 +128,16 @@
                                });
                                
                                //menu.Add().Text("Historical Data").Action("Index", "FracasHistory");
-                               if (li != null && (li.Exists(p => p.role == (int)StarEnergi.Config.role.SHE) || li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)StarEnergi.Config.role.AUDITOR || p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE || p.role == (int)StarEnergi.Config.role.MEDIC)))
+                               if (li != null && (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) || li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)StarEnergi.Config.role.AUDITOR || p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE || p.role == (int)StarEnergi.Config.role.MEDIC)))
                                {
                                    menu.Add().Text("SHE").Action("Index", "HseKPI")
                                        .Items(item =>
                                        {
-                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)Config.role.SHE || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)Config.role.IIR || p.role == (int)Config.role.ADMINMASTERSHE))
                                            {
                                                 item.Add().Text("SHE Incident Report").Action("Index", "Incident");
                                            }
-                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.SHE || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR || p.role == (int)Config.role.ADMINMASTERSHE))
                                            {
                                                item.Add().Text("SHE Incident Investigation Report").Action("Index", "Investigation");
                                            }
@@ -163,7 +149,7 @@
                                            {
                                                item.Add().Text("SHE Audit").Action("Index", "HseAuditor");   
                                            }
-                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)Config.role.SHE || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)Config.role.IIR || p.role == (int)Config.role.ADMINMASTERSHE))
                                            {
                                                item.Add().Text("SHE Observation Form").Action("Index", "SheObservation");
                                            }
@@ -180,7 +166,7 @@
                                        });
                                }
                                menu.Add().Text("Daily Log").Action("Index", "DailyLogs");
-                               if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINDATA)) {
+                               if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG)) {
                                     menu.Add().Text("Equipment Daily Report").Action("Index", "EquipmentDailyReport");
                                }
                                menu.Add().Text("Asset Register").Action("Index", "AssetRegister");

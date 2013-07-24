@@ -48,7 +48,7 @@
                     })
                     .ToolBar(commands =>
                     {
-                        if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINDATA) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGSUPERVISOR)) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Operation Warning" });
+                        if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGSUPERVISOR)) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Operation Warning" });
                     })
                     .DataBinding(dataBinding =>
                     {
@@ -61,7 +61,7 @@
                     {
                         columns.Command(commands =>
                         {
-                            if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINDATA) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGSUPERVISOR)) commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Warning" });
+                            if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGSUPERVISOR)) commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Warning" });
                         }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
                         columns.Bound(o => o.id).Hidden();
                         columns.Bound(o => o.start_date).Width(150).Title("Start Date");

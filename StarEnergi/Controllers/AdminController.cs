@@ -22,8 +22,7 @@ namespace StarEnergi.Controllers
             else {
                 string username = (String)Session["username"].ToString();
                 List<user_per_role> li = db.user_per_role.Where(p => p.username == username).ToList();
-                if (!(li.Exists(p => p.role == (int)Config.role.ADMIN || p.role == (int)Config.role.ADMINDATA 
-                    || p.role == (int)Config.role.SHE || p.role == (int)Config.role.INITIATORIR)))
+                if (!(li.Exists(p => p.role == (int)Config.role.ADMIN)))
                 {
                     return RedirectToAction("LogOn", "Account", new { returnUrl = "/admin" });
                 }

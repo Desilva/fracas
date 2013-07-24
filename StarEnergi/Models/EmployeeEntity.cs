@@ -21,5 +21,6 @@ namespace StarEnergi.Models
         public List<user_per_role> role { get; set; }
         public byte? delagate { get; set; }
         public int? employee_delegate { get; set; }
+        public byte? approval_level { get; set; }
     }
 }

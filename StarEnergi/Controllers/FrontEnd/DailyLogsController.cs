@@ -383,9 +383,12 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             DateTime dt = dailyLog.date.Value.AddDays(-1);
             daily_log dl = db.daily_log.Where(p => p.date == dt && p.shift == 2).ToList().FirstOrDefault();
-            if (dl.is_approve != 1)
+            if (dl != null)
             {
-                return Json(null);
+                if (dl.is_approve != 1)
+                {
+                    return Json(null);
+                }
             }
             int id_before = db.daily_log.Max(p => p.id) + 1;
             db.daily_log.Add(dailyLog);
@@ -469,10 +472,10 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         [HttpPost]
-        public JsonResult Edit(daily_log dailyLog)
+        public JsonResult Edit(daily_log dailyLog, string time_check)
         {
             daily_log ir = db.daily_log.Find(dailyLog.id);
-
+            DateTime dt = DateTime.Parse(time_check);
             ir.date = dailyLog.date;
             ir.grup = dailyLog.grup;
             ir.production_foreman = dailyLog.production_foreman;
@@ -484,7 +487,7 @@ namespace StarEnergi.Controllers.FrontEnd
             ir.production_operator_6 = dailyLog.production_operator_6;
             ir.production_operator_7 = dailyLog.production_operator_7;
             ir.production_operator_8 = dailyLog.production_operator_8;
-            ir.time_check = dailyLog.time_check;
+            ir.time_check = dt.TimeOfDay;
             ir.wma_2_is_text = dailyLog.wma_2_is_text;
             ir.wma_2_fcv = dailyLog.wma_2_fcv;
             ir.wma_2_flow = dailyLog.wma_2_flow;

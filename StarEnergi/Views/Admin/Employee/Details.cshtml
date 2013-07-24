@@ -33,6 +33,11 @@
         @Html.DisplayFor(model => model.position)
     </div>
 
+    <div class="display-label">Approval Level</div>
+    <div class="display-field">
+        @(Model.approval_level == 1 ? "Supervisor" : (Model.approval_level == 2 ? "Superintendent" : "None"))
+    </div>
+
     <div class="display-label">Work Location</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.work_location)

@@ -127,7 +127,7 @@
                     })
                     .ToolBar(commands =>
                     {
-                        if (li != null && li.Exists(p => p.role == 1) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGWEEKLYTARGET)) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Target" });
+                        if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGWEEKLYTARGET)) commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }).HtmlAttributes(new { title = "Add Target" });
                     })
                     .DataBinding(dataBinding =>
                     {
@@ -140,7 +140,7 @@
                     {
                         columns.Command(commands =>
                         {
-                            if (li != null && li.Exists(p => p.role == 1) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGWEEKLYTARGET)) commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Target" });
+                            if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGWEEKLYTARGET)) commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { title = "Edit Target" });
                         }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
                         columns.Bound(o => o.id).Hidden();
                         columns.Bound(o => o.date).Width(150).Title("Date");

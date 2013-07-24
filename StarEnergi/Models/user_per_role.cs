@@ -18,7 +18,7 @@ namespace StarEnergi.Models
         public string username { get; set; }
         public Nullable<int> role { get; set; }
     
-        public virtual user user { internal get; set; }
+        public virtual user user { get; set; }
     }
     
 }

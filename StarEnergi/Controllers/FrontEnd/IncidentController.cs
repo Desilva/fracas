@@ -57,7 +57,8 @@ namespace StarEnergi.Controllers.FrontEnd
                            username = (ue.username == null ? String.Empty : ue.username),
                            employee = employees.employee2,
                            delagate = employees.delagate,
-                           employee_delegate = employees.employee_delegate
+                           employee_delegate = employees.employee_delegate,
+                           approval_level = employees.approval_level
                        }).ToList();
             List<EmployeeEntity> bind = has;
             foreach (EmployeeEntity ee in bind)
@@ -124,7 +125,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 int? supervisor_id_del = null;
                 while (cur_user_boss != null)
                 {
-                    if (cur_user_boss.position.ToLower().Contains("supervisor"))
+                    if (cur_user_boss.approval_level == 1)
                     {
                         if (cur_user_boss.delagate == 1)
                         {
@@ -136,9 +137,7 @@ namespace StarEnergi.Controllers.FrontEnd
                             supervisor_id = cur_user_boss.id;
                         }
                     }
-                    Debug.WriteLine("::" + cur_user_boss.position.ToLower() + "::");
-                    Debug.WriteLine(cur_user_boss.position.ToLower().Contains("superintendent"));
-                    if (cur_user_boss.position.ToLower().Contains("superintendent"))
+                    if (cur_user_boss.approval_level == 2)
                     {
                         if (cur_user_boss.delagate == 1)
                         {

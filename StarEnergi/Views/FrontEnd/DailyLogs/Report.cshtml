@@ -12,7 +12,7 @@
     function OnRowDataBoundEq(e) {
         var dataItem = e.dataItem;
         var row = e.row;
-        var ex = '@(li != null ? li.Exists(p => p.role == 1) && li.Exists(p => p.role == 8) : false)';
+        var ex = '@(li != null ? li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG) && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOGLEADER) : false)';
         var templateComplete =  (ex == 'True' ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="Edit Daily Log" onClick="Edit('+dataItem.id +');">' : 
                                 '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="View Daily Log" onClick="View('+dataItem.id+');">')
                                 + '<span class="t-icon t-edit"></span>'

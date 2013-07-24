@@ -138,8 +138,8 @@ namespace StarEnergi.Controllers
 
                 if (returnUrl == "/admin")
                 {
-                    if ((li.Exists(p => p.role == (int)Config.role.ADMIN)) || (li.Exists(p => p.role == (int)Config.role.ADMINDATA))
-                         || (li.Exists(p => p.role == (int)Config.role.SHE)) || (li.Exists(p => p.role == (int)Config.role.INITIATORIR)))
+                    if ((li.Exists(p => p.role == (int)Config.role.ADMIN)) || (li.Exists(p => p.role == (int)Config.role.FRACAS))
+                         || (li.Exists(p => p.role == (int)Config.role.IIR)) || (li.Exists(p => p.role == (int)Config.role.INITIATORIR)))
                     {
                         HttpContext.Session.Add("roles", li);
                         return "";

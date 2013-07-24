@@ -18,6 +18,14 @@
     }
 
     function save() {
+        radios = document.getElementsByName("approval_level");
+        var approval_level = 0;
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                approval_level = radios[i].value;
+            }
+        }
+
         var values =
         {
             "employee_no": $('#employee_no').val(),
@@ -29,7 +37,8 @@
             "dept_id": eval('@ViewBag.dept_id'),
             "department": $('#department').val(),
             "employee_dept": eval('@ViewBag.dept_id'),
-            "signature":$('#img_sign_src').val()
+            "signature": $('#img_sign_src').val(),
+            "approval_level" : approval_level
         }
 
         $.post("EmployeeBoss/Create", values, function (data) {
@@ -96,6 +105,15 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.position)
+            <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.approval_level)
+        </div>
+        <div class="editor-field">
+            <input type="radio" name="approval_level" value="0" id="approval_level_0" />None
+            <input type="radio" name="approval_level" value="1" id="approval_level_1" />Supervisor
+            <input type="radio" name="approval_level" value="2" id="approval_level_2" />Superintendent
             <div class="errorM"></div>
         </div>
         <div class="editor-label">

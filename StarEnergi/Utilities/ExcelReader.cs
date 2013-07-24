@@ -1582,20 +1582,27 @@ namespace StarEnergi.Utilities
             {
                 if (shift == 1)
                 {
-                    daily_log dlw = db.daily_log.Where(p => p.date == dat.Value.AddDays(-1) && p.shift == 2).ToList().FirstOrDefault();
-                    if (dlw.is_approve != 1)
+                    DateTime prev = dat.Value.AddDays(-1);
+                    daily_log dlw = db.daily_log.Where(p => p.date == prev && p.shift == 2).ToList().FirstOrDefault();
+                    if (dlw != null)
                     {
-                        err += "Daily log night shift must be approved first.";
-                        return err;
+                        if (dlw.is_approve != 1)
+                        {
+                            err += "Daily log night shift must be approved first.";
+                            return err;
+                        }
                     }
                 }
                 else
                 {
                     daily_log dlw = db.daily_log.Where(p => p.date == dat.Value && p.shift == 1).ToList().FirstOrDefault();
-                    if (dlw.is_approve != 1)
+                    if (dlw != null)
                     {
-                        err += "Daily log day shift must be approved first.";
-                        return err;
+                        if (dlw.is_approve != 1)
+                        {
+                            err += "Daily log day shift must be approved first.";
+                            return err;
+                        }
                     }
                 }
                 daily_log dl = new daily_log()

@@ -1997,7 +1997,7 @@
         values.id = ids;
         $.post("DailyLogs/Approve", values, function (data) {
             console.log(data);
-            if (data != "") {
+            if (data != "" && data != null) {
                 $('#realmod_save').css("display", "none");
                 alert('Change shift Daily Log');
                 $('#contentEventLog').load('DailyLogs/addDailyLog/'+'@id1');

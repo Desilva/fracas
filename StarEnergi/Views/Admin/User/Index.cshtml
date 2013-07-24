@@ -25,7 +25,7 @@
                     has += ", Admin Data Master";
                     break;
                 case 1:
-                    has += ", Admin Data Input";
+                    has += ", FRACAS";
                     break;
                 case 2:
                     has += ", RCA";
@@ -34,39 +34,42 @@
                     has += ", RCA view";
                     break;
                 case 4:
-                    has += ", PIR Initiator";
-                    break;
-                case 5:
-                    has += ", PIR Process Owner";
-                    break;
-                case 6:
-                    has += ", SHE";
-                    break;
-                case 7:
-                    has += ", Initiator IR / SHE Observation";
-                    break;
-                case 8:
-                    has += ", Daily Log Leader";
-                    break;
-                case 9:
-                    has += ", Admin SHE Observation";
-                    break;
-                case 10:
-                    has += ", Daily Log Weekly Target";
-                    break;
-                case 11:
                     has += ", Full Access PIR";
                     break;
-                case 12:
+                case 5:
+                    has += ", PIR Initiator";
+                    break;
+                case 6:
+                    has += ", PIR Process Owner";
+                    break;
+                case 7:
                     has += ", Auditor";
                     break;
-                case 13:
-                    has += ", Admin Master SHE";
+                case 8:
+                    has += ", IIR";
                     break;
-                case 14:
+                case 9:
+                    has += ", Initiator IR / SHE Observation";
+                    break;
+                case 10:
+                    has += ", Observation Input";
+                    break;
+                case 11:
+                    has += ", Admin SHE";
+                    break;
+                case 12:
                     has += ", Medic";
                     break;
+                case 13:
+                    has += ", Daily Log";
+                    break;
+                case 14:
+                    has += ", Daily Log Weekly Target";
+                    break;
                 case 15:
+                    has += ", Daily Log Leader";
+                    break;
+                case 16:
                     has += ", Daily Log Supervisor";
                     break;
                 default:
@@ -352,7 +355,7 @@
 		            <div class="info_inside_left">Role</div>
 		            <div class="infoFieldinput">
                         @foreach (StarEnergi.Models.user_role role in ur) {
-                            if (role.id != (int)StarEnergi.Config.role.SHE && role.id != (int)StarEnergi.Config.role.INITIATORIR)
+                            if (role.id != (int)StarEnergi.Config.role.IIR && role.id != (int)StarEnergi.Config.role.INITIATORIR)
                             {
                                 <input type="checkbox" name="role" id="role@(role.id)" value="@role.id" />@role.role<br />
                             } else {
@@ -397,7 +400,7 @@
 		            <div class="info_inside_left">Role</div>
 		            <div class="infoFieldinput">
                         @foreach (StarEnergi.Models.user_role role in ur) {
-                            if (role.id != (int)StarEnergi.Config.role.SHE && role.id != (int)StarEnergi.Config.role.INITIATORIR)
+                            if (role.id != (int)StarEnergi.Config.role.IIR && role.id != (int)StarEnergi.Config.role.INITIATORIR)
                             {
                                 <input type="checkbox" name="edit_role" id="edit_role@(role.id)" value="@role.id" />@role.role<br />
                             } else {

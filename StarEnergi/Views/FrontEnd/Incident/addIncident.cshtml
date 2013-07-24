@@ -190,16 +190,16 @@
                 <h5>Potential Loss Severity  <div id="potential_loss_req" style="display:none;color:red;">* required</div></h5>
             </td>
             <td colspan="3">
-                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.potential_loss_severity == 1 ? "checked" : "" : "") onclick="investigation();"/>Major
+                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.potential_loss_severity == 1 ? "checked" : "" : "") onclick="investigation();"/>Major
             </td>
             <td colspan="3">
-                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="2" @(isEdit ? ir.potential_loss_severity == 2 ? "checked" : "" : "") onclick="investigation();"/>Serious
+                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="2" @(isEdit ? ir.potential_loss_severity == 2 ? "checked" : "" : "") onclick="investigation();"/>Serious
             </td>
             <td colspan="3">
-                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="3" @(isEdit ? ir.potential_loss_severity == 3 ? "checked" : "" : "") onclick="investigation();"/>Moderate
+                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="3" @(isEdit ? ir.potential_loss_severity == 3 ? "checked" : "" : "") onclick="investigation();"/>Moderate
             </td>
             <td colspan="3">
-                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="4" @(isEdit ? ir.potential_loss_severity == 4 ? "checked" : "" : "") onclick="investigation();"/>Minor
+                <input type="radio" name="potential_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="4" @(isEdit ? ir.potential_loss_severity == 4 ? "checked" : "" : "") onclick="investigation();"/>Minor
             </td>
         </tr>
         <tr>
@@ -208,16 +208,16 @@
                 <small>(If no corrective action taken)</small>
             </td>
             <td colspan="3">
-                <input type="radio" name="probability" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.probability == 1 ? "checked" : "" : "") onclick="investigation();"/>Frequent
+                <input type="radio" name="probability" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.probability == 1 ? "checked" : "" : "") onclick="investigation();"/>Frequent
             </td>
             <td colspan="3">
-                <input type="radio" name="probability" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="2" @(isEdit ? ir.probability == 2 ? "checked" : "" : "") onclick="investigation();"/>Occasional
+                <input type="radio" name="probability" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="2" @(isEdit ? ir.probability == 2 ? "checked" : "" : "") onclick="investigation();"/>Occasional
             </td>
             <td colspan="3">
-                <input type="radio" name="probability" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="3" @(isEdit ? ir.probability == 3 ? "checked" : "" : "") onclick="investigation();"/>Seldom
+                <input type="radio" name="probability" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="3" @(isEdit ? ir.probability == 3 ? "checked" : "" : "") onclick="investigation();"/>Seldom
             </td>
             <td colspan="3">
-                <input type="radio" name="probability" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="4" @(isEdit ? ir.probability == 4 ? "checked" : "" : "") onclick="investigation();"/>Rare
+                <input type="radio" name="probability" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="4" @(isEdit ? ir.probability == 4 ? "checked" : "" : "") onclick="investigation();"/>Rare
             </td>
         </tr>
     </tbody>
@@ -230,13 +230,13 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="facts" name="facts" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled")>@(isEdit ? ir.factual_information : "")</textarea>
+                <textarea id="facts" name="facts" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled")>@(isEdit ? ir.factual_information : "")</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Cost Estimate<small>(Estimated cost for medical treatment, rehabilitation, damage to property, loss to process, etc.)</small>  <div id="cost_req" style="display:none;color:red;">* required</div></h5><br />
-                &nbsp;&nbsp;$ <input type="text" id="cost" name="cost" style="width:950px" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled") value="@(isEdit ? ir.cost_estimate : "")"/>
+                &nbsp;&nbsp;$ <input type="text" id="cost" name="cost" style="width:950px" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="@(isEdit ? ir.cost_estimate : "")"/>
             </td>
         </tr>
     </tbody>
@@ -248,7 +248,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 7) && !isView ? "" : "disabled")>@(isEdit ? ir.immediate_action : "")</textarea>
+                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled")>@(isEdit ? ir.immediate_action : "")</textarea>
             </td>
         </tr>
     </tbody>
@@ -261,7 +261,7 @@
                 <h5>Prepared by:  <div id="prepared_req" style="display:none;color:red;">* required</h5>
             </td>
             <td colspan="2">
-                @if (li.Exists(p => p.role == 7) && !isView)
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
                     <select id="prepared" name="prepared" onchange="bindpre()" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView ? "" : "disabled")>
                         <option value="" selected disabled>Choose One</option>
@@ -291,13 +291,13 @@
                 <h5>Ack by supervisor  <div id="ack_req" style="display:none;color:red;">* required</h5>
             </td>
             <td colspan="2">
-                @if (li.Exists(p => p.role == 7) && !isView)
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
                     <select id="ack" name="ack" onchange="bindack()" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView ? "" : "disabled")>
                         <option value="" selected disabled>-</option>
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (user.position.ToLower().Contains("supervisor"))
+                            if (user.approval_level == 1)
                             {
                                 if (!isEdit && supervisor_id != null && user.id == supervisor_id)
                                 {
@@ -346,7 +346,7 @@
                         .Name("date_prepared")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:166px" })
                         .Value(isEdit ? ir.prepare_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 7) && !isView ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? true : false)
                 )
             </td>
             <td>
@@ -357,7 +357,7 @@
                         .Name("date_ack")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:166px" })
                         .Value(isEdit ? ir.ack_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 7) && !isView ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? true : false)
                 )
             </td>
         </tr>
@@ -398,7 +398,7 @@
                 {
                     <text>a/n </text>
                 }
-                @if (li.Exists(p => p.role == 7) && !isView)
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
                     
                     <select id="sup_name" name="sup_name" @((li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView) && (ir != null ? ir.superintendent_approve == null : true) ? "" : "disabled") onchange="selectSup()">
@@ -411,7 +411,7 @@
                                 sup_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (user.position.ToLower().Contains("superintendent"))
+                            else if (user.approval_level == 2)
                             {
                                 if (!isEdit && user.id == superintendent_id)
                                 {
@@ -465,7 +465,7 @@
                         .Name("date_sup")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
                         .Value(isEdit ? ir.superintendent_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 7) && (!isEdit || ir.superintendent_approve == null) && !isView ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.superintendent_approve == null) && !isView ? true : false)
                 )
             </td>
             <td style="width:16.67%" class="right">
@@ -479,7 +479,7 @@
                 {
                     <text>a/n </text>
                 }
-                @if (li.Exists(p => p.role == 7) && !isView)
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
                     <select id="she_sup_name" name="she_sup_name" @(isEdit && ir.she_superintendent_approve != null ? "disabled" : "") disabled>
                         <option value="" selected>Choose One</option>
@@ -543,7 +543,7 @@
                         .Name("date_she_sup")
                         .HtmlAttributes(new { id = "ddatetime_wrapper", style = "width:100px" })
                         .Value(isEdit ? ir.she_superintendent_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 7) && (!isEdit || ir.she_superintendent_approve == null) && !isView ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.she_superintendent_approve == null) && !isView ? true : false)
                 )
             </td>
         </tr>
@@ -559,7 +559,7 @@
                 {
                     <text>a/n </text>
                 }
-                @if (li.Exists(p => p.role == 7) && !isView)
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
                     <select id="loss_control_name" name="loss_control_name" disabled>
                         <option value="" selected>Choose One</option>
@@ -623,7 +623,7 @@
                         .Name("date_loss_control")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
                         .Value(isEdit ? ir.loss_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 7) && (!isEdit || ir.loss_control_approve == null) && !isView ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.loss_control_approve == null) && !isView ? true : false)
                 )
             </td>
             <td style="width:16.67%" class="right">
@@ -637,7 +637,7 @@
                 {
                     <text>a/n </text>
                 }
-                @if (li.Exists(p => p.role == 7) && !isView)
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
                     <select id="field_man_name" name="field_man_name" disabled>
                         <option value="" selected>Choose One</option>
@@ -701,7 +701,7 @@
                         .Name("date_field_man")
                         .HtmlAttributes(new { id = "ddatetime_wrapper", style = "width:100px" })
                         .Value(isEdit ? ir.field_manager_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == 7) && (!isEdit || ir.field_manager_approve == null) && !isView ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.field_manager_approve == null) && !isView ? true : false)
                 )
             </td>
         </tr>
@@ -731,7 +731,7 @@
                 <h5>Investigation Lead by  <div id="lead_req" style="display:none;color:red;">* required</div></h5>
             </td>
             <td style="width:16.67%" class="right">
-                @if (li.Exists(p => p.role == 7) && !isView)
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
                     <select id="lead_name" name="lead_name" @(isEdit && ir.investigation == 1 ? "" : "disabled")>
                         <option value="" selected disabled>Choose One</option>

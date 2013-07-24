@@ -24,8 +24,18 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/HseInjuryReport" });
             }
-            ViewBag.Nama = "SHE Injury Report";
-            return View();
+            else
+            {
+                string username = (String)Session["username"].ToString();
+                li = db.user_per_role.Where(p => p.username == username).ToList();
+                if (!li.Exists(p => p.role == (int)Config.role.MEDIC))
+                {
+                    return RedirectToAction("LogOn", "Account", new { returnUrl = "/HseInjuryReport" });
+                }
+                ViewBag.Nama = "SHE Injury Report";
+                return View();
+            }
+            
         }
 
         public ActionResult report()
