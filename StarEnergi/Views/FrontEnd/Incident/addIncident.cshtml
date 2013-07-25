@@ -238,7 +238,15 @@
         <tr>
             <td>
                 <h5>Cost Estimate<small>(Estimated cost for medical treatment, rehabilitation, damage to property, loss to process, etc.)</small>  <div id="cost_req" style="display:none;color:red;">* required</div></h5><br />
-                &nbsp;&nbsp;$ <input type="text" id="cost" name="cost" style="width:950px" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="@(isEdit ? ir.cost_estimate : "")"/>
+                &nbsp;&nbsp;$ @(Html.Telerik().NumericTextBox()
+                        .Name("cost")
+                        .InputHtmlAttributes(new { id = "cost" })
+                        .HtmlAttributes(new { style = "margin-left:100px" })
+                        .Spinners(false)
+                        .MinValue(0)
+                        .MaxValue(100000000).Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
+                        .Value(isEdit ? Int32.Parse(ir.cost_estimate != null ? ir.cost_estimate : "0") : 0)
+                    )
             </td>
         </tr>
     </tbody>
@@ -476,7 +484,7 @@
                     </select>
                     <input type="hidden" id="sup_delegate" value="@sup_isDelegate" />
                     <input type="hidden" id="sup_delegate_name" value="@(ir != null ? sup_isDelegate ? ir.superintendent : "" : superintendent_id_del.ToString())" />
-                        if (isEdit && ir.supervisor_approve != null)
+                        if (isEdit && (ir.supervisor_approve != null || ir.ack_supervisor == null))
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null ? "0" : ir.superintendent_delegate))
                             {
@@ -554,7 +562,7 @@
                     </select>
                     <input type="hidden" id="she_sup_delegate" value="@she_sup_delegate" />
                     <input type="hidden" id="she_sup_delegate_name" value="@(ir != null ? she_sup_delegate ? ir.she_superintendent : "" : she_sup_delegate_name.ToString())" />
-                        if (isEdit && ir.loss_control_approve != null)
+                    if (isEdit && (ir.loss_control_approve != null || ir.loss_control == null))
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null ? "0" : ir.she_superintendent_delegate))
                             {
@@ -634,7 +642,7 @@
                     </select>
                     <input type="hidden" id="loss_control_delegate" value="@loss_control_delegate" />
                     <input type="hidden" id="loss_control_delegate_name" value="@(ir != null ? loss_control_delegate ? ir.loss_control : "" : loss_control_delegate_name.ToString())" />
-                        if (isEdit && ir.superintendent_approve != null)
+                        if (isEdit && (ir.superintendent_approve != null || ir.superintendent == null))
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null ? "0" : ir.loss_control_delegate))
                             {
@@ -712,7 +720,7 @@
                     </select>
                     <input type="hidden" id="field_man_delegate" value="@field_manager_delegate" />
                     <input type="hidden" id="field_man_delegate_name" value="@(ir != null ? field_manager_delegate ? ir.field_manager : "" : field_manager_delegate_name.ToString())" />
-                        if (isEdit && ir.she_superintendent_approve != null)
+                    if (isEdit && (ir.she_superintendent_approve != null || ir.she_superintendent == null))
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null ? "0" : ir.field_manager_delegate))
                             {

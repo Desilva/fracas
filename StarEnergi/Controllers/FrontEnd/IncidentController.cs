@@ -287,7 +287,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     s.Add(e.email);
 
             }
-            else
+            else if (incidentReport.superintendent_delegate != null)
             {
                 e = db.employees.Find(Int32.Parse(incidentReport.superintendent_delegate));
                 if (e.email != null)
@@ -300,7 +300,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (e.email != null)
                     s.Add(e.email);
             }
-            else
+            else if (incidentReport.field_manager_delegate != null)
             {
                 e = db.employees.Find(Int32.Parse(incidentReport.field_manager_delegate));
                 if (e.email != null)
@@ -313,7 +313,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (e.email != null)
                     s.Add(e.email);
             }
-            else
+            else if (incidentReport.loss_control_delegate != null)
             {
                 e = db.employees.Find(Int32.Parse(incidentReport.loss_control_delegate));
                 if (e.email != null)
@@ -326,7 +326,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (e.email != null)
                     s.Add(e.email);
             }
-            else
+            else if (incidentReport.she_superintendent_delegate != null)
             {
                 e = db.employees.Find(Int32.Parse(incidentReport.she_superintendent_delegate));
                 if (e.email != null)
@@ -340,7 +340,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     s.Add(e.email);
 
             }
-            else
+            else if (incidentReport.supervisor_delegate != null)
             {
                 e = db.employees.Find(Int32.Parse(incidentReport.supervisor_delegate));
                 if (e.email != null)
