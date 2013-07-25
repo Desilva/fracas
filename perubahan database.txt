@@ -1,0 +1,10 @@
+database baru
+- incident_report
+	- supervisor_approve
+	- supervisor_delegate
+- bom
+	- id	int	Unchecked
+	- id_reference	int	Checked
+	- level_equip	int	Checked
+	- no_key_map	varchar(50)	Checked
+	- description	text	Checked
