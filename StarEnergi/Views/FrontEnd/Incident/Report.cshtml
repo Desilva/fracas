@@ -22,7 +22,7 @@
         var row = e.row;
         var username = '@username';
         var alpha_name = '@alpha_name';
-        var isCanEdit = alpha_name == dataItem.prepared_by || username == dataItem.ack_supervisor || username == dataItem.superintendent || username == dataItem.field_manager || username == dataItem.loss_control || username == dataItem.she_superintendent || username == dataItem.superintendent_delegate || username == dataItem.field_manager_delegate || username == dataItem.loss_control_delegate || username == dataItem.she_superintendent_delegate ? true : false;
+        var isCanEdit = alpha_name == dataItem.prepared_by || username == dataItem.ack_supervisor || username == dataItem.superintendent || username == dataItem.field_manager || username == dataItem.loss_control || username == dataItem.she_superintendent || username == dataItem.superintendent_delegate || username == dataItem.field_manager_delegate || username == dataItem.loss_control_delegate || username == dataItem.she_superintendent_delegate || username == dataItem.supervisor_delegate ? true : false;
         isCanEdit = isCanEdit || username == dataItem.lead_name;
         var isApprove = dataItem.field_manager_approve != null;// && username == dataItem.lead_name;
         var isNeedRCA = dataItem.investigation == 1;
@@ -48,29 +48,36 @@
 
         var i = 0;
 
-        if (username == dataItem.superintendent) {
+        if (username == dataItem.superintendent || username == dataItem.superintendent_delegate) {
             if (dataItem.superintendent_approve != null) {
                 row.style.background = 'orange';
             }
         }
 
-        if (username == dataItem.loss_control) {
+        if (username == dataItem.loss_control || username == dataItem.loss_control_delegate) {
             if (dataItem.loss_control_approve != null) {
                 row.style.background = 'orange';
             }
         }
 
-        if (username == dataItem.she_superintendent) {
+        if (username == dataItem.she_superintendent || username == dataItem.she_superintendent_delegate) {
             if (dataItem.she_superintendent_approve != null) {
                 row.style.background = 'orange';
             }
         }
 
-        if (username == dataItem.field_manager) {
+        if (username == dataItem.field_manager || username == dataItem.field_manager_delegate) {
             if (dataItem.field_manager_approve != null) {
                 row.style.background = 'orange';
             }
         }
+
+        if (username == dataItem.ack_supervisor || username == dataItem.supervisor_delegate) {
+            if (dataItem.supervisor_approve != null) {
+                row.style.background = 'orange';
+            }
+        }
+
         for (var a in row.cells) {
             if (row.cells[a].className == "t-group-cell") {
                 i++;

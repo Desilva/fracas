@@ -123,6 +123,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 int? superintendent_id_del = null;
                 int? supervisor_id = null;
                 int? supervisor_id_del = null;
+                string supervisor_position = null;
                 while (cur_user_boss != null)
                 {
                     if (cur_user_boss.approval_level == 1)
@@ -131,6 +132,7 @@ namespace StarEnergi.Controllers.FrontEnd
                         {
                             supervisor_id = cur_user_boss.id;
                             supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
                         }
                         else
                         {
@@ -153,6 +155,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.supervisor_id = supervisor_id;
                 ViewBag.superintendent_id_del = superintendent_id_del;
                 ViewBag.supervisor_id_del = supervisor_id_del;
+                ViewBag.supervisor_position = supervisor_position;
                 int last_id = db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id);
                 last_id++;
                 string subPath = "~/Attachment/incident_report/" + last_id + "/signatures"; // your code goes here
@@ -330,12 +333,20 @@ namespace StarEnergi.Controllers.FrontEnd
                     s.Add(e.email);
             }
 
-            if (incidentReport.ack_supervisor != null)
+            if (incidentReport.ack_supervisor != null && incidentReport.supervisor_delegate == null)
             {
                 e = db.employees.Find(Int32.Parse(incidentReport.ack_supervisor));
                 if (e.email != null)
                     s.Add(e.email);
+
             }
+            else
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.supervisor_delegate));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+
             if (incidentReport.lead_name != null)
             {
                 e = db.employees.Find(Int32.Parse(incidentReport.lead_name));
@@ -350,7 +361,8 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 id_ir = id,
                 username = HttpContext.Session["username"].ToString(),
-                status = "Create new Incident Report"
+                status = "Create new Incident Report",
+                date = DateTime.Now
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
@@ -457,10 +469,19 @@ namespace StarEnergi.Controllers.FrontEnd
             return Json(new { success = true, delegates = delegates, delegate_name = emp.employee_delegate });
         }
 
+        [HttpPost]
+        public ActionResult selectSupervisor(int id, int employee_id)
+        {
+            employee emp = db.employees.Find(employee_id);
+            bool delegates = emp.delagate == 1;
+
+            return Json(new { success = true, delegates = delegates, delegate_name = emp.employee_delegate });
+        }
+
         #region approval
 
         [HttpPost]
-        public ActionResult approveLossControl(int id, int employee_id)
+        public ActionResult approveLossControl(int id, int employee_id, DateTime date)
         {
             string sign = db.employees.Find(employee_id).signature;
             if (sign != null)
@@ -474,6 +495,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     ir.loss_control_approve = "d" + sign;
                 }
+                ir.loss_date = date;
                 db.Entry(ir).State = EntityState.Modified;
                 db.SaveChanges();
                 incident_report_log ir_log = new incident_report_log
@@ -494,7 +516,7 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         [HttpPost]
-        public ActionResult approveSuperintendent(int id, int employee_id)
+        public ActionResult approveSuperintendent(int id, int employee_id, DateTime date)
         {
             string sign = db.employees.Find(employee_id).signature;
             if (sign != null)
@@ -508,7 +530,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     ir.superintendent_approve = "d" + sign;
                 }
-                
+                ir.superintendent_date = date;
                 db.Entry(ir).State = EntityState.Modified;
                 db.SaveChanges();
                 incident_report_log ir_log = new incident_report_log
@@ -530,7 +552,43 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         [HttpPost]
-        public ActionResult approveFieldManager(int id, int employee_id)
+        public ActionResult approveSupervisor(int id, int employee_id, DateTime date)
+        {
+            string sign = db.employees.Find(employee_id).signature;
+            if (sign != null)
+            {
+                incident_report ir = db.incident_report.Find(id);
+                if (ir.ack_supervisor == employee_id.ToString())
+                {
+                    ir.supervisor_approve = "a" + sign;
+                }
+                else
+                {
+                    ir.supervisor_approve = "d" + sign;
+                }
+                ir.ack_date = date;
+                db.Entry(ir).State = EntityState.Modified;
+                db.SaveChanges();
+                incident_report_log ir_log = new incident_report_log
+                {
+                    id_ir = id,
+                    username = HttpContext.Session["username"].ToString(),
+                    status = "Approved by Supervisor",
+                    date = DateTime.Now
+                };
+                db.incident_report_log.Add(ir_log);
+                db.SaveChanges();
+                return Json(new { success = true, path = sign });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult approveFieldManager(int id, int employee_id, DateTime date)
         {
             string sign = db.employees.Find(employee_id).signature;
             if (sign != null)
@@ -544,6 +602,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     ir.field_manager_approve = "d" + sign;
                 }
+                ir.field_manager_date = date;
                 db.Entry(ir).State = EntityState.Modified;
                 db.SaveChanges();
                 incident_report_log ir_log = new incident_report_log
@@ -564,7 +623,7 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         [HttpPost]
-        public ActionResult approveSheSuperintendent(int id, int employee_id)
+        public ActionResult approveSheSuperintendent(int id, int employee_id, DateTime date)
         {
             string sign = db.employees.Find(employee_id).signature;
             if (sign != null)
@@ -578,6 +637,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     ir.she_superintendent_approve = "d" + sign;
                 }
+                ir.she_superintendent_date = date;
                 db.Entry(ir).State = EntityState.Modified;
                 db.SaveChanges();
                 incident_report_log ir_log = new incident_report_log
@@ -623,6 +683,33 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
             return Json(new { success = true });
 
+        }
+
+        [HttpPost]
+        public ActionResult rejectSupervisor(int id, string comment)
+        {
+            incident_report incidentReport = db.incident_report.Find(id);
+            List<String> s = new List<string>();
+            var sendEmail = new SendEmailController();
+            if (incidentReport.prepared_by != null)
+            {
+                employee e = db.employees.Find(Int32.Parse(incidentReport.prepared_by));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+            if (s.Count > 0)
+                sendEmail.Send(s, "Salam,\n\nIncident Report dengan Reference Number " + incidentReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh Supervisor.\n\nTerima Kasih.", "Rejected Incident Report " + incidentReport.reference_number);
+            incident_report_log ir_log = new incident_report_log
+            {
+                id_ir = id,
+                username = HttpContext.Session["username"].ToString(),
+                status = "Rejected by Supervisor",
+                comment = comment,
+                date = DateTime.Now
+            };
+            db.incident_report_log.Add(ir_log);
+            db.SaveChanges();
+            return Json(new { success = true });
         }
 
         [HttpPost]

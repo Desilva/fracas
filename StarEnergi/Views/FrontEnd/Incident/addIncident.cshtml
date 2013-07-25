@@ -14,6 +14,7 @@
     int? supervisor_id = null;
     int? superintendent_id_del = null;
     int? supervisor_id_del = null;
+    string supervisor_position = null;
     if (ViewBag.mod != null)
     {
         id = ViewBag.mod as Nullable<Int32>;
@@ -30,6 +31,7 @@
         superintendent_id = ViewBag.superintendent_id as Nullable<int>;
         supervisor_id_del = ViewBag.supervisor_id_del as Nullable<int>;
         superintendent_id_del = ViewBag.superintendent_id_del as Nullable<int>;
+        supervisor_position = ViewBag.supervisor_position as string;
     }
     List<StarEnergi.Models.user_per_role> li = null;
     if (ViewData["user_role"] != null)
@@ -291,23 +293,36 @@
                 <h5>Ack by supervisor  <div id="ack_req" style="display:none;color:red;">* required</h5>
             </td>
             <td colspan="2">
+                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && (ir.supervisor_approve == null ? true : ir.supervisor_approve.Substring(0, 1) == "a"))
+                {
+                }
+                else if (ir != null && ir.supervisor_delegate != null && (ir.supervisor_approve == null ? true : ir.supervisor_approve.Substring(0, 1) == "d"))
+                {
+                    <text>a/n </text>
+                }
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
-                    <select id="ack" name="ack" onchange="bindack()" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView ? "" : "disabled")>
+                    <select id="ack" name="ack" @((li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView) && (ir != null ? ir.supervisor_approve == null : true) ? "" : "disabled") onchange="selectSupervisor()">
                         <option value="" selected disabled>-</option>
+                        @{bool supervisor_isDelegate = false; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (user.approval_level == 1)
+                            if (isEdit && user.id == Int32.Parse(ir.supervisor_delegate == null ? "0" : ir.supervisor_delegate))
                             {
-                                if (!isEdit && supervisor_id != null && user.id == supervisor_id)
+                                supervisor_isDelegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (user.approval_level == 1)
+                            {
+                                if (!isEdit && user.id == supervisor_id)
                                 {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                                 }
-                                //else if (!isEdit && supervisor_id == null && user.dept_id == dept_id && user.position.ToLower().Contains("supervisor"))
-                                //{
-                                //    <option value="@user.id" selected>@user.alpha_name</option>
-                                //}
-                                else if (isEdit && user.id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor))
+                                else if (isEdit && user.id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && (ir.supervisor_delegate == null || (ir.supervisor_approve == null ? false : ir.supervisor_approve.Substring(0, 1) != "d")))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else if (isEdit && user.id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && has.Find(p => p.username == username).id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && (ir.supervisor_approve == null ? true : ir.supervisor_approve.Substring(0, 1) == "a"))
                                 {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                                 }
@@ -316,12 +331,34 @@
                                     <option value="@user.id">@user.alpha_name</option>
                                 }
                             }
+                            else if (user.id == supervisor_id_del)
+                            {
+                                supervisor_isDelegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
                         }
                     </select>
+                    <input type="hidden" id="supervisor_delegate" value="@supervisor_isDelegate" />
+                    <input type="hidden" id="supervisor_delegate_name" value="@(ir != null ? supervisor_isDelegate ? ir.ack_supervisor : "" : supervisor_id_del.ToString())" />
+                        if (isEdit)
+                        {
+                            if (has.Find(p => p.username == username).id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) || has.Find(p => p.username == username).id == Int32.Parse(ir.supervisor_delegate == null ? "0" : ir.supervisor_delegate))
+                            {
+                                if (ir.supervisor_approve == null)
+                                {
+                                <div id="button_supervisor_approve">
+                                    <input type="button" id="approve_supervisor" onclick="approveSupervisor('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                    <input type="button" id="reject_supervisor" onclick="reject('5')" value="Reject" />
+                                </div>
+                                }
+                            }
+                        <img id="img_approve_supervisor" width="50" height="50" @(ir.supervisor_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.supervisor_approve == null ? "" : ir.supervisor_approve.Substring(1))"/>
+                        }
                 }
                 else
                 {
                     <input type="text" name="ack" id="ack" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ir.ack_supervisor)).alpha_name : "")" disabled/>
+                    <img id="img_approve_supervisor" width="50" height="50" @(ir.supervisor_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.supervisor_approve == null ? "" : ir.supervisor_approve.Substring(1))"/>
                 }
             </td>
         </tr>
@@ -346,7 +383,7 @@
                         .Name("date_prepared")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:166px" })
                         .Value(isEdit ? ir.prepare_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? true : false)
+                        .Enable(false)
                 )
             </td>
             <td>
@@ -356,8 +393,8 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_ack")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:166px" })
-                        .Value(isEdit ? ir.ack_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? true : false)
+                        .Value(isEdit && ir.supervisor_approve != null ? ir.ack_date : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.supervisor_approve == null) && !isView ? true : false)
                 )
             </td>
         </tr>
@@ -439,7 +476,7 @@
                     </select>
                     <input type="hidden" id="sup_delegate" value="@sup_isDelegate" />
                     <input type="hidden" id="sup_delegate_name" value="@(ir != null ? sup_isDelegate ? ir.superintendent : "" : superintendent_id_del.ToString())" />
-                    if (isEdit)
+                        if (isEdit && ir.supervisor_approve != null)
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null ? "0" : ir.superintendent_delegate))
                             {
@@ -464,7 +501,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_sup")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
-                        .Value(isEdit ? ir.superintendent_date : DateTime.Now)
+                        .Value(isEdit && ir.superintendent_approve != null ? ir.superintendent_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.superintendent_approve == null) && !isView ? true : false)
                 )
             </td>
@@ -517,7 +554,7 @@
                     </select>
                     <input type="hidden" id="she_sup_delegate" value="@she_sup_delegate" />
                     <input type="hidden" id="she_sup_delegate_name" value="@(ir != null ? she_sup_delegate ? ir.she_superintendent : "" : she_sup_delegate_name.ToString())" />
-                    if (isEdit)
+                        if (isEdit && ir.loss_control_approve != null)
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null ? "0" : ir.she_superintendent_delegate))
                             {
@@ -542,7 +579,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_she_sup")
                         .HtmlAttributes(new { id = "ddatetime_wrapper", style = "width:100px" })
-                        .Value(isEdit ? ir.she_superintendent_date : DateTime.Now)
+                        .Value(isEdit && ir.she_superintendent_approve != null ? ir.she_superintendent_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.she_superintendent_approve == null) && !isView ? true : false)
                 )
             </td>
@@ -597,7 +634,7 @@
                     </select>
                     <input type="hidden" id="loss_control_delegate" value="@loss_control_delegate" />
                     <input type="hidden" id="loss_control_delegate_name" value="@(ir != null ? loss_control_delegate ? ir.loss_control : "" : loss_control_delegate_name.ToString())" />
-                    if (isEdit)
+                        if (isEdit && ir.superintendent_approve != null)
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null ? "0" : ir.loss_control_delegate))
                             {
@@ -622,7 +659,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_loss_control")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
-                        .Value(isEdit ? ir.loss_date : DateTime.Now)
+                        .Value(isEdit && ir.loss_control_approve != null ? ir.loss_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.loss_control_approve == null) && !isView ? true : false)
                 )
             </td>
@@ -675,7 +712,7 @@
                     </select>
                     <input type="hidden" id="field_man_delegate" value="@field_manager_delegate" />
                     <input type="hidden" id="field_man_delegate_name" value="@(ir != null ? field_manager_delegate ? ir.field_manager : "" : field_manager_delegate_name.ToString())" />
-                        if (isEdit)
+                        if (isEdit && ir.she_superintendent_approve != null)
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null ? "0" : ir.field_manager_delegate))
                             {
@@ -700,7 +737,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_field_man")
                         .HtmlAttributes(new { id = "ddatetime_wrapper", style = "width:100px" })
-                        .Value(isEdit ? ir.field_manager_date : DateTime.Now)
+                        .Value(isEdit && ir.field_manager_approve != null ? ir.field_manager_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.field_manager_approve == null) && !isView ? true : false)
                 )
             </td>
@@ -833,7 +870,7 @@
 
     function reject_ajax() {
         var type = $('#type_reject').val();
-        var route = type == 1 ? "@Url.Action("rejectSuperintendent", "Incident")" : type == 2 ? "@Url.Action("rejectLossControl", "Incident")" : type == 3 ? "@Url.Action("rejectSheSuperintendent", "Incident")" : type == 4 ? "@Url.Action("rejectFieldManager", "Incident")" : "";
+        var route = type == 1 ? "@Url.Action("rejectSuperintendent", "Incident")" : type == 2 ? "@Url.Action("rejectLossControl", "Incident")" : type == 3 ? "@Url.Action("rejectSheSuperintendent", "Incident")" : type == 4 ? "@Url.Action("rejectFieldManager", "Incident")" : type == 5 ? "@Url.Action("rejectSupervisor", "Incident")" : "";
         $('#reject_ir').css("display", "inline");
         $.ajax({
             type: "POST",
@@ -854,7 +891,8 @@
     function approveSuperintendent(employee_id) {
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
-            $.post("Incident/approveSuperintendent", { id: '@id', employee_id: employee_id }, function (data) {
+            var date = $('#date_sup').val();
+            $.post("Incident/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_superintendent').parent().hide();
@@ -872,10 +910,33 @@
         }
     }
 
+    function approveSupervisor(employee_id) {
+        var r = confirm("Are you sure want to Approve this incident report?");
+        if (r == true) {
+            var date = $('#date_ack').val();
+            $.post("Incident/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+                if (data.success) {
+                    var has = data.path;
+                    $('#approve_supervisor').parent().hide();
+                    $('#img_approve_supervisor').attr('src', has);
+                    $('#img_approve_supervisor').css('display', 'block');
+                    $('#ack').prop('disabled', true);
+                    $('#date_ack').prop('disabled', true);
+                } else {
+                    alert("You do not supply your signature");
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
     function approveFM(employee_id) {
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
-            $.post("Incident/approveFieldManager", { id: '@id', employee_id: employee_id }, function (data) {
+            var date = $('#date_field_man').val();
+            $.post("Incident/approveFieldManager", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_field_manager').parent().hide();
@@ -896,7 +957,8 @@
     function approveSS(employee_id) {
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
-            $.post("Incident/approveSheSuperintendent", { id: '@id', employee_id: employee_id }, function (data) {
+            var date = $('#date_she_sup').val();
+            $.post("Incident/approveSheSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_she_superintendent').parent().hide();
@@ -917,7 +979,8 @@
     function approveLC(employee_id) {
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
-            $.post("Incident/approveLossControl", { id: '@id', employee_id: employee_id }, function (data) {
+            var date = $('#date_loss_control').val();
+            $.post("Incident/approveLossControl", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_loss_control').parent().hide();
@@ -941,6 +1004,19 @@
             if (data.success) {
                 $('#sup_delegate').val(data.delegates);
                 $('#sup_delegate_name').val(data.delegate_name);
+            } else {
+                alert("You do not supply your signature");
+            }
+        });
+    }
+
+    function selectSupervisor() {
+        var sup_id = $('#ack').val();
+        $.post("Incident/selectSupervisor", { id: '@id', employee_id: sup_id }, function (data) {
+            if (data.success) {
+                $('#supervisor_delegate').val(data.delegates);
+                $('#supervisor_delegate_name').val(data.delegate_name);
+                document.getElementById('ack_job').innerHTML = has[sup_id];
             } else {
                 alert("You do not supply your signature");
             }
@@ -1038,121 +1114,125 @@
     }
 }
 
-function save() {
-    if (isInv == 'True') {
-        if (validateData()) {
-            $('#save').attr('disabled','disabled');
-            var type_report;
-            var checkBoxes = $("input[name='type_report']");
-            $.each(checkBoxes, function () {
-                if ($(this).attr('checked')) {
-                    type_report = $(this).val();
-                }
-            });
-
-            var incident_type = "";
-            var checkBoxes = $("input[name='incident_type']");
-            $.each(checkBoxes, function () {
-                if ($(this).attr('checked')) {
-                    incident_type = $(this).val();
-                }
-            });
-            if (incident_type == "") {
-                incident_type = $('#other_text').val();
-            }
-
-            var actual_loss = "";
-            var checkBoxes = $("input[name='actual_loss']");
-            $.each(checkBoxes, function () {
-                if ($(this).attr('checked')) {
-                    actual_loss = $(this).val();
-                }
-            });
-
-            var potential_loss = "";
-            var checkBoxes = $("input[name='potential_loss']");
-            $.each(checkBoxes, function () {
-                if ($(this).attr('checked')) {
-                    potential_loss = $(this).val();
-                }
-            });
-
-            var probability = "";
-            var checkBoxes = $("input[name='probability']");
-            $.each(checkBoxes, function () {
-                if ($(this).attr('checked')) {
-                    probability = $(this).val();
-                }
-            });
-
-            var sup_delegate = $('#sup_delegate').val();
-            var she_sup_delegate = $('#she_sup_delegate').val();
-            var loss_control_delegate = $('#loss_control_delegate').val();
-            var field_man_delegate = $('#field_man_delegate').val();
-            var values = {
-                facility: $('#bus_unit').val(),
-                incident_location: $('#inc_loc').val(),
-                reference_number: $('#ref_num').val(),
-                type_of_report: type_report,
-                date_incident: $('#date_incident').val(),
-                title: $('#titles').val(),
-                incident_type: incident_type,
-                actual_loss_severity: actual_loss,
-                potential_loss_severity: potential_loss,
-                probability: probability,
-                factual_information: $('#facts').val(),
-                cost_estimate: $('#cost').val(),
-                immediate_action: $('#imme_action').val(),
-                prepared_by: $('#prepared').val(),
-                ack_supervisor: $('#ack').val(),
-                prepare_date: $('#date_prepared').val(),
-                ack_date: $('#date_ack').val(),
-                superintendent: isEdit == 'False' ? $('#sup_name').val() : (sup_delegate == 'True' ? $('#sup_delegate_name').val() : $('#sup_name').val()),
-                superintendent_delegate: isEdit == 'False' ? $('#sup_delegate_name').val() : (sup_delegate == 'True' ? $('#sup_name').val() : $('#sup_delegate_name').val()),
-                loss_control: isEdit == 'False' ? $('#loss_control_name').val() : (loss_control_delegate == 'True' ? $('#loss_control_delegate_name').val() : $('#loss_control_name').val()),
-                loss_control_delegate: isEdit == 'False' ? $('#loss_control_delegate_name').val() : (loss_control_delegate == 'True' ? $('#loss_control_name').val() : $('#loss_control_delegate_name').val()),
-                field_manager: isEdit == 'False' ? $('#field_man_name').val() : (field_man_delegate == 'True' ? $('#field_man_delegate_name').val() : $('#field_man_name').val()),
-                field_manager_delegate: isEdit == 'False' ? $('#field_man_delegate_name').val() : (field_man_delegate == 'True' ? $('#field_man_name').val() : $('#field_man_delegate_name').val()),
-                she_superintendent: isEdit == 'False' ? $('#she_sup_name').val() : (she_sup_delegate == 'True' ? $('#she_sup_delegate_name').val() : $('#she_sup_name').val()),
-                she_superintendent_delegate: isEdit == 'False' ? $('#she_sup_delegate_name').val() : (she_sup_delegate == 'True' ? $('#she_sup_name').val() : $('#she_sup_delegate_name').val()),
-                superintendent_date: $('#date_sup').val(),
-                loss_date: $('#date_loss_control').val(),
-                field_manager_date: $('#date_field_man').val(),
-                she_superintendent_date: $('#date_she_sup').val(),
-                investigation: $('input:radio[name=investigation]:checked').val(),
-                investigation_req: $('#request_name_hid').val(),
-                lead_name: $('#lead_name').val()
-            }
-            $('#realmod_save').css("display", "block");
-            if (isEdit == 'False') {
-                $.post("Incident/Add", values, function (data) {
-                    if (data != undefined) {
-                        isSave = true;
-                        $('#realmod_save').css("display", "none");
-                        alert('incident report with reference number "' + data.ref_num + '" saved');
-                        back();
-                    } else {
-                        $('#realmod_save').css("display", "none");
-                        alert('Error adding incident report');
+    function save() {
+        if (isInv == 'True') {
+            if (validateData()) {
+                $('#save').attr('disabled','disabled');
+                var type_report;
+                var checkBoxes = $("input[name='type_report']");
+                $.each(checkBoxes, function () {
+                    if ($(this).attr('checked')) {
+                        type_report = $(this).val();
                     }
                 });
-            } else if (isEdit == 'True') {
-                var ids = '@id';
-                values.id = ids;
-                $.post("Incident/Edit", values, function (data) {
-                    if (data != undefined) {
-                        $('#realmod_save').css("display", "none");
-                        alert('incident report changed');
-                        back();
-                    } else {
-                        $('#realmod_save').css("display", "none");
-                        alert('Error changing incident report');
+
+                var incident_type = "";
+                var checkBoxes = $("input[name='incident_type']");
+                $.each(checkBoxes, function () {
+                    if ($(this).attr('checked')) {
+                        incident_type = $(this).val();
                     }
                 });
+                if (incident_type == "") {
+                    incident_type = $('#other_text').val();
+                }
+
+                var actual_loss = "";
+                var checkBoxes = $("input[name='actual_loss']");
+                $.each(checkBoxes, function () {
+                    if ($(this).attr('checked')) {
+                        actual_loss = $(this).val();
+                    }
+                });
+
+                var potential_loss = "";
+                var checkBoxes = $("input[name='potential_loss']");
+                $.each(checkBoxes, function () {
+                    if ($(this).attr('checked')) {
+                        potential_loss = $(this).val();
+                    }
+                });
+
+                var probability = "";
+                var checkBoxes = $("input[name='probability']");
+                $.each(checkBoxes, function () {
+                    if ($(this).attr('checked')) {
+                        probability = $(this).val();
+                    }
+                });
+
+                var supervisor_delegate = $('#supervisor_delegate').val();
+                var sup_delegate = $('#sup_delegate').val();
+                var she_sup_delegate = $('#she_sup_delegate').val();
+                var loss_control_delegate = $('#loss_control_delegate').val();
+                var field_man_delegate = $('#field_man_delegate').val();
+
+                var values = {
+                    facility: $('#bus_unit').val(),
+                    incident_location: $('#inc_loc').val(),
+                    reference_number: $('#ref_num').val(),
+                    type_of_report: type_report,
+                    date_incident: $('#date_incident').val(),
+                    title: $('#titles').val(),
+                    incident_type: incident_type,
+                    actual_loss_severity: actual_loss,
+                    potential_loss_severity: potential_loss,
+                    probability: probability,
+                    factual_information: $('#facts').val(),
+                    cost_estimate: $('#cost').val(),
+                    immediate_action: $('#imme_action').val(),
+                    prepared_by: $('#prepared').val(),
+                    ack_supervisor: $('#ack').val(),
+                    supervisor_delegate: isEdit == 'False' ? $('#supervisor_delegate_name').val() : (supervisor_delegate == 'True' ? $('#supervisor_name').val() : $('#supervisor_delegate_name').val()),
+                    prepare_date: $('#date_prepared').val(),
+                    ack_date: $('#date_ack').val(),
+                    superintendent: isEdit == 'False' ? $('#sup_name').val() : (sup_delegate == 'True' ? $('#sup_delegate_name').val() : $('#sup_name').val()),
+                    superintendent_delegate: isEdit == 'False' ? $('#sup_delegate_name').val() : (sup_delegate == 'True' ? $('#sup_name').val() : $('#sup_delegate_name').val()),
+                    loss_control: isEdit == 'False' ? $('#loss_control_name').val() : (loss_control_delegate == 'True' ? $('#loss_control_delegate_name').val() : $('#loss_control_name').val()),
+                    loss_control_delegate: isEdit == 'False' ? $('#loss_control_delegate_name').val() : (loss_control_delegate == 'True' ? $('#loss_control_name').val() : $('#loss_control_delegate_name').val()),
+                    field_manager: isEdit == 'False' ? $('#field_man_name').val() : (field_man_delegate == 'True' ? $('#field_man_delegate_name').val() : $('#field_man_name').val()),
+                    field_manager_delegate: isEdit == 'False' ? $('#field_man_delegate_name').val() : (field_man_delegate == 'True' ? $('#field_man_name').val() : $('#field_man_delegate_name').val()),
+                    she_superintendent: isEdit == 'False' ? $('#she_sup_name').val() : (she_sup_delegate == 'True' ? $('#she_sup_delegate_name').val() : $('#she_sup_name').val()),
+                    she_superintendent_delegate: isEdit == 'False' ? $('#she_sup_delegate_name').val() : (she_sup_delegate == 'True' ? $('#she_sup_name').val() : $('#she_sup_delegate_name').val()),
+                    superintendent_date: $('#date_sup').val(),
+                    loss_date: $('#date_loss_control').val(),
+                    field_manager_date: $('#date_field_man').val(),
+                    she_superintendent_date: $('#date_she_sup').val(),
+                    investigation: $('input:radio[name=investigation]:checked').val(),
+                    investigation_req: $('#request_name_hid').val(),
+                    lead_name: $('#lead_name').val()
+                }
+                $('#realmod_save').css("display", "block");
+                if (isEdit == 'False') {
+                    $.post("Incident/Add", values, function (data) {
+                        if (data != undefined) {
+                            isSave = true;
+                            $('#realmod_save').css("display", "none");
+                            alert('incident report with reference number "' + data.ref_num + '" saved');
+                            back();
+                        } else {
+                            $('#realmod_save').css("display", "none");
+                            alert('Error adding incident report');
+                        }
+                    });
+                } else if (isEdit == 'True') {
+                    var ids = '@id';
+                    values.id = ids;
+                    $.post("Incident/Edit", values, function (data) {
+                        if (data != undefined) {
+                            $('#realmod_save').css("display", "none");
+                            alert('incident report changed');
+                            back();
+                        } else {
+                            $('#realmod_save').css("display", "none");
+                            alert('Error changing incident report');
+                        }
+                    });
+                }
             }
         }
     }
-}
+
     function back() {
         if (!isSave) {
             $.post("Incident/DeleteAtch?id=@id", function (data) {});

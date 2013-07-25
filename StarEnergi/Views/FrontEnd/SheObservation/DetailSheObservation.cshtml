@@ -733,20 +733,25 @@
 </div>
 <script type="text/javascript">
     function saveReview() {
-        var values = {
-            id: '@Model.id',
-            is_quality: $('#is_quality').is(":checked") == true ? 1 : 0
-        };
+        var r = confirm("Are you sure you have really reviewed this SHE Observation?");
+        if (r == true) {
+            var values = {
+                id: '@Model.id',
+                is_quality: $('#is_quality').is(":checked") == true ? 1 : 0
+            };
 
-        $.post("SheObservation/QualityReview", values, function (data) {
-            if (data != undefined) {
-                isSave = true;
-                alert('SHE Observation reviewed. You can not change it anymore.');
-                window.location = "/SheObservation";
-                $('#contentEventLog').load('SheObservation/Index');
-            } else {
-                alert('Fail to change');
-            }
-        });
+            $.post("SheObservation/QualityReview", values, function (data) {
+                if (data != undefined) {
+                    isSave = true;
+                    alert('SHE Observation reviewed. You can not change it anymore.');
+                    window.location = "/SheObservation";
+                    $('#contentEventLog').load('SheObservation/Index');
+                } else {
+                    alert('Fail to change');
+                }
+            });
+        } else {
+            e.preventDefault();
+        }
     }
 </script>

@@ -52,6 +52,8 @@ namespace StarEnergi.Models
         public string field_manager_delegate { get; set; }
         public string loss_control_delegate { get; set; }
         public string she_superintendent_delegate { get; set; }
+        public string supervisor_approve { get; set; }
+        public string supervisor_delegate { get; set; }
 
         public string rca_number { get; set; }
         public string type_report { get; set; }
@@ -59,5 +61,4 @@ namespace StarEnergi.Models
         public string potential_loss { get; set; }
         public string probability_str { get; set; }
     }
-    
 }
