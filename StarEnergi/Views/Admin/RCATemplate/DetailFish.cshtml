@@ -438,7 +438,6 @@
 		        var name = $('#name').val();
 		        if (name != "") {
 		            mxUtils.post(url, 'filename=' + name + '.xml&xml=' + xmlString + '&id=' + @(template != null ? template.id : 0) , function (req) {
-		                alert(req.getText());
 		                if (req.getStatus() == "200" && req.getText() != "") {
 		                    mxUtils.alert('File save successful');
 		                    var grid = $('#Template').data('tGrid');
@@ -584,7 +583,6 @@
                 var name = $('#name').val();
                 if (name != "") {
                     mxUtils.post(url, 'filename=' + name + '.xml&xml=' + xmlString + '&id=' + @(template != null ? template.id : 0) , function (req) {
-		                alert(req.getText());
 		                if (req.getStatus() == "200" && req.getText() != "") {
 		                    mxUtils.alert('File save successful');
 		                    var grid = $('#Template').data('tGrid');
@@ -897,11 +895,11 @@
 
 
     hideProperties = function (graph) {
-        if (document.getElementsByClassName('mxWindow').item(4) != null) {
+        if (document.getElementsByClassName('mxWindow').item(2) != null) {
             graph.setEnabled(true);
             mxEffects.fadeOut(document.getElementById('fade'),
                 50, true, 10, 30, true);
-            document.body.removeChild(document.getElementsByClassName('mxWindow').item(4));
+            document.body.removeChild(document.getElementsByClassName('mxWindow').item(2));
         }
     };
 
