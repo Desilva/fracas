@@ -18,7 +18,7 @@ namespace StarEnergi.Models
         public Nullable<int> id_reference { get; set; }
         public Nullable<int> level_equip { get; set; }
         public string no_key_map { get; set; }
-        public string descrition { get; set; }
+        public string description { get; set; }
     }
     
 }

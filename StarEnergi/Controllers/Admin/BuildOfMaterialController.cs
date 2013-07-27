@@ -64,7 +64,7 @@ namespace StarEnergi.Controllers.Admin
             {
                 bom target = db.boms.Where(p => p.id == editable.id).FirstOrDefault();
                 target.no_key_map = editable.no_key_map;
-                target.descrition = editable.descrition;
+                target.description = editable.description;
                 db.SaveChanges();
             }
             return bindingBom(id_reference, level);

@@ -18,13 +18,14 @@ namespace StarEnergi.Models
         {
             this.equipments = new HashSet<equipment>();
         }
-
+    
         public int id { get; set; }
         public int id_system { get; set; }
         public string nama { get; set; }
-
-        public virtual system system { get; set; }
+        public string description { get; set; }
+    
         public virtual ICollection<equipment> equipments { get; set; }
+        public virtual system system { get; set; }
     }
     
 }

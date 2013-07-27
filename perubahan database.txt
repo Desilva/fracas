@@ -8,3 +8,6 @@ database baru
 	- level_equip	int	Checked
 	- no_key_map	varchar(50)	Checked
 	- description	text	Checked
+- date template rca
+
+- ganti template SBS

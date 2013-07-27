@@ -15,6 +15,7 @@
         {
             "Id": $('#id').val(),
             "Nama": $('#nama').val(),
+            "Description": $('#eqDescription').val(),
             "Id_system": eval('@ViewBag.id_system')
         }
 
@@ -23,7 +24,7 @@
                 if (data["status"] == 0) {
                     var html = $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().find('img').attr('src');
                     var image = '<img class="t-image" src="' + html + '" alt="image">';
-                    $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().html(image+$('#nama').val());
+                    $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().html(image + $('#eqDescription').val());
                     $('#content').load('EquipmentGroup/details/' + $('#id').val());
                 } else {
                     clearError();
@@ -61,6 +62,13 @@
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.nama)
+        <div class="errorM"></div>
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.description)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.description, new { id="eqDescription"})
         <div class="errorM"></div>
     </div>
     <p>

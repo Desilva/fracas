@@ -17,6 +17,11 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.nama)
     </div>
+
+     <div class="display-label">description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
     <p>
         <!--@Html.ActionLink("Edit", "Edit", new { id=Model.id }) |-->
         <input type="button" value="Edit" onclick="edit()" />

@@ -77,6 +77,22 @@ namespace StarEnergi.Utilities
                             err.Add(errTemp);
                         };
                     }
+                    else if (k == 5)//insert component
+                    {
+                        errTemp = saveComponent(temp);
+                        if (errTemp != "")
+                        {
+                            err.Add(errTemp);
+                        };
+                    }
+                    else if (k == 6)//insert subcomponent
+                    {
+                        errTemp = saveSubComponent(temp);
+                        if (errTemp != "")
+                        {
+                            err.Add(errTemp);
+                        };
+                    }
                 
                 }
                 k++;
@@ -176,6 +192,7 @@ namespace StarEnergi.Utilities
                     equipment_groups equipment_group = new equipment_groups();
                     equipment_group.id_system = system.id;
                     equipment_group.nama = data[1].ToString();
+                    equipment_group.description = data[2].ToString() == "" ? data[1].ToString() : data[2].ToString();
                     db.equipment_groups.Add(equipment_group);
                     db.SaveChanges();
                 }
@@ -327,6 +344,68 @@ namespace StarEnergi.Utilities
             else
             {
                 err = "Equipment " + data[0] + " tidak terdaftar di dalam database";
+            }
+            return err;
+        }
+
+        private string saveComponent(List<object> data)
+        {
+            string err = "";
+            string temp = data[1].ToString();
+            List<component> exist = db.components.Where(x => x.tag_number == temp).ToList();
+            if (exist.Count == 0)
+            {
+                temp = data[0].ToString();
+                equipment_part ep = db.equipment_part.Where(x => x.part.tag_number == temp).SingleOrDefault();
+                if (ep != null)
+                {
+                    component co = new component();
+                    co.id_equipment_part = ep.id;
+                    co.tag_number = data[1].ToString();
+                    co.description = data[2].ToString();
+                    db.components.Add(co);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    err = "Sub Equipment " + data[0] + " tidak terdaftar di dalam database";
+                }
+
+            }
+            else
+            {
+                err = "Component " + data[1] + " sudah terdapat di dalam database";
+            }
+            return err;
+        }
+
+        private string saveSubComponent(List<object> data)
+        {
+            string err = "";
+            string temp = data[1].ToString();
+            List<sub_component> exist = db.sub_component.Where(x => x.tag_number == temp).ToList();
+            if (exist.Count == 0)
+            {
+                temp = data[0].ToString();
+                component c = db.components.Where(x => x.tag_number == temp).SingleOrDefault();
+                if (c != null)
+                {
+                    sub_component sc = new sub_component();
+                    sc.id_component = c.id;
+                    sc.tag_number = data[1].ToString();
+                    sc.description = data[2].ToString();
+                    db.sub_component.Add(sc);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    err = "Component " + data[0] + " tidak terdaftar di dalam database";
+                }
+
+            }
+            else
+            {
+                err = "Sub Component " + data[1] + " sudah terdapat di dalam database";
             }
             return err;
         }
