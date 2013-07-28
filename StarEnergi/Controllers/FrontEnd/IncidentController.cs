@@ -118,7 +118,7 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 int cur_user_id = Int32.Parse(HttpContext.Session["id"].ToString());
                 int? cur_dept_id = db.employees.Find(cur_user_id).dept_id;
-                employee cur_user_boss = db.employees.Find(cur_user_id);
+                employee cur_user_boss = db.employees.Find(cur_user_id).employee2;
                 int? superintendent_id = null;
                 int? superintendent_id_del = null;
                 int? supervisor_id = null;
@@ -139,16 +139,65 @@ namespace StarEnergi.Controllers.FrontEnd
                             supervisor_id = cur_user_boss.id;
                         }
                     }
-                    if (cur_user_boss.approval_level == 2)
+                    else if (supervisor_id == null && cur_user_boss.approval_level == 2)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (cur_user_boss.approval_level == 2)
                     {
                         if (cur_user_boss.delagate == 1)
                         {
                             superintendent_id = cur_user_boss.id;
                             superintendent_id_del = cur_user_boss.employee_delegate;
-                        } else {
+                        }
+                        else
+                        {
                             superintendent_id = cur_user_boss.id;
                         }
                     }
+                    else if (supervisor_id == null && superintendent_id == null && cur_user_boss.employee2 == null)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+                    
                     cur_user_boss = cur_user_boss.employee2;
                 }
                 ViewBag.superintendent_id = superintendent_id;
@@ -444,6 +493,9 @@ namespace StarEnergi.Controllers.FrontEnd
             ir.she_superintendent_delegate = incidentReport.she_superintendent_delegate;
             ir.loss_control_delegate = incidentReport.loss_control_delegate;
             ir.field_manager_delegate = incidentReport.field_manager_delegate;
+            ir.supervisor_approve = incidentReport.supervisor_approve;
+            ir.supervisor_delegate = incidentReport.supervisor_delegate;
+            ir.kontraktor_seg = incidentReport.kontraktor_seg;
 
             db.Entry(ir).State = EntityState.Modified;
             db.SaveChanges();

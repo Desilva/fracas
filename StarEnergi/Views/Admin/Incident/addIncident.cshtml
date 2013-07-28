@@ -87,6 +87,13 @@
 <table id="tabGenInfo" class="tabs" style="width:980px" cellspacing="0" cellpadding="0">
     <tbody style="width:100%">
         <tr>
+            <td colspan="18" class="right">
+                <h5>Business Unit / Facility</h5><br />
+                <input type="radio" id="on_the_job" name="type_report" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.SHE) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.type_of_report == 1 ? "checked" : "" : "")/>On the job
+                <input type="radio" id="off_the_job" name="type_report" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.SHE) && !isView ? "" : "disabled") value="0" @(isEdit ? ir.type_of_report == 0 ? "checked" : "" : "")/>Off the job
+            </td>
+        </tr>
+        <tr>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Business Unit / Facility</h5><br />
                 <select id="bus_unit" name="bus_unit" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.SHE) && !isView ? "" : "disabled")>

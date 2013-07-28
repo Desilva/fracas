@@ -97,6 +97,13 @@
 <table id="tabGenInfo" class="tabs" style="width:980px" cellspacing="0" cellpadding="0">
     <tbody style="width:100%">
         <tr>
+            <td colspan="18">
+                <input type="radio" id="contractor" name="con_seg" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="1" @(isEdit ? ir.kontraktor_seg == 1 ? "checked" : "" : "")/>Contractor
+                <input type="radio" id="seg" name="con_seg" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled") value="2" @(isEdit ? ir.kontraktor_seg == 2 ? "checked" : "" : "")/>SEG
+                <div id="con_seg_req" style="display:none;color:red;">* required</div>
+            </td>
+        </tr>
+        <tr>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Business Unit / Facility</h5><br />
                 <select id="bus_unit" name="bus_unit" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled")>
@@ -320,13 +327,13 @@
                                 supervisor_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
+                            else if (user.id == supervisor_id)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
                             else if (user.approval_level == 1)
                             {
-                                if (!isEdit && user.id == supervisor_id)
-                                {
-                                    <option value="@user.id" selected>@user.alpha_name</option>
-                                }
-                                else if (isEdit && user.id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && (ir.supervisor_delegate == null || (ir.supervisor_approve == null ? false : ir.supervisor_approve.Substring(0, 1) != "d")))
+                                if (isEdit && user.id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && (ir.supervisor_delegate == null || (ir.supervisor_approve == null ? false : ir.supervisor_approve.Substring(0, 1) != "d")))
                                 {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                                 }
@@ -338,6 +345,14 @@
                                 {
                                     <option value="@user.id">@user.alpha_name</option>
                                 }
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && (ir.supervisor_delegate == null || (ir.supervisor_approve == null ? false : ir.supervisor_approve.Substring(0, 1) != "d")))
+                            {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && has.Find(p => p.username == username).id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && (ir.supervisor_approve == null ? true : ir.supervisor_approve.Substring(0, 1) == "a"))
+                            {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
                             }
                             else if (user.id == supervisor_id_del)
                             {
@@ -456,13 +471,13 @@
                                 sup_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
+                            else if (user.id == superintendent_id)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
                             else if (user.approval_level == 2)
                             {
-                                if (!isEdit && user.id == superintendent_id)
-                                {
-                                    <option value="@user.id" selected>@user.alpha_name</option>
-                                }
-                                else if (isEdit && user.id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_delegate == null || (ir.superintendent_approve == null ? false : ir.superintendent_approve.Substring(0, 1) != "d")))
+                                if (isEdit && user.id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_delegate == null || (ir.superintendent_approve == null ? false : ir.superintendent_approve.Substring(0, 1) != "d")))
                                 {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                                 }
@@ -475,6 +490,14 @@
                                     <option value="@user.id">@user.alpha_name</option>
                                 }
                             }
+                            else if (isEdit && user.id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_delegate == null || (ir.superintendent_approve == null ? false : ir.superintendent_approve.Substring(0, 1) != "d")))
+                            {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_approve == null ? true : ir.superintendent_approve.Substring(0, 1) == "a"))
+                            {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                            }
                             else if (user.id == superintendent_id_del)
                             {
                                 sup_isDelegate = true;
@@ -484,7 +507,7 @@
                     </select>
                     <input type="hidden" id="sup_delegate" value="@sup_isDelegate" />
                     <input type="hidden" id="sup_delegate_name" value="@(ir != null ? sup_isDelegate ? ir.superintendent : "" : superintendent_id_del.ToString())" />
-                        if (isEdit && (ir.supervisor_approve != null || ir.ack_supervisor == null))
+                        if (isEdit && (ir.supervisor_approve != null || ir.ack_supervisor == null || ir.ack_supervisor == ir.superintendent))
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null ? "0" : ir.superintendent_delegate))
                             {
@@ -562,7 +585,7 @@
                     </select>
                     <input type="hidden" id="she_sup_delegate" value="@she_sup_delegate" />
                     <input type="hidden" id="she_sup_delegate_name" value="@(ir != null ? she_sup_delegate ? ir.she_superintendent : "" : she_sup_delegate_name.ToString())" />
-                    if (isEdit && (ir.loss_control_approve != null || ir.loss_control == null))
+                        if (isEdit && (ir.loss_control_approve != null || ir.loss_control == null))
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null ? "0" : ir.she_superintendent_delegate))
                             {
@@ -720,7 +743,7 @@
                     </select>
                     <input type="hidden" id="field_man_delegate" value="@field_manager_delegate" />
                     <input type="hidden" id="field_man_delegate_name" value="@(ir != null ? field_manager_delegate ? ir.field_manager : "" : field_manager_delegate_name.ToString())" />
-                    if (isEdit && (ir.she_superintendent_approve != null || ir.she_superintendent == null))
+                        if (isEdit && (ir.she_superintendent_approve != null || ir.she_superintendent == null))
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null ? "0" : ir.field_manager_delegate))
                             {
@@ -769,8 +792,31 @@
                 <h5>Investigation Request by</h5>
             </td>
             <td style="width:16.67%" class="right">
-                <input type="hidden" name="request_name_hid" id="request_name_hid" value="@(isEdit ? ir.investigation_req == null || ir.investigation_req == "null" ? "" : ir.investigation_req : "")"/>
-                <input type="text" name="request_name" id="request_name" value="@(isEdit ? ir.investigation_req == null || ir.investigation_req == "null" ? "" : has.Find(p => p.id == Int32.Parse(ir.investigation_req)).alpha_name : "")" disabled style="width:166px"/>
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
+                {
+                    <select id="request_name" name="request_name" @(isEdit && ir.investigation == 1 && Session["id"].ToString() == "231" ? "" : "disabled")>
+                        <option value="" selected disabled>Choose One</option>
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if ((user.approval_level == 1 || user.approval_level == 2))
+                            {
+                                if (isEdit && user.id == Int32.Parse(ir.investigation_req == null ? "0" : ir.investigation_req))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.id">@user.alpha_name</option>
+                                }
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <input type="text" name="request_name" id="request_name" value="@(isEdit ? ir.investigation_req == null ? "" : has.Find(p => p.id == Int32.Parse(ir.investigation_req == null ? "0" : ir.investigation_req)).alpha_name : "")" disabled style="width:166px"/>
+                }
+            
             </td>
             <td style="width:16.67%" class="right">
                 <h5>Investigation Lead by  <div id="lead_req" style="display:none;color:red;">* required</div></h5>
@@ -778,11 +824,11 @@
             <td style="width:16.67%" class="right">
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
-                    <select id="lead_name" name="lead_name" @(isEdit && ir.investigation == 1 ? "" : "disabled")>
+                    <select id="lead_name" name="lead_name" @(isEdit && ir.investigation == 1 && Session["id"].ToString() == "231" ? "" : "disabled")>
                         <option value="" selected disabled>Choose One</option>
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (user.level == 1 && (user.role != null ? user.role.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) : false))
+                            if ((user.approval_level == 1 || user.approval_level == 2))
                             {
                                 if (isEdit && user.id == Int32.Parse(ir.lead_name == null ? "0" : ir.lead_name))
                                 {
@@ -952,6 +998,8 @@
                     $('#img_approve_field_manager').css('display', 'block');
                     $('#field_man_name').prop('disabled', true);
                     $('#date_field_man').prop('disabled', true);
+                    window.location = "/Incident";
+                    $('#contentEventLog').load('Incident/AddIncident/@id');
                 } else {
                     alert("You do not supply your signature");
                 }
@@ -1094,30 +1142,18 @@
         if (incident_type == "Injury / Illness") {
             if (!$('#investigation_1').attr('checked')) {
                 $('#investigation_1').attr('checked', true);
-                $('#lead_name').removeAttr("disabled", "disabled");
-                $('#request_name').val('@has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).alpha_name');
-                $('#request_name_hid').val('@has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).id');
                 alert('Investigation required!');
             }
         } else {
             if (parseInt(potential_loss) == 0 || parseInt(probability) == 0) {
                 $('#investigation_0').attr('checked', true);
-                $('#lead_name').attr('disabled', 'disabled');
-                $('#request_name').val('');
-                $('#request_name_hid').val('');
             } else if (parseInt(potential_loss) + parseInt(probability) <= 4) {
                 if (!$('#investigation_1').attr('checked')) {
                     $('#investigation_1').attr('checked', true);
-                    $('#lead_name').removeAttr("disabled", "disabled");
-                    $('#request_name').val('@has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).alpha_name');
-                    $('#request_name_hid').val('@has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).id');
                     alert('Investigation required!');
                 }
             } else {
                 $('#investigation_0').attr('checked', true);
-                $('#lead_name').attr('disabled', 'disabled');
-                $('#request_name').val('');
-                $('#request_name_hid').val('');
             }
     }
 }
@@ -1131,6 +1167,14 @@
                 $.each(checkBoxes, function () {
                     if ($(this).attr('checked')) {
                         type_report = $(this).val();
+                    }
+                });
+
+                var con_seg;
+                var checkBoxes = $("input[name='con_seg']");
+                $.each(checkBoxes, function () {
+                    if ($(this).attr('checked')) {
+                        con_seg = $(this).val();
                     }
                 });
 
@@ -1207,8 +1251,9 @@
                     field_manager_date: $('#date_field_man').val(),
                     she_superintendent_date: $('#date_she_sup').val(),
                     investigation: $('input:radio[name=investigation]:checked').val(),
-                    investigation_req: $('#request_name_hid').val(),
-                    lead_name: $('#lead_name').val()
+                    investigation_req: $('#request_name').val(),
+                    lead_name: $('#lead_name').val(),
+                    kontraktor_seg: con_seg
                 }
                 $('#realmod_save').css("display", "block");
                 if (isEdit == 'False') {
@@ -1301,6 +1346,20 @@
             $('#type_report_req').css('display','none');
         }
 
+        var con_seg;
+        var checkBoxes = $("input[name='con_seg']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                con_seg = $(this).val();
+            }
+        });
+        if (con_seg == null) {
+            $('#con_seg_req').css('display','inline');
+            validate = false;
+        } else {
+            $('#con_seg_req').css('display','none');
+        }
+
         var incident_type = "";
         var checkBoxes = $("input[name='incident_type']");
         $.each(checkBoxes, function () {
@@ -1363,15 +1422,17 @@
             $('#probability_req').css('display','none');
         }
 
-        if ($('input:radio[name=investigation]:checked').val() == 1) {
-            if ($('#lead_name').val() == "") {
-                $('#lead_req').css('display','inline');
-                validate = false;
+        if ('@(Session["id"].ToString() == "231")' == 'True') {
+            if ($('input:radio[name=investigation]:checked').val() == 1) {
+                if ($('#lead_name').val() == "") {
+                    $('#lead_req').css('display','inline');
+                    validate = false;
+                } else {
+                    $('#lead_req').css('display','none');
+                }
             } else {
                 $('#lead_req').css('display','none');
             }
-        } else {
-            $('#lead_req').css('display','none');
         }
 
         if (isAdminSHE == "True") {
