@@ -133,8 +133,8 @@ namespace StarEnergi.Utilities
         private string saveSystem(List<object> data)
         {
             string err = "";
-            string temp = data[2].ToString();
-            List<system> exist = db.systems.Where(x => x.nama == temp).ToList();
+            string temp = data[1].ToString();
+            List<system> exist = db.systems.Where(x => x.kode == temp).ToList();
             if (exist.Count == 0)
             {
                 temp = data[0].ToString();
@@ -322,6 +322,7 @@ namespace StarEnergi.Utilities
                     equipment_part ep = new equipment_part();
                     ep.id_parts = part.id;
                     ep.id_equipment = equipment.id;
+                    ep.status = 1;
                     ep.installed_date = data[5].ToString() == "" ? DateTime.Now : DateTime.Parse(data[5].ToString());
                     ep.obsolete_date = ep.installed_date.Value.Add(new TimeSpan((int)part.warranty, 0, 0));
                     db.equipment_part.Add(ep);
