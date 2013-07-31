@@ -28,6 +28,12 @@
         var templateRepair = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="Edit" onClick="Edit(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-edit"></span>'
                                 + '</a>'
+                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="To Trouble Shooting" onClick="AddTS(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-tsr"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="To RCA" onClick="openChooser(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-rca"></span>'
+                                + '</a>';
                                 //+ '<a class="t-button t-grid-delete t-button-icon t-button-icon" title="Delete" href="#">'
                                 //+ '<span class="t-icon t-delete"></span>'
                                 //+ '</a>';

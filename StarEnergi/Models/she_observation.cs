@@ -125,6 +125,8 @@ namespace StarEnergi.Models
         public string employee_id { get; set; }
         public Nullable<byte> is_quality { get; set; }
         public Nullable<byte> is_review { get; set; }
+
+        public string quality { get; set; }
     }
     
 }

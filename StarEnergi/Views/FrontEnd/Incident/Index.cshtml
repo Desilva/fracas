@@ -20,6 +20,30 @@
         showIncidentReport();
     });
 
+
+    function showDateChooser() {
+        var detailWindow = $("#ExportReport").data("tWindow");
+        $('#type').val('0');
+        detailWindow.center().open();
+    }
+
+    function showDateChooserData() {
+        var detailWindow = $("#ExportReport").data("tWindow");
+        $('#type').val('1');
+        detailWindow.center().open();
+    }
+
+    function exportReport() {
+        var detailWindow = $("#ExportReport").data("tWindow");
+        detailWindow.close();
+        var from = $('#date_from').val();
+        var to = $('#date_to').val();
+        if ($('#type').val() == 0) {
+            window.location='/Incident/ExportExcelTotal?from=' + from + '&to=' + to;
+        } else {
+            window.location='/Incident/ExportExcelData?fromD=' + from + '&toD=' + to;
+        }
+    }
 </script>
 <div id="contentEventLog">
     <h2 class="adminH2">Incident Report</h2>
@@ -29,7 +53,11 @@
         {
         <input type="button" id="addEvent" value="Add Incident Report" onclick="addEvent()"/>
         }
-        <input type="button" id="exportExcel" value="Export Report" onclick="window.location='/Incident/ExportExcelTotal'"/>
+        @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE))
+        {
+        <input type="button" id="exportExcel" value="Export Report" onclick="showDateChooser()"/>
+        <input type="button" id="exportData" value="Export Data" onclick="showDateChooserData()"/>
+        }
     </div>
     <br/>
     <div id="incidentReport">
@@ -54,3 +82,37 @@
     <br/>
     <iframe id="upload_target" name="upload_target" src="" width="980" height="350" style="border:0px solid #fff;"></iframe>
 </div>
+
+
+@(Html.Telerik().Window()
+    .Name("ExportReport")
+    .Visible(false)
+    .Title("Export Report")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+
+                   <input type="hidden" id="type" />
+                    <div class="info_inside_left">From</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date_from")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                            .Value(DateTime.Today)
+                        )
+                    </div>
+                   <div class="info_inside_left">To</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date_to")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                            .Value(DateTime.Today)
+                        )
+                    </div>
+	            <p class="submit">
+		            <input name="Submit" value="Save" type="submit" onclick="exportReport();" />
+	            </p>
+	         </div>
+        </text>)
+)

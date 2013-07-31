@@ -1,21 +1,57 @@
 ﻿@{
     ViewBag.Title = "SHE Observation Form";
-    //List<StarEnergi.Models.user_per_role> li = null;
-    //if (ViewData["user_role"] != null)
-    //{
-    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
-    //}
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
 }
 <div id="contentEventLog">
 <h2 class="adminH2">SHE Observation Form</h2>
-<div>
-    <input type="button" id="addSheObservation" value="Add SHE Observation" onclick="addSheObservation()"/>
-</div>
+    <div>
+        <input type="button" id="addSheObservation" value="Add SHE Observation" onclick="addSheObservation()"/>
+        @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE))
+        {
+        <input type="button" id="exportExcel" value="Export Report by Person" onclick="showDateChooser()"/>
+        }
+    </div>
 <br/>
 <div id="sheObservation">
 </div>
 <br />
 </div>
+@(Html.Telerik().Window()
+    .Name("ExportReport")
+    .Visible(false)
+    .Title("Export Report")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+
+                   <input type="hidden" id="type" />
+                    <div class="info_inside_left">From</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date_from")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                            .Value(DateTime.Today)
+                        )
+                    </div>
+                   <div class="info_inside_left">To</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date_to")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                            .Value(DateTime.Today)
+                        )
+                    </div>
+	            <p class="submit">
+		            <input name="Submit" value="Save" type="submit" onclick="exportReport();" />
+	            </p>
+	         </div>
+        </text>)
+)
 <script type="text/javascript">
 
     function addSheObservation() {
@@ -29,5 +65,21 @@
     $(document).ready(function () {
         showSheObservation();
     });
+
+    function showDateChooser() {
+        var detailWindow = $("#ExportReport").data("tWindow");
+        $('#type').val('0');
+        detailWindow.center().open();
+    }
+
+    function exportReport() {
+        var detailWindow = $("#ExportReport").data("tWindow");
+        detailWindow.close();
+        var from = $('#date_from').val();
+        var to = $('#date_to').val();
+        if ($('#type').val() == 0) {
+            window.location = '/SheObservation/ExportExcelData?fromD=' + from + '&toD=' + to;
+        }
+    }
 
 </script>

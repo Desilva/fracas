@@ -62,7 +62,7 @@
 				        $("#id_equipment").html("");
 				        $('<option value="">-- Select Equipment --</option>').appendTo("#id_equipment");
 				        for (var i = 0; i < hasil.length; i++) {
-				            $("<option value='" + hasil[i]['id'] + "'>" + hasil[i]['tag_num'] + "</option>").appendTo("#id_equipment");
+				            $("<option value='" + hasil[i]['id'] + "'>" + hasil[i]['tag_num'] + " - " + hasil[i]['nama'] + "</option>").appendTo("#id_equipment");
 				        }
 				        $('#realmod_checker_system').css("display", "none");
 				    }
@@ -90,7 +90,7 @@
 				        $("#last_operation").val(hasil[1]);
 				        $('<option value="">-- None --</option>').appendTo("#id_part");
 				        for (var i = 0; i < hasil[0].length; i++) {
-				            $("<option value='" + hasil[0][i]['id'] + "'>" + hasil[0][i]['tag_number'] + "</option>").appendTo("#id_part");
+				            $("<option value='" + hasil[0][i]['id'] + "'>" + hasil[0][i]['tag_number'] + " - " + hasil[0][i]['nama'] + "</option>").appendTo("#id_part");
 				        }
 				        $('<option value="">-- Select Failure Mode --</option>').appendTo("#id_failure_mode");
 				        for (var i = 0; i < hasil[2].length; i++) {

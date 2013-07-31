@@ -263,6 +263,26 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.id_failure_cause = new SelectList(db.failure_causes, "id", "description");
             ViewBag.id_failure_effect = new SelectList(db.failure_effects, "id", "description");
             ViewBag.id_secondary_effect = new SelectList(db.secondary_effects, "id", "description");
+
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.alpha_name
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = (ue.username == null ? String.Empty : ue.username),
+                           delagate = employees.delagate,
+                           employee_delegate = employees.employee_delegate
+                       }).ToList();
+            ViewBag.list_employee = has;
             return PartialView();
         }
 
@@ -652,7 +672,8 @@ namespace StarEnergi.Controllers.FrontEnd
                         select new TinyEquipmentEntity
                         {
                             id = o.id,
-                            tag_num = o.tag_num
+                            tag_num = o.tag_num,
+                            nama = o.nama
                         };
             return Json(model.ToList());
         }
@@ -673,7 +694,8 @@ namespace StarEnergi.Controllers.FrontEnd
                        select new PartEntity
                        {
                            id = o.id,
-                           tag_number = o.part.tag_number
+                           tag_number = o.part.tag_number,
+                           nama = o.part.nama
                        };
             var model = from o in db.equipment_event
                         where o.id_equipment == id_equipment

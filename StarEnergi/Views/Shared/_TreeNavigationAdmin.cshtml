@@ -91,7 +91,7 @@
             mappings.For<StarEnergi.Models.equipment_groups>(binding => binding
                   .ItemDataBound((item, equipment_groups) =>
                   {
-                      item.Text = equipment_groups.description == null ? "a" : equipment_groups.description;
+                      item.Text = equipment_groups.description == null ? equipment_groups.nama : equipment_groups.description;
                       item.Value = Config.TreeType.EQUIPMENT_GROUP + ";" + equipment_groups.id.ToString();
                       if (equipment_groups.equipments.Count != 0)
                       {
@@ -105,7 +105,7 @@
             mappings.For<StarEnergi.Models.equipment>(binding => binding
                  .ItemDataBound((item, equipment) =>
                  {
-                     item.Text = equipment.tag_num;
+                     item.Text = equipment.nama;
                      item.Value = Config.TreeType.EQUIPMENTS + ";" + equipment.id.ToString();
                      if (equipment.equipment_part.Count != 0)
                       {
@@ -119,7 +119,7 @@
             mappings.For<StarEnergi.Models.equipment_part>(binding => binding
                  .ItemDataBound((item, equipment_part) =>
                  {
-                     item.Text = equipment_part.part.tag_number;
+                     item.Text = equipment_part.part.nama;
                      item.Value = Config.TreeType.PART + ";" + equipment_part.id.ToString();
                      if (equipment_part.components.Count != 0)
                      {
@@ -133,7 +133,7 @@
             mappings.For<StarEnergi.Models.component>(binding => binding
                  .ItemDataBound((item, component) =>
                  {
-                     item.Text = component.tag_number;
+                     item.Text = component.description;
                      item.Value = Config.TreeType.COMPONENT + ";" + component.id.ToString();
                      if (component.sub_component.Count != 0)
                      {
@@ -147,7 +147,7 @@
             mappings.For<StarEnergi.Models.sub_component>(binding => binding
                  .ItemDataBound((item, sub_component) =>
                  {
-                     item.Text = sub_component.tag_number;
+                     item.Text = sub_component.description;
                      item.Value = Config.TreeType.SUBCOMPONENT + ";" + sub_component.id.ToString();
                      item.ImageUrl = ("~/Content/image/file.png");
                  }));

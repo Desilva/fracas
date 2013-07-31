@@ -15,7 +15,8 @@
 <div style="width:45%;float:left">
     <h3>SHE Observation</h3>
     <span><input type="button" id="log" value="Log" onclick="log(1)"/></span><br />
-    <span><b>Target : <div id="obs_view_target" style="display:inline;">@ViewBag.obs_target</div>%  </b><div style="display:inline;"><input type="button" id="changeTarget" value="Change Target" onclick="changeObsTarget()" @(Session["id"].ToString() == "278" ? "" : "style=display:none") /></div></span><br />
+    <span><b>Target Card : <div id="obs_view_target" style="display:inline;">@ViewBag.obs_target</div>%  </b><div style="display:inline;"><input type="button" id="changeTarget" value="Change Target" onclick="changeObsTarget()" @(Session["id"].ToString() == "278" ? "" : "style=display:none") /></div></span><br />
+    <span><b>Target Quality : <div id="obs_view_target_quality" style="display:inline;">@ViewBag.obs_target_quality</div>%  </b><div style="display:inline;"><input type="button" id="changeTargetQuality" value="Change Target" onclick="changeObsTargetQuality()" @(Session["id"].ToString() == "278" ? "" : "style=display:none") /></div></span><br />
     <span><b>Total Card (@ViewBag.last_year) : <div id="view_total_obs_bef" style="display:inline;">@ViewBag.totalAllCardBef</div></b></span><br />
     <ul>
         <li><span><b>Total Card (@ViewBag.start_month/@ViewBag.last_year - @ViewBag.end_month/@ViewBag.last_year) : <div id="view_total_obs_till_bef" style="display:inline;">@ViewBag.totalCardBef</div></b></span><br /></li>
@@ -25,10 +26,17 @@
     <ul>
         <li><span><b>Total Card (@ViewBag.start_month/@ViewBag.current_year - @ViewBag.end_month/@ViewBag.current_year) : <div id="view_total_obs_till_aft" style="display:inline;">@ViewBag.totalCardAft</div></b></span><br /></li>
         <li><span><b>Average / month : <div id="view_total_avg_aft" style="display:inline;">@ViewBag.averageAft</div></b></span><br /></li>
+        <li><span><b>Total Quality Card (@ViewBag.start_month/@ViewBag.current_year - @ViewBag.end_month/@ViewBag.current_year) : <div id="view_total_quality_obs_till_aft" style="display:inline;">@ViewBag.totalQualityCardAft</div></b></span><br /></li>
+        
     </ul>
     <div>
         <img src="../../../Content/image/success.png" alt="Success" width="200" id="success" @((ViewBag.success as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
         <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="fail" @((ViewBag.success as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
+    </div>
+    <br />
+    <div>
+        <img src="../../../Content/image/success.png" alt="Success" width="200" id="successQ" @((ViewBag.successQuality as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
+        <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="failQ" @((ViewBag.successQuality as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
     </div>
     <br />
 </div>
@@ -74,6 +82,32 @@
 )
 
 @(Html.Telerik().Window()
+    .Name("obs_window_quality")
+    .Visible(false)
+    .Title("Target")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Target </div>
+		            <div class="infoFieldinput">@(Html.Telerik().Slider<double>()
+                          .Name("obs_target_quality")
+                          .Min(0)
+                          .Max(100)
+                          .SmallStep(5)
+                          .LargeStep(10)
+                          .ShowButtons(true)
+                          .TickPlacement(SliderTickPlacement.Both)
+                    )</div>
+
+	            <p class="submit">
+		            <input name="Submit" value="Set" type="submit" onclick="setObsNewTargetQuality();" />
+	            </p>
+	         </div>
+        </text>)
+)
+
+@(Html.Telerik().Window()
     .Name("ir_window")
     .Visible(false)
     .Title("Target")
@@ -107,6 +141,13 @@
         });
     }
 
+    function changeObsTargetQuality() {
+        $.post("HseKPI/ObsTargetQuality", null, function (data) {
+            $("#obs_target_quality").data("tSlider").value(data.target);
+            $('#obs_window_quality').data('tWindow').center().open();
+        });
+    }
+
     function log(type) {
         if (type == 1)
             $('#contentEventLog').load('HseKPI/log?type=1');
@@ -125,6 +166,22 @@
             } else {
                 $('#success').hide();
                 $('#fail').show();
+            }
+        });
+
+    }
+
+    function setObsNewTargetQuality() {
+        var target = $("#obs_target_quality").val();
+        $.post("HseKPI/setObsTargetQuality", { target: target }, function (data) {
+            $('#obs_window_quality').data('tWindow').close();
+            $("#obs_view_target_quality").html(target);
+            if (data.successFail == true) {
+                $('#successQ').show();
+                $('#failQ').hide();
+            } else {
+                $('#successQ').hide();
+                $('#failQ').show();
             }
         });
 

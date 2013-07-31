@@ -23,25 +23,29 @@
         var username = '@username';
         var alpha_name = '@alpha_name';
         var isCanEdit = alpha_name == dataItem.prepared_by || username == dataItem.ack_supervisor || username == dataItem.superintendent || username == dataItem.field_manager || username == dataItem.loss_control || username == dataItem.she_superintendent || username == dataItem.superintendent_delegate || username == dataItem.field_manager_delegate || username == dataItem.loss_control_delegate || username == dataItem.she_superintendent_delegate || username == dataItem.supervisor_delegate ? true : false;
-        isCanEdit = isCanEdit || username == dataItem.lead_name;
-        var isApprove = dataItem.field_manager_approve != null;// && username == dataItem.lead_name;
+        isCanEdit = (isCanEdit || username == dataItem.lead_name) && dataItem.field_manager_approve == null;
+        var isApprove = dataItem.field_manager_approve != null && username == dataItem.lead_name;
         var isNeedRCA = dataItem.investigation == 1;
         var isAnalyst = dataItem.id_rca != null;
-        var templateComplete = (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (dataItem.field_manager_approve == null ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
-                                + '<span class="t-icon t-edit"></span>'
-                                + '</a>' : '')
+        var templateComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (isCanEdit ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
+                                + '<span class="t-icon ' + (isCanEdit ? 't-edit' : 't-view') + '"></span>'
+                                + '</a>')
                                 + ((isApprove && !isAnalyst && isNeedRCA) ? '<a class="t-button t-rca t-button-icon" onClick="openChooser(' + dataItem.id + ');" title="Add to RCA">'
                                 + '<span class="t-icon t-rca"></span>'
                                 + '</a>' : '')
+                                + (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="AddFracas(' + dataItem.id + ');" title="To FRACAS">'
+                                + '<span class="t-icon t-fracas"></span></a>' : '')
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Incident Report Log">'
                                 + '<span class="t-icon t-log"></span>'
                                 + '</a>';
-        var templateUnComplete = (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (dataItem.field_manager_approve == null ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
-                                + '<span class="t-icon t-edit"></span>'
-                                + '</a>' : '')
+        var templateUnComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (isCanEdit ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
+                                + '<span class="t-icon ' + (isCanEdit ? 't-edit' : 't-view') + '"></span>'
+                                + '</a>')
                                 + ((isApprove && !isAnalyst && isNeedRCA) ? '<a class="t-button t-rca t-button-icon" onClick="openChooser(' + dataItem.id + ');" title="Add to RCA">'
                                 + '<span class="t-icon t-rca"></span>'
                                 + '</a>' : '')
+                                + (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="AddFracas(' + dataItem.id + ');" title="To FRACAS">'
+                                + '<span class="t-icon t-fracas"></span></a>' : '')
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Incident Report Log">'
                                 + '<span class="t-icon t-log"></span>'
                                 + '</a>';
@@ -96,6 +100,10 @@
 
     function AddTS(id) {
         $('#contentEventLog').load('TroubleShooting/addTroubleShooting', { 'id_ir': id });
+    }
+
+    function AddFracas(id) {
+        $('#contentEventLog').load('Fracas/addEvent', { 'id_ir': id });
     }
 
     function editIIR(id) {
@@ -162,8 +170,17 @@
         background-image:url("/Content/image/add_rca.png");
     }
 
+    .t-fracas {
+        background-image:url("/Content/image/add_fracas.png");
+    }
+
     .t-log {
         background-image:url("/Content/image/iconLog.jpg");
+        background-size: 16px;
+    }
+
+    .t-view {
+        background-image:url("/Content/image/view.png");
         background-size: 16px;
     }
 </style>

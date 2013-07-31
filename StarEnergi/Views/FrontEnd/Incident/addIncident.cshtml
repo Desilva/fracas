@@ -15,13 +15,16 @@
     int? superintendent_id_del = null;
     int? supervisor_id_del = null;
     string supervisor_position = null;
+    string user_id = HttpContext.Current.Session["id"].ToString();
     if (ViewBag.mod != null)
     {
         id = ViewBag.mod as Nullable<Int32>;
         ViewBag.Title = "Edit Incident Report";
         ir = ViewBag.datas as StarEnergi.Models.incident_report;
         isEdit = true;
-        isView = ir.field_manager_approve != null;
+        isView = ir.field_manager_approve != null || (user_id != ir.prepared_by && user_id != ir.ack_supervisor && user_id != ir.superintendent & user_id != ir.loss_control 
+            && user_id != ir.she_superintendent && user_id != ir.field_manager && user_id != ir.lead_name && user_id != ir.superintendent_delegate &&  user_id != ir.superintendent_delegate && 
+             user_id != ir.supervisor_delegate &&  user_id != ir.she_superintendent_delegate &&  user_id != ir.loss_control_delegate &&  user_id != ir.field_manager_delegate);
     }
     else
     {
@@ -301,7 +304,8 @@
                 }
                 else
                 {
-                    <input type="text" name="prepared" id="prepared" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ir.prepared_by)).alpha_name : "")" disabled/>
+                    <input type="hidden" name="ack" id="prepared" value="@ir.prepared_by"/>
+                    <input type="text" name="ack" id="prepared_name" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ir.prepared_by)).alpha_name : "")" disabled/>
                 }
             </td>
             <td>
@@ -380,7 +384,8 @@
                 }
                 else
                 {
-                    <input type="text" name="ack" id="ack" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ir.ack_supervisor)).alpha_name : "")" disabled/>
+                    <input type="hidden" name="ack" id="ack" value="@ir.ack_supervisor"/>
+                    <input type="text" name="ack" id="ack_name" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ir.ack_supervisor)).alpha_name : "")" disabled/>
                     <img id="img_approve_supervisor" width="50" height="50" @(ir.supervisor_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.supervisor_approve == null ? "" : ir.supervisor_approve.Substring(1))"/>
                 }
             </td>

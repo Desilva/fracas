@@ -721,16 +721,24 @@
     @if(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)) {
         <input name="quality" id="is_quality" value="1" type="checkbox" @(Model.is_review == 1 ? "disabled" : "") @(Model.is_quality == 1 ? "checked" : "") /><text>Quality SHE Observation</text>
     }
+    <div class="submit">
+        @if(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE) && Model.is_review != 1) {
+            <input name="Submit" value="Mark as Reviewed" type="submit" onclick="saveReview()"/>
+        }
+	    <button type="button" value="Back">
+            @Html.ActionLink("Back", "Index", "SheObservation")
+        </button>
+    </div>
+    <br/>
+    <b>Attachment(s):</b>
+    <div class="attachment" id="atch">
+
+    </div>
+    <br />
 </div>
 <br/>
-<div class="submit">
-    @if(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE) && Model.is_review != 1) {
-        <input name="Submit" value="Mark as Reviewed" type="submit" onclick="saveReview()"/>
-    }
-	<button type="button" value="Back">
-        @Html.ActionLink("Back", "Index", "SheObservation")
-    </button>
-</div>
+
+
 <script type="text/javascript">
     function saveReview() {
         var r = confirm("Are you sure you have really reviewed this SHE Observation?");
@@ -754,4 +762,20 @@
             e.preventDefault();
         }
     }
+
+    function bindatch() {
+        $.post("SheObservation/Atch", { id: '@id' }, function (data) {
+            var has = data.files.split(";;");
+            $('#atch').empty();
+            for (var f in has) {
+                if (has[f] != "") {
+                    $('#atch').append('<a href="' + data.path + has[f] + '">' + has[f] + '</a><br/>');
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        bindatch();
+    });
 </script>

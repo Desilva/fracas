@@ -30,6 +30,7 @@ namespace StarEnergi.Controllers.FrontEnd
             li = db.user_per_role.Where(p => p.username == username).ToList();
             ViewData["user_role"] = li;
             ViewBag.obs_target = db.she_KPI_target.Find(1).target;
+            ViewBag.obs_target_quality = db.she_KPI_target.Find(4).target;
             ViewBag.ir_target = db.she_KPI_target.Find(3).target;
 
             DateTime prev = DateTime.Today.AddYears(-1);
@@ -43,7 +44,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
             int totalCardBef = list_she_obs_bef.Where(p => p.date_time.Value.Month >= 1 && p.date_time.Value.Month <= prev.Month).ToList().Count;
             int totalCardAft = list_she_obs_aft.Where(p => p.date_time.Value.Month >= 1 && p.date_time.Value.Month <= prev.Month).ToList().Count;
-
+            int totalQualityCardAft = list_she_obs_aft.Where(p => p.date_time.Value.Month >= 1 && p.date_time.Value.Month <= prev.Month && p.is_quality == 1).ToList().Count;
             int averageBef = totalCardBef / prev.Month;
             int averageAft = totalCardAft / prev.Month;
 
@@ -73,6 +74,7 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.totalAllCardAft = totalAllCardAft;
             ViewBag.totalCardBef = totalCardBef;
             ViewBag.totalCardAft = totalCardAft;
+            ViewBag.totalQualityCardAft = totalQualityCardAft;
             ViewBag.averageBef = averageBef;
             ViewBag.averageAft = averageAft;
 
@@ -86,6 +88,7 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.totalIROps = totalIROps;
 
             ViewBag.success = totalCardAft >= totalCardBef + totalCardBef * (int)ViewBag.obs_target / 100;
+            ViewBag.successQuality = totalQualityCardAft * 100 / totalCardAft >= (int)ViewBag.obs_target_quality;
             ViewBag.successIR = totalIRBef == 0 ? true : (totalIRHuman + totalIROps) * 100 / totalIRBef >= (int)ViewBag.ir_target;
             return View();
         }
@@ -94,6 +97,13 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult obsTarget()
         {
             return Json(new { success = true, target = db.she_KPI_target.Find(1).target });
+
+        }
+
+        [HttpPost]
+        public ActionResult obsTargetQuality()
+        {
+            return Json(new { success = true, target = db.she_KPI_target.Find(4).target });
 
         }
 
@@ -123,6 +133,26 @@ namespace StarEnergi.Controllers.FrontEnd
             int totalCardAft = list_she_obs_aft.Where(p => p.date_time.Value.Month >= 1 && p.date_time.Value.Month == prev.Month).ToList().Count;
 
             bool success = totalCardAft >= totalCardBef + totalCardBef * (int)target / 100;
+            return Json(new { success = true, successFail = success });
+
+        }
+
+        [HttpPost]
+        public ActionResult setObsTargetQuality(int target)
+        {
+            she_KPI_target kp = db.she_KPI_target.Find(4);
+            double? prev_target = kp.target;
+            kp.target = target;
+            db.Entry(kp).State = EntityState.Modified;
+            db.SaveChanges();
+            DateTime prev = DateTime.Today.AddYears(-1);
+            List<she_observation> list_she_obs_bef = db.she_observation.Where(p => p.date_time.Value.Year == prev.Year).ToList();
+            List<she_observation> list_she_obs_aft = db.she_observation.Where(p => p.date_time.Value.Year == DateTime.Today.Year).ToList();
+
+            int totalCardBef = list_she_obs_bef.Where(p => p.date_time.Value.Month >= 1 && p.date_time.Value.Month == prev.Month).ToList().Count;
+            int totalCardAft = list_she_obs_aft.Where(p => p.date_time.Value.Month >= 1 && p.date_time.Value.Month == prev.Month).ToList().Count;
+            int totalQualityCardAft = list_she_obs_aft.Where(p => p.date_time.Value.Month >= 1 && p.date_time.Value.Month == prev.Month && p.is_quality == 1).ToList().Count;
+            bool success = totalQualityCardAft * 100 / totalCardAft >= (int)target;
             return Json(new { success = true, successFail = success });
 
         }

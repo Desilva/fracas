@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Add Event";
+    List<StarEnergi.Models.EmployeeEntity> list_employee = ViewBag.list_employee as List<StarEnergi.Models.EmployeeEntity>;
 }
 
 <div id="detailEquipment" style="margin-left:410px; margin-top:43px; padding-left:10px; position:absolute; width:377px; display:none">
@@ -182,9 +183,9 @@
     	
         <br />
         <div id="immidiate">
-        <div class="info_inside_left">Immidiate Cor. Action</div>
+        <div class="info_inside_left">Immediate Cor. Action</div>
             <div class="infoFieldinput">
-                @Html.DropDownList("id_immidiate", "-- Select Immidiate Cor. Action --")
+                @Html.DropDownList("id_immidiate", "-- Select Immediate Cor. Action --")
                 <input name="Submit" value="+" type="button"  onclick="addImmidiate();"/>
             </div> 
             <div class="info_inside_left"></div>
@@ -227,8 +228,16 @@
 			
         <br />
         <div class="info_inside_left">Person in charge</div>
-        <div class="infoFieldinput"><input id="engineer" name="engineer" type="text" value=""/></div>
-
+        <div class="infoFieldinput">
+        @(Html.Telerik().AutoComplete()
+            .Name("engineer")
+            .Encode(false)
+            .BindTo(list_employee.Select(p => p.alpha_name))
+            .AutoFill(true)
+            .HtmlAttributes(new { style = string.Format("width:200px") })
+            .HighlightFirstMatch(true)
+        )
+        </div>
         <br />		
         
     </div>

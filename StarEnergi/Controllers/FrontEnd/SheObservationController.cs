@@ -1,11 +1,15 @@
 ﻿using ReportManagement;
 using StarEnergi.Models;
+using StarEnergi.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Telerik.Web.Mvc;
 
 namespace StarEnergi.Controllers.FrontEnd
@@ -24,6 +28,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/SheObservation" });
             }
             ViewBag.Nama = "SHE Observation Form";
+            string username = Session["username"].ToString();
+            li = db.user_per_role.Where(p => p.username == username).ToList();
+            ViewData["user_role"] = li;
             return View();
         }
 
@@ -67,6 +74,15 @@ namespace StarEnergi.Controllers.FrontEnd
                     return DetailSheObservation(id.Value);
                 }
             }
+            else
+            {
+                int last_id = db.she_observation.ToList().Count == 0 ? 0 : db.she_observation.Max(p => p.id);
+                last_id++;
+                string subPath = "~/Attachment/she_observation/" + last_id + "/"; // your code goes here
+                bool IsExists = System.IO.Directory.Exists(Server.MapPath(subPath));
+                if (!IsExists)
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+            }
             return PartialView();
         }
 
@@ -89,10 +105,40 @@ namespace StarEnergi.Controllers.FrontEnd
             if (li.Exists(p => p.role == (int)Config.role.ADMINMASTERSHE))
             {
                 f = db.she_observation.ToList();
+                foreach (she_observation o in f)
+                {
+                    if (o.is_quality == 1)
+                    {
+                        o.quality = "Yes";
+                    }
+                    else if (o.is_quality == 0)
+                    {
+                        o.quality = "No";
+                    }
+                    else
+                    {
+                        o.quality = "";
+                    }
+                }
             }
             else
             {
                 f = db.she_observation.Where(p => p.observer == name).ToList();
+                foreach (she_observation o in f)
+                {
+                    if (o.is_quality == 1)
+                    {
+                        o.quality = "Yes";
+                    }
+                    else if (o.is_quality == 0)
+                    {
+                        o.quality = "No";
+                    }
+                    else
+                    {
+                        o.quality = "";
+                    }
+                }
             }
             
 
@@ -105,8 +151,41 @@ namespace StarEnergi.Controllers.FrontEnd
         [HttpPost]
         public JsonResult Add(she_observation sheObservation)
         {
+            int id_before = (db.she_observation.ToList().Count == 0 ? 0 : db.she_observation.Max(p => p.id)) + 1;
             db.she_observation.Add(sheObservation);
             db.SaveChanges();
+            int id = sheObservation.id;
+            if (id != id_before)
+            {
+                string subPath = "~/Attachment/she_observation/" + id + "/"; // your code goes here
+                bool IsExists = System.IO.Directory.Exists(Server.MapPath(subPath));
+                if (!IsExists)
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+
+                try
+                {
+                    string old_path = Server.MapPath("~/Attachment/she_observation/" + id_before);
+                    string new_path = Server.MapPath("~/Attachment/she_observation/" + id);
+                    var files = from file in Directory.EnumerateFiles(Server.MapPath("~/Attachment/she_observation/" + id_before), "*.*", SearchOption.TopDirectoryOnly)
+                                select new
+                                {
+                                    File = file
+                                };
+
+                    foreach (var f in files)
+                    {
+                        System.IO.File.Move(old_path + "/" + f.File.Substring(f.File.LastIndexOf("\\") + 1), new_path + "/" + f.File.Substring(f.File.LastIndexOf("\\") + 1));
+                    }
+                }
+                catch (UnauthorizedAccessException UAEx)
+                {
+                    Debug.WriteLine(UAEx.Message);
+                }
+                catch (PathTooLongException PathEx)
+                {
+                    Debug.WriteLine(PathEx.Message);
+                }
+            }
 
             return Json(true);
         }
@@ -265,6 +344,123 @@ namespace StarEnergi.Controllers.FrontEnd
             db.Entry(so).State = EntityState.Modified;
             db.SaveChanges();
             return Json(true);
+        }
+
+        [HttpPost]
+        public JsonResult Attach(int type_approve)
+        {
+            return Json(true);
+        }
+
+        [HttpPost]
+        public ActionResult attachment(IEnumerable<HttpPostedFileBase> attachment, int? id)
+        {
+            var currpath = "";
+            string st = "";
+            if (id == null) id = (db.she_observation.ToList().Count == 0 ? 0 : db.she_observation.Max(p => p.id)) + 1;
+            if (attachment != null)
+            {
+                foreach (var file in attachment)
+                {
+                    currpath = Path.Combine(
+                    Server.MapPath("~/Attachment/she_observation/" + id),
+                    file.FileName);
+                    file.SaveAs(currpath);
+                }
+                currpath = "/Attachment/she_observation/" + id + "/";
+                try
+                {
+                    var files = from file in Directory.EnumerateFiles(Server.MapPath("~/Attachment/she_observation/" + id), "*.*", SearchOption.TopDirectoryOnly)
+                                select new
+                                {
+                                    File = file
+                                };
+
+                    foreach (var f in files)
+                    {
+                        st += f.File.Substring(f.File.LastIndexOf("\\") + 1) + ";;";
+                        Debug.WriteLine(f.File);
+                    }
+                    Debug.WriteLine(files.Count().ToString());
+                }
+                catch (UnauthorizedAccessException UAEx)
+                {
+                    Debug.WriteLine(UAEx.Message);
+                }
+                catch (PathTooLongException PathEx)
+                {
+                    Debug.WriteLine(PathEx.Message);
+                }
+            }
+            return Json(new { success = true, path = currpath, files = st });
+        }
+
+        [HttpPost]
+        public ActionResult Atch(int? id)
+        {
+            if (id == null) id = (db.she_observation.ToList().Count == 0 ? 0 : db.she_observation.Max(p => p.id)) + 1;
+            var currpath = "/Attachment/she_observation/" + id + "/";
+            string st = "";
+            try
+            {
+                var files = from file in Directory.EnumerateFiles(Server.MapPath("~/Attachment/she_observation/" + id), "*.*", SearchOption.TopDirectoryOnly)
+                            select new
+                            {
+                                File = file
+                            };
+
+                foreach (var f in files)
+                {
+                    st += f.File.Substring(f.File.LastIndexOf("\\") + 1) + ";;";
+                    Debug.WriteLine(f.File);
+                }
+                Debug.WriteLine(files.Count().ToString());
+            }
+            catch (UnauthorizedAccessException UAEx)
+            {
+                Debug.WriteLine(UAEx.Message);
+            }
+            catch (PathTooLongException PathEx)
+            {
+                Debug.WriteLine(PathEx.Message);
+            }
+            return Json(new { success = true, path = currpath, files = st });
+        }
+
+        // ini masih pending, segera diselesaikan kalau sudah bangun
+        public ActionResult ExportExcelData(DateTime fromD, DateTime toD)
+        {
+            List<SheObservationPersonReport> result = new List<SheObservationPersonReport>();
+            var r = (from emp in db.employees
+                     orderby emp.department
+                     select new SheObservationPersonReport
+                     {
+                         alpha_name = emp.alpha_name,
+                         department = emp.department
+                     }).ToList();
+            result = r;
+            foreach (SheObservationPersonReport emp in result)
+            {
+                List<she_observation> list_obs = db.she_observation.Where(p => p.observer == emp.alpha_name && p.department == emp.department && p.date_time >= fromD && p.date_time <= toD).ToList();
+                emp.total_observation = list_obs.Count;
+                emp.total_quality_obs = list_obs.Where(p => p.is_quality == 1).Count();
+            }
+            GridView gv = new GridView();
+            gv.Caption = "SHE Observation Report By Person From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();
+            gv.DataSource = result;
+            gv.DataBind();
+            gv.HeaderRow.Cells[0].Text = "Name";
+            gv.HeaderRow.Cells[1].Text = "Department";
+            gv.HeaderRow.Cells[2].Text = "Total SHE Observation";
+            gv.HeaderRow.Cells[3].Text = "Total Quality SHE Observation";
+            if (gv != null)
+            {
+                return new DownloadFileActionResult(gv, "SHE Observation Person Report.xls");
+            }
+            else
+            {
+                return new JavaScriptResult();
+            }
         }
 
     }

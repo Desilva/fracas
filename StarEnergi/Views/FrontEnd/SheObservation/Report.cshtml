@@ -34,10 +34,11 @@
             {
             }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
             columns.Bound(o => o.id).Hidden();
-            columns.Bound(o => o.date_time).Width(225).Title("Date/Time");
+            columns.Bound(o => o.date_time).Width(200).Title("Date/Time");
             columns.Bound(o => o.observer).Width(175).Title("Observer");
             columns.Bound(o => o.department).Width(175).Title("Department");
             columns.Bound(o => o.location).Title("Location");
+            columns.Bound(o => o.quality).Width(100).Title("Quality");
             
         })
         .ClientEvents(

@@ -679,8 +679,48 @@
             @Html.ActionLink("Print SHE Observation", "printSheObservation", "SheObservation", new {id = id},  new { target = "_blank" })
         </button>
     }
+    @(Html.Telerik().Upload()
+        .Name("attachment")
+        .Multiple(true)
+        .Async(async => async
+            .Save("attachment", "SheObservation", new { id = id })
+            .AutoUpload(true)
+            )
+        .ClientEvents(events => events
+            .OnSuccess("onSuccessAttachment").OnSelect("onSelectUpload"))
+        .ShowFileList(false)
+    )
 </div>
+<br/>
+<b>Attachment(s):</b>
+<div class="attachment" id="atch">
+
+</div>
+<br />
 <script type="text/javascript">
+    function onSuccessAttachment(data) {
+        var dat = jQuery.parseJSON(data.response);
+        var has = data.response.files.split(";;");
+        $('#atch').empty();
+        for (var f in has) {
+            if (has[f] != "") {
+                $('#atch').append('<a href="' + data.response.path + has[f] + '">' + has[f] + '</a><br/>');
+            }
+        }
+    }
+
+    function bindatch() {
+        $.post("SheObservation/Atch", { id: '@id' }, function (data) {
+            var has = data.files.split(";;");
+            $('#atch').empty();
+            for (var f in has) {
+                if (has[f] != "") {
+                    $('#atch').append('<a href="' + data.path + has[f] + '">' + has[f] + '</a><br/>');
+                }
+            }
+        });
+    }
+
     function loadWell() {
         if (isEdit != 'False') {
             if ('@dl' != null) {
@@ -1451,4 +1491,8 @@
             }
         });
     }
+
+    $(document).ready(function () {
+        bindatch();
+    });
 </script>
