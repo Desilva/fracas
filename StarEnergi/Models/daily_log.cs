@@ -280,6 +280,9 @@ namespace StarEnergi.Models
         public virtual List<daily_log_operation_warning> list_daily_log_operation_warning { get; set; }
 
         public virtual daily_log daily_log_shift2 { get; set; }
+
+        public virtual string target_sh1 { get; set; }
+        public virtual string target_sh2 { get; set; }
         public virtual List<string> attach { get; set; }
     }
     

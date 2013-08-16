@@ -47,7 +47,7 @@ namespace StarEnergi.Controllers.FrontEnd
                        join dept in db.employee_dept on employees.dept_id equals dept.id
                        join users in db.users on employees.id equals users.employee_id into user_employee
                        from ue in user_employee.DefaultIfEmpty()
-                       where employees.dept_id == 10
+                       where employees.department == "Production"
                        select new EmployeeEntity
                        {
                            id = employees.id,

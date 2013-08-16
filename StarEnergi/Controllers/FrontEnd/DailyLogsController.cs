@@ -69,9 +69,18 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             ViewBag.id = id;
             ViewBag.lastPlantStatus = db.daily_log_last_plant_status.Where(p => p.id_daily_log == id).ToList();
+            
             if (db.daily_log.Find(id) != null)
             {
-                ViewBag.lastPlantTime = db.daily_log.Find(id).last_plant_time;
+                daily_log dl = db.daily_log.Find(id);
+                ViewBag.dl = dl;
+                daily_log_weekly_target wt = db.daily_log_weekly_target.Where(p => p.date == dl.date && p.shift == dl.shift).ToList().FirstOrDefault();
+                if (wt != null)
+                {
+                    ViewBag.target_1_sh1 = Double.Parse(wt.target_unit_1);
+                    ViewBag.target_2_sh1 = Double.Parse(wt.target_unit_2);
+                }
+                ViewBag.lastPlantTime = dl.last_plant_time;
             }
             return PartialView();
         }
@@ -1843,6 +1852,13 @@ namespace StarEnergi.Controllers.FrontEnd
                 Debug.WriteLine(PathEx.Message);
             }
 
+            daily_log_weekly_target wt = db.daily_log_weekly_target.Where(p => p.date == dl.date && p.shift == dl.shift).ToList().FirstOrDefault();
+            if (wt != null)
+            {
+                dl.target_sh1 = Double.Parse(wt.target_unit_1).ToString("f2");
+                dl.target_sh2 = Double.Parse(wt.target_unit_2).ToString("f2");
+            }
+
             dl.daily_log_shift2 = db.daily_log.Find(dl.id_shift2 == null ? 0 : dl.id_shift2);
             if (dl.daily_log_shift2 != null)
             {
@@ -1877,6 +1893,13 @@ namespace StarEnergi.Controllers.FrontEnd
                 catch (PathTooLongException PathEx)
                 {
                     Debug.WriteLine(PathEx.Message);
+                }
+
+                daily_log_weekly_target wt2 = db.daily_log_weekly_target.Where(p => p.date == dl.daily_log_shift2.date && p.shift == dl.daily_log_shift2.shift).ToList().FirstOrDefault();
+                if (wt2 != null)
+                {
+                    dl.daily_log_shift2.target_sh1 = Double.Parse(wt2.target_unit_1).ToString("f2");
+                    dl.daily_log_shift2.target_sh2 = Double.Parse(wt2.target_unit_2).ToString("f2");
                 }
             }
             return this.ViewPdf("", "DailyLogPrint", dl);

@@ -10,7 +10,15 @@
 		<tr>
 			<td class="time no-border-top">@(time != null && time.Length > 0 ? time.Remove(0,4) : time)</td>
 			<td>
-				Last plant status:<br>
+				Last plant status:<br/>
+		        Shift Target<br/>
+                Unit 1: @ViewBag.target_1_sh1 MWh<br/>
+		        Unit 2: @ViewBag.target_2_sh1 MWh<br/>
+		        Target Shift Achievement<br/>
+                Unit 1: @ViewBag.dl.achievement_1 MWh<br />
+                Remark: @ViewBag.dl.remark_1<br />
+                Unit 2: @ViewBag.dl.achievement_2 MWh<br />
+                Remark: @ViewBag.dl.remark_2<br />
 				<ul>
                     @foreach (StarEnergi.Models.daily_log_last_plant_status lps in li) {
                         <li>@lps.description</li>
