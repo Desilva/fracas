@@ -25,7 +25,8 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         public ActionResult DetailsEquipment(int id) {
-            ViewBag.nama = db.equipments.Find(id).tag_num;
+            ViewBag.tag_num = db.equipments.Find(id).tag_num;
+            ViewBag.nama = db.equipments.Find(id).nama;
             ViewBag.id = id;
             return PartialView();
         }

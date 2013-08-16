@@ -1,6 +1,7 @@
 ﻿@model StarEnergi.Models.daily_log
 @{
     int? id = Model.id as Nullable<Int32>;
+    double a;
 }
 <div class="container">
     <table border="0">
@@ -77,420 +78,420 @@
 			    <td style="font-size:5px" border="0.5">WWA-2</td>
                 @if (Model.wma_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.wma_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.wma_2_fcv,out a) ? a.ToString("f2") : Model.wma_2_fcv)</td>
                 }
                 else
                 {
-                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.wma_2_fcv</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.wma_2_flow</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.wma_2_whp</td>
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.wma_2_fcv,out a) ? a.ToString("f2") : Model.wma_2_fcv)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.wma_2_flow,out a) ? a.ToString("f2") : Model.wma_2_flow)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.wma_2_whp,out a) ? a.ToString("f2") : Model.wma_2_whp)</td>
                 }
 			    <td style="font-size:5px" border="0.5">MBA-1</td>
 			    @if (Model.mba_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.mba_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.mba_1_fcv,out a) ? a.ToString("f2") : Model.mba_1_fcv)</td>
                 }
                 else
                 {
-                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.mba_1_fcv</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.mba_1_flow</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.mba_1_whp</td>
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.mba_1_fcv,out a) ? a.ToString("f2") : Model.mba_1_fcv)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.mba_1_flow,out a) ? a.ToString("f2") : Model.mba_1_flow)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.mba_1_whp,out a) ? a.ToString("f2") : Model.mba_1_whp)</td>
                 }
 			    <td style="font-size:5px" border="0.5">Generator Output</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.generator_output_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.generator_output_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.generator_output_1,out a) ? a.ToString("f2") : Model.generator_output_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.generator_output_2,out a) ? a.ToString("f2") : Model.generator_output_2)</td>
 			    <td style="font-size:5px" border="0.5">MW</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWA-4</td>
                 @if (Model.wma_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.wma_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.wma_4_fcv,out a) ? a.ToString("f2") : Model.wma_4_fcv)</td>
                 }
                 else
                 {
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_4">@Model.wma_4_fcv</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wma_4_flow</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wma_4_whp</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_4">@(Double.TryParse(Model.wma_4_fcv,out a) ? a.ToString("f2") : Model.wma_4_fcv)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wma_4_flow,out a) ? a.ToString("f2") : Model.wma_4_flow)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wma_4_whp,out a) ? a.ToString("f2") : Model.wma_4_whp)</td>
                 }
 			    <td style="font-size:5px">MBA-2</td>
                 @if (Model.mba_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.mba_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.mba_2_fcv,out a) ? a.ToString("f2") : Model.mba_2_fcv)</td>
                 }
                 else
                 {
-                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_2">@Model.mba_2_fcv</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_2_flow</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_2_whp</td>
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_2">@(Double.TryParse(Model.mba_2_fcv,out a) ? a.ToString("f2") : Model.mba_2_fcv)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mba_2_flow,out a) ? a.ToString("f2") : Model.mba_2_flow)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mba_2_whp,out a) ? a.ToString("f2") : Model.mba_2_whp)</td>
                 }
 			    <td style="font-size:5px">(gross)</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.gross_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.gross_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.gross_1,out a) ? a.ToString("f2") : Model.gross_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.gross_2,out a) ? a.ToString("f2") : Model.gross_2)</td>
 			    <td style="font-size:5px">Mvar</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWA-6</td>
                 @if (Model.wma_6_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.wma_6_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.wma_6_fcv,out a) ? a.ToString("f2") : Model.wma_6_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_6">@Model.wma_6_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wma_6_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wma_6_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_6">@(Double.TryParse(Model.wma_6_fcv,out a) ? a.ToString("f2") : Model.wma_6_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wma_6_flow,out a) ? a.ToString("f2") : Model.wma_6_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wma_6_whp,out a) ? a.ToString("f2") : Model.wma_6_whp)</td>
                 }
 			    <td style="font-size:5px">MBA-3</td>
                 @if (Model.mba_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.mba_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.mba_3_fcv,out a) ? a.ToString("f2") : Model.mba_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_3">@Model.mba_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_3">@(Double.TryParse(Model.mba_3_fcv,out a) ? a.ToString("f2") : Model.mba_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mba_3_flow,out a) ? a.ToString("f2") : Model.mba_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mba_3_whp,out a) ? a.ToString("f2") : Model.mba_3_whp)</td>
                 }
 			    <td style="font-size:5px">Generator Output Counter</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.generator_output_counter_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.generator_output_counter_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.generator_output_counter_1,out a) ? a.ToString("f2") : Model.generator_output_counter_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.generator_output_counter_2,out a) ? a.ToString("f2") : Model.generator_output_counter_2)</td>
 			    <td style="font-size:5px">minute</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-1</td>
                 @if (Model.mbd_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbd_1_fcv,out a) ? a.ToString("f2") : Model.mbd_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_1">@Model.mbd_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_1">@(Double.TryParse(Model.mbd_1_fcv,out a) ? a.ToString("f2") : Model.mbd_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_1_flow,out a) ? a.ToString("f2") : Model.mbd_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_1_whp,out a) ? a.ToString("f2") : Model.mbd_1_whp)</td>
                 }
 			    <td style="font-size:5px">MBA-4</td>
                 @if (Model.mba_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mba_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mba_4_fcv,out a) ? a.ToString("f2") : Model.mba_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_4">@Model.mba_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_4">@(Double.TryParse(Model.mba_4_fcv,out a) ? a.ToString("f2") : Model.mba_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mba_4_flow,out a) ? a.ToString("f2") : Model.mba_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mba_4_whp,out a) ? a.ToString("f2") : Model.mba_4_whp)</td>
                 }
 			    <td style="font-size:5px">Power Factor</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.power_factor_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.power_factor_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.power_factor_1,out a) ? a.ToString("f2") : Model.power_factor_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.power_factor_2,out a) ? a.ToString("f2") : Model.power_factor_2)</td>
 			    <td style="font-size:5px">&nbsp;</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-2</td>
                 @if (Model.mbd_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbd_2_fcv,out a) ? a.ToString("f2") : Model.mbd_2_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_2">@Model.mbd_2_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_2_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_2_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_2">@(Double.TryParse(Model.mbd_2_fcv,out a) ? a.ToString("f2") : Model.mbd_2_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_2_flow,out a) ? a.ToString("f2") : Model.mbd_2_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_2_whp,out a) ? a.ToString("f2") : Model.mbd_2_whp)</td>
                 }
 			    <td style="font-size:5px">MBA-5</td>
                 @if (Model.mba_5_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mba_5_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mba_5_fcv,out a) ? a.ToString("f2") : Model.mba_5_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_5">@Model.mba_5_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_5_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mba_5_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_5">@(Double.TryParse(Model.mba_5_fcv,out a) ? a.ToString("f2") : Model.mba_5_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mba_5_flow,out a) ? a.ToString("f2") : Model.mba_5_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mba_5_whp,out a) ? a.ToString("f2") : Model.mba_5_whp)</td>
                 }
 			    <td style="font-size:5px">Tap Changer</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.tap_charger_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.tap_charger_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.tap_charger_1,out a) ? a.ToString("f2") : Model.tap_charger_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.tap_charger_2,out a) ? a.ToString("f2") : Model.tap_charger_2)</td>
 			    <td style="font-size:5px">step</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-3</td>
                 @if (Model.mbd_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbd_3_fcv,out a) ? a.ToString("f2") : Model.mbd_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_3">@Model.mbd_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_3">@(Double.TryParse(Model.mbd_3_fcv,out a) ? a.ToString("f2") : Model.mbd_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_3_flow,out a) ? a.ToString("f2") : Model.mbd_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_3_whp,out a) ? a.ToString("f2") : Model.mbd_3_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-1</td>
                 @if (Model.mbb_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbb_1_fcv,out a) ? a.ToString("f2") : Model.mbb_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_1">@Model.mbb_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_1">@(Double.TryParse(Model.mbb_1_fcv,out a) ? a.ToString("f2") : Model.mbb_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_1_flow,out a) ? a.ToString("f2") : Model.mbb_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_1_whp,out a) ? a.ToString("f2") : Model.mbb_1_whp)</td>
                 }
 			    <td style="font-size:5px">PLN Grid Voltage</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_grid_voltage_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_grid_voltage_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pln_grid_voltage_1,out a) ? a.ToString("f2") : Model.pln_grid_voltage_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pln_grid_voltage_2,out a) ? a.ToString("f2") : Model.pln_grid_voltage_2)</td>
 			    <td style="font-size:5px">kV</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-4</td>
                 @if (Model.mbd_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbd_4_fcv,out a) ? a.ToString("f2") : Model.mbd_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_4">@Model.mbd_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_4">@(Double.TryParse(Model.mbd_4_fcv,out a) ? a.ToString("f2") : Model.mbd_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_4_flow,out a) ? a.ToString("f2") : Model.mbd_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_4_whp,out a) ? a.ToString("f2") : Model.mbd_4_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-2</td>
                 @if (Model.mbb_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbb_2_fcv,out a) ? a.ToString("f2") : Model.mbb_2_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_2">@Model.mbb_2_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_2_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_2_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_2">@(Double.TryParse(Model.mbb_2_fcv,out a) ? a.ToString("f2") : Model.mbb_2_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_2_flow,out a) ? a.ToString("f2") : Model.mbb_2_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_2_whp,out a) ? a.ToString("f2") : Model.mbb_2_whp)</td>
                 }
 			    <td style="font-size:5px">Valve Limiter</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.valve_limiter_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.valve_limiter_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.valve_limiter_1,out a) ? a.ToString("f2") : Model.valve_limiter_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.valve_limiter_2,out a) ? a.ToString("f2") : Model.valve_limiter_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-5</td>
                 @if (Model.mbd_5_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbd_5_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbd_5_fcv,out a) ? a.ToString("f2") : Model.mbd_5_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_5">@Model.mbd_5_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_5_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbd_5_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_5">@(Double.TryParse(Model.mbd_5_fcv,out a) ? a.ToString("f2") : Model.mbd_5_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_5_flow,out a) ? a.ToString("f2") : Model.mbd_5_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbd_5_whp,out a) ? a.ToString("f2") : Model.mbd_5_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-3</td>
                 @if (Model.mbb_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbb_3_fcv,out a) ? a.ToString("f2") : Model.mbb_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_3">@Model.mbb_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_3">@(Double.TryParse(Model.mbb_3_fcv,out a) ? a.ToString("f2") : Model.mbb_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_3_flow,out a) ? a.ToString("f2") : Model.mbb_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_3_whp,out a) ? a.ToString("f2") : Model.mbb_3_whp)</td>
                 }
 			    <td style="font-size:5px">Governor Output</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.governor_output_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.governor_output_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.governor_output_1,out a) ? a.ToString("f2") : Model.governor_output_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.governor_output_2,out a) ? a.ToString("f2") : Model.governor_output_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-1</td>
                 @if (Model.wwq_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.wwq_1_fcv,out a) ? a.ToString("f2") : Model.wwq_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_1">@Model.wwq_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_1">@(Double.TryParse(Model.wwq_1_fcv,out a) ? a.ToString("f2") : Model.wwq_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_1_flow,out a) ? a.ToString("f2") : Model.wwq_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_1_whp,out a) ? a.ToString("f2") : Model.wwq_1_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-4</td>
                 @if (Model.mbb_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbb_4_fcv,out a) ? a.ToString("f2") : Model.mbb_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_4">@Model.mbb_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_4">@(Double.TryParse(Model.mbb_4_fcv,out a) ? a.ToString("f2") : Model.mbb_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_4_flow,out a) ? a.ToString("f2") : Model.mbb_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_4_whp,out a) ? a.ToString("f2") : Model.mbb_4_whp)</td>
                 }
 			    <td style="font-size:5px">WCP Counter</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wcp_counter_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wcp_counter_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wcp_counter_1,out a) ? a.ToString("f2") : Model.wcp_counter_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wcp_counter_2,out a) ? a.ToString("f2") : Model.wcp_counter_2)</td>
 			    <td style="font-size:5px">minute</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-2</td>
                 @if (Model.wwq_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.wwq_2_fcv,out a) ? a.ToString("f2") : Model.wwq_2_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_2">@Model.wwq_2_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_2_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_2_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_2">@(Double.TryParse(Model.wwq_2_fcv,out a) ? a.ToString("f2") : Model.wwq_2_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_2_flow,out a) ? a.ToString("f2") : Model.wwq_2_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_2_whp,out a) ? a.ToString("f2") : Model.wwq_2_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-5</td>
                 @if (Model.mbb_5_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_5_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbb_5_fcv,out a) ? a.ToString("f2") : Model.mbb_5_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_5">@Model.mbb_5_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_5_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_5_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_5">@(Double.TryParse(Model.mbb_5_fcv,out a) ? a.ToString("f2") : Model.mbb_5_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_5_flow,out a) ? a.ToString("f2") : Model.mbb_5_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_5_whp,out a) ? a.ToString("f2") : Model.mbb_5_whp)</td>
                 }
 			    <td style="font-size:5px">Condenser Pressure</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_pressure_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_pressure_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condenser_pressure_1,out a) ? a.ToString("f2") : Model.condenser_pressure_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condenser_pressure_2,out a) ? a.ToString("f2") : Model.condenser_pressure_2)</td>
 			    <td style="font-size:5px">mBar</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-3</td>
                 @if (Model.wwq_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.wwq_3_fcv,out a) ? a.ToString("f2") : Model.wwq_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_3">@Model.wwq_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_3">@(Double.TryParse(Model.wwq_3_fcv,out a) ? a.ToString("f2") : Model.wwq_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_3_flow,out a) ? a.ToString("f2") : Model.wwq_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_3_whp,out a) ? a.ToString("f2") : Model.wwq_3_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-6</td>
                 @if (Model.mbb_6_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbb_6_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbb_6_fcv,out a) ? a.ToString("f2") : Model.mbb_6_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_6">@Model.mbb_6_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_6_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbb_6_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_6">@(Double.TryParse(Model.mbb_6_fcv,out a) ? a.ToString("f2") : Model.mbb_6_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_6_flow,out a) ? a.ToString("f2") : Model.mbb_6_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbb_6_whp,out a) ? a.ToString("f2") : Model.mbb_6_whp)</td>
                 }
 			    <td style="font-size:5px">Main C/W Flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.main_cw_flow_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.main_cw_flow_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.main_cw_flow_1,out a) ? a.ToString("f2") : Model.main_cw_flow_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.main_cw_flow_2,out a) ? a.ToString("f2") : Model.main_cw_flow_2)</td>
 			    <td style="font-size:5px">kg/s</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-4</td>
                 @if (Model.wwq_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.wwq_4_fcv,out a) ? a.ToString("f2") : Model.wwq_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_4">@Model.wwq_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_4">@(Double.TryParse(Model.wwq_4_fcv,out a) ? a.ToString("f2") : Model.wwq_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_4_flow,out a) ? a.ToString("f2") : Model.wwq_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_4_whp,out a) ? a.ToString("f2") : Model.wwq_4_whp)</td>
                 }
 			    <td style="font-size:5px">WWF-1</td>
                 @if (Model.wwf_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwf_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.wwf_1_fcv,out a) ? a.ToString("f2") : Model.wwf_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_1">@Model.wwf_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwf_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwf_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_1">@(Double.TryParse(Model.wwf_1_fcv,out a) ? a.ToString("f2") : Model.wwf_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwf_1_flow,out a) ? a.ToString("f2") : Model.wwf_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwf_1_whp,out a) ? a.ToString("f2") : Model.wwf_1_whp)</td>
                 }
 			    <td style="font-size:5px">PPC-G(CO)</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ppc_g_co_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ppc_g_co_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ppc_g_co_1,out a) ? a.ToString("f2") : Model.ppc_g_co_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ppc_g_co_2,out a) ? a.ToString("f2") : Model.ppc_g_co_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-5</td>
                 @if (Model.wwq_5_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwq_5_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.wwq_5_fcv,out a) ? a.ToString("f2") : Model.wwq_5_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_5">@Model.wwq_5_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_5_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwq_5_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_5">@(Double.TryParse(Model.wwq_5_fcv,out a) ? a.ToString("f2") : Model.wwq_5_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_5_flow,out a) ? a.ToString("f2") : Model.wwq_5_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwq_5_whp,out a) ? a.ToString("f2") : Model.wwq_5_whp)</td>
                 }
 			    <td style="font-size:5px">WWF-3</td>
                 @if (Model.wwf_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwf_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.wwf_3_fcv,out a) ? a.ToString("f2") : Model.wwf_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_3">@Model.wwf_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwf_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwf_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_3">@(Double.TryParse(Model.wwf_3_fcv,out a) ? a.ToString("f2") : Model.wwf_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwf_3_flow,out a) ? a.ToString("f2") : Model.wwf_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwf_3_whp,out a) ? a.ToString("f2") : Model.wwf_3_whp)</td>
                 }
 			    <td style="font-size:5px">Interface Pressure (SP)</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.interface_pressure_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.interface_pressure_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.interface_pressure_1,out a) ? a.ToString("f2") : Model.interface_pressure_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.interface_pressure_2,out a) ? a.ToString("f2") : Model.interface_pressure_2)</td>
 			    <td style="font-size:5px">Bar</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBE-3</td>
                 @if (Model.mbe_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbe_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbe_3_fcv,out a) ? a.ToString("f2") : Model.mbe_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_3">@Model.mbe_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbe_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbe_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_3">@(Double.TryParse(Model.mbe_3_fcv,out a) ? a.ToString("f2") : Model.mbe_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbe_3_flow,out a) ? a.ToString("f2") : Model.mbe_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbe_3_whp,out a) ? a.ToString("f2") : Model.mbe_3_whp)</td>
                 }
 			    <td style="font-size:5px">WWW-1</td>
                 @if (Model.www_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.www_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.www_1_fcv,out a) ? a.ToString("f2") : Model.www_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="www_1">@Model.www_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.www_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.www_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="www_1">@(Double.TryParse(Model.www_1_fcv,out a) ? a.ToString("f2") : Model.www_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.www_1_flow,out a) ? a.ToString("f2") : Model.www_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.www_1_whp,out a) ? a.ToString("f2") : Model.www_1_whp)</td>
                 }
 			    <td style="font-size:5px">Vent Bias(SP)</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.vent_bias_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.vent_bias_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.vent_bias_1,out a) ? a.ToString("f2") : Model.vent_bias_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.vent_bias_2,out a) ? a.ToString("f2") : Model.vent_bias_2)</td>
 			    <td style="font-size:5px">Bar</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBE-4</td>
                 @if (Model.mbe_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.mbe_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.mbe_4_fcv,out a) ? a.ToString("f2") : Model.mbe_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_4">@Model.mbe_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbe_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mbe_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_4">@(Double.TryParse(Model.mbe_4_fcv,out a) ? a.ToString("f2") : Model.mbe_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbe_4_flow,out a) ? a.ToString("f2") : Model.mbe_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mbe_4_whp,out a) ? a.ToString("f2") : Model.mbe_4_whp)</td>
                 }
 			    <td style="font-size:5px">WWP-1</td>
                 @if (Model.wwp_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.wwp_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.wwp_1_fcv,out a) ? a.ToString("f2") : Model.wwp_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwp_1">@Model.wwp_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwp_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwp_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwp_1">@(Double.TryParse(Model.wwp_1_fcv,out a) ? a.ToString("f2") : Model.wwp_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwp_1_flow,out a) ? a.ToString("f2") : Model.wwp_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwp_1_whp,out a) ? a.ToString("f2") : Model.wwp_1_whp)</td>
                 }
 			    <td style="font-size:5px">Main C/W Pressure</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.main_cw_pressure_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.main_cw_pressure_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.main_cw_pressure_1,out a) ? a.ToString("f2") : Model.main_cw_pressure_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.main_cw_pressure_2,out a) ? a.ToString("f2") : Model.main_cw_pressure_2)</td>
 			    <td style="font-size:5px">Bar</td>
 		    </tr>
 		    <tr border="0.5">
@@ -503,28 +504,28 @@
 			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">T1 Exhaust Temp. (C)</td>
 			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">T1 Exhaust Temp. (C)</td>
 			    <td style="font-size:5px">CT Basin pH</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ct_basin_ph_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ct_basin_ph_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ct_basin_ph_1,out a) ? a.ToString("f2") : Model.ct_basin_ph_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ct_basin_ph_2,out a) ? a.ToString("f2") : Model.ct_basin_ph_2)</td>
 			    <td style="font-size:5px">&nbsp;</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Condenser C/W Inlet-A</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_cw_inlet_a_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_cw_inlet_a_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condenser_cw_inlet_a_1,out a) ? a.ToString("f2") : Model.condenser_cw_inlet_a_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condenser_cw_inlet_a_2,out a) ? a.ToString("f2") : Model.condenser_cw_inlet_a_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ncg_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ncg_2</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.turbine_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.turbine_2</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ct_temp_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ct_temp_2</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.exhaust_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.exhaust_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ncg_1,out a) ? a.ToString("f2") : Model.ncg_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ncg_2,out a) ? a.ToString("f2") : Model.ncg_2)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.turbine_1,out a) ? a.ToString("f2") : Model.turbine_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.turbine_2,out a) ? a.ToString("f2") : Model.turbine_2)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ct_temp_1,out a) ? a.ToString("f2") : Model.ct_temp_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ct_temp_2,out a) ? a.ToString("f2") : Model.ct_temp_2)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.exhaust_1,out a) ? a.ToString("f2") : Model.exhaust_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.exhaust_2,out a) ? a.ToString("f2") : Model.exhaust_2)</td>
 			    <td style="font-size:5px">Condenser C/W Inlet-B</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_cw_inlet_b_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condenser_cw_inlet_b_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condenser_cw_inlet_b_1,out a) ? a.ToString("f2") : Model.condenser_cw_inlet_b_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condenser_cw_inlet_b_2,out a) ? a.ToString("f2") : Model.condenser_cw_inlet_b_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
@@ -537,28 +538,28 @@
 			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">NaOH 48% Level (mm)</td>
 			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">WWD Pond Level (m)</td>
 			    <td style="font-size:5px">Gen. Trans. Winding Temp.</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.gen_trans_winding_temp_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.gen_trans_winding_temp_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.gen_trans_winding_temp_1,out a) ? a.ToString("f2") : Model.gen_trans_winding_temp_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.gen_trans_winding_temp_2,out a) ? a.ToString("f2") : Model.gen_trans_winding_temp_2)</td>
 			    <td style="font-size:5px">C</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Unit Trans. Winding Temp.</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.unit_trans_winding_temp_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.unit_trans_winding_temp_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.unit_trans_winding_temp_1,out a) ? a.ToString("f2") : Model.unit_trans_winding_temp_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.unit_trans_winding_temp_2,out a) ? a.ToString("f2") : Model.unit_trans_winding_temp_2)</td>
 			    <td style="font-size:5px">C</td>
 		    </tr>
 		    <tr border="0.5">
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.upper_tp_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.lower_tp_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mv_333</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.mv_334</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.brine_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condensate_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.naoh_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wwd_pond_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.upper_tp_level,out a) ? a.ToString("f2") : Model.upper_tp_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.lower_tp_level,out a) ? a.ToString("f2") : Model.lower_tp_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mv_333,out a) ? a.ToString("f2") : Model.mv_333)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.mv_334,out a) ? a.ToString("f2") : Model.mv_334)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.brine_level,out a) ? a.ToString("f2") : Model.brine_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condensate_level,out a) ? a.ToString("f2") : Model.condensate_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.naoh_level,out a) ? a.ToString("f2") : Model.naoh_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wwd_pond_level,out a) ? a.ToString("f2") : Model.wwd_pond_level)</td>
 			    <td style="font-size:5px">Wheel Case Pressure</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wheel_case_pressure_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.wheel_case_pressure_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wheel_case_pressure_1,out a) ? a.ToString("f2") : Model.wheel_case_pressure_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.wheel_case_pressure_2,out a) ? a.ToString("f2") : Model.wheel_case_pressure_2)</td>
 			    <td style="font-size:5px">Bar</td>
 		    </tr>
 	    </table>
@@ -680,112 +681,112 @@
 		    <tr border="0.5">
 			    <td style="font-size:5px" rowspan="2">Unit Transformer</td>
 			    <td style="font-size:5px">Active</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.uti_active_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.uti_active_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.uti_active_1,out a) ? a.ToString("f2") : Model.uti_active_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.uti_active_2,out a) ? a.ToString("f2") : Model.uti_active_2)</td>
 			    <td style="font-size:5px">MWh</td>
 			    <td style="font-size:5px">SEGWWL Availability</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.segwwl_availability_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.segwwl_availability_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.segwwl_availability_1,out a) ? a.ToString("f2") : Model.segwwl_availability_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.segwwl_availability_2,out a) ? a.ToString("f2") : Model.segwwl_availability_2)</td>
 			    <td style="font-size:5px">MWh</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Reactive</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.uti_reactive_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.uti_reactive_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.uti_reactive_1,out a) ? a.ToString("f2") : Model.uti_reactive_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.uti_reactive_2,out a) ? a.ToString("f2") : Model.uti_reactive_2)</td>
 			    <td style="font-size:5px">Mvarh</td>
 			    <td style="font-size:5px">PLN Dispatch</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_dispatch_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_dispatch_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pln_dispatch_1,out a) ? a.ToString("f2") : Model.pln_dispatch_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pln_dispatch_2,out a) ? a.ToString("f2") : Model.pln_dispatch_2)</td>
 			    <td style="font-size:5px">MWh</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px" rowspan="2">Steam Consumption</td>
 			    <td style="font-size:5px">Main</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.sc_main_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.sc_main_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.sc_main_1,out a) ? a.ToString("f2") : Model.sc_main_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.sc_main_2,out a) ? a.ToString("f2") : Model.sc_main_2)</td>
 			    <td style="font-size:5px">Ton</td>
 			    <td style="font-size:5px">PLN Meter</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_meter_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_meter_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pln_meter_1,out a) ? a.ToString("f2") : Model.pln_meter_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pln_meter_2,out a) ? a.ToString("f2") : Model.pln_meter_2)</td>
 			    <td style="font-size:5px">MWh</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Auxiliary</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.sc_auxiliary_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.sc_auxiliary_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.sc_auxiliary_1,out a) ? a.ToString("f2") : Model.sc_auxiliary_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.sc_auxiliary_2,out a) ? a.ToString("f2") : Model.sc_auxiliary_2)</td>
 			    <td style="font-size:5px">Ton</td>
 			    <td style="font-size:5px">SEGWWL Export</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.segwwl_export_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.segwwl_export_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.segwwl_export_1,out a) ? a.ToString("f2") : Model.segwwl_export_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.segwwl_export_2,out a) ? a.ToString("f2") : Model.segwwl_export_2)</td>
 			    <td style="font-size:5px">MWh</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td colspan="5" style="font-size:5px" align="center" bgcolor="yellow">Production</td>
 			    <td style="font-size:5px">Actual Export</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.actual_export_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.actual_export_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.actual_export_1,out a) ? a.ToString("f2") : Model.actual_export_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.actual_export_2,out a) ? a.ToString("f2") : Model.actual_export_2)</td>
 			    <td style="font-size:5px">MWh</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px" rowspan="2">Generate Export (gross)</td>
 			    <td style="font-size:5px">Active</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ge_active_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ge_active_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ge_active_1,out a) ? a.ToString("f2") : Model.ge_active_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ge_active_2,out a) ? a.ToString("f2") : Model.ge_active_2)</td>
 			    <td style="font-size:5px">MWh</td>
 			    <td style="font-size:5px">Production Excess</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.production_excess_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.production_excess_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.production_excess_1,out a) ? a.ToString("f2") : Model.production_excess_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.production_excess_2,out a) ? a.ToString("f2") : Model.production_excess_2)</td>
 			    <td style="font-size:5px">MWh</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Reactive</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ge_reactive_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.ge_reactive_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ge_reactive_1,out a) ? a.ToString("f2") : Model.ge_reactive_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.ge_reactive_2,out a) ? a.ToString("f2") : Model.ge_reactive_2)</td>
 			    <td style="font-size:5px">Mvarh</td>
 			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="4">Losses</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px" rowspan="2">Metering at 10:00</td>
 			    <td style="font-size:5px">SEGWWL</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.metering_segwwl_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.metering_segwwl_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.metering_segwwl_1,out a) ? a.ToString("f2") : Model.metering_segwwl_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.metering_segwwl_2,out a) ? a.ToString("f2") : Model.metering_segwwl_2)</td>
 			    <td style="font-size:5px">MWh</td>
 			    <td style="font-size:5px">RPF</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.rpf_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.rpf_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.rpf_1,out a) ? a.ToString("f2") : Model.rpf_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.rpf_2,out a) ? a.ToString("f2") : Model.rpf_2)</td>
 			    <td style="font-size:5px">MWh</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">PLN</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.metering_pln_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.metering_pln_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.metering_pln_1,out a) ? a.ToString("f2") : Model.metering_pln_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.metering_pln_2,out a) ? a.ToString("f2") : Model.metering_pln_2)</td>
 			    <td style="font-size:5px">MWh</td>
 			    <td style="font-size:5px">PGF</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pgf_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pgf_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pgf_1,out a) ? a.ToString("f2") : Model.pgf_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pgf_2,out a) ? a.ToString("f2") : Model.pgf_2)</td>
 			    <td style="font-size:5px">MWh</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px" rowspan="2">Condensate</td>
 			    <td style="font-size:5px">P/S</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condensate_ps_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.condensate_ps_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condensate_ps_1,out a) ? a.ToString("f2") : Model.condensate_ps_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.condensate_ps_2,out a) ? a.ToString("f2") : Model.condensate_ps_2)</td>
 			    <td style="font-size:5px">Ton</td>
 			    <td style="font-size:5px">PLN</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.pln_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pln_1,out a) ? a.ToString("f2") : Model.pln_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.pln_2,out a) ? a.ToString("f2") : Model.pln_2)</td>
 			    <td style="font-size:5px">Ton</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Total</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" colspan="2">@Model.condensate_total</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" colspan="2">@(Double.TryParse(Model.condensate_total,out a) ? a.ToString("f2") : Model.condensate_total)</td>
 			    <td style="font-size:5px">Ton</td>
 			    <td style="font-size:5px" rowspan="2" colspan="4"><b>Note:</b><br />@(Model.note != null && Model.note.Length > 0 ? Model.note.Remove(0,4) == "" ? "  " :  Model.note.Remove(0,4) : Model.note)&nbsp;</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Brine</td>
 			    <td style="font-size:5px">Total</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" colspan="2">@Model.brine_total</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" colspan="2">@(Double.TryParse(Model.brine_total,out a) ? a.ToString("f2") : Model.brine_total)</td>
 			    <td style="font-size:5px">Ton</td>
 		    </tr>
 	    </table>
@@ -1009,420 +1010,420 @@
 			    <td style="font-size:5px" border="0.5">WWA-2</td>
                 @if (Model.daily_log_shift2.wma_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.wma_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wma_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_2_fcv)</td>
                 }
                 else
                 {
-                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.wma_2_fcv</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.wma_2_flow</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.wma_2_whp</td>
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.daily_log_shift2.wma_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_2_fcv)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.daily_log_shift2.wma_2_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_2_flow)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.daily_log_shift2.wma_2_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_2_whp)</td>
                 }
 			    <td style="font-size:5px" border="0.5">MBA-1</td>
 			    @if (Model.daily_log_shift2.mba_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.mba_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mba_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_1_fcv)</td>
                 }
                 else
                 {
-                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.mba_1_fcv</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.mba_1_flow</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.mba_1_whp</td>
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.daily_log_shift2.mba_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_1_fcv)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.daily_log_shift2.mba_1_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_1_flow)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.daily_log_shift2.mba_1_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_1_whp)</td>
                 }
 			    <td style="font-size:5px" border="0.5">Generator Output</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.generator_output_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@Model.daily_log_shift2.generator_output_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.daily_log_shift2.generator_output_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.generator_output_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" border="0.5">@(Double.TryParse(Model.daily_log_shift2.generator_output_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.generator_output_2)</td>
 			    <td style="font-size:5px" border="0.5">MW</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWA-4</td>
                 @if (Model.daily_log_shift2.wma_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.wma_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wma_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_4_fcv)</td>
                 }
                 else
                 {
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_4">@Model.daily_log_shift2.wma_4_fcv</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wma_4_flow</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wma_4_whp</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_4">@(Double.TryParse(Model.daily_log_shift2.wma_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_4_fcv)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wma_4_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_4_flow)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wma_4_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_4_whp)</td>
                 }
 			    <td style="font-size:5px">MBA-2</td>
                 @if (Model.daily_log_shift2.mba_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.mba_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mba_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_2_fcv)</td>
                 }
                 else
                 {
-                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_2">@Model.daily_log_shift2.mba_2_fcv</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_2_flow</td>
-			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_2_whp</td>
+                    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_2">@(Double.TryParse(Model.daily_log_shift2.mba_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_2_fcv)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mba_2_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_2_flow)</td>
+			        <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mba_2_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_2_whp)</td>
                 }
 			    <td style="font-size:5px">(gross)</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.gross_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.gross_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.gross_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.gross_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.gross_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.gross_2)</td>
 			    <td style="font-size:5px">Mvar</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWA-6</td>
                 @if (Model.daily_log_shift2.wma_6_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.wma_6_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wma_6_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_6_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_6">@Model.daily_log_shift2.wma_6_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wma_6_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wma_6_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wma_6">@(Double.TryParse(Model.daily_log_shift2.wma_6_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_6_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wma_6_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_6_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wma_6_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wma_6_whp)</td>
                 }
 			    <td style="font-size:5px">MBA-3</td>
                 @if (Model.daily_log_shift2.mba_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@Model.daily_log_shift2.mba_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" border="0.5" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mba_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_3">@Model.daily_log_shift2.mba_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_3">@(Double.TryParse(Model.daily_log_shift2.mba_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mba_3_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mba_3_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_3_whp)</td>
                 }
 			    <td style="font-size:5px">Generator Output Counter</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.generator_output_counter_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.generator_output_counter_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.generator_output_counter_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.generator_output_counter_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.generator_output_counter_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.generator_output_counter_2)</td>
 			    <td style="font-size:5px">minute</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-1</td>
                 @if (Model.daily_log_shift2.mbd_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbd_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_1">@Model.daily_log_shift2.mbd_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_1">@(Double.TryParse(Model.daily_log_shift2.mbd_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_1_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_1_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_1_whp)</td>
                 }
 			    <td style="font-size:5px">MBA-4</td>
                 @if (Model.daily_log_shift2.mba_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mba_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mba_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_4">@Model.daily_log_shift2.mba_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_4">@(Double.TryParse(Model.daily_log_shift2.mba_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mba_4_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mba_4_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_4_whp)</td>
                 }
 			    <td style="font-size:5px">Power Factor</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.power_factor_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.power_factor_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.power_factor_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.power_factor_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.power_factor_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.power_factor_2)</td>
 			    <td style="font-size:5px">&nbsp;</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-2</td>
                 @if (Model.daily_log_shift2.mbd_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbd_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_2_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_2">@Model.daily_log_shift2.mbd_2_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_2_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_2_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_2">@(Double.TryParse(Model.daily_log_shift2.mbd_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_2_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_2_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_2_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_2_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_2_whp)</td>
                 }
 			    <td style="font-size:5px">MBA-5</td>
                 @if (Model.daily_log_shift2.mba_5_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mba_5_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mba_5_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_5_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_5">@Model.daily_log_shift2.mba_5_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_5_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mba_5_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mba_5">@(Double.TryParse(Model.daily_log_shift2.mba_5_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_5_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mba_5_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_5_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mba_5_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mba_5_whp)</td>
                 }
 			    <td style="font-size:5px">Tap Changer</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.tap_charger_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.tap_charger_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.tap_charger_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.tap_charger_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.tap_charger_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.tap_charger_2)</td>
 			    <td style="font-size:5px">step</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-3</td>
                 @if (Model.daily_log_shift2.mbd_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbd_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_3">@Model.daily_log_shift2.mbd_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_3">@(Double.TryParse(Model.daily_log_shift2.mbd_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_3_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_3_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_3_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-1</td>
                 @if (Model.daily_log_shift2.mbb_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbb_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_1">@Model.daily_log_shift2.mbb_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_1">@(Double.TryParse(Model.daily_log_shift2.mbb_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_1_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_1_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_1_whp)</td>
                 }
 			    <td style="font-size:5px">PLN Grid Voltage</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.pln_grid_voltage_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.pln_grid_voltage_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.pln_grid_voltage_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.pln_grid_voltage_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.pln_grid_voltage_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.pln_grid_voltage_2)</td>
 			    <td style="font-size:5px">kV</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-4</td>
                 @if (Model.daily_log_shift2.mbd_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbd_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_4">@Model.daily_log_shift2.mbd_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_4">@(Double.TryParse(Model.daily_log_shift2.mbd_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_4_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_4_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_4_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-2</td>
                 @if (Model.daily_log_shift2.mbb_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbb_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_2_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_2">@Model.daily_log_shift2.mbb_2_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_2_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_2_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_2">@(Double.TryParse(Model.daily_log_shift2.mbb_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_2_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_2_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_2_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_2_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_2_whp)</td>
                 }
 			    <td style="font-size:5px">Valve Limiter</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.valve_limiter_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.valve_limiter_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.valve_limiter_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.valve_limiter_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.valve_limiter_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.valve_limiter_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBD-5</td>
                 @if (Model.daily_log_shift2.mbd_5_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbd_5_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbd_5_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_5_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_5">@Model.daily_log_shift2.mbd_5_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_5_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbd_5_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbd_5">@(Double.TryParse(Model.daily_log_shift2.mbd_5_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_5_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_5_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_5_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbd_5_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbd_5_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-3</td>
                 @if (Model.daily_log_shift2.mbb_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbb_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_3">@Model.daily_log_shift2.mbb_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_3">@(Double.TryParse(Model.daily_log_shift2.mbb_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_3_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_3_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_3_whp)</td>
                 }
 			    <td style="font-size:5px">Governor Output</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.governor_output_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.governor_output_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.governor_output_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.governor_output_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.governor_output_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.governor_output_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-1</td>
                 @if (Model.daily_log_shift2.wwq_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wwq_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_1">@Model.daily_log_shift2.wwq_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_1">@(Double.TryParse(Model.daily_log_shift2.wwq_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_1_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_1_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_1_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-4</td>
                 @if (Model.daily_log_shift2.mbb_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbb_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_4">@Model.daily_log_shift2.mbb_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_4">@(Double.TryParse(Model.daily_log_shift2.mbb_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_4_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_4_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_4_whp)</td>
                 }
 			    <td style="font-size:5px">WCP Counter</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wcp_counter_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wcp_counter_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wcp_counter_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.wcp_counter_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wcp_counter_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.wcp_counter_2)</td>
 			    <td style="font-size:5px">minute</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-2</td>
                 @if (Model.daily_log_shift2.wwq_2_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_2_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wwq_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_2_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_2">@Model.daily_log_shift2.wwq_2_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_2_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_2_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_2">@(Double.TryParse(Model.daily_log_shift2.wwq_2_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_2_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_2_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_2_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_2_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_2_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-5</td>
                 @if (Model.daily_log_shift2.mbb_5_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_5_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbb_5_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_5_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_5">@Model.daily_log_shift2.mbb_5_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_5_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_5_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_5">@(Double.TryParse(Model.daily_log_shift2.mbb_5_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_5_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_5_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_5_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_5_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_5_whp)</td>
                 }
 			    <td style="font-size:5px">Condenser Pressure</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_pressure_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_pressure_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.condenser_pressure_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.condenser_pressure_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.condenser_pressure_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.condenser_pressure_2)</td>
 			    <td style="font-size:5px">mBar</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-3</td>
                 @if (Model.daily_log_shift2.wwq_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wwq_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_3">@Model.daily_log_shift2.wwq_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_3">@(Double.TryParse(Model.daily_log_shift2.wwq_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_3_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_3_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_3_whp)</td>
                 }
 			    <td style="font-size:5px">MBB-6</td>
                 @if (Model.daily_log_shift2.mbb_6_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbb_6_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbb_6_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_6_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_6">@Model.daily_log_shift2.mbb_6_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_6_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbb_6_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbb_6">@(Double.TryParse(Model.daily_log_shift2.mbb_6_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_6_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_6_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_6_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbb_6_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbb_6_whp)</td>
                 }
 			    <td style="font-size:5px">Main C/W Flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.main_cw_flow_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.main_cw_flow_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.main_cw_flow_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.main_cw_flow_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.main_cw_flow_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.main_cw_flow_2)</td>
 			    <td style="font-size:5px">kg/s</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-4</td>
                 @if (Model.daily_log_shift2.wwq_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wwq_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_4">@Model.daily_log_shift2.wwq_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_4">@(Double.TryParse(Model.daily_log_shift2.wwq_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_4_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_4_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_4_whp)</td>
                 }
 			    <td style="font-size:5px">WWF-1</td>
                 @if (Model.daily_log_shift2.wwf_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwf_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wwf_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwf_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_1">@Model.daily_log_shift2.wwf_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwf_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwf_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_1">@(Double.TryParse(Model.daily_log_shift2.wwf_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwf_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwf_1_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwf_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwf_1_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwf_1_whp)</td>
                 }
 			    <td style="font-size:5px">PPC-G(CO)</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ppc_g_co_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ppc_g_co_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.ppc_g_co_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.ppc_g_co_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.ppc_g_co_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.ppc_g_co_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">WWQ-5</td>
                 @if (Model.daily_log_shift2.wwq_5_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwq_5_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wwq_5_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_5_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_5">@Model.daily_log_shift2.wwq_5_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_5_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwq_5_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwq_5">@(Double.TryParse(Model.daily_log_shift2.wwq_5_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_5_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_5_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_5_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwq_5_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwq_5_whp)</td>
                 }
 			    <td style="font-size:5px">WWF-3</td>
                 @if (Model.daily_log_shift2.wwf_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwf_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wwf_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwf_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_3">@Model.daily_log_shift2.wwf_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwf_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwf_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwf_3">@(Double.TryParse(Model.daily_log_shift2.wwf_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwf_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwf_3_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwf_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwf_3_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwf_3_whp)</td>
                 }
 			    <td style="font-size:5px">Interface Pressure (SP)</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.interface_pressure_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.interface_pressure_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.interface_pressure_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.interface_pressure_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.interface_pressure_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.interface_pressure_2)</td>
 			    <td style="font-size:5px">Bar</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBE-3</td>
                 @if (Model.daily_log_shift2.mbe_3_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbe_3_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbe_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbe_3_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_3">@Model.daily_log_shift2.mbe_3_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbe_3_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbe_3_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_3">@(Double.TryParse(Model.daily_log_shift2.mbe_3_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbe_3_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbe_3_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbe_3_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbe_3_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbe_3_whp)</td>
                 }
 			    <td style="font-size:5px">WWW-1</td>
                 @if (Model.daily_log_shift2.www_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.www_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.www_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.www_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="www_1">@Model.daily_log_shift2.www_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.www_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.www_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="www_1">@(Double.TryParse(Model.daily_log_shift2.www_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.www_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.www_1_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.www_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.www_1_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.www_1_whp)</td>
                 }
 			    <td style="font-size:5px">Vent Bias(SP)</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.vent_bias_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.vent_bias_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.vent_bias_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.vent_bias_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.vent_bias_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.vent_bias_2)</td>
 			    <td style="font-size:5px">Bar</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">MBE-4</td>
                 @if (Model.daily_log_shift2.mbe_4_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.mbe_4_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.mbe_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbe_4_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_4">@Model.daily_log_shift2.mbe_4_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbe_4_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mbe_4_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="mbe_4">@(Double.TryParse(Model.daily_log_shift2.mbe_4_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbe_4_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbe_4_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbe_4_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mbe_4_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.mbe_4_whp)</td>
                 }
 			    <td style="font-size:5px">WWP-1</td>
                 @if (Model.daily_log_shift2.wwp_1_is_text == 1)
                 {
-                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@Model.daily_log_shift2.wwp_1_fcv</td>
+                    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="3">@(Double.TryParse(Model.daily_log_shift2.wwp_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwp_1_fcv)</td>
                 }
                 else
                 {
-                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwp_1">@Model.daily_log_shift2.wwp_1_fcv</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwp_1_flow</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwp_1_whp</td>
+                <td style="font-size:5px" align="right" bgcolor="#c0c0c0" id="wwp_1">@(Double.TryParse(Model.daily_log_shift2.wwp_1_fcv,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwp_1_fcv)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwp_1_flow,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwp_1_flow)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwp_1_whp,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwp_1_whp)</td>
                 }
 			    <td style="font-size:5px">Main C/W Pressure</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.main_cw_pressure_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.main_cw_pressure_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.main_cw_pressure_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.main_cw_pressure_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.main_cw_pressure_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.main_cw_pressure_2)</td>
 			    <td style="font-size:5px">Bar</td>
 		    </tr>
 		    <tr border="0.5">
@@ -1435,28 +1436,28 @@
 			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">T1 Exhaust Temp. (C)</td>
 			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">T1 Exhaust Temp. (C)</td>
 			    <td style="font-size:5px">CT Basin pH</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ct_basin_ph_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ct_basin_ph_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.ct_basin_ph_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.ct_basin_ph_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.ct_basin_ph_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.ct_basin_ph_2)</td>
 			    <td style="font-size:5px">&nbsp;</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Condenser C/W Inlet-A</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_cw_inlet_a_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_cw_inlet_a_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.condenser_cw_inlet_a_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.condenser_cw_inlet_a_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.condenser_cw_inlet_a_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.condenser_cw_inlet_a_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ncg_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ncg_2</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.turbine_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.turbine_2</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ct_temp_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.ct_temp_2</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.exhaust_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.exhaust_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.ncg_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.ncg_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.ncg_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.ncg_2)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.turbine_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.turbine_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.turbine_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.turbine_2)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.ct_temp_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.ct_temp_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.ct_temp_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.ct_temp_2)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.exhaust_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.exhaust_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.exhaust_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.exhaust_2)</td>
 			    <td style="font-size:5px">Condenser C/W Inlet-B</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_cw_inlet_b_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condenser_cw_inlet_b_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.condenser_cw_inlet_b_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.condenser_cw_inlet_b_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.condenser_cw_inlet_b_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.condenser_cw_inlet_b_2)</td>
 			    <td style="font-size:5px">%</td>
 		    </tr>
 		    <tr border="0.5">
@@ -1469,28 +1470,28 @@
 			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">NaOH 48% Level (mm)</td>
 			    <td style="font-size:5px" align="center" bgcolor="#00ffff" rowspan="2">WWD Pond Level (m)</td>
 			    <td style="font-size:5px">Gen. Trans. Winding Temp.</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.gen_trans_winding_temp_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.gen_trans_winding_temp_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.gen_trans_winding_temp_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.gen_trans_winding_temp_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.gen_trans_winding_temp_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.gen_trans_winding_temp_2)</td>
 			    <td style="font-size:5px">C</td>
 		    </tr>
 		    <tr border="0.5">
 			    <td style="font-size:5px">Unit Trans. Winding Temp.</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.unit_trans_winding_temp_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.unit_trans_winding_temp_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.unit_trans_winding_temp_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.unit_trans_winding_temp_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.unit_trans_winding_temp_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.unit_trans_winding_temp_2)</td>
 			    <td style="font-size:5px">C</td>
 		    </tr>
 		    <tr border="0.5">
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.upper_tp_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.lower_tp_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mv_333</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.mv_334</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.brine_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.condensate_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.naoh_level</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wwd_pond_level</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.upper_tp_level,out a) ? a.ToString("f2") : Model.daily_log_shift2.upper_tp_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.lower_tp_level,out a) ? a.ToString("f2") : Model.daily_log_shift2.lower_tp_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mv_333,out a) ? a.ToString("f2") : Model.daily_log_shift2.mv_333)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.mv_334,out a) ? a.ToString("f2") : Model.daily_log_shift2.mv_334)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.brine_level,out a) ? a.ToString("f2") : Model.daily_log_shift2.brine_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.condensate_level,out a) ? a.ToString("f2") : Model.daily_log_shift2.condensate_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.naoh_level,out a) ? a.ToString("f2") : Model.daily_log_shift2.naoh_level)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wwd_pond_level,out a) ? a.ToString("f2") : Model.daily_log_shift2.wwd_pond_level)</td>
 			    <td style="font-size:5px">Wheel Case Pressure</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wheel_case_pressure_1</td>
-			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@Model.daily_log_shift2.wheel_case_pressure_2</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wheel_case_pressure_1,out a) ? a.ToString("f2") : Model.daily_log_shift2.wheel_case_pressure_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(Model.daily_log_shift2.wheel_case_pressure_2,out a) ? a.ToString("f2") : Model.daily_log_shift2.wheel_case_pressure_2)</td>
 			    <td style="font-size:5px">Bar</td>
 		    </tr>
 	    </table>

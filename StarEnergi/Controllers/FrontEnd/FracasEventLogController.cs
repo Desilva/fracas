@@ -52,6 +52,7 @@ namespace StarEnergi.Controllers.FrontEnd
                             {
                                 idEquipment = o.id_equipment,
                                 tagNumber = o.equipment.tag_num,
+                                name = o.equipment.nama,
                                 dateTimeStop = o.datetime_stop,
                                 dateTimeStart = o.datetime_ops,
                                 durasi = o.durasi,
@@ -70,7 +71,7 @@ namespace StarEnergi.Controllers.FrontEnd
                                 eventDesc = o.event_description
                             };
                 details = model.ToList().First();
-                ViewBag.nama = "Detail Event Equipment " + details.tagNumber;
+                ViewBag.nama = "Detail Event Equipment " + details.tagNumber + " (" + details.name + ")";
                 ViewBag.idEquipment = details.idEquipment;
             }
             else
@@ -97,10 +98,11 @@ namespace StarEnergi.Controllers.FrontEnd
                                 financialCost = o.financial_cost,
                                 repairCost = o.repair_cost,
                                 eventDesc = o.event_description,
-                                relatedItem = o.equipment_part.part.tag_number
+                                relatedItem = o.equipment_part.part.tag_number,
+                                name = o.equipment_part.part.nama
                             };
                 details = model.ToList().First();
-                ViewBag.nama = "Detail Event Equipment " + details.tagNumber;
+                ViewBag.nama = "Detail Event Equipment " + details.tagNumber + " (" + details.name + ")";
                 ViewBag.idEquipment = details.idEquipment;
             }
 

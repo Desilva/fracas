@@ -35,6 +35,8 @@ namespace StarEnergi.Models
         public string type { get; set; }
         public byte? status { get; set; }
 
+        public string name { get; set; }
+
         public int part { get; set; }//0 equipment 1 part
     }
 }

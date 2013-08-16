@@ -21,7 +21,7 @@
     string parseValue = "";
     int userShift = 0;
 
-    System.Diagnostics.Debug.WriteLine(userShift);
+    double a;
 }
 
 <link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
@@ -673,8 +673,8 @@
 			    <td class="gray-bg center number"><input type='text' id='sh1_mba_1_flow' name='mba_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id='sh1_mba_1_whp' name='mba_1_whp' style='width:50px' /></td>
 			    <td>Generator Output</td>
-			    <td class="gray-bg center number"><input type='text' id='sh1_generator_output_1' name='generator_output_1' style='width:50px' value="@(isEdit ? dl.generator_output_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id='sh1_generator_output_2' name='generator_output_2' style='width:50px' value="@(isEdit ? dl.generator_output_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id='sh1_generator_output_1' name='generator_output_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.generator_output_1,out a) ? a.ToString("f2") : dl.generator_output_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id='sh1_generator_output_2' name='generator_output_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.generator_output_2,out a) ? a.ToString("f2") : dl.generator_output_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MW</td>
 		    </tr>
 		    <tr>
@@ -695,8 +695,8 @@
 			    <td class="gray-bg center number"><input type='text' id='sh1_mba_2_flow' name='mba_2_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id='sh1_mba_2_whp' name='mba_2_whp' style='width:50px' /></td>
 			    <td>(gross)</td>
-			    <td class="gray-bg center number"><input type='text' id='sh1_gross_1' name='gross_1' style='width:50px' value="@(isEdit ? dl.gross_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id='sh1_gross_2' name='gross_2' style='width:50px' value="@(isEdit ? dl.gross_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id='sh1_gross_1' name='gross_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.gross_1,out a) ? a.ToString("f2") : dl.gross_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id='sh1_gross_2' name='gross_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.gross_2,out a) ? a.ToString("f2") : dl.gross_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Mvar</td>
 		    </tr>
 		    <tr>
@@ -717,8 +717,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mba_3_flow" name='mba_3_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mba_3_whp" name='mba_3_whp' style='width:50px' /></td>
 			    <td>Generator Output Counter</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_generator_output_counter_1" name='generator_output_counter_1' style='width:50px' value="@(isEdit ? dl.generator_output_counter_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_generator_output_counter_2" name='generator_output_counter_2' style='width:50px' value="@(isEdit ? dl.generator_output_counter_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_generator_output_counter_1" name='generator_output_counter_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.generator_output_counter_1,out a) ? a.ToString("f2") : dl.generator_output_counter_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_generator_output_counter_2" name='generator_output_counter_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.generator_output_counter_2,out a) ? a.ToString("f2") : dl.generator_output_counter_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>minute</td>
 		    </tr>
 		    <tr>
@@ -739,8 +739,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mba_4_flow" name='mba_4_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mba_4_whp" name='mba_4_whp' style='width:50px' /></td>
 			    <td>Power Factor</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_power_factor_1" name='power_factor_1' style='width:50px' value="@(isEdit ? dl.power_factor_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_power_factor_2" name='power_factor_2' style='width:50px' value="@(isEdit ? dl.power_factor_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_power_factor_1" name='power_factor_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.power_factor_1,out a) ? a.ToString("f2") : dl.power_factor_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_power_factor_2" name='power_factor_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.power_factor_2,out a) ? a.ToString("f2") : dl.power_factor_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>&nbsp;</td>
 		    </tr>
 		    <tr>
@@ -761,8 +761,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mba_5_flow" name='mba_5_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mba_5_whp" name='mba_5_whp' style='width:50px' /></td>
 			    <td>Tap Changer</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_tap_charger_1" name='tap_charger_1' style='width:50px' value="@(isEdit ? dl.tap_charger_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>} /></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_tap_charger_2" name='tap_charger_2' style='width:50px' value="@(isEdit ? dl.tap_charger_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_tap_charger_1" name='tap_charger_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.tap_charger_1,out a) ? a.ToString("f2") : dl.tap_charger_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>} /></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_tap_charger_2" name='tap_charger_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.tap_charger_2,out a) ? a.ToString("f2") : dl.tap_charger_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>step</td>
 		    </tr>
 		    <tr>
@@ -783,8 +783,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_1_flow" name='mbb_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_1_whp" name='mbb_1_whp' style='width:50px' /></td>
 			    <td>PLN Grid Voltage</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_pln_grid_voltage_1" name='pln_grid_voltage_1' style='width:50px' value="@(isEdit ? dl.pln_grid_voltage_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_pln_grid_voltage_2" name='pln_grid_voltage_2' style='width:50px' value="@(isEdit ? dl.pln_grid_voltage_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_pln_grid_voltage_1" name='pln_grid_voltage_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.pln_grid_voltage_1,out a) ? a.ToString("f2") : dl.pln_grid_voltage_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_pln_grid_voltage_2" name='pln_grid_voltage_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.pln_grid_voltage_2,out a) ? a.ToString("f2") : dl.pln_grid_voltage_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>kV</td>
 		    </tr>
 		    <tr>
@@ -805,8 +805,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_2_flow" name='mbb_2_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_2_whp" name='mbb_2_whp' style='width:50px' /></td>
 			    <td>Valve Limiter</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_valve_limiter_1" name='valve_limiter_1' style='width:50px' value="@(isEdit ? dl.valve_limiter_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_valve_limiter_2" name='valve_limiter_2' style='width:50px' value="@(isEdit ? dl.valve_limiter_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_valve_limiter_1" name='valve_limiter_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.valve_limiter_1,out a) ? a.ToString("f2") : dl.valve_limiter_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_valve_limiter_2" name='valve_limiter_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.valve_limiter_2,out a) ? a.ToString("f2") : dl.valve_limiter_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
 		    <tr>
@@ -827,8 +827,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_3_flow" name='mbb_3_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_3_whp" name='mbb_3_whp' style='width:50px' /></td>
 			    <td>Governor Output</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_governor_output_1" name='governor_output_1' style='width:50px' value="@(isEdit ? dl.governor_output_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_governor_output_2" name='governor_output_2' style='width:50px' value="@(isEdit ? dl.governor_output_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_governor_output_1" name='governor_output_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.governor_output_1,out a) ? a.ToString("f2") : dl.governor_output_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_governor_output_2" name='governor_output_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.governor_output_2,out a) ? a.ToString("f2") : dl.governor_output_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
 		    <tr>
@@ -849,8 +849,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_4_flow" name='mbb_4_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_4_whp" name='mbb_4_whp' style='width:50px' /></td>
 			    <td>WCP Counter</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_wcp_counter_1" name='wcp_counter_1' style='width:50px' value="@(isEdit ? dl.wcp_counter_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_wcp_counter_2" name='wcp_counter_2' style='width:50px' value="@(isEdit ? dl.wcp_counter_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_wcp_counter_1" name='wcp_counter_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.wcp_counter_1,out a) ? a.ToString("f2") : dl.wcp_counter_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_wcp_counter_2" name='wcp_counter_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.wcp_counter_2,out a) ? a.ToString("f2") : dl.wcp_counter_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>minute</td>
 		    </tr>
 		    <tr>
@@ -871,8 +871,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_5_flow" name='mbb_5_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_5_whp" name='mbb_5_whp' style='width:50px' /></td>
 			    <td>Condenser Pressure</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_pressure_1" name='condenser_pressure_1' style='width:50px' value="@(isEdit ? dl.condenser_pressure_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_pressure_2" name='condenser_pressure_2' style='width:50px' value="@(isEdit ? dl.condenser_pressure_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_pressure_1" name='condenser_pressure_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.condenser_pressure_1,out a) ? a.ToString("f2") : dl.condenser_pressure_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_pressure_2" name='condenser_pressure_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.condenser_pressure_2,out a) ? a.ToString("f2") : dl.condenser_pressure_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>mBar</td>
 		    </tr>
 		    <tr>
@@ -893,8 +893,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_6_flow" name='mbb_6_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_mbb_6_whp" name='mbb_6_whp' style='width:50px' /></td>
 			    <td>Main C/W Flow</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_main_cw_flow_1" name='main_cw_flow_1' style='width:50px' value="@(isEdit ? dl.main_cw_flow_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_main_cw_flow_2" name='main_cw_flow_2' style='width:50px' value="@(isEdit ? dl.main_cw_flow_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_main_cw_flow_1" name='main_cw_flow_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.main_cw_flow_1,out a) ? a.ToString("f2") : dl.main_cw_flow_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_main_cw_flow_2" name='main_cw_flow_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.main_cw_flow_2,out a) ? a.ToString("f2") : dl.main_cw_flow_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>kg/s</td>
 		    </tr>
 		    <tr>
@@ -915,8 +915,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_wwf_1_flow" name='wwf_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_wwf_1_whp" name='wwf_1_whp' style='width:50px' /></td>
 			    <td>PPC-G(CO)</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_ppc_g_co_1" name='ppc_g_co_1' style='width:50px' value="@(isEdit ? dl.ppc_g_co_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_ppc_g_co_2" name='ppc_g_co_2' style='width:50px' value="@(isEdit ? dl.ppc_g_co_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_ppc_g_co_1" name='ppc_g_co_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.ppc_g_co_1,out a) ? a.ToString("f2") : dl.ppc_g_co_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_ppc_g_co_2" name='ppc_g_co_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.ppc_g_co_2,out a) ? a.ToString("f2") : dl.ppc_g_co_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
 		    <tr>
@@ -937,8 +937,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_wwf_3_flow" name='wwf_3_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_wwf_3_whp" name='wwf_3_whp' style='width:50px' /></td>
 			    <td>Interface Pressure (SP)</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_interface_pressure_1" name='interface_pressure_1' style='width:50px' value="@(isEdit ? dl.interface_pressure_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_interface_pressure_2" name='interface_pressure_2' style='width:50px' value="@(isEdit ? dl.interface_pressure_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_interface_pressure_1" name='interface_pressure_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.interface_pressure_1,out a) ? a.ToString("f2") : dl.interface_pressure_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_interface_pressure_2" name='interface_pressure_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.interface_pressure_2,out a) ? a.ToString("f2") : dl.interface_pressure_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Bar</td>
 		    </tr>
 		    <tr>
@@ -959,8 +959,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_www_1_flow" name='www_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_www_1_whp" name='www_1_whp' style='width:50px' /></td>
 			    <td>Vent Bias(SP)</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_vent_bias_1" name='vent_bias_1' style='width:50px' value="@(isEdit ? dl.vent_bias_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_vent_bias_2" name='vent_bias_2' style='width:50px' value="@(isEdit ? dl.vent_bias_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_vent_bias_1" name='vent_bias_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.vent_bias_1,out a) ? a.ToString("f2") : dl.vent_bias_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_vent_bias_2" name='vent_bias_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.vent_bias_2,out a) ? a.ToString("f2") : dl.vent_bias_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Bar</td>
 		    </tr>
 		    <tr>
@@ -981,8 +981,8 @@
 			    <td class="gray-bg center number"><input type='text' id="sh1_wwp_1_flow" name='wwp_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh1_wwp_1_whp" name='wwp_1_whp' style='width:50px' /></td>
 			    <td>Main C/W Pressure</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_main_cw_pressure_1" name='main_cw_pressure_1' style='width:50px' value="@(isEdit ? dl.main_cw_pressure_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_main_cw_pressure_2" name='main_cw_pressure_2' style='width:50px' value="@(isEdit ? dl.main_cw_pressure_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_main_cw_pressure_1" name='main_cw_pressure_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.main_cw_pressure_1,out a) ? a.ToString("f2") : dl.main_cw_pressure_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_main_cw_pressure_2" name='main_cw_pressure_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.main_cw_pressure_2,out a) ? a.ToString("f2") : dl.main_cw_pressure_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Bar</td>
 		    </tr>
 		    <tr>
@@ -995,28 +995,28 @@
 			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
 			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
 			    <td>CT Basin pH</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_ct_basin_ph_1" name='ct_basin_ph_1' style='width:50px' value="@(isEdit ? dl.ct_basin_ph_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_ct_basin_ph_2" name='ct_basin_ph_2' style='width:50px' value="@(isEdit ? dl.ct_basin_ph_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_ct_basin_ph_1" name='ct_basin_ph_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.ct_basin_ph_1,out a) ? a.ToString("f2") : dl.ct_basin_ph_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_ct_basin_ph_2" name='ct_basin_ph_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.ct_basin_ph_2,out a) ? a.ToString("f2") : dl.ct_basin_ph_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>&nbsp;</td>
 		    </tr>
 		    <tr>
 			    <td>Condenser C/W Inlet-A</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_cw_inlet_a_1" name='condenser_cw_inlet_a_1' style='width:50px' value="@(isEdit ? dl.condenser_cw_inlet_a_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_cw_inlet_a_2" name='condenser_cw_inlet_a_2' style='width:50px' value="@(isEdit ? dl.condenser_cw_inlet_a_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_cw_inlet_a_1" name='condenser_cw_inlet_a_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.condenser_cw_inlet_a_1,out a) ? a.ToString("f2") : dl.condenser_cw_inlet_a_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_cw_inlet_a_2" name='condenser_cw_inlet_a_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.condenser_cw_inlet_a_2,out a) ? a.ToString("f2") : dl.condenser_cw_inlet_a_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
 		    <tr>
-			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh1_ncg_1" name='ncg_1' style='width:100px' value="@(isEdit ? dl.ncg_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_ncg_2" name='ncg_2' style='width:50px' value="@(isEdit ? dl.ncg_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_turbine_1" name='turbine_1' style='width:50px' value="@(isEdit ? dl.turbine_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_turbine_2" name='turbine_2' style='width:50px' value="@(isEdit ? dl.turbine_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh1_ct_temp_1" name='ct_temp_1' style='width:100px' value="@(isEdit ? dl.ct_temp_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_ct_temp_2" name='ct_temp_2' style='width:50px' value="@(isEdit ? dl.ct_temp_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_exhaust_1" name='exhaust_1' style='width:50px' value="@(isEdit ? dl.exhaust_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_exhaust_2" name='exhaust_2' style='width:50px' value="@(isEdit ? dl.exhaust_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh1_ncg_1" name='ncg_1' style='width:100px' value="@(isEdit ? (Double.TryParse(dl.ncg_1,out a) ? a.ToString("f2") : dl.ncg_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_ncg_2" name='ncg_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.ncg_2,out a) ? a.ToString("f2") : dl.ncg_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_turbine_1" name='turbine_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.turbine_1,out a) ? a.ToString("f2") : dl.turbine_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_turbine_2" name='turbine_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.turbine_2,out a) ? a.ToString("f2") : dl.turbine_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh1_ct_temp_1" name='ct_temp_1' style='width:100px' value="@(isEdit ? (Double.TryParse(dl.ct_temp_1,out a) ? a.ToString("f2") : dl.ct_temp_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_ct_temp_2" name='ct_temp_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.ct_temp_2,out a) ? a.ToString("f2") : dl.ct_temp_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_exhaust_1" name='exhaust_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.exhaust_1,out a) ? a.ToString("f2") : dl.exhaust_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_exhaust_2" name='exhaust_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.exhaust_2,out a) ? a.ToString("f2") : dl.exhaust_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Condenser C/W Inlet-B</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_cw_inlet_b_1" name='condenser_cw_inlet_b_1' style='width:50px' value="@(isEdit ? dl.condenser_cw_inlet_b_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_cw_inlet_b_2" name='condenser_cw_inlet_b_2' style='width:50px' value="@(isEdit ? dl.condenser_cw_inlet_b_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_cw_inlet_b_1" name='condenser_cw_inlet_b_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.condenser_cw_inlet_b_1,out a) ? a.ToString("f2") : dl.condenser_cw_inlet_b_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_condenser_cw_inlet_b_2" name='condenser_cw_inlet_b_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.condenser_cw_inlet_b_2,out a) ? a.ToString("f2") : dl.condenser_cw_inlet_b_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
 		    <tr>
@@ -1029,28 +1029,28 @@
 			    <td class="blue-bg center" rowspan="2">NaOH 48% Level (mm)</td>
 			    <td class="blue-bg center" rowspan="2">WWD Pond Level (m)</td>
 			    <td>Gen. Trans. Winding Temp.</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_gen_trans_winding_temp_1" name='gen_trans_winding_temp_1' style='width:50px' value="@(isEdit ? dl.gen_trans_winding_temp_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_gen_trans_winding_temp_2" name='gen_trans_winding_temp_2' style='width:50px' value="@(isEdit ? dl.gen_trans_winding_temp_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_gen_trans_winding_temp_1" name='gen_trans_winding_temp_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.gen_trans_winding_temp_1,out a) ? a.ToString("f2") : dl.gen_trans_winding_temp_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_gen_trans_winding_temp_2" name='gen_trans_winding_temp_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.gen_trans_winding_temp_2,out a) ? a.ToString("f2") : dl.gen_trans_winding_temp_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>C</td>
 		    </tr>
 		    <tr>
 			    <td>Unit Trans. Winding Temp.</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_unit_trans_winding_temp_1" name='unit_trans_winding_temp_1' style='width:50px' value="@(isEdit ? dl.unit_trans_winding_temp_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_unit_trans_winding_temp_2" name='unit_trans_winding_temp_2' style='width:50px' value="@(isEdit ? dl.unit_trans_winding_temp_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_unit_trans_winding_temp_1" name='unit_trans_winding_temp_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.unit_trans_winding_temp_1,out a) ? a.ToString("f2") : dl.unit_trans_winding_temp_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_unit_trans_winding_temp_2" name='unit_trans_winding_temp_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.unit_trans_winding_temp_2,out a) ? a.ToString("f2") : dl.unit_trans_winding_temp_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>C</td>
 		    </tr>
 		    <tr>
-			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh1_upper_tp_level" name='upper_tp_level' style='width:100px' value="@(isEdit ? dl.upper_tp_level : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_lower_tp_level" name='lower_tp_level' style='width:50px' value="@(isEdit ? dl.lower_tp_level : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_mv_333" name='mv_333' style='width:50px' value="@(isEdit ? dl.mv_333 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_mv_334" name='mv_334' style='width:50px' value="@(isEdit ? dl.mv_334 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh1_brine_level" name='brine_level' style='width:100px' value="@(isEdit ? dl.brine_level : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_condensate_level" name='condensate_level' style='width:50px' value="@(isEdit ? dl.condensate_level : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_naoh_level" name='naoh_level' style='width:50px' value="@(isEdit ? dl.naoh_level : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_wwd_pond_level" name='wwd_pond_level' style='width:50px' value="@(isEdit ? dl.wwd_pond_level : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh1_upper_tp_level" name='upper_tp_level' style='width:100px' value="@(isEdit ? (Double.TryParse(dl.upper_tp_level,out a) ? a.ToString("f2") : dl.upper_tp_level) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_lower_tp_level" name='lower_tp_level' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.lower_tp_level,out a) ? a.ToString("f2") : dl.lower_tp_level) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_mv_333" name='mv_333' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.mv_333,out a) ? a.ToString("f2") : dl.mv_333) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_mv_334" name='mv_334' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.mv_334,out a) ? a.ToString("f2") : dl.mv_334) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh1_brine_level" name='brine_level' style='width:100px' value="@(isEdit ? (Double.TryParse(dl.brine_level,out a) ? a.ToString("f2") : dl.brine_level) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_condensate_level" name='condensate_level' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.condensate_level,out a) ? a.ToString("f2") : dl.condensate_level) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_naoh_level" name='naoh_level' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.naoh_level,out a) ? a.ToString("f2") : dl.naoh_level) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_wwd_pond_level" name='wwd_pond_level' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.wwd_pond_level,out a) ? a.ToString("f2") : dl.wwd_pond_level) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Wheel Case Pressure</td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_wheel_case_pressure_1" name='wheel_case_pressure_1' style='width:50px' value="@(isEdit ? dl.wheel_case_pressure_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh1_wheel_case_pressure_2" name='wheel_case_pressure_2' style='width:50px' value="@(isEdit ? dl.wheel_case_pressure_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_wheel_case_pressure_1" name='wheel_case_pressure_1' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.wheel_case_pressure_1,out a) ? a.ToString("f2") : dl.wheel_case_pressure_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type='text' id="sh1_wheel_case_pressure_2" name='wheel_case_pressure_2' style='width:50px' value="@(isEdit ? (Double.TryParse(dl.wheel_case_pressure_2,out a) ? a.ToString("f2") : dl.wheel_case_pressure_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Bar</td>
 		    </tr>
 	    </table>
@@ -1076,112 +1076,112 @@
 		    <tr>
 			    <td rowspan="2">Unit Transformer</td>
 			    <td>Active</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_uti_active_1" name="sh1_uti_active_1" style="width:100px" value="@(isEdit ? dl.uti_active_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_uti_active_2" name="sh1_uti_active_2" style="width:100px" value="@(isEdit ? dl.uti_active_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_uti_active_1" name="sh1_uti_active_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.uti_active_1,out a) ? a.ToString("f2") : dl.uti_active_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_uti_active_2" name="sh1_uti_active_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.uti_active_2,out a) ? a.ToString("f2") : dl.uti_active_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 			    <td>SEGWWL Availability</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_segwwl_availability_1" name="sh1_segwwl_availability_1" style="width:100px" value="@(isEdit ? dl.segwwl_availability_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_segwwl_availability_2" name="sh1_segwwl_availability_2" style="width:100px" value="@(isEdit ? dl.segwwl_availability_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_segwwl_availability_1" name="sh1_segwwl_availability_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.segwwl_availability_1,out a) ? a.ToString("f2") : dl.segwwl_availability_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_segwwl_availability_2" name="sh1_segwwl_availability_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.segwwl_availability_2,out a) ? a.ToString("f2") : dl.segwwl_availability_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 		    </tr>
 		    <tr>
 			    <td>Reactive</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_uti_reactive_1" name="sh1_uti_reactive_1" style="width:100px" value="@(isEdit ? dl.uti_reactive_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_uti_reactive_2" name="sh1_uti_reactive_2" style="width:100px" value="@(isEdit ? dl.uti_reactive_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_uti_reactive_1" name="sh1_uti_reactive_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.uti_reactive_1,out a) ? a.ToString("f2") : dl.uti_reactive_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_uti_reactive_2" name="sh1_uti_reactive_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.uti_reactive_2,out a) ? a.ToString("f2") : dl.uti_reactive_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Mvarh</td>
 			    <td>PLN Dispatch</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_pln_dispatch_1" name="sh1_pln_dispatch_1" style="width:100px" value="@(isEdit ? dl.pln_dispatch_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_pln_dispatch_2" name="sh1_pln_dispatch_2" style="width:100px" value="@(isEdit ? dl.pln_dispatch_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_pln_dispatch_1" name="sh1_pln_dispatch_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.pln_dispatch_1,out a) ? a.ToString("f2") : dl.pln_dispatch_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_pln_dispatch_2" name="sh1_pln_dispatch_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.pln_dispatch_2,out a) ? a.ToString("f2") : dl.pln_dispatch_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 		    </tr>
 		    <tr>
 			    <td rowspan="2">Steam Consumption</td>
 			    <td>Main</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_sc_main_1" name="sh1_sc_main_1" style="width:100px" value="@(isEdit ? dl.sc_main_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_sc_main_2" name="sh1_sc_main_2" style="width:100px" value="@(isEdit ? dl.sc_main_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_sc_main_1" name="sh1_sc_main_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.sc_main_1,out a) ? a.ToString("f2") : dl.sc_main_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_sc_main_2" name="sh1_sc_main_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.sc_main_2,out a) ? a.ToString("f2") : dl.sc_main_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Ton</td>
 			    <td>PLN Meter</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_pln_meter_1" name="sh1_pln_meter_1" style="width:100px" value="@(isEdit ? dl.pln_meter_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_pln_meter_2" name="sh1_pln_meter_2" style="width:100px" value="@(isEdit ? dl.pln_meter_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_pln_meter_1" name="sh1_pln_meter_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.pln_meter_1,out a) ? a.ToString("f2") : dl.pln_meter_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_pln_meter_2" name="sh1_pln_meter_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.pln_meter_2,out a) ? a.ToString("f2") : dl.pln_meter_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 		    </tr>
 		    <tr>
 			    <td>Auxiliary</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_sc_auxiliary_1" name="sh1_sc_auxiliary_1" style="width:100px" value="@(isEdit ? dl.sc_auxiliary_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_sc_auxiliary_2" name="sh1_sc_auxiliary_2" style="width:100px" value="@(isEdit ? dl.sc_auxiliary_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_sc_auxiliary_1" name="sh1_sc_auxiliary_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.sc_auxiliary_1,out a) ? a.ToString("f2") : dl.sc_auxiliary_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_sc_auxiliary_2" name="sh1_sc_auxiliary_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.sc_auxiliary_2,out a) ? a.ToString("f2") : dl.sc_auxiliary_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Ton</td>
 			    <td>SEGWWL Export</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_segwwl_export_1" name="sh1_segwwl_export_1" style="width:100px" value="@(isEdit ? dl.segwwl_export_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_segwwl_export_2" name="sh1_segwwl_export_2" style="width:100px" value="@(isEdit ? dl.segwwl_export_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_segwwl_export_1" name="sh1_segwwl_export_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.segwwl_export_1,out a) ? a.ToString("f2") : dl.segwwl_export_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_segwwl_export_2" name="sh1_segwwl_export_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.segwwl_export_2,out a) ? a.ToString("f2") : dl.segwwl_export_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 		    </tr>
 		    <tr>
 			    <td colspan="5" class="yellow-bg center">Production</td>
 			    <td>Actual Export</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_actual_export_1" name="sh1_actual_export_1" style="width:100px" value="@(isEdit ? dl.actual_export_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_actual_export_2" name="sh1_actual_export_2" style="width:100px" value="@(isEdit ? dl.actual_export_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_actual_export_1" name="sh1_actual_export_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.actual_export_1,out a) ? a.ToString("f2") : dl.actual_export_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_actual_export_2" name="sh1_actual_export_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.actual_export_2,out a) ? a.ToString("f2") : dl.actual_export_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 		    </tr>
 		    <tr>
 			    <td rowspan="2">Generate Export (gross)</td>
 			    <td>Active</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_ge_active_1" name="sh1_ge_active_1" style="width:100px" value="@(isEdit ? dl.ge_active_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_ge_active_2" name="sh1_ge_active_2" style="width:100px" value="@(isEdit ? dl.ge_active_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_ge_active_1" name="sh1_ge_active_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.ge_active_1,out a) ? a.ToString("f2") : dl.ge_active_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_ge_active_2" name="sh1_ge_active_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.ge_active_2,out a) ? a.ToString("f2") : dl.ge_active_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 			    <td>Production Excess</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_production_excess_1" name="sh1_production_excess_1" style="width:100px" value="@(isEdit ? dl.production_excess_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_production_excess_2" name="sh1_production_excess_2" style="width:100px" value="@(isEdit ? dl.production_excess_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_production_excess_1" name="sh1_production_excess_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.production_excess_1,out a) ? a.ToString("f2") : dl.production_excess_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_production_excess_2" name="sh1_production_excess_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.production_excess_2,out a) ? a.ToString("f2") : dl.production_excess_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 		    </tr>
 		    <tr>
 			    <td>Reactive</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_ge_reactive_1" name="sh1_ge_reactive_1" style="width:100px" value="@(isEdit ? dl.ge_reactive_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_ge_reactive_2" name="sh1_ge_reactive_2" style="width:100px" value="@(isEdit ? dl.ge_reactive_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_ge_reactive_1" name="sh1_ge_reactive_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.ge_reactive_1,out a) ? a.ToString("f2") : dl.ge_reactive_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_ge_reactive_2" name="sh1_ge_reactive_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.ge_reactive_2,out a) ? a.ToString("f2") : dl.ge_reactive_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Mvarh</td>
 			    <td class="yellow-bg center" colspan="4">Losses</td>
 		    </tr>
 		    <tr>
 			    <td rowspan="2">Metering at 10:00</td>
 			    <td>SEGWWL</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_metering_segwwl_1" name="sh1_metering_segwwl_1" style="width:100px" value="@(isEdit ? dl.metering_segwwl_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_metering_segwwl_2" name="sh1_metering_segwwl_2" style="width:100px" value="@(isEdit ? dl.metering_segwwl_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_metering_segwwl_1" name="sh1_metering_segwwl_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.metering_segwwl_1,out a) ? a.ToString("f2") : dl.metering_segwwl_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_metering_segwwl_2" name="sh1_metering_segwwl_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.metering_segwwl_2,out a) ? a.ToString("f2") : dl.metering_segwwl_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 			    <td>RPF</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_rpf_1" name="sh1_rpf_1" style="width:100px" value="@(isEdit ? dl.rpf_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_rpf_2" name="sh1_rpf_2" style="width:100px" value="@(isEdit ? dl.rpf_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_rpf_1" name="sh1_rpf_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.rpf_1,out a) ? a.ToString("f2") : dl.rpf_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_rpf_2" name="sh1_rpf_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.rpf_2,out a) ? a.ToString("f2") : dl.rpf_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 		    </tr>
 		    <tr>
 			    <td>PLN</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_metering_pln_1" name="sh1_metering_pln_1" style="width:100px" value="@(isEdit ? dl.metering_pln_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_metering_pln_2" name="sh1_metering_pln_2" style="width:100px" value="@(isEdit ? dl.metering_pln_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_metering_pln_1" name="sh1_metering_pln_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.metering_pln_1,out a) ? a.ToString("f2") : dl.metering_pln_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_metering_pln_2" name="sh1_metering_pln_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.metering_pln_2,out a) ? a.ToString("f2") : dl.metering_pln_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 			    <td>PGF</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_pgf_1" name="sh1_pgf_1" style="width:100px" value="@(isEdit ? dl.pgf_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_pgf_2" name="sh1_pgf_2" style="width:100px" value="@(isEdit ? dl.pgf_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_pgf_1" name="sh1_pgf_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.pgf_1,out a) ? a.ToString("f2") : dl.pgf_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_pgf_2" name="sh1_pgf_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.pgf_2,out a) ? a.ToString("f2") : dl.pgf_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>MWh</td>
 		    </tr>
 		    <tr>
 			    <td rowspan="2">Condensate</td>
 			    <td>P/S</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_condensate_ps_1" name="sh1_condensate_ps_1" style="width:100px" value="@(isEdit ? dl.condensate_ps_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_condensate_ps_2" name="sh1_condensate_ps_2" style="width:100px" value="@(isEdit ? dl.condensate_ps_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_condensate_ps_1" name="sh1_condensate_ps_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.condensate_ps_1,out a) ? a.ToString("f2") : dl.condensate_ps_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_condensate_ps_2" name="sh1_condensate_ps_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.condensate_ps_2,out a) ? a.ToString("f2") : dl.condensate_ps_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Ton</td>
 			    <td>PLN</td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_pln_1" name="sh1_pln_1" style="width:100px" value="@(isEdit ? dl.pln_1 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type="text" id="sh1_pln_2" name="sh1_pln_2" style="width:100px" value="@(isEdit ? dl.pln_2 : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_pln_1" name="sh1_pln_1" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.pln_1,out a) ? a.ToString("f2") : dl.pln_1) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number"><input type="text" id="sh1_pln_2" name="sh1_pln_2" style="width:100px" value="@(isEdit ? (Double.TryParse(dl.pln_2,out a) ? a.ToString("f2") : dl.pln_2) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Ton</td>
 		    </tr>
 		    <tr>
 			    <td>Total</td>
-			    <td class="gray-bg center number" colspan="2"><input type="text" id="sh1_condensate_total" name="sh1_condensate_total" style="width:210px" value="@(isEdit ? dl.condensate_total : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number" colspan="2"><input type="text" id="sh1_condensate_total" name="sh1_condensate_total" style="width:210px" value="@(isEdit ? (Double.TryParse(dl.condensate_total,out a) ? a.ToString("f2") : dl.condensate_total) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Ton</td>
 			    <td rowspan="2" colspan="4"><b>Note:</b><br /><input type="text" id="sh1_note" name="sh1_note" style="width:400px" value="@(isEdit ? dl.note : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 		    </tr>
 		    <tr>
 			    <td>Brine</td>
 			    <td>Total</td>
-			    <td class="gray-bg center number" colspan="2"><input type="text" id="sh1_brine_total" name="sh1_brine_total" style="width:210px" value="@(isEdit ? dl.brine_total : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
+			    <td class="gray-bg center number" colspan="2"><input type="text" id="sh1_brine_total" name="sh1_brine_total" style="width:210px" value="@(isEdit ? (Double.TryParse(dl.brine_total,out a) ? a.ToString("f2") : dl.brine_total) : "")" @if (isEdit && dl.is_approve == 1) {<text>disabled</text>}/></td>
 			    <td>Ton</td>
 		    </tr>
 	    </table>
@@ -1391,9 +1391,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_1_flow" name='mba_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_1_whp" name='mba_1_whp' style='width:50px' /></td>
 			    <td>Generator Output</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_generator_output_1" name='generator_output_1' style='width:50px' value="@(isEdit2 ? dl2.generator_output_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_generator_output_1" name='generator_output_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.generator_output_1,out a) ? a.ToString("f2") : dl2.generator_output_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                       {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_generator_output_2" name='generator_output_2' style='width:50px' value="@(isEdit2 ? dl2.generator_output_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_generator_output_2" name='generator_output_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.generator_output_2,out a) ? a.ToString("f2") : dl2.generator_output_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                       {<text>disabled</text>}/></td>
 			    <td>MW</td>
 		    </tr>
@@ -1415,9 +1415,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_2_flow" name='mba_2_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_2_whp" name='mba_2_whp' style='width:50px' /></td>
 			    <td>(gross)</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_gross_1" name='gross_1' style='width:50px' value="@(isEdit2 ? dl2.gross_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_gross_1" name='gross_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.gross_1,out a) ? a.ToString("f2") : dl2.gross_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                      {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_gross_2" name='gross_2' style='width:50px' value="@(isEdit2 ? dl2.gross_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_gross_2" name='gross_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.gross_2,out a) ? a.ToString("f2") : dl2.gross_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                      {<text>disabled</text>}/></td>
 			    <td>Mvar</td>
 		    </tr>
@@ -1439,9 +1439,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_3_flow" name='mba_3_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_3_whp" name='mba_3_whp' style='width:50px' /></td>
 			    <td>Generator Output Counter</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_generator_output_counter_1" name='generator_output_counter_1' style='width:50px' value="@(isEdit2 ? dl2.generator_output_counter_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_generator_output_counter_1" name='generator_output_counter_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.generator_output_counter_1,out a) ? a.ToString("f2") : dl2.generator_output_counter_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                               {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_generator_output_counter_2" name='generator_output_counter_2' style='width:50px' value="@(isEdit2 ? dl2.generator_output_counter_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_generator_output_counter_2" name='generator_output_counter_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.generator_output_counter_2,out a) ? a.ToString("f2") : dl2.generator_output_counter_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                               {<text>disabled</text>}/></td>
 			    <td>minute</td>
 		    </tr>
@@ -1463,9 +1463,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_4_flow" name='mba_4_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_4_whp" name='mba_4_whp' style='width:50px' /></td>
 			    <td>Power Factor</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_power_factor_1" name='power_factor_1' style='width:50px' value="@(isEdit2 ? dl2.power_factor_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_power_factor_1" name='power_factor_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.power_factor_1,out a) ? a.ToString("f2") : dl2.power_factor_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                           {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_power_factor_2" name='power_factor_2' style='width:50px' value="@(isEdit2 ? dl2.power_factor_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_power_factor_2" name='power_factor_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.power_factor_2,out a) ? a.ToString("f2") : dl2.power_factor_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                           {<text>disabled</text>}/></td>
 			    <td>&nbsp;</td>
 		    </tr>
@@ -1487,9 +1487,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_5_flow" name='mba_5_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mba_5_whp" name='mba_5_whp' style='width:50px' /></td>
 			    <td>Tap Changer</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_tap_charger_1" name='tap_charger_1' style='width:50px' value="@(isEdit2 ? dl2.tap_charger_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_tap_charger_1" name='tap_charger_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.tap_charger_1,out a) ? a.ToString("f2") : dl2.tap_charger_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                        {<text>disabled</text>} /></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_tap_charger_2" name='tap_charger_2' style='width:50px' value="@(isEdit2 ? dl2.tap_charger_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_tap_charger_2" name='tap_charger_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.tap_charger_2,out a) ? a.ToString("f2") : dl2.tap_charger_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                        {<text>disabled</text>}/></td>
 			    <td>step</td>
 		    </tr>
@@ -1511,9 +1511,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_1_flow" name='mbb_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_1_whp" name='mbb_1_whp' style='width:50px' /></td>
 			    <td>PLN Grid Voltage</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_pln_grid_voltage_1" name='pln_grid_voltage_1' style='width:50px' value="@(isEdit2 ? dl2.pln_grid_voltage_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_pln_grid_voltage_1" name='pln_grid_voltage_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.pln_grid_voltage_1,out a) ? a.ToString("f2") : dl2.pln_grid_voltage_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                       {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_pln_grid_voltage_2" name='pln_grid_voltage_2' style='width:50px' value="@(isEdit2 ? dl2.pln_grid_voltage_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_pln_grid_voltage_2" name='pln_grid_voltage_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.pln_grid_voltage_2,out a) ? a.ToString("f2") : dl2.pln_grid_voltage_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                       {<text>disabled</text>}/></td>
 			    <td>kV</td>
 		    </tr>
@@ -1535,9 +1535,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_2_flow" name='mbb_2_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_2_whp" name='mbb_2_whp' style='width:50px' /></td>
 			    <td>Valve Limiter</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_valve_limiter_1" name='valve_limiter_1' style='width:50px' value="@(isEdit2 ? dl2.valve_limiter_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_valve_limiter_1" name='valve_limiter_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.valve_limiter_1,out a) ? a.ToString("f2") : dl2.valve_limiter_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                              {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_valve_limiter_2" name='valve_limiter_2' style='width:50px' value="@(isEdit2 ? dl2.valve_limiter_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_valve_limiter_2" name='valve_limiter_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.valve_limiter_2,out a) ? a.ToString("f2") : dl2.valve_limiter_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                              {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
@@ -1559,9 +1559,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_3_flow" name='mbb_3_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_3_whp" name='mbb_3_whp' style='width:50px' /></td>
 			    <td>Governor Output</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_governor_output_1" name='governor_output_1' style='width:50px' value="@(isEdit2 ? dl2.governor_output_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_governor_output_1" name='governor_output_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.governor_output_1,out a) ? a.ToString("f2") : dl2.governor_output_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                    {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_governor_output_2" name='governor_output_2' style='width:50px' value="@(isEdit2 ? dl2.governor_output_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_governor_output_2" name='governor_output_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.governor_output_2,out a) ? a.ToString("f2") : dl2.governor_output_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                    {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
@@ -1583,9 +1583,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_4_flow" name='mbb_4_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_4_whp" name='mbb_4_whp' style='width:50px' /></td>
 			    <td>WCP Counter</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_wcp_counter_1" name='wcp_counter_1' style='width:50px' value="@(isEdit2 ? dl2.wcp_counter_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_wcp_counter_1" name='wcp_counter_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.wcp_counter_1,out a) ? a.ToString("f2") : dl2.wcp_counter_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                        {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_wcp_counter_2" name='wcp_counter_2' style='width:50px' value="@(isEdit2 ? dl2.wcp_counter_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_wcp_counter_2" name='wcp_counter_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.wcp_counter_2,out a) ? a.ToString("f2") : dl2.wcp_counter_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                        {<text>disabled</text>}/></td>
 			    <td>minute</td>
 		    </tr>
@@ -1607,9 +1607,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_5_flow" name='mbb_5_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_5_whp" name='mbb_5_whp' style='width:50px' /></td>
 			    <td>Condenser Pressure</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_pressure_1" name='condenser_pressure_1' style='width:50px' value="@(isEdit2 ? dl2.condenser_pressure_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_pressure_1" name='condenser_pressure_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.condenser_pressure_1,out a) ? a.ToString("f2") : dl2.condenser_pressure_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                             {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_pressure_2" name='condenser_pressure_2' style='width:50px' value="@(isEdit2 ? dl2.condenser_pressure_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_pressure_2" name='condenser_pressure_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.condenser_pressure_2,out a) ? a.ToString("f2") : dl2.condenser_pressure_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                             {<text>disabled</text>}/></td>
 			    <td>mBar</td>
 		    </tr>
@@ -1631,9 +1631,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_6_flow" name='mbb_6_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_mbb_6_whp" name='mbb_6_whp' style='width:50px' /></td>
 			    <td>Main C/W Flow</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_main_cw_flow_1" name='main_cw_flow_1' style='width:50px' value="@(isEdit2 ? dl2.main_cw_flow_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_main_cw_flow_1" name='main_cw_flow_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.main_cw_flow_1,out a) ? a.ToString("f2") : dl2.main_cw_flow_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                           {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_main_cw_flow_2" name='main_cw_flow_2' style='width:50px' value="@(isEdit2 ? dl2.main_cw_flow_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_main_cw_flow_2" name='main_cw_flow_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.main_cw_flow_2,out a) ? a.ToString("f2") : dl2.main_cw_flow_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                           {<text>disabled</text>}/></td>
 			    <td>kg/s</td>
 		    </tr>
@@ -1655,9 +1655,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_wwf_1_flow" name='wwf_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_wwf_1_whp" name='wwf_1_whp' style='width:50px' /></td>
 			    <td>PPC-G(CO)</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_ppc_g_co_1" name='ppc_g_co_1' style='width:50px' value="@(isEdit2 ? dl2.ppc_g_co_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_ppc_g_co_1" name='ppc_g_co_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.ppc_g_co_1,out a) ? a.ToString("f2") : dl2.ppc_g_co_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                               {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_ppc_g_co_2" name='ppc_g_co_2' style='width:50px' value="@(isEdit2 ? dl2.ppc_g_co_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_ppc_g_co_2" name='ppc_g_co_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.ppc_g_co_2,out a) ? a.ToString("f2") : dl2.ppc_g_co_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                               {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
@@ -1679,9 +1679,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_wwf_3_flow" name='wwf_3_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_wwf_3_whp" name='wwf_3_whp' style='width:50px' /></td>
 			    <td>Interface Pressure (SP)</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_interface_pressure_1" name='interface_pressure_1' style='width:50px' value="@(isEdit2 ? dl2.interface_pressure_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_interface_pressure_1" name='interface_pressure_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.interface_pressure_1,out a) ? a.ToString("f2") : dl2.interface_pressure_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                             {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_interface_pressure_2" name='interface_pressure_2' style='width:50px' value="@(isEdit2 ? dl2.interface_pressure_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_interface_pressure_2" name='interface_pressure_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.interface_pressure_2,out a) ? a.ToString("f2") : dl2.interface_pressure_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                             {<text>disabled</text>}/></td>
 			    <td>Bar</td>
 		    </tr>
@@ -1703,9 +1703,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_www_1_flow" name='www_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_www_1_whp" name='www_1_whp' style='width:50px' /></td>
 			    <td>Vent Bias(SP)</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_vent_bias_1" name='vent_bias_1' style='width:50px' value="@(isEdit2 ? dl2.vent_bias_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_vent_bias_1" name='vent_bias_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.vent_bias_1,out a) ? a.ToString("f2") : dl2.vent_bias_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                  {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_vent_bias_2" name='vent_bias_2' style='width:50px' value="@(isEdit2 ? dl2.vent_bias_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_vent_bias_2" name='vent_bias_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.vent_bias_2,out a) ? a.ToString("f2") : dl2.vent_bias_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                  {<text>disabled</text>}/></td>
 			    <td>Bar</td>
 		    </tr>
@@ -1727,9 +1727,9 @@
 			    <td class="gray-bg center number"><input type='text' id="sh2_wwp_1_flow" name='wwp_1_flow' style='width:50px' /></td>
 			    <td class="gray-bg center number"><input type='text' id="sh2_wwp_1_whp" name='wwp_1_whp' style='width:50px' /></td>
 			    <td>Main C/W Pressure</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_main_cw_pressure_1" name='main_cw_pressure_1' style='width:50px' value="@(isEdit2 ? dl2.main_cw_pressure_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_main_cw_pressure_1" name='main_cw_pressure_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.main_cw_pressure_1,out a) ? a.ToString("f2") : dl2.main_cw_pressure_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                       {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_main_cw_pressure_2" name='main_cw_pressure_2' style='width:50px' value="@(isEdit2 ? dl2.main_cw_pressure_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_main_cw_pressure_2" name='main_cw_pressure_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.main_cw_pressure_2,out a) ? a.ToString("f2") : dl2.main_cw_pressure_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                       {<text>disabled</text>}/></td>
 			    <td>Bar</td>
 		    </tr>
@@ -1743,41 +1743,41 @@
 			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
 			    <td class="blue-bg center" rowspan="2">T1 Exhaust Temp. (C)</td>
 			    <td>CT Basin pH</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_ct_basin_ph_1" name='ct_basin_ph_1' style='width:50px' value="@(isEdit2 ? dl2.ct_basin_ph_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_ct_basin_ph_1" name='ct_basin_ph_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.ct_basin_ph_1,out a) ? a.ToString("f2") : dl2.ct_basin_ph_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                        {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_ct_basin_ph_2" name='ct_basin_ph_2' style='width:50px' value="@(isEdit2 ? dl2.ct_basin_ph_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_ct_basin_ph_2" name='ct_basin_ph_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.ct_basin_ph_2,out a) ? a.ToString("f2") : dl2.ct_basin_ph_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                        {<text>disabled</text>}/></td>
 			    <td>&nbsp;</td>
 		    </tr>
 		    <tr>
 			    <td>Condenser C/W Inlet-A</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_cw_inlet_a_1" name='condenser_cw_inlet_a_1' style='width:50px' value="@(isEdit2 ? dl2.condenser_cw_inlet_a_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_cw_inlet_a_1" name='condenser_cw_inlet_a_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.condenser_cw_inlet_a_1,out a) ? a.ToString("f2") : dl2.condenser_cw_inlet_a_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                   {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_cw_inlet_a_2" name='condenser_cw_inlet_a_2' style='width:50px' value="@(isEdit2 ? dl2.condenser_cw_inlet_a_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_cw_inlet_a_2" name='condenser_cw_inlet_a_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.condenser_cw_inlet_a_2,out a) ? a.ToString("f2") : dl2.condenser_cw_inlet_a_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                   {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
 		    <tr>
-			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh2_ncg_1" name='ncg_1' style='width:100px' value="@(isEdit2 ? dl2.ncg_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh2_ncg_1" name='ncg_1' style='width:100px' value="@(isEdit2 ? (Double.TryParse(dl2.ncg_1,out a) ? a.ToString("f2") : dl2.ncg_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                             {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_ncg_2" name='ncg_2' style='width:50px' value="@(isEdit2 ? dl2.ncg_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_ncg_2" name='ncg_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.ncg_2,out a) ? a.ToString("f2") : dl2.ncg_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_turbine_1" name='turbine_1' style='width:50px' value="@(isEdit2 ? dl2.turbine_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_turbine_1" name='turbine_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.turbine_1,out a) ? a.ToString("f2") : dl2.turbine_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                            {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_turbine_2" name='turbine_2' style='width:50px' value="@(isEdit2 ? dl2.turbine_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_turbine_2" name='turbine_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.turbine_2,out a) ? a.ToString("f2") : dl2.turbine_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                            {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh2_ct_temp_1" name='ct_temp_1' style='width:100px' value="@(isEdit2 ? dl2.ct_temp_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh2_ct_temp_1" name='ct_temp_1' style='width:100px' value="@(isEdit2 ? (Double.TryParse(dl2.ct_temp_1,out a) ? a.ToString("f2") : dl2.ct_temp_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                         {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_ct_temp_2" name='ct_temp_2' style='width:50px' value="@(isEdit2 ? dl2.ct_temp_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_ct_temp_2" name='ct_temp_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.ct_temp_2,out a) ? a.ToString("f2") : dl2.ct_temp_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                            {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_exhaust_1" name='exhaust_1' style='width:50px' value="@(isEdit2 ? dl2.exhaust_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_exhaust_1" name='exhaust_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.exhaust_1,out a) ? a.ToString("f2") : dl2.exhaust_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                            {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_exhaust_2" name='exhaust_2' style='width:50px' value="@(isEdit2 ? dl2.exhaust_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_exhaust_2" name='exhaust_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.exhaust_2,out a) ? a.ToString("f2") : dl2.exhaust_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                            {<text>disabled</text>}/></td>
 			    <td>Condenser C/W Inlet-B</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_cw_inlet_b_1" name='condenser_cw_inlet_b_1' style='width:50px' value="@(isEdit2 ? dl2.condenser_cw_inlet_b_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_cw_inlet_b_1" name='condenser_cw_inlet_b_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.condenser_cw_inlet_b_1,out a) ? a.ToString("f2") : dl2.condenser_cw_inlet_b_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                   {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_cw_inlet_b_2" name='condenser_cw_inlet_b_2' style='width:50px' value="@(isEdit2 ? dl2.condenser_cw_inlet_b_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_condenser_cw_inlet_b_2" name='condenser_cw_inlet_b_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.condenser_cw_inlet_b_2,out a) ? a.ToString("f2") : dl2.condenser_cw_inlet_b_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                   {<text>disabled</text>}/></td>
 			    <td>%</td>
 		    </tr>
@@ -1791,41 +1791,41 @@
 			    <td class="blue-bg center" rowspan="2">NaOH 48% Level (mm)</td>
 			    <td class="blue-bg center" rowspan="2">WWD Pond Level (m)</td>
 			    <td>Gen. Trans. Winding Temp.</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_gen_trans_winding_temp_1" name='gen_trans_winding_temp_1' style='width:50px' value="@(isEdit2 ? dl2.gen_trans_winding_temp_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_gen_trans_winding_temp_1" name='gen_trans_winding_temp_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.gen_trans_winding_temp_1,out a) ? a.ToString("f2") : dl2.gen_trans_winding_temp_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                         {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_gen_trans_winding_temp_2" name='gen_trans_winding_temp_2' style='width:50px' value="@(isEdit2 ? dl2.gen_trans_winding_temp_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_gen_trans_winding_temp_2" name='gen_trans_winding_temp_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.gen_trans_winding_temp_2,out a) ? a.ToString("f2") : dl2.gen_trans_winding_temp_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                         {<text>disabled</text>}/></td>
 			    <td>C</td>
 		    </tr>
 		    <tr>
 			    <td>Unit Trans. Winding Temp.</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_unit_trans_winding_temp_1" name='unit_trans_winding_temp_1' style='width:50px' value="@(isEdit2 ? dl2.unit_trans_winding_temp_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_unit_trans_winding_temp_1" name='unit_trans_winding_temp_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.unit_trans_winding_temp_1,out a) ? a.ToString("f2") : dl2.unit_trans_winding_temp_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                            {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_unit_trans_winding_temp_2" name='unit_trans_winding_temp_2' style='width:50px' value="@(isEdit2 ? dl2.unit_trans_winding_temp_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_unit_trans_winding_temp_2" name='unit_trans_winding_temp_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.unit_trans_winding_temp_2,out a) ? a.ToString("f2") : dl2.unit_trans_winding_temp_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                            {<text>disabled</text>}/></td>
 			    <td>C</td>
 		    </tr>
 		    <tr>
-			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh2_upper_tp_level" name='upper_tp_level' style='width:100px' value="@(isEdit2 ? dl2.upper_tp_level : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh2_upper_tp_level" name='upper_tp_level' style='width:100px' value="@(isEdit2 ? (Double.TryParse(dl2.upper_tp_level,out a) ? a.ToString("f2") : dl2.upper_tp_level) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                        {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_lower_tp_level" name='lower_tp_level' style='width:50px' value="@(isEdit2 ? dl2.lower_tp_level : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_lower_tp_level" name='lower_tp_level' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.lower_tp_level,out a) ? a.ToString("f2") : dl2.lower_tp_level) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                           {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_mv_333" name='mv_333' style='width:50px' value="@(isEdit2 ? dl2.mv_333 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_mv_333" name='mv_333' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.mv_333,out a) ? a.ToString("f2") : dl2.mv_333) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                   {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_mv_334" name='mv_334' style='width:50px' value="@(isEdit2 ? dl2.mv_334 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_mv_334" name='mv_334' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.mv_334,out a) ? a.ToString("f2") : dl2.mv_334) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                   {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh2_brine_level" name='brine_level' style='width:100px' value="@(isEdit2 ? dl2.brine_level : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number" colspan="2"><input type='text' id="sh2_brine_level" name='brine_level' style='width:100px' value="@(isEdit2 ? (Double.TryParse(dl2.brine_level,out a) ? a.ToString("f2") : dl2.brine_level) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                               {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_condensate_level" name='condensate_level' style='width:50px' value="@(isEdit2 ? dl2.condensate_level : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_condensate_level" name='condensate_level' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.condensate_level,out a) ? a.ToString("f2") : dl2.condensate_level) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                 {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_naoh_level" name='naoh_level' style='width:50px' value="@(isEdit2 ? dl2.naoh_level : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_naoh_level" name='naoh_level' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.naoh_level,out a) ? a.ToString("f2") : dl2.naoh_level) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                               {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_wwd_pond_level" name='wwd_pond_level' style='width:50px' value="@(isEdit2 ? dl2.wwd_pond_level : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_wwd_pond_level" name='wwd_pond_level' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.wwd_pond_level,out a) ? a.ToString("f2") : dl2.wwd_pond_level) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                           {<text>disabled</text>}/></td>
 			    <td>Wheel Case Pressure</td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_wheel_case_pressure_1" name='wheel_case_pressure_1' style='width:50px' value="@(isEdit2 ? dl2.wheel_case_pressure_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_wheel_case_pressure_1" name='wheel_case_pressure_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.wheel_case_pressure_1,out a) ? a.ToString("f2") : dl2.wheel_case_pressure_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                {<text>disabled</text>}/></td>
-			    <td class="gray-bg center number"><input type='text' id="sh2_wheel_case_pressure_2" name='wheel_case_pressure_2' style='width:50px' value="@(isEdit2 ? dl2.wheel_case_pressure_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
+			    <td class="gray-bg center number"><input type='text' id="sh2_wheel_case_pressure_2" name='wheel_case_pressure_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.wheel_case_pressure_2,out a) ? a.ToString("f2") : dl2.wheel_case_pressure_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                {<text>disabled</text>}/></td>
 			    <td>Bar</td>
 		    </tr>
@@ -1908,17 +1908,19 @@
         <button type="button" value="Print Daily Log">
             @Html.ActionLink("Print Daily Log", "printDL", "DailyLogs", new { id = id1 }, new { target = "_blank" })
         </button>
-        @(Html.Telerik().Upload()
-            .Name("attachment2")
-            .Multiple(true)
-            .Async(async => async
-                .Save("attachment2", "DailyLogs", new { id = id2 })
-                .AutoUpload(true)
-                )
-            .ClientEvents(events => events
-                .OnSuccess("onSuccessAttachment2"))
-            .ShowFileList(false)
-        )
+        if (dl2.is_approve != 1) {
+            @(Html.Telerik().Upload()
+                .Name("attachment2")
+                .Multiple(true)
+                .Async(async => async
+                    .Save("attachment2", "DailyLogs", new { id = id2 })
+                    .AutoUpload(true)
+                    )
+                .ClientEvents(events => events
+                    .OnSuccess("onSuccessAttachment2"))
+                .ShowFileList(false)
+            )
+        }
     }
 </div>
 <br />
@@ -2018,7 +2020,7 @@
                     {
                         <text>$('input:radio[name="sh1_wma_2_is_text"]').attr('disabled', 'disabled'); $('#sh1_wma_2_fcv').attr('disabled', 'disabled');</text>
                     }
-                    $('#sh1_wma_2_fcv').val('@dl.wma_2_fcv');
+                    $('#sh1_wma_2_fcv').val('@(Double.TryParse(dl.wma_2_fcv,out a) ? a.ToString("f2") : dl.wma_2_fcv)');
                 } else {
                     $('input:radio[name="sh1_wma_2_is_text"]').filter('[value="0"]').attr('checked', true);
 
@@ -2030,9 +2032,9 @@
                                 $('#sh1_wma_2_whp').attr('disabled', 'disabled');</text>
                     }
 
-                    $('#sh1_wma_2_fcv').val('@dl.wma_2_fcv');
-                    $('#sh1_wma_2_flow').val('@dl.wma_2_flow');
-                    $('#sh1_wma_2_whp').val('@dl.wma_2_whp');
+                    $('#sh1_wma_2_fcv').val('@(Double.TryParse(dl.wma_2_fcv,out a) ? a.ToString("f2") : dl.wma_2_fcv)');
+                    $('#sh1_wma_2_flow').val('@(Double.TryParse(dl.wma_2_flow,out a) ? a.ToString("f2") : dl.wma_2_flow)');
+                    $('#sh1_wma_2_whp').val('@(Double.TryParse(dl.wma_2_whp,out a) ? a.ToString("f2") : dl.wma_2_whp)');
                 }
                 
                 if ('@dl.wma_4_is_text' == '1') {
@@ -2042,7 +2044,7 @@
      {
 						<text>$('input:radio[name="sh1_wma_4_is_text"]').attr('disabled', 'disabled'); $('#sh1_wma_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wma_4_fcv').val('@dl.wma_4_fcv');
+					$('#sh1_wma_4_fcv').val('@(Double.TryParse(dl.wma_4_fcv,out a) ? a.ToString("f2") : dl.wma_4_fcv)');
 				} else {
 					$('input:radio[name="sh1_wma_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2052,9 +2054,9 @@
 								$('#sh1_wma_4_flow').attr('disabled', 'disabled');
 								$('#sh1_wma_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wma_4_fcv').val('@dl.wma_4_fcv');
-					$('#sh1_wma_4_flow').val('@dl.wma_4_flow');
-					$('#sh1_wma_4_whp').val('@dl.wma_4_whp');
+					$('#sh1_wma_4_fcv').val('@(Double.TryParse(dl.wma_4_fcv,out a) ? a.ToString("f2") : dl.wma_4_fcv)');
+					$('#sh1_wma_4_flow').val('@(Double.TryParse(dl.wma_4_flow,out a) ? a.ToString("f2") : dl.wma_4_flow)');
+					$('#sh1_wma_4_whp').val('@(Double.TryParse(dl.wma_4_whp,out a) ? a.ToString("f2") : dl.wma_4_whp)');
 				}
                 if ('@dl.wma_6_is_text' == '1') {
 					$('input:radio[name="sh1_wma_6_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2063,7 +2065,7 @@
      {
 						<text>$('input:radio[name="sh1_wma_6_is_text"]').attr('disabled', 'disabled'); $('#sh1_wma_6_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wma_6_fcv').val('@dl.wma_6_fcv');
+					$('#sh1_wma_6_fcv').val('@(Double.TryParse(dl.wma_6_fcv,out a) ? a.ToString("f2") : dl.wma_6_fcv)');
 				} else {
 					$('input:radio[name="sh1_wma_6_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2073,9 +2075,9 @@
 								$('#sh1_wma_6_flow').attr('disabled', 'disabled');
 								$('#sh1_wma_6_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wma_6_fcv').val('@dl.wma_6_fcv');
-					$('#sh1_wma_6_flow').val('@dl.wma_6_flow');
-					$('#sh1_wma_6_whp').val('@dl.wma_6_whp');
+					$('#sh1_wma_6_fcv').val('@(Double.TryParse(dl.wma_6_fcv,out a) ? a.ToString("f2") : dl.wma_6_fcv)');
+					$('#sh1_wma_6_flow').val('@(Double.TryParse(dl.wma_6_flow,out a) ? a.ToString("f2") : dl.wma_6_flow)');
+					$('#sh1_wma_6_whp').val('@(Double.TryParse(dl.wma_6_whp,out a) ? a.ToString("f2") : dl.wma_6_whp)');
 				}
                 if ('@dl.mbd_1_is_text' == '1') {
 					$('input:radio[name="sh1_mbd_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2084,7 +2086,7 @@
      {
 						<text>$('input:radio[name="sh1_mbd_1_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbd_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_1_fcv').val('@dl.mbd_1_fcv');
+					$('#sh1_mbd_1_fcv').val('@(Double.TryParse(dl.mbd_1_fcv,out a) ? a.ToString("f2") : dl.mbd_1_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbd_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2094,9 +2096,9 @@
 								$('#sh1_mbd_1_flow').attr('disabled', 'disabled');
 								$('#sh1_mbd_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_1_fcv').val('@dl.mbd_1_fcv');
-					$('#sh1_mbd_1_flow').val('@dl.mbd_1_flow');
-					$('#sh1_mbd_1_whp').val('@dl.mbd_1_whp');
+					$('#sh1_mbd_1_fcv').val('@(Double.TryParse(dl.mbd_1_fcv,out a) ? a.ToString("f2") : dl.mbd_1_fcv)');
+					$('#sh1_mbd_1_flow').val('@(Double.TryParse(dl.mbd_1_flow,out a) ? a.ToString("f2") : dl.mbd_1_flow)');
+					$('#sh1_mbd_1_whp').val('@(Double.TryParse(dl.mbd_1_whp,out a) ? a.ToString("f2") : dl.mbd_1_whp)');
 				}
                 if ('@dl.mbd_2_is_text' == '1') {
 					$('input:radio[name="sh1_mbd_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2105,7 +2107,7 @@
      {
 						<text>$('input:radio[name="sh1_mbd_2_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbd_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_2_fcv').val('@dl.mbd_2_fcv');
+					$('#sh1_mbd_2_fcv').val('@(Double.TryParse(dl.mbd_2_fcv,out a) ? a.ToString("f2") : dl.mbd_2_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbd_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2115,9 +2117,9 @@
 								$('#sh1_mbd_2_flow').attr('disabled', 'disabled');
 								$('#sh1_mbd_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_2_fcv').val('@dl.mbd_2_fcv');
-					$('#sh1_mbd_2_flow').val('@dl.mbd_2_flow');
-					$('#sh1_mbd_2_whp').val('@dl.mbd_2_whp');
+					$('#sh1_mbd_2_fcv').val('@(Double.TryParse(dl.mbd_2_fcv,out a) ? a.ToString("f2") : dl.mbd_2_fcv)');
+					$('#sh1_mbd_2_flow').val('@(Double.TryParse(dl.mbd_2_flow,out a) ? a.ToString("f2") : dl.mbd_2_flow)');
+					$('#sh1_mbd_2_whp').val('@(Double.TryParse(dl.mbd_2_whp,out a) ? a.ToString("f2") : dl.mbd_2_whp)');
 				}
                 if ('@dl.mbd_3_is_text' == '1') {
 					$('input:radio[name="sh1_mbd_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2126,7 +2128,7 @@
      {
 						<text>$('input:radio[name="sh1_mbd_3_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbd_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_3_fcv').val('@dl.mbd_3_fcv');
+					$('#sh1_mbd_3_fcv').val('@(Double.TryParse(dl.mbd_3_fcv,out a) ? a.ToString("f2") : dl.mbd_3_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbd_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2136,9 +2138,9 @@
 								$('#sh1_mbd_3_flow').attr('disabled', 'disabled');
 								$('#sh1_mbd_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_3_fcv').val('@dl.mbd_3_fcv');
-					$('#sh1_mbd_3_flow').val('@dl.mbd_3_flow');
-					$('#sh1_mbd_3_whp').val('@dl.mbd_3_whp');
+					$('#sh1_mbd_3_fcv').val('@(Double.TryParse(dl.mbd_3_fcv,out a) ? a.ToString("f2") : dl.mbd_3_fcv)');
+					$('#sh1_mbd_3_flow').val('@(Double.TryParse(dl.mbd_3_flow,out a) ? a.ToString("f2") : dl.mbd_3_flow)');
+					$('#sh1_mbd_3_whp').val('@(Double.TryParse(dl.mbd_3_whp,out a) ? a.ToString("f2") : dl.mbd_3_whp)');
 				}
                 if ('@dl.mbd_4_is_text' == '1') {
 					$('input:radio[name="sh1_mbd_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2147,7 +2149,7 @@
      {
 						<text>$('input:radio[name="sh1_mbd_4_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbd_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_4_fcv').val('@dl.mbd_4_fcv');
+					$('#sh1_mbd_4_fcv').val('@(Double.TryParse(dl.mbd_4_fcv,out a) ? a.ToString("f2") : dl.mbd_4_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbd_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2157,9 +2159,9 @@
 								$('#sh1_mbd_4_flow').attr('disabled', 'disabled');
 								$('#sh1_mbd_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_4_fcv').val('@dl.mbd_4_fcv');
-					$('#sh1_mbd_4_flow').val('@dl.mbd_4_flow');
-					$('#sh1_mbd_4_whp').val('@dl.mbd_4_whp');
+					$('#sh1_mbd_4_fcv').val('@(Double.TryParse(dl.mbd_4_fcv,out a) ? a.ToString("f2") : dl.mbd_4_fcv)');
+					$('#sh1_mbd_4_flow').val('@(Double.TryParse(dl.mbd_4_flow,out a) ? a.ToString("f2") : dl.mbd_4_flow)');
+					$('#sh1_mbd_4_whp').val('@(Double.TryParse(dl.mbd_4_whp,out a) ? a.ToString("f2") : dl.mbd_4_whp)');
 				}
                 if ('@dl.mbd_5_is_text' == '1') {
 					$('input:radio[name="sh1_mbd_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2168,7 +2170,7 @@
      {
 						<text>$('input:radio[name="sh1_mbd_5_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbd_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_5_fcv').val('@dl.mbd_5_fcv');
+					$('#sh1_mbd_5_fcv').val('@(Double.TryParse(dl.mbd_5_fcv,out a) ? a.ToString("f2") : dl.mbd_5_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbd_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2178,9 +2180,9 @@
 								$('#sh1_mbd_5_flow').attr('disabled', 'disabled');
 								$('#sh1_mbd_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbd_5_fcv').val('@dl.mbd_5_fcv');
-					$('#sh1_mbd_5_flow').val('@dl.mbd_5_flow');
-					$('#sh1_mbd_5_whp').val('@dl.mbd_5_whp');
+					$('#sh1_mbd_5_fcv').val('@(Double.TryParse(dl.mbd_5_fcv,out a) ? a.ToString("f2") : dl.mbd_5_fcv)');
+					$('#sh1_mbd_5_flow').val('@(Double.TryParse(dl.mbd_5_flow,out a) ? a.ToString("f2") : dl.mbd_5_flow)');
+					$('#sh1_mbd_5_whp').val('@(Double.TryParse(dl.mbd_5_whp,out a) ? a.ToString("f2") : dl.mbd_5_whp)');
 				}
                 if ('@dl.wwq_1_is_text' == '1') {
 					$('input:radio[name="sh1_wwq_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2189,7 +2191,7 @@
      {
 						<text>$('input:radio[name="sh1_wwq_1_is_text"]').attr('disabled', 'disabled'); $('#sh1_wwq_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_1_fcv').val('@dl.wwq_1_fcv');
+					$('#sh1_wwq_1_fcv').val('@(Double.TryParse(dl.wwq_1_fcv,out a) ? a.ToString("f2") : dl.wwq_1_fcv)');
 				} else {
 					$('input:radio[name="sh1_wwq_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2199,9 +2201,9 @@
 								$('#sh1_wwq_1_flow').attr('disabled', 'disabled');
 								$('#sh1_wwq_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_1_fcv').val('@dl.wwq_1_fcv');
-					$('#sh1_wwq_1_flow').val('@dl.wwq_1_flow');
-					$('#sh1_wwq_1_whp').val('@dl.wwq_1_whp');
+					$('#sh1_wwq_1_fcv').val('@(Double.TryParse(dl.wwq_1_fcv,out a) ? a.ToString("f2") : dl.wwq_1_fcv)');
+					$('#sh1_wwq_1_flow').val('@(Double.TryParse(dl.wwq_1_flow,out a) ? a.ToString("f2") : dl.wwq_1_flow)');
+					$('#sh1_wwq_1_whp').val('@(Double.TryParse(dl.wwq_1_whp,out a) ? a.ToString("f2") : dl.wwq_1_whp)');
 				}
                 if ('@dl.wwq_2_is_text' == '1') {
 					$('input:radio[name="sh1_wwq_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2210,7 +2212,7 @@
      {
 						<text>$('input:radio[name="sh1_wwq_2_is_text"]').attr('disabled', 'disabled'); $('#sh1_wwq_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_2_fcv').val('@dl.wwq_2_fcv');
+					$('#sh1_wwq_2_fcv').val('@(Double.TryParse(dl.wwq_2_fcv,out a) ? a.ToString("f2") : dl.wwq_2_fcv)');
 				} else {
 					$('input:radio[name="sh1_wwq_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2220,9 +2222,9 @@
 								$('#sh1_wwq_2_flow').attr('disabled', 'disabled');
 								$('#sh1_wwq_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_2_fcv').val('@dl.wwq_2_fcv');
-					$('#sh1_wwq_2_flow').val('@dl.wwq_2_flow');
-					$('#sh1_wwq_2_whp').val('@dl.wwq_2_whp');
+					$('#sh1_wwq_2_fcv').val('@(Double.TryParse(dl.wwq_2_fcv,out a) ? a.ToString("f2") : dl.wwq_2_fcv)');
+					$('#sh1_wwq_2_flow').val('@(Double.TryParse(dl.wwq_2_flow,out a) ? a.ToString("f2") : dl.wwq_2_flow)');
+					$('#sh1_wwq_2_whp').val('@(Double.TryParse(dl.wwq_2_whp,out a) ? a.ToString("f2") : dl.wwq_2_whp)');
 				}
                 if ('@dl.wwq_3_is_text' == '1') {
 					$('input:radio[name="sh1_wwq_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2231,7 +2233,7 @@
      {
 						<text>$('input:radio[name="sh1_wwq_3_is_text"]').attr('disabled', 'disabled'); $('#sh1_wwq_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_3_fcv').val('@dl.wwq_3_fcv');
+					$('#sh1_wwq_3_fcv').val('@(Double.TryParse(dl.wwq_3_fcv,out a) ? a.ToString("f2") : dl.wwq_3_fcv)');
 				} else {
 					$('input:radio[name="sh1_wwq_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2241,9 +2243,9 @@
 								$('#sh1_wwq_3_flow').attr('disabled', 'disabled');
 								$('#sh1_wwq_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_3_fcv').val('@dl.wwq_3_fcv');
-					$('#sh1_wwq_3_flow').val('@dl.wwq_3_flow');
-					$('#sh1_wwq_3_whp').val('@dl.wwq_3_whp');
+					$('#sh1_wwq_3_fcv').val('@(Double.TryParse(dl.wwq_3_fcv,out a) ? a.ToString("f2") : dl.wwq_3_fcv)');
+					$('#sh1_wwq_3_flow').val('@(Double.TryParse(dl.wwq_3_flow,out a) ? a.ToString("f2") : dl.wwq_3_flow)');
+					$('#sh1_wwq_3_whp').val('@(Double.TryParse(dl.wwq_3_whp,out a) ? a.ToString("f2") : dl.wwq_3_whp)');
 				}
                 if ('@dl.wwq_4_is_text' == '1') {
 					$('input:radio[name="sh1_wwq_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2252,7 +2254,7 @@
      {
 						<text>$('input:radio[name="sh1_wwq_4_is_text"]').attr('disabled', 'disabled'); $('#sh1_wwq_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_4_fcv').val('@dl.wwq_4_fcv');
+					$('#sh1_wwq_4_fcv').val('@(Double.TryParse(dl.wwq_4_fcv,out a) ? a.ToString("f2") : dl.wwq_4_fcv)');
 				} else {
 					$('input:radio[name="sh1_wwq_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2262,9 +2264,9 @@
 								$('#sh1_wwq_4_flow').attr('disabled', 'disabled');
 								$('#sh1_wwq_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_4_fcv').val('@dl.wwq_4_fcv');
-					$('#sh1_wwq_4_flow').val('@dl.wwq_4_flow');
-					$('#sh1_wwq_4_whp').val('@dl.wwq_4_whp');
+					$('#sh1_wwq_4_fcv').val('@(Double.TryParse(dl.wwq_4_fcv,out a) ? a.ToString("f2") : dl.wwq_4_fcv)');
+					$('#sh1_wwq_4_flow').val('@(Double.TryParse(dl.wwq_4_flow,out a) ? a.ToString("f2") : dl.wwq_4_flow)');
+					$('#sh1_wwq_4_whp').val('@(Double.TryParse(dl.wwq_4_whp,out a) ? a.ToString("f2") : dl.wwq_4_whp)');
 				}
                 if ('@dl.wwq_5_is_text' == '1') {
 					$('input:radio[name="sh1_wwq_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2273,7 +2275,7 @@
      {
 						<text>$('input:radio[name="sh1_wwq_5_is_text"]').attr('disabled', 'disabled'); $('#sh1_wwq_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_5_fcv').val('@dl.wwq_5_fcv');
+					$('#sh1_wwq_5_fcv').val('@(Double.TryParse(dl.wwq_5_fcv,out a) ? a.ToString("f2") : dl.wwq_5_fcv)');
 				} else {
 					$('input:radio[name="sh1_wwq_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2283,9 +2285,9 @@
 								$('#sh1_wwq_5_flow').attr('disabled', 'disabled');
 								$('#sh1_wwq_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwq_5_fcv').val('@dl.wwq_5_fcv');
-					$('#sh1_wwq_5_flow').val('@dl.wwq_5_flow');
-					$('#sh1_wwq_5_whp').val('@dl.wwq_5_whp');
+					$('#sh1_wwq_5_fcv').val('@(Double.TryParse(dl.wwq_5_fcv,out a) ? a.ToString("f2") : dl.wwq_5_fcv)');
+					$('#sh1_wwq_5_flow').val('@(Double.TryParse(dl.wwq_5_flow,out a) ? a.ToString("f2") : dl.wwq_5_flow)');
+					$('#sh1_wwq_5_whp').val('@(Double.TryParse(dl.wwq_5_whp,out a) ? a.ToString("f2") : dl.wwq_5_whp)');
 				}
                 if ('@dl.mbe_3_is_text' == '1') {
 					$('input:radio[name="sh1_mbe_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2294,7 +2296,7 @@
      {
 						<text>$('input:radio[name="sh1_mbe_3_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbe_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbe_3_fcv').val('@dl.mbe_3_fcv');
+					$('#sh1_mbe_3_fcv').val('@(Double.TryParse(dl.mbe_3_fcv,out a) ? a.ToString("f2") : dl.mbe_3_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbe_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2304,9 +2306,9 @@
 								$('#sh1_mbe_3_flow').attr('disabled', 'disabled');
 								$('#sh1_mbe_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbe_3_fcv').val('@dl.mbe_3_fcv');
-					$('#sh1_mbe_3_flow').val('@dl.mbe_3_flow');
-					$('#sh1_mbe_3_whp').val('@dl.mbe_3_whp');
+					$('#sh1_mbe_3_fcv').val('@(Double.TryParse(dl.mbe_3_fcv,out a) ? a.ToString("f2") : dl.mbe_3_fcv)');
+					$('#sh1_mbe_3_flow').val('@(Double.TryParse(dl.mbe_3_flow,out a) ? a.ToString("f2") : dl.mbe_3_flow)');
+					$('#sh1_mbe_3_whp').val('@(Double.TryParse(dl.mbe_3_whp,out a) ? a.ToString("f2") : dl.mbe_3_whp)');
 				}
                 if ('@dl.mbe_4_is_text' == '1') {
 					$('input:radio[name="sh1_mbe_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2315,7 +2317,7 @@
      {
 						<text>$('input:radio[name="sh1_mbe_4_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbe_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbe_4_fcv').val('@dl.mbe_4_fcv');
+					$('#sh1_mbe_4_fcv').val('@(Double.TryParse(dl.mbe_4_fcv,out a) ? a.ToString("f2") : dl.mbe_4_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbe_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2325,9 +2327,9 @@
 								$('#sh1_mbe_4_flow').attr('disabled', 'disabled');
 								$('#sh1_mbe_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbe_4_fcv').val('@dl.mbe_4_fcv');
-					$('#sh1_mbe_4_flow').val('@dl.mbe_4_flow');
-					$('#sh1_mbe_4_whp').val('@dl.mbe_4_whp');
+					$('#sh1_mbe_4_fcv').val('@(Double.TryParse(dl.mbe_4_fcv,out a) ? a.ToString("f2") : dl.mbe_4_fcv)');
+					$('#sh1_mbe_4_flow').val('@(Double.TryParse(dl.mbe_4_flow,out a) ? a.ToString("f2") : dl.mbe_4_flow)');
+					$('#sh1_mbe_4_whp').val('@(Double.TryParse(dl.mbe_4_whp,out a) ? a.ToString("f2") : dl.mbe_4_whp)');
 				}
                 if ('@dl.mba_1_is_text' == '1') {
 					$('input:radio[name="sh1_mba_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2336,7 +2338,7 @@
      {
 						<text>$('input:radio[name="sh1_mba_1_is_text"]').attr('disabled', 'disabled'); $('#sh1_mba_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_1_fcv').val('@dl.mba_1_fcv');
+					$('#sh1_mba_1_fcv').val('@(Double.TryParse(dl.mba_1_fcv,out a) ? a.ToString("f2") : dl.mba_1_fcv)');
 				} else {
 					$('input:radio[name="sh1_mba_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2346,9 +2348,9 @@
 								$('#sh1_mba_1_flow').attr('disabled', 'disabled');
 								$('#sh1_mba_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_1_fcv').val('@dl.mba_1_fcv');
-					$('#sh1_mba_1_flow').val('@dl.mba_1_flow');
-					$('#sh1_mba_1_whp').val('@dl.mba_1_whp');
+					$('#sh1_mba_1_fcv').val('@(Double.TryParse(dl.mba_1_fcv,out a) ? a.ToString("f2") : dl.mba_1_fcv)');
+					$('#sh1_mba_1_flow').val('@(Double.TryParse(dl.mba_1_flow,out a) ? a.ToString("f2") : dl.mba_1_flow)');
+					$('#sh1_mba_1_whp').val('@(Double.TryParse(dl.mba_1_whp,out a) ? a.ToString("f2") : dl.mba_1_whp)');
 				}
                 if ('@dl.mba_2_is_text' == '1') {
 					$('input:radio[name="sh1_mba_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2357,7 +2359,7 @@
      {
 						<text>$('input:radio[name="sh1_mba_2_is_text"]').attr('disabled', 'disabled'); $('#sh1_mba_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_2_fcv').val('@dl.mba_2_fcv');
+					$('#sh1_mba_2_fcv').val('@(Double.TryParse(dl.mba_2_fcv,out a) ? a.ToString("f2") : dl.mba_2_fcv)');
 				} else {
 					$('input:radio[name="sh1_mba_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2367,9 +2369,9 @@
 								$('#sh1_mba_2_flow').attr('disabled', 'disabled');
 								$('#sh1_mba_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_2_fcv').val('@dl.mba_2_fcv');
-					$('#sh1_mba_2_flow').val('@dl.mba_2_flow');
-					$('#sh1_mba_2_whp').val('@dl.mba_2_whp');
+					$('#sh1_mba_2_fcv').val('@(Double.TryParse(dl.mba_2_fcv,out a) ? a.ToString("f2") : dl.mba_2_fcv)');
+					$('#sh1_mba_2_flow').val('@(Double.TryParse(dl.mba_2_flow,out a) ? a.ToString("f2") : dl.mba_2_flow)');
+					$('#sh1_mba_2_whp').val('@(Double.TryParse(dl.mba_2_whp,out a) ? a.ToString("f2") : dl.mba_2_whp)');
 				}
                 if ('@dl.mba_3_is_text' == '1') {
 					$('input:radio[name="sh1_mba_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2378,7 +2380,7 @@
      {
 						<text>$('input:radio[name="sh1_mba_3_is_text"]').attr('disabled', 'disabled'); $('#sh1_mba_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_3_fcv').val('@dl.mba_3_fcv');
+					$('#sh1_mba_3_fcv').val('@(Double.TryParse(dl.mba_3_fcv,out a) ? a.ToString("f2") : dl.mba_3_fcv)');
 				} else {
 					$('input:radio[name="sh1_mba_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2388,9 +2390,9 @@
 								$('#sh1_mba_3_flow').attr('disabled', 'disabled');
 								$('#sh1_mba_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_3_fcv').val('@dl.mba_3_fcv');
-					$('#sh1_mba_3_flow').val('@dl.mba_3_flow');
-					$('#sh1_mba_3_whp').val('@dl.mba_3_whp');
+					$('#sh1_mba_3_fcv').val('@(Double.TryParse(dl.mba_3_fcv,out a) ? a.ToString("f2") : dl.mba_3_fcv)');
+					$('#sh1_mba_3_flow').val('@(Double.TryParse(dl.mba_3_flow,out a) ? a.ToString("f2") : dl.mba_3_flow)');
+					$('#sh1_mba_3_whp').val('@(Double.TryParse(dl.mba_3_whp,out a) ? a.ToString("f2") : dl.mba_3_whp)');
 				}
                 if ('@dl.mba_4_is_text' == '1') {
 					$('input:radio[name="sh1_mba_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2399,7 +2401,7 @@
      {
 						<text>$('input:radio[name="sh1_mba_4_is_text"]').attr('disabled', 'disabled'); $('#sh1_mba_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_4_fcv').val('@dl.mba_4_fcv');
+					$('#sh1_mba_4_fcv').val('@(Double.TryParse(dl.mba_4_fcv,out a) ? a.ToString("f2") : dl.mba_4_fcv)');
 				} else {
 					$('input:radio[name="sh1_mba_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2409,9 +2411,9 @@
 								$('#sh1_mba_4_flow').attr('disabled', 'disabled');
 								$('#sh1_mba_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_4_fcv').val('@dl.mba_4_fcv');
-					$('#sh1_mba_4_flow').val('@dl.mba_4_flow');
-					$('#sh1_mba_4_whp').val('@dl.mba_4_whp');
+					$('#sh1_mba_4_fcv').val('@(Double.TryParse(dl.mba_4_fcv,out a) ? a.ToString("f2") : dl.mba_4_fcv)');
+					$('#sh1_mba_4_flow').val('@(Double.TryParse(dl.mba_4_flow,out a) ? a.ToString("f2") : dl.mba_4_flow)');
+					$('#sh1_mba_4_whp').val('@(Double.TryParse(dl.mba_4_whp,out a) ? a.ToString("f2") : dl.mba_4_whp)');
 				}
                 if ('@dl.mba_5_is_text' == '1') {
 					$('input:radio[name="sh1_mba_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2420,7 +2422,7 @@
      {
 						<text>$('input:radio[name="sh1_mba_5_is_text"]').attr('disabled', 'disabled'); $('#sh1_mba_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_5_fcv').val('@dl.mba_5_fcv');
+					$('#sh1_mba_5_fcv').val('@(Double.TryParse(dl.mba_5_fcv,out a) ? a.ToString("f2") : dl.mba_5_fcv)');
 				} else {
 					$('input:radio[name="sh1_mba_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2430,9 +2432,9 @@
 								$('#sh1_mba_5_flow').attr('disabled', 'disabled');
 								$('#sh1_mba_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mba_5_fcv').val('@dl.mba_5_fcv');
-					$('#sh1_mba_5_flow').val('@dl.mba_5_flow');
-					$('#sh1_mba_5_whp').val('@dl.mba_5_whp');
+					$('#sh1_mba_5_fcv').val('@(Double.TryParse(dl.mba_5_fcv,out a) ? a.ToString("f2") : dl.mba_5_fcv)');
+					$('#sh1_mba_5_flow').val('@(Double.TryParse(dl.mba_5_flow,out a) ? a.ToString("f2") : dl.mba_5_flow)');
+					$('#sh1_mba_5_whp').val('@(Double.TryParse(dl.mba_5_whp,out a) ? a.ToString("f2") : dl.mba_5_whp)');
 				}
                 if ('@dl.mbb_1_is_text' == '1') {
 					$('input:radio[name="sh1_mbb_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2441,7 +2443,7 @@
      {
 						<text>$('input:radio[name="sh1_mbb_1_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbb_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_1_fcv').val('@dl.mbb_1_fcv');
+					$('#sh1_mbb_1_fcv').val('@(Double.TryParse(dl.mbb_1_fcv,out a) ? a.ToString("f2") : dl.mbb_1_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbb_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2451,9 +2453,9 @@
 								$('#sh1_mbb_1_flow').attr('disabled', 'disabled');
 								$('#sh1_mbb_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_1_fcv').val('@dl.mbb_1_fcv');
-					$('#sh1_mbb_1_flow').val('@dl.mbb_1_flow');
-					$('#sh1_mbb_1_whp').val('@dl.mbb_1_whp');
+					$('#sh1_mbb_1_fcv').val('@(Double.TryParse(dl.mbb_1_fcv,out a) ? a.ToString("f2") : dl.mbb_1_fcv)');
+					$('#sh1_mbb_1_flow').val('@(Double.TryParse(dl.mbb_1_flow,out a) ? a.ToString("f2") : dl.mbb_1_flow)');
+					$('#sh1_mbb_1_whp').val('@(Double.TryParse(dl.mbb_1_whp,out a) ? a.ToString("f2") : dl.mbb_1_whp)');
 				}
                 if ('@dl.mbb_2_is_text' == '1') {
 					$('input:radio[name="sh1_mbb_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2462,7 +2464,7 @@
      {
 						<text>$('input:radio[name="sh1_mbb_2_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbb_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_2_fcv').val('@dl.mbb_2_fcv');
+					$('#sh1_mbb_2_fcv').val('@(Double.TryParse(dl.mbb_2_fcv,out a) ? a.ToString("f2") : dl.mbb_2_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbb_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2472,9 +2474,9 @@
 								$('#sh1_mbb_2_flow').attr('disabled', 'disabled');
 								$('#sh1_mbb_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_2_fcv').val('@dl.mbb_2_fcv');
-					$('#sh1_mbb_2_flow').val('@dl.mbb_2_flow');
-					$('#sh1_mbb_2_whp').val('@dl.mbb_2_whp');
+					$('#sh1_mbb_2_fcv').val('@(Double.TryParse(dl.mbb_2_fcv,out a) ? a.ToString("f2") : dl.mbb_2_fcv)');
+					$('#sh1_mbb_2_flow').val('@(Double.TryParse(dl.mbb_2_flow,out a) ? a.ToString("f2") : dl.mbb_2_flow)');
+					$('#sh1_mbb_2_whp').val('@(Double.TryParse(dl.mbb_2_whp,out a) ? a.ToString("f2") : dl.mbb_2_whp)');
 				}
                 if ('@dl.mbb_3_is_text' == '1') {
 					$('input:radio[name="sh1_mbb_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2483,7 +2485,7 @@
      {
 						<text>$('input:radio[name="sh1_mbb_3_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbb_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_3_fcv').val('@dl.mbb_3_fcv');
+					$('#sh1_mbb_3_fcv').val('@(Double.TryParse(dl.mbb_3_fcv,out a) ? a.ToString("f2") : dl.mbb_3_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbb_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2493,9 +2495,9 @@
 								$('#sh1_mbb_3_flow').attr('disabled', 'disabled');
 								$('#sh1_mbb_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_3_fcv').val('@dl.mbb_3_fcv');
-					$('#sh1_mbb_3_flow').val('@dl.mbb_3_flow');
-					$('#sh1_mbb_3_whp').val('@dl.mbb_3_whp');
+					$('#sh1_mbb_3_fcv').val('@(Double.TryParse(dl.mbb_3_fcv,out a) ? a.ToString("f2") : dl.mbb_3_fcv)');
+					$('#sh1_mbb_3_flow').val('@(Double.TryParse(dl.mbb_3_flow,out a) ? a.ToString("f2") : dl.mbb_3_flow)');
+					$('#sh1_mbb_3_whp').val('@(Double.TryParse(dl.mbb_3_whp,out a) ? a.ToString("f2") : dl.mbb_3_whp)');
 				}
                 if ('@dl.mbb_4_is_text' == '1') {
 					$('input:radio[name="sh1_mbb_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2504,7 +2506,7 @@
      {
 						<text>$('input:radio[name="sh1_mbb_4_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbb_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_4_fcv').val('@dl.mbb_4_fcv');
+					$('#sh1_mbb_4_fcv').val('@(Double.TryParse(dl.mbb_4_fcv,out a) ? a.ToString("f2") : dl.mbb_4_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbb_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2514,9 +2516,9 @@
 								$('#sh1_mbb_4_flow').attr('disabled', 'disabled');
 								$('#sh1_mbb_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_4_fcv').val('@dl.mbb_4_fcv');
-					$('#sh1_mbb_4_flow').val('@dl.mbb_4_flow');
-					$('#sh1_mbb_4_whp').val('@dl.mbb_4_whp');
+					$('#sh1_mbb_4_fcv').val('@(Double.TryParse(dl.mbb_4_fcv,out a) ? a.ToString("f2") : dl.mbb_4_fcv)');
+					$('#sh1_mbb_4_flow').val('@(Double.TryParse(dl.mbb_4_flow,out a) ? a.ToString("f2") : dl.mbb_4_flow)');
+					$('#sh1_mbb_4_whp').val('@(Double.TryParse(dl.mbb_4_whp,out a) ? a.ToString("f2") : dl.mbb_4_whp)');
 				}
                 if ('@dl.mbb_5_is_text' == '1') {
 					$('input:radio[name="sh1_mbb_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2525,7 +2527,7 @@
      {
 						<text>$('input:radio[name="sh1_mbb_5_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbb_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_5_fcv').val('@dl.mbb_5_fcv');
+					$('#sh1_mbb_5_fcv').val('@(Double.TryParse(dl.mbb_5_fcv,out a) ? a.ToString("f2") : dl.mbb_5_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbb_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2535,9 +2537,9 @@
 								$('#sh1_mbb_5_flow').attr('disabled', 'disabled');
 								$('#sh1_mbb_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_5_fcv').val('@dl.mbb_5_fcv');
-					$('#sh1_mbb_5_flow').val('@dl.mbb_5_flow');
-					$('#sh1_mbb_5_whp').val('@dl.mbb_5_whp');
+					$('#sh1_mbb_5_fcv').val('@(Double.TryParse(dl.mbb_5_fcv,out a) ? a.ToString("f2") : dl.mbb_5_fcv)');
+					$('#sh1_mbb_5_flow').val('@(Double.TryParse(dl.mbb_5_flow,out a) ? a.ToString("f2") : dl.mbb_5_flow)');
+					$('#sh1_mbb_5_whp').val('@(Double.TryParse(dl.mbb_5_whp,out a) ? a.ToString("f2") : dl.mbb_5_whp)');
 				}
                 if ('@dl.mbb_6_is_text' == '1') {
 					$('input:radio[name="sh1_mbb_6_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2546,7 +2548,7 @@
      {
 						<text>$('input:radio[name="sh1_mbb_6_is_text"]').attr('disabled', 'disabled'); $('#sh1_mbb_6_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_6_fcv').val('@dl.mbb_6_fcv');
+					$('#sh1_mbb_6_fcv').val('@(Double.TryParse(dl.mbb_6_fcv,out a) ? a.ToString("f2") : dl.mbb_6_fcv)');
 				} else {
 					$('input:radio[name="sh1_mbb_6_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2556,9 +2558,9 @@
 								$('#sh1_mbb_6_flow').attr('disabled', 'disabled');
 								$('#sh1_mbb_6_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_mbb_6_fcv').val('@dl.mbb_6_fcv');
-					$('#sh1_mbb_6_flow').val('@dl.mbb_6_flow');
-					$('#sh1_mbb_6_whp').val('@dl.mbb_6_whp');
+					$('#sh1_mbb_6_fcv').val('@(Double.TryParse(dl.mbb_6_fcv,out a) ? a.ToString("f2") : dl.mbb_6_fcv)');
+					$('#sh1_mbb_6_flow').val('@(Double.TryParse(dl.mbb_6_flow,out a) ? a.ToString("f2") : dl.mbb_6_flow)');
+					$('#sh1_mbb_6_whp').val('@(Double.TryParse(dl.mbb_6_whp,out a) ? a.ToString("f2") : dl.mbb_6_whp)');
 				}
                 if ('@dl.wwf_1_is_text' == '1') {
 					$('input:radio[name="sh1_wwf_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2567,7 +2569,7 @@
      {
 						<text>$('input:radio[name="sh1_wwf_1_is_text"]').attr('disabled', 'disabled'); $('#sh1_wwf_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwf_1_fcv').val('@dl.wwf_1_fcv');
+					$('#sh1_wwf_1_fcv').val('@(Double.TryParse(dl.wwf_1_fcv,out a) ? a.ToString("f2") : dl.wwf_1_fcv)');
 				} else {
 					$('input:radio[name="sh1_wwf_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2577,9 +2579,9 @@
 								$('#sh1_wwf_1_flow').attr('disabled', 'disabled');
 								$('#sh1_wwf_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwf_1_fcv').val('@dl.wwf_1_fcv');
-					$('#sh1_wwf_1_flow').val('@dl.wwf_1_flow');
-					$('#sh1_wwf_1_whp').val('@dl.wwf_1_whp');
+					$('#sh1_wwf_1_fcv').val('@(Double.TryParse(dl.wwf_1_fcv,out a) ? a.ToString("f2") : dl.wwf_1_fcv)');
+					$('#sh1_wwf_1_flow').val('@(Double.TryParse(dl.wwf_1_flow,out a) ? a.ToString("f2") : dl.wwf_1_flow)');
+					$('#sh1_wwf_1_whp').val('@(Double.TryParse(dl.wwf_1_whp,out a) ? a.ToString("f2") : dl.wwf_1_whp)');
 				}
                 if ('@dl.wwf_3_is_text' == '1') {
 					$('input:radio[name="sh1_wwf_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2588,7 +2590,7 @@
      {
 						<text>$('input:radio[name="sh1_wwf_3_is_text"]').attr('disabled', 'disabled'); $('#sh1_wwf_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwf_3_fcv').val('@dl.wwf_3_fcv');
+					$('#sh1_wwf_3_fcv').val('@(Double.TryParse(dl.wwf_3_fcv,out a) ? a.ToString("f2") : dl.wwf_3_fcv)');
 				} else {
 					$('input:radio[name="sh1_wwf_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2598,9 +2600,9 @@
 								$('#sh1_wwf_3_flow').attr('disabled', 'disabled');
 								$('#sh1_wwf_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwf_3_fcv').val('@dl.wwf_3_fcv');
-					$('#sh1_wwf_3_flow').val('@dl.wwf_3_flow');
-					$('#sh1_wwf_3_whp').val('@dl.wwf_3_whp');
+					$('#sh1_wwf_3_fcv').val('@(Double.TryParse(dl.wwf_3_fcv,out a) ? a.ToString("f2") : dl.wwf_3_fcv)');
+					$('#sh1_wwf_3_flow').val('@(Double.TryParse(dl.wwf_3_flow,out a) ? a.ToString("f2") : dl.wwf_3_flow)');
+					$('#sh1_wwf_3_whp').val('@(Double.TryParse(dl.wwf_3_whp,out a) ? a.ToString("f2") : dl.wwf_3_whp)');
 				}
                 if ('@dl.www_1_is_text' == '1') {
 					$('input:radio[name="sh1_www_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2609,7 +2611,7 @@
      {
 						<text>$('input:radio[name="sh1_www_1_is_text"]').attr('disabled', 'disabled'); $('#sh1_www_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_www_1_fcv').val('@dl.www_1_fcv');
+					$('#sh1_www_1_fcv').val('@(Double.TryParse(dl.www_1_fcv,out a) ? a.ToString("f2") : dl.www_1_fcv)');
 				} else {
 					$('input:radio[name="sh1_www_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2619,9 +2621,9 @@
 								$('#sh1_www_1_flow').attr('disabled', 'disabled');
 								$('#sh1_www_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_www_1_fcv').val('@dl.www_1_fcv');
-					$('#sh1_www_1_flow').val('@dl.www_1_flow');
-					$('#sh1_www_1_whp').val('@dl.www_1_whp');
+					$('#sh1_www_1_fcv').val('@(Double.TryParse(dl.www_1_fcv,out a) ? a.ToString("f2") : dl.www_1_fcv)');
+					$('#sh1_www_1_flow').val('@(Double.TryParse(dl.www_1_flow,out a) ? a.ToString("f2") : dl.www_1_flow)');
+					$('#sh1_www_1_whp').val('@(Double.TryParse(dl.www_1_whp,out a) ? a.ToString("f2") : dl.www_1_whp)');
 				}
                 if ('@dl.wwp_1_is_text' == '1') {
 					$('input:radio[name="sh1_wwp_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2630,7 +2632,7 @@
      {
 						<text>$('input:radio[name="sh1_wwp_1_is_text"]').attr('disabled', 'disabled'); $('#sh1_wwp_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwp_1_fcv').val('@dl.wwp_1_fcv');
+					$('#sh1_wwp_1_fcv').val('@(Double.TryParse(dl.wwp_1_fcv,out a) ? a.ToString("f2") : dl.wwp_1_fcv)');
 				} else {
 					$('input:radio[name="sh1_wwp_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl.is_approve == 1)
@@ -2640,9 +2642,9 @@
 								$('#sh1_wwp_1_flow').attr('disabled', 'disabled');
 								$('#sh1_wwp_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh1_wwp_1_fcv').val('@dl.wwp_1_fcv');
-					$('#sh1_wwp_1_flow').val('@dl.wwp_1_flow');
-					$('#sh1_wwp_1_whp').val('@dl.wwp_1_whp');
+					$('#sh1_wwp_1_fcv').val('@(Double.TryParse(dl.wwp_1_fcv,out a) ? a.ToString("f2") : dl.wwp_1_fcv)');
+					$('#sh1_wwp_1_flow').val('@(Double.TryParse(dl.wwp_1_flow,out a) ? a.ToString("f2") : dl.wwp_1_flow)');
+					$('#sh1_wwp_1_whp').val('@(Double.TryParse(dl.wwp_1_whp,out a) ? a.ToString("f2") : dl.wwp_1_whp)');
 				}
 
 
@@ -2658,7 +2660,7 @@
      {
 						<text>$('input:radio[name="sh2_wma_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_wma_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_2_fcv').val('@dl2.wma_2_fcv');
+					$('#sh2_wma_2_fcv').val('@(Double.TryParse(dl.wma_2_fcv,out a) ? a.ToString("f2") : dl.wma_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_wma_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2668,9 +2670,9 @@
 								$('#sh2_wma_2_flow').attr('disabled', 'disabled');
 								$('#sh2_wma_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_2_fcv').val('@dl2.wma_2_fcv');
-					$('#sh2_wma_2_flow').val('@dl2.wma_2_flow');
-					$('#sh2_wma_2_whp').val('@dl2.wma_2_whp');
+					$('#sh2_wma_2_fcv').val('@(Double.TryParse(dl.wma_2_fcv,out a) ? a.ToString("f2") : dl.wma_2_fcv)');
+					$('#sh2_wma_2_flow').val('@(Double.TryParse(dl.wma_2_flow,out a) ? a.ToString("f2") : dl.wma_2_flow)');
+					$('#sh2_wma_2_whp').val('@(Double.TryParse(dl.wma_2_whp,out a) ? a.ToString("f2") : dl.wma_2_whp)');
 				}
                 if ('@dl2.wma_4_is_text' == '1') {
 					$('input:radio[name="sh2_wma_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2679,7 +2681,7 @@
      {
 						<text>$('input:radio[name="sh2_wma_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_wma_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_4_fcv').val('@dl2.wma_4_fcv');
+					$('#sh2_wma_4_fcv').val('@(Double.TryParse(dl.wma_4_fcv,out a) ? a.ToString("f2") : dl.wma_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_wma_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2689,9 +2691,9 @@
 								$('#sh2_wma_4_flow').attr('disabled', 'disabled');
 								$('#sh2_wma_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_4_fcv').val('@dl2.wma_4_fcv');
-					$('#sh2_wma_4_flow').val('@dl2.wma_4_flow');
-					$('#sh2_wma_4_whp').val('@dl2.wma_4_whp');
+					$('#sh2_wma_4_fcv').val('@(Double.TryParse(dl.wma_4_fcv,out a) ? a.ToString("f2") : dl.wma_4_fcv)');
+					$('#sh2_wma_4_flow').val('@(Double.TryParse(dl.wma_4_flow,out a) ? a.ToString("f2") : dl.wma_4_flow)');
+					$('#sh2_wma_4_whp').val('@(Double.TryParse(dl.wma_4_whp,out a) ? a.ToString("f2") : dl.wma_4_whp)');
 				}
                 if ('@dl2.wma_6_is_text' == '1') {
 					$('input:radio[name="sh2_wma_6_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2700,7 +2702,7 @@
      {
 						<text>$('input:radio[name="sh2_wma_6_is_text"]').attr('disabled', 'disabled'); $('#sh2_wma_6_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_6_fcv').val('@dl2.wma_6_fcv');
+					$('#sh2_wma_6_fcv').val('@(Double.TryParse(dl.wma_6_fcv,out a) ? a.ToString("f2") : dl.wma_6_fcv)');
 				} else {
 					$('input:radio[name="sh2_wma_6_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2710,9 +2712,9 @@
 								$('#sh2_wma_6_flow').attr('disabled', 'disabled');
 								$('#sh2_wma_6_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_6_fcv').val('@dl2.wma_6_fcv');
-					$('#sh2_wma_6_flow').val('@dl2.wma_6_flow');
-					$('#sh2_wma_6_whp').val('@dl2.wma_6_whp');
+					$('#sh2_wma_6_fcv').val('@(Double.TryParse(dl.wma_6_fcv,out a) ? a.ToString("f2") : dl.wma_6_fcv)');
+					$('#sh2_wma_6_flow').val('@(Double.TryParse(dl.wma_6_flow,out a) ? a.ToString("f2") : dl.wma_6_flow)');
+					$('#sh2_wma_6_whp').val('@(Double.TryParse(dl.wma_6_whp,out a) ? a.ToString("f2") : dl.wma_6_whp)');
 				}
                 if ('@dl2.mbd_1_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2721,7 +2723,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_1_fcv').val('@dl2.mbd_1_fcv');
+					$('#sh2_mbd_1_fcv').val('@(Double.TryParse(dl.mbd_1_fcv,out a) ? a.ToString("f2") : dl.mbd_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2731,9 +2733,9 @@
 								$('#sh2_mbd_1_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_1_fcv').val('@dl2.mbd_1_fcv');
-					$('#sh2_mbd_1_flow').val('@dl2.mbd_1_flow');
-					$('#sh2_mbd_1_whp').val('@dl2.mbd_1_whp');
+					$('#sh2_mbd_1_fcv').val('@(Double.TryParse(dl.mbd_1_fcv,out a) ? a.ToString("f2") : dl.mbd_1_fcv)');
+					$('#sh2_mbd_1_flow').val('@(Double.TryParse(dl.mbd_1_flow,out a) ? a.ToString("f2") : dl.mbd_1_flow)');
+					$('#sh2_mbd_1_whp').val('@(Double.TryParse(dl.mbd_1_whp,out a) ? a.ToString("f2") : dl.mbd_1_whp)');
 				}
                 if ('@dl2.mbd_2_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2742,7 +2744,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_2_fcv').val('@dl2.mbd_2_fcv');
+					$('#sh2_mbd_2_fcv').val('@(Double.TryParse(dl.mbd_2_fcv,out a) ? a.ToString("f2") : dl.mbd_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2752,9 +2754,9 @@
 								$('#sh2_mbd_2_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_2_fcv').val('@dl2.mbd_2_fcv');
-					$('#sh2_mbd_2_flow').val('@dl2.mbd_2_flow');
-					$('#sh2_mbd_2_whp').val('@dl2.mbd_2_whp');
+					$('#sh2_mbd_2_fcv').val('@(Double.TryParse(dl.mbd_2_fcv,out a) ? a.ToString("f2") : dl.mbd_2_fcv)');
+					$('#sh2_mbd_2_flow').val('@(Double.TryParse(dl.mbd_2_flow,out a) ? a.ToString("f2") : dl.mbd_2_flow)');
+					$('#sh2_mbd_2_whp').val('@(Double.TryParse(dl.mbd_2_whp,out a) ? a.ToString("f2") : dl.mbd_2_whp)');
 				}
                 if ('@dl2.mbd_3_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2763,7 +2765,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_3_fcv').val('@dl2.mbd_3_fcv');
+					$('#sh2_mbd_3_fcv').val('@(Double.TryParse(dl.mbd_3_fcv,out a) ? a.ToString("f2") : dl.mbd_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2773,9 +2775,9 @@
 								$('#sh2_mbd_3_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_3_fcv').val('@dl2.mbd_3_fcv');
-					$('#sh2_mbd_3_flow').val('@dl2.mbd_3_flow');
-					$('#sh2_mbd_3_whp').val('@dl2.mbd_3_whp');
+					$('#sh2_mbd_3_fcv').val('@(Double.TryParse(dl.mbd_3_fcv,out a) ? a.ToString("f2") : dl.mbd_3_fcv)');
+					$('#sh2_mbd_3_flow').val('@(Double.TryParse(dl.mbd_3_flow,out a) ? a.ToString("f2") : dl.mbd_3_flow)');
+					$('#sh2_mbd_3_whp').val('@(Double.TryParse(dl.mbd_3_whp,out a) ? a.ToString("f2") : dl.mbd_3_whp)');
 				}
                 if ('@dl2.mbd_4_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2784,7 +2786,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_4_fcv').val('@dl2.mbd_4_fcv');
+					$('#sh2_mbd_4_fcv').val('@(Double.TryParse(dl.mbd_4_fcv,out a) ? a.ToString("f2") : dl.mbd_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2794,9 +2796,9 @@
 								$('#sh2_mbd_4_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_4_fcv').val('@dl2.mbd_4_fcv');
-					$('#sh2_mbd_4_flow').val('@dl2.mbd_4_flow');
-					$('#sh2_mbd_4_whp').val('@dl2.mbd_4_whp');
+					$('#sh2_mbd_4_fcv').val('@(Double.TryParse(dl.mbd_4_fcv,out a) ? a.ToString("f2") : dl.mbd_4_fcv)');
+					$('#sh2_mbd_4_flow').val('@(Double.TryParse(dl.mbd_4_flow,out a) ? a.ToString("f2") : dl.mbd_4_flow)');
+					$('#sh2_mbd_4_whp').val('@(Double.TryParse(dl.mbd_4_whp,out a) ? a.ToString("f2") : dl.mbd_4_whp)');
 				}
                 if ('@dl2.mbd_5_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2805,7 +2807,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_5_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_5_fcv').val('@dl2.mbd_5_fcv');
+					$('#sh2_mbd_5_fcv').val('@(Double.TryParse(dl.mbd_5_fcv,out a) ? a.ToString("f2") : dl.mbd_5_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2815,9 +2817,9 @@
 								$('#sh2_mbd_5_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_5_fcv').val('@dl2.mbd_5_fcv');
-					$('#sh2_mbd_5_flow').val('@dl2.mbd_5_flow');
-					$('#sh2_mbd_5_whp').val('@dl2.mbd_5_whp');
+					$('#sh2_mbd_5_fcv').val('@(Double.TryParse(dl.mbd_5_fcv,out a) ? a.ToString("f2") : dl.mbd_5_fcv)');
+					$('#sh2_mbd_5_flow').val('@(Double.TryParse(dl.mbd_5_flow,out a) ? a.ToString("f2") : dl.mbd_5_flow)');
+					$('#sh2_mbd_5_whp').val('@(Double.TryParse(dl.mbd_5_whp,out a) ? a.ToString("f2") : dl.mbd_5_whp)');
 				}
                 if ('@dl2.wwq_1_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2826,7 +2828,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_1_fcv').val('@dl2.wwq_1_fcv');
+					$('#sh2_wwq_1_fcv').val('@(Double.TryParse(dl.wwq_1_fcv,out a) ? a.ToString("f2") : dl.wwq_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2836,9 +2838,9 @@
 								$('#sh2_wwq_1_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_1_fcv').val('@dl2.wwq_1_fcv');
-					$('#sh2_wwq_1_flow').val('@dl2.wwq_1_flow');
-					$('#sh2_wwq_1_whp').val('@dl2.wwq_1_whp');
+					$('#sh2_wwq_1_fcv').val('@(Double.TryParse(dl.wwq_1_fcv,out a) ? a.ToString("f2") : dl.wwq_1_fcv)');
+					$('#sh2_wwq_1_flow').val('@(Double.TryParse(dl.wwq_1_flow,out a) ? a.ToString("f2") : dl.wwq_1_flow)');
+					$('#sh2_wwq_1_whp').val('@(Double.TryParse(dl.wwq_1_whp,out a) ? a.ToString("f2") : dl.wwq_1_whp)');
 				}
                 if ('@dl2.wwq_2_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2847,7 +2849,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_2_fcv').val('@dl2.wwq_2_fcv');
+					$('#sh2_wwq_2_fcv').val('@(Double.TryParse(dl.wwq_2_fcv,out a) ? a.ToString("f2") : dl.wwq_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2857,9 +2859,9 @@
 								$('#sh2_wwq_2_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_2_fcv').val('@dl2.wwq_2_fcv');
-					$('#sh2_wwq_2_flow').val('@dl2.wwq_2_flow');
-					$('#sh2_wwq_2_whp').val('@dl2.wwq_2_whp');
+					$('#sh2_wwq_2_fcv').val('@(Double.TryParse(dl.wwq_2_fcv,out a) ? a.ToString("f2") : dl.wwq_2_fcv)');
+					$('#sh2_wwq_2_flow').val('@(Double.TryParse(dl.wwq_2_flow,out a) ? a.ToString("f2") : dl.wwq_2_flow)');
+					$('#sh2_wwq_2_whp').val('@(Double.TryParse(dl.wwq_2_whp,out a) ? a.ToString("f2") : dl.wwq_2_whp)');
 				}
                 if ('@dl2.wwq_3_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2868,7 +2870,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_3_fcv').val('@dl2.wwq_3_fcv');
+					$('#sh2_wwq_3_fcv').val('@(Double.TryParse(dl.wwq_3_fcv,out a) ? a.ToString("f2") : dl.wwq_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2878,9 +2880,9 @@
 								$('#sh2_wwq_3_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_3_fcv').val('@dl2.wwq_3_fcv');
-					$('#sh2_wwq_3_flow').val('@dl2.wwq_3_flow');
-					$('#sh2_wwq_3_whp').val('@dl2.wwq_3_whp');
+					$('#sh2_wwq_3_fcv').val('@(Double.TryParse(dl.wwq_3_fcv,out a) ? a.ToString("f2") : dl.wwq_3_fcv)');
+					$('#sh2_wwq_3_flow').val('@(Double.TryParse(dl.wwq_3_flow,out a) ? a.ToString("f2") : dl.wwq_3_flow)');
+					$('#sh2_wwq_3_whp').val('@(Double.TryParse(dl.wwq_3_whp,out a) ? a.ToString("f2") : dl.wwq_3_whp)');
 				}
                 if ('@dl2.wwq_4_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2889,7 +2891,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_4_fcv').val('@dl2.wwq_4_fcv');
+					$('#sh2_wwq_4_fcv').val('@(Double.TryParse(dl.wwq_4_fcv,out a) ? a.ToString("f2") : dl.wwq_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2899,9 +2901,9 @@
 								$('#sh2_wwq_4_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_4_fcv').val('@dl2.wwq_4_fcv');
-					$('#sh2_wwq_4_flow').val('@dl2.wwq_4_flow');
-					$('#sh2_wwq_4_whp').val('@dl2.wwq_4_whp');
+					$('#sh2_wwq_4_fcv').val('@(Double.TryParse(dl.wwq_4_fcv,out a) ? a.ToString("f2") : dl.wwq_4_fcv)');
+					$('#sh2_wwq_4_flow').val('@(Double.TryParse(dl.wwq_4_flow,out a) ? a.ToString("f2") : dl.wwq_4_flow)');
+					$('#sh2_wwq_4_whp').val('@(Double.TryParse(dl.wwq_4_whp,out a) ? a.ToString("f2") : dl.wwq_4_whp)');
 				}
                 if ('@dl2.wwq_5_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2910,7 +2912,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_5_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_5_fcv').val('@dl2.wwq_5_fcv');
+					$('#sh2_wwq_5_fcv').val('@(Double.TryParse(dl.wwq_5_fcv,out a) ? a.ToString("f2") : dl.wwq_5_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2920,9 +2922,9 @@
 								$('#sh2_wwq_5_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_5_fcv').val('@dl2.wwq_5_fcv');
-					$('#sh2_wwq_5_flow').val('@dl2.wwq_5_flow');
-					$('#sh2_wwq_5_whp').val('@dl2.wwq_5_whp');
+					$('#sh2_wwq_5_fcv').val('@(Double.TryParse(dl.wwq_5_fcv,out a) ? a.ToString("f2") : dl.wwq_5_fcv)');
+					$('#sh2_wwq_5_flow').val('@(Double.TryParse(dl.wwq_5_flow,out a) ? a.ToString("f2") : dl.wwq_5_flow)');
+					$('#sh2_wwq_5_whp').val('@(Double.TryParse(dl.wwq_5_whp,out a) ? a.ToString("f2") : dl.wwq_5_whp)');
 				}
                 if ('@dl2.mbe_3_is_text' == '1') {
 					$('input:radio[name="sh2_mbe_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2931,7 +2933,7 @@
      {
 						<text>$('input:radio[name="sh2_mbe_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbe_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbe_3_fcv').val('@dl2.mbe_3_fcv');
+					$('#sh2_mbe_3_fcv').val('@(Double.TryParse(dl.mbe_3_fcv,out a) ? a.ToString("f2") : dl.mbe_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbe_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2941,9 +2943,9 @@
 								$('#sh2_mbe_3_flow').attr('disabled', 'disabled');
 								$('#sh2_mbe_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbe_3_fcv').val('@dl2.mbe_3_fcv');
-					$('#sh2_mbe_3_flow').val('@dl2.mbe_3_flow');
-					$('#sh2_mbe_3_whp').val('@dl2.mbe_3_whp');
+					$('#sh2_mbe_3_fcv').val('@(Double.TryParse(dl.mbe_3_fcv,out a) ? a.ToString("f2") : dl.mbe_3_fcv)');
+					$('#sh2_mbe_3_flow').val('@(Double.TryParse(dl.mbe_3_flow,out a) ? a.ToString("f2") : dl.mbe_3_flow)');
+					$('#sh2_mbe_3_whp').val('@(Double.TryParse(dl.mbe_3_whp,out a) ? a.ToString("f2") : dl.mbe_3_whp)');
 				}
                 if ('@dl2.mbe_4_is_text' == '1') {
 					$('input:radio[name="sh2_mbe_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2952,7 +2954,7 @@
      {
 						<text>$('input:radio[name="sh2_mbe_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbe_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbe_4_fcv').val('@dl2.mbe_4_fcv');
+					$('#sh2_mbe_4_fcv').val('@(Double.TryParse(dl.mbe_4_fcv,out a) ? a.ToString("f2") : dl.mbe_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbe_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2962,9 +2964,9 @@
 								$('#sh2_mbe_4_flow').attr('disabled', 'disabled');
 								$('#sh2_mbe_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbe_4_fcv').val('@dl2.mbe_4_fcv');
-					$('#sh2_mbe_4_flow').val('@dl2.mbe_4_flow');
-					$('#sh2_mbe_4_whp').val('@dl2.mbe_4_whp');
+					$('#sh2_mbe_4_fcv').val('@(Double.TryParse(dl.mbe_4_fcv,out a) ? a.ToString("f2") : dl.mbe_4_fcv)');
+					$('#sh2_mbe_4_flow').val('@(Double.TryParse(dl.mbe_4_flow,out a) ? a.ToString("f2") : dl.mbe_4_flow)');
+					$('#sh2_mbe_4_whp').val('@(Double.TryParse(dl.mbe_4_whp,out a) ? a.ToString("f2") : dl.mbe_4_whp)');
 				}
                 if ('@dl2.mba_1_is_text' == '1') {
 					$('input:radio[name="sh2_mba_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2973,7 +2975,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_1_fcv').val('@dl2.mba_1_fcv');
+					$('#sh2_mba_1_fcv').val('@(Double.TryParse(dl.mba_1_fcv,out a) ? a.ToString("f2") : dl.mba_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2983,9 +2985,9 @@
 								$('#sh2_mba_1_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_1_fcv').val('@dl2.mba_1_fcv');
-					$('#sh2_mba_1_flow').val('@dl2.mba_1_flow');
-					$('#sh2_mba_1_whp').val('@dl2.mba_1_whp');
+					$('#sh2_mba_1_fcv').val('@(Double.TryParse(dl.mba_1_fcv,out a) ? a.ToString("f2") : dl.mba_1_fcv)');
+					$('#sh2_mba_1_flow').val('@(Double.TryParse(dl.mba_1_flow,out a) ? a.ToString("f2") : dl.mba_1_flow)');
+					$('#sh2_mba_1_whp').val('@(Double.TryParse(dl.mba_1_whp,out a) ? a.ToString("f2") : dl.mba_1_whp)');
 				}
                 if ('@dl2.mba_2_is_text' == '1') {
 					$('input:radio[name="sh2_mba_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2994,7 +2996,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_2_fcv').val('@dl2.mba_2_fcv');
+					$('#sh2_mba_2_fcv').val('@(Double.TryParse(dl.mba_2_fcv,out a) ? a.ToString("f2") : dl.mba_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3004,9 +3006,9 @@
 								$('#sh2_mba_2_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_2_fcv').val('@dl2.mba_2_fcv');
-					$('#sh2_mba_2_flow').val('@dl2.mba_2_flow');
-					$('#sh2_mba_2_whp').val('@dl2.mba_2_whp');
+					$('#sh2_mba_2_fcv').val('@(Double.TryParse(dl.mba_2_fcv,out a) ? a.ToString("f2") : dl.mba_2_fcv)');
+					$('#sh2_mba_2_flow').val('@(Double.TryParse(dl.mba_2_flow,out a) ? a.ToString("f2") : dl.mba_2_flow)');
+					$('#sh2_mba_2_whp').val('@(Double.TryParse(dl.mba_2_whp,out a) ? a.ToString("f2") : dl.mba_2_whp)');
 				}
                 if ('@dl2.mba_3_is_text' == '1') {
 					$('input:radio[name="sh2_mba_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3015,7 +3017,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_3_fcv').val('@dl2.mba_3_fcv');
+					$('#sh2_mba_3_fcv').val('@(Double.TryParse(dl.mba_3_fcv,out a) ? a.ToString("f2") : dl.mba_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3025,9 +3027,9 @@
 								$('#sh2_mba_3_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_3_fcv').val('@dl2.mba_3_fcv');
-					$('#sh2_mba_3_flow').val('@dl2.mba_3_flow');
-					$('#sh2_mba_3_whp').val('@dl2.mba_3_whp');
+					$('#sh2_mba_3_fcv').val('@(Double.TryParse(dl.mba_3_fcv,out a) ? a.ToString("f2") : dl.mba_3_fcv)');
+					$('#sh2_mba_3_flow').val('@(Double.TryParse(dl.mba_3_flow,out a) ? a.ToString("f2") : dl.mba_3_flow)');
+					$('#sh2_mba_3_whp').val('@(Double.TryParse(dl.mba_3_whp,out a) ? a.ToString("f2") : dl.mba_3_whp)');
 				}
                 if ('@dl2.mba_4_is_text' == '1') {
 					$('input:radio[name="sh2_mba_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3036,7 +3038,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_4_fcv').val('@dl2.mba_4_fcv');
+					$('#sh2_mba_4_fcv').val('@(Double.TryParse(dl.mba_4_fcv,out a) ? a.ToString("f2") : dl.mba_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3046,9 +3048,9 @@
 								$('#sh2_mba_4_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_4_fcv').val('@dl2.mba_4_fcv');
-					$('#sh2_mba_4_flow').val('@dl2.mba_4_flow');
-					$('#sh2_mba_4_whp').val('@dl2.mba_4_whp');
+					$('#sh2_mba_4_fcv').val('@(Double.TryParse(dl.mba_4_fcv,out a) ? a.ToString("f2") : dl.mba_4_fcv)');
+					$('#sh2_mba_4_flow').val('@(Double.TryParse(dl.mba_4_flow,out a) ? a.ToString("f2") : dl.mba_4_flow)');
+					$('#sh2_mba_4_whp').val('@(Double.TryParse(dl.mba_4_whp,out a) ? a.ToString("f2") : dl.mba_4_whp)');
 				}
                 if ('@dl2.mba_5_is_text' == '1') {
 					$('input:radio[name="sh2_mba_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3057,7 +3059,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_5_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_5_fcv').val('@dl2.mba_5_fcv');
+					$('#sh2_mba_5_fcv').val('@(Double.TryParse(dl.mba_5_fcv,out a) ? a.ToString("f2") : dl.mba_5_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3067,9 +3069,9 @@
 								$('#sh2_mba_5_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_5_fcv').val('@dl2.mba_5_fcv');
-					$('#sh2_mba_5_flow').val('@dl2.mba_5_flow');
-					$('#sh2_mba_5_whp').val('@dl2.mba_5_whp');
+					$('#sh2_mba_5_fcv').val('@(Double.TryParse(dl.mba_5_fcv,out a) ? a.ToString("f2") : dl.mba_5_fcv)');
+					$('#sh2_mba_5_flow').val('@(Double.TryParse(dl.mba_5_flow,out a) ? a.ToString("f2") : dl.mba_5_flow)');
+					$('#sh2_mba_5_whp').val('@(Double.TryParse(dl.mba_5_whp,out a) ? a.ToString("f2") : dl.mba_5_whp)');
 				}
                 if ('@dl2.mbb_1_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3078,7 +3080,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_1_fcv').val('@dl2.mbb_1_fcv');
+					$('#sh2_mbb_1_fcv').val('@(Double.TryParse(dl.mbb_1_fcv,out a) ? a.ToString("f2") : dl.mbb_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3088,9 +3090,9 @@
 								$('#sh2_mbb_1_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_1_fcv').val('@dl2.mbb_1_fcv');
-					$('#sh2_mbb_1_flow').val('@dl2.mbb_1_flow');
-					$('#sh2_mbb_1_whp').val('@dl2.mbb_1_whp');
+					$('#sh2_mbb_1_fcv').val('@(Double.TryParse(dl.mbb_1_fcv,out a) ? a.ToString("f2") : dl.mbb_1_fcv)');
+					$('#sh2_mbb_1_flow').val('@(Double.TryParse(dl.mbb_1_flow,out a) ? a.ToString("f2") : dl.mbb_1_flow)');
+					$('#sh2_mbb_1_whp').val('@(Double.TryParse(dl.mbb_1_whp,out a) ? a.ToString("f2") : dl.mbb_1_whp)');
 				}
                 if ('@dl2.mbb_2_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3099,7 +3101,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_2_fcv').val('@dl2.mbb_2_fcv');
+					$('#sh2_mbb_2_fcv').val('@(Double.TryParse(dl.mbb_2_fcv,out a) ? a.ToString("f2") : dl.mbb_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3109,9 +3111,9 @@
 								$('#sh2_mbb_2_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_2_fcv').val('@dl2.mbb_2_fcv');
-					$('#sh2_mbb_2_flow').val('@dl2.mbb_2_flow');
-					$('#sh2_mbb_2_whp').val('@dl2.mbb_2_whp');
+					$('#sh2_mbb_2_fcv').val('@(Double.TryParse(dl.mbb_2_fcv,out a) ? a.ToString("f2") : dl.mbb_2_fcv)');
+					$('#sh2_mbb_2_flow').val('@(Double.TryParse(dl.mbb_2_flow,out a) ? a.ToString("f2") : dl.mbb_2_flow)');
+					$('#sh2_mbb_2_whp').val('@(Double.TryParse(dl.mbb_2_whp,out a) ? a.ToString("f2") : dl.mbb_2_whp)');
 				}
                 if ('@dl2.mbb_3_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3120,7 +3122,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_3_fcv').val('@dl2.mbb_3_fcv');
+					$('#sh2_mbb_3_fcv').val('@(Double.TryParse(dl.mbb_3_fcv,out a) ? a.ToString("f2") : dl.mbb_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3130,9 +3132,9 @@
 								$('#sh2_mbb_3_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_3_fcv').val('@dl2.mbb_3_fcv');
-					$('#sh2_mbb_3_flow').val('@dl2.mbb_3_flow');
-					$('#sh2_mbb_3_whp').val('@dl2.mbb_3_whp');
+					$('#sh2_mbb_3_fcv').val('@(Double.TryParse(dl.mbb_3_fcv,out a) ? a.ToString("f2") : dl.mbb_3_fcv)');
+					$('#sh2_mbb_3_flow').val('@(Double.TryParse(dl.mbb_3_flow,out a) ? a.ToString("f2") : dl.mbb_3_flow)');
+					$('#sh2_mbb_3_whp').val('@(Double.TryParse(dl.mbb_3_whp,out a) ? a.ToString("f2") : dl.mbb_3_whp)');
 				}
                 if ('@dl2.mbb_4_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3141,7 +3143,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_4_fcv').val('@dl2.mbb_4_fcv');
+					$('#sh2_mbb_4_fcv').val('@(Double.TryParse(dl.mbb_4_fcv,out a) ? a.ToString("f2") : dl.mbb_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3151,9 +3153,9 @@
 								$('#sh2_mbb_4_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_4_fcv').val('@dl2.mbb_4_fcv');
-					$('#sh2_mbb_4_flow').val('@dl2.mbb_4_flow');
-					$('#sh2_mbb_4_whp').val('@dl2.mbb_4_whp');
+					$('#sh2_mbb_4_fcv').val('@(Double.TryParse(dl.mbb_4_fcv,out a) ? a.ToString("f2") : dl.mbb_4_fcv)');
+					$('#sh2_mbb_4_flow').val('@(Double.TryParse(dl.mbb_4_flow,out a) ? a.ToString("f2") : dl.mbb_4_flow)');
+					$('#sh2_mbb_4_whp').val('@(Double.TryParse(dl.mbb_4_whp,out a) ? a.ToString("f2") : dl.mbb_4_whp)');
 				}
                 if ('@dl2.mbb_5_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3162,7 +3164,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_5_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_5_fcv').val('@dl2.mbb_5_fcv');
+					$('#sh2_mbb_5_fcv').val('@(Double.TryParse(dl.mbb_5_fcv,out a) ? a.ToString("f2") : dl.mbb_5_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3172,9 +3174,9 @@
 								$('#sh2_mbb_5_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_5_fcv').val('@dl2.mbb_5_fcv');
-					$('#sh2_mbb_5_flow').val('@dl2.mbb_5_flow');
-					$('#sh2_mbb_5_whp').val('@dl2.mbb_5_whp');
+					$('#sh2_mbb_5_fcv').val('@(Double.TryParse(dl.mbb_5_fcv,out a) ? a.ToString("f2") : dl.mbb_5_fcv)');
+					$('#sh2_mbb_5_flow').val('@(Double.TryParse(dl.mbb_5_flow,out a) ? a.ToString("f2") : dl.mbb_5_flow)');
+					$('#sh2_mbb_5_whp').val('@(Double.TryParse(dl.mbb_5_whp,out a) ? a.ToString("f2") : dl.mbb_5_whp)');
 				}
                 if ('@dl2.mbb_6_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_6_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3183,7 +3185,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_6_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_6_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_6_fcv').val('@dl2.mbb_6_fcv');
+					$('#sh2_mbb_6_fcv').val('@(Double.TryParse(dl.mbb_6_fcv,out a) ? a.ToString("f2") : dl.mbb_6_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_6_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3193,9 +3195,9 @@
 								$('#sh2_mbb_6_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_6_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_6_fcv').val('@dl2.mbb_6_fcv');
-					$('#sh2_mbb_6_flow').val('@dl2.mbb_6_flow');
-					$('#sh2_mbb_6_whp').val('@dl2.mbb_6_whp');
+					$('#sh2_mbb_6_fcv').val('@(Double.TryParse(dl.mbb_6_fcv,out a) ? a.ToString("f2") : dl.mbb_6_fcv)');
+					$('#sh2_mbb_6_flow').val('@(Double.TryParse(dl.mbb_6_flow,out a) ? a.ToString("f2") : dl.mbb_6_flow)');
+					$('#sh2_mbb_6_whp').val('@(Double.TryParse(dl.mbb_6_whp,out a) ? a.ToString("f2") : dl.mbb_6_whp)');
 				}
                 if ('@dl2.wwf_1_is_text' == '1') {
 					$('input:radio[name="sh2_wwf_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3204,7 +3206,7 @@
      {
 						<text>$('input:radio[name="sh2_wwf_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwf_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwf_1_fcv').val('@dl2.wwf_1_fcv');
+					$('#sh2_wwf_1_fcv').val('@(Double.TryParse(dl.wwf_1_fcv,out a) ? a.ToString("f2") : dl.wwf_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwf_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3214,9 +3216,9 @@
 								$('#sh2_wwf_1_flow').attr('disabled', 'disabled');
 								$('#sh2_wwf_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwf_1_fcv').val('@dl2.wwf_1_fcv');
-					$('#sh2_wwf_1_flow').val('@dl2.wwf_1_flow');
-					$('#sh2_wwf_1_whp').val('@dl2.wwf_1_whp');
+					$('#sh2_wwf_1_fcv').val('@(Double.TryParse(dl.wwf_1_fcv,out a) ? a.ToString("f2") : dl.wwf_1_fcv)');
+					$('#sh2_wwf_1_flow').val('@(Double.TryParse(dl.wwf_1_flow,out a) ? a.ToString("f2") : dl.wwf_1_flow)');
+					$('#sh2_wwf_1_whp').val('@(Double.TryParse(dl.wwf_1_whp,out a) ? a.ToString("f2") : dl.wwf_1_whp)');
 				}
                 if ('@dl2.wwf_3_is_text' == '1') {
 					$('input:radio[name="sh2_wwf_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3225,7 +3227,7 @@
      {
 						<text>$('input:radio[name="sh2_wwf_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwf_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwf_3_fcv').val('@dl2.wwf_3_fcv');
+					$('#sh2_wwf_3_fcv').val('@(Double.TryParse(dl.wwf_3_fcv,out a) ? a.ToString("f2") : dl.wwf_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwf_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3235,9 +3237,9 @@
 								$('#sh2_wwf_3_flow').attr('disabled', 'disabled');
 								$('#sh2_wwf_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwf_3_fcv').val('@dl2.wwf_3_fcv');
-					$('#sh2_wwf_3_flow').val('@dl2.wwf_3_flow');
-					$('#sh2_wwf_3_whp').val('@dl2.wwf_3_whp');
+					$('#sh2_wwf_3_fcv').val('@(Double.TryParse(dl.wwf_3_fcv,out a) ? a.ToString("f2") : dl.wwf_3_fcv)');
+					$('#sh2_wwf_3_flow').val('@(Double.TryParse(dl.wwf_3_flow,out a) ? a.ToString("f2") : dl.wwf_3_flow)');
+					$('#sh2_wwf_3_whp').val('@(Double.TryParse(dl.wwf_3_whp,out a) ? a.ToString("f2") : dl.wwf_3_whp)');
 				}
                 if ('@dl2.www_1_is_text' == '1') {
 					$('input:radio[name="sh2_www_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3246,7 +3248,7 @@
      {
 						<text>$('input:radio[name="sh2_www_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_www_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_www_1_fcv').val('@dl2.www_1_fcv');
+					$('#sh2_www_1_fcv').val('@(Double.TryParse(dl.www_1_fcv,out a) ? a.ToString("f2") : dl.www_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_www_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3256,9 +3258,9 @@
 								$('#sh2_www_1_flow').attr('disabled', 'disabled');
 								$('#sh2_www_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_www_1_fcv').val('@dl2.www_1_fcv');
-					$('#sh2_www_1_flow').val('@dl2.www_1_flow');
-					$('#sh2_www_1_whp').val('@dl2.www_1_whp');
+					$('#sh2_www_1_fcv').val('@(Double.TryParse(dl.www_1_fcv,out a) ? a.ToString("f2") : dl.www_1_fcv)');
+					$('#sh2_www_1_flow').val('@(Double.TryParse(dl.www_1_flow,out a) ? a.ToString("f2") : dl.www_1_flow)');
+					$('#sh2_www_1_whp').val('@(Double.TryParse(dl.www_1_whp,out a) ? a.ToString("f2") : dl.www_1_whp)');
 				}
                 if ('@dl2.wwp_1_is_text' == '1') {
 					$('input:radio[name="sh2_wwp_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3267,7 +3269,7 @@
      {
 						<text>$('input:radio[name="sh2_wwp_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwp_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwp_1_fcv').val('@dl2.wwp_1_fcv');
+					$('#sh2_wwp_1_fcv').val('@(Double.TryParse(dl.wwp_1_fcv,out a) ? a.ToString("f2") : dl.wwp_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwp_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3277,9 +3279,9 @@
 								$('#sh2_wwp_1_flow').attr('disabled', 'disabled');
 								$('#sh2_wwp_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwp_1_fcv').val('@dl2.wwp_1_fcv');
-					$('#sh2_wwp_1_flow').val('@dl2.wwp_1_flow');
-					$('#sh2_wwp_1_whp').val('@dl2.wwp_1_whp');
+					$('#sh2_wwp_1_fcv').val('@(Double.TryParse(dl.wwp_1_fcv,out a) ? a.ToString("f2") : dl.wwp_1_fcv)');
+					$('#sh2_wwp_1_flow').val('@(Double.TryParse(dl.wwp_1_flow,out a) ? a.ToString("f2") : dl.wwp_1_flow)');
+					$('#sh2_wwp_1_whp').val('@(Double.TryParse(dl.wwp_1_whp,out a) ? a.ToString("f2") : dl.wwp_1_whp)');
 				}
             }
         }

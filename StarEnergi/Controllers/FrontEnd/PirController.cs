@@ -83,7 +83,7 @@ namespace StarEnergi.Controllers.FrontEnd
                          select new {a.id, a.alpha_name, a.position }).ToList();
             foreach (var a in query)
             {
-                if (a.position.ToLower().Contains("superintendent"))
+                //if (a.position.ToLower().Contains("superintendent"))
                     processUserList.Add(new employee { alpha_name = a.alpha_name, id = a.id });
             }
 
@@ -524,6 +524,7 @@ namespace StarEnergi.Controllers.FrontEnd
             pir.improvement_plant = nvc["improvement_plant"].ToString();
             pir.process_owner = nvc["process_owner"].ToString();
             pir.action_by = nvc["action_by"].ToString();
+            pir.investigator = db.employees.Find(Int32.Parse(Session["id"].ToString())).alpha_name;
             if (nvc["start_implement_date"].ToString() != "")
                 pir.start_implement_date = DateTime.Parse(nvc["start_implement_date"].ToString());
             if (nvc["target_completion_process"].ToString() != "")

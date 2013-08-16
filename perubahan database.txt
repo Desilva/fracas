@@ -1,7 +1,6 @@
 database baru
 - incident_report
-	- supervisor_approve
-	- supervisor_delegate
+	- kontraktor_seg
 - bom
 	- id	int	Unchecked
 	- id_reference	int	Checked

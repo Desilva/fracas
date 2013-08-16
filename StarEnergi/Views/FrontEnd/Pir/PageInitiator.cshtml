@@ -224,13 +224,13 @@
     </tr>
     <tr>
         <td>
-            @Model.initiate_by, @Model.initiator_sign_date.Value.ToString("dd MMMM yyy")
+            @Model.initiate_by,  @(Model.initiator_sign_date != null ? Model.initiator_sign_date.Value.ToString("dd MMMM yyy") : "")
         </td>
         <td>
-            @Model.kpbo_sign_date_init.Value.ToString("dd MMMM yyy")
+            @(Model.kpbo_sign_date_init != null ? Model.kpbo_sign_date_init.Value.ToString("dd MMMM yyy") : "")
         </td>
         <td colspan="2">
-            @Model.target_completion_init.Value.ToString("dd MMMM yyy")
+            @(Model.target_completion_init != null ? Model.target_completion_init.Value.ToString("dd MMMM yyy") : "")
         </td>
     </tr>
 </table>
@@ -379,7 +379,7 @@
     </tr>
     <tr>
         <td colspan="2" >
-            
+            @Model.investigator
         </td>
         <td colspan="2">
             @Model.investigator_date
@@ -571,11 +571,6 @@
             }
         </td>
     </tr>
-    <tr>
-        <td colspan="4" class="bluess">
-            Initiator send the final hard copy PIR to DCC for closing
-        </td>
-    </tr>
 </table>
     }
     else
@@ -657,6 +652,8 @@
 <button type="button" value="Print">
     @Html.ActionLink("Print", "printPIR", "PIR", new {id = Model.id},  new { target = "_blank" })
 </button>
+@if (Model.status != "VERIFIED")
+    {
 @(Html.Telerik().Upload()
     .Name("attachment")
     .Multiple(true)
@@ -668,6 +665,7 @@
         .OnSuccess("onSuccessAttachment").OnSelect("onSelectUpload"))
     .ShowFileList(false)
 )
+}
 <br/>
 <b>Attachment(s):</b>
 <div class="attachment" id="atch">

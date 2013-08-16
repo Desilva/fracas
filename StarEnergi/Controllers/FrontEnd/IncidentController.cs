@@ -200,6 +200,11 @@ namespace StarEnergi.Controllers.FrontEnd
                     
                     cur_user_boss = cur_user_boss.employee2;
                 }
+                if (superintendent_id == null) 
+                { 
+                    superintendent_id = supervisor_id; 
+                    superintendent_id_del = supervisor_id_del; 
+                }
                 ViewBag.superintendent_id = superintendent_id;
                 ViewBag.supervisor_id = supervisor_id;
                 ViewBag.superintendent_id_del = superintendent_id_del;

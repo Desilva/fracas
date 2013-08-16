@@ -9,7 +9,7 @@
 @{
     if(Config.menu == Config.MenuFrontEnd.FRACAS){
         <!--<h3>History Equipment <a href="AssetRegister/DetailEquipment/@ViewBag.id">@ViewBag.nama</a></h3>-->
-        <h3>History Equipment @ViewBag.nama</h3>
+        <h3>History Equipment @ViewBag.tag_num (@ViewBag.nama)</h3>
     }
 }
 @(Html.Telerik().Grid<StarEnergi.Models.FracasEventModel>()

@@ -56,9 +56,12 @@ namespace StarEnergi.Models
         public string pir_category { get; set; }
         public Nullable<int> process_user { get; set; }
         public Nullable<byte> from { get; set; }
+        public string investigator_sign { get; set; }
+        public string mgmt { get; set; }
+        public string mgmt_sign { get; set; }
     
         public virtual ICollection<audit_log> audit_log { get; set; }
-        public virtual ICollection<iir_recommendations> iir_recommendations { internal get; set; }
+        public virtual ICollection<iir_recommendations> iir_recommendations { get; set; }
         public virtual ICollection<pir_log> pir_log { get; set; }
         public virtual ICollection<rca> rcas { get; set; }
         public virtual List<string> attach { get; set; }

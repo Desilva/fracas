@@ -567,7 +567,7 @@
             <tr>
 			    <td style="width:200px"><b>Department</b></td>
 			    <td>
-                    <input type="text" id="department" name="department" value="@(isEdit ? dl.department : has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).dept_name)" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) ? "" : "disabled")/>
+                    <input type="text" id="department" name="department" value="@(isEdit ? dl.department : has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).dept_name)" disabled/>
 			    </td>
 		    </tr>
 	    </table>

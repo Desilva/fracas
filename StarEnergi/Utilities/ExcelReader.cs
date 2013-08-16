@@ -2001,7 +2001,10 @@ namespace StarEnergi.Utilities
         public string savePIR(List<object> data)
         {
             string err = "";
-
+            int? user_id = null;
+            string kbp = data[14].ToString();
+            employee kbpe = db.employees.Where(p => p.alpha_name == kbp).FirstOrDefault();
+            user_id = kbpe != null ? kbpe.id : (Int32?)null;
             pir pir = new pir()
                 {
                     no = null,
@@ -2034,9 +2037,15 @@ namespace StarEnergi.Utilities
                     review_mgmt_verified_date = null,
                     description = null,
                     status = data[1].ToString(),
+                    process_user = user_id,
                 };
-                db.pirs.Add(pir);
-                db.SaveChanges();
+            db.pirs.Add(pir);
+            db.SaveChanges();
+
+            string subPath = "D:\\Informatics\\Proyek\\Star Energy\\fracas\\StarEnergi\\Attachment\\pir\\" + pir.id; // your code goes here
+            bool IsExists = System.IO.Directory.Exists(subPath);
+            if (!IsExists)
+                System.IO.Directory.CreateDirectory(subPath);
             return err;
         }
         #endregion

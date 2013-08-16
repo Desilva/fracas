@@ -10,6 +10,7 @@
                 "id": '@Model.id',
                 "type": '@Model.status',
                 "desc_prob": $('#desc_prob').val(),
+                
                 "investigator_date": $('#InvestigatorDate_wrapper').val(),
                 "improvement_plant": $('#improvement_plan').val(),
                 "start_implement_date": $('#StartImplementDate_wrapper').val(),
@@ -45,6 +46,7 @@
             "id": '@Model.id',
             "type": '@Model.status',
             "desc_prob": $('#desc_prob').val(),
+            "investigator": '@Session["username"].ToString()',
             "investigator_date": $('#InvestigatorDate_wrapper').val(),
             "improvement_plant": $('#improvement_plan').val(),
             "start_implement_date": $('#StartImplementDate_wrapper').val(),
@@ -97,7 +99,7 @@
         </td>
     </tr>
     <tr>
-        <td class="tdWidth" rowspan="5" colspan="2">
+        <td class="tdWidth" rowspan="5" colspan="2" >
                 @Model.improvement_request
         </td>
         <td class="bluess">
@@ -185,7 +187,7 @@
     </tr>
     <tr>
         <td colspan="2" >
-             
+             @(Model.investigator == null ? Session["username"].ToString() : Model.investigator)
         </td>
         <td colspan="2">
               @{ if (Model.investigator_date != null)

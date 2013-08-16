@@ -22,9 +22,9 @@
         ViewBag.Title = "Edit Incident Report";
         ir = ViewBag.datas as StarEnergi.Models.incident_report;
         isEdit = true;
-        isView = ir.field_manager_approve != null || (user_id != ir.prepared_by && user_id != ir.ack_supervisor && user_id != ir.superintendent & user_id != ir.loss_control 
-            && user_id != ir.she_superintendent && user_id != ir.field_manager && user_id != ir.lead_name && user_id != ir.superintendent_delegate &&  user_id != ir.superintendent_delegate && 
-             user_id != ir.supervisor_delegate &&  user_id != ir.she_superintendent_delegate &&  user_id != ir.loss_control_delegate &&  user_id != ir.field_manager_delegate);
+        isView = ir.field_manager_approve != null || (user_id != ir.prepared_by && (user_id != ir.ack_supervisor || ir.supervisor_approve != null) && (user_id != ir.superintendent || ir.superintendent_approve != null) && (user_id != ir.loss_control || ir.loss_control_approve != null)
+            && (user_id != ir.she_superintendent || ir.she_superintendent_approve != null) && (user_id != ir.field_manager || ir.field_manager_approve != null) && user_id != ir.lead_name && (user_id != ir.superintendent_delegate || ir.superintendent_approve != null) && (user_id != ir.she_superintendent_delegate || ir.she_superintendent_approve != null) &&
+             (user_id != ir.supervisor_delegate || ir.supervisor_approve != null) && (user_id != ir.loss_control_delegate || ir.loss_control_approve != null) && (user_id != ir.field_manager_delegate || ir.field_manager_approve != null));
     }
     else
     {
