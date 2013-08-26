@@ -119,11 +119,27 @@ namespace StarEnergi.Controllers.FrontEnd
                     {
                         o.quality = "";
                     }
+                    if (o.observer != null)
+                        o.observer = o.observer.Split('#').First();
                 }
             }
             else
             {
-                f = db.she_observation.Where(p => p.observer == name).ToList();
+                List<she_observation> temp = db.she_observation.ToList();
+                foreach(she_observation s in temp){
+                    string[] obs = s.observer.Split('#');
+                    if (obs.Count() <= 1) { 
+                        if(obs[0].Equals(name)){
+                            f.Add(s);
+                        }
+                    }else{
+                        if(obs[1].Equals(id.ToString())){
+                            f.Add(s);
+                        }
+                    }
+                    
+                }
+                //f = db.she_observation.Where(p => p.observer == name).ToList();
                 foreach (she_observation o in f)
                 {
                     if (o.is_quality == 1)
@@ -138,13 +154,15 @@ namespace StarEnergi.Controllers.FrontEnd
                     {
                         o.quality = "";
                     }
+                    if (o.observer != null)
+                        o.observer = o.observer.Split('#').First();
                 }
             }
             
 
             return View(new GridModel<she_observation>
             {
-                Data = f
+                Data = f.OrderByDescending(x => x.date_time)
             });
         }
 
@@ -302,6 +320,9 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             she_observation details = new she_observation();
             details = db.she_observation.Find(id);
+            if (details.observer != null)
+                details.observer = details.observer.Split('#').First();
+
             var has = (from employees in db.employees
                        join dept in db.employee_dept on employees.dept_id equals dept.id
                        join users in db.users on employees.id equals users.employee_id into user_employee

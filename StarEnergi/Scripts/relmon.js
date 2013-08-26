@@ -437,3 +437,34 @@ function onSelectUpload(e) {
     }
     return true;
 }
+
+function getSubClass(idClass, loading, option , selected) {
+    if (idClass != '') {
+
+        $(loading).css("display", "inline-block");
+        $.post(
+                "Equipment/GetSubClass",
+                {
+                    id_class : idClass
+                },
+                function (data) {
+                    console.log(data);
+                    hasil = eval(data);
+                    
+                    $(option).html("");
+                    $('<option value="">-- Select Class First --</option>').appendTo(option);
+                    for (var i = 0; i < hasil.length; i++) {
+                        if (hasil[i]['id'] == selected) {
+                            $("<option value='" + hasil[i]['id'] + "' selected >" + hasil[i]['title'] + "</option>").appendTo(option);
+                        } else {
+                            $("<option value='" + hasil[i]['id'] + "'>" + hasil[i]['title'] + "</option>").appendTo(option);
+                        }
+                        
+                    }
+                    $(loading).css("display", "none");
+                }
+                );
+    } else {
+        $(loading).css("display", "none");
+    }
+}

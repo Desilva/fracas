@@ -1272,17 +1272,23 @@ namespace StarEnergi.Controllers.FrontEnd
 
                             }
                         }
-                        if (s.Count > 0) sendEmail.Send(s, "Bapak/Ibu,<br />Anda terpilih dan mendapat tugas sebagai Leader Team Investigator untuk Root Cause Analysis dengan nomor referensi " + rca.rca_code + ".<br />"
+                        if (s.Count > 0)
+                        {
+                            sendEmail.Send(s, "Bapak/Ibu,<br />Anda terpilih dan mendapat tugas sebagai Leader Team Investigator untuk Root Cause Analysis dengan nomor referensi " + rca.rca_code + ".<br />"
                                 + "Mohon anda untuk menunjuk dan memilih anggota timnya.Terima kasih."
                                 + "<br/><br/><i>Dear Sir/Madam,<br/>We inform you that you are assigned as the Team Investigator Leader for Root Cause Analysis with reference number " + rca.rca_code + ".<br />"
                                 + "Please nominate and assign your team member.Thank you.</i>"
                                 + "<br/><br/>Salam,<br/><i>Regard,</i><br/>" + RCASessionRepository.db.employees.Find(Int32.Parse(Session["id"].ToString())).alpha_name, "Root Cause Analysis \"" + rca.rca_code + "\" Team Leader");
+                        }
 
-                        if (t.Count > 0) sendEmail.Send(t, "Bapak/Ibu,<br />Anda terpilih dan mendapat tugas sebagai Anggota Team Investigator untuk Root Cause Analysis dengan nomor referensi " + rca.rca_code + "."
+                        if (t.Count > 0)
+                        {
+                            sendEmail.Send(t, "Bapak/Ibu,<br />Anda terpilih dan mendapat tugas sebagai Anggota Team Investigator untuk Root Cause Analysis dengan nomor referensi " + rca.rca_code + "."
                                 + "Terima kasih."
                                 + "<br/><br/><i>Dear Sir/Madam,<br/>We inform you that you are assigned as the Team Investigator Member for Root Cause Analysis with reference number " + rca.rca_code + "."
                                 + "Thank you.</i>"
                                 + "<br/><br/>Salam,<br/><i>Regard,</i><br/>" + RCASessionRepository.db.employees.Find(Int32.Parse(Session["id"].ToString())).alpha_name, "Root Cause Analysis \"" + rca.rca_code + "\" Team Member");
+                        }
 
                         HttpContext.Session.Remove("id_analysis");
                         return RedirectToAction("Index");
@@ -1323,7 +1329,7 @@ namespace StarEnergi.Controllers.FrontEnd
                         rca o_rca = RCASessionRepository.db.rcas.Find(rca.id);
                         if (o_rca.fracas_ir_id != null && o_rca.fracas_ir == 2)
                         {
-                            incident_report ir = RCASessionRepository.db.incident_report.Find(rca.fracas_ir_id);
+                            incident_report ir = RCASessionRepository.db.incident_report.Find(o_rca.fracas_ir_id);
                             ir.id_rca = rca.id;
                             RCASessionRepository.db.Entry(ir).State = EntityState.Modified;
                             RCASessionRepository.db.SaveChanges();

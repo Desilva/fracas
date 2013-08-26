@@ -222,24 +222,27 @@ namespace StarEnergi.Utilities
                 {
 
                     //check discipline and tag_type
-                    temp = data[8].ToString(); //discipline
+                    temp = data[8].ToString(); //tag_types
+                    tag_types t = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
+
+                    temp = data[9].ToString(); //discipline
                     discipline d = db.disciplines.Where(x => x.title == temp).SingleOrDefault();
 
-                    temp = data[9].ToString(); //tag_types
-                    tag_types t = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
+                    if (t == null)
+                    {
+                        t = new tag_types();
+                        t.title = data[8].ToString();
+                        db.tag_types.Add(t);
+                    }
 
                     if (d == null)
                     {
                         d = new discipline();
-                        d.title = data[8].ToString();
+                        d.title = data[9].ToString();
+                        d.id_tag_type = t.id;
                         db.disciplines.Add(d);
                     }
-                    if (t == null)
-                    {
-                        t = new tag_types();
-                        t.title = data[9].ToString();
-                        db.tag_types.Add(t);
-                    }
+                    
                     db.SaveChanges();
 
                     //equipment
@@ -1266,7 +1269,9 @@ namespace StarEnergi.Utilities
                     if (isFirst)
                     {
                         string s = temp.ElementAt(8).ToString();
-                        s.Remove(0, 1);
+                        s = s.Remove(0,1);
+                        //string[] dateArray = s.Split('/');
+                        //s = dateArray[1] + "-" + dateArray[2] + "-" + dateArray[0];
                         DateTime date = Convert.ToDateTime(s);
                         id_report = saveEquipmentReport(date);
                         isFirst = false;
@@ -2038,6 +2043,7 @@ namespace StarEnergi.Utilities
                     description = null,
                     status = data[1].ToString(),
                     process_user = user_id,
+                    from = 1,
                 };
             db.pirs.Add(pir);
             db.SaveChanges();

@@ -30,11 +30,13 @@
         
     </ul>
     <div>
+        <b>Result By Card</b><br /><br />
         <img src="../../../Content/image/success.png" alt="Success" width="200" id="success" @((ViewBag.success as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
         <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="fail" @((ViewBag.success as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
     </div>
     <br />
     <div>
+        <b>Result By Quality</b><br /><br />
         <img src="../../../Content/image/success.png" alt="Success" width="200" id="successQ" @((ViewBag.successQuality as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
         <img src="../../../Content/image/fail.png" alt="Fail" width="200" id="failQ" @((ViewBag.successQuality as Nullable<bool>).Value == false ? "style=display:block" : "style=display:none") />
     </div>

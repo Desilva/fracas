@@ -13,6 +13,7 @@ namespace StarEnergi.Models
         public string system_name { get; set; }
         public string tag_number { get; set; }
         public string discipline { get; set; }
+        public int? id_discipline { get; set; }
         public DateTime obsolete_date { get; set; }
         public double? mtbf { get; set; }
         public double? mttr { get; set; }

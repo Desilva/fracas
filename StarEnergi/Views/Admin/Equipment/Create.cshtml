@@ -58,6 +58,12 @@
             $('#'+value).next('div').html('');
         });
     }
+
+    $(document).ready(function () {
+        $("#id_tag_type").bind("change", function () {
+            getSubClass($("#id_tag_type").val(), '#loading-class', '#id_discipline', "");
+        });
+    })
 </script>
 
 <div class="fieldR">* Required Field</div>
@@ -98,10 +104,21 @@
     </div>
    
     <div class="editor-label">
+        @Html.LabelFor(model => model.id_tag_type)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("id_tag_type", String.Empty)
+        <span id="loading-class" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
         @Html.LabelFor(model => model.id_discipline)<a class="bintang">*</a>
     </div>
     <div class="editor-field">
-        @Html.DropDownList("id_discipline", String.Empty)
+        <select name="id_discipline" id="id_discipline">
+            <option value="">-- Select Class First --</option>
+        </select>
         <div class="errorM"></div>
     </div>
 
@@ -141,14 +158,6 @@
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.vendor)
-        <div class="errorM"></div>
-    </div>
-
-    <div class="editor-label">
-        @Html.LabelFor(model => model.id_tag_type)<a class="bintang">*</a>
-    </div>
-    <div class="editor-field">
-        @Html.DropDownList("id_tag_type", String.Empty)
         <div class="errorM"></div>
     </div>
 

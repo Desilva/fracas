@@ -113,7 +113,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.requester = requester != null ? has.Where(p => p.id == Int32.Parse(requester)).ToList().FirstOrDefault().username : null;
 
                 //add file initiator
-                string pirNumber = db.pirs.Count() == 0 ? "" : db.pirs.Where(x=>x.no != null).OrderByDescending(x => x.id).First().no;
+                string pirNumber = db.pirs.Where(x => x.no != null).ToList().Count() == 0 ? "" : db.pirs.Where(x => x.no != null).OrderByDescending(x => x.id).First().no;
                 pirNumber = MyTools.generatePirNumber(pirNumber);
                 pir pir = new pir();
                 pir.no = pirNumber;

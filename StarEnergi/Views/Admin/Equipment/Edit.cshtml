@@ -103,6 +103,13 @@
     function addPart() {
         $('#content').load('Part/Index/' + $('#equipment_id').val());
     }
+
+    $(document).ready(function () {
+        getSubClass('@Model.equipment.id_tag_type', '#loading-class', '#id_discipline', '@Model.equipment.id_discipline');
+        $("#id_tag_type").bind("change", function () {
+            getSubClass($("#id_tag_type").val(), '#loading-class', '#id_discipline', '@Model.equipment.id_discipline');
+        });
+    })
 </script>
 <div class="fieldR">* Required Field</div>
 @Html.ValidationSummary(true)
@@ -144,10 +151,21 @@
     </div>
 
     <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.id_tag_type)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("id_tag_type", string.Empty)
+        <span id="loading-class" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
         @Html.LabelFor(model => model.equipment.id_discipline)<a class="bintang">*</a>
     </div>
     <div class="editor-field">
-        @Html.DropDownList("id_discipline", string.Empty)
+        <select name="id_discipline" id="id_discipline">
+            <option value="">-- Select Class First --</option>
+        </select>
         <div class="errorM"></div>
     </div>
 
@@ -184,14 +202,6 @@
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.equipment.vendor)
-        <div class="errorM"></div>
-    </div>
-
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.id_tag_type)<a class="bintang">*</a>
-    </div>
-    <div class="editor-field">
-        @Html.DropDownList("id_tag_type", string.Empty)
         <div class="errorM"></div>
     </div>
     

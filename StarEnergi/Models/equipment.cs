@@ -61,7 +61,7 @@ namespace StarEnergi.Models
         public Nullable<double> lamda { get; set; }
 
         [Required]
-        [Display(Name = "Discipline")]
+        [Display(Name = "Sub Class")]
         public Nullable<int> id_discipline { get; set; }
 
         [Display(Name = "MTBF")]

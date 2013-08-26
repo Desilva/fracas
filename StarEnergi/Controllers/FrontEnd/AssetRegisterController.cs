@@ -31,10 +31,13 @@ namespace StarEnergi.Controllers.FrontEnd
                             system_name = o.equipment_groups.system.nama,
                             unit_name = o.equipment_groups.system.unit.nama,
                             area_name = o.equipment_groups.system.unit.foc.nama,
-                            discipline = o.discipline.title,
+                            id_discipline = o.id_discipline,
                             mtbf = o.mtbf,
                             mttr = o.mttr
                         };
+            foreach(AssetRegisterEntity a in model ){
+                a.discipline = a.id_discipline != null ? (db.disciplines.Find(a.id_discipline) != null ? db.disciplines.Find(a.id_discipline).title : "") : "";
+            }
             return View(model.ToList());
         }
 
@@ -50,10 +53,14 @@ namespace StarEnergi.Controllers.FrontEnd
                             system_name = o.equipment_groups.system.nama,
                             unit_name = o.equipment_groups.system.unit.nama,
                             area_name = o.equipment_groups.system.unit.foc.nama,
-                            discipline = o.discipline.title,
+                            id_discipline = o.id_discipline,
                             mtbf = o.mtbf,
                             mttr = o.mttr
                         };
+            foreach (AssetRegisterEntity a in model)
+            {
+                a.discipline = a.id_discipline != null ? (db.disciplines.Find(a.id_discipline) != null ? db.disciplines.Find(a.id_discipline).title : "") : "";
+            }
             return PartialView("Index",model.ToList());
         }
 
@@ -76,10 +83,14 @@ namespace StarEnergi.Controllers.FrontEnd
                             system_name = o.equipment_groups.system.nama,
                             unit_name = o.equipment_groups.system.unit.nama,
                             area_name = o.equipment_groups.system.unit.foc.nama,
-                            discipline = o.discipline.title,
+                            id_discipline = o.id_discipline,
                             mtbf = o.mtbf,
                             mttr = o.mttr
                         };
+            foreach (AssetRegisterEntity a in model)
+            {
+                a.discipline = a.id_discipline != null ? (db.disciplines.Find(a.id_discipline) != null ? db.disciplines.Find(a.id_discipline).title : "") : "";
+            }
 
             return View(new GridModel<AssetRegisterEntity>
             {
@@ -95,7 +106,9 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public ActionResult AjaxView_Equipment(int id)
         {
-            return PartialView(db.equipments.Find(id));
+            equipment e = db.equipments.Find(id);
+            e.discipline = db.disciplines.Find(e.id_discipline);
+            return PartialView(e);
         }
 
         public ActionResult AjaxView_PartList(int id)

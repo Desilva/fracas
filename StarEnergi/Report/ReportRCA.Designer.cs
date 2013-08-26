@@ -172,7 +172,7 @@ namespace StarEnergi.Report
             this.textBox9.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.None;
             this.textBox9.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox9.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
-            this.textBox9.Value = "= Fields.fullname";
+            this.textBox9.Value = "= Fields.id_user";
             // 
             // panel7
             // 

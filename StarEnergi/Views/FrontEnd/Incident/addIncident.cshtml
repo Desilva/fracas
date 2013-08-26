@@ -255,7 +255,7 @@
                         .Spinners(false)
                         .MinValue(0)
                         .MaxValue(100000000).Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
-                        .Value(isEdit ? Int32.Parse(ir.cost_estimate != null ? ir.cost_estimate : "0") : 0)
+                        .Value(isEdit ? double.Parse(!string.IsNullOrWhiteSpace(ir.cost_estimate) ? ir.cost_estimate : "0") : 0)
                     )
             </td>
         </tr>
@@ -305,14 +305,14 @@
                 else
                 {
                     <input type="hidden" name="ack" id="prepared" value="@ir.prepared_by"/>
-                    <input type="text" name="ack" id="prepared_name" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ir.prepared_by)).alpha_name : "")" disabled/>
+                    <input type="text" name="ack" id="prepared_name" value="@(string.IsNullOrWhiteSpace(ir.prepared_by) ? "" : (isEdit ? has.Find(p => p.id == Int32.Parse(ir.prepared_by)).alpha_name : ""))" disabled/>
                 }
             </td>
             <td>
                 <h5>Ack by supervisor  <div id="ack_req" style="display:none;color:red;">* required</h5>
             </td>
             <td colspan="2">
-                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor) && (ir.supervisor_approve == null ? true : ir.supervisor_approve.Substring(0, 1) == "a"))
+                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(string.IsNullOrWhiteSpace(ir.ack_supervisor) ? "0" : ir.ack_supervisor) && (string.IsNullOrWhiteSpace(ir.supervisor_approve) ? true : ir.supervisor_approve.Substring(0, 1) == "a"))
                 {
                 }
                 else if (ir != null && ir.supervisor_delegate != null && (ir.supervisor_approve == null ? true : ir.supervisor_approve.Substring(0, 1) == "d"))
@@ -688,7 +688,7 @@
                 else
                 {
                     <input type="text" name="loss_control_name" id="loss_control_name" value="@(isEdit ? ir.loss_control == null ? "" : (ir.loss_control_approve == null ? has.Find(p => p.id == Int32.Parse(ir.loss_control)).alpha_name : (ir.loss_control_approve.Substring(0, 1) == "a" ? has.Find(p => p.id == Int32.Parse(ir.loss_control)).alpha_name : has.Find(p => p.id == Int32.Parse(ir.loss_control_delegate)).alpha_name)) : "")" disabled style="width:166px"/>
-                    <img id="img_approve_loss_control" width="50" height="50" @(ir.loss_control_approve == null ? "style='display:none;" : "style='display:block;")  src="@(ir.loss_control_approve == null ? "" : ir.loss_control_approve.Substring(1))"/>
+                    <img id="img_approve_loss_control" width="50" height="50" @(ir.loss_control_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir.loss_control_approve == null ? "" : ir.loss_control_approve.Substring(1))"/>
                 }
             </td>
             <td style="width:13.33%" class="right">

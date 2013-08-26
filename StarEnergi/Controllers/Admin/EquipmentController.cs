@@ -514,5 +514,23 @@ namespace StarEnergi.Controllers.Admin
         }
 
         #endregion
+
+        public JsonResult GetSubClass(int id_class)
+        {
+            var subClass = db.disciplines.Where(x => x.id_tag_type == id_class);
+
+            List<DisciplineEntity> send = new List<DisciplineEntity>();
+            foreach (discipline d in subClass) {
+                DisciplineEntity dt = new DisciplineEntity
+                {
+                    id = d.id,
+                    id_tag_type = d.id_tag_type,
+                    title = d.title
+                };
+                send.Add(dt);
+            }
+
+            return Json(send);
+        }
     }
 }

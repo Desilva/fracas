@@ -32,9 +32,11 @@ namespace StarEnergi.Models
                          tag_num = x.part.tag_number,
                          nama = x.part.nama,
                          vendor = x.part.vendor,
-                         warranty = x.part.warranty
+                         warranty = x.part.warranty,
                      };
             equipment = e;
+            if (e.id_discipline != null)
+                equipment.discipline = db.disciplines.Find(e.id_discipline);
             parts = ep.ToList();
         }
 

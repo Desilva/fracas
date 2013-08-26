@@ -6,6 +6,7 @@
     {
         id = ViewBag.mod as Nullable<Int32>;
         dl = ViewBag.datas as StarEnergi.Models.she_observation;
+        dl.observer = dl.observer.Split('#').First();
         isEdit = true;
     }
     List<StarEnergi.Models.EmployeeEntity> has = null;
@@ -25,648 +26,653 @@
 <div class="container">
 	<header>
 		<div class="page-title" style="width:980px">
-            <h4><input type="checkbox" id="she_obs" name="she_obs" @(isEdit ? dl.she_obs == 1 ? "checked" : "" : "")/>SHE OBSERVATIONS<br />
-            <input type="checkbox" id="she_ins" name="she_ins" @(isEdit ? dl.she_ins == 1 ? "checked" : "" : "")/>SHE INSPECTION</h4>
-		</div>
-		<div class="clearfix" style="width:768px"></div>
-		<b>OBSERVE -> STOP -> DISCUSS -> COMMITMENT -> REPORT<br />
-        OBSERVE -> CORRECTIVE -> PREVENT RECURRENT -> REPORT</b>
+            <h4>
+                <b>Category : </b><br />
+                <input type="checkbox" style="margin-left:15px;" id="she_obs" name="she_obs" @(isEdit ? dl.she_obs == 1 ? "checked" : "" : "")/>SHE OBSERVATIONS <br />
+                <input type="checkbox" style="margin-left:15px;" id="she_ins" name="she_ins" @(isEdit ? dl.she_ins == 1 ? "checked" : "" : "")/>SHE INSPECTION
+            </h4>
+		</div>		
 	</header>
-	<div class="log-part1">
-		<table class="w-border" style="width:980px">
-			<tr>
-				<td class="no-border-btm"><b>WRITE</b></td>
-                <td class="center" rowspan="3"><b>SEVERITY</b></td>
-                <td class="center" rowspan="3"><b>OBSERVATION CHECKLIST</b></td>
-                <td class="rights no-border-btm"><b>WRITE</b></td>
-			</tr>
-            <tr>
-				<td class="no-border-btm no-border-top"><b>UA - UNSAFE ACT</b></td>
-                <td class="rights no-border-btm no-border-top"><b>SAFE ACT - SA</b></td>
-			</tr>
-			<tr>
-				<td class="no-border-top"><b>UC - UNSAFE COND</b></td>
-                <td class="rights no-border-top"><b>SAFE COND - SC</b></td>
-			</tr>
-		</table>
-	</div>
-	<div class="log-part2">
-        <table class="w-border" style="width:980px">
-		    <tr>
-			    <td class="orange-bg center" colspan="4"><b>1. SAFETY</b></td>
-		    </tr>
-		    <tr>
-			    <td class="" style="width:100px">
-                    <input type="radio" id="accident_unsafe_act" name="accident_unsafe" value="1" />UA
-                    <input type="radio" id="accident_unsafe_cond" name="accident_unsafe" value="1" />UC
-			    </td>
-                <td class="" style="width:250px">
-                    <input type="radio" id="accident_risk_fatality" name="accident_risk" value="1" />Serious
-                    <input type="radio" id="accident_risk_major" name="accident_risk" value="1" />Moderate
-                    <input type="radio" id="accident_risk_minor" name="accident_risk" value="1" />Minor
-			    </td>
-			    <td>Potential accident - Berpotensi kecelakaan</td>
-                <td style="width:100px">
-                    <input type="radio" id="accident_safe_act" name="accident_safe" value="1" />SA
-                    <input type="radio" id="accident_safe_cond" name="accident_safe" value="1" />SC
-			    </td>
-		    </tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="fire_unsafe_act" name="fire_unsafe" value="1" />UA
-					<input type="radio" id="fire_unsafe_cond" name="fire_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="fire_risk_fatality" name="fire_risk" value="1" />Serious
-					<input type="radio" id="fire_risk_major" name="fire_risk" value="1" />Moderate
-					<input type="radio" id="fire_risk_minor" name="fire_risk" value="1" />Minor
-				</td>
-				<td>Potential fire/explode - Berpotensi kebakaran/meledak</td>
-				<td style="width:100px">
-					<input type="radio" id="fire_safe_act" name="fire_safe" value="1" />SA
-					<input type="radio" id="fire_safe_cond" name="fire_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="prevention_unsafe_act" name="prevention_unsafe" value="1" />UA
-					<input type="radio" id="prevention_unsafe_cond" name="prevention_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="prevention_risk_fatality" name="prevention_risk" value="1" />Serious
-					<input type="radio" id="prevention_risk_major" name="prevention_risk" value="1" />Moderate
-					<input type="radio" id="prevention_risk_minor" name="prevention_risk" value="1" />Minor
-				</td>
-				<td>Incident Prevention Program - Pencegahan kecelakaan</td>
-				<td style="width:100px">
-					<input type="radio" id="prevention_safe_act" name="prevention_safe" value="1" />SA
-					<input type="radio" id="prevention_safe_cond" name="prevention_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="supervisor_unsafe_act" name="supervisor_unsafe" value="1" />UA
-					<input type="radio" id="supervisor_unsafe_cond" name="supervisor_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="supervisor_risk_fatality" name="supervisor_risk" value="1" />Serious
-					<input type="radio" id="supervisor_risk_major" name="supervisor_risk" value="1" />Moderate
-					<input type="radio" id="supervisor_risk_minor" name="supervisor_risk" value="1" />Minor
-				</td>
-				<td>Supervisor in locations - Pengawas berada di lokasi</td>
-				<td style="width:100px">
-					<input type="radio" id="supervisor_safe_act" name="supervisor_safe" value="1" />SA
-					<input type="radio" id="supervisor_safe_cond" name="supervisor_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-			    <td class="orange-bg center" colspan="4"><b>2. HEALTH</b></td>
-		    </tr>
-		    <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="fit_work_unsafe_act" name="fit_work_unsafe" value="1" />UA
-					<input type="radio" id="fit_work_unsafe_cond" name="fit_work_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="fit_work_risk_fatality" name="fit_work_risk" value="1" />Serious
-					<input type="radio" id="fit_work_risk_major" name="fit_work_risk" value="1" />Moderate
-					<input type="radio" id="fit_work_risk_minor" name="fit_work_risk" value="1" />Minor
-				</td>
-				<td>Fit for work - Kondisi sehat/siap untuk kerja</td>
-				<td style="width:100px">
-					<input type="radio" id="fit_work_safe_act" name="fit_work_safe" value="1" />SA
-					<input type="radio" id="fit_work_safe_cond" name="fit_work_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="psychological_unsafe_act" name="psychological_unsafe" value="1" />UA
-					<input type="radio" id="psychological_unsafe_cond" name="psychological_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="psychological_risk_fatality" name="psychological_risk" value="1" />Serious
-					<input type="radio" id="psychological_risk_major" name="psychological_risk" value="1" />Moderate
-					<input type="radio" id="psychological_risk_minor" name="psychological_risk" value="1" />Minor
-				</td>
-				<td>Psychological problem - Masalah Psikologi</td>
-				<td style="width:100px">
-					<input type="radio" id="psychological_safe_act" name="psychological_safe" value="1" />SA
-					<input type="radio" id="psychological_safe_cond" name="psychological_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="posture_unsafe_act" name="posture_unsafe" value="1" />UA
-					<input type="radio" id="posture_unsafe_cond" name="posture_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="posture_risk_fatality" name="posture_risk" value="1" />Serious
-					<input type="radio" id="posture_risk_major" name="posture_risk" value="1" />Moderate
-					<input type="radio" id="posture_risk_minor" name="posture_risk" value="1" />Minor
-				</td>
-				<td>Posture/ergonomics - Ergonomi/posisi tubuh</td>
-				<td style="width:100px">
-					<input type="radio" id="posture_safe_act" name="posture_safe" value="1" />SA
-					<input type="radio" id="posture_safe_cond" name="posture_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="substance_unsafe_act" name="substance_unsafe" value="1" />UA
-					<input type="radio" id="substance_unsafe_cond" name="substance_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="substance_risk_fatality" name="substance_risk" value="1" />Serious
-					<input type="radio" id="substance_risk_major" name="substance_risk" value="1" />Moderate
-					<input type="radio" id="substance_risk_minor" name="substance_risk" value="1" />Minor
-				</td>
-				<td>Hazardous Substance - Bahan berbahaya ke tubuh</td>
-				<td style="width:100px">
-					<input type="radio" id="substance_safe_act" name="substance_safe" value="1" />SA
-					<input type="radio" id="substance_safe_cond" name="substance_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="hygiene_unsafe_act" name="hygiene_unsafe" value="1" />UA
-					<input type="radio" id="hygiene_unsafe_cond" name="hygiene_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="hygiene_risk_fatality" name="hygiene_risk" value="1" />Serious
-					<input type="radio" id="hygiene_risk_major" name="hygiene_risk" value="1" />Moderate
-					<input type="radio" id="hygiene_risk_minor" name="hygiene_risk" value="1" />Minor
-				</td>
-				<td>Hygiene & sanitation - Kebersihan & kesehatan</td>
-				<td style="width:100px">
-					<input type="radio" id="hygiene_safe_act" name="hygiene_safe" value="1" />SA
-					<input type="radio" id="hygiene_safe_cond" name="hygiene_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-			    <td class="orange-bg center" colspan="4"><b>3. ENVIRONMENT</b></td>
-		    </tr>
-		    <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="house_unsafe_act" name="house_unsafe" value="1" />UA
-					<input type="radio" id="house_unsafe_cond" name="house_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="house_risk_fatality" name="house_risk" value="1" />Serious
-					<input type="radio" id="house_risk_major" name="house_risk" value="1" />Moderate
-					<input type="radio" id="house_risk_minor" name="house_risk" value="1" />Minor
-				</td>
-				<td>House keeping - Kerapihan & kebersihan</td>
-				<td style="width:100px">
-					<input type="radio" id="house_safe_act" name="house_safe" value="1" />SA
-					<input type="radio" id="house_safe_cond" name="house_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="standard_unsafe_act" name="standard_unsafe" value="1" />UA
-					<input type="radio" id="standard_unsafe_cond" name="standard_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="standard_risk_fatality" name="standard_risk" value="1" />Serious
-					<input type="radio" id="standard_risk_major" name="standard_risk" value="1" />Moderate
-					<input type="radio" id="standard_risk_minor" name="standard_risk" value="1" />Minor
-				</td>
-				<td>Standard labeling - Pemberian simbol2 standar</td>
-				<td style="width:100px">
-					<input type="radio" id="standard_safe_act" name="standard_safe" value="1" />SA
-					<input type="radio" id="standard_safe_cond" name="standard_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="spill_unsafe_act" name="spill_unsafe" value="1" />UA
-					<input type="radio" id="spill_unsafe_cond" name="spill_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="spill_risk_fatality" name="spill_risk" value="1" />Serious
-					<input type="radio" id="spill_risk_major" name="spill_risk" value="1" />Moderate
-					<input type="radio" id="spill_risk_minor" name="spill_risk" value="1" />Minor
-				</td>
-				<td>Potential of Spill/emission - Berpotensi pencemaran</td>
-				<td style="width:100px">
-					<input type="radio" id="spill_safe_act" name="spill_safe" value="1" />SA
-					<input type="radio" id="spill_safe_cond" name="spill_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="waste_energy_unsafe_act" name="waste_energy_unsafe" value="1" />UA
-					<input type="radio" id="waste_energy_unsafe_cond" name="waste_energy_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="waste_energy_risk_fatality" name="waste_energy_risk" value="1" />Serious
-					<input type="radio" id="waste_energy_risk_major" name="waste_energy_risk" value="1" />Moderate
-					<input type="radio" id="waste_energy_risk_minor" name="waste_energy_risk" value="1" />Minor
-				</td>
-				<td>Waste Energy/Inefficient - Boros enerji</td>
-				<td style="width:100px">
-					<input type="radio" id="waste_energy_safe_act" name="waste_energy_safe" value="1" />SA
-					<input type="radio" id="waste_energy_safe_cond" name="waste_energy_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="containment_unsafe_act" name="containment_unsafe" value="1" />UA
-					<input type="radio" id="containment_unsafe_cond" name="containment_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="containment_risk_fatality" name="containment_risk" value="1" />Serious
-					<input type="radio" id="containment_risk_major" name="containment_risk" value="1" />Moderate
-					<input type="radio" id="containment_risk_minor" name="containment_risk" value="1" />Minor
-				</td>
-				<td>Containment adequacy - Pencegahan pencemaran</td>
-				<td style="width:100px">
-					<input type="radio" id="containment_safe_act" name="containment_safe" value="1" />SA
-					<input type="radio" id="containment_safe_cond" name="containment_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="absorbent_unsafe_act" name="absorbent_unsafe" value="1" />UA
-					<input type="radio" id="absorbent_unsafe_cond" name="absorbent_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="absorbent_risk_fatality" name="absorbent_risk" value="1" />Serious
-					<input type="radio" id="absorbent_risk_major" name="absorbent_risk" value="1" />Moderate
-					<input type="radio" id="absorbent_risk_minor" name="absorbent_risk" value="1" />Minor
-				</td>
-				<td>Absorbent availability - Ketersediaan alat penyerap</td>
-				<td style="width:100px">
-					<input type="radio" id="absorbent_safe_act" name="absorbent_safe" value="1" />SA
-					<input type="radio" id="absorbent_safe_cond" name="absorbent_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-			    <td class="orange-bg center" colspan="4"><b>4. DOCUMENT/PROCEDURE</b><br /><b>(availability, adequacy, understood, follow, comply)</b></td>
-		    </tr>
-		    <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="hira_unsafe_act" name="hira_unsafe" value="1" />UA
-					<input type="radio" id="hira_unsafe_cond" name="hira_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="hira_risk_fatality" name="hira_risk" value="1" />Serious
-					<input type="radio" id="hira_risk_major" name="hira_risk" value="1" />Moderate
-					<input type="radio" id="hira_risk_minor" name="hira_risk" value="1" />Minor
-				</td>
-				<td>HIRA/JSA - Identifikasi bahaya & penanggulangan</td>
-				<td style="width:100px">
-					<input type="radio" id="hira_safe_act" name="hira_safe" value="1" />SA
-					<input type="radio" id="hira_safe_cond" name="hira_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="ptw_unsafe_act" name="ptw_unsafe" value="1" />UA
-					<input type="radio" id="ptw_unsafe_cond" name="ptw_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="ptw_risk_fatality" name="ptw_risk" value="1" />Serious
-					<input type="radio" id="ptw_risk_major" name="ptw_risk" value="1" />Moderate
-					<input type="radio" id="ptw_risk_minor" name="ptw_risk" value="1" />Minor
-				</td>
-				<td>PTW/ Special PTW - Dokumen ijin kerja</td>
-				<td style="width:100px">
-					<input type="radio" id="ptw_safe_act" name="ptw_safe" value="1" />SA
-					<input type="radio" id="ptw_safe_cond" name="ptw_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="sop_unsafe_act" name="sop_unsafe" value="1" />UA
-					<input type="radio" id="sop_unsafe_cond" name="sop_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="sop_risk_fatality" name="sop_risk" value="1" />Serious
-					<input type="radio" id="sop_risk_major" name="sop_risk" value="1" />Moderate
-					<input type="radio" id="sop_risk_minor" name="sop_risk" value="1" />Minor
-				</td>
-				<td>SOP/Guidline/working instruction - Petunjuk kerja</td>
-				<td style="width:100px">
-					<input type="radio" id="sop_safe_act" name="sop_safe" value="1" />SA
-					<input type="radio" id="sop_safe_cond" name="sop_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="msds_unsafe_act" name="msds_unsafe" value="1" />UA
-					<input type="radio" id="msds_unsafe_cond" name="msds_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="msds_risk_fatality" name="msds_risk" value="1" />Serious
-					<input type="radio" id="msds_risk_major" name="msds_risk" value="1" />Moderate
-					<input type="radio" id="msds_risk_minor" name="msds_risk" value="1" />Minor
-				</td>
-				<td>MSDS - Material Safety Data Sheets</td>
-				<td style="width:100px">
-					<input type="radio" id="msds_safe_act" name="msds_safe" value="1" />SA
-					<input type="radio" id="msds_safe_cond" name="msds_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="emergency_unsafe_act" name="emergency_unsafe" value="1" />UA
-					<input type="radio" id="emergency_unsafe_cond" name="emergency_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="emergency_risk_fatality" name="emergency_risk" value="1" />Serious
-					<input type="radio" id="emergency_risk_major" name="emergency_risk" value="1" />Moderate
-					<input type="radio" id="emergency_risk_minor" name="emergency_risk" value="1" />Minor
-				</td>
-				<td>Emergency Preparedness - Siap tanggap darurat</td>
-				<td style="width:100px">
-					<input type="radio" id="emergency_safe_act" name="emergency_safe" value="1" />SA
-					<input type="radio" id="emergency_safe_cond" name="emergency_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="certificates_unsafe_act" name="certificates_unsafe" value="1" />UA
-					<input type="radio" id="certificates_unsafe_cond" name="certificates_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="certificates_risk_fatality" name="certificates_risk" value="1" />Serious
-					<input type="radio" id="certificates_risk_major" name="certificates_risk" value="1" />Moderate
-					<input type="radio" id="certificates_risk_minor" name="certificates_risk" value="1" />Minor
-				</td>
-				<td>Certificates - sertifikat operator/perjalanan</td>
-				<td style="width:100px">
-					<input type="radio" id="certificates_safe_act" name="certificates_safe" value="1" />SA
-					<input type="radio" id="certificates_safe_cond" name="certificates_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-			    <td class="orange-bg center" colspan="4"><b>5. TOOLS & EQUIPMENTS</b><br /><b>(wrong for the job, used incorrectly, unsafe condition)</b></td>
-		    </tr>
-		    <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="ppe_unsafe_act" name="ppe_unsafe" value="1" onclick="show_equipment();" />UA
-					<input type="radio" id="ppe_unsafe_cond" name="ppe_unsafe" value="1" onclick="show_equipment();" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="ppe_risk_fatality" name="ppe_risk" value="1" />Serious
-					<input type="radio" id="ppe_risk_major" name="ppe_risk" value="1" />Moderate
-					<input type="radio" id="ppe_risk_minor" name="ppe_risk" value="1" />Minor
-				</td>
-				<td>PPE - Alat Pelindung Diri
-                    <select id="ppe_equipment" style="display:none">
-                        <option value="">Choose One</option>
-                        <option value="0">Safety helmet</option>
-                        <option value="1">Safety gloves</option>
-                        <option value="2">Safety glasses</option>
-                        <option value="3">Safety shoes</option>
-                        <option value="4">Safety ear protection</option>
-                    </select>
-				</td>
-				<td style="width:100px">
-					<input type="radio" id="ppe_safe_act" name="ppe_safe" value="1" onclick="show_equipment();" />SA
-					<input type="radio" id="ppe_safe_cond" name="ppe_safe" value="1" onclick="show_equipment();" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="hand_unsafe_act" name="hand_unsafe" value="1" />UA
-					<input type="radio" id="hand_unsafe_cond" name="hand_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="hand_risk_fatality" name="hand_risk" value="1" />Serious
-					<input type="radio" id="hand_risk_major" name="hand_risk" value="1" />Moderate
-					<input type="radio" id="hand_risk_minor" name="hand_risk" value="1" />Minor
-				</td>
-				<td>Hand / portable tools - Alat portabel</td>
-				<td style="width:100px">
-					<input type="radio" id="hand_safe_act" name="hand_safe" value="1" />SA
-					<input type="radio" id="hand_safe_cond" name="hand_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="mechanical_unsafe_act" name="mechanical_unsafe" value="1" />UA
-					<input type="radio" id="mechanical_unsafe_cond" name="mechanical_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="mechanical_risk_fatality" name="mechanical_risk" value="1" />Serious
-					<input type="radio" id="mechanical_risk_major" name="mechanical_risk" value="1" />Moderate
-					<input type="radio" id="mechanical_risk_minor" name="mechanical_risk" value="1" />Minor
-				</td>
-				<td>Mechanical - Mekanis</td>
-				<td style="width:100px">
-					<input type="radio" id="mechanical_safe_act" name="mechanical_safe" value="1" />SA
-					<input type="radio" id="mechanical_safe_cond" name="mechanical_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="electrical_unsafe_act" name="electrical_unsafe" value="1" />UA
-					<input type="radio" id="electrical_unsafe_cond" name="electrical_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="electrical_risk_fatality" name="electrical_risk" value="1" />Serious
-					<input type="radio" id="electrical_risk_major" name="electrical_risk" value="1" />Moderate
-					<input type="radio" id="electrical_risk_minor" name="electrical_risk" value="1" />Minor
-				</td>
-				<td>Electrical / electronic - Listrik</td>
-				<td style="width:100px">
-					<input type="radio" id="electrical_safe_act" name="electrical_safe" value="1" />SA
-					<input type="radio" id="electrical_safe_cond" name="electrical_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="vehicular_unsafe_act" name="vehicular_unsafe" value="1" />UA
-					<input type="radio" id="vehicular_unsafe_cond" name="vehicular_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:200px">
-					<input type="radio" id="vehicular_risk_fatality" name="vehicular_risk" value="1" />Serious
-					<input type="radio" id="vehicular_risk_major" name="vehicular_risk" value="1" />Moderate
-					<input type="radio" id="vehicular_risk_minor" name="vehicular_risk" value="1" />Minor
-				</td>
-				<td>Vehicular / heavy equipment - kendaraan/alat berat</td>
-				<td style="width:100px">
-					<input type="radio" id="vehicular_safe_act" name="vehicular_safe" value="1" />SA
-					<input type="radio" id="vehicular_safe_cond" name="vehicular_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-			    <td class="orange-bg center" colspan="4"><b>6. WORKING AREA</b></td>
-		    </tr>
-		    <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="substandard_unsafe_act" name="substandard_unsafe" value="1" />UA
-					<input type="radio" id="substandard_unsafe_cond" name="substandard_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="substandard_risk_fatality" name="substandard_risk" value="1" />Serious
-					<input type="radio" id="substandard_risk_major" name="substandard_risk" value="1" />Moderate
-					<input type="radio" id="substandard_risk_minor" name="substandard_risk" value="1" />Minor
-				</td>
-				<td>Substandard facilities - Fasilitas substandard</td>
-				<td style="width:100px">
-					<input type="radio" id="substandard_safe_act" name="substandard_safe" value="1" />SA
-					<input type="radio" id="substandard_safe_cond" name="substandard_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="h2s_unsafe_act" name="h2s_unsafe" value="1" />UA
-					<input type="radio" id="h2s_unsafe_cond" name="h2s_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="h2s_risk_fatality" name="h2s_risk" value="1" />Serious
-					<input type="radio" id="h2s_risk_major" name="h2s_risk" value="1" />Moderate
-					<input type="radio" id="h2s_risk_minor" name="h2s_risk" value="1" />Minor
-				</td>
-				<td>H2S exposure - Paparan H2S</td>
-				<td style="width:100px">
-					<input type="radio" id="h2s_safe_act" name="h2s_safe" value="1" />SA
-					<input type="radio" id="h2s_safe_cond" name="h2s_safe" value="1" />SC
-				</td>
-			</tr>
-            <tr>
-				<td class="" style="width:100px">
-					<input type="radio" id="workplace_health_unsafe_act" name="workplace_health_unsafe" value="1" />UA
-					<input type="radio" id="workplace_health_unsafe_cond" name="workplace_health_unsafe" value="1" />UC
-				</td>
-				<td class="" style="width:250px">
-					<input type="radio" id="workplace_health_risk_fatality" name="workplace_health_risk" value="1" />Serious
-					<input type="radio" id="workplace_health_risk_major" name="workplace_health_risk" value="1" />Moderate
-					<input type="radio" id="workplace_health_risk_minor" name="workplace_health_risk" value="1" />Minor
-				</td>
-				<td>Workplace health hazards - Potensi bahaya kesehatan<br />(Noise, dust, temperature, vibration, radiation, temperature, ventilation, illumination, slippery)</td>
-				<td style="width:100px">
-					<input type="radio" id="workplace_health_safe_act" name="workplace_health_safe" value="1" />SA
-					<input type="radio" id="workplace_health_safe_cond" name="workplace_health_safe" value="1" />SC
-				</td>
-			</tr>
-	    </table>
-	</div>
-    <br />
-	<div class="log-part3">
-        <table class="w-border" style="width:980px">
-		    <tr>
-			    <td style="width:200px"><b>Date/Time</b></td>
-			    <td>
-                    @(Html.Telerik().DateTimePicker()
-                        .Name("date_time")
-                        .HtmlAttributes(new { id = "datetime_wrapper", style = "margin-left:5px" })
-                        .Value(isEdit ? dl.date_time : DateTime.Now)
-                    )
-			    </td>
-		    </tr>
-            <tr>
-			    <td style="width:200px"><b>Observer</b></td>
-			    <td>
-                    <input type="text" id="observer" name="observer" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) ? "" : "disabled") value="@(isEdit ? dl.observer : has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).alpha_name)" />
-			    </td>
-		    </tr>
-            <tr>
-			    <td style="width:200px"><b>Department</b></td>
-			    <td>
-                    <input type="text" id="department" name="department" value="@(isEdit ? dl.department : has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).dept_name)" disabled/>
-			    </td>
-		    </tr>
-	    </table>
-	</div>
-    <br />
-	<div class="log-part4">
-        <table class="w-border" style="width:980px">
-		    <tr>
-			    <td>
-                    <b>Location:</b><br />
-                    <input type="text" id="location" name="location" value="@(isEdit ? dl.location : "")" />
-			    </td>
-		    </tr>
-            <tr>
-			    <td>
-                    <b>Activity:</b><br />
-                    <textarea id="activity" name="activity" cols="118" rows="6" style="resize:none">@(isEdit ? dl.activity : "")</textarea>
-			    </td>
-		    </tr>
-            <tr>
-			    <td>
-                    <ul style="margin-left:0px;padding-left:0px;margin-bottom:0px">
-                        <li style="display:inline"><b><label for="equip_choose"><input type="radio" value="0" id="equip_choose" name="equipment_employee"/>Equipment</label></b></li>
-                        <li style="display:inline"><b><label for="employee_choose"><input type="radio" value="1" id="employee_choose" name="equipment_employee"/>Employee</label></b></li>
-                    </ul>
-                    <select id="equipment_id" style="display:none">
-                        <option>Choose One</option>
-                        @foreach (StarEnergi.Models.equipment eq in ViewBag.list_equipment as List<StarEnergi.Models.equipment>)
-                        {
-                            <option value="@eq.id">@eq.tag_num</option>
-                        }
-                    </select>
-                    <div id="employee_id" style="display:none">
-                        <div id="selectEmployee" style="overflow-y:scroll;height:200px;float:left;width:450px">
-                            @{has = has.OrderBy(p => p.alpha_name).ToList();}
-                            @foreach (StarEnergi.Models.EmployeeEntity em in has)
+    <div id="content-observation">
+	    <div class="log-part1">
+            <div class="clearfix" style="width:768px"></div>
+		    <b>OBSERVE -> STOP -> DISCUSS -> COMMITMENT -> REPORT<br />
+            OBSERVE -> CORRECTIVE -> PREVENT RECURRENT -> REPORT</b>
+		    <table class="w-border" style="width:980px">
+			    <tr>
+				    <td class="no-border-btm"><b>WRITE</b></td>
+                    <td class="center" rowspan="3"><b>SEVERITY</b></td>
+                    <td class="center" rowspan="3"><b>OBSERVATION CHECKLIST</b></td>
+                    <td class="rights no-border-btm"><b>WRITE</b></td>
+			    </tr>
+                <tr>
+				    <td class="no-border-btm no-border-top"><b>UA - UNSAFE ACT</b></td>
+                    <td class="rights no-border-btm no-border-top"><b>SAFE ACT - SA</b></td>
+			    </tr>
+			    <tr>
+				    <td class="no-border-top"><b>UC - UNSAFE COND</b></td>
+                    <td class="rights no-border-top"><b>SAFE COND - SC</b></td>
+			    </tr>
+		    </table>
+	    </div>
+	    <div class="log-part2">
+            <table class="w-border" style="width:980px">
+		        <tr>
+			        <td class="orange-bg center" colspan="4"><b>1. SAFETY</b></td>
+		        </tr>
+		        <tr>
+			        <td class="" style="width:100px">
+                        <input type="radio" id="accident_unsafe_act" name="accident_unsafe" value="1" />UA
+                        <input type="radio" id="accident_unsafe_cond" name="accident_unsafe" value="1" />UC
+			        </td>
+                    <td class="" style="width:250px">
+                        <input type="radio" id="accident_risk_fatality" name="accident_risk" value="1" />Serious
+                        <input type="radio" id="accident_risk_major" name="accident_risk" value="1" />Moderate
+                        <input type="radio" id="accident_risk_minor" name="accident_risk" value="1" />Minor
+			        </td>
+			        <td>Potential accident - Berpotensi kecelakaan</td>
+                    <td style="width:100px">
+                        <input type="radio" id="accident_safe_act" name="accident_safe" value="1" />SA
+                        <input type="radio" id="accident_safe_cond" name="accident_safe" value="1" />SC
+			        </td>
+		        </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="fire_unsafe_act" name="fire_unsafe" value="1" />UA
+					    <input type="radio" id="fire_unsafe_cond" name="fire_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="fire_risk_fatality" name="fire_risk" value="1" />Serious
+					    <input type="radio" id="fire_risk_major" name="fire_risk" value="1" />Moderate
+					    <input type="radio" id="fire_risk_minor" name="fire_risk" value="1" />Minor
+				    </td>
+				    <td>Potential fire/explode - Berpotensi kebakaran/meledak</td>
+				    <td style="width:100px">
+					    <input type="radio" id="fire_safe_act" name="fire_safe" value="1" />SA
+					    <input type="radio" id="fire_safe_cond" name="fire_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="prevention_unsafe_act" name="prevention_unsafe" value="1" />UA
+					    <input type="radio" id="prevention_unsafe_cond" name="prevention_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="prevention_risk_fatality" name="prevention_risk" value="1" />Serious
+					    <input type="radio" id="prevention_risk_major" name="prevention_risk" value="1" />Moderate
+					    <input type="radio" id="prevention_risk_minor" name="prevention_risk" value="1" />Minor
+				    </td>
+				    <td>Incident Prevention Program - Pencegahan kecelakaan</td>
+				    <td style="width:100px">
+					    <input type="radio" id="prevention_safe_act" name="prevention_safe" value="1" />SA
+					    <input type="radio" id="prevention_safe_cond" name="prevention_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="supervisor_unsafe_act" name="supervisor_unsafe" value="1" />UA
+					    <input type="radio" id="supervisor_unsafe_cond" name="supervisor_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="supervisor_risk_fatality" name="supervisor_risk" value="1" />Serious
+					    <input type="radio" id="supervisor_risk_major" name="supervisor_risk" value="1" />Moderate
+					    <input type="radio" id="supervisor_risk_minor" name="supervisor_risk" value="1" />Minor
+				    </td>
+				    <td>Supervisor in locations - Pengawas berada di lokasi</td>
+				    <td style="width:100px">
+					    <input type="radio" id="supervisor_safe_act" name="supervisor_safe" value="1" />SA
+					    <input type="radio" id="supervisor_safe_cond" name="supervisor_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+			        <td class="orange-bg center" colspan="4"><b>2. HEALTH</b></td>
+		        </tr>
+		        <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="fit_work_unsafe_act" name="fit_work_unsafe" value="1" />UA
+					    <input type="radio" id="fit_work_unsafe_cond" name="fit_work_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="fit_work_risk_fatality" name="fit_work_risk" value="1" />Serious
+					    <input type="radio" id="fit_work_risk_major" name="fit_work_risk" value="1" />Moderate
+					    <input type="radio" id="fit_work_risk_minor" name="fit_work_risk" value="1" />Minor
+				    </td>
+				    <td>Fit for work - Kondisi sehat/siap untuk kerja</td>
+				    <td style="width:100px">
+					    <input type="radio" id="fit_work_safe_act" name="fit_work_safe" value="1" />SA
+					    <input type="radio" id="fit_work_safe_cond" name="fit_work_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="psychological_unsafe_act" name="psychological_unsafe" value="1" />UA
+					    <input type="radio" id="psychological_unsafe_cond" name="psychological_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="psychological_risk_fatality" name="psychological_risk" value="1" />Serious
+					    <input type="radio" id="psychological_risk_major" name="psychological_risk" value="1" />Moderate
+					    <input type="radio" id="psychological_risk_minor" name="psychological_risk" value="1" />Minor
+				    </td>
+				    <td>Psychological problem - Masalah Psikologi</td>
+				    <td style="width:100px">
+					    <input type="radio" id="psychological_safe_act" name="psychological_safe" value="1" />SA
+					    <input type="radio" id="psychological_safe_cond" name="psychological_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="posture_unsafe_act" name="posture_unsafe" value="1" />UA
+					    <input type="radio" id="posture_unsafe_cond" name="posture_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="posture_risk_fatality" name="posture_risk" value="1" />Serious
+					    <input type="radio" id="posture_risk_major" name="posture_risk" value="1" />Moderate
+					    <input type="radio" id="posture_risk_minor" name="posture_risk" value="1" />Minor
+				    </td>
+				    <td>Posture/ergonomics - Ergonomi/posisi tubuh</td>
+				    <td style="width:100px">
+					    <input type="radio" id="posture_safe_act" name="posture_safe" value="1" />SA
+					    <input type="radio" id="posture_safe_cond" name="posture_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="substance_unsafe_act" name="substance_unsafe" value="1" />UA
+					    <input type="radio" id="substance_unsafe_cond" name="substance_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="substance_risk_fatality" name="substance_risk" value="1" />Serious
+					    <input type="radio" id="substance_risk_major" name="substance_risk" value="1" />Moderate
+					    <input type="radio" id="substance_risk_minor" name="substance_risk" value="1" />Minor
+				    </td>
+				    <td>Hazardous Substance - Bahan berbahaya ke tubuh</td>
+				    <td style="width:100px">
+					    <input type="radio" id="substance_safe_act" name="substance_safe" value="1" />SA
+					    <input type="radio" id="substance_safe_cond" name="substance_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="hygiene_unsafe_act" name="hygiene_unsafe" value="1" />UA
+					    <input type="radio" id="hygiene_unsafe_cond" name="hygiene_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="hygiene_risk_fatality" name="hygiene_risk" value="1" />Serious
+					    <input type="radio" id="hygiene_risk_major" name="hygiene_risk" value="1" />Moderate
+					    <input type="radio" id="hygiene_risk_minor" name="hygiene_risk" value="1" />Minor
+				    </td>
+				    <td>Hygiene & sanitation - Kebersihan & kesehatan</td>
+				    <td style="width:100px">
+					    <input type="radio" id="hygiene_safe_act" name="hygiene_safe" value="1" />SA
+					    <input type="radio" id="hygiene_safe_cond" name="hygiene_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+			        <td class="orange-bg center" colspan="4"><b>3. ENVIRONMENT</b></td>
+		        </tr>
+		        <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="house_unsafe_act" name="house_unsafe" value="1" />UA
+					    <input type="radio" id="house_unsafe_cond" name="house_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="house_risk_fatality" name="house_risk" value="1" />Serious
+					    <input type="radio" id="house_risk_major" name="house_risk" value="1" />Moderate
+					    <input type="radio" id="house_risk_minor" name="house_risk" value="1" />Minor
+				    </td>
+				    <td>House keeping - Kerapihan & kebersihan</td>
+				    <td style="width:100px">
+					    <input type="radio" id="house_safe_act" name="house_safe" value="1" />SA
+					    <input type="radio" id="house_safe_cond" name="house_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="standard_unsafe_act" name="standard_unsafe" value="1" />UA
+					    <input type="radio" id="standard_unsafe_cond" name="standard_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="standard_risk_fatality" name="standard_risk" value="1" />Serious
+					    <input type="radio" id="standard_risk_major" name="standard_risk" value="1" />Moderate
+					    <input type="radio" id="standard_risk_minor" name="standard_risk" value="1" />Minor
+				    </td>
+				    <td>Standard labeling - Pemberian simbol2 standar</td>
+				    <td style="width:100px">
+					    <input type="radio" id="standard_safe_act" name="standard_safe" value="1" />SA
+					    <input type="radio" id="standard_safe_cond" name="standard_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="spill_unsafe_act" name="spill_unsafe" value="1" />UA
+					    <input type="radio" id="spill_unsafe_cond" name="spill_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="spill_risk_fatality" name="spill_risk" value="1" />Serious
+					    <input type="radio" id="spill_risk_major" name="spill_risk" value="1" />Moderate
+					    <input type="radio" id="spill_risk_minor" name="spill_risk" value="1" />Minor
+				    </td>
+				    <td>Potential of Spill/emission - Berpotensi pencemaran</td>
+				    <td style="width:100px">
+					    <input type="radio" id="spill_safe_act" name="spill_safe" value="1" />SA
+					    <input type="radio" id="spill_safe_cond" name="spill_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="waste_energy_unsafe_act" name="waste_energy_unsafe" value="1" />UA
+					    <input type="radio" id="waste_energy_unsafe_cond" name="waste_energy_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="waste_energy_risk_fatality" name="waste_energy_risk" value="1" />Serious
+					    <input type="radio" id="waste_energy_risk_major" name="waste_energy_risk" value="1" />Moderate
+					    <input type="radio" id="waste_energy_risk_minor" name="waste_energy_risk" value="1" />Minor
+				    </td>
+				    <td>Waste Energy/Inefficient - Boros enerji</td>
+				    <td style="width:100px">
+					    <input type="radio" id="waste_energy_safe_act" name="waste_energy_safe" value="1" />SA
+					    <input type="radio" id="waste_energy_safe_cond" name="waste_energy_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="containment_unsafe_act" name="containment_unsafe" value="1" />UA
+					    <input type="radio" id="containment_unsafe_cond" name="containment_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="containment_risk_fatality" name="containment_risk" value="1" />Serious
+					    <input type="radio" id="containment_risk_major" name="containment_risk" value="1" />Moderate
+					    <input type="radio" id="containment_risk_minor" name="containment_risk" value="1" />Minor
+				    </td>
+				    <td>Containment adequacy - Pencegahan pencemaran</td>
+				    <td style="width:100px">
+					    <input type="radio" id="containment_safe_act" name="containment_safe" value="1" />SA
+					    <input type="radio" id="containment_safe_cond" name="containment_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="absorbent_unsafe_act" name="absorbent_unsafe" value="1" />UA
+					    <input type="radio" id="absorbent_unsafe_cond" name="absorbent_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="absorbent_risk_fatality" name="absorbent_risk" value="1" />Serious
+					    <input type="radio" id="absorbent_risk_major" name="absorbent_risk" value="1" />Moderate
+					    <input type="radio" id="absorbent_risk_minor" name="absorbent_risk" value="1" />Minor
+				    </td>
+				    <td>Absorbent availability - Ketersediaan alat penyerap</td>
+				    <td style="width:100px">
+					    <input type="radio" id="absorbent_safe_act" name="absorbent_safe" value="1" />SA
+					    <input type="radio" id="absorbent_safe_cond" name="absorbent_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+			        <td class="orange-bg center" colspan="4"><b>4. DOCUMENT/PROCEDURE</b><br /><b>(availability, adequacy, understood, follow, comply)</b></td>
+		        </tr>
+		        <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="hira_unsafe_act" name="hira_unsafe" value="1" />UA
+					    <input type="radio" id="hira_unsafe_cond" name="hira_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="hira_risk_fatality" name="hira_risk" value="1" />Serious
+					    <input type="radio" id="hira_risk_major" name="hira_risk" value="1" />Moderate
+					    <input type="radio" id="hira_risk_minor" name="hira_risk" value="1" />Minor
+				    </td>
+				    <td>HIRA/JSA - Identifikasi bahaya & penanggulangan</td>
+				    <td style="width:100px">
+					    <input type="radio" id="hira_safe_act" name="hira_safe" value="1" />SA
+					    <input type="radio" id="hira_safe_cond" name="hira_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="ptw_unsafe_act" name="ptw_unsafe" value="1" />UA
+					    <input type="radio" id="ptw_unsafe_cond" name="ptw_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="ptw_risk_fatality" name="ptw_risk" value="1" />Serious
+					    <input type="radio" id="ptw_risk_major" name="ptw_risk" value="1" />Moderate
+					    <input type="radio" id="ptw_risk_minor" name="ptw_risk" value="1" />Minor
+				    </td>
+				    <td>PTW/ Special PTW - Dokumen ijin kerja</td>
+				    <td style="width:100px">
+					    <input type="radio" id="ptw_safe_act" name="ptw_safe" value="1" />SA
+					    <input type="radio" id="ptw_safe_cond" name="ptw_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="sop_unsafe_act" name="sop_unsafe" value="1" />UA
+					    <input type="radio" id="sop_unsafe_cond" name="sop_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="sop_risk_fatality" name="sop_risk" value="1" />Serious
+					    <input type="radio" id="sop_risk_major" name="sop_risk" value="1" />Moderate
+					    <input type="radio" id="sop_risk_minor" name="sop_risk" value="1" />Minor
+				    </td>
+				    <td>SOP/Guidline/working instruction - Petunjuk kerja</td>
+				    <td style="width:100px">
+					    <input type="radio" id="sop_safe_act" name="sop_safe" value="1" />SA
+					    <input type="radio" id="sop_safe_cond" name="sop_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="msds_unsafe_act" name="msds_unsafe" value="1" />UA
+					    <input type="radio" id="msds_unsafe_cond" name="msds_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="msds_risk_fatality" name="msds_risk" value="1" />Serious
+					    <input type="radio" id="msds_risk_major" name="msds_risk" value="1" />Moderate
+					    <input type="radio" id="msds_risk_minor" name="msds_risk" value="1" />Minor
+				    </td>
+				    <td>MSDS - Material Safety Data Sheets</td>
+				    <td style="width:100px">
+					    <input type="radio" id="msds_safe_act" name="msds_safe" value="1" />SA
+					    <input type="radio" id="msds_safe_cond" name="msds_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="emergency_unsafe_act" name="emergency_unsafe" value="1" />UA
+					    <input type="radio" id="emergency_unsafe_cond" name="emergency_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="emergency_risk_fatality" name="emergency_risk" value="1" />Serious
+					    <input type="radio" id="emergency_risk_major" name="emergency_risk" value="1" />Moderate
+					    <input type="radio" id="emergency_risk_minor" name="emergency_risk" value="1" />Minor
+				    </td>
+				    <td>Emergency Preparedness - Siap tanggap darurat</td>
+				    <td style="width:100px">
+					    <input type="radio" id="emergency_safe_act" name="emergency_safe" value="1" />SA
+					    <input type="radio" id="emergency_safe_cond" name="emergency_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="certificates_unsafe_act" name="certificates_unsafe" value="1" />UA
+					    <input type="radio" id="certificates_unsafe_cond" name="certificates_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="certificates_risk_fatality" name="certificates_risk" value="1" />Serious
+					    <input type="radio" id="certificates_risk_major" name="certificates_risk" value="1" />Moderate
+					    <input type="radio" id="certificates_risk_minor" name="certificates_risk" value="1" />Minor
+				    </td>
+				    <td>Certificates - sertifikat operator/perjalanan</td>
+				    <td style="width:100px">
+					    <input type="radio" id="certificates_safe_act" name="certificates_safe" value="1" />SA
+					    <input type="radio" id="certificates_safe_cond" name="certificates_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+			        <td class="orange-bg center" colspan="4"><b>5. TOOLS & EQUIPMENTS</b><br /><b>(wrong for the job, used incorrectly, unsafe condition)</b></td>
+		        </tr>
+		        <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="ppe_unsafe_act" name="ppe_unsafe" value="1" onclick="show_equipment();" />UA
+					    <input type="radio" id="ppe_unsafe_cond" name="ppe_unsafe" value="1" onclick="show_equipment();" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="ppe_risk_fatality" name="ppe_risk" value="1" />Serious
+					    <input type="radio" id="ppe_risk_major" name="ppe_risk" value="1" />Moderate
+					    <input type="radio" id="ppe_risk_minor" name="ppe_risk" value="1" />Minor
+				    </td>
+				    <td>PPE - Alat Pelindung Diri
+                        <select id="ppe_equipment" style="display:none">
+                            <option value="">Choose One</option>
+                            <option value="0">Safety helmet</option>
+                            <option value="1">Safety gloves</option>
+                            <option value="2">Safety glasses</option>
+                            <option value="3">Safety shoes</option>
+                            <option value="4">Safety ear protection</option>
+                        </select>
+				    </td>
+				    <td style="width:100px">
+					    <input type="radio" id="ppe_safe_act" name="ppe_safe" value="1" onclick="show_equipment();" />SA
+					    <input type="radio" id="ppe_safe_cond" name="ppe_safe" value="1" onclick="show_equipment();" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="hand_unsafe_act" name="hand_unsafe" value="1" />UA
+					    <input type="radio" id="hand_unsafe_cond" name="hand_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="hand_risk_fatality" name="hand_risk" value="1" />Serious
+					    <input type="radio" id="hand_risk_major" name="hand_risk" value="1" />Moderate
+					    <input type="radio" id="hand_risk_minor" name="hand_risk" value="1" />Minor
+				    </td>
+				    <td>Hand / portable tools - Alat portabel</td>
+				    <td style="width:100px">
+					    <input type="radio" id="hand_safe_act" name="hand_safe" value="1" />SA
+					    <input type="radio" id="hand_safe_cond" name="hand_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="mechanical_unsafe_act" name="mechanical_unsafe" value="1" />UA
+					    <input type="radio" id="mechanical_unsafe_cond" name="mechanical_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="mechanical_risk_fatality" name="mechanical_risk" value="1" />Serious
+					    <input type="radio" id="mechanical_risk_major" name="mechanical_risk" value="1" />Moderate
+					    <input type="radio" id="mechanical_risk_minor" name="mechanical_risk" value="1" />Minor
+				    </td>
+				    <td>Mechanical - Mekanis</td>
+				    <td style="width:100px">
+					    <input type="radio" id="mechanical_safe_act" name="mechanical_safe" value="1" />SA
+					    <input type="radio" id="mechanical_safe_cond" name="mechanical_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="electrical_unsafe_act" name="electrical_unsafe" value="1" />UA
+					    <input type="radio" id="electrical_unsafe_cond" name="electrical_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="electrical_risk_fatality" name="electrical_risk" value="1" />Serious
+					    <input type="radio" id="electrical_risk_major" name="electrical_risk" value="1" />Moderate
+					    <input type="radio" id="electrical_risk_minor" name="electrical_risk" value="1" />Minor
+				    </td>
+				    <td>Electrical / electronic - Listrik</td>
+				    <td style="width:100px">
+					    <input type="radio" id="electrical_safe_act" name="electrical_safe" value="1" />SA
+					    <input type="radio" id="electrical_safe_cond" name="electrical_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="vehicular_unsafe_act" name="vehicular_unsafe" value="1" />UA
+					    <input type="radio" id="vehicular_unsafe_cond" name="vehicular_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:200px">
+					    <input type="radio" id="vehicular_risk_fatality" name="vehicular_risk" value="1" />Serious
+					    <input type="radio" id="vehicular_risk_major" name="vehicular_risk" value="1" />Moderate
+					    <input type="radio" id="vehicular_risk_minor" name="vehicular_risk" value="1" />Minor
+				    </td>
+				    <td>Vehicular / heavy equipment - kendaraan/alat berat</td>
+				    <td style="width:100px">
+					    <input type="radio" id="vehicular_safe_act" name="vehicular_safe" value="1" />SA
+					    <input type="radio" id="vehicular_safe_cond" name="vehicular_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+			        <td class="orange-bg center" colspan="4"><b>6. WORKING AREA</b></td>
+		        </tr>
+		        <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="substandard_unsafe_act" name="substandard_unsafe" value="1" />UA
+					    <input type="radio" id="substandard_unsafe_cond" name="substandard_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="substandard_risk_fatality" name="substandard_risk" value="1" />Serious
+					    <input type="radio" id="substandard_risk_major" name="substandard_risk" value="1" />Moderate
+					    <input type="radio" id="substandard_risk_minor" name="substandard_risk" value="1" />Minor
+				    </td>
+				    <td>Substandard facilities - Fasilitas substandard</td>
+				    <td style="width:100px">
+					    <input type="radio" id="substandard_safe_act" name="substandard_safe" value="1" />SA
+					    <input type="radio" id="substandard_safe_cond" name="substandard_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="h2s_unsafe_act" name="h2s_unsafe" value="1" />UA
+					    <input type="radio" id="h2s_unsafe_cond" name="h2s_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="h2s_risk_fatality" name="h2s_risk" value="1" />Serious
+					    <input type="radio" id="h2s_risk_major" name="h2s_risk" value="1" />Moderate
+					    <input type="radio" id="h2s_risk_minor" name="h2s_risk" value="1" />Minor
+				    </td>
+				    <td>H2S exposure - Paparan H2S</td>
+				    <td style="width:100px">
+					    <input type="radio" id="h2s_safe_act" name="h2s_safe" value="1" />SA
+					    <input type="radio" id="h2s_safe_cond" name="h2s_safe" value="1" />SC
+				    </td>
+			    </tr>
+                <tr>
+				    <td class="" style="width:100px">
+					    <input type="radio" id="workplace_health_unsafe_act" name="workplace_health_unsafe" value="1" />UA
+					    <input type="radio" id="workplace_health_unsafe_cond" name="workplace_health_unsafe" value="1" />UC
+				    </td>
+				    <td class="" style="width:250px">
+					    <input type="radio" id="workplace_health_risk_fatality" name="workplace_health_risk" value="1" />Serious
+					    <input type="radio" id="workplace_health_risk_major" name="workplace_health_risk" value="1" />Moderate
+					    <input type="radio" id="workplace_health_risk_minor" name="workplace_health_risk" value="1" />Minor
+				    </td>
+				    <td>Workplace health hazards - Potensi bahaya kesehatan<br />(Noise, dust, temperature, vibration, radiation, temperature, ventilation, illumination, slippery)</td>
+				    <td style="width:100px">
+					    <input type="radio" id="workplace_health_safe_act" name="workplace_health_safe" value="1" />SA
+					    <input type="radio" id="workplace_health_safe_cond" name="workplace_health_safe" value="1" />SC
+				    </td>
+			    </tr>
+	        </table>
+	    </div>
+        <br />
+	    <div class="log-part3">
+            <table class="w-border" style="width:980px">
+		        <tr>
+			        <td style="width:200px"><b>Date/Time</b></td>
+			        <td>
+                        @(Html.Telerik().DateTimePicker()
+                            .Name("date_time")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "margin-left:5px" })
+                            .Value(isEdit ? dl.date_time : DateTime.Now)
+                        )
+			        </td>
+		        </tr>
+                <tr>
+			        <td style="width:200px"><b>Observer</b></td>
+			        <td>
+                        <input type="text" id="observer" name="observer" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) ? "" : "disabled") value="@(isEdit ? dl.observer : has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).alpha_name)" />
+			        </td>
+		        </tr>
+                <tr>
+			        <td style="width:200px"><b>Department</b></td>
+			        <td>
+                        <input type="text" id="department" name="department" value="@(isEdit ? dl.department : has.Find(p => p.username == HttpContext.Current.Session["username"].ToString()).dept_name)" disabled/>
+			        </td>
+		        </tr>
+	        </table>
+	    </div>
+        <br />
+	    <div class="log-part4">
+            <table class="w-border" style="width:980px">
+		        <tr>
+			        <td>
+                        <b>Location:</b><br />
+                        <input type="text" id="location" name="location" value="@(isEdit ? dl.location : "")" />
+			        </td>
+		        </tr>
+                <tr>
+			        <td>
+                        <b>Activity:</b><br />
+                        <textarea id="activity" name="activity" cols="118" rows="6" style="resize:none">@(isEdit ? dl.activity : "")</textarea>
+			        </td>
+		        </tr>
+                <tr>
+			        <td>
+                        <ul style="margin-left:0px;padding-left:0px;margin-bottom:0px">
+                            <li style="display:inline"><b><label for="equip_choose"><input type="radio" value="0" id="equip_choose" name="equipment_employee"/>Equipment</label></b></li>
+                            <li style="display:inline"><b><label for="employee_choose"><input type="radio" value="1" id="employee_choose" name="equipment_employee"/>Employee</label></b></li>
+                        </ul>
+                        <select id="equipment_id" style="display:none">
+                            <option>Choose One</option>
+                            @foreach (StarEnergi.Models.equipment eq in ViewBag.list_equipment as List<StarEnergi.Models.equipment>)
                             {
-                                <input type="checkbox" name="employee" value="@em.id" onclick="check()" />@em.alpha_name<br />
+                                <option value="@eq.id">@eq.tag_num - @eq.nama</option>
                             }
+                        </select>
+                        <div id="employee_id" style="display:none">
+                            <div id="selectEmployee" style="overflow-y:scroll;height:200px;float:left;width:450px">
+                                @{has = has.OrderBy(p => p.alpha_name).ToList();}
+                                @foreach (StarEnergi.Models.EmployeeEntity em in has)
+                                {
+                                    <input type="checkbox" name="employee" value="@em.id" onclick="check()" />@em.alpha_name<br />
+                                }
+                            </div>
+                            <div id="selectedEmployee" style="overflow-y:auto;height:200px;float:left;width:450px">
+                                <ul id="chosenList">
+                                </ul>
+                            </div>
                         </div>
-                        <div id="selectedEmployee" style="overflow-y:auto;height:200px;float:left;width:450px">
-                            <ul id="chosenList">
-                            </ul>
-                        </div>
-                    </div>
-			    </td>
-		    </tr>
-            <tr>
-			    <td class="no-border-btm">
-                    <input type="checkbox" id="safe_observed" name="safe_observed" value="1" @(isEdit ? dl.safe_observed == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Safe Act/Condition Observed.</b>
-			    </td>
-		    </tr>
-            <tr>
-			    <td>
-                    <textarea name="safe_observeds" id="safe_observeds" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.safe_observeds : "")</textarea>
-			    </td>
-		    </tr>
-            <tr>
-			    <td class="no-border-top">
-                    <input type="checkbox" id="action_encourages" name="action_encourages" value="1" @(isEdit ? dl.action_encourages == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Action taken to encourage continued SHE perfomances.</b>
-			    </td>
-		    </tr>
-            <tr>
-			    <td>
-                    <textarea name="action_encourage" id="action_encourage" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.action_encourage : "")</textarea>
-			    </td>
-		    </tr>
-            <tr>
-			    <td class="no-border-btm">
-                    <input type="checkbox" id="unsafe_observed" name="unsafe_observed" value="1" @(isEdit ? dl.unsafe_observed == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Unsafe Act/Conditions Observed.</b>
-			    </td>
-		    </tr>
-            <tr>
-			    <td>
-                    <textarea name="unsafe_observeds" id="unsafe_observeds" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.unsafe_observeds : "")</textarea>
-			    </td>
-		    </tr>
-            <tr>
-			    <td class="no-border-btm no-border-top">
-                    <input type="checkbox" id="immediate_corrective_act" name="immediate_corrective_act" value="1" @(isEdit ? dl.immediate_corrective_act == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Immediate corrective actions.</b>
-			    </td>
-		    </tr>
-            <tr>
-			    <td>
-                    <textarea name="immediate_corrective_acts" id="immediate_corrective_acts" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.immediate_corrective_acts : "")</textarea>
-			    </td>
-		    </tr>
-            <tr>
-			    <td class="no-border-top">
-                    <input type="checkbox" id="action_prevents" name="action_prevents" value="1" @(isEdit ? dl.action_prevents == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Action to prevent recurrences.</b>
-			    </td>
-		    </tr>
-            <tr>
-			    <td>
-                    <textarea name="action_prevent" id="action_prevent" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.action_prevent : "")</textarea>
-			    </td>
-		    </tr>
-	    </table>
-	</div>
+			        </td>
+		        </tr>
+                <tr>
+			        <td class="no-border-btm">
+                        <input type="checkbox" id="safe_observed" name="safe_observed" value="1" @(isEdit ? dl.safe_observed == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Safe Act/Condition Observed.</b>
+			        </td>
+		        </tr>
+                <tr>
+			        <td>
+                        <textarea name="safe_observeds" id="safe_observeds" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.safe_observeds : "")</textarea>
+			        </td>
+		        </tr>
+                <tr>
+			        <td class="no-border-top">
+                        <input type="checkbox" id="action_encourages" name="action_encourages" value="1" @(isEdit ? dl.action_encourages == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Action taken to encourage continued SHE perfomances.</b>
+			        </td>
+		        </tr>
+                <tr>
+			        <td>
+                        <textarea name="action_encourage" id="action_encourage" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.action_encourage : "")</textarea>
+			        </td>
+		        </tr>
+                <tr>
+			        <td class="no-border-btm">
+                        <input type="checkbox" id="unsafe_observed" name="unsafe_observed" value="1" @(isEdit ? dl.unsafe_observed == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Unsafe Act/Conditions Observed.</b>
+			        </td>
+		        </tr>
+                <tr>
+			        <td>
+                        <textarea name="unsafe_observeds" id="unsafe_observeds" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.unsafe_observeds : "")</textarea>
+			        </td>
+		        </tr>
+                <tr>
+			        <td class="no-border-btm no-border-top">
+                        <input type="checkbox" id="immediate_corrective_act" name="immediate_corrective_act" value="1" @(isEdit ? dl.immediate_corrective_act == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Immediate corrective actions.</b>
+			        </td>
+		        </tr>
+                <tr>
+			        <td>
+                        <textarea name="immediate_corrective_acts" id="immediate_corrective_acts" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.immediate_corrective_acts : "")</textarea>
+			        </td>
+		        </tr>
+                <tr>
+			        <td class="no-border-top">
+                        <input type="checkbox" id="action_prevents" name="action_prevents" value="1" @(isEdit ? dl.action_prevents == 1 ? "checked" : "" : "") onchange="changeInput(this)"/><b>Action to prevent recurrences.</b>
+			        </td>
+		        </tr>
+                <tr>
+			        <td>
+                        <textarea name="action_prevent" id="action_prevent" cols="118" rows="6" style="resize:none" disabled>@(isEdit ? dl.action_prevent : "")</textarea>
+			        </td>
+		        </tr>
+	        </table>
+	    </div>
+    </div>
     <br />
 </div>
 <br/>
@@ -1296,6 +1302,12 @@
 
     function save() {
         isSave = true;
+
+        if(!($('#she_obs').is(':checked'))&&!($('#she_ins').is(':checked'))){
+            alert('Field Category is required');
+            return;
+        }
+
         var equipment_employee = "";
         var checkBoxes = $("input[name='equipment_employee']");
         $.each(checkBoxes, function () {
@@ -1403,7 +1415,7 @@
                 workplace_health_safe: '' + ($('#workplace_health_safe_act').is(":checked") == true ? '1' : '0') + ($('#workplace_health_safe_cond').is(":checked") == true ? '1' : '0'),
                 workplace_health_risk: '' + ($('#workplace_health_risk_fatality').is(":checked") == true ? '1' : '0') + ($('#workplace_health_risk_major').is(":checked") == true ? '1' : '0') + ($('#workplace_health_risk_minor').is(":checked") == true ? '1' : '0'),
                 date_time: $('#date_time').val(),
-                observer: $('#observer').val(),
+                observer: $('#observer').val()+'#'+'@HttpContext.Current.Session["id"]',
                 department: $('#department').val(),
                 location: $('#location').val(),
                 activity: $('#activity').val(),

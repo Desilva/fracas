@@ -16,15 +16,19 @@ namespace StarEnergi.Models
     {
         public tag_types()
         {
+            this.disciplines = new HashSet<discipline>();
             this.equipments = new HashSet<equipment>();
             this.failure_modes = new HashSet<failure_modes>();
         }
-
+    
         public int id { get; set; }
         public string title { get; set; }
-
+    
+        public virtual ICollection<discipline> disciplines { get; set; }
         public virtual ICollection<equipment> equipments { get; set; }
         public virtual ICollection<failure_modes> failure_modes { get; set; }
+        public virtual tag_types tag_types1 { get; set; }
+        public virtual tag_types tag_types2 { get; set; }
     }
     
 }

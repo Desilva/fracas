@@ -55,7 +55,12 @@
         @Html.DisplayFor(model => model.equipment.pdf)
     </div>
 
-    <div class="display-label">Discipline</div>
+    <div class="display-label">Equipment Class</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.tag_types.title)
+    </div>
+
+    <div class="display-label">Sub Class</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.equipment.discipline.title)
     </div>
@@ -101,11 +106,6 @@
     <div class="display-label">Manufacture</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.equipment.vendor)
-    </div>
-
-    <div class="display-label">Equipment Class</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.equipment.tag_types.title)
     </div>
 
     <div class="display-label">Data Sheet</div>

@@ -14,15 +14,11 @@ namespace StarEnergi.Models
 {
     public partial class discipline
     {
-        public discipline()
-        {
-            this.equipments = new HashSet<equipment>();
-        }
-
         public int id { get; set; }
         public string title { get; set; }
-
-        public virtual ICollection<equipment> equipments { get; set; }
+        public int id_tag_type { get; set; }
+    
+        public virtual tag_types tag_types { get; set; }
     }
     
 }

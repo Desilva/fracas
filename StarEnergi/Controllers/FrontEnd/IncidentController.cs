@@ -109,10 +109,10 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.mod = id;
                 incident_report ir = db.incident_report.Find(id);
                 ViewBag.datas = ir;
-                ViewBag.superintendent_del = ir.superintendent_approve == null ? (ir.superintendent == null ? null : db.employees.Find(Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent)).employee_delegate) : null;
-                ViewBag.she_superintendent_del = ir.she_superintendent_approve == null ? db.employees.Find(Int32.Parse(ir.she_superintendent == null ? "0" : ir.she_superintendent)).employee_delegate : null;
-                ViewBag.loss_control_del = ir.loss_control_approve == null ? db.employees.Find(Int32.Parse(ir.loss_control == null ? "0" : ir.loss_control)).employee_delegate : null;
-                ViewBag.field_manager_del = ir.field_manager_approve == null ? db.employees.Find(Int32.Parse(ir.field_manager == null ? "0" : ir.field_manager)).employee_delegate : null;
+                ViewBag.superintendent_del = string.IsNullOrWhiteSpace(ir.superintendent_approve) == null ? (string.IsNullOrWhiteSpace(ir.superintendent) ? null : db.employees.Find(Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent)).employee_delegate) : null;
+                ViewBag.she_superintendent_del = string.IsNullOrWhiteSpace(ir.she_superintendent_approve) == null ? db.employees.Find(Int32.Parse(string.IsNullOrWhiteSpace(ir.superintendent) == null ? "0" : ir.she_superintendent)).employee_delegate : null;
+                ViewBag.loss_control_del = string.IsNullOrWhiteSpace(ir.loss_control_approve) == null ? db.employees.Find(Int32.Parse(string.IsNullOrWhiteSpace(ir.loss_control) == null ? "0" : ir.loss_control)).employee_delegate : null;
+                ViewBag.field_manager_del = string.IsNullOrWhiteSpace(ir.field_manager_approve) == null ? db.employees.Find(Int32.Parse(string.IsNullOrWhiteSpace(ir.field_manager) ? "0" : ir.field_manager)).employee_delegate : null;
             }
             else
             {
@@ -331,84 +331,9 @@ namespace StarEnergi.Controllers.FrontEnd
             incidentReport.reference_number = ir_ref;
             db.incident_report.Add(incidentReport);
             db.SaveChanges();
-            employee e;
-            List<String> s = new List<string>();
-            var sendEmail = new SendEmailController();
-            if (incidentReport.superintendent != null && incidentReport.superintendent_delegate == null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.superintendent));
-                if (e.email != null)
-                    s.Add(e.email);
-
-            }
-            else if (incidentReport.superintendent_delegate != null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.superintendent_delegate));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-
-            if (incidentReport.field_manager != null && incidentReport.field_manager_delegate == null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.field_manager));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            else if (incidentReport.field_manager_delegate != null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.field_manager_delegate));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-
-            if (incidentReport.loss_control != null && incidentReport.loss_control_delegate == null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.loss_control));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            else if (incidentReport.loss_control_delegate != null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.loss_control_delegate));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-
-            if (incidentReport.she_superintendent != null && incidentReport.she_superintendent_delegate == null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.she_superintendent));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            else if (incidentReport.she_superintendent_delegate != null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.she_superintendent_delegate));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-
-            if (incidentReport.ack_supervisor != null && incidentReport.supervisor_delegate == null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.ack_supervisor));
-                if (e.email != null)
-                    s.Add(e.email);
-
-            }
-            else if (incidentReport.supervisor_delegate != null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.supervisor_delegate));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-
-            if (incidentReport.lead_name != null)
-            {
-                e = db.employees.Find(Int32.Parse(incidentReport.lead_name));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            if (s.Count > 0)
-                sendEmail.Send(s, "Bapak/Ibu,<br />Mohon review dan approval untuk Incident Report dengan nomor referensi " + incidentReport.reference_number + ".Terima Kasih.<br /><br /><i>Dear Sir/Madam,<br />Please review and approval for Incident Report with reference number " + incidentReport.reference_number + ".Thank you.</i><br /><br />Salam,<br /><i>Regards,</i><br />" + db.employees.Find(Int32.Parse(incidentReport.prepared_by)).alpha_name, "Approving Incident Report " + incidentReport.reference_number);
+            
+            //send email
+            SendEmailToAll(incidentReport);
 
             int id = db.incident_report.Max(p => p.id);
             incident_report_log ir_log = new incident_report_log
@@ -563,6 +488,12 @@ namespace StarEnergi.Controllers.FrontEnd
                 };
                 db.incident_report_log.Add(ir_log);
                 db.SaveChanges();
+
+                if (ir.she_superintendent != null && ir.she_superintendent_delegate == null)
+                    SendEmailApprove(ir, Int32.Parse(ir.she_superintendent));
+                else if (ir.she_superintendent_delegate != null)
+                    SendEmailApprove(ir, Int32.Parse(ir.she_superintendent_delegate));
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -598,6 +529,12 @@ namespace StarEnergi.Controllers.FrontEnd
                 };
                 db.incident_report_log.Add(ir_log);
                 db.SaveChanges();
+
+                if (ir.loss_control != null && ir.loss_control_delegate == null)
+                    SendEmailApprove(ir, Int32.Parse(ir.loss_control));
+                else if (ir.loss_control_delegate != null)
+                    SendEmailApprove(ir, Int32.Parse(ir.loss_control_delegate));
+              
                 return Json(new { success = true, path = sign });
             }
             else
@@ -634,6 +571,12 @@ namespace StarEnergi.Controllers.FrontEnd
                 };
                 db.incident_report_log.Add(ir_log);
                 db.SaveChanges();
+
+                if (ir.superintendent != null && ir.superintendent_delegate == null)
+                    SendEmailApprove(ir, Int32.Parse(ir.superintendent));
+                else if (ir.superintendent_delegate != null)
+                    SendEmailApprove(ir, Int32.Parse(ir.superintendent_delegate));
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -705,6 +648,12 @@ namespace StarEnergi.Controllers.FrontEnd
                 };
                 db.incident_report_log.Add(ir_log);
                 db.SaveChanges();
+
+                if (ir.field_manager != null && ir.field_manager_delegate == null)
+                    SendEmailApprove(ir, Int32.Parse(ir.field_manager));
+                else if (ir.field_manager_delegate != null)
+                    SendEmailApprove(ir, Int32.Parse(ir.field_manager_delegate));
+                
                 return Json(new { success = true, path = sign });
             }
             else
@@ -719,14 +668,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            if (incidentReport.prepared_by != null)
-            {
-                employee e = db.employees.Find(Int32.Parse(incidentReport.prepared_by));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            if (s.Count > 0)
-                sendEmail.Send(s, "Salam,\n\nIncident Report dengan Reference Number " + incidentReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh Initiator Superintendent.\n\nTerima Kasih.", "Rejected Incident Report " + incidentReport.reference_number);
+            
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -737,6 +679,7 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
+            SendEmailToAll(incidentReport, 2,comment);
             return Json(new { success = true });
 
         }
@@ -747,14 +690,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            if (incidentReport.prepared_by != null)
-            {
-                employee e = db.employees.Find(Int32.Parse(incidentReport.prepared_by));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            if (s.Count > 0)
-                sendEmail.Send(s, "Salam,\n\nIncident Report dengan Reference Number " + incidentReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh Supervisor.\n\nTerima Kasih.", "Rejected Incident Report " + incidentReport.reference_number);
+            
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -765,6 +701,7 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
+            SendEmailToAll(incidentReport, 2, comment);
             return Json(new { success = true });
         }
 
@@ -774,14 +711,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            if (incidentReport.prepared_by != null)
-            {
-                employee e = db.employees.Find(Int32.Parse(incidentReport.prepared_by));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            if (s.Count > 0)
-                sendEmail.Send(s, "Salam,\n\nIncident Report dengan Reference Number " + incidentReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh Safety Supervisor.\n\nTerima Kasih.", "Rejected Incident Report " + incidentReport.reference_number);
+            
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -792,6 +722,7 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
+            SendEmailToAll(incidentReport, 2, comment);
             return Json(new { success = true });
 
         }
@@ -802,14 +733,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            if (incidentReport.prepared_by != null)
-            {
-                employee e = db.employees.Find(Int32.Parse(incidentReport.prepared_by));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            if (s.Count > 0)
-                sendEmail.Send(s, "Salam,\n\nIncident Report dengan Reference Number " + incidentReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh SHE Superintendent.\n\nTerima Kasih.", "Rejected Incident Report " + incidentReport.reference_number);
+            
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -820,6 +744,7 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
+            SendEmailToAll(incidentReport, 2, comment);
             return Json(new { success = true });
 
         }
@@ -830,14 +755,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            if (incidentReport.prepared_by != null)
-            {
-                employee e = db.employees.Find(Int32.Parse(incidentReport.prepared_by));
-                if (e.email != null)
-                    s.Add(e.email);
-            }
-            if (s.Count > 0)
-                sendEmail.Send(s, "Salam,\n\nIncident Report dengan Reference Number " + incidentReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh Field Manager.\n\nTerima Kasih.", "Rejected Incident Report " + incidentReport.reference_number);
+            
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -848,6 +766,7 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
+            SendEmailToAll(incidentReport, 2, comment);
             return Json(new { success = true });
 
         }
@@ -1363,6 +1282,105 @@ namespace StarEnergi.Controllers.FrontEnd
             else
             {
                 return new JavaScriptResult();
+            }
+        }
+
+        public void SendEmailApprove(incident_report ir, int employeeId) {
+            var sendEmail = new SendEmailController();
+            employee e = db.employees.Find(employeeId);
+            if (e.email != null)
+            {
+                List<string> s = new List<string>();
+                s.Add(e.email);
+                sendEmail.Send(s, "Bapak/Ibu,<br />Mohon review dan approval untuk Incident Report dengan nomor referensi " + ir.reference_number + ".Terima Kasih.<br /><br /><i>Dear Sir/Madam,<br />Please review and approval for Incident Report with reference number " + ir.reference_number + ".Thank you.</i><br /><br />Salam,<br /><i>Regards,</i><br /> Sytem Fracas Application", "Approving Incident Report " + ir.reference_number);
+            }
+        }
+
+        //reject type = 2
+        public void SendEmailToAll(incident_report incidentReport, int type = 1, string comment = "")
+        {
+            employee e;
+            List<String> s = new List<string>();
+            var sendEmail = new SendEmailController();
+            if (incidentReport.superintendent != null && incidentReport.superintendent_delegate == null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.superintendent));
+                if (e.email != null)
+                    s.Add(e.email);
+
+            }
+            else if (incidentReport.superintendent_delegate != null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.superintendent_delegate));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+
+            if (incidentReport.field_manager != null && incidentReport.field_manager_delegate == null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.field_manager));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+            else if (incidentReport.field_manager_delegate != null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.field_manager_delegate));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+
+            if (incidentReport.loss_control != null && incidentReport.loss_control_delegate == null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.loss_control));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+            else if (incidentReport.loss_control_delegate != null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.loss_control_delegate));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+
+            if (incidentReport.she_superintendent != null && incidentReport.she_superintendent_delegate == null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.she_superintendent));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+            else if (incidentReport.she_superintendent_delegate != null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.she_superintendent_delegate));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+
+            if (incidentReport.ack_supervisor != null && incidentReport.supervisor_delegate == null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.ack_supervisor));
+                if (e.email != null)
+                    s.Add(e.email);
+
+            }
+            else if (incidentReport.supervisor_delegate != null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.supervisor_delegate));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+
+            if (incidentReport.lead_name != null)
+            {
+                e = db.employees.Find(Int32.Parse(incidentReport.lead_name));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+            if (s.Count > 0)
+            {
+                if (type == 1)
+                    sendEmail.Send(s, "Bapak/Ibu,<br />Mohon review dan approval untuk Incident Report dengan nomor referensi " + incidentReport.reference_number + ".Terima Kasih.<br /><br /><i>Dear Sir/Madam,<br />Please review and approval for Incident Report with reference number " + incidentReport.reference_number + ".Thank you.</i><br /><br />Salam,<br /><i>Regards,</i><br />" + db.employees.Find(Int32.Parse(incidentReport.prepared_by)).alpha_name, "Approving Incident Report " + incidentReport.reference_number);
+                else
+                    sendEmail.Send(s, "Bapak/Ibu,<br />Dokumen berikut dengan no referensi " + incidentReport.reference_number + " kami kembalikan untuk diperbaiki sesuai dengan alasan di bawah.Terima Kasih.<br />Alasan :<br />" + comment + "<br /><br /><i>Dear Sir/Madam,<br />Document with reference number " + incidentReport.reference_number + " need to be reviewed in accordance with the following reasons .Thank you.<br />Reasons :<br />" + comment + "</i><br /><br />Salam,<br /><i>Regards,</i><br />" + db.employees.Find(Int32.Parse(HttpContext.Session["id"].ToString())).alpha_name, "Rejected Incident Report " + incidentReport.reference_number);
             }
         }
     } 

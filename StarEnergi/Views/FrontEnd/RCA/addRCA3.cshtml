@@ -84,12 +84,12 @@
         <div class="addField">
             <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
-            <div class="info_new_left">Equipment Type</div>
+            <div class="info_new_left">Equipment Class</div>
             <div class="infonewinput">
                 @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
                 {
                     <select name="equipment_type" id="equipment_type">
-                        <option value="" disabled selected>Choose Equipment Type</option>
+                        <option value="" disabled selected>Choose Equipment Class</option>
                         @foreach (StarEnergi.Models.tag_types a in ViewData["equipments"] as List<StarEnergi.Models.tag_types>)
                         {
                             if (ViewBag.id_equipment_type == null)
@@ -113,12 +113,12 @@
                 }
             </div>
             <br />
-            <div class="info_new_left">Equipment Class</div>
+            <div class="info_new_left">Equipment Sub Class</div>
             <div class="infonewinput">
                 @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
                 {
                     <select name="equipment_class" id="equipment_class">
-                        <option value="" disabled selected>Choose Equipment Class</option>
+                        <option value="" disabled selected>Choose Equipment Sub Class</option>
                         @foreach (StarEnergi.Models.discipline a in ViewData["equipmentClass"] as List<StarEnergi.Models.discipline>)
                         {
                             if (ViewBag.id_equipment_class == null)
@@ -179,7 +179,7 @@
             <div class="info_new_left">Other</div>
             <div class="infonewinput"><input id="other" type="text" name="other" value="@ViewBag.other" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/></div>
             <br />
-            <div class="info_new_left">Manufacture</div>
+            <div class="info_new_left">Manufacturer</div>
             <div class="infonewinput"><input id="manufacture" type="text" name="manufacture" value="@ViewBag.manufacture" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/></div>
             <br />
             <div class="addSubmit">
