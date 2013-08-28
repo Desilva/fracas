@@ -288,6 +288,7 @@ namespace StarEnergi.Controllers.FrontEnd
                              }).ToList();
                     i.rca_number = r.FirstOrDefault().rca_number;
                 }
+                i.inves = i.investigation == 1 ? "Yes" : "No";
                 i.type_report = i.type_of_report == 1 ? "On the job" : i.type_of_report == 0 ? "Off the job" : "";
                 i.actual_loss = i.actual_loss_severity == 1 ? "Major" : i.actual_loss_severity == 2 ? "Serious" : i.actual_loss_severity == 3 ? "Moderate" : i.actual_loss_severity == 4 ? "Minor" : "";
                 i.potential_loss = i.potential_loss_severity == 1 ? "Major" : i.potential_loss_severity == 2 ? "Serious" : i.potential_loss_severity == 3 ? "Moderate" : i.potential_loss_severity == 4 ? "Minor" : "";

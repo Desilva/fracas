@@ -131,7 +131,7 @@
         <div class="addField" style="height: 330px;">
             <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
-            @*<div style="float: left;">
+            <div style="float: left;">
                 <div class="info_new_left">Principal Analyst</div>
                 <div class="infonewinput">
                     @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
@@ -164,7 +164,7 @@
                         <input id="analyst" type="text" name="analyst" value="@ViewBag.analyst" disabled/>   
                     }
                 </div>
-            </div>*@
+            </div>
             <br />
              @(Html.Telerik().Grid<StarEnergi.Models.RCATeamEmployeeModel>(Model)
                 .Name("Team")

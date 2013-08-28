@@ -100,7 +100,7 @@ namespace StarEnergi.Report
             // textBox58
             // 
             this.textBox58.Name = "textBox58";
-            this.textBox58.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox58.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000002086162567D));
             this.textBox58.Style.BackgroundColor = System.Drawing.Color.OrangeRed;
             this.textBox58.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox58.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
@@ -114,7 +114,7 @@ namespace StarEnergi.Report
             // textBox65
             // 
             this.textBox65.Name = "textBox65";
-            this.textBox65.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.21000000834465027D), Telerik.Reporting.Drawing.Unit.Inch(0.14999997615814209D));
+            this.textBox65.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000002086162567D));
             this.textBox65.Style.BackgroundColor = System.Drawing.Color.OrangeRed;
             this.textBox65.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox65.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
@@ -128,7 +128,7 @@ namespace StarEnergi.Report
             // textBox79
             // 
             this.textBox79.Name = "textBox79";
-            this.textBox79.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000000298023224D), Telerik.Reporting.Drawing.Unit.Inch(0.14999997615814209D));
+            this.textBox79.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000002086162567D));
             this.textBox79.Style.BackgroundColor = System.Drawing.Color.OrangeRed;
             this.textBox79.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox79.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
@@ -142,7 +142,7 @@ namespace StarEnergi.Report
             // textBox72
             // 
             this.textBox72.Name = "textBox72";
-            this.textBox72.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000000298023224D), Telerik.Reporting.Drawing.Unit.Inch(0.14999997615814209D));
+            this.textBox72.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D), Telerik.Reporting.Drawing.Unit.Inch(0.15000002086162567D));
             this.textBox72.Style.BackgroundColor = System.Drawing.Color.OrangeRed;
             this.textBox72.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox72.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
@@ -156,7 +156,7 @@ namespace StarEnergi.Report
             // textBox57
             // 
             this.textBox57.Name = "textBox57";
-            this.textBox57.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.82000023126602173D), Telerik.Reporting.Drawing.Unit.Inch(0.1499999612569809D));
+            this.textBox57.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.7999999523162842D), Telerik.Reporting.Drawing.Unit.Inch(0.1499999463558197D));
             this.textBox57.Style.BackgroundColor = System.Drawing.Color.OrangeRed;
             this.textBox57.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox57.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
@@ -170,7 +170,7 @@ namespace StarEnergi.Report
             // textBox1559
             // 
             this.textBox1559.Name = "textBox1559";
-            this.textBox1559.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.82000035047531128D), Telerik.Reporting.Drawing.Unit.Inch(0.15000000596046448D));
+            this.textBox1559.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.7999999523162842D), Telerik.Reporting.Drawing.Unit.Inch(0.15000000596046448D));
             this.textBox1559.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1559.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1559.Style.Font.Bold = true;
@@ -183,7 +183,7 @@ namespace StarEnergi.Report
             // textBox655
             // 
             this.textBox655.Name = "textBox655";
-            this.textBox655.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.8899998664855957D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox655.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(5.619999885559082D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox655.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox655.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox655.Style.Font.Bold = true;
@@ -196,7 +196,7 @@ namespace StarEnergi.Report
             // textBox921
             // 
             this.textBox921.Name = "textBox921";
-            this.textBox921.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.8899998664855957D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox921.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(5.619999885559082D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox921.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox921.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox921.Style.Font.Bold = true;
@@ -209,7 +209,7 @@ namespace StarEnergi.Report
             // textBox975
             // 
             this.textBox975.Name = "textBox975";
-            this.textBox975.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.8899998664855957D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox975.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(5.619999885559082D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox975.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox975.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox975.Style.Font.Bold = true;
@@ -222,7 +222,7 @@ namespace StarEnergi.Report
             // textBox1029
             // 
             this.textBox1029.Name = "textBox1029";
-            this.textBox1029.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.8899998664855957D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1029.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(5.619999885559082D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1029.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1029.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1029.Style.Font.Bold = true;
@@ -235,7 +235,7 @@ namespace StarEnergi.Report
             // textBox1083
             // 
             this.textBox1083.Name = "textBox1083";
-            this.textBox1083.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.8899998664855957D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1083.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(5.619999885559082D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1083.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1083.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1083.Style.Font.Bold = true;
@@ -248,7 +248,7 @@ namespace StarEnergi.Report
             // textBox1137
             // 
             this.textBox1137.Name = "textBox1137";
-            this.textBox1137.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.8899998664855957D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1137.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(5.619999885559082D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1137.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1137.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1137.Style.Font.Bold = true;
@@ -261,7 +261,7 @@ namespace StarEnergi.Report
             // textBox601
             // 
             this.textBox601.Name = "textBox601";
-            this.textBox601.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.848957896232605D), Telerik.Reporting.Drawing.Unit.Inch(0.89999997615814209D));
+            this.textBox601.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(7.9799995422363281D), Telerik.Reporting.Drawing.Unit.Inch(0.90000057220458984D));
             this.textBox601.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox601.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox601.Style.Color = System.Drawing.Color.Red;
@@ -275,7 +275,7 @@ namespace StarEnergi.Report
             // textBox1614
             // 
             this.textBox1614.Name = "textBox1614";
-            this.textBox1614.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.8899998664855957D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1614.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(5.619999885559082D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1614.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1614.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1614.Style.Font.Bold = true;
@@ -287,7 +287,7 @@ namespace StarEnergi.Report
             // textBox1613
             // 
             this.textBox1613.Name = "textBox1613";
-            this.textBox1613.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.8489577770233154D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1613.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(7.9799995422363281D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1613.Style.BorderStyle.Bottom = Telerik.Reporting.Drawing.BorderType.None;
             this.textBox1613.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1613.Style.BorderStyle.Left = Telerik.Reporting.Drawing.BorderType.None;
@@ -304,10 +304,10 @@ namespace StarEnergi.Report
             // 
             // crosstab1
             // 
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.21000011265277863D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.21000003814697266D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.20000022649765015D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.20000022649765015D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D)));
             this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D)));
             this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D)));
             this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D)));
@@ -481,12 +481,12 @@ namespace StarEnergi.Report
             tableGroup34.ReportItem = this.textBox1613;
             this.crosstab1.RowGroups.Add(tableGroup15);
             this.crosstab1.RowGroups.Add(tableGroup34);
-            this.crosstab1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(5.5589580535888672D), Telerik.Reporting.Drawing.Unit.Inch(1.5000005960464478D));
+            this.crosstab1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(15.399996757507324D), Telerik.Reporting.Drawing.Unit.Inch(1.5000005960464478D));
             // 
             // textBox876
             // 
             this.textBox876.Name = "textBox876";
-            this.textBox876.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox876.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox876.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox876.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox876.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -499,7 +499,7 @@ namespace StarEnergi.Report
             // textBox877
             // 
             this.textBox877.Name = "textBox877";
-            this.textBox877.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.21000000834465027D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox877.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox877.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox877.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox877.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -512,7 +512,7 @@ namespace StarEnergi.Report
             // textBox878
             // 
             this.textBox878.Name = "textBox878";
-            this.textBox878.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox878.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox878.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox878.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox878.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -525,7 +525,7 @@ namespace StarEnergi.Report
             // textBox879
             // 
             this.textBox879.Name = "textBox879";
-            this.textBox879.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox879.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox879.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox879.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox879.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -538,7 +538,7 @@ namespace StarEnergi.Report
             // textBox930
             // 
             this.textBox930.Name = "textBox930";
-            this.textBox930.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox930.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox930.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox930.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox930.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -551,7 +551,7 @@ namespace StarEnergi.Report
             // textBox931
             // 
             this.textBox931.Name = "textBox931";
-            this.textBox931.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox931.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox931.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox931.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox931.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -564,7 +564,7 @@ namespace StarEnergi.Report
             // textBox932
             // 
             this.textBox932.Name = "textBox932";
-            this.textBox932.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox932.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox932.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox932.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox932.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -577,7 +577,7 @@ namespace StarEnergi.Report
             // textBox933
             // 
             this.textBox933.Name = "textBox933";
-            this.textBox933.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox933.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox933.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox933.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox933.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -590,7 +590,7 @@ namespace StarEnergi.Report
             // textBox984
             // 
             this.textBox984.Name = "textBox984";
-            this.textBox984.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox984.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox984.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox984.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox984.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -603,7 +603,7 @@ namespace StarEnergi.Report
             // textBox985
             // 
             this.textBox985.Name = "textBox985";
-            this.textBox985.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.21000000834465027D), Telerik.Reporting.Drawing.Unit.Inch(0.15000000596046448D));
+            this.textBox985.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox985.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox985.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox985.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -616,7 +616,7 @@ namespace StarEnergi.Report
             // textBox986
             // 
             this.textBox986.Name = "textBox986";
-            this.textBox986.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.15000000596046448D));
+            this.textBox986.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox986.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox986.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox986.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -629,7 +629,7 @@ namespace StarEnergi.Report
             // textBox987
             // 
             this.textBox987.Name = "textBox987";
-            this.textBox987.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.15000000596046448D));
+            this.textBox987.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox987.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox987.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox987.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -642,7 +642,7 @@ namespace StarEnergi.Report
             // textBox1038
             // 
             this.textBox1038.Name = "textBox1038";
-            this.textBox1038.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1038.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1038.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1038.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1038.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -655,7 +655,7 @@ namespace StarEnergi.Report
             // textBox1039
             // 
             this.textBox1039.Name = "textBox1039";
-            this.textBox1039.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1039.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1039.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1039.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1039.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -668,7 +668,7 @@ namespace StarEnergi.Report
             // textBox1040
             // 
             this.textBox1040.Name = "textBox1040";
-            this.textBox1040.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1040.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1040.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1040.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1040.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -681,7 +681,7 @@ namespace StarEnergi.Report
             // textBox1041
             // 
             this.textBox1041.Name = "textBox1041";
-            this.textBox1041.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1041.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1041.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1041.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1041.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -694,7 +694,7 @@ namespace StarEnergi.Report
             // textBox1092
             // 
             this.textBox1092.Name = "textBox1092";
-            this.textBox1092.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1092.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1092.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1092.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1092.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -707,7 +707,7 @@ namespace StarEnergi.Report
             // textBox1093
             // 
             this.textBox1093.Name = "textBox1093";
-            this.textBox1093.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.21000000834465027D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1093.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1093.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1093.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1093.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -720,7 +720,7 @@ namespace StarEnergi.Report
             // textBox1094
             // 
             this.textBox1094.Name = "textBox1094";
-            this.textBox1094.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1094.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1094.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1094.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1094.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -733,7 +733,7 @@ namespace StarEnergi.Report
             // textBox1095
             // 
             this.textBox1095.Name = "textBox1095";
-            this.textBox1095.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1095.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1095.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1095.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1095.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -746,7 +746,7 @@ namespace StarEnergi.Report
             // textBox1146
             // 
             this.textBox1146.Name = "textBox1146";
-            this.textBox1146.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1146.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1146.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1146.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1146.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -759,7 +759,7 @@ namespace StarEnergi.Report
             // textBox1147
             // 
             this.textBox1147.Name = "textBox1147";
-            this.textBox1147.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1147.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1147.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1147.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1147.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -772,7 +772,7 @@ namespace StarEnergi.Report
             // textBox1148
             // 
             this.textBox1148.Name = "textBox1148";
-            this.textBox1148.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1148.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1148.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1148.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1148.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -785,7 +785,7 @@ namespace StarEnergi.Report
             // textBox1149
             // 
             this.textBox1149.Name = "textBox1149";
-            this.textBox1149.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1149.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1149.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1149.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1149.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -798,7 +798,7 @@ namespace StarEnergi.Report
             // textBox1623
             // 
             this.textBox1623.Name = "textBox1623";
-            this.textBox1623.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999999344348908D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1623.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1623.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1623.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1623.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -813,7 +813,7 @@ namespace StarEnergi.Report
             // textBox1624
             // 
             this.textBox1624.Name = "textBox1624";
-            this.textBox1624.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20999997854232788D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1624.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1624.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1624.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1624.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -828,7 +828,7 @@ namespace StarEnergi.Report
             // textBox1625
             // 
             this.textBox1625.Name = "textBox1625";
-            this.textBox1625.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1625.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1625.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1625.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1625.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -843,7 +843,7 @@ namespace StarEnergi.Report
             // textBox1626
             // 
             this.textBox1626.Name = "textBox1626";
-            this.textBox1626.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.20000013709068298D), Telerik.Reporting.Drawing.Unit.Inch(0.14999999105930328D));
+            this.textBox1626.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.45000001788139343D), Telerik.Reporting.Drawing.Unit.Inch(0.15000009536743164D));
             this.textBox1626.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox1626.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox1626.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(7D);
@@ -858,7 +858,7 @@ namespace StarEnergi.Report
             // textBox22
             // 
             this.textBox22.Name = "textBox22";
-            this.textBox22.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4.73895788192749D), Telerik.Reporting.Drawing.Unit.Inch(0.44999992847442627D));
+            this.textBox22.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(13.59999942779541D), Telerik.Reporting.Drawing.Unit.Inch(0.44999998807907104D));
             this.textBox22.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox22.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             this.textBox22.Style.Color = System.Drawing.Color.Orange;

@@ -17,6 +17,7 @@ namespace StarEnergi.Models
         public int id { get; set; }
         public Nullable<int> id_rca { get; set; }
         public Nullable<int> id_csf { get; set; }
+        public string custom { get; set; }
     
         public virtual rca rca { get; set; }
     }

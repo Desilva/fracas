@@ -678,11 +678,24 @@ namespace StarEnergi.Controllers.FrontEnd
                         foreach (string n in csf)
                         {
                             Debug.WriteLine("n = " + n);
-                            rca_csf_conector csfc = new rca_csf_conector()
+                            int a;
+                            rca_csf_conector csfc = new rca_csf_conector();
+                            if (Int32.TryParse(n, out a))
                             {
-                                id_csf = Int32.Parse(n),
-                                id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString())
-                            };
+                                csfc = new rca_csf_conector()
+                                {
+                                    id_csf = Int32.Parse(n),
+                                    id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString())
+                                };
+                            }
+                            else
+                            {
+                                csfc = new rca_csf_conector()
+                                {
+                                    custom = n,
+                                    id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString())
+                                };
+                            }
 
                             RCASessionRepository.db.rca_csf_conector.Add(csfc);
                             RCASessionRepository.db.SaveChanges();
@@ -712,11 +725,24 @@ namespace StarEnergi.Controllers.FrontEnd
                         foreach (string n in csf)
                         {
                             Debug.WriteLine("n = " + n);
-                            rca_csf_conector csfc = new rca_csf_conector()
+                            int a;
+                            rca_csf_conector csfc = new rca_csf_conector();
+                            if (Int32.TryParse(n, out a))
                             {
-                                id_csf = Int32.Parse(n),
-                                id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString())
-                            };
+                                csfc = new rca_csf_conector()
+                                {
+                                    id_csf = Int32.Parse(n),
+                                    id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString())
+                                };
+                            }
+                            else
+                            {
+                                csfc = new rca_csf_conector()
+                                {
+                                    custom = n,
+                                    id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString())
+                                };
+                            }
 
                             RCASessionRepository.db.rca_csf_conector.Add(csfc);
                             RCASessionRepository.db.SaveChanges();
@@ -887,8 +913,8 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 ViewData["teams"] = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == rca.id).ToList();
                 ViewBag.isPublish = rca.is_publish;
-                //if (rca.id_team != null)
-                //    ViewBag.analyst = RCASessionRepository.db.rca_team_connector.Where(p => p.id == rca.id_team).FirstOrDefault().id_user;
+                if (rca.id_team != null)
+                    ViewBag.analyst = RCASessionRepository.db.rca_team_connector.Where(p => p.id == rca.id_team).FirstOrDefault().id_user;
             }
             // || p.role == (int)StarEnergi.Config.role.PIRINITIATOR
             List<user_per_role> upr_rca = RCASessionRepository.db.user_per_role.Where(p => p.role == (int)Config.role.RCA).ToList();
@@ -925,8 +951,8 @@ namespace StarEnergi.Controllers.FrontEnd
             string username = "";
             if (rca != null)
             {
-                //if (rca.id_team != null)
-                //    //username = RCASessionRepository.db.rca_team_connector.Where(p => p.id == rca.id_team).FirstOrDefault().id_user;
+                if (rca.id_team != null)
+                    username = RCASessionRepository.db.rca_team_connector.Where(p => p.id == rca.id_team).FirstOrDefault().id_user;
                 //else
                 //{
                 //    //username = HttpContext.Session["username"].ToString();
@@ -1010,13 +1036,25 @@ namespace StarEnergi.Controllers.FrontEnd
                         RCASessionRepository.db.rca_team_connector.Remove(r);
                         RCASessionRepository.db.SaveChanges();
                     }
+                    rca_team_connector csfc = new rca_team_connector()
+                    {
+                        id_user = analyst,
+                        id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString()),
+                        rca_position = null
+                    };
+                    RCASessionRepository.db.rca_team_connector.Add(csfc);
+                    RCASessionRepository.db.SaveChanges();
+                    int idd = csfc.id;
+
+                    rca.id_team = idd;
+                    RCASessionRepository.UpdateRCA6(rca);
                     if (checkedRecords != null)
                     {
 
                         foreach (string name in checkedRecords)
                         {
                             Debug.WriteLine("name = " + name);
-                            rca_team_connector csfc = new rca_team_connector()
+                            csfc = new rca_team_connector()
                             {
                                 id_user = name,
                                 id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString()),
@@ -1028,11 +1066,8 @@ namespace StarEnergi.Controllers.FrontEnd
                             i++;
                         }
                         int id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
-                        int idd = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == id_rca).FirstOrDefault().id;
 
-                        rca.id_team = idd;
-
-                        RCASessionRepository.UpdateRCA6(rca);
+                        
                     }
                 }
                 if (types == "add")
@@ -1090,12 +1125,24 @@ namespace StarEnergi.Controllers.FrontEnd
                         RCASessionRepository.db.rca_team_connector.Remove(r);
                         RCASessionRepository.db.SaveChanges();
                     }
+                    rca_team_connector csfc = new rca_team_connector()
+                    {
+                        id_user = analyst,
+                        id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString()),
+                        rca_position = null
+                    };
+                    RCASessionRepository.db.rca_team_connector.Add(csfc);
+                    RCASessionRepository.db.SaveChanges();
+                    int idd = csfc.id;
+
+                    rca.id_team = idd;
+                    RCASessionRepository.UpdateRCA6(rca);
                     if (checkedRecords != null)
                     {
                         foreach (string name in checkedRecords)
                         {
                             Debug.WriteLine("name = " + name);
-                            rca_team_connector csfc = new rca_team_connector()
+                            csfc = new rca_team_connector()
                             {
                                 id_user = name,
                                 id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString()),
@@ -1107,11 +1154,6 @@ namespace StarEnergi.Controllers.FrontEnd
                         }
 
                         int id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
-                        int idd = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == id_rca).FirstOrDefault().id;
-
-                        rca.id_team = idd;
-
-                        RCASessionRepository.UpdateRCA6(rca);
                     }
                 }
                 if (types == "add")

@@ -1467,7 +1467,45 @@
     }
 
     function validate() {
-        return true;
+        var ret = true;
+        if ($('#location').val() == "") {
+            ret = false;
+            alert("Location can not empty");
+        }
+
+        if ($('#accident_unsafe_act').is(":checked") == 0 && $('#accident_safe_act').is(":checked") == 0 && $('#accident_unsafe_cond').is(":checked") == 0 && $('#accident_safe_cond').is(":checked") == 0 && 
+            $('#fire_unsafe_act').is(":checked") == 0 && $('#fire_safe_act').is(":checked") == 0 && $('#fire_unsafe_cond').is(":checked") == 0 && $('#fire_safe_cond').is(":checked") == 0 && 
+            $('#prevention_unsafe_act').is(":checked") == 0 && $('#prevention_safe_act').is(":checked") == 0 && $('#prevention_unsafe_cond').is(":checked") == 0 && $('#prevention_safe_cond').is(":checked") == 0 && 
+            $('#supervisor_unsafe_act').is(":checked") == 0 && $('#supervisor_safe_act').is(":checked") == 0 && $('#supervisor_unsafe_cond').is(":checked") == 0 && $('#supervisor_safe_cond').is(":checked") == 0 && 
+            $('#fit_work_unsafe_act').is(":checked") == 0 && $('#fit_work_safe_act').is(":checked") == 0 && $('#fit_work_unsafe_cond').is(":checked") == 0 && $('#fit_work_safe_cond').is(":checked") == 0 && 
+            $('#psychological_unsafe_act').is(":checked") == 0 && $('#psychological_safe_act').is(":checked") == 0 && $('#psychological_unsafe_cond').is(":checked") == 0 && $('#psychological_safe_cond').is(":checked") == 0 && 
+            $('#posture_unsafe_act').is(":checked") == 0 && $('#posture_safe_act').is(":checked") == 0 && $('#posture_unsafe_cond').is(":checked") == 0 && $('#posture_safe_cond').is(":checked") == 0 && 
+            $('#substance_unsafe_act').is(":checked") == 0 && $('#substance_safe_act').is(":checked") == 0 && $('#substance_unsafe_cond').is(":checked") == 0 && $('#substance_safe_cond').is(":checked") == 0 && 
+            $('#hygiene_unsafe_act').is(":checked") == 0 && $('#hygiene_safe_act').is(":checked") == 0 && $('#hygiene_unsafe_cond').is(":checked") == 0 && $('#hygiene_safe_cond').is(":checked") == 0 && 
+            $('#house_unsafe_act').is(":checked") == 0 && $('#house_safe_act').is(":checked") == 0 && $('#house_unsafe_cond').is(":checked") == 0 && $('#house_safe_cond').is(":checked") == 0 && 
+            $('#standard_unsafe_act').is(":checked") == 0 && $('#standard_safe_act').is(":checked") == 0 && $('#standard_unsafe_cond').is(":checked") == 0 && $('#standard_safe_cond').is(":checked") == 0 && 
+            $('#spill_unsafe_act').is(":checked") == 0 && $('#spill_safe_act').is(":checked") == 0 && $('#spill_unsafe_cond').is(":checked") == 0 && $('#spill_safe_cond').is(":checked") == 0 && 
+            $('#waste_energy_unsafe_act').is(":checked") == 0 && $('#waste_energy_safe_act').is(":checked") == 0 && $('#waste_energy_unsafe_cond').is(":checked") == 0 && $('#waste_energy_safe_cond').is(":checked") == 0 && 
+            $('#containment_unsafe_act').is(":checked") == 0 && $('#containment_safe_act').is(":checked") == 0 && $('#containment_unsafe_cond').is(":checked") == 0 && $('#containment_safe_cond').is(":checked") == 0 && 
+            $('#absorbent_unsafe_act').is(":checked") == 0 && $('#absorbent_safe_act').is(":checked") == 0 && $('#absorbent_unsafe_cond').is(":checked") == 0 && $('#absorbent_safe_cond').is(":checked") == 0 && 
+            $('#hira_unsafe_act').is(":checked") == 0 && $('#hira_safe_act').is(":checked") == 0 && $('#hira_unsafe_cond').is(":checked") == 0 && $('#hira_safe_cond').is(":checked") == 0 && 
+            $('#ptw_unsafe_act').is(":checked") == 0 && $('#ptw_safe_act').is(":checked") == 0 && $('#ptw_unsafe_cond').is(":checked") == 0 && $('#ptw_safe_cond').is(":checked") == 0 && 
+            $('#sop_unsafe_act').is(":checked") == 0 && $('#sop_safe_act').is(":checked") == 0 && $('#sop_unsafe_cond').is(":checked") == 0 && $('#sop_safe_cond').is(":checked") == 0 && 
+            $('#msds_unsafe_act').is(":checked") == 0 && $('#msds_safe_act').is(":checked") == 0 && $('#msds_unsafe_cond').is(":checked") == 0 && $('#msds_safe_cond').is(":checked") == 0 && 
+            $('#emergency_unsafe_act').is(":checked") == 0 && $('#emergency_safe_act').is(":checked") == 0 && $('#emergency_unsafe_cond').is(":checked") == 0 && $('#emergency_safe_cond').is(":checked") == 0 && 
+            $('#certificates_unsafe_act').is(":checked") == 0 && $('#certificates_safe_act').is(":checked") == 0 && $('#certificates_unsafe_cond').is(":checked") == 0 && $('#certificates_safe_cond').is(":checked") == 0 && 
+            $('#ppe_unsafe_act').is(":checked") == 0 && $('#ppe_safe_act').is(":checked") == 0 && $('#ppe_unsafe_cond').is(":checked") == 0 && $('#ppe_safe_cond').is(":checked") == 0 && 
+            $('#hand_unsafe_act').is(":checked") == 0 && $('#hand_safe_act').is(":checked") == 0 && $('#hand_unsafe_cond').is(":checked") == 0 && $('#hand_safe_cond').is(":checked") == 0 && 
+            $('#mechanical_unsafe_act').is(":checked") == 0 && $('#mechanical_safe_act').is(":checked") == 0 && $('#mechanical_unsafe_cond').is(":checked") == 0 && $('#mechanical_safe_cond').is(":checked") == 0 && 
+            $('#electrical_unsafe_act').is(":checked") == 0 && $('#electrical_safe_act').is(":checked") == 0 && $('#electrical_unsafe_cond').is(":checked") == 0 && $('#electrical_safe_cond').is(":checked") == 0 && 
+            $('#vehicular_unsafe_act').is(":checked") == 0 && $('#vehicular_safe_act').is(":checked") == 0 && $('#vehicular_unsafe_cond').is(":checked") == 0 && $('#vehicular_safe_cond').is(":checked") == 0 && 
+            $('#substandard_unsafe_act').is(":checked") == 0 && $('#substandard_safe_act').is(":checked") == 0 && $('#substandard_unsafe_cond').is(":checked") == 0 && $('#substandard_safe_cond').is(":checked") == 0 && 
+            $('#h2s_unsafe_act').is(":checked") == 0 && $('#h2s_safe_act').is(":checked") == 0 && $('#h2s_unsafe_cond').is(":checked") == 0 && $('#h2s_safe_cond').is(":checked") == 0 && 
+            $('#workplace_health_unsafe_act').is(":checked") == 0 && $('#workplace_health_safe_act').is(":checked") == 0 && $('#workplace_health_unsafe_cond').is(":checked") == 0 && $('#workplace_health_safe_cond').is(":checked") == 0) {
+            ret = false;
+            alert("Safe / Unsafe must be checked min. 1");
+        }
+        return ret;
     }
 
     $(document).ready(function() {

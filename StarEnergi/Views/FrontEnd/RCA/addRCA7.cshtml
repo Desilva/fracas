@@ -36,7 +36,7 @@
         <div class="addField">
             <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
-            <div class="info_inside_left">Analysis Start Date </div>
+            <div class="info_inside_left">Analysis Start Date <a class="bintang">*</a></div>
             <div class="infoFieldinput longField">
                     @Html.Telerik().DateTimePickerFor(o => o.start_date).Name("start_date").InputHtmlAttributes(new { id = "start_date", name = "start_date" }).Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? true : false)
                     @Html.ValidationMessage("start_date", "*")

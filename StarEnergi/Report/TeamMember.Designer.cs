@@ -25,7 +25,7 @@ namespace StarEnergi.Report
             // 
             // detail
             // 
-            this.detail.Height = Telerik.Reporting.Drawing.Unit.Inch(0.20000004768371582D);
+            this.detail.Height = Telerik.Reporting.Drawing.Unit.Inch(0.099999986588954926D);
             this.detail.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox1});
             this.detail.Name = "detail";
@@ -34,8 +34,8 @@ namespace StarEnergi.Report
             // 
             this.textBox1.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0D));
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.5D), Telerik.Reporting.Drawing.Unit.Inch(0.20000004768371582D));
-            this.textBox1.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(9D);
+            this.textBox1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.5D), Telerik.Reporting.Drawing.Unit.Inch(0.099999986588954926D));
+            this.textBox1.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(6D);
             this.textBox1.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox1.Value = "= \'-.\' + Fields.alpha_name + \' (\' + Iif(Fields.rca_position = 1,\'L\',Iif(Fields.rc" +
     "a_position = 2, \'M\', Iif(Fields.rca_position = 3, \'F\',\'\'))) + \')\'";
@@ -71,7 +71,7 @@ namespace StarEnergi.Report
             styleRule1.Style.Padding.Right = Telerik.Reporting.Drawing.Unit.Point(2D);
             this.StyleSheet.AddRange(new Telerik.Reporting.Drawing.StyleRule[] {
             styleRule1});
-            this.Width = Telerik.Reporting.Drawing.Unit.Inch(2D);
+            this.Width = Telerik.Reporting.Drawing.Unit.Inch(1.9099999666213989D);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }

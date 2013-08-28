@@ -484,7 +484,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public JsonResult Edit(daily_log dailyLog, string time_check)
         {
             daily_log ir = db.daily_log.Find(dailyLog.id);
-            DateTime dt = DateTime.Parse(time_check);
+            DateTime dt = DateTime.Parse(time_check == "" ? "00:00:00" : time_check);
             ir.date = dailyLog.date;
             ir.grup = dailyLog.grup;
             ir.production_foreman = dailyLog.production_foreman;

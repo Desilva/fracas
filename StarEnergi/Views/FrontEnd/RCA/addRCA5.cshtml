@@ -30,6 +30,10 @@
             document.getElementById("charter").innerHTML = e.response.cont;
         }
     }
+
+    function insertCharter() {
+        $('#charter').val("Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. ");
+    }
 </script>
 <br />
 @using(Html.BeginForm()) {
@@ -52,13 +56,14 @@
                         .Name("Charter")
                         .ClientEvents(events => events
                             .OnSuccess("Charter"))
+                        .HtmlAttributes(new { style="width:200px;overflow-y:hidden;height:30px" })
                         .Async(async => async
                             .Save("Saves", "RCA")
                             .AutoUpload(true)
                         )
                 )
                 }
-                <!-- <input name="insert" id="insert" type="button" value="Insert Sample Charter"/> -->
+                <input name="insert" id="insert" type="button" value="Insert Sample Charter" onclick="insertCharter()" />
                 <textarea name="charter" id="charter" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")>@ViewBag.charter</textarea>
             </div>
             <div class="comment">

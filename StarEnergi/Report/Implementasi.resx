@@ -142,6 +142,9 @@ FROM            rca_implementation INNER JOIN
   <data name="pictureBox1.Value" xml:space="preserve">
     <value>= IIf(Fields.is_complete = 0, IIf(Fields.due_date.Date &gt;= Now(),ResolveUrl("~/Content/image/icon/green.png"),ResolveUrl("~/Content/image/icon/red.png")), IIf(Fields.complete_date.Date &gt; Fields.due_date.Date,ResolveUrl("~/Content/image/icon/red.png"),ResolveUrl("~/Content/image/icon/green.png")))</value>
   </data>
+  <metadata name="$this.Zoom" type="System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>2</value>
+  </metadata>
   <metadata name="$this.SnapGridSize" type="Telerik.Reporting.Drawing.Unit, Telerik.Reporting, Version=6.0.12.215, Culture=neutral, PublicKeyToken=a9d7983dfcc261be">
     <value>0.1in</value>
   </metadata>

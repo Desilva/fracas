@@ -37,9 +37,10 @@
             columns.Bound(o => o.date_time).Width(200).Title("Date/Time");
             columns.Bound(o => o.observer).Width(175).Title("Observer");
             columns.Bound(o => o.department).Width(175).Title("Department");
-            columns.Bound(o => o.location).Title("Location");
+            columns.Bound(o => o.location).Width(175).Title("Location");
             columns.Bound(o => o.quality).Width(100).Title("Quality");
-            
+            columns.Bound(o => o.equipment_employee).Width(200).Title("Equipment / Employee");
+            columns.Bound(o => o.equipment_employee).Width(200).Title("PPE");
         })
         .ClientEvents(
             events => events
@@ -67,7 +68,12 @@
             }
         }
         row.cells[i].innerHTML = templateComplete;
-
+        if (dataItem.equipment_employee == 0) {
+            row.cells[7].innerHTML = dataItem.equipment_name;
+        } else if (dataItem.equipment_employee == 1) {
+            row.cells[7].innerHTML = dataItem.employee_name;
+        }
+        row.cells[8].innerHTML = dataItem.ppe_name;
         if (dataItem.is_review == 1) {
             row.style.background = 'orange';
         }

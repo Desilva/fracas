@@ -1223,9 +1223,14 @@
                 Unit 1
 		    </td>
             <td>
-                <input type='text' id="sh1_achievement_1" name='achievement_1' style='width:100px' value="@(isEdit ? dl.achievement_1 : "")" @if (isEdit && dl.is_approve == 1)
-                                                                                                                                                  {<text>disabled</text>} onkeyup="check_remark(1)" />
-		    </td>
+                @(Html.Telerik().NumericTextBox()
+                        .Name("sh1_achievement_1")
+                        .InputHtmlAttributes(new { id = "sh1_achievement_1", onkeyup = "check_remark(1)", style = "width:75px" })
+                        .Spinners(true)
+                        .MinValue(0)
+                        .MaxValue(100000000).Enable(!(isEdit && dl.is_approve == 1))
+                        .Value(isEdit ? double.Parse(dl.achievement_1 == null ? "0" : dl.achievement_1) : 0)) MWh
+            </td>
             <td>
                 Remark 
                 <input type='text' id="sh1_remark_1" name='remark_1' style='width:100px' value="@(isEdit ? dl.remark_1 : "")" @if ((isEdit && dl.is_approve == 1) || (!isEdit) || (Double.Parse(dl.achievement_1 == null ? "0" : dl.achievement_1) >= (ViewBag.target_1_sh1 == null ? 0D : (ViewBag.target_1_sh1))))
@@ -1235,9 +1240,14 @@
                 Unit 2
 		    </td>
 		    <td>
-                <input type='text' id="sh1_achievement_2" name='achievement_2' style='width:100px' value="@(isEdit ? dl.achievement_2 : "")" @if (isEdit && dl.is_approve == 1)
-                                                                                                                                                  {<text>disabled</text>} onkeyup="check_remark(2)" />
-		    </td>
+                @(Html.Telerik().NumericTextBox()
+                        .Name("sh1_achievement_2")
+                        .InputHtmlAttributes(new { id = "sh1_achievement_2", onkeyup = "check_remark(2)", style = "width:75px" })
+                        .Spinners(true)
+                        .MinValue(0)
+                        .MaxValue(100000000).Enable(!(isEdit && dl.is_approve == 1))
+                        .Value(isEdit ? double.Parse(dl.achievement_2 == null ? "0" : dl.achievement_2) : 0)) MWh
+            </td>
             <td>
                 Remark 
                 <input type='text' id="sh1_remark_2" name='remark_2' style='width:100px' value="@(isEdit ? dl.remark_2 : "")" @if ((isEdit && dl.is_approve == 1) || (!isEdit) || (Double.Parse(dl.achievement_2 == null ? "0" : dl.achievement_2) >= (ViewBag.target_2_sh1 == null ? 0D : ViewBag.target_2_sh1)))
@@ -1871,9 +1881,14 @@
                 Unit 1
 		    </td>
             <td>
-                <input type='text' id="sh2_achievement_1" name='achievement_1' style='width:100px' value="@(isEdit2 ? dl2.achievement_1 : "")" @if (isEdit2 && dl2.is_approve == 1)
-                                                                                                                                                  {<text>disabled</text>} onkeyup="check_remark(3)" />
-		    </td>
+                @(Html.Telerik().NumericTextBox()
+                        .Name("sh2_achievement_1")
+                        .InputHtmlAttributes(new { id = "sh2_achievement_1", onkeyup = "check_remark(3)", style = "width:75px" })
+                        .Spinners(true)
+                        .MinValue(0)
+                        .MaxValue(100000000).Enable(!(isEdit && dl2.is_approve == 1))
+                        .Value(isEdit ? double.Parse(dl2.achievement_1 == null ? "0" : dl2.achievement_1) : 0)) MWh
+            </td>
             <td>
                 Remark 
                 <input type='text' id="sh2_remark_1" name='remark_1' style='width:100px' value="@(isEdit2 ? dl2.remark_1 : "")" @if ((isEdit2 && dl2.is_approve == 1) || (!isEdit2) || (Double.Parse(dl2.achievement_1 == null ? "0" : dl2.achievement_1) >= (ViewBag.target_1_sh2 == null ? 0D : ViewBag.target_1_sh2)))
@@ -1883,9 +1898,14 @@
                 Unit 2
 		    </td>
 		    <td>
-                <input type='text' id="sh2_achievement_2" name='achievement_2' style='width:100px' value="@(isEdit2 ? dl2.achievement_2 : "")" @if (isEdit2 && dl2.is_approve == 1)
-                                                                                                                                                  {<text>disabled</text>} onkeyup="check_remark(4)" />
-		    </td>
+                @(Html.Telerik().NumericTextBox()
+                        .Name("sh2_achievement_2")
+                        .InputHtmlAttributes(new { id = "sh2_achievement_2", onkeyup = "check_remark(4)", style = "width:75px" })
+                        .Spinners(true)
+                        .MinValue(0)
+                        .MaxValue(100000000).Enable(!(isEdit && dl2.is_approve == 1))
+                        .Value(isEdit ? double.Parse(dl2.achievement_2 == null ? "0" : dl2.achievement_2) : 0)) MWh
+            </td>
             <td>
                 Remark 
                 <input type='text' id="sh2_remark_2" name='remark_2' style='width:100px' value="@(isEdit2 ? dl2.remark_2 : "")" @if ((isEdit2 && dl2.is_approve == 1) || (!isEdit2) || (Double.Parse(dl2.achievement_2 == null ? "0" : dl2.achievement_2) >= (ViewBag.target_2_sh2 == null ? 0D : ViewBag.target_2_sh2)))

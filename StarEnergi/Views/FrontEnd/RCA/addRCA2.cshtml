@@ -274,7 +274,10 @@
             </div>
             <br />-->
             <div class="info_new_left"><div>Functional Location</div><div> (ID Number)</div></div>
-            <div class="infonewinput"><input id="functional_location" type="text" name="functional_location" value="@ViewBag.functional_location" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/></div>
+            <div class="infonewinput">
+                <input id="functional_location" type="text" name="functional_location" value="@ViewBag.functional_location" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/>
+                <input id="browse" name="browse" type="button" style="display:inline" onclick="" value="Browse" />
+            </div>
             <br />
             <div class="addSubmit">
 	            <input name="cancel" value="Cancel" type="submit"/>

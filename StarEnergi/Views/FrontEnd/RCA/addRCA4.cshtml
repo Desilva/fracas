@@ -59,7 +59,12 @@
         {
             foreach (StarEnergi.Models.rca_csf_conector a in data)
             {
-                <text>arrayChoose[@i] = @a.id_csf;</text>
+                if (a.id_csf == null) {
+                    <text>arrayChoose[@i] = "@a.custom";</text>
+                    <text>arrayName["@a.custom"] = "@a.custom";</text>
+                } else {
+                    <text>arrayChoose[@i] = @a.id_csf;</text>
+                }
                 i++;
             }
         }
@@ -72,6 +77,22 @@
                 document.getElementById("chosenList").appendChild(node);
             }
         }
+    }
+
+    function showInput() {
+        $('#customCSF').show();
+        $('#addCSF').show();
+    }
+
+    function addCustom() {
+        var custom = $('#customCSF').val();
+        if (custom != '') {
+            $('.borderTA').append('<input name="csf" type="checkbox" value="' + custom + '" onclick="check(this.form);" />' + custom + '<br/>');
+            arrayName[custom] = custom;
+        }
+        $('#customCSF').val('');
+        $('#customCSF').hide();
+        $('#addCSF').hide();
     }
 </script>
 <br />
@@ -90,9 +111,17 @@
             <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
             <div class="TA">
-                <div class="availableTA">
+                <div class="availableTA" style="overflow-y:scroll;height:200px">
                     <div class="center">Available Critical Success Factors</div>
-                    <div class="borderTA">
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    {
+                        <div>
+                            <input type="button" id="addCustomCSF" onclick="showInput()" value="Add Custom CSF" />
+                            <input type="text" id="customCSF" style="display:none" />
+                            <input type="button" id="addCSF" onclick="addCustom()" style="display:none" value="Add" />
+                        </div>
+                    }
+                    <div class="borderTA" style="overflow-y:auto">
                         @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
                         {
                             foreach (StarEnergi.Models.rca_csf a in ViewData["csfs"] as List<StarEnergi.Models.rca_csf>)
@@ -108,6 +137,17 @@
                                 else
                                 {
                                 <input name="csf" type="checkbox" value="@a.id" onclick='check(this.form);' />@a.name<br/>
+                                }
+                            }
+
+                            if (data != null)
+                            {
+                                foreach (StarEnergi.Models.rca_csf_conector d in data)
+                                {
+                                    if (d.id_csf == null)
+                                    {
+                                        <input name="csf" type="checkbox" checked="checked" value="@d.custom" onclick='check(this.form);' />@d.custom<br/>
+                                    }
                                 }
                             }
                         }
@@ -128,10 +168,21 @@
                                 <input name="csf" type="checkbox" value="@a.id" onclick='check(this.form);' disabled/>@a.name<br/>
                                 }
                             }
+                            
+                            if (data != null)
+                            {
+                                foreach (StarEnergi.Models.rca_csf_conector d in data)
+                                {
+                                    if (d.id_csf == null)
+                                    {
+                                        <input name="csf" type="checkbox" checked="checked" value="@d.custom" onclick='check(this.form);' disabled />@d.custom<br/>
+                                    }
+                                }
+                            }
                         }
                     </div>
                 </div>
-                <div class="chosenTA">
+                <div class="chosenTA" style="overflow-y:scroll;height:200px">
                     <div class="center">Chosen Critical Success Factors</div>
                     <ul id="chosenList"></ul>
                 </div>

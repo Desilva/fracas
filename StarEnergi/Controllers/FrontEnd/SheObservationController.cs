@@ -121,6 +121,37 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                     if (o.observer != null)
                         o.observer = o.observer.Split('#').First();
+
+                    if (o.equipment_employee == 0)
+                    {
+                        o.equipment_name = "";
+                        if (o.equipment_id != null)
+                            o.employee_name = o.equipment_name = db.equipments.Find(o.equipment_id == null ? 0 : o.equipment_id).nama;
+                    }
+                    else if (o.equipment_employee == 1)
+                    {
+                        o.employee_name = "";
+                        if (o.employee_id != null)
+                        {
+                            string[] em = o.employee_id.Split(',');
+                            foreach (string s in em)
+                            {
+                                if (s != "")
+                                    o.employee_name += db.employees.Find(Int32.Parse(s)).alpha_name + ", ";
+                            }
+                            o.employee_name = o.employee_name.Remove(o.employee_name.Length > 2 ? o.employee_name.Length - 2 : 0);
+                        }
+                    }
+
+                    switch (o.type_equipment)
+                    {
+                        case 0: o.ppe_name = "Safety helmet"; break;
+                        case 1: o.ppe_name = "Safety gloves"; break;
+                        case 2: o.ppe_name = "Safety glasses"; break;
+                        case 3: o.ppe_name = "Safety shoes"; break;
+                        case 4: o.ppe_name = "Safety ear protection"; break;
+                        default: o.ppe_name = ""; break;
+                    }
                 }
             }
             else
@@ -156,6 +187,37 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                     if (o.observer != null)
                         o.observer = o.observer.Split('#').First();
+
+                    if (o.equipment_employee == 0)
+                    {
+                        o.equipment_name = "";
+                        if (o.equipment_id != null)
+                            o.equipment_name = db.equipments.Find(o.equipment_id == null ? 0 : o.equipment_id).nama;
+                    }
+                    else if (o.equipment_employee == 1)
+                    {
+                        o.employee_name = "";
+                        if (o.employee_id != null)
+                        {
+                            string[] em = o.employee_id.Split(',');
+                            foreach (string s in em)
+                            {
+                                if (s != "")
+                                    o.employee_name += db.employees.Find(Int32.Parse(s)).alpha_name + ", ";
+                            }
+                            o.employee_name.Remove(o.employee_name.Length > 2 ? o.employee_name.Length - 2 : 0);
+                        }
+                    }
+
+                    switch (o.type_equipment)
+                    {
+                        case 0: o.ppe_name = "Safety helmet"; break;
+                        case 1: o.ppe_name = "Safety gloves"; break;
+                        case 2: o.ppe_name = "Safety glasses"; break;
+                        case 3: o.ppe_name = "Safety shoes"; break;
+                        case 4: o.ppe_name = "Safety ear protection"; break;
+                        default: o.ppe_name = ""; break;
+                    }
                 }
             }
             
