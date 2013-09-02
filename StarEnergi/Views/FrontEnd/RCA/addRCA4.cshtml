@@ -87,8 +87,26 @@
     function addCustom() {
         var custom = $('#customCSF').val();
         if (custom != '') {
-            $('.borderTA').append('<input name="csf" type="checkbox" value="' + custom + '" onclick="check(this.form);" />' + custom + '<br/>');
-            arrayName[custom] = custom;
+            var r = confirm("Do you want to save the custom CSF to the databases for future use? If you answer no it will only be added to this analysis.");
+            var save = false;
+            if (r == true) {
+                save = true;
+            }
+            if (save) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("saveCustomCSF", "RCA")",
+                    traditional: true,
+                    data: { custom: custom },
+                    success: function (data) {
+                        $('.borderTA').append('<input name="csf" type="checkbox" value="' + data.id + '" onclick="check(this.form);" />' + custom + '<br/>');
+                        arrayName[data.id] = custom;
+                    }
+                });
+            } else {
+                $('.borderTA').append('<input name="csf" type="checkbox" value="' + custom + '" onclick="check(this.form);" />' + custom + '<br/>');
+                arrayName[custom] = custom;
+            }
         }
         $('#customCSF').val('');
         $('#customCSF').hide();

@@ -80,6 +80,7 @@
             return false;
         });
     });
+    
 
     $(document).keydown(function(event) {
         //19 for Mac Command+S
@@ -468,6 +469,7 @@
 		        }
 		    }
 
+
 		    // Installs a popupmenu handler using local function (see below).
 		    graph.panningHandler.factoryMethod = function (menu, cell, evt, doc) {
 		        return createPopupMenu(graph, menu, cell, evt, doc);
@@ -582,6 +584,57 @@
 		    document.getElementById("menuTool").appendChild(wnds.getElement());
 		}
 	};
+
+    //autosave
+    var myVar=setInterval(function(){myTimer()},60000);
+    function myTimer()
+    {
+        if (isTree == '1') {
+            findPath(graph);
+            if (treeNode != null) {
+                if (treeNode.getAttribute('path','') != JSON.stringify(pathes)) {
+                    delDesc();
+                    treeNode.setAttribute('path',JSON.stringify(pathes));
+                }
+            }
+            createGraph();
+            var enc = new mxCodec(mxUtils.createXmlDocument());
+            var node = enc.encode(graph.getModel());
+            var xml = mxUtils.getXml(node);
+            var xmlString = encodeURIComponent(xml);
+            var url = '@Url.Action("save", "RCA")';
+            var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
+            var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
+            mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
+                if (req.getStatus() == "200")
+                    var d=new Date();
+                    var t=d.toLocaleTimeString();
+                    $('div.lastSave').text('Last auto save at: ' + t);
+                // Process server response using req of type mxXmlRequest
+            });
+        } else {
+            items = [];
+            events = $("#event").val();
+            $(".why").each(function () {
+                var vals = $(this).val();
+                items.push(vals);
+            });
+            var fracasir = $("input[name=fracasir]:checked").val();
+            var fracasirid = $("#selec").val();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("saveWhy", "RCA")",
+                traditional: true,
+                data: {filename: 'analysis' + id + '.xml', events: events, item: items, id: id, fracasir : fracasir, fracasirid : fracasirid},
+                success: function () {
+                    var d=new Date();
+                    var t=d.toLocaleTimeString();
+                    $('div.lastSave').text('Last auto save at: ' + t);
+                }
+            });
+            createGraph();
+        }
+    }
 
     //find path
     function findPath(graph) {
@@ -2013,6 +2066,9 @@
 	                style="position:absolute;overflow:hidden;top:307px;left:275px;width:850px;height:400px;">
                 </div>
             </div>
+            <div class="lastSave">
+                
+            </div>
     }
     else
     {
@@ -2048,6 +2104,8 @@
                     </div>
                     <br />
                 </div>
+            </div>
+            <div class="lastSave">
             </div>
             <div class="OpenMenu">
                 <input id="back" type="button" name="back" value="back" onclick="parent.location='@Url.Action("Index", "RCA")'"/>

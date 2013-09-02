@@ -1036,7 +1036,7 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             incident_report i = db.incident_report.Find(id);
 
-            return Json(new { id = id, analysis_title = i.title, cost = i.cost_estimate });
+            return Json(new { id = id, analysis_title = i.title, cost = i.cost_estimate, lead_name = i.lead_name });
         }
 
         public ActionResult ExportExcelData(DateTime fromD, DateTime toD)

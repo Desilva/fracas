@@ -10,7 +10,11 @@ namespace StarEnergi.Models
     public class RCAEntityModel
     {
         public int id { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
         public string name { get; set; }
+
         public string description { get; set; }
         public int? id_type { get; set; }
         public string type_name { get; set; }
@@ -60,6 +64,7 @@ namespace StarEnergi.Models
 
     public class RCAEntityModelExcel
     {
+        public string rca_code { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public string type_name { get; set; }
@@ -67,8 +72,6 @@ namespace StarEnergi.Models
         public string facility { get; set; }
         public string division { get; set; }
         public string department { get; set; }
-        public string building { get; set; }
-        public string floor { get; set; }
         public string functional_location { get; set; }
         public string equipment_type { get; set; }
         public string equipment_class { get; set; }

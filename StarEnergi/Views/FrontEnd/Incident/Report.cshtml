@@ -40,7 +40,7 @@
         var templateComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (isCanEdit ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
                                 + '<span class="t-icon ' + (isCanEdit ? 't-edit' : 't-view') + '"></span>'
                                 + '</a>')
-                                + ((isApprove && !isAnalyst && isNeedRCA) ? '<a class="t-button t-rca t-button-icon" onClick="openChooser(' + dataItem.id + ');" title="Add to RCA">'
+                                + ((isApprove && !isAnalyst && isNeedRCA) ? '<a class="t-button t-rca t-button-icon" onClick="toRcas(' + dataItem.id + ');" title="Add to RCA">'
                                 + '<span class="t-icon t-rca"></span>'
                                 + '</a>' : '')
                                 + (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="AddFracas(' + dataItem.id + ');" title="To FRACAS">'
@@ -51,7 +51,7 @@
         var templateUnComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (isCanEdit ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
                                 + '<span class="t-icon ' + (isCanEdit ? 't-edit' : 't-view') + '"></span>'
                                 + '</a>')
-                                + ((isApprove && !isAnalyst && isNeedRCA) ? '<a class="t-button t-rca t-button-icon" onClick="openChooser(' + dataItem.id + ');" title="Add to RCA">'
+                                + ((isApprove && !isAnalyst && isNeedRCA) ? '<a class="t-button t-rca t-button-icon" onClick="toRcas(' + dataItem.id + ');" title="Add to RCA">'
                                 + '<span class="t-icon t-rca"></span>'
                                 + '</a>' : '')
                                 + (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="AddFracas(' + dataItem.id + ');" title="To FRACAS">'
@@ -143,23 +143,14 @@
         document.getElementById('ids').value = id;
     }
 
-    function toRcas() {
-        var radios = document.getElementsByName('choose');
-        var id = document.getElementById('ids').value;
-        var val = -1;
-        for (var i = 0, length = radios.length; i < length; i++) {
-            if (radios[i].checked) {
-                val = radios[i].value;
-            }
-        }
-
+    function toRcas(id) {
         $.ajax({
             type: "POST",
             url: "@Url.Action("getCode", "Incident")",
             traditional: true,
             data: { id: id },
             success: function (data) {
-                window.location = 'RCA/addRCA?isTree=' + val + '&i=' + data.id + '&a=' + data.analysis_title + '&c=' + data.cost;
+                window.location = 'RCA/addRCA?i=' + data.id + '&a=' + data.analysis_title + '&c=' + data.cost + '&l=' + data.lead_name;
             }
         });
 

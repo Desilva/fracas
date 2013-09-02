@@ -53,7 +53,7 @@
 				<div class="menuImage">
 					<img src="/Content/image/folder_add.ico" width="64" height="64"/>
 					<br/>
-				<a href="#" class="btn" data-toggle="popover" data-placement="bottom" data-content="@(li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA || p.role == (int)StarEnergi.Config.role.RCAVIEW) ? "<a href=" + @Url.Action("Index", "RCA", new{ isTree = 1}) + ">Tree Diagram</a><br/><a href=" + @Url.Action("Index", "RCA", new{ isTree = 0}) + ">5-Ways</a><br/><a href=" + @Url.Action("Index", "RCA", new{ isTree = 2}) + ">Fishbone</a>" : "")" title="RCA" data-original-title="Popover on top" data-html="true">RCA</a>
+				<a href=@Url.Action("Index", "rca") class="btn" title="RCA">RCA</a>
 				</div>
 				<div class="menuImage">
 					<img src="/Content/image/process.ico" width="64" height="64"/>

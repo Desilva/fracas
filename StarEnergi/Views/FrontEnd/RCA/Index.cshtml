@@ -4,7 +4,6 @@
     if (ViewData["user_role"] != null) {
         li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
     }
-    int? isTree = ViewBag.isTree as Nullable<Int32>;
 }
 @model IEnumerable<StarEnergi.Models.RCAEntityModel>
 <script type="text/javascript">
@@ -65,6 +64,57 @@
                 e.preventDefault();
             }
         }
+
+        if (e.name == "Open") {
+            var dataItem = e.dataItem;
+            if (dataItem.is_tree == null) {
+                e.preventDefault();
+                openChooser(dataItem.id);
+            } else {
+                e.preventDefault();
+                switch (dataItem.is_tree) {
+                    case 0:
+                        window.location = 'RCA/open/' + dataItem.id;
+                        break;
+                    case 1:
+                        window.location = 'RCA/open/' + dataItem.id;
+                        break;
+                    case 2:
+                        window.location = 'RCA/test/' + dataItem.id;
+                        break;
+                }
+            }
+        }
+    }
+
+    function openChooser(id) {
+        $('#Window').data('tWindow').center().open();
+        document.getElementById('ids').value = id;
+    }
+
+    function toRcas() {
+        var radios = document.getElementsByName('choose');
+        var id = document.getElementById('ids').value;
+        var val = -1;
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                val = radios[i].value;
+            }
+        }
+        var radio = val;
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("setAnalysisType", "RCA")",
+            traditional: true,
+            data: { id: id, radio: radio },
+            success: function (data) {
+                if (radio == 2)
+                    window.location = 'RCA/test/' + id;
+                else
+                    window.location = 'RCA/open/' + id;
+            }
+        });
+
     }
 </script>
 <div id="contentEventLog">   
@@ -108,23 +158,12 @@
         {
             columns.Command(commands =>
             {
-                if (isTree == 2)
-                {
-                    commands.Custom("Open")
-                            .Text("Open")
-                            .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Open Analysis", id = "open" })
-                            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
-                            .Action("test", "RCA");
-                }
-                else
-                {
-                    commands.Custom("Open")
-                            .Text("Open")
-                            .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Open Analysis", id = "open" })
-                            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
-                            .Action("open", "RCA");
-                }
-                
+                commands.Custom("Open")
+                        .Text("Open")
+                        .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Open Analysis", id = "open" })
+                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                        .Ajax(true)
+                        .Action("open", "RCA");
                 commands.Custom("Edit")
                         .Text("Edit")
                         .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconEdit.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 70%;margin-right: -5px;margin-right: -10px;", title = li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) ? "Edit Analysis" : "View Analysis" })
@@ -194,3 +233,23 @@
         .Filterable()
         )
 </div>
+
+@{  Html.Telerik().Window()
+        .Name("Window")
+        .Title("Choose Analysis Type")
+        .Content(@<text>
+                <input name="ids" id="ids" type="hidden" value="" />
+                <input name="choose" type="radio" value="1" checked/>Tree Diagram
+                <input name="choose" type="radio" value="0" />5 Why's
+                <input name="choose" type="radio" value="2" />Fishbone Diagram
+                <br />
+                <div class="form-actions">
+                    <input type="button" onclick="toRcas()" value="Go!" />
+                </div>
+            </text>)
+        .Width(400)
+        .Draggable(true)
+        .Modal(true)
+        .Visible(false)
+        .Render();
+}

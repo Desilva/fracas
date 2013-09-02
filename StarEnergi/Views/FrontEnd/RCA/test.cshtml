@@ -630,6 +630,36 @@
 		}
 	};
 
+    //autosave
+    var myVar=setInterval(function(){myTimer()},60000);
+    function myTimer()
+    {
+        findPath(graph);
+        if (treeNode != null) {
+            if (treeNode.getAttribute('path','') != JSON.stringify(pathes)) {
+                delDesc();
+                treeNode.setAttribute('path',JSON.stringify(pathes));
+            }
+        }
+			        
+        var enc = new mxCodec(mxUtils.createXmlDocument());
+        var node = enc.encode(graph.getModel());
+        var xml = mxUtils.getXml(node);
+        var xmlString = encodeURIComponent(xml);
+        var url = '@Url.Action("save2", "RCA")';
+		var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
+		var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
+		fileName = 'analysis' + id + '.xml';
+		mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
+		    if (req.getStatus() == "200")
+		        var d=new Date();
+		        var t=d.toLocaleTimeString();
+		        $('div.lastSave').text('Last auto save at: ' + t);
+			// Process server response using req of type mxXmlRequest
+		});
+		exportImages(editor,graph,graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? false : true);
+    }
+
     function recurseMoveChild(cell,graph,model,vertex,prev) {
         if (vertex.getAttribute('level','-1') != 0) {
             model.beginUpdate();
@@ -2294,6 +2324,8 @@
             <div id="menuTool"
 	            style="position:absolute;overflow:hidden;top:307px;left:275px;width:850px;height:400px;">
             </div>
+        </div>
+        <div class="lastSave">
         </div>
     }
 </div>

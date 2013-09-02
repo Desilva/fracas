@@ -1,4 +1,6 @@
-﻿@{
+﻿@using StarEnergi
+@model IEnumerable<StarEnergi.Models.plant>
+@{
     int? isPublish = ViewBag.isPublish;
     List<StarEnergi.Models.user_per_role> li = null;
     if (ViewData["user_role"] != null)
@@ -96,8 +98,42 @@
     $(document).ready(function () {
         $('#id_facility').change();
     });
+
+    function browseEquipment() {
+        var detailWindow = $("#BrowseEquipment").data("tWindow");
+        detailWindow.center().open();
+    }
+
+    function onLoadTree() {
+        $(".t-in", this).live("dblclick", function () {
+            var node = $(this).closest('.t-item');
+            var text = $(this).text();
+
+            var treeview = $('#TreeSBS').data('tTreeView');
+            var value = treeview.getItemValue(node).split(';');
+            if (value[0] == '@Config.TreeType.EQUIPMENTS') {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("getFuncLocation", "RCA")",
+                traditional: true,
+                data: {
+                    id: value[1]
+                },
+                success: function (data) {
+                    $('#functional_location').val(data.tag_number);
+                }
+            });
+            var detailWindow = $("#BrowseEquipment").data("tWindow");
+            detailWindow.close();
+        } else {
+
+        }
+        });
+    }
 </script>
 <br />
+
+
 @using (Html.BeginForm())
 {
 <div class="addContent">
@@ -276,7 +312,7 @@
             <div class="info_new_left"><div>Functional Location</div><div> (ID Number)</div></div>
             <div class="infonewinput">
                 <input id="functional_location" type="text" name="functional_location" value="@ViewBag.functional_location" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/>
-                <input id="browse" name="browse" type="button" style="display:inline" onclick="" value="Browse" />
+                <input id="browse" name="browse" type="button" style="display:inline" onclick="browseEquipment()" value="Browse" />
             </div>
             <br />
             <div class="addSubmit">
@@ -288,3 +324,104 @@
     </div>
 </div>
 }
+
+@(Html.Telerik().Window()
+    .Name("BrowseEquipment")
+    .Visible(false)
+    .Title("Choose Functional Location")
+    .Modal(true)
+    .Width(400)
+    .Height(600)
+    .Content(@<text>
+               @(
+            Html.Telerik().TreeView()
+                .Name("TreeSBS")
+                .BindTo(Model, mappings =>
+                {
+                    mappings.For<StarEnergi.Models.plant>(binding => binding
+                            .ItemDataBound((items, plant) =>
+                            {
+                                items.Text = plant.nama;
+                                items.Value = Config.TreeType.PLANT + ";" + plant.id.ToString();
+                                items.Expanded = true;
+                                if (plant.focs.Count != 0) {
+                                    items.ImageUrl = ("~/Content/image/folder.png");
+                                }else
+                                    items.ImageUrl = ("~/Content/image/file.png");
+                            })
+                            .Children(plant => plant.focs));
+            
+                    mappings.For<StarEnergi.Models.foc>(binding => binding
+                            .ItemDataBound((items, foc) =>
+                            {
+                                items.Text = foc.nama;
+                                items.Value = Config.TreeType.AREA +";"+ foc.id.ToString();
+                                if (foc.units.Count != 0)
+                                {
+                                    items.ImageUrl = ("~/Content/image/folder.png");
+                                }
+                                else
+                                    items.ImageUrl = ("~/Content/image/file.png");
+                       
+                            })
+                            .Children(foc => foc.units));
+
+                    mappings.For<StarEnergi.Models.unit>(binding => binding
+                            .ItemDataBound((items, unit) =>
+                            {
+                                items.Text = unit.nama;
+                                items.Value = Config.TreeType.UNIT + ";" + unit.id.ToString();
+                                if (unit.systems.Count != 0)
+                                {
+                                    items.ImageUrl = ("~/Content/image/folder.png");
+                                }
+                                else
+                                    items.ImageUrl = ("~/Content/image/file.png");
+                            })
+                            .Children(unit => unit.systems));
+            
+                    mappings.For<StarEnergi.Models.system>(binding => binding
+                           .ItemDataBound((items, system) =>
+                           {
+                               items.Text = system.nama;
+                               items.Value = Config.TreeType.SYSTEM + ";" + system.id.ToString();
+                               if (system.equipment_groups.Count != 0)
+                               {
+                                   items.ImageUrl = ("~/Content/image/folder.png");
+                               }
+                               else
+                                   items.ImageUrl = ("~/Content/image/file.png");
+                           })
+                           .Children(system => system.equipment_groups));
+            
+                    mappings.For<StarEnergi.Models.equipment_groups>(binding => binding
+                          .ItemDataBound((items, equipment_groups) =>
+                          {
+                              items.Text = equipment_groups.description == null ? equipment_groups.nama : equipment_groups.description;
+                              items.Value = Config.TreeType.EQUIPMENT_GROUP + ";" + equipment_groups.id.ToString();
+                              if (equipment_groups.equipments.Count != 0)
+                              {
+                                  items.ImageUrl = ("~/Content/image/folder.png");
+                              }
+                              else
+                                  items.ImageUrl = ("~/Content/image/file.png");
+                          })
+                          .Children(equipment_groups => equipment_groups.equipments));
+            
+                    mappings.For<StarEnergi.Models.equipment>(binding => binding
+                         .ItemDataBound((items, equipment) =>
+                         {
+                             items.Text = equipment.nama;
+                             items.Value = Config.TreeType.EQUIPMENTS + ";" + equipment.id.ToString();
+                                  items.ImageUrl = ("~/Content/image/file.png");
+                         }));
+            
+                })
+                .ClientEvents(eventsTree =>
+                           eventsTree.OnLoad("onLoadTree")
+                )
+           )
+        </text>)
+)
+
+

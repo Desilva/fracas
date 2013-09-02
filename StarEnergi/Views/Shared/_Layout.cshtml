@@ -172,13 +172,7 @@
                                menu.Add().Text("Asset Register").Action("Index", "AssetRegister");
                                if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA || p.role == (int)StarEnergi.Config.role.RCAVIEW))
                                {
-                                   menu.Add().Text("RCA")
-                                       .Items(item =>
-                                       {
-                                           item.Add().Text("Tree Diagram").Action("Index", "rca", new { isTree = 1 });
-                                           item.Add().Text("5 - why").Action("Index", "rca", new { isTree = 0 });
-                                           item.Add().Text("Fishbone Diagram").Action("Index", "rca", new { isTree = 2 });
-                                       });
+                                   menu.Add().Text("RCA").Action("Index", "rca");
                                }
                                if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.PIRINITIATOR || p.role == (int)StarEnergi.Config.role.PIRPROCESS || p.role == (int)StarEnergi.Config.role.FULLPIR || p.role == (int)StarEnergi.Config.role.AUDITOR))
                                {
@@ -190,6 +184,7 @@
                                                item2.Add().Text("IIR").Action("Report", "pir", new { id_page = 1 });
                                                item2.Add().Text("Internal Audit").Action("Report", "pir", new { id_page = 2 });
                                                item2.Add().Text("External Audit").Action("Report", "pir", new { id_page = 3 });
+                                               item2.Add().Text("Summary").Action("Report", "pir", new { id_page = 4 });
                                            });
                                        });
                                }

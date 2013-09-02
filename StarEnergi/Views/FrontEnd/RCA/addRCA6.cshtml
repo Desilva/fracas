@@ -134,7 +134,7 @@
             <div style="float: left;">
                 <div class="info_new_left">Principal Analyst</div>
                 <div class="infonewinput">
-                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.analyst == null)
                     {
                     <select name="analyst" id="analyst">
                         <option value="" disabled selected>Choose Principal Analyst</option>

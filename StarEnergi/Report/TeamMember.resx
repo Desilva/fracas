@@ -129,7 +129,7 @@
         RGF0YVNvdXJjZVBhcmFtZXRlcgMAAAACAAAACQQAAAAFBAAAAEtTeXN0ZW0uQ29sbGVjdGlvbnMuR2Vu
         ZXJpYy5MaXN0YDFbW1RlbGVyaWsuUmVwb3J0aW5nLlNxbERhdGFTb3VyY2VQYXJhbWV0ZXIDAAAABl9p
         dGVtcwVfc2l6ZQhfdmVyc2lvbgQAACpUZWxlcmlrLlJlcG9ydGluZy5TcWxEYXRhU291cmNlUGFyYW1l
-        dGVyW10CAAAACAgDAAAACQUAAAAAAAAACAAAAAcFAAAAAAEAAAAAAAAABChUZWxlcmlrLlJlcG9ydGlu
+        dGVyW10CAAAACAgDAAAACQUAAAAAAAAACQAAAAcFAAAAAAEAAAAAAAAABChUZWxlcmlrLlJlcG9ydGlu
         Zy5TcWxEYXRhU291cmNlUGFyYW1ldGVyAgAAAAs=
 </value>
   </metadata>
@@ -139,7 +139,7 @@ FROM            rca INNER JOIN
                          rca_team_connector ON rca.id = rca_team_connector.id_rca INNER JOIN
                          users ON rca_team_connector.id_user = users.username INNER JOIN
                          employee ON users.employee_id = employee.id
-where isnull(rca_team_connector.rca_position,'') &lt;&gt; ''
+where isnull(rca_team_connector.rca_position,'') &lt;&gt; '' and rca_team_connector.rca_position = 2
 Order by rca_team_connector.rca_position</value>
   </data>
   <metadata name="$this.SnapGridSize" type="Telerik.Reporting.Drawing.Unit, Telerik.Reporting, Version=6.0.12.215, Culture=neutral, PublicKeyToken=a9d7983dfcc261be">

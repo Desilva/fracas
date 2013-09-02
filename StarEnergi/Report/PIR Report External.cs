@@ -95,7 +95,7 @@ namespace StarEnergi.Reporting
             )
             SELECT procedure_reference_list.proc_ref_list as procedure_reference, COUNT(pir.date_rise) as yeartodate
             from procedure_reference_list
-            left join (select * from pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 3 ) as pir on procedure_reference_list.proc_ref_list = pir.procedure_reference group by proc_ref_list"
+            left join (select * from pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 2 ) as pir on procedure_reference_list.proc_ref_list = pir.procedure_reference group by proc_ref_list"
                  , ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);    
             adapter.Fill(table);
             Telerik.Reporting.Processing.Chart procChart = (Telerik.Reporting.Processing.Chart)sender;
@@ -123,7 +123,7 @@ namespace StarEnergi.Reporting
             string reportParamaters = report.Report.Parameters["year"].Value.ToString();
             DataTable table = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(@"
-            SELECT 'Closed' AS [Status], COUNT(CASE WHEN pir.status = 'VERIFIED' THEN 1 END) as yeartodate FROM pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 3 UNION ALL SELECT 'Raised' AS [Status],COUNT(CASE WHEN pir.status != 'VERIFIED' THEN 1 END) as yeartodate FROM pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 3 UNION ALL SELECT 'Open' AS [Status], COUNT(CASE WHEN DateDiff(day,date_rise,GETDATE()) <=0 THEN 1 END) as yeartodate FROM pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 3 UNION ALL SELECT 'Overdue' AS [Status], COUNT(CASE WHEN DateDiff(day,date_rise,GETDATE()) > 0 THEN 1 END) as yeartodate FROM pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 3"
+            SELECT 'Closed' AS [Status], COUNT(CASE WHEN pir.status = 'VERIFIED' THEN 1 END) as yeartodate FROM pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 2 UNION ALL SELECT 'Raised' AS [Status],COUNT(CASE WHEN pir.status != 'VERIFIED' THEN 1 END) as yeartodate FROM pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 2 UNION ALL SELECT 'Open' AS [Status], COUNT(CASE WHEN DateDiff(day,date_rise,pir.initiator_verified_date) <=0 OR (isnull(pir.initiator_verified_date,'') = '' AND isnull(pir.date_rise,'') <> '') THEN 1 END) as yeartodate FROM pir where [from] = 2 AND month(date_rise) <= month(GETDATE()) UNION ALL SELECT 'Overdue' AS [Status], COUNT(CASE WHEN isnull(pir.initiator_verified_date,'') <> '' AND DateDiff(day,date_rise,pir.initiator_verified_date) > 0 THEN 1 END) as yeartodate FROM pir where [from] = 2 AND month(date_rise) <= month(GETDATE())"
                  , ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
             adapter.Fill(table);
             Telerik.Reporting.Processing.Chart procChart = (Telerik.Reporting.Processing.Chart)sender;
@@ -193,7 +193,7 @@ namespace StarEnergi.Reporting
             select proc_owner_list.ownlist as process_owner,
 	            COUNT(CASE WHEN DateDiff(day,date_rise,GETDATE()) > 0 THEN 1 END) as Overdue
             from proc_owner_list
-            left join (Select * from pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 3) as p on p.process_owner = proc_owner_list.ownlist group by ownlist"
+            left join (Select * from pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 2) as p on p.process_owner = proc_owner_list.ownlist group by ownlist"
                  , ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
             adapter.Fill(table);
             Telerik.Reporting.Processing.Chart procChart = (Telerik.Reporting.Processing.Chart)sender;
@@ -268,7 +268,7 @@ namespace StarEnergi.Reporting
             select proc_owner_list.ownlist as process_owner,
 	            COUNT(CASE WHEN DateDiff(day,date_rise,GETDATE()) <=0 THEN 1 END) as [Open]
             from proc_owner_list
-            left join (Select * from pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 3) as p on p.process_owner = proc_owner_list.ownlist group by ownlist"
+            left join (Select * from pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 2) as p on p.process_owner = proc_owner_list.ownlist group by ownlist"
                  , ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
             adapter.Fill(table);
             Telerik.Reporting.Processing.Chart procChart = (Telerik.Reporting.Processing.Chart)sender;
@@ -343,7 +343,7 @@ namespace StarEnergi.Reporting
             select proc_owner_list.ownlist as process_owner,
 	            COUNT(CASE WHEN p.status = 'VERIFIED' THEN 1 END) as Closed
             from proc_owner_list
-            left join (Select * from pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 3) as p on p.process_owner = proc_owner_list.ownlist group by ownlist"
+            left join (Select * from pir where YEAR(date_rise) = '" + reportParamaters + "' and [from] = 2) as p on p.process_owner = proc_owner_list.ownlist group by ownlist"
                  , ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
             adapter.Fill(table);
             Telerik.Reporting.Processing.Chart procChart = (Telerik.Reporting.Processing.Chart)sender;
