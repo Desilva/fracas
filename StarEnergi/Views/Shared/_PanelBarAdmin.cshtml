@@ -9,6 +9,8 @@
             $('#content').load('LongTermCor');
         } else if (item.find('> .t-link').text() == "Equipment Class") {
             $('#content').load('TagType');
+        }else if (item.find('> .t-link').text() == "Equipment Sub Class") {
+            $('#content').load('SubClass');
         } else if (item.find('> .t-link').text() == "Event Description") {
             $('#content').load('EventDescription');
         } else if (item.find('> .t-link').text() == "Process Owner") {
@@ -70,6 +72,7 @@
                     item.Add().Text("Immidiate Cor Action");
                     item.Add().Text("Long Term Cor Action");
                     item.Add().Text("Equipment Class");
+                    item.Add().Text("Equipment Sub Class");
                     item.Add().Text("Event Description");
                     item.Add().Text("Process Owner");                   
                     item.Add().Text("Critical Success Factors");

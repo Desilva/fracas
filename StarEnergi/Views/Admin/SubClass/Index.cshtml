@@ -1,0 +1,44 @@
+﻿@model IEnumerable<StarEnergi.Models.discipline>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Department</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.DisciplineEntity>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("SubClass")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "SubClass")
+                .Insert("_InsertAjaxEditing", "SubClass")
+                .Update("_SaveAjaxEditing", "SubClass")
+                .Delete("_DeleteAjaxEditing", "SubClass");
+        })
+        .Columns(columns =>
+        {
+            columns.ForeignKey(o => o.id_tag_type, (System.Collections.IEnumerable)ViewData["equipment_class"],
+                   "id", "title").Width(200).Title("Equipment Class");
+            columns.Bound(o => o.title).Title("Equipment Sub Class");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 
