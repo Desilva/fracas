@@ -1787,21 +1787,21 @@ namespace StarEnergi.Controllers.FrontEnd
                 RCASessionRepository.db.SaveChanges();
             }
 
-            if (rcas.analysis_file != null)
-            {
-                String filepath = Server.MapPath("~/Content/xml/" + rcas.analysis_file);
-                StreamReader sr = new StreamReader(filepath);
-                string xml = sr.ReadToEnd();
-                sr.Close();
-                string filename = "analysis" + newId + ".xml";
-                string filepath2 = Server.MapPath("~/Content/xml/" + filename);
-                StreamWriter sw = new StreamWriter(filepath2);
-                sw.WriteLine(xml);
-                sw.Close();
-                Debug.WriteLine("save id = " + id);
-                rcas.analysis_file = filename;
-                RCASessionRepository.UpdateRCATree(rcas);
-            }
+            //if (rcas.analysis_file != null)
+            //{
+            //    String filepath = Server.MapPath("~/Content/xml/" + rcas.analysis_file);
+            //    StreamReader sr = new StreamReader(filepath);
+            //    string xml = sr.ReadToEnd();
+            //    sr.Close();
+            //    string filename = "analysis" + newId + ".xml";
+            //    string filepath2 = Server.MapPath("~/Content/xml/" + filename);
+            //    StreamWriter sw = new StreamWriter(filepath2);
+            //    sw.WriteLine(xml);
+            //    sw.Close();
+            //    Debug.WriteLine("save id = " + id);
+            //    rcas.analysis_file = filename;
+            //    RCASessionRepository.UpdateRCATree(rcas);
+            //}
 
             if (HttpContext.Session["username"].ToString() == null)
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
@@ -2710,7 +2710,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
             foreach (RCAEntityModel rcas in result)
             {
-                rcas.member_name = db.rca_team_connector.Where(p => p.id_rca == rcas.id && p.rca_position == 1).Select(p => p.id_user).ToList();
+                rcas.member_name = db.rca_team_connector.Where(p => p.id_rca == rcas.id && p.rca_position == null).Select(p => p.id_user).ToList();
 
             }
             return result;

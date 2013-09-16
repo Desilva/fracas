@@ -30,27 +30,27 @@ namespace StarEnergi.Controllers.FrontEnd
             string file = "";
             if (type == "Fracas_Event_Log")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "Historical_Data")
+            else if (type == "Historical_Data")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "Incident_Report")
+            else if (type == "Incident_Report")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "Incident_Investigation_Report")
+            else if (type == "Incident_Investigation_Report")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "Injury_Report")
+            else if (type == "Injury_Report")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if(type = "Audit")
+            else if(type == "Audit")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "Observation_Form")
+            else if (type == "Observation_Form")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "Daily_Log")
+            else if (type == "Daily_Log")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "Equipt._Report")
+            else if (type == "Equipt._Report")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "Asset_Register")
+            else if (type == "Asset_Register")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "RCA")
+            else if (type == "RCA")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
-            else if (type = "PIR")
+            else if (type == "PIR")
                 file = Server.MapPath(Url.Content("~/Content/Help/road-map.pdf"));
             PdfReader reader = new PdfReader(file);
             MemoryStream pdfStream = new MemoryStream();
