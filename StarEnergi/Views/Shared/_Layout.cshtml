@@ -189,12 +189,10 @@
                                            });
                                        });
                                }
+                               menu.Add().Text(" ").Action("Index", "Help").ImageUrl(Url.Content("~/Content/image/icon/book-small.png"));
                                
                            }).Render();
-                        //if ((ViewBag.stat == "pir") || (ViewBag.stat == "rca"))
-                        //{
                         Html.RenderPartial("_LogOnPartial");
-                        //}                    
                     }
                 }			
                 </div>
