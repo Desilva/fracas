@@ -788,18 +788,18 @@
                 <h5>Investigation Required?</h5>
             </td>
             <td style="width:8.33%">
-                <input type="radio" name="investigation" id="investigation_1" value="1" disabled @(isEdit ? ir.investigation == 1 ? "checked" : "" : "")/>yes
+                <input type="radio" name="investigation" id="investigation_1" value="1" @(isEdit ? ((has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)) ? "" : "disabled") : "disabled") @(isEdit ? ir.investigation == 1 ? "checked" : "" : "") onclick="investigation(1)"/>yes
             </td>
             <td style="width:8.33%" class="right">
-                <input type="radio" name="investigation" id="investigation_0" value="0" disabled @(isEdit ? (ir.investigation == 0 || ir.investigation == null) ? "checked" : "" : "checked")/>no
+                <input type="radio" name="investigation" id="investigation_0" value="0" @(isEdit ? ((has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)) ? "" : "disabled") : "disabled") @(isEdit ? (ir.investigation == 0 || ir.investigation == null) ? "checked" : "" : "checked") onclick="investigation(0)"/>no
             </td>
             <td style="width:16.67%" class="right">
-                <h5>Investigation Request by</h5>
+                <h5>Investigation Request by  <div id="request_req" style="display:none;color:red;">* required</div></h5>
             </td>
             <td style="width:16.67%" class="right">
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
-                    <select id="request_name" name="request_name" @(isEdit && ir.investigation == 1 && Session["id"].ToString() == "231" ? "" : "disabled")>
+                    <select id="request_name" name="request_name" @(isEdit && ir.investigation == 1 && (has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)) ? "" : "disabled")>
                         <option value="" selected disabled>Choose One</option>
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
@@ -829,7 +829,7 @@
             <td style="width:16.67%" class="right">
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
-                    <select id="lead_name" name="lead_name" @(isEdit && ir.investigation == 1 && Session["id"].ToString() == "231" ? "" : "disabled")>
+                    <select id="lead_name" name="lead_name" @(isEdit && ir.investigation == 1 && (has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)) ? "" : "disabled")>
                         <option value="" selected disabled>Choose One</option>
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
@@ -1256,8 +1256,8 @@
                     field_manager_date: $('#date_field_man').val(),
                     she_superintendent_date: $('#date_she_sup').val(),
                     investigation: $('input:radio[name=investigation]:checked').val(),
-                    investigation_req: $('#request_name').val(),
-                    lead_name: $('#lead_name').val(),
+                    investigation_req: $('input:radio[name=investigation]:checked').val() == 1 ? $('#request_name').val() : "",
+                    lead_name: $('input:radio[name=investigation]:checked').val() == 1 ? $('#lead_name').val() : "",
                     kontraktor_seg: con_seg
                 }
                 $('#realmod_save').css("display", "block");
@@ -1427,7 +1427,7 @@
             $('#probability_req').css('display','none');
         }
 
-        if ('@(Session["id"].ToString() == "231")' == 'True') {
+        if ('@(ir != null && (has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)))' == 'True') {
             if ($('input:radio[name=investigation]:checked').val() == 1) {
                 if ($('#lead_name').val() == "") {
                     $('#lead_req').css('display','inline');
@@ -1435,8 +1435,15 @@
                 } else {
                     $('#lead_req').css('display','none');
                 }
+                if ($('#request_name').val() == "") {
+                    $('#request_req').css('display','inline');
+                    validate = false;
+                } else {
+                    $('#request_req').css('display','none');
+                }
             } else {
                 $('#lead_req').css('display','none');
+                $('#request_req').css('display','none');
             }
         }
 
@@ -1475,6 +1482,16 @@
 
     function bindack() {
         document.getElementById('ack_job').innerHTML = has[document.getElementById('ack').value];
+    }
+
+    function investigation(value) {
+        if (value == 1) {
+            $('#request_name').removeAttr('disabled');
+            $('#lead_name').removeAttr('disabled');
+        } else if (value == 0) {
+            $('#request_name').attr('disabled','disabled');
+            $('#lead_name').attr('disabled','disabled');
+        }
     }
 
 </script>

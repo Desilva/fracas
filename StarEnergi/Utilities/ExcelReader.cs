@@ -2048,10 +2048,10 @@ namespace StarEnergi.Utilities
             db.pirs.Add(pir);
             db.SaveChanges();
 
-            string subPath = "D:\\Informatics\\Proyek\\Star Energy\\fracas\\StarEnergi\\Attachment\\pir\\" + pir.id; // your code goes here
-            bool IsExists = System.IO.Directory.Exists(subPath);
+            string subPath = "~/Attachment/pir/" + pir.id; // your code goes here
+            bool IsExists = System.IO.Directory.Exists(System.Web.HttpContext.Current.Server.MapPath(subPath));
             if (!IsExists)
-                System.IO.Directory.CreateDirectory(subPath);
+                System.IO.Directory.CreateDirectory(System.Web.HttpContext.Current.Server.MapPath(subPath));
             return err;
         }
         #endregion

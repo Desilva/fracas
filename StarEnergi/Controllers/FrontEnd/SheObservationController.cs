@@ -518,24 +518,42 @@ namespace StarEnergi.Controllers.FrontEnd
                      orderby emp.department
                      select new SheObservationPersonReport
                      {
+                         id_employee = emp.id,
                          alpha_name = emp.alpha_name,
                          department = emp.department
                      }).ToList();
             result = r;
+            toD.AddDays(1);
             foreach (SheObservationPersonReport emp in result)
             {
-                List<she_observation> list_obs = db.she_observation.Where(p => p.observer == emp.alpha_name && p.department == emp.department && p.date_time >= fromD && p.date_time <= toD).ToList();
+                List<she_observation> list_obs = new List<she_observation>();
+                List<she_observation> temp = db.she_observation.ToList();
+                foreach(she_observation s in temp){
+                    string[] obs = s.observer.Split('#');
+                    if (obs.Count() <= 1) { 
+                        if(obs[0].Equals(emp.alpha_name) && s.date_time >= fromD && s.date_time <= toD){
+                            list_obs.Add(s);
+                        }
+                    }else{
+                        if(obs[1].Equals(emp.id_employee.ToString()) && s.date_time >= fromD && s.date_time <= toD){
+                            list_obs.Add(s);
+                        }
+                    }
+                    
+                }
                 emp.total_observation = list_obs.Count;
                 emp.total_quality_obs = list_obs.Where(p => p.is_quality == 1).Count();
             }
+            toD.AddDays(-1);
             GridView gv = new GridView();
             gv.Caption = "SHE Observation Report By Person From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();
             gv.DataSource = result;
             gv.DataBind();
-            gv.HeaderRow.Cells[0].Text = "Name";
-            gv.HeaderRow.Cells[1].Text = "Department";
-            gv.HeaderRow.Cells[2].Text = "Total SHE Observation";
-            gv.HeaderRow.Cells[3].Text = "Total Quality SHE Observation";
+            gv.HeaderRow.Cells[0].Text = "ID";
+            gv.HeaderRow.Cells[1].Text = "Name";
+            gv.HeaderRow.Cells[2].Text = "Department";
+            gv.HeaderRow.Cells[3].Text = "Total SHE Observation";
+            gv.HeaderRow.Cells[4].Text = "Total Quality SHE Observation";
             if (gv != null)
             {
                 return new DownloadFileActionResult(gv, "SHE Observation Person Report.xls");

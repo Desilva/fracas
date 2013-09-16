@@ -1904,6 +1904,141 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             return this.ViewPdf("", "DailyLogPrint", dl);
         }
+        
+        public ActionResult printReport(DateTime fromD, DateTime toD, string sections)
+        {
+            IList<string> section = sections.Split(',');
+            List<DailyLogReportEntity> report = new List<DailyLogReportEntity>();
+            List<daily_log> list_dl = db.daily_log.Where(p => p.date >= fromD.Date && p.date <= toD.Date && p.shift == 1).ToList();
+            foreach (daily_log dl in list_dl)
+            {
+                DailyLogReportEntity dl_report = new DailyLogReportEntity();
+                dl.daily_log_shift2 = db.daily_log.Find(dl.id_shift2);
+                dl_report.date = dl.date;
+                if (section.Contains("1"))
+                {
+                    dl_report.section1 = true;
+                    dl_report.grup_1 = dl.grup;
+                    dl_report.production_foreman_1 = dl.production_foreman;
+                    dl_report.production_operator_1_1 = dl.production_operator_1;
+                    dl_report.production_operator_2_1 = dl.production_operator_2;
+                    dl_report.production_operator_3_1 = dl.production_operator_3;
+                    dl_report.production_operator_4_1 = dl.production_operator_4;
+                    dl_report.production_operator_5_1 = dl.production_operator_5;
+                    dl_report.production_operator_6_1 = dl.production_operator_6;
+                    dl_report.production_operator_7_1 = dl.production_operator_7;
+                    dl_report.production_operator_8_1 = dl.production_operator_8;
+
+                    if (dl.daily_log_shift2 != null)
+                    {
+                        dl_report.grup_2 = dl.daily_log_shift2.grup;
+                        dl_report.production_foreman_2 = dl.daily_log_shift2.production_foreman;
+                        dl_report.production_operator_1_2 = dl.daily_log_shift2.production_operator_1;
+                        dl_report.production_operator_2_2 = dl.daily_log_shift2.production_operator_2;
+                        dl_report.production_operator_3_2 = dl.daily_log_shift2.production_operator_3;
+                        dl_report.production_operator_4_2 = dl.daily_log_shift2.production_operator_4;
+                        dl_report.production_operator_5_2 = dl.daily_log_shift2.production_operator_5;
+                        dl_report.production_operator_6_2 = dl.daily_log_shift2.production_operator_6;
+                        dl_report.production_operator_7_2 = dl.daily_log_shift2.production_operator_7;
+                        dl_report.production_operator_8_2 = dl.daily_log_shift2.production_operator_8;
+                    }
+                }
+
+                if (section.Contains("2"))
+                {
+                    dl_report.section2 = true;
+                    dl_report.list_daily_log_power_stations = db.daily_log_power_stations.Where(p => p.id_daily_log == dl.id || p.id_daily_log == dl.id_shift2).OrderBy(p => p.power_station_unit).ThenBy(p => p.power_station_time).ToList();
+                    dl_report.list_daily_log_sags = db.daily_log_sags.Where(p => p.id_daily_log == dl.id || p.id_daily_log == dl.id_shift2).OrderBy(p => p.sags_unit).ThenBy(p => p.sags_time).ToList();
+                }
+
+                if (section.Contains("3"))
+                {
+                    dl_report.section3 = true;
+                    dl_report.uti_active_1 = dl.uti_active_1;
+                    dl_report.uti_reactive_1 = dl.uti_reactive_1;
+                    dl_report.sc_main_1 = dl.sc_main_1;
+                    dl_report.sc_auxiliary_1 = dl.sc_auxiliary_1;
+                    dl_report.ge_active_1 = dl.ge_active_1;
+                    dl_report.ge_reactive_1 = dl.ge_reactive_1;
+                    dl_report.metering_segwwl_1 = dl.metering_segwwl_1;
+                    dl_report.metering_pln_1 = dl.metering_pln_1;
+                    dl_report.condensate_ps_1 = dl.condensate_ps_1;
+                    dl_report.segwwl_availability_1 = dl.segwwl_availability_1;
+                    dl_report.pln_dispatch_1 = dl.pln_dispatch_1;
+                    dl_report.pln_meter_1 = dl.pln_meter_1;
+                    dl_report.segwwl_export_1 = dl.segwwl_export_1;
+                    dl_report.actual_export_1 = dl.actual_export_1;
+                    dl_report.production_excess_1 = dl.production_excess_1;
+                    dl_report.rpf_1 = dl.rpf_1;
+                    dl_report.pgf_1 = dl.pgf_1;
+                    dl_report.pln_1 = dl.pln_1;
+                    dl_report.uti_active_2 = dl.uti_active_2;
+                    dl_report.uti_reactive_2 = dl.uti_reactive_2;
+                    dl_report.sc_main_2 = dl.sc_main_2;
+                    dl_report.sc_auxiliary_2 = dl.sc_auxiliary_2;
+                    dl_report.ge_active_2 = dl.ge_active_2;
+                    dl_report.ge_reactive_2 = dl.ge_reactive_2;
+                    dl_report.metering_segwwl_2 = dl.metering_segwwl_2;
+                    dl_report.metering_pln_2 = dl.metering_pln_2;
+                    dl_report.condensate_ps_2 = dl.condensate_ps_2;
+                    dl_report.segwwl_availability_2 = dl.segwwl_availability_2;
+                    dl_report.pln_dispatch_2 = dl.pln_dispatch_2;
+                    dl_report.pln_meter_2 = dl.pln_meter_2;
+                    dl_report.segwwl_export_2 = dl.segwwl_export_2;
+                    dl_report.actual_export_2 = dl.actual_export_2;
+                    dl_report.production_excess_2 = dl.production_excess_2;
+                    dl_report.rpf_2 = dl.rpf_2;
+                    dl_report.pgf_2 = dl.pgf_2;
+                    dl_report.pln_2 = dl.pln_2;
+                    dl_report.condensate_total = dl.condensate_total;
+                    dl_report.brine_total = dl.brine_total;
+                    dl_report.note = dl.note;
+                }
+
+                if (section.Contains("4"))
+                {
+                    dl_report.section4 = true;
+                    double target_1 = 0;
+                    double target_2 = 0;
+                    List<daily_log_weekly_target> wt = db.daily_log_weekly_target.Where(p => p.date == dl.date).ToList();
+                    foreach (daily_log_weekly_target w in wt)
+                    {
+                        target_1 += Double.Parse(w.target_unit_1);
+                        target_2 += Double.Parse(w.target_unit_2);
+                    }
+                    dl_report.target_1 = target_1.ToString("f2");
+                    dl_report.target_2 = target_2.ToString("f2");
+                    dl_report.achievement_1_1 = dl.achievement_1;
+                    dl_report.achievement_2_1 = dl.achievement_2;
+                    dl_report.remark_1_1 = dl.remark_1;
+                    dl_report.remark_2_1 = dl.remark_2;
+
+                    if (dl.daily_log_shift2 != null)
+                    {
+                        dl_report.achievement_1_2 = dl.daily_log_shift2.achievement_1;
+                        dl_report.achievement_2_2 = dl.daily_log_shift2.achievement_2;
+                        dl_report.remark_1_2 = dl.daily_log_shift2.remark_1;
+                        dl_report.remark_2_2 = dl.daily_log_shift2.remark_2;
+                    }
+                }
+
+                if (section.Contains("5"))
+                {
+                    dl_report.section5 = true;
+                    dl_report.list_daily_log_last_plant_status = db.daily_log_last_plant_status.Where(p => p.id_daily_log == dl.id || p.id_daily_log == dl.id_shift2).ToList();
+                }
+                report.Add(dl_report);
+            }
+
+            DailyLogReport dlr = new DailyLogReport
+            {
+                list_entity = report,
+                from_date = fromD,
+                to_date = toD
+            };
+
+            return this.ViewPdf("", "DailyLogReportPrint", dlr);
+        }
 
         // ==============================================
 

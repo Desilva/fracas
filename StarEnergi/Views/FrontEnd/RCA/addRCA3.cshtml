@@ -25,18 +25,21 @@
 <script type="text/javascript">
     $(function () {
         $('#equipment_type').change(function () {
-            $.post('@Url.Action("getEquipmentCode", "RCA")', { selectedType: $(this).val(), selectedClass: $('#equipment_class').val() }, function (result) {
+            $.post('@Url.Action("getEquipmentSubClass", "RCA")', { selectedType: $(this).val() }, function (result) {
                 var str = '<option value="" disabled selected>Choose Equipment Class</option>';
                 var size = 0;
-
+                $('#equipment_code').html(str);
                 $.each(result, function () {
                     size++;
                 });
 
-                if (size == 0) {
-                    $('#equipment_code').val('Choose Equipment Type and Equipment Class');
+                if (result.count == 0) {
+                    $('#equipment_class').html(str);
                 } else {
-                    $('#equipment_code').val(result[0].tag_num);
+                    $.each(result, function () {
+                        str += '<option value="' + this.id + '">' + this.title + '</option>\n';
+                    });
+                    $('#equipment_class').html(str);
                 }
             });
         });
@@ -45,7 +48,7 @@
     $(function () {
         $('#equipment_class').change(function () {
             $.post('@Url.Action("getEquipmentCode", "RCA")', { selectedType: $('#equipment_type').val(), selectedClass : $(this).val() }, function (result) {
-                var str = '<option value="" disabled selected>Choose Equipment Type and Class</option>';
+                var str = '<option value="" disabled selected>Choose Equipment Code</option>';
                 //var size = 0;
 
                 //$.each(result, function () {
@@ -61,10 +64,18 @@
                     $('#equipment_code').html(str);
                 } else {
                     $.each(result, function () {
-                        str += '<option value="' + this.tag_num + '">' + this.tag_num + '</option>\n';
+                        str += '<option value="' + this.tag_num + '">' + this.tag_num + ' - ' + this.nama + '</option>\n';
                     });
                     $('#equipment_code').html(str);
                 }
+            });
+        });
+    });
+
+    $(function () {
+        $('#equipment_code').change(function () {
+            $.post('@Url.Action("getEquipmentManufacture", "RCA")', { selectedCode: $(this).val() }, function (result) {
+                $('#manufacture').val(result.manufacture);
             });
         });
     });
@@ -119,19 +130,22 @@
                 {
                     <select name="equipment_class" id="equipment_class">
                         <option value="" disabled selected>Choose Equipment Sub Class</option>
-                        @foreach (StarEnergi.Models.discipline a in ViewData["equipmentClass"] as List<StarEnergi.Models.discipline>)
+                        @if (ViewData["equipmentClass"] != null)
                         {
-                            if (ViewBag.id_equipment_class == null)
+                            foreach (StarEnergi.Models.DisciplineEntity a in ViewData["equipmentClass"] as List<StarEnergi.Models.DisciplineEntity>)
                             {
-                            <option value="@a.id">@a.title</option>
-                            }
-                            else if (a.id.ToString().CompareTo(ViewBag.id_equipment_class) == 0)
-                            {
-                            <option value="@a.id" selected="selected">@a.title</option>
-                            }
-                            else
-                            {
-                            <option value="@a.id">@a.title</option>
+                                if (ViewBag.id_equipment_class == null)
+                                {
+                                <option value="@a.id">@a.title</option>
+                                }
+                                else if (a.id.ToString().CompareTo(ViewBag.id_equipment_class) == 0)
+                                {
+                                <option value="@a.id" selected="selected">@a.title</option>
+                                }
+                                else
+                                {
+                                <option value="@a.id">@a.title</option>
+                                }
                             }
                         }
                     </select>
@@ -146,24 +160,24 @@
             <div class="infonewinput">
                 @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
                 {
-                <select name="equipment_code" id="equipment_code">
+                <select name="equipment_code" id="equipment_code" style="max-width:250px">
                     <option value="" disabled selected>Choose Equipment Type and Class</option>
                         
                     @if (ViewData["equipmentCodes"] != null)
                     {
-                        foreach (string a in ViewData["equipmentCodes"] as List<string>)
+                        foreach (StarEnergi.Models.equipment a in ViewData["equipmentCodes"] as List<StarEnergi.Models.equipment>)
                         {
                             if (ViewBag.equipment_code == null)
                             {
-                            <option value="@a">@a</option>
+                            <option value="@a.tag_num">@a.tag_num - @a.nama</option>
                             }
-                            else if (a.ToString().CompareTo(ViewBag.equipment_code) == 0)
+                            else if (a.tag_num.ToString().CompareTo(ViewBag.equipment_code) == 0)
                             {
-                            <option value="@a" selected="selected">@a</option>
+                            <option value="@a.tag_num" selected="selected">@a.tag_num - @a.nama</option>
                             }
                             else
                             {
-                            <option value="@a">@a</option>
+                            <option value="@a.tag_num">@a.tag_num - @a.nama</option>
                             }
                         }
                     }

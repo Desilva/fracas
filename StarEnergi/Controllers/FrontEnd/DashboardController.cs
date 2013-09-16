@@ -20,6 +20,16 @@ namespace StarEnergi.Controllers.FrontEnd
             //Config.menu = Config.MenuFrontEnd.DASHBOARD;
             //ViewBag.nama = "Dashboard";
             //return View(db.plants);
+            she_observation_undian undian = db.she_observation_undian.OrderByDescending(p => p.from).FirstOrDefault();
+            if (undian != null)
+            {
+                undian.from_period = undian.from.Value.ToString("MMM yyyy");
+                undian.to_period = undian.to.Value.ToString("MMM yyyy");
+                undian.winner_name_1 = db.she_observation.Find(undian.winner_id_she_observation_1).observer.Split('#').FirstOrDefault();
+                undian.winner_name_2 = db.she_observation.Find(undian.winner_id_she_observation_2).observer.Split('#').FirstOrDefault();
+                undian.winner_name_3 = db.she_observation.Find(undian.winner_id_she_observation_3).observer.Split('#').FirstOrDefault();
+            }
+            ViewBag.winner = undian;
             return View("Dashboard");
         }
 

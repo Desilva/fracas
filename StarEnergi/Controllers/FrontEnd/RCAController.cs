@@ -212,7 +212,7 @@ namespace StarEnergi.Controllers.FrontEnd
                             rcas.fracas_ir = 2;
                         }
                         HttpContext.Session["id_analysis"] = RCASessionRepository.Insert(rcas);
-                        if (l != null) {
+                        if (l != null && l != "") {
                             int id_emp = Int32.Parse(l);
                             int id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
                             string user = RCASessionRepository.db.users.Where(p => p.employee_id == id_emp).FirstOrDefault().username;
@@ -544,16 +544,47 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.equipment_code = rca.equipment_code;
             if (rca.equipment_code != null)
             {
-                ViewData["equipmentCodes"] = RCASessionRepository.db.equipments.Where(p => p.id_tag_type == rca.id_type_equipment && p.id_discipline == rca.id_equipment_class).Select(p => p.tag_num).Distinct().ToList();
+                ViewData["equipmentCodes"] = RCASessionRepository.db.equipments.Where(p => p.id_tag_type == rca.id_type_equipment && p.id_discipline == rca.id_equipment_class).Distinct().ToList();
+            }
+            if (rca.equipment_class != null)
+            {
+                ViewData["equipmentClass"] = (from disciplines in RCASessionRepository.db.disciplines
+                                              where disciplines.id_tag_type == rca.id_type_equipment
+                                              select new DisciplineEntity
+                                              {
+                                                  id = disciplines.id,
+                                                  title = disciplines.title,
+                                                  id_tag_type = disciplines.id_tag_type
+                                              }).ToList();
             }
             ViewBag.other = rca.other;
             ViewBag.manufacture = rca.manufacture;
             ViewBag.isPublish = rca.is_publish;
 
             ViewData["equipments"] = RCASessionRepository.db.tag_types.ToList();
-            ViewData["equipmentClass"] = RCASessionRepository.db.disciplines.ToList();
+            //ViewData["equipmentClass"] = RCASessionRepository.db.disciplines.ToList();
             ViewData["user_role"] = li;
             return View();
+        }
+
+        //
+        // POST: /RCA/getEquipmentSubClass
+
+        [HttpPost]
+        public JsonResult getEquipmentSubClass(string selectedType)
+        {
+            int selectType = 0;
+            if (selectedType != null && selectedType != "")
+                selectType = Int32.Parse(selectedType);
+            var query = (from disciplines in RCASessionRepository.db.disciplines
+                        where disciplines.id_tag_type == selectType
+                        select new DisciplineEntity
+                        {
+                            id = disciplines.id,
+                            title = disciplines.title,
+                            id_tag_type = disciplines.id_tag_type
+                        }).ToList();
+            return Json(query);
         }
 
         //
@@ -568,9 +599,19 @@ namespace StarEnergi.Controllers.FrontEnd
             int selectClass = 0;
             if (selectedClass != null && selectedClass != "")
                 selectClass = Int32.Parse(selectedClass);
-            var query = RCASessionRepository.db.equipments.Where(p => p.id_tag_type == selectType && p.id_discipline == selectClass).Select(p => new { tag_num = p.tag_num }).Distinct();
+            var query = RCASessionRepository.db.equipments.Where(p => p.id_tag_type == selectType && p.id_discipline == selectClass).Select(p => new { tag_num = p.tag_num, nama = p.nama }).Distinct();
             Debug.WriteLine("selected Class = " + selectedClass);
             return Json(query);
+        }
+
+        //
+        // POST: /RCA/getEquipmentClass
+
+        [HttpPost]
+        public JsonResult getEquipmentManufacture(string selectedCode)
+        {
+            var s = RCASessionRepository.db.equipments.Where(p => p.tag_num == selectedCode).FirstOrDefault().vendor;
+            return Json(new {manufacture = s});
         }
 
         //
@@ -1079,6 +1120,25 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             var button = next ?? cancel ?? previous;
 
+            //if (analyst == null)
+            //{
+            //    ViewData["user_role"] = li;
+            //    ViewBag.types = types;
+            //    List<user_per_role> upr_rca = RCASessionRepository.db.user_per_role.Where(p => p.role == (int)Config.role.RCA).ToList();
+            //    List<user_per_role> upr_pir = RCASessionRepository.db.user_per_role.Where(p => p.role == (int)StarEnergi.Config.role.PIRINITIATOR).ToList();
+            //    List<user_per_role> upr_rca_pir = upr_rca.Join(upr_pir, u => u.username, t => t.username, (u, t) => u).ToList();
+            //    List<RCATeamEmployeeModel> rt = upr_rca.Join(RCASessionRepository.db.users,
+            //    u => u.username,
+            //    t => t.username,
+            //    (u, t) => new RCATeamModel { username = u.username, fullname = t.fullname, jabatan = t.jabatan, role = u.role, employee_id = t.employee_id }).Join(RCASessionRepository.db.employees,
+            //    u => u.employee_id,
+            //    t => t.id,
+            //    (u, t) => new RCATeamEmployeeModel { username = u.username, alpha_name = t.alpha_name, position = t.position, role = u.role, employee_id = u.employee_id }).ToList();
+            //    ModelState.AddModelError("analyst", "Principal Analyst required");
+            //    ViewData["peoples"] = rt.ToList();
+            //    return View(rt.ToList());
+            //}
+
             if (button == "Next")
             {
                 RCAEntityModel rca = new RCAEntityModel();
@@ -1097,17 +1157,20 @@ namespace StarEnergi.Controllers.FrontEnd
                     rca_team_connector csfc;
                     if (rcas.id_team == null)
                     {
-                        csfc = new rca_team_connector()
+                        if (analyst != null)
                         {
-                            id_user = analyst,
-                            id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString()),
-                            rca_position = null
-                        };
-                        RCASessionRepository.db.rca_team_connector.Add(csfc);
-                        RCASessionRepository.db.SaveChanges();
-                        int idd = csfc.id;
+                            csfc = new rca_team_connector()
+                            {
+                                id_user = analyst,
+                                id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString()),
+                                rca_position = null
+                            };
+                            RCASessionRepository.db.rca_team_connector.Add(csfc);
+                            RCASessionRepository.db.SaveChanges();
+                            int idd = csfc.id;
 
-                        rca.id_team = idd;
+                            rca.id_team = idd;
+                        }
                     }
                     else
                     {
@@ -1195,17 +1258,20 @@ namespace StarEnergi.Controllers.FrontEnd
                     rca_team_connector csfc;
                     if (rcas.id_team == null)
                     {
-                        csfc = new rca_team_connector()
+                        if (analyst != null)
                         {
-                            id_user = analyst,
-                            id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString()),
-                            rca_position = null
-                        };
-                        RCASessionRepository.db.rca_team_connector.Add(csfc);
-                        RCASessionRepository.db.SaveChanges();
-                        int idd = csfc.id;
+                            csfc = new rca_team_connector()
+                            {
+                                id_user = analyst,
+                                id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString()),
+                                rca_position = null
+                            };
+                            RCASessionRepository.db.rca_team_connector.Add(csfc);
+                            RCASessionRepository.db.SaveChanges();
+                            int idd = csfc.id;
 
-                        rca.id_team = idd;
+                            rca.id_team = idd;
+                        }
                     }
                     else
                     {
@@ -2216,7 +2282,7 @@ namespace StarEnergi.Controllers.FrontEnd
         // Post: RCA/implementasi
         //
         [HttpPost]
-        public ActionResult implementation(string id)
+        public ActionResult implementation(string id, [FromJson]string[][] list)
         {
             int ids = -1;
             if (id != null)
@@ -2236,9 +2302,9 @@ namespace StarEnergi.Controllers.FrontEnd
                            work_location = employees.work_location,
                            dob = employees.dob,
                            dept_name = dept.dept_name
-                       }).ToList();
+                       }).OrderBy(p => p.alpha_name).ToList();
             ViewData["users"] = has;
-            
+            ViewBag.list = list;
             ViewBag.id = ids;
             ViewData["user_role"] = li;
             rca_implementation[] df = RCASessionRepository.db.rca_implementation.ToArray();

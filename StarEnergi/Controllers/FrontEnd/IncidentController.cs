@@ -1052,11 +1052,12 @@ namespace StarEnergi.Controllers.FrontEnd
                          prepared_by = ir.prepared_by,
                          title = ir.title,
                          incident_type = ir.incident_type
-                     }).ToList();
+                     }).OrderBy(p => p.date_incident).ToList();
             result = r;
             foreach (incident_report_e ire in result)
             {
-                ire.prepared_by = db.employees.Find(Int32.Parse(ire.prepared_by)).alpha_name;
+                if (ire.prepared_by != null && ire.prepared_by != "")
+                    ire.prepared_by = db.employees.Find(Int32.Parse(ire.prepared_by)).alpha_name;
             }
             GridView gv = new GridView();
             gv.Caption = "Incident Report Data From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();

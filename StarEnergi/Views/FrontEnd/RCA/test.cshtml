@@ -699,11 +699,20 @@
                     var changeGeometri = new mxGeometryChange(model,par, geometri);
                     model.execute(changeGeometri);
                 } else {
+                    
                     recurseMoveChild(cell.getEdgeAt(0).source,graph,model,vertex,cell);
                 }
             } finally {
                 model.endUpdate();
             }
+        } else {
+            var geometri = cell.getGeometry();
+            var z = cell.getEdgeAt(4).target;
+            wid = cell.getGeometry().width/2+z.getGeometry().width/2+175;
+            addValue = wid - (cell.getGeometry().getCenterX() - z.getGeometry().getCenterX());
+            geometri.x += addValue;
+            var changeGeometri = new mxGeometryChange(model,vertex, geometri);
+            model.execute(changeGeometri);
         }
     }
 
@@ -1073,7 +1082,7 @@
                             });
                         };
                         div.appendChild(fracas_rad);
-                        var p = document.createTextNode('from fracas');
+                        var p = document.createTextNode('from FRACAS');
                         div.appendChild(p);
                         ir_rad = document.createElement('input');
                         ir_rad.type = 'radio';
@@ -1120,7 +1129,7 @@
                             });
                         };
                         div.appendChild(ir_rad);
-                        var p = document.createTextNode('from ir');
+                        var p = document.createTextNode('from IR');
                         div.appendChild(p);
                         none_rad = document.createElement('input');
                         none_rad.type = 'radio';

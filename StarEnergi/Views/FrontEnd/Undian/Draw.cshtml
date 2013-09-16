@@ -1,0 +1,121 @@
+﻿@{
+    List<StarEnergi.Models.she_observation> list_obs = null;
+    if (ViewBag.list_she_obs != null) {
+        list_obs = ViewBag.list_she_obs as List<StarEnergi.Models.she_observation>;   
+    }
+}
+
+<!DOCTYPE html>
+<h2 class="adminH2">SHE Observation Lucky Draw Period @((ViewBag.date_from as DateTime?).Value.ToString("MMM yyyy")) - @((ViewBag.date_to as DateTime?).Value.AddDays(-1).ToString("MMM yyyy"))</h2>
+<input type="hidden" id="from" value="@ViewBag.date_from" />
+<input type="hidden" id="to" value="@ViewBag.date_to" />
+<input type="hidden" id="id_undian" />
+
+<div style="width:400px;margin:0 auto;">
+    <h4 style="text-align:center;margin-bottom:2px;">Winner 1</h4>
+    <h2 id="winner1" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;">Start Drawing!</h2>
+    <input type="hidden" id="id_winner1" />
+    <div style="margin:0 auto;width:200px;text-align:center">
+        <input type="button" id="draw1" value="Draw!" onclick="startDraw(1)" style="margin:0 auto"/>
+        <input type="button" id="stop1" value="Stop!" onclick="stop(1)" style="margin:0 auto;display:none"/>
+    </div>
+</div>
+<div style="width:400px;margin:0 auto;display:none" id="winner2div">
+    <h4 style="text-align:center;margin-bottom:2px;">Winner 2</h4>
+    <h2 id="winner2" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;">Start Drawing!</h2>
+    <input type="hidden" id="id_winner2" />
+    <div style="margin:0 auto;width:200px;text-align:center">
+        <input type="button" id="draw2" value="Draw!" onclick="startDraw(2)" style="margin:0 auto"/>
+        <input type="button" id="stop2" value="Stop!" onclick="stop(2)" style="margin:0 auto;display:none"/>
+    </div>
+</div>
+<div style="width:400px;margin:0 auto;display:none" id="winner3div">
+    <h4 style="text-align:center;margin-bottom:2px;">Winner 3</h4>
+    <h2 id="winner3" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;">Start Drawing!</h2>
+    <input type="hidden" id="id_winner3" />
+    <div style="margin:0 auto;width:200px;text-align:center">
+        <input type="button" id="draw3" value="Draw!" onclick="startDraw(3)" style="margin:0 auto"/>
+        <input type="button" id="stop3" value="Stop!" onclick="stop(3)" style="margin:0 auto;display:none"/>
+    </div>
+</div>
+<div style="width:400px;margin:0 auto;display:none" id="congrats">
+    <h3 id="winner3" style="text-align:center;color:blue;padding:10px 0;margin-top:2px;">Congratulation to all winners.</h3>
+</div>
+<script type="text/javascript">
+    var arrayObs = [];
+    var myVar;
+    @foreach (StarEnergi.Models.she_observation she in list_obs)
+    {
+        <text>arrayObs.push([@she.id,'@she.observer']);</text>
+    }
+
+    function startDraw(value) {
+        myVar = setInterval(function () { drawing(value) }, 30);
+        $('#draw' + value).hide();
+        $('#stop' + value).show();
+    }
+
+    function stop(value) {
+        clearInterval(myVar);
+        var id = $('#id_winner' + value).val();
+        var she_obs_id = arrayObs[id][0];
+        var obs_name = arrayObs[id][1].split('#')[0];
+        var obs_id = null;
+        if (arrayObs[id][1].split('#').length > 1) {
+            obs_id = arrayObs[id][1].split('#')[1];
+        }
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("saveResult", "Undian")",
+            traditional: true,
+            data: {
+                she_obs: she_obs_id,
+                winner_id: value,
+                from: $('#from').val(),
+                to: $('#to').val(),
+                id_undian: $('#id_undian').val() == '' ? null : $('#id_undian').val()
+            },
+            success: function (data) {
+                for (var i = 0; i < arrayObs.length; i++) {
+                    var a = arrayObs[i][1].split('#');
+                    if (a.length > 1) {
+                        if (obs_id != null) {
+                            if (a[1] == obs_id) {
+                                arrayObs.splice(i, 1);
+                                i--;
+                            }
+                        } else {
+                            if (a[0] == obs_name) {
+                                arrayObs.splice(i, 1);
+                                i--;
+                            }
+                        }
+                    } else {
+                        if (a[0] == obs_name) {
+                            arrayObs.splice(i, 1);
+                            i--;
+                        }
+                    }
+                }
+                console.log(arrayObs);
+                $('#id_undian').val(data.id);
+            }
+        });
+        $('#stop' + value).hide();
+        if (value == 1) {
+            $('#winner2div').show();
+        } else if (value == 2) {
+            $('#winner3div').show();
+        } else if (value == 3) {
+            $('#congrats').show();
+        }
+    }
+
+    function drawing(value) {
+        var rand_value = Math.floor((Math.random() * arrayObs.length));
+        console.log(rand_value);
+        $('#winner' + value).html(arrayObs[rand_value][1].split('#')[0]);
+        $('#id_winner' + value).val(rand_value);
+    }
+
+</script>

@@ -3,10 +3,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int? id = ViewBag.ids as Nullable<Int32>;
     List<StarEnergi.Models.rca_implementation> li = ViewData["imp"] as List<StarEnergi.Models.rca_implementation>;
-    int[,] a = new int[3,3];
+    int[,] a = new int[4,5];
     int i = 0;
-    for (i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++)
+    for (i = 0; i < 4; i++) {
+        for (int j = 0; j < 5; j++)
         {
             a[i, j] = 0;
         }   
@@ -99,7 +99,7 @@
 
         @foreach(StarEnergi.Models.rca_implementation imp in li) {
             i++;
-            <text>var brr = [@((((a[(int)imp.dampak - 1, (int)imp.usaha - 1]) % 5) * 0.2 + 0.1) + (int)imp.usaha - 1),@((((a[(int)imp.dampak - 1, (int)imp.usaha - 1]) / 5) * 0.2 + 0.1) + (int)imp.dampak - 1), 10, "@i"];</text>
+            <text>var brr = [@((((a[(int)imp.dampak - 1, (int)imp.usaha - 1]) % 3) * 0.3 + 0.15) + (int)imp.usaha - 1),@((((a[(int)imp.dampak - 1, (int)imp.usaha - 1]) / 5) * 0.2 + 0.15) + (int)imp.dampak - 1), 10, { label: "@i", color: '@((int)imp.dampak < 4 && (int)imp.usaha < 3 ? "red" : ((int)imp.dampak < 4 && (int)imp.usaha < 4 ? "yellow" : "green"))' }];</text>
             <text>arr.push(brr);</text>
             a[(int)imp.dampak - 1, (int)imp.usaha - 1] += 1;
         }
@@ -117,25 +117,35 @@
                 shadow: true,
                 shadowAlpha: 0.05
             },
-            axesDefaults: {
-                min: 0,
-                max: 3,
-                numberTicks: 4,
-                ticks: [[0, ""], [1, "Low"], [2, "Medium"], [3, "High"]],
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    showMark: false,
-                    show: true,
-                    showLabel: true,
-                    angle: -30,
-                    labelPosition: 'end'
-                }
-            },
             axes: {
                 xaxis: {
-                    label: "Effort"
+                    min: 0,
+                    max: 5,
+                    numberTicks: 6,
+                    ticks: [[0, ""], [1, "1"], [2, "2"], [3, "3"], [4, "4"], [5, "5"]],
+                    tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                    tickOptions: {
+                        showMark: false,
+                        show: true,
+                        showLabel: true,
+                        angle: -30,
+                        labelPosition: 'end'
+                    },
+                    label: "Priority"
                 },
                 yaxis: {
+                    min: 0,
+                    max: 4,
+                    numberTicks: 5,
+                    ticks: [[0, ""], [1, "Major"], [2, "Serious"], [3, "Moderate"], [4, "Minor"]],
+                    tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                    tickOptions: {
+                        showMark: false,
+                        show: true,
+                        showLabel: true,
+                        angle: -30,
+                        labelPosition: 'end'
+                    },
                     label: "Effect"
                 }
             }
@@ -148,7 +158,7 @@
         for (var e in dc) {
             if (dc[e].style != null) {
                 var c = parseFloat(dc[e].style.left);
-                dc[e].style.left = '' + (c - 70) + 'px';
+                dc[e].style.left = '' + (c - 35) + 'px';
             }
         }
 

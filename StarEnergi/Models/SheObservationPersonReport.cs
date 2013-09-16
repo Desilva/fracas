@@ -7,6 +7,7 @@ namespace StarEnergi.Models
 {
     public class SheObservationPersonReport
     {
+        public int id_employee { get; set; }
         public string alpha_name { get; set; }
         public string department { get; set; }
         public int total_observation { get; set; }

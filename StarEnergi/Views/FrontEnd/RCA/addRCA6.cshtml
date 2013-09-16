@@ -97,9 +97,9 @@
             }
 
             if (isFind && isFirst == 'True') {
-                return "<select name='select' id='sel" + name + "' value='" + arraySel[name] + "'><option value='0'>-</option><option value='1' " + (arraySel[name] == 1 ? "selected" : "") + ">Leader</option><option value='2' " + (arraySel[name] == 2 ? "selected" : "") + ">Member</option><option value='3' " + (arraySel[name] == 3 ? "selected" : "") + ">Facilitator</option></select>";
+                return "<select name='select' id='sel" + name + "' value='" + arraySel[name] + "' onchange='onLeader(\"" + name + "\")'><option value='0'>-</option><option value='1' " + (arraySel[name] == 1 ? "selected" : "") + ">Leader</option><option value='3' " + (arraySel[name] == 3 ? "selected" : "") + ">Facilitator</option><option value='2' " + (arraySel[name] == 2 ? "selected" : "") + ">Member</option></select>";
             } else {
-                return "<select name='select' id='sel" + name + "' disabled><option value='0'>-</option><option value='1'>Leader</option><option value='2'>Member</option><option value='3'>Facilitator</option></select>";
+                return "<select name='select' id='sel" + name + "' disabled onchange='onLeader(\"" + name + "\")'><option value='0'>-</option><option value='1'>Leader</option><option value='3'>Facilitator</option><option value='2'>Member</option></select>";
             }
         } else {
             return "";
@@ -113,8 +113,70 @@
                 isFirst = 'False';
                 $("#Team").data("tGrid").dataBind(result);
             });
+
+            if ($('#analyst').val() == "") {
+                $('#next').attr('disabled','disabled');
+                $('#prev').attr('disabled','disabled');
+            } else {
+                $('#next').removeAttr('disabled');
+                $('#prev').removeAttr('disabled');
+            }
         });
     });
+
+    $(document).ready(function() {
+        if ('@((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.analyst == null)' == 'True') {
+            $('#next').attr('disabled','disabled');
+            $('#prev').attr('disabled','disabled');
+        }
+    });
+
+    function onLeader(name) {
+        var arrRole = [];
+        var leader = null;
+        var facilitator = null;
+
+        for (var i in document.getElementsByName("select")) {
+            if (document.getElementsByName("select")[i].value == 1 && leader == null)
+                leader = true;
+            else if (document.getElementsByName("select")[i].value == 1 && leader)
+                leader = false;
+
+            if (document.getElementsByName("select")[i].value == 3 && facilitator == null)
+                facilitator = true;
+            else if (document.getElementsByName("select")[i].value == 3 && facilitator)
+                facilitator = false;
+        }
+
+        if ($("[id='sel"+name+"']").val() == 1 || $("[id='sel"+name+"']").val() == 3) {
+            if ($("[id='sel"+name+"']").val() == 1) {
+                if (leader == null || !leader) {
+                    alert("Leader must be only one.");
+                    $('#next').attr('disabled','disabled');
+                    $('#prev').attr('disabled','disabled');
+                } else if (facilitator) {
+                    $('#next').removeAttr('disabled');
+                    $('#prev').removeAttr('disabled');
+                }
+            }
+
+            if ($("[id='sel"+name+"']").val() == 3) {
+                if (facilitator == null || !facilitator) {
+                    alert("Facilitor must be only one.");
+                    $('#next').attr('disabled','disabled');
+                    $('#prev').attr('disabled','disabled');
+                } else if (leader) {
+                    $('#next').removeAttr('disabled');
+                    $('#prev').removeAttr('disabled');
+                }
+            }
+        } else {
+            if (facilitator && leader) {
+                $('#next').removeAttr('disabled');
+                $('#prev').removeAttr('disabled');
+            }
+        }
+    }
 </script>
 <br />
 @using (Html.BeginForm())
@@ -132,7 +194,7 @@
             <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
             <div style="float: left;">
-                <div class="info_new_left">Principal Analyst</div>
+                <div class="info_new_left">Principal Analyst <a class="bintang">*</a></div>
                 <div class="infonewinput">
                     @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.analyst == null)
                     {
@@ -158,6 +220,7 @@
 
                         }
                     </select>
+                    @Html.ValidationMessage("analyst", "Principal Analyst required")
                     }
                     else
                     {
@@ -188,7 +251,7 @@
                     columns.Bound(o => o.username).ClientTemplate("<#= select(username) #>").
                             Title("RCA Pos.").Width(100).HtmlAttributes(new { style = "text-align:center" });
                 })
-                .Pageable(o => o.PageSize(10))
+                .Pageable(o => o.PageSize(300))
                 .Sortable()
                 .Groupable()
                 .Filterable()
@@ -202,8 +265,8 @@
         
         <div class="addSubmit">
 	        <input name="cancel" value="Cancel" type="submit"/>
-            <input type="submit" value="Previous" name="previous"/>
-            <input type="submit" value="Next" name="next"/>
+            <input type="submit" value="Previous" name="previous" id="prev"/>
+            <input type="submit" value="Next" name="next" id="next"/>
         </div>
     </div>
 </div>

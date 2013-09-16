@@ -28,6 +28,29 @@
         $('#dailyLogKPI').load('DailyLogs/keyPerformanceIndicator');
     }
 
+    function loadExport() {
+        var detailWindow = $("#ExportReport").data("tWindow");
+        $('#type').val('0');
+        detailWindow.center().open();
+    }
+
+    function exportReport() {
+        var detailWindow = $("#ExportReport").data("tWindow");
+        detailWindow.close();
+        var from = $('#date_from').val();
+        var to = $('#date_to').val();
+        var arrRole = [];
+
+        for (var i in document.getElementsByName("section")) {
+            if (document.getElementsByName("section")[i].checked)
+                arrRole.push(document.getElementsByName("section")[i].value);
+        }
+
+        if ($('#type').val() == 0) {
+            window.location = '/DailyLogs/PrintReport?fromD=' + from + '&toD=' + to + '&sections=' + arrRole;
+        }
+    }
+
     $(document).ready(function () {
         showKPI();
         showOperationalWarning();
@@ -55,6 +78,7 @@
     {
 <div>
     <input type="button" id="addDailyLog" value="Add Daily Log" onclick="addDailyLog()"/>
+    <input type="button" id="exportReport" value="Export Report" onclick="loadExport()"/>
 </div>
     }
 <br/>
@@ -83,3 +107,43 @@ using (Html.BeginForm("LoadExcel", "DailyLogs", FormMethod.Post, new { enctype =
 <iframe id="upload_target" name="upload_target" src="" width="980" height="350" style="border:0px solid #fff;"></iframe>
 }
 </div>
+@(Html.Telerik().Window()
+    .Name("ExportReport")
+    .Visible(false)
+    .Title("Export Report")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+
+                   <input type="hidden" id="type" />
+                    <div class="info_inside_left">From</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date_from")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                            .Value(DateTime.Today)
+                        )
+                    </div>
+                   <div class="info_inside_left">To</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date_to")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                            .Value(DateTime.Today)
+                        )
+                    </div>
+                   <div class="info_inside_left">Section</div>
+		            <div class="infoFieldinput">
+                        <input type="checkbox" name="section" id="section_1" value="1" />Section 1 - Group<br />
+                        <input type="checkbox" name="section" id="section_2" value="2" />Section 2 - Activities<br />
+                        <input type="checkbox" name="section" id="section_3" value="3" />Section 3 - Metering & Dispatch<br />
+                        <input type="checkbox" name="section" id="section_4" value="4" />Section 4 - Target & Achievement<br />
+                        <input type="checkbox" name="section" id="section_5" value="5" />Section 5 - Last Plant Status<br />
+                    </div>
+	            <p class="submit">
+		            <input name="Submit" value="Save" type="submit" onclick="exportReport();" />
+	            </p>
+	         </div>
+        </text>)
+)

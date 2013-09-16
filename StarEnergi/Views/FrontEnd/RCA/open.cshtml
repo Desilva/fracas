@@ -926,7 +926,7 @@
                             });
                         };
                         div.appendChild(fracas_rad);
-                        var p = document.createTextNode('from fracas');
+                        var p = document.createTextNode('from FRACAS');
                         div.appendChild(p);
                         ir_rad = document.createElement('input');
                         ir_rad.type = 'radio';
@@ -973,7 +973,7 @@
                             });
                         };
                         div.appendChild(ir_rad);
-                        var p = document.createTextNode('from ir');
+                        var p = document.createTextNode('from IR');
                         div.appendChild(p);
                         none_rad = document.createElement('input');
                         none_rad.type = 'radio';
@@ -2078,8 +2078,8 @@
                 <br />
                 <div class="info_new_left"></div>
                 <div class="openinfonewinput">
-                    <input type="radio" id="fracas_rad" name="fracasir" value="1" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "") @(fracasir == 1 ? "checked" : "") onclick="clickFracas()"/>from fracas
-                    <input type="radio" id="ir_rad" name="fracasir" value="2" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "") @(fracasir == 2 ? "checked" : "") onclick="clickIR()"/>from ir
+                    <input type="radio" id="fracas_rad" name="fracasir" value="1" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "") @(fracasir == 1 ? "checked" : "") onclick="clickFracas()"/>from FRACAS
+                    <input type="radio" id="ir_rad" name="fracasir" value="2" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "") @(fracasir == 2 ? "checked" : "") onclick="clickIR()"/>from IR
                     <input type="radio" id="none_rad" name="fracasir" value="0" @(isPublish == 1 || !li.Exists(p => p.role == 2) ? "disabled" : "") @(fracasir == 0 || fracasir == null ? "checked" : "") onclick="clickNone()"/>none
                 </div>
                 <br />

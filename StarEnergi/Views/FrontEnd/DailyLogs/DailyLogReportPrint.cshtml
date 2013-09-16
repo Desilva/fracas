@@ -1,0 +1,389 @@
+﻿@model StarEnergi.Models.DailyLogReport
+@{
+    double a;
+}
+<div class="container">
+    <table border="0">
+        <tr>
+            <td width="20%">
+                <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+            </td>
+            <td width="80%">
+                <h3>STAR ENERGY GEOTHERMAL (WAYANG WINDU LIMITED)</h3>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <u><b style="font-size:8px">Wayang Windu Geothermal Power Plant</b></u><p style="font-size:8px">Control Room Log Book (@Model.from_date.ToShortDateString() - @Model.to_date.ToShortDateString())</p>
+            </td>
+        </tr>
+    </table>
+    @foreach (StarEnergi.Models.DailyLogReportEntity dl_report in Model.list_entity) {
+        if (dl_report.section1 == true) {
+	<table>
+		<tr border="0.5" bgcolor="yellow">
+			<td style="font-size:5px;text-align:center;">Date</td>
+			<td style="font-size:5px;text-align:center;">Group</td>
+			<td style="font-size:5px;text-align:center;">Production Foreman</td>
+			<td colspan="4" style="font-size:5px;text-align:center;">Production Operators</td>
+		</tr>
+		<tr border="0.5">
+			<td rowspan="4" style="font-size:5px;text-align:center;" border="0.5">@(dl_report.date != null ? dl_report.date.Value.ToLongDateString() : "")</td>
+			<td rowspan="2" style="font-size:5px;text-align:center;">@dl_report.grup_1</td>
+			<td rowspan="2" style="font-size:5px;text-align:center;">@dl_report.production_foreman_1</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_1_1)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_3_1)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_5_1)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_7_1)&nbsp;</td>
+		</tr>
+		<tr border="0.5">
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_2_1)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_4_1)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_6_1)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_8_1)&nbsp;</td>
+		</tr>
+        <tr border="0.5">
+			<td rowspan="2" style="font-size:5px;text-align:center;">@dl_report.grup_2</td>
+			<td rowspan="2" style="font-size:5px;text-align:center;">@dl_report.production_foreman_2</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_1_2)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_3_2)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_5_2)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_7_2)&nbsp;</td>
+		</tr>
+		<tr border="0.5">
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_2_2)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_4_2)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_6_2)&nbsp;</td>
+			<td style="font-size:5px;text-align:center;">@(dl_report.production_operator_8_2)&nbsp;</td>
+		</tr>
+	</table>
+        }
+        if (dl_report.section2 == true) {
+	<div class="log-part3">
+        <table>
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td colspan="4">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="4"><u><b>Power Station activity</b></u></td>
+		    </tr>
+            @{
+                var lastUnit = "";
+            }
+            @foreach (StarEnergi.Models.daily_log_power_stations ps in dl_report.list_daily_log_power_stations.ToList()) {
+                if (lastUnit != ps.power_station_unit) {
+                    if (lastUnit != "")
+                    {
+                        <tr>
+			                <td colspan="5">&nbsp;</td>
+		                </tr>
+                    }
+                    lastUnit = ps.power_station_unit;
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@ps.power_station_time</td>
+			            <td style="font-size:5px" width="8%"><b>@ps.power_station_unit</b></td>
+                        <td style="font-size:5px" width="2%"><b>-></b></td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">@ps.power_station_activity</td>
+		            </tr>
+                } else {
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@ps.power_station_time</td>
+			            <td style="font-size:5px" width="8%">&nbsp;</td>
+                        <td style="font-size:5px" width="2%">&nbsp;</td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">o @ps.power_station_activity</td>
+		            </tr>
+                }  
+            }
+	    </table>
+	</div>
+    <br />
+	<div class="log-part4">
+        <table class="no-border-last-row">
+		    <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="4" width="92%"><u><b>SAGS activity</b></u></td>
+		    </tr>
+            @{
+                lastUnit = "";
+            }
+            @foreach (StarEnergi.Models.daily_log_sags sags in dl_report.list_daily_log_sags.ToList())
+            {
+                if (lastUnit != sags.sags_unit) {
+                    if (lastUnit != "")
+                    {
+                        <tr>
+			                <td colspan="5">&nbsp;</td>
+		                </tr>
+                    }
+                    lastUnit = sags.sags_unit;
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@sags.sags_time</td>
+			            <td style="font-size:5px" width="8%"><b>@sags.sags_unit</b></td>
+                        <td style="font-size:5px" width="2%"><b>-></b></td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">@sags.sags_activity</td>
+		            </tr>
+                } else {
+                    <tr>
+			            <td width="8%" style="font-size:5px" align="center">@sags.sags_time</td>
+			            <td style="font-size:5px" width="8%">&nbsp;</td>
+                        <td style="font-size:5px" width="2%">&nbsp;</td>
+                        <td style="font-size:5px" width="1%">o</td>
+			            <td style="font-size:5px">o @sags.sags_activity</td>
+		            </tr>
+                } 
+            }
+            <tr>
+			    <td width="8%" style="font-size:5px" align="center">&nbsp;</td>
+			    <td style="font-size:5px" width="8%">&nbsp;</td>
+                <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="1%">&nbsp;</td>
+			    <td style="font-size:5px">&nbsp;</td>
+		    </tr>
+	    </table>
+	</div>
+        }
+        if (dl_report.section3 == true) {
+	<div class="log-part5">
+        <table>
+            <tr>
+			    <td width="8%" style="font-size:5px">&nbsp;</td>
+			    <td width="11%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+			    <td width="11%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+                <td width="10%" style="font-size:5px">&nbsp;</td>
+		    </tr>
+		    <tr>
+			    <td style="font-size:5px" rowspan="14">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="9" border="0.5">METERING AND DISPATCH</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="2">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">Unit-1</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">Unit-2</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="2">&nbsp;</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">Unit-1</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">Unit-2</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow">&nbsp;</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Unit Transformer</td>
+			    <td style="font-size:5px">Active</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.uti_active_1,out a) ? a.ToString("f2") : dl_report.uti_active_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.uti_active_2,out a) ? a.ToString("f2") : dl_report.uti_active_2)</td>
+			    <td style="font-size:5px">MWh</td>
+			    <td style="font-size:5px">SEGWWL Availability</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.segwwl_availability_1,out a) ? a.ToString("f2") : dl_report.segwwl_availability_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.segwwl_availability_2,out a) ? a.ToString("f2") : dl_report.segwwl_availability_2)</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Reactive</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.uti_reactive_1,out a) ? a.ToString("f2") : dl_report.uti_reactive_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.uti_reactive_2,out a) ? a.ToString("f2") : dl_report.uti_reactive_2)</td>
+			    <td style="font-size:5px">Mvarh</td>
+			    <td style="font-size:5px">PLN Dispatch</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.pln_dispatch_1,out a) ? a.ToString("f2") : dl_report.pln_dispatch_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.pln_dispatch_2,out a) ? a.ToString("f2") : dl_report.pln_dispatch_2)</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Steam Consumption</td>
+			    <td style="font-size:5px">Main</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.sc_main_1,out a) ? a.ToString("f2") : dl_report.sc_main_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.sc_main_2,out a) ? a.ToString("f2") : dl_report.sc_main_2)</td>
+			    <td style="font-size:5px">Ton</td>
+			    <td style="font-size:5px">PLN Meter</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.pln_meter_1,out a) ? a.ToString("f2") : dl_report.pln_meter_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.pln_meter_2,out a) ? a.ToString("f2") : dl_report.pln_meter_2)</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Auxiliary</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.sc_auxiliary_1,out a) ? a.ToString("f2") : dl_report.sc_auxiliary_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.sc_auxiliary_2,out a) ? a.ToString("f2") : dl_report.sc_auxiliary_2)</td>
+			    <td style="font-size:5px">Ton</td>
+			    <td style="font-size:5px">SEGWWL Export</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.segwwl_export_1,out a) ? a.ToString("f2") : dl_report.segwwl_export_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.segwwl_export_2,out a) ? a.ToString("f2") : dl_report.segwwl_export_2)</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td colspan="5" style="font-size:5px" align="center" bgcolor="yellow">Production</td>
+			    <td style="font-size:5px">Actual Export</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.actual_export_1,out a) ? a.ToString("f2") : dl_report.actual_export_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.actual_export_2,out a) ? a.ToString("f2") : dl_report.actual_export_2)</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Generate Export (gross)</td>
+			    <td style="font-size:5px">Active</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.ge_active_1,out a) ? a.ToString("f2") : dl_report.ge_active_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.ge_active_2,out a) ? a.ToString("f2") : dl_report.ge_active_2)</td>
+			    <td style="font-size:5px">MWh</td>
+			    <td style="font-size:5px">Production Excess</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.production_excess_1,out a) ? a.ToString("f2") : dl_report.production_excess_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.production_excess_2,out a) ? a.ToString("f2") : dl_report.production_excess_2)</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Reactive</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.ge_reactive_1,out a) ? a.ToString("f2") : dl_report.ge_reactive_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.ge_reactive_2,out a) ? a.ToString("f2") : dl_report.ge_reactive_2)</td>
+			    <td style="font-size:5px">Mvarh</td>
+			    <td style="font-size:5px" align="center" bgcolor="yellow" colspan="4">Losses</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Metering at 10:00</td>
+			    <td style="font-size:5px">SEGWWL</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.metering_segwwl_1,out a) ? a.ToString("f2") : dl_report.metering_segwwl_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.metering_segwwl_2,out a) ? a.ToString("f2") : dl_report.metering_segwwl_2)</td>
+			    <td style="font-size:5px">MWh</td>
+			    <td style="font-size:5px">RPF</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.rpf_1,out a) ? a.ToString("f2") : dl_report.rpf_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.rpf_2,out a) ? a.ToString("f2") : dl_report.rpf_2)</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">PLN</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.metering_pln_1,out a) ? a.ToString("f2") : dl_report.metering_pln_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.metering_pln_2,out a) ? a.ToString("f2") : dl_report.metering_pln_2)</td>
+			    <td style="font-size:5px">MWh</td>
+			    <td style="font-size:5px">PGF</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.pgf_1,out a) ? a.ToString("f2") : dl_report.pgf_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.pgf_2,out a) ? a.ToString("f2") : dl_report.pgf_2)</td>
+			    <td style="font-size:5px">MWh</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px" rowspan="2">Condensate</td>
+			    <td style="font-size:5px">P/S</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.condensate_ps_1,out a) ? a.ToString("f2") : dl_report.condensate_ps_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.condensate_ps_2,out a) ? a.ToString("f2") : dl_report.condensate_ps_2)</td>
+			    <td style="font-size:5px">Ton</td>
+			    <td style="font-size:5px">PLN</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.pln_1,out a) ? a.ToString("f2") : dl_report.pln_1)</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0">@(Double.TryParse(dl_report.pln_2,out a) ? a.ToString("f2") : dl_report.pln_2)</td>
+			    <td style="font-size:5px">Ton</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Total</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" colspan="2">@(Double.TryParse(dl_report.condensate_total,out a) ? a.ToString("f2") : dl_report.condensate_total)</td>
+			    <td style="font-size:5px">Ton</td>
+			    <td style="font-size:5px" rowspan="2" colspan="4"><b>Note:</b><br />@(dl_report.note != null && dl_report.note.Length > 0 ? dl_report.note.Remove(0,4) == "" ? "  " :  dl_report.note.Remove(0,4) : dl_report.note)&nbsp;</td>
+		    </tr>
+		    <tr border="0.5">
+			    <td style="font-size:5px">Brine</td>
+			    <td style="font-size:5px">Total</td>
+			    <td style="font-size:5px" align="right" bgcolor="#c0c0c0" colspan="2">@(Double.TryParse(dl_report.brine_total,out a) ? a.ToString("f2") : dl_report.brine_total)</td>
+			    <td style="font-size:5px">Ton</td>
+		    </tr>
+	    </table>
+	</div>
+        }
+	<div class="log-part8">
+        <table class="w-border">
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="90%">&nbsp;</td>
+		    </tr>
+        @if (dl_report.section4 == true) {
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    <u><b>Shift Target:</b></u>
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    Unit 1: @dl_report.target_1
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    Unit 2: @dl_report.target_2
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    <u><b>Target Achievement:</b></u>
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    <b>Day Shift</b>
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    Unit 1: @dl_report.achievement_1_1 MWh<br />
+                    Remark: @dl_report.remark_1_1
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    Unit 2: @dl_report.achievement_2_1 MWh<br />
+                    Remark: @dl_report.remark_2_1
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    <b>Night Shift</b>
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    Unit 1: @dl_report.achievement_1_2 MWh<br />
+                    Remark: @dl_report.remark_1_2
+			    </td>
+		    </tr>
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    Unit 2: @dl_report.achievement_2_2 MWh<br />
+                    Remark: @dl_report.remark_2_2
+			    </td>
+		    </tr>
+        }
+        @if (dl_report.section5 == true) {
+            <tr>
+			    <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+			    <td style="font-size:5px" colspan="2">
+				    <u><b>Last plant status:</b></u>
+			    </td>
+		    </tr>
+            foreach (StarEnergi.Models.daily_log_last_plant_status lps in dl_report.list_daily_log_last_plant_status.ToList())
+            {
+		        <tr>
+			        <td style="font-size:5px" align="center" width="8%">&nbsp;</td>
+                    <td style="font-size:5px" align="center" width="2%">o</td>
+			        <td style="font-size:5px">@lps.description</td>
+		        </tr>
+            }
+        }
+            <tr>
+			    <td width="8%">&nbsp;</td>
+			    <td style="font-size:5px" width="2%">&nbsp;</td>
+                <td style="font-size:5px" width="90%">&nbsp;</td>
+		    </tr>
+	</table>
+</div>
+<np />
+    }

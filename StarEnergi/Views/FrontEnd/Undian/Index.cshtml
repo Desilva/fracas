@@ -1,0 +1,120 @@
+﻿@{
+    List<StarEnergi.Models.EmployeeEntity> has = null;
+    if (ViewBag.user != null)
+    {
+        has = ViewBag.user as List<StarEnergi.Models.EmployeeEntity>;
+    }
+
+    List<StarEnergi.Models.she_observation_undian_exception> ex = null;
+    if (ViewBag.ex != null) {
+        ex = ViewBag.ex as List<StarEnergi.Models.she_observation_undian_exception>;
+    }
+}
+
+<!DOCTYPE html>
+<div id="contentEventLog">
+    <h2 class="adminH2">SHE Observation Lucky Draw    <input type="button" id="viewWinner" value="View Winner All Periods" onclick="viewWinner()" /></h2>
+    <div>
+        <div style="width:300px;float:left">
+            <label for="date_from">From : </label>
+            @(Html.Telerik().DatePicker()
+                .Name("date_from")
+                .HtmlAttributes(new { id = "datetime_wrapper", style = "margin-left:5px;margin-top:-3px" })
+                .Value(DateTime.Now)
+            )
+        </div>
+        <div style="width:300px;float:left">
+            <label for="date_to">To : </label>
+            @(Html.Telerik().DatePicker()
+                .Name("date_to")
+                .HtmlAttributes(new { id = "datetime_wrapper", style = "margin-left:5px;margin-top:-3px" })
+                .Value(DateTime.Now)
+            )
+        </div>
+        <br />
+        <div style="width:940px;margin-top:20px">
+            <label for="exception">Exception(s) : </label>
+            <br />
+            <div id="employee_id" style="height:200px">
+                <div id="selectEmployee" style="overflow-y:scroll;height:200px;float:left;width:450px;border:1px solid black">
+                    @{has = has.OrderBy(p => p.alpha_name).ToList();}
+                    @foreach (StarEnergi.Models.EmployeeEntity em in has)
+                    {
+                        <input type="checkbox" name="employee" value="@em.id" onclick="check()" @(ex.Exists(p => p.id_employee == em.id) ? "checked" : "") />@em.alpha_name<br />
+                    }
+                </div>
+                <div id="selectedEmployee" style="overflow-y:auto;height:200px;float:left;width:450px;border:1px solid black"">
+                    <ul id="chosenList">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br/>
+    </div>
+    <br/>
+    <div>
+        <input type="button" id="startDraw" value="Start Drawing" onclick="startDraw()"/>
+    </div>
+    <br />
+</div>
+<script type="text/javascript">
+    var arrayName = [];
+
+    @{has = has.OrderBy(p => p.alpha_name).ToList();}
+    @foreach (StarEnergi.Models.EmployeeEntity em in has)
+    {
+        <text>arrayName[@em.id] = "@em.alpha_name";</text>
+    }
+    function check() {
+        document.getElementById("chosenList").innerHTML = "";
+        var employee_id = "";
+        var checkBoxes = $("input[name='employee']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                var node = document.createElement("li");
+                var textnode = document.createTextNode(arrayName[$(this).val()]);
+                node.appendChild(textnode);
+                document.getElementById("chosenList").appendChild(node);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        check();
+    });
+
+    function startDraw() {
+        var employee_id = [];
+        var from = $('#date_from').val();
+        var to = $('#date_to').val();
+        var checkBoxes = $("input[name='employee']");
+        $.each(checkBoxes, function () {
+            if ($(this).attr('checked')) {
+                employee_id.push($(this).val());
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("startDraw", "Undian")",
+            traditional: true,
+            data: {
+                employees: employee_id,
+                from : from,
+                to: to
+            },
+            success: function (data) {
+                console.log(data);
+                if (data == null || data == "") {
+                    alert("The period has existed, please choose another period");
+                } else {
+                    $('#contentEventLog').load('Undian/Draw?from=' + from + '&to=' + to);
+                }
+            }
+        });
+    }
+
+    function viewWinner() {
+        $('#contentEventLog').load('Undian/Winner');
+    }
+</script>

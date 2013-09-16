@@ -212,6 +212,7 @@
 
     function implement() {
         document.getElementById("id").value = id;
+        document.getElementById("list").value = JSON.stringify(list);
         document.getElementById("forms").submit();
     }
 
@@ -948,10 +949,12 @@
 <div class ="submit">
     <form method="post" action="@Url.Action("implementation","RCA")" id="forms">
         <input type="hidden" id="id" name="id" value="" />
+        <input type="hidden" id="list" name="list" value="" />
     </form>
+
     <input id="back" type="button" name="back" value="back" onclick="window.location = (isTree == 2 ? '/rca/test/' + '@id' : '/rca/open/' + '@id')"/>
     <input id="save" type="button" name="save" value="save" onclick="save()"/>
-    <input id="implementasi" type="button" name="implementasi" value="implementasi" onclick="implement()"/>
+    <input id="implementasi" type="button" name="implementasi" value="Implementation" onclick="implement()"/>
 </div>
 
 

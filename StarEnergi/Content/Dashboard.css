@@ -3,8 +3,7 @@
 		width:603px;
 		-webkit-border-radius:5px 5px 5px 5px;
 		-moz-border-radius:5px 5px 5px 5px;
-		margin-left:180px;
-		margin-top:50px;
+		margin:12px auto 0 auto;
 	}
 	.menuImage{
 		float:left;

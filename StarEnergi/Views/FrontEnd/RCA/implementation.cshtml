@@ -1,5 +1,10 @@
 ﻿@{
     ViewBag.Title = "Implementation";
+    string[][] list = null;
+    if (ViewBag.list != null)
+    {
+        list = ViewBag.list as string[][];
+    }
     int? id = null;
     if (ViewBag.id != null) {
         id = Int32.Parse(ViewBag.id.ToString());
@@ -15,9 +20,27 @@
     {
         li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
     }
+    int i = 0;
 }
 @model IEnumerable<StarEnergi.Models.rca_implementation>
 <script type="text/javascript">
+    var list = Array();
+    
+    @if (list != null) {
+        i = 0;
+        int j = 0;
+        foreach (string[] l in list) {
+            <text>var ls = Array();</text>
+            foreach(string ll in l) {
+                <text>ls.push('@ll');</text>
+                j++;       
+            }
+            <text>list.push(ls);</text>
+            j = 0;
+            i++;
+        }
+    }
+
     function onCommand(e) {
         if (e.name == "Complete") {
             var r = confirm("Are you sure this implementation has completed?");
@@ -48,13 +71,16 @@
         var dampak = "";
         switch (dataItem.dampak) {
             case 1:
-                dampak = "low";
+                dampak = "Major";
                 break;
             case 2:
-                dampak = "medium";
+                dampak = "Serious";
                 break;
             case 3:
-                dampak = "high";
+                dampak = "Moderate";
+                break;
+            case 4:
+                dampak = "Minor";
                 break;
         }
         row.childNodes[3].innerHTML = dampak;
@@ -62,13 +88,19 @@
         var usaha = "";
         switch (dataItem.usaha) {
             case 1:
-                usaha = "low";
+                usaha = "1";
                 break;
             case 2:
-                usaha = "medium";
+                usaha = "2";
                 break;
             case 3:
-                usaha = "high";
+                usaha = "3";
+                break;
+            case 4:
+                usaha = "4";
+                break;
+            case 5:
+                usaha = "5";
                 break;
         }
         row.childNodes[4].innerHTML = usaha;
@@ -88,14 +120,14 @@
         var retStr = "<img alt='" + due_date + "' width='13' height='13' src='@Url.Content("~/Content/image/icon/")";
         var now = new Date();
         if (is_complete == 1) {
-            if (complete_date > due_date) {
+            if (complete_date >= due_date) {
                 retStr += "red.png' />";
             } else {
                 retStr += "green.png' />";
             }
         } else {
             if (due_date != null) {
-                if (now > due_date) {
+                if (now >= due_date) {
                     retStr += "red.png' />";
                 } else {
                     retStr += "green.png' />";
@@ -134,6 +166,12 @@
             }
         });
     }
+
+    function verify() {
+        document.getElementById("id").value = '@id';
+        document.getElementById("list").value = JSON.stringify(list);
+        document.getElementById("forms").submit();
+    }
 </script>
 <h2>Implementation</h2>
 <br/><br/>
@@ -166,8 +204,8 @@
             columns.ForeignKey(o => o.pic, (System.Collections.IEnumerable)ViewData["users"],
                    "id", "alpha_name").Width(100).Title("PIC");
             columns.Bound(o => o.due_date).Width(100).Title("Due Date");
-            columns.Bound(o => o.dampak).Width(80).Title("Dampak");
-            columns.Bound(o => o.usaha).Width(80).Title("Usaha");
+            columns.Bound(o => o.dampak).Width(80).Title("Effort");
+            columns.Bound(o => o.usaha).Width(80).Title("Priority");
             columns.Bound(o => o.id).Width(100).ClientTemplate("<#= status(is_complete,due_date,complete_date) #>").Title("Status").HtmlAttributes(new { align = "center" });
             columns.Command(commands =>
             {
@@ -197,6 +235,10 @@
        )
 <br/>
 <div class ="submit" style="margin-top:10px">
-    <input id="back" type="button" name="back" value="back to verification" onclick="javascript: history.go(-1)"/>
+    <form method="post" action="@Url.Action("verification","RCA")" id="forms">
+        <input type="hidden" id="list" name="list" value="" />
+        <input type="hidden" id="id" name="id" value="" />
+    </form>
+    <input id="back" type="button" name="back" value="back to verification" onclick="verify()"/>
     <input id="back2" type="button" name="back2" value="back to RCA" onclick="parent.location='@Url.Action("Index","RCA")'" />
 </div>
