@@ -1,12 +1,15 @@
 database baru
-- incident_report
-	- kontraktor_seg
-- bom
-	- id	int	Unchecked
-	- id_reference	int	Checked
-	- level_equip	int	Checked
-	- no_key_map	varchar(50)	Checked
-	- description	text	Checked
-- date template rca
+- rca_csf_connector
+	-	custom varchar(255)
 
-- ganti template SBS
+- she_observation_undian
+	- id	int primary key identity
+	- [from]	date
+	- [to]	date
+	- winner_id_she_observation_1	int
+	- winner_id_she_observation_2	int
+	- winner_id_she_observation_3	int
+
+- she_observation_undian_exception
+	- id	int	primary key identity
+	- id_employee	int
