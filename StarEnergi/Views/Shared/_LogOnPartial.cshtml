@@ -1,10 +1,6 @@
 ﻿<div id="logindisplay">
-
 @if(HttpContext.Current.Session["username"] != null) {
     <text>Welcome <strong>@User.Identity.Name</strong>!
     [ @Html.ActionLink("Log Off", "LogOff", "Account") ]</text>
 }
-@*else {
-    @:[ @Html.ActionLink("Log On", "LogOn", "Account") ]
-}*@
 </div>
