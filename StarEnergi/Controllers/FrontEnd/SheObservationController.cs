@@ -31,6 +31,17 @@ namespace StarEnergi.Controllers.FrontEnd
             string username = Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
             ViewData["user_role"] = li;
+            var processUserList = new List<employee>();
+            var query = (from a in db.employees
+                         where a.employee_dept == 25
+                         orderby a.alpha_name
+                         select new { a.id, a.alpha_name }).ToList();
+            foreach (var a in query)
+            {
+                //if (a.position.ToLower().Contains("superintendent"))
+                processUserList.Add(new employee { alpha_name = a.alpha_name, id = a.id });
+            }
+            ViewBag.emp_id = new SelectList(processUserList, "id", "alpha_name");
             return View();
         }
 
@@ -429,6 +440,8 @@ namespace StarEnergi.Controllers.FrontEnd
             return Json(true);
         }
 
+        #region attachment
+
         [HttpPost]
         public JsonResult Attach(int type_approve)
         {
@@ -507,10 +520,16 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 Debug.WriteLine(PathEx.Message);
             }
+            catch (DirectoryNotFoundException DirEx)
+            {
+                Debug.WriteLine(DirEx.Message);
+            }
             return Json(new { success = true, path = currpath, files = st });
         }
 
-        // ini masih pending, segera diselesaikan kalau sudah bangun
+        #endregion
+
+        #region export data
         public ActionResult ExportExcelData(DateTime fromD, DateTime toD)
         {
             List<SheObservationPersonReport> result = new List<SheObservationPersonReport>();
@@ -564,5 +583,61 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
+        public ActionResult ExportExcelDataContractor(DateTime fromD, DateTime toD, int emp_id)
+        {
+            List<SheObservationPersonReport> result = new List<SheObservationPersonReport>();
+            string department = db.employees.Find(emp_id).department;
+            toD.AddDays(1);
+            List<she_observation> temp = db.she_observation.ToList();
+            List<she_observation> list_obs = new List<she_observation>();
+            foreach (she_observation she_obs in temp)
+            {
+                string[] obs = she_obs.observer.Split('#');
+                if (obs.Count() <= 1)
+                {
+                    if (she_obs.department == department && she_obs.date_time >= fromD && she_obs.date_time <= toD)
+                    {
+                        list_obs.Add(she_obs);
+                    }
+                }
+                else
+                {
+                    if (obs[1].Equals(emp_id.ToString()) && she_obs.date_time >= fromD && she_obs.date_time <= toD)
+                    {
+                        list_obs.Add(she_obs);
+                    }
+                }
+            }
+            List<string> s = list_obs.Select(p => p.observer).Distinct().ToList();
+            foreach (string a in s) {
+                SheObservationPersonReport she_report = new SheObservationPersonReport {
+                    alpha_name = a.Split('#')[0],
+                    department = department,
+                    total_observation = list_obs.Count(p => p.observer == a),
+                    total_quality_obs = list_obs.Where(p => p.observer == a && p.is_quality == 1).Count()
+                };
+                result.Add(she_report);
+            }
+            
+            toD.AddDays(-1);
+            GridView gv = new GridView();
+            gv.Caption = "SHE Observation Report By Person for " + department + " From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();
+            gv.DataSource = result;
+            gv.DataBind();
+            gv.HeaderRow.Cells[0].Text = "ID";
+            gv.HeaderRow.Cells[1].Text = "Name";
+            gv.HeaderRow.Cells[2].Text = "Department";
+            gv.HeaderRow.Cells[3].Text = "Total SHE Observation";
+            gv.HeaderRow.Cells[4].Text = "Total Quality SHE Observation";
+            if (gv != null)
+            {
+                return new DownloadFileActionResult(gv, "SHE Observation Person Report for " + department + ".xls");
+            }
+            else
+            {
+                return new JavaScriptResult();
+            }
+        }
+        #endregion
     }
 }

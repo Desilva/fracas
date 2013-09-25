@@ -92,8 +92,8 @@
         }
 
         
-        row.cells[3].innerHTML = dataItem.grade == 0 ? "Minor NC" : dataItem.grade == 1 ? "Major NC" : dataItem.grade == 2 ? "Observation" : "";
-        row.cells[4].innerHTML = dataItem.grade == 0 ? "New" : dataItem.grade == 1 ? "Open" : dataItem.grade == 2 ? "Closed" : "";
+        row.cells[3].innerHTML = dataItem.grade == 0 ? "Minor NC" : (dataItem.grade == 1 ? "Major NC" : (dataItem.grade == 2 ? "Observation" : ""));
+        row.cells[4].innerHTML = dataItem.status == 0 ? "New" : (dataItem.status == 1 ? "Open" : (dataItem.status == 2 ? "Closed" : ""));
 
         var clause = "";
         for (var s in dataItem.list_clauses) {
@@ -275,6 +275,12 @@ function SaveLog() {
         });
     }
 
+    function htmlEncode(value) {
+        //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+        //then grab the encoded contents back out.  The div never exists on the page.
+        return escape($('<div/>').text(value).html());
+    }
+
     function raisePir() {
         $.ajax({
             type: "POST",
@@ -286,7 +292,7 @@ function SaveLog() {
             },
             success: function (data) {
                 $("#RaisePIR").data("tWindow").close();
-                $('#contentEventLog').load('pir/pageInitiator/?idRca=' + $('#edit_ids').val() + '&identity=' + (parseInt(data.in_ex) + 2) + '&requester=' + $('#requester').val() + '&reference=' + data.reference);
+                $('#contentEventLog').load('pir/pageInitiator/?idRca=' + $('#edit_ids').val() + '&identity=' + (parseInt(data.in_ex) + 2) + '&requester=' + $('#requester').val() + '&reference=' + data.reference + '&finding=' + htmlEncode(data.finding));
                 
             }
         });

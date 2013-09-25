@@ -25,6 +25,11 @@ namespace StarEnergi.Controllers.Admin
             return PartialView();
         }
 
+        public ActionResult BOM()
+        {
+            return PartialView();
+        }
+
         [HttpPost]
         public string Index(HttpPostedFileBase userfile)
         {
@@ -52,6 +57,8 @@ namespace StarEnergi.Controllers.Admin
                 err = SaveEquipmentDailyReport(path);
             else if (fileName == Config.filePIR)
                 err = SavePIR(path);
+            else if (fileName == Config.fileExcelBOM)
+                err = SaveBOM(path);
             return err;
         }
 
@@ -68,6 +75,13 @@ namespace StarEnergi.Controllers.Admin
         {
             ExcelReader excel = new ExcelReader();
             List<string> err = excel.LoadDataMaster(path);
+            return excel.generateError(err);
+        }
+
+        private string SaveBOM(string path)
+        {
+            ExcelReader excel = new ExcelReader();
+            List<string> err = excel.LoadBOM(path);
             return excel.generateError(err);
         }
 

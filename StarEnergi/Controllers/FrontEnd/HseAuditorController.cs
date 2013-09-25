@@ -227,7 +227,7 @@ namespace StarEnergi.Controllers.FrontEnd
             audit audit = db.audits.Find(al.id_audit);
             db.Entry(al).State = EntityState.Modified;
             db.SaveChanges();
-            return Json(new { in_ex = audit.in_ex, reference = audit.audit_no }, JsonRequestBehavior.AllowGet);
+            return Json(new { in_ex = audit.in_ex, reference = audit.audit_no, finding = System.Web.HttpUtility.HtmlEncode(al.finding) }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

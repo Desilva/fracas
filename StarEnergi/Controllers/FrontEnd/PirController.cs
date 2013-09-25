@@ -76,10 +76,11 @@ namespace StarEnergi.Controllers.FrontEnd
 
         //load 
         //identity 0 rca, 1 iir
-        public ActionResult pageInitiator(int identity=-1, int id = -1, int idRca = -1, string requester = null, string reference = null)
+        public ActionResult pageInitiator(int identity=-1, int id = -1, int idRca = -1, string requester = null, string reference = null, string finding = null)
         {
             var processUserList = new List<employee>();
             var query = (from a in db.employees
+                         orderby a.alpha_name
                          select new {a.id, a.alpha_name, a.position }).ToList();
             foreach (var a in query)
             {
@@ -90,6 +91,7 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.idRca = idRca;
             ViewBag.identity = identity;
             ViewBag.reference = reference;
+            ViewBag.finding = finding;
             if (id == -1)
             {
                 var has = (from employees in db.employees
@@ -117,6 +119,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 pirNumber = MyTools.generatePirNumber(pirNumber);
                 pir pir = new pir();
                 pir.no = pirNumber;
+                pir.improvement_request = finding;
                 pir.from = (Byte)identity;
                 if (identity == 1)
                 {

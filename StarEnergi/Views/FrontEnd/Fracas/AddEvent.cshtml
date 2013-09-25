@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = "Add Event";
     List<StarEnergi.Models.EmployeeEntity> list_employee = ViewBag.list_employee as List<StarEnergi.Models.EmployeeEntity>;
+    int emp_id = Int32.Parse(Session["id"].ToString());
+    string name = list_employee.Where(p => p.id == emp_id).FirstOrDefault().alpha_name;
 }
 
 <div id="detailEquipment" style="margin-left:410px; margin-top:43px; padding-left:10px; position:absolute; width:377px; display:none">
@@ -217,7 +219,7 @@
          </div>
 		
         <br />		
-        <div class="info_inside_left">Finacial Cost </div>
+        <div class="info_inside_left">Financial Cost </div>
         <div class="infoFieldinput">
          @(Html.Telerik().IntegerTextBox()
                         .Name("financial_cost")
@@ -236,6 +238,8 @@
             .AutoFill(true)
             .HtmlAttributes(new { style = string.Format("width:200px") })
             .HighlightFirstMatch(true)
+            .Value(name)
+            
         )
         </div>
         <br />		

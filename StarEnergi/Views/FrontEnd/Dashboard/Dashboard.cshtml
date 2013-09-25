@@ -14,9 +14,17 @@
             HttpContext.Current.Response.Redirect(@Url.Action("LogOn", "Account", new { returnUrl = returnUrl }));
         }
     }
-    StarEnergi.Models.she_observation_undian undian = null;
-    if (ViewBag.winner != null) {
-        undian = ViewBag.winner as StarEnergi.Models.she_observation_undian;
+    StarEnergi.Models.WinnerReport undian = null;
+    string s = "";
+    if (ViewBag.winner != null)
+    {
+        undian = ViewBag.winner as StarEnergi.Models.WinnerReport;
+        s = "";
+        foreach (StarEnergi.Models.WinnerEntity win in undian.winners)
+        {
+            s += win.winner + ", ";
+        }
+        s = s.Length > 2 ? s.Remove(s.Length - 2) : s;
     }
     //HttpContext.Current.Response.Redirect(@Url.Action("LogOn","Account",new {returnUrl = returnUrl}));
 }    
@@ -30,14 +38,18 @@
 @if (undian != null) {
     <div class="winner" style="max-width:500px;margin:0 auto;text-align:center;color:#FF6600">
         <h5 style="margin-bottom:12px;">
-            SHE Observation Lucky Draw Period @undian.from_period - @undian.to_period
+            SHE Observation Lucky Draw Period @undian.from.Value.ToString("dd MMM yyyy") - @undian.to.Value.ToString("dd MMM yyyy")
             <br />
-            <b style="color:#0066CC;font-size:large">Winners: @undian.winner_name_1, @undian.winner_name_2, @undian.winner_name_3</b>
+            <b style="color:#0066CC;font-size:large">Winners: @s
+            </b>
             <br />
             Congratulation to all winners.
         </h5>
     </div>
 }
+    <script>
+        console.log(0,"abcd".slice(0,"abcd".indexOf("c")));
+    </script>
 	<div class="primary">
 			<h3 style="color:#24525f" align="center">DASHBOARD</h3>
 		<div class="MENU">

@@ -49,6 +49,8 @@
             $('#content').load('User');
         } else if (item.find('> .t-link').text() == "RCA Template") {
             $('#content').load('RCATemplate');
+        } else if (item.find('> .t-link').text() == "SBS BOM") {
+            $('#content').load('LoadExcel/BOM');
         }
     }
 </script>
@@ -90,6 +92,7 @@
                 .Items(item =>
                 {
                     item.Add().Text("SBS");
+                    item.Add().Text("SBS BOM");
                     item.Add().Text("Data Master");
                 });
         })

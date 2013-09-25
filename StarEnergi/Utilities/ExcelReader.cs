@@ -2055,6 +2055,109 @@ namespace StarEnergi.Utilities
             return err;
         }
         #endregion
+
+        #region BOM
+        public List<string> LoadBOM(string filename)
+        {
+            Excel.Application app;
+            Excel.Workbook book;
+            Excel.Range ShtRange;
+            List<object> temp;
+            List<string> err;
+            int i, j = 0;
+            bool add = true;
+
+            app = new Excel.Application();
+            book = app.Workbooks.Open(Filename: filename);
+
+            err = new List<string>();
+            foreach (Excel.Worksheet sheet in book.Sheets)
+            {
+                ShtRange = sheet.UsedRange;
+                string a = sheet.Name;
+                for (i = 2; i <= ShtRange.Rows.Count; i++)
+                {
+                    temp = new List<object>();
+                    for (j = 1; j <= ShtRange.Columns.Count; j++)
+                    {
+                        if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
+                        {
+                            if (j == 1)
+                                add = false;
+                            temp.Add("");
+                        }
+                        else
+                            temp.Add((ShtRange.Cells[i, j] as Excel.Range).Value2.ToString());
+                    }
+
+                    string errTemp = "";
+                    if (add) errTemp = saveBOM(temp);
+                    if (errTemp != "")
+                    {
+                        err.Add(errTemp);
+                    };
+                    add = true;
+                }
+            }
+            book.Close(true, Missing.Value, Missing.Value);
+            app.Quit();
+
+            return err;
+        }
+
+        private string saveBOM(List<object> data)
+        {
+            string err = "";
+            int level_equip = (data[1].ToString() == "Equipment" ? 5 : (data[1].ToString() == "Sub Equipment" ? 6 : (data[1].ToString() == "Component" ? 7 : (data[1].ToString() == "Sub Component" ? 8 : 0))));
+            if (level_equip != 0)
+            {
+                bom bom = new bom();
+                bom.level_equip = level_equip;
+                bom.no_key_map = data[2].ToString();
+
+                if (db.boms.Where(p => p.no_key_map == bom.no_key_map && p.level_equip == bom.level_equip).Count() > 0)
+                {
+                    err = "Bill of Material " + bom.no_key_map + " for Tag number " + data[0].ToString() + " already exist.";
+                }
+                else
+                {
+                    bom.description = data[3].ToString();
+                    string tag_num = data[0].ToString();
+                    int id = 0;
+                    switch (level_equip)
+                    {
+                        case 5:
+                            id = db.equipments.Where(p => p.tag_num == tag_num).FirstOrDefault().id;
+                            bom.id_reference = id;
+                            break;
+                        case 6:
+                            id = db.parts.Where(p => p.tag_number == tag_num).FirstOrDefault().id;
+                            id = db.equipment_part.Where(p => p.id_parts == id).FirstOrDefault().id;
+                            bom.id_reference = id;
+                            break;
+                        case 7:
+                            id = db.components.Where(p => p.tag_number == tag_num).FirstOrDefault().id;
+                            bom.id_reference = id;
+                            break;
+                        case 8:
+                            id = db.sub_component.Where(p => p.tag_number == tag_num).FirstOrDefault().id;
+                            bom.id_reference = id;
+                            break;
+                    }
+
+                    db.boms.Add(bom);
+                    db.SaveChanges();
+                }
+            }
+            else
+            {
+                err = "Tag number " + data[0].ToString() + " not found.";
+            }
+            
+            return err;
+        }
+
+        #endregion
 		
         public string generateError(List<string> err) {
             string html = "";

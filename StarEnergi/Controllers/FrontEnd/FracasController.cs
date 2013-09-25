@@ -313,6 +313,27 @@ namespace StarEnergi.Controllers.FrontEnd
             DateTime? temp = model.Where(x => x.datetime_ops <= e.datetime_stop).ToList().Max(x => x.datetime_ops).Value;
 
             ViewBag.last_operation = temp.ToString();
+
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.alpha_name
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = (ue.username == null ? String.Empty : ue.username),
+                           delagate = employees.delagate,
+                           employee_delegate = employees.employee_delegate
+                       }).ToList();
+            ViewBag.list_employee = has;
+
             return PartialView(e);
         }
 

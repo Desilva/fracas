@@ -6,9 +6,9 @@
 
 <h2>Immediate Cor Actions</h2>
 
-@(Html.Telerik().Grid<StarEnergi.Models.immediate_actions>(Model)
+@(Html.Telerik().Grid<StarEnergi.Models.immediate_actions>()
         .TableHtmlAttributes(new { style = "width:695px" })
-        .Name("ImmediateCor")
+        .Name("ImmediateCorrect")
         .DataKeys(keys =>
         {
             keys.Add(p => p.id);

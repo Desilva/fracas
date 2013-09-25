@@ -131,7 +131,7 @@
             <div class="TA">
                 <div class="availableTA" style="overflow-y:scroll;height:200px">
                     <div class="center">Available Critical Success Factors</div>
-                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
                     {
                         <div>
                             <input type="button" id="addCustomCSF" onclick="showInput()" value="Add Custom CSF" />
@@ -140,7 +140,7 @@
                         </div>
                     }
                     <div class="borderTA" style="overflow-y:auto">
-                        @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                        @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
                         {
                             foreach (StarEnergi.Models.rca_csf a in ViewData["csfs"] as List<StarEnergi.Models.rca_csf>)
                             {

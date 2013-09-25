@@ -1,6 +1,7 @@
 ﻿@model StarEnergi.Models.equipment_event
 @{
-    ViewBag.Title = "Add Event";
+    ViewBag.Title = "Edit Event";
+    List<StarEnergi.Models.EmployeeEntity> list_employee = ViewBag.list_employee as List<StarEnergi.Models.EmployeeEntity>;
 }
 
 <h2 class="adminH2">Edit Event FRACAS</h2>
@@ -77,7 +78,18 @@
         <div class="infoFieldinput">
             <input id="downtime" name="downtime" type="text" value="@Model.downtime" readonly="true"/>&nbsp;Hours
          </div>
-		
+        <br />
+		<div id="eventdesc">
+            <div class="info_inside_left">Event Description</div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_event_desc", "-- Select Event Description --")
+                <input name="Submit" value="+" type="button"  onclick="addEventDesc();"/>
+            </div> 		
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_event_desc" class="taFracas" rows=5>@(Model.event_description)</textarea>
+            </div>    
+        </div>
         <br />
         <div id="mode">
 	        <div class="info_inside_left">Failure Mode </div>
@@ -116,8 +128,9 @@
                 <textarea id="area_failure_effect" class="taFracas" rows=5>@(Model.failure_effect)</textarea>
             </div> 
         </div>
-		
         <br />
+    </div>
+    <div id="fracasRightEdit" style="margin-top:-746px">
         <div id="secondaryeffect">
         <div class="info_inside_left">Secondary Effect</div>
             <div class="infoFieldinput">
@@ -129,8 +142,8 @@
                 <textarea id="area_secondary_effect" class="taFracas" rows=5>@(Model.secondary_effect)</textarea>
             </div>   
         </div>
-    </div>
-    <div id="fracasRightEdit">
+        <br />
+
         <div class="info_inside_left">Failure Severity</div>
         <div class="infoFieldinput">
             <select name="id_severity" id="id_severity">
@@ -138,15 +151,6 @@
                 <option value="SERIOUS">SERIOUS</option>
                 <option value="MODERATE">MODERATE</option>
                 <option value="MINOR">MINOR</option>
-            </select>
-        </div>
-		
-        <br />
-        <div class="info_inside_left">Failure CLSSS</div>
-        <div class="infoFieldinput">
-            <select name="id_clsss" id="id_clsss">
-                <option value="PRIMARY">PRIMARY</option>
-                <option value="SECONDARY">SECONDARY</option>
             </select>
         </div>	
     	
@@ -187,7 +191,7 @@
          </div>
 		
         <br />		
-        <div class="info_inside_left">Finacial Cost </div>
+        <div class="info_inside_left">Financial Cost </div>
         <div class="infoFieldinput">
          @(Html.Telerik().IntegerTextBox()
                         .Name("financial_cost")
@@ -199,22 +203,21 @@
 			
         <br />
         <div class="info_inside_left">Person in charge</div>
-        <div class="infoFieldinput"><input id="engineer" name="engineer" type="text" value="@(Model.engineer)"/></div>
-
-        <br />		
-        <div id="eventdesc">
-            <div class="info_inside_left">Event Description</div>
-            <div class="infoFieldinput">
-                @Html.DropDownList("id_event_desc", "-- Select Event Description --")
-                <input name="Submit" value="+" type="button"  onclick="addEventDesc();"/>
-            </div> 		
-            <div class="info_inside_left"></div>
-            <div class="infoFieldinput">
-                <textarea id="area_event_desc" class="taFracas" rows=5>@(Model.event_description)</textarea>
-            </div>    
+        <div class="infoFieldinput">
+            @(Html.Telerik().AutoComplete()
+            .Name("engineer")
+            .Encode(false)
+            .BindTo(list_employee.Select(p => p.alpha_name))
+            .AutoFill(true)
+            .HtmlAttributes(new { style = string.Format("width:200px") })
+            .HighlightFirstMatch(true)
+            .Value(Model.engineer)
+            
+        )
         </div>
+        <br />
     </div>
-    <div class="lineLeft edit"></div>
+    <div class="lineLeft edit" style="margin-top:-575px"></div>
     <br />
     <div class="submit">
 	    <input name="Submit" value="Save" type="submit" onclick="saveFracasEdit(@(Model.id),@(Model.id_equipment));"/>

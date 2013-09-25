@@ -3,86 +3,141 @@
     if (ViewBag.list_she_obs != null) {
         list_obs = ViewBag.list_she_obs as List<StarEnergi.Models.she_observation>;   
     }
+    int? percentage = ViewBag.percentage as Nullable<Int32>;
 }
 
 <!DOCTYPE html>
-<h2 class="adminH2">SHE Observation Lucky Draw Period @((ViewBag.date_from as DateTime?).Value.ToString("MMM yyyy")) - @((ViewBag.date_to as DateTime?).Value.AddDays(-1).ToString("MMM yyyy"))</h2>
+<h2 class="adminH2">SHE Observation Lucky Draw Period @((ViewBag.date_from as DateTime?).Value.ToString("dd MMM yyyy")) - @((ViewBag.date_to as DateTime?).Value.AddDays(-1).ToString("dd MMM yyyy"))</h2>
 <input type="hidden" id="from" value="@ViewBag.date_from" />
 <input type="hidden" id="to" value="@ViewBag.date_to" />
-<input type="hidden" id="id_undian" />
+<input type="hidden" id="id_undian" value="@ViewBag.id"/>
 
-<div style="width:400px;margin:0 auto;">
-    <h4 style="text-align:center;margin-bottom:2px;">Winner 1</h4>
-    <h2 id="winner1" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;">Start Drawing!</h2>
-    <input type="hidden" id="id_winner1" />
+<div style="width:475px;float:left">
+    <label for="reward">Reward ($): </label>
+    @(Html.Telerik().NumericTextBox()
+        .Name("reward")
+        .InputHtmlAttributes(new { id = "reward" })
+        .HtmlAttributes(new { style = "margin-left:0px" })
+        .Spinners(true)
+        .MinValue(0)
+        .MaxValue(100000000)
+    )
+    <br />
+    Category: <label for="quality"> <input type="radio" name="category" id="category0" value="0" /> Quality</label>
+    <label for="All"> <input type="radio" name="category" id="category1" value="1" /> All</label>
+    <h4 style="text-align:center;margin-bottom:2px;"></h4>
+    <h2 id="winner" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;">Start Drawing!</h2>
+    <input type="hidden" id="id_winner" />
     <div style="margin:0 auto;width:200px;text-align:center">
-        <input type="button" id="draw1" value="Draw!" onclick="startDraw(1)" style="margin:0 auto"/>
-        <input type="button" id="stop1" value="Stop!" onclick="stop(1)" style="margin:0 auto;display:none"/>
+        <input type="button" id="draw" value="Draw!" onclick="startDraw()" style="margin:0 auto"/>
+        <input type="button" id="stop" value="Stop!" onclick="stop()" style="margin:0 auto;display:none"/>
     </div>
 </div>
-<div style="width:400px;margin:0 auto;display:none" id="winner2div">
-    <h4 style="text-align:center;margin-bottom:2px;">Winner 2</h4>
-    <h2 id="winner2" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;">Start Drawing!</h2>
-    <input type="hidden" id="id_winner2" />
-    <div style="margin:0 auto;width:200px;text-align:center">
-        <input type="button" id="draw2" value="Draw!" onclick="startDraw(2)" style="margin:0 auto"/>
-        <input type="button" id="stop2" value="Stop!" onclick="stop(2)" style="margin:0 auto;display:none"/>
-    </div>
-</div>
-<div style="width:400px;margin:0 auto;display:none" id="winner3div">
-    <h4 style="text-align:center;margin-bottom:2px;">Winner 3</h4>
-    <h2 id="winner3" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;">Start Drawing!</h2>
-    <input type="hidden" id="id_winner3" />
-    <div style="margin:0 auto;width:200px;text-align:center">
-        <input type="button" id="draw3" value="Draw!" onclick="startDraw(3)" style="margin:0 auto"/>
-        <input type="button" id="stop3" value="Stop!" onclick="stop(3)" style="margin:0 auto;display:none"/>
-    </div>
-</div>
-<div style="width:400px;margin:0 auto;display:none" id="congrats">
+<div style="width:475px;margin-left:30px;float:left">
     <h3 id="winner3" style="text-align:center;color:blue;padding:10px 0;margin-top:2px;">Congratulation to all winners.</h3>
+    <div id="winnerss">
+        Category: Quality
+        <ul id="winners_q">
+        </ul>
+        Category: All
+        <ul id="winners">
+        </ul>
+    </div>
 </div>
 <script type="text/javascript">
     var arrayObs = [];
+    var arrayObsQ = [];
+    var percentage = '@(percentage == null ? 5 : percentage)'
+
     var myVar;
     @foreach (StarEnergi.Models.she_observation she in list_obs)
     {
-        <text>arrayObs.push([@she.id,'@she.observer']);</text>
-    }
-
-    function startDraw(value) {
-        myVar = setInterval(function () { drawing(value) }, 30);
-        $('#draw' + value).hide();
-        $('#stop' + value).show();
-    }
-
-    function stop(value) {
-        clearInterval(myVar);
-        var id = $('#id_winner' + value).val();
-        var she_obs_id = arrayObs[id][0];
-        var obs_name = arrayObs[id][1].split('#')[0];
-        var obs_id = null;
-        if (arrayObs[id][1].split('#').length > 1) {
-            obs_id = arrayObs[id][1].split('#')[1];
+        if (she.is_contractor == 1) {
+            for(int i = 0; i < percentage / 10; i++) {
+                <text>arrayObs.push([@she.id, '@she.observer', '@she.is_contractor']);</text>
+            }    
+        } else {
+            for(int i = 0; i < 10 - (percentage / 10); i++) {
+                <text>arrayObs.push([@she.id, '@she.observer', '@she.is_contractor']);</text>
+            }   
         }
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("saveResult", "Undian")",
-            traditional: true,
-            data: {
-                she_obs: she_obs_id,
-                winner_id: value,
-                from: $('#from').val(),
-                to: $('#to').val(),
-                id_undian: $('#id_undian').val() == '' ? null : $('#id_undian').val()
-            },
-            success: function (data) {
-                for (var i = 0; i < arrayObs.length; i++) {
-                    var a = arrayObs[i][1].split('#');
-                    if (a.length > 1) {
-                        if (obs_id != null) {
-                            if (a[1] == obs_id) {
-                                arrayObs.splice(i, 1);
-                                i--;
+        
+    }
+    @foreach (StarEnergi.Models.she_observation she in list_obs)
+    {
+        if (she.is_quality == 1) {
+            if (she.is_contractor == 1) {
+                for(int i = 0; i < percentage / 10; i++) {
+                    <text>arrayObsQ.push([@she.id, '@she.observer', '@she.is_contractor']);</text>
+                }    
+            } else {
+                for(int i = 0; i < 10 - (percentage / 10); i++) {
+                    <text>arrayObsQ.push([@she.id, '@she.observer', '@she.is_contractor']);</text>
+                }   
+            }
+        }
+    }
+
+    function startDraw() {
+        var category = $('input[name="category"]:checked').val();
+        if (category != null && $('#reward').val() != "") {
+            myVar = setInterval(function () { drawing(category) }, 30);
+            $('#draw').hide();
+            $('#stop').show();
+            $('input[name="category"]').attr('disabled', 'disabled');
+            $('#reward').attr('disabled', 'disabled');
+        } else if ($('#reward').val() == "") {
+            alert("Please enter the reward.");
+        } else if (category == null) {
+            alert("Please choose the category.");
+        }
+    }
+
+    function stop() {
+        clearInterval(myVar);
+        var id = $('#id_winner').val();
+        var category = $('input[name="category"]:checked').val();
+        var she_obs_id, obs_name, obs_id;
+        if (id != null && id != '') {
+            if (category == 1) {
+                she_obs_id = arrayObs[id][0];
+                obs_name = arrayObs[id][1].split('#')[0];
+                obs_id = null;
+                if (arrayObs[id][1].split('#').length > 1) {
+                    obs_id = arrayObs[id][1].split('#')[1];
+                }
+            } else if (category == 0) {
+                she_obs_id = arrayObsQ[id][0];
+                obs_name = arrayObsQ[id][1].split('#')[0];
+                obs_id = null;
+                if (arrayObsQ[id][1].split('#').length > 1) {
+                    obs_id = arrayObsQ[id][1].split('#')[1];
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("saveResult", "Undian")",
+                traditional: true,
+                data: {
+                    she_obs: she_obs_id,
+                    id_undian: $('#id_undian').val() == '' ? '' : $('#id_undian').val(),
+                    reward: $('#reward').val(),
+                    category: category
+                },
+                success: function (data) {
+                    for (var i = 0; i < arrayObs.length; i++) {
+                        var a = arrayObs[i][1].split('#');
+                        if (a.length > 1) {
+                            if (obs_id != null && arrayObs[i][2] != 1) {
+                                if (a[1] == obs_id) {
+                                    arrayObs.splice(i, 1);
+                                    i--;
+                                }
+                            } else {
+                                if (a[0] == obs_name) {
+                                    arrayObs.splice(i, 1);
+                                    i--;
+                                }
                             }
                         } else {
                             if (a[0] == obs_name) {
@@ -90,32 +145,74 @@
                                 i--;
                             }
                         }
-                    } else {
-                        if (a[0] == obs_name) {
-                            arrayObs.splice(i, 1);
-                            i--;
+                    }
+                    for (var i = 0; i < arrayObsQ.length; i++) {
+                        var a = arrayObsQ[i][1].split('#');
+                        if (a.length > 1) {
+                            if (obs_id != null && arrayObsQ[i][2] != 1) {
+                                if (a[1] == obs_id) {
+                                    arrayObsQ.splice(i, 1);
+                                    i--;
+                                }
+                            } else {
+                                if (a[0] == obs_name) {
+                                    arrayObsQ.splice(i, 1);
+                                    i--;
+                                }
+                            }
+                        } else {
+                            if (a[0] == obs_name) {
+                                arrayObsQ.splice(i, 1);
+                                i--;
+                            }
                         }
                     }
+                    console.log(data.list_winner);
+                    $('#winners_q').empty();
+                    $('#winners').empty();
+                    for (var a in data.list_winner) {
+                        var node = document.createElement("li");
+                        var textnode = document.createTextNode(data.list_winner[a].winner.slice(0, data.list_winner[a].winner.indexOf('#')) + ' (Reward: $ ' + data.list_winner[a].reward + ')');
+                        node.appendChild(textnode);
+                        if (data.list_winner[a].category == "Quality")
+                            document.getElementById("winners_q").appendChild(node);
+                        else
+                            document.getElementById("winners").appendChild(node);
+                    }
+
+                    $('#stop').hide();
+                    $('#draw').show();
+                    $('input[name="category"]').removeAttr('disabled');
+                    $('#reward').removeAttr('disabled');
                 }
-                console.log(arrayObs);
-                $('#id_undian').val(data.id);
-            }
-        });
-        $('#stop' + value).hide();
-        if (value == 1) {
-            $('#winner2div').show();
-        } else if (value == 2) {
-            $('#winner3div').show();
-        } else if (value == 3) {
-            $('#congrats').show();
+            });
+        } else {
+            $('#stop').hide();
+            $('#draw').show();
+            $('input[name="category"]').removeAttr('disabled');
+            $('#reward').removeAttr('disabled');
         }
     }
 
-    function drawing(value) {
-        var rand_value = Math.floor((Math.random() * arrayObs.length));
-        console.log(rand_value);
-        $('#winner' + value).html(arrayObs[rand_value][1].split('#')[0]);
-        $('#id_winner' + value).val(rand_value);
+    function drawing(category) {
+        
+        if (category == 1) {
+            if (arrayObs.length != 0) {
+                var rand_value = Math.floor((Math.random() * arrayObs.length));
+                $('#winner').html(arrayObs[rand_value][1].split('#')[0]);
+                $('#id_winner').val(rand_value);
+            } else {
+                $('#id_winner').val('');
+            }
+        } else {
+            if (arrayObsQ.length != 0) {
+                var rand_value = Math.floor((Math.random() * arrayObsQ.length));
+                $('#winner').html(arrayObsQ[rand_value][1].split('#')[0]);
+                $('#id_winner').val(rand_value);
+            } else {
+                $('#id_winner').val('');
+            }
+        }
     }
 
 </script>

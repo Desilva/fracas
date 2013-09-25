@@ -1,4 +1,5 @@
-﻿using StarEnergi.Models;
+﻿using ReportManagement;
+using StarEnergi.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +10,7 @@ using Telerik.Web.Mvc;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
-    public class UndianController : Controller
+    public class UndianController : PdfViewController
     {
         private relmon_star_energiEntities db = new relmon_star_energiEntities();
         public static List<user_per_role> li;
@@ -51,7 +52,7 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         [HttpPost]
-        public JsonResult startDraw(int[] employees, DateTime from, DateTime to)
+        public JsonResult startDraw(int[] employees, DateTime from, DateTime to, int percentage)
         {
             
             foreach (int i in employees)
@@ -73,17 +74,27 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             else
             {
-                return Json(true);
+                she_observation_undian undian = new she_observation_undian
+                {
+                    from = from,
+                    to = to,
+                    percentage = percentage
+                };
+                db.she_observation_undian.Add(undian);
+                db.SaveChanges();
+                return Json(new { id = undian.id });
             }
 
 
             
         }
 
-        public ActionResult draw(DateTime from, DateTime to)
+        public ActionResult draw(int id)
         {
-            to = to.AddDays(1);
-            List<she_observation> list_she_obs = db.she_observation.Where(p => p.date_time >= from.Date && p.date_time <= to.Date && p.is_quality == 1).ToList();
+            she_observation_undian undian = db.she_observation_undian.Find(id);
+            DateTime from = undian.from.Value;
+            DateTime to = undian.to.Value.AddDays(1);
+            List<she_observation> list_she_obs = db.she_observation.Where(p => p.date_time >= from.Date && p.date_time <= to.Date).ToList();
             List<she_observation_undian_exception> list_ex = db.she_observation_undian_exception.ToList();
             for (int i = 0; i < list_she_obs.Count; i++)
             {
@@ -91,6 +102,16 @@ namespace StarEnergi.Controllers.FrontEnd
                 string[] a = she_obs.observer.Split('#');
                 if (a.Length > 1)
                 {
+                    int emp_id = Int32.Parse(a.ElementAt(1));
+                    employee emp = db.employees.Find(emp_id);
+                    if (emp != null && emp.employee_dept == 25)
+                    {
+                        she_obs.is_contractor = 1;
+                    }
+                    else
+                    {
+                        she_obs.is_contractor = 0;
+                    }
                     if (list_ex.Exists(p => p.id_employee == Int32.Parse(a.ElementAt(1))))
                     {
                         list_she_obs.Remove(she_obs);
@@ -112,74 +133,130 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.list_she_obs = list_she_obs;
             ViewBag.date_from = from;
             ViewBag.date_to = to;
+            ViewBag.id = id;
+            ViewBag.percentage = undian.percentage;
             return PartialView();
         }
 
         [HttpPost]
-        public JsonResult saveResult(int she_obs, int winner_id, DateTime? from, DateTime? to, int? id_undian)
+        public JsonResult saveResult(int she_obs, int id_undian, string reward, byte category)
         {
-            she_observation_undian undian = null;
-            if (winner_id == 1)
+            she_observation_undian_winner undian = new she_observation_undian_winner
             {
-                undian = new she_observation_undian
-                {
-                    from = from.Value,
-                    to = to.Value.AddDays(-1),
-                    winner_id_she_observation_1 = she_obs
-                };
+                reward = Double.Parse(reward),
+                category = category,
+                winner_observation = she_obs,
+                id_undian = id_undian
+            };
+            db.she_observation_undian_winner.Add(undian);
+            db.SaveChanges();
 
-                db.she_observation_undian.Add(undian);
-                db.SaveChanges();
-            }
-            else if (winner_id == 2)
-            {
-                undian = db.she_observation_undian.Find(id_undian);
-                undian.winner_id_she_observation_2 = she_obs;
-
-                db.Entry(undian).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-            else if (winner_id == 3)
-            {
-                undian = db.she_observation_undian.Find(id_undian);
-                undian.winner_id_she_observation_3 = she_obs;
-
-                db.Entry(undian).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-
-            return Json(new {id = undian.id});
+            var a = (from undians in db.she_observation_undian_winner
+                     join obs in db.she_observation 
+                     on undians.winner_observation equals obs.id
+                     where undians.id_undian == id_undian
+                     select new WinnerEntity
+                     {
+                         reward = undians.reward.Value,
+                         category = undians.category == 0 ? "Quality" : "All",
+                         winner = obs.observer
+                     }).ToList();
+            return Json(new {list_winner = a});
         }
 
         public ActionResult winner()
         {
+            List<she_observation_undian> undian = db.she_observation_undian.OrderByDescending(p => p.from).ToList();
+            ViewBag.undian = undian;
             return PartialView();
         }
 
         //
         // Ajax select binding she observation report
         [GridAction]
-        public ActionResult _SelectAjaxUndian()
+        public ActionResult _SelectAjaxUndian(int? id)
         {
-            return bindingUndian();
+            return bindingUndian(id);
         }
 
         //select data incident she observation report
-        private ViewResult bindingUndian()
+        private ViewResult bindingUndian(int? id)
         {
-            List<she_observation_undian> f = db.she_observation_undian.ToList();
-            foreach (she_observation_undian she in f)
+            List<she_observation_undian_winner> f = null;
+            List<WinnerEntity> g = new List<WinnerEntity>();
+            if (id == null)
             {
-                she.from_period = she.from.Value.ToString("MMM yyyy");
-                she.to_period = she.to.Value.ToString("MMM yyyy");
-                she.winner_name_1 = db.she_observation.Find(she.winner_id_she_observation_1).observer.Split('#').FirstOrDefault();
-                she.winner_name_2 = db.she_observation.Find(she.winner_id_she_observation_2).observer.Split('#').FirstOrDefault();
-                she.winner_name_3 = db.she_observation.Find(she.winner_id_she_observation_3).observer.Split('#').FirstOrDefault();
+                she_observation_undian undian = db.she_observation_undian.OrderBy(p => p.from).ToList().LastOrDefault();
+                if (undian != null)
+                {
+                    f = db.she_observation_undian_winner.Where(p => p.id_undian == undian.id).ToList();
+                }
+                else
+                {
+                    f = db.she_observation_undian_winner.ToList();
+                }
             }
-            return View(new GridModel<she_observation_undian>
+            else
             {
-                Data = f.OrderByDescending(x => x.from)
+                f = db.she_observation_undian_winner.Where(p => p.id_undian == id).ToList();
+            }
+
+            foreach (she_observation_undian_winner she in f)
+            {
+                WinnerEntity w = new WinnerEntity
+                {
+                    id = she.id,
+                    winner = db.she_observation.Find(she.winner_observation).observer.Split('#')[0].ToString(),
+                    reward_string = she.reward.Value.ToString("C"),
+                    category = she.category == 0 ? "Quality" : "All"
+                };
+                g.Add(w);
+            }
+            return View(new GridModel<WinnerEntity>
+            {
+                Data = g
             });
+        }
+
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult _BindGrid(GridCommand command, string mode, int? id)
+        {
+            return bindingUndian(id);
+        }
+
+        public ActionResult Print(int id)
+        {
+            WinnerReport report = new WinnerReport();
+
+            she_observation_undian undian = db.she_observation_undian.Find(id);
+            report.from = undian.from;
+            report.to = undian.to;
+
+            List<she_observation_undian_winner> f = db.she_observation_undian_winner.Where(p => p.id_undian == id).ToList();
+            List<WinnerEntity> g = new List<WinnerEntity>();
+            int count_q = 0;
+            int count = 0;
+            foreach (she_observation_undian_winner she in f)
+            {
+                WinnerEntity w = new WinnerEntity
+                {
+                    id = she.id,
+                    winner = db.she_observation.Find(she.winner_observation).observer.Split('#')[0].ToString(),
+                    reward_string = she.reward.Value.ToString("C"),
+                    category = she.category == 0 ? "Quality" : "All"
+                };
+                g.Add(w);
+                if (she.category == 0)
+                    count_q++;
+                else
+                    count++;
+            }
+
+            report.winners = g;
+            report.count = count;
+            report.count_q = count_q;
+
+            return this.ViewPdf("", "Print", report);
         }
     }
 }

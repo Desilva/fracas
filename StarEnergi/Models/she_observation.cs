@@ -130,6 +130,7 @@ namespace StarEnergi.Models
         public string equipment_name { get; set; }
         public string employee_name { get; set; }
         public string ppe_name { get; set; }
+        public int is_contractor { get; set; }
     }
     
 }

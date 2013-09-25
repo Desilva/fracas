@@ -8,10 +8,20 @@
     }
 </style>
 <h2 style="margin-bottom:5px;">She Observation Lucky Draw<br />Winner of All Periods</h2>
-<input type="button" id="back" value="Back" onclick="back()" style="margin-top:-10px;margin-bottom:7px;"/>
+<br />
+<div>
+    Period : 
+    <select id="period">
+        @foreach (StarEnergi.Models.she_observation_undian undian in ViewBag.undian as List<StarEnergi.Models.she_observation_undian>)
+        {
+            <text><option value="@undian.id">@undian.from.Value.ToString("dd MMM yyyy") - @undian.to.Value.ToString("dd MMM yyyy")</option></text>
+        }
+    </select>
+</div>
+<br />
 @( 
- Html.Telerik().Grid<StarEnergi.Models.she_observation_undian>()
-        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+ Html.Telerik().Grid<StarEnergi.Models.WinnerEntity>()
+        .HtmlAttributes(new { style = "width:980px" })
         .Name("SheObservationWinner")
         .DataKeys(keys =>
         {
@@ -25,11 +35,9 @@
         .Columns(columns =>
         {
             columns.Bound(o => o.id).Hidden();
-            columns.Bound(o => o.from_period).Width(160).Title("Period (From)");
-            columns.Bound(o => o.to_period).Width(160).Title("Period (To)");
-            columns.Bound(o => o.winner_name_1).Width(220).Title("Winner 1");
-            columns.Bound(o => o.winner_name_2).Width(220).Title("Winner 2");
-            columns.Bound(o => o.winner_name_3).Width(220).Title("Winner 3");
+            columns.Bound(o => o.winner).Title("Winner");
+            columns.Bound(o => o.category).Width(160).Title("Category");
+            columns.Bound(o => o.reward_string).Width(160).Title("Reward");
         })
         .Pageable(p => p.PageSize(15))
         .Sortable()
@@ -38,8 +46,25 @@
         .Filterable()
         .Groupable()
 )
+<div>
+    <input type="button" id="back" value="Back" onclick="back()" style="margin-top:10px;margin-bottom:7px;"/>
+    @if ((ViewBag.undian as List<StarEnergi.Models.she_observation_undian>).Count > 0) {
+        <input type="button" id="print" value="Print Report" onclick="print()" style="margin-top:10px;margin-bottom:7px;"/>
+        <input type="button" id="certificate" value="Generate Certificate(s)" onclick="printCertificate()" style="margin-top:10px;margin-bottom:7px;"/>
+    }
+</div>
 <script type="text/javascript">
     function back() {
         window.location = "/Undian";
     }
+
+    function print() {
+        window.open("/Undian/Print?id=" + $('#period').val(),"_blank");
+    }
+
+    $('#period').change(function () {
+        var $grid = $("#SheObservationWinner").data("tGrid");
+        var param = { id: $(this).val() };
+        $grid.rebind(param);
+    });
 </script>

@@ -6,9 +6,14 @@ database baru
 	- id	int primary key identity
 	- [from]	date
 	- [to]	date
-	- winner_id_she_observation_1	int
-	- winner_id_she_observation_2	int
-	- winner_id_she_observation_3	int
+	- percentage	int
+
+- she_observation_undian_winner
+	- id	int	primary key identity
+	- id_undian	int
+	- reward	float
+	- category	tinyint
+	- winner_observation	int
 
 - she_observation_undian_exception
 	- id	int	primary key identity

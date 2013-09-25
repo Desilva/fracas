@@ -32,16 +32,27 @@
     var arraySel = new Array();
     var isFirst = '@(ViewBag.isFirst)';
     var isPublish = '@(ViewBag.isPublish)';
-    function check(name) {
-        @if (data != null)
+    @if (data != null)
+    {
+        foreach (StarEnergi.Models.rca_team_connector a in data)
         {
-            foreach (StarEnergi.Models.rca_team_connector a in data)
-            {
+            if (a.rca_position != null) {
                 <text>arrayChoose[@i] = '@a.id_user';</text>
                 i++;
             }
         }
+    }
 
+    @if (data != null)
+    {
+        foreach (StarEnergi.Models.rca_team_connector a in data)
+        {
+            if (a.rca_position != null) {
+                <text>arraySel['@a.id_user'] = '@a.rca_position';</text>
+            }
+        }
+    }
+    function check(name) {
         var isFind = false;
         
         if (isPublish == "0") {
@@ -50,8 +61,8 @@
                     isFind = true;
                 }
             }
-
-            if (isFind && isFirst == 'True') {
+            console.log(arrayChoose.length + " " + name + " " + isFind);
+            if (isFind) {
                 return "<input type='checkbox' name='checkedRecords' id='chc" + name + "' checked='checked' value='" + name + "' onclick='checkb(\""+ name + "\")'/>";
             } else {
                 return "<input type='checkbox' name='checkedRecords' id='chc" + name + "' value='" + name + "' onclick='checkbs(\""+ name + "\")'/>";
@@ -65,30 +76,31 @@
     function checkb(name) {
         if ($("[id='chc"+name+"']").is(':checked')) {
             $("[id='sel"+name+"']").removeAttr('disabled');
+            arrayChoose.push(name);
         } else {
             $("[id='sel"+name+"']").attr('disabled', 'disabled');
+            var pos = arrayChoose.indexOf(name);
+            if (pos > -1) {
+                arrayChoose.splice(pos,1);
+            }
         }
     }
 
     function checkbs(name) {
         if ($("[id='chc"+name+"']").is(':checked')) {
             $("[id='sel"+name+"']").removeAttr('disabled');
+            arrayChoose.push(name);
         } else {
             $("[id='sel"+name+"']").attr('disabled', 'disabled');
+            var pos = arrayChoose.indexOf(name);
+            if (pos > -1) {
+                arrayChoose.splice(pos,1);
+            }
         }
     }
 
     function select(name) {
-        @if (data != null)
-        {
-            foreach (StarEnergi.Models.rca_team_connector a in data)
-            {
-                <text>arraySel['@a.id_user'] = '@a.rca_position';</text>
-            }
-        }
-
         var isFind = false;
-        console.log(arrayChoose.length);
         if (isPublish == "0") {
             for (var i = 0; i < arrayChoose.length && isFind == false; i++) {
                 if (arraySel[name]) {
@@ -96,7 +108,7 @@
                 }
             }
 
-            if (isFind && isFirst == 'True') {
+            if (isFind) {
                 return "<select name='select' id='sel" + name + "' value='" + arraySel[name] + "' onchange='onLeader(\"" + name + "\")'><option value='0'>-</option><option value='1' " + (arraySel[name] == 1 ? "selected" : "") + ">Leader</option><option value='3' " + (arraySel[name] == 3 ? "selected" : "") + ">Facilitator</option><option value='2' " + (arraySel[name] == 2 ? "selected" : "") + ">Member</option></select>";
             } else {
                 return "<select name='select' id='sel" + name + "' disabled onchange='onLeader(\"" + name + "\")'><option value='0'>-</option><option value='1'>Leader</option><option value='3'>Facilitator</option><option value='2'>Member</option></select>";
@@ -135,16 +147,29 @@
         var arrRole = [];
         var leader = null;
         var facilitator = null;
+        arraySel[name] = $("[id='sel"+name+"']").val();
 
-        for (var i in document.getElementsByName("select")) {
-            if (document.getElementsByName("select")[i].value == 1 && leader == null)
+        //for (var i in document.getElementsByName("select")) {
+        //    if (document.getElementsByName("select")[i].value == 1 && leader == null)
+        //        leader = true;
+        //    else if (document.getElementsByName("select")[i].value == 1 && leader)
+        //        leader = false;
+
+        //    if (document.getElementsByName("select")[i].value == 3 && facilitator == null)
+        //        facilitator = true;
+        //    else if (document.getElementsByName("select")[i].value == 3 && facilitator)
+        //        facilitator = false;
+        //}
+
+        for (var a in arraySel) {
+            if (arraySel[a] == 1 && leader == null)
                 leader = true;
-            else if (document.getElementsByName("select")[i].value == 1 && leader)
+            else if (arraySel[a] == 1 && leader)
                 leader = false;
 
-            if (document.getElementsByName("select")[i].value == 3 && facilitator == null)
+            if (arraySel[a] == 3 && facilitator == null)
                 facilitator = true;
-            else if (document.getElementsByName("select")[i].value == 3 && facilitator)
+            else if (arraySel[a] == 3 && facilitator)
                 facilitator = false;
         }
 
@@ -177,9 +202,22 @@
             }
         }
     }
+
+    function onSubmit() {
+        if ($('#analyst').val() == "") {
+            alert("You must choose principal analyst.");
+            return false;
+        }
+        var arrayN = Array();
+        for (var i in arrayChoose) {
+            arrayN.push(arraySel[arrayChoose[i]]);
+        }
+        $('#abcd').val(JSON.stringify(arrayChoose));
+        $('#abcde').val(JSON.stringify(arrayN));
+    }
 </script>
 <br />
-@using (Html.BeginForm())
+@using (Html.BeginForm("addRCA6","RCA",FormMethod.Post,new {onsubmit = "onSubmit()"}))
 {
 <div class="addContent">
     <div class="addImage">
@@ -262,11 +300,12 @@
             )
             <br />
         </div> 
-        
+        <input type="hidden" name="abcd" id="abcd"/>
+        <input type="hidden" name="abcde" id="abcde"/>
         <div class="addSubmit">
 	        <input name="cancel" value="Cancel" type="submit"/>
-            <input type="submit" value="Previous" name="previous" id="prev"/>
-            <input type="submit" value="Next" name="next" id="next"/>
+            <input type="submit" value="Previous" name="previous" id="prev" onsubmit="onSubmit()"/>
+            <input type="submit" value="Next" name="next" id="next" onsubmit="onSubmit()"/>
         </div>
     </div>
 </div>

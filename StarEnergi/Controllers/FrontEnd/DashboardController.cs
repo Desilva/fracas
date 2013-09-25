@@ -21,15 +21,42 @@ namespace StarEnergi.Controllers.FrontEnd
             //ViewBag.nama = "Dashboard";
             //return View(db.plants);
             she_observation_undian undian = db.she_observation_undian.OrderByDescending(p => p.from).FirstOrDefault();
+            WinnerReport winner = null;
             if (undian != null)
             {
-                undian.from_period = undian.from.Value.ToString("MMM yyyy");
-                undian.to_period = undian.to.Value.ToString("MMM yyyy");
-                undian.winner_name_1 = db.she_observation.Find(undian.winner_id_she_observation_1).observer.Split('#').FirstOrDefault();
-                undian.winner_name_2 = db.she_observation.Find(undian.winner_id_she_observation_2).observer.Split('#').FirstOrDefault();
-                undian.winner_name_3 = db.she_observation.Find(undian.winner_id_she_observation_3).observer.Split('#').FirstOrDefault();
+                winner = new WinnerReport
+                {
+                    from = undian.from,
+                    to = undian.to
+                };
+                List<she_observation_undian_winner> f = db.she_observation_undian_winner.Where(p => p.id_undian == undian.id).ToList();
+                List<WinnerEntity> g = new List<WinnerEntity>();
+                int count_q = 0;
+                int count = 0;
+                foreach (she_observation_undian_winner she in f)
+                {
+                    WinnerEntity w = new WinnerEntity
+                    {
+                        id = she.id,
+                        winner = db.she_observation.Find(she.winner_observation).observer.Split('#')[0].ToString(),
+                        reward_string = she.reward.Value.ToString("C"),
+                        category = she.category == 0 ? "Quality" : "All"
+                    };
+                    g.Add(w);
+                    if (she.category == 0)
+                        count_q++;
+                    else
+                        count++;
+                }
+
+                winner.winners = g;
+                //    undian.from_period = undian.from.Value.ToString("MMM yyyy");
+                //    undian.to_period = undian.to.Value.ToString("MMM yyyy");
+                //    undian.winner_name_1 = db.she_observation.Find(undian.winner_id_she_observation_1).observer.Split('#').FirstOrDefault();
+                //    undian.winner_name_2 = db.she_observation.Find(undian.winner_id_she_observation_2).observer.Split('#').FirstOrDefault();
+                //    undian.winner_name_3 = db.she_observation.Find(undian.winner_id_she_observation_3).observer.Split('#').FirstOrDefault();
             }
-            ViewBag.winner = undian;
+            ViewBag.winner = winner;
             return View("Dashboard");
         }
 

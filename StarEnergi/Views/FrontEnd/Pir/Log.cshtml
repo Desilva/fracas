@@ -8,7 +8,7 @@
 </script>
 
 <h2>Log</h2>
-<b>PIR No : @Model.First().pir.no</b>
+<b>PIR No : @(Model.Count() > 0 ? Model.First().pir.no : "")</b>
 <br/>
 <ul>
 @{

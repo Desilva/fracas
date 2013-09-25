@@ -204,7 +204,7 @@
             columns.ForeignKey(o => o.pic, (System.Collections.IEnumerable)ViewData["users"],
                    "id", "alpha_name").Width(100).Title("PIC");
             columns.Bound(o => o.due_date).Width(100).Title("Due Date");
-            columns.Bound(o => o.dampak).Width(80).Title("Effort");
+            columns.Bound(o => o.dampak).Width(80).Title("Effect");
             columns.Bound(o => o.usaha).Width(80).Title("Priority");
             columns.Bound(o => o.id).Width(100).ClientTemplate("<#= status(is_complete,due_date,complete_date) #>").Title("Status").HtmlAttributes(new { align = "center" });
             columns.Command(commands =>

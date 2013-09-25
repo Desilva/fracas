@@ -13,6 +13,7 @@
         @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE))
         {
         <input type="button" id="exportExcel" value="Export Report by Person" onclick="showDateChooser()"/>
+            <input type="button" id="exportExcelContractor" value="Export Report by Person Contractor" onclick="showChooser()"/>
         }
     </div>
 <br/>
@@ -52,6 +53,43 @@
 	         </div>
         </text>)
 )
+
+@(Html.Telerik().Window()
+    .Name("ExportReportContractor")
+    .Visible(false)
+    .Title("Export Report Contractor")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+
+                   <input type="hidden" id="type_cn" />
+                    <div class="info_inside_left">From</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date_from_cn")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                            .Value(DateTime.Today)
+                        )
+                    </div>
+                   <div class="info_inside_left">To</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date_to_cn")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                            .Value(DateTime.Today)
+                        )
+                    </div>
+                   <div class="info_inside_left">Contractor</div>
+		            <div class="infoFieldinput">
+                        @Html.DropDownList("emp_id")
+                    </div>
+	            <p class="submit">
+		            <input name="Submit" value="Save" type="submit" onclick="exportReportContractor();" />
+	            </p>
+	         </div>
+        </text>)
+)
 <script type="text/javascript">
 
     function addSheObservation() {
@@ -79,6 +117,23 @@
         var to = $('#date_to').val();
         if ($('#type').val() == 0) {
             window.location = '/SheObservation/ExportExcelData?fromD=' + from + '&toD=' + to;
+        }
+    }
+
+    function showChooser() {
+        var detailWindow = $("#ExportReportContractor").data("tWindow");
+        $('#type_cn').val('0');
+        detailWindow.center().open();
+    }
+
+    function exportReportContractor() {
+        var detailWindow = $("#ExportReportContractor").data("tWindow");
+        detailWindow.close();
+        var from = $('#date_from_cn').val();
+        var to = $('#date_to_cn').val();
+        var emp_id = $('#emp_id').val();
+        if ($('#type_cn').val() == 0) {
+            window.location = '/SheObservation/ExportExcelDataContractor?fromD=' + from + '&toD=' + to + '&emp_id=' + emp_id;
         }
     }
 

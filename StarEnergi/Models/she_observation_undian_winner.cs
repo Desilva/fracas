@@ -12,12 +12,13 @@ using System.Collections.Generic;
 
 namespace StarEnergi.Models
 {
-    public partial class she_observation_undian
+    public partial class she_observation_undian_winner
     {
         public int id { get; set; }
-        public Nullable<System.DateTime> from { get; set; }
-        public Nullable<System.DateTime> to { get; set; }
-        public Nullable<int> percentage { get; set; }
+        public Nullable<int> id_undian { get; set; }
+        public Nullable<double> reward { get; set; }
+        public Nullable<byte> category { get; set; }
+        public Nullable<int> winner_observation { get; set; }
     }
     
 }

@@ -109,7 +109,7 @@ namespace StarEnergi.Controllers.Admin
         public void create(FailureModeEntity failureModeEntity)
         {
             failure_modes failureMode = new failure_modes();
-            //failureMode.title = failureModeEntity.title;
+            failureMode.title = failureModeEntity.title;
             failureMode.description = failureModeEntity.description;
             failureMode.id_tag_type = failureModeEntity.id_tag_type;
             db.failure_modes.Add(failureMode);

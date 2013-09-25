@@ -87,10 +87,10 @@
             @Model.initiate_by, @Model.initiator_sign_date.Value.ToString("dd MMMM yyy")
         </td>
         <td width="22.5%" style="font-size:10px">
-            @Model.kpbo_sign_date_init.Value.ToString("dd MMMM yyy")
+            @(Model.kpbo_sign_date_init != null ? Model.kpbo_sign_date_init.Value.ToString("dd MMMM yyy") : "")
         </td>
         <td colspan="2" style="font-size:10px" width="45%">
-            @Model.target_completion_init.Value.ToString("dd MMMM yyy")
+            @(Model.target_completion_init != null ? Model.target_completion_init.Value.ToString("dd MMMM yyy") : "")
         </td>
     </tr>
     <tr border="0.5">

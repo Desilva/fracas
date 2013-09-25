@@ -32,6 +32,19 @@
             )
         </div>
         <br />
+        <div style="margin-top:20px">
+            <label for="date_to">Contractor Percentage : </label>
+            @(Html.Telerik().Slider<int>()
+                  .Name("percentage")
+                  .Min(0)
+                  .Max(100)
+                  .SmallStep(5)
+                  .LargeStep(10)
+                  .ShowButtons(true)
+                  .Value(50)
+                  .HtmlAttributes(new { style = "width:400px" })
+            )
+        </div>
         <div style="width:940px;margin-top:20px">
             <label for="exception">Exception(s) : </label>
             <br />
@@ -54,6 +67,7 @@
     <br/>
     <div>
         <input type="button" id="startDraw" value="Start Drawing" onclick="startDraw()"/>
+        <span id="realmod_save" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
     </div>
     <br />
 </div>
@@ -84,6 +98,8 @@
     });
 
     function startDraw() {
+        $('#realmod_save').css("display", "block");
+        $('#startDraw').attr('disabled','disabled');
         var employee_id = [];
         var from = $('#date_from').val();
         var to = $('#date_to').val();
@@ -94,6 +110,7 @@
             }
         });
 
+
         $.ajax({
             type: "POST",
             url: "@Url.Action("startDraw", "Undian")",
@@ -101,14 +118,17 @@
             data: {
                 employees: employee_id,
                 from : from,
-                to: to
+                to: to,
+                percentage: $('#percentage').val()
             },
             success: function (data) {
                 console.log(data);
                 if (data == null || data == "") {
                     alert("The period has existed, please choose another period");
+                    $('#realmod_save').css("display", "none");
+                    $('#startDraw').removeAttr('disabled');
                 } else {
-                    $('#contentEventLog').load('Undian/Draw?from=' + from + '&to=' + to);
+                    $('#contentEventLog').load('Undian/Draw?from=' + from + '&to=' + to + '&id=' + data.id);
                 }
             }
         });
