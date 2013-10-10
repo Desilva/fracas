@@ -3,6 +3,7 @@ using StarEnergi.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -48,11 +49,104 @@ namespace StarEnergi.Controllers.FrontEnd
                        }).ToList();
             ViewBag.user = has;
             ViewBag.ex = db.she_observation_undian_exception.ToList();
+
             return View();
         }
 
+        #region reward master
+
+        //
+        // Ajax select binding
+        [GridAction]
+        public ActionResult _SelectAjaxReward()
+        {
+            return binding();
+        }
+
+        //
+        // Ajax insert binding
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _InsertAjaxReward()
+        {
+            she_observation_undian_reward reward = new she_observation_undian_reward();
+            if (TryUpdateModel(reward))
+            {
+                create(reward);
+            }
+            return binding();
+        }
+
+        //
+        // Ajax update binding
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _SaveAjaxReward(int id)
+        {
+
+            she_observation_undian_reward reward = db.she_observation_undian_reward.Find(id);
+
+            if (TryUpdateModel(reward))
+            {
+                update(reward);
+            }
+            return binding();
+        }
+
+        //
+        // Ajax delete binding
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _DeleteAjaxReward(int id)
+        {
+            delete(id);
+            return binding();
+        }
+
+        //select data reward
+        private ViewResult binding()
+        {
+            
+            var model = db.she_observation_undian_reward.ToList();
+            return View(new GridModel<she_observation_undian_reward>
+            {
+                Data = model
+            });
+        }
+
+        //insert data reward
+        public void create(she_observation_undian_reward reward)
+        {
+            db.she_observation_undian_reward.Add(reward);
+            db.SaveChanges();
+        }
+
+        //update data reward
+        private void update(she_observation_undian_reward reward)
+        {
+            db.Entry(reward).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        //delete data reward
+        private void delete(int id)
+        {
+            she_observation_undian_reward reward = db.she_observation_undian_reward.Find(id);
+            db.she_observation_undian_reward.Remove(reward);
+            db.SaveChanges();
+        }
+
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
         [HttpPost]
-        public JsonResult startDraw(int[] employees, DateTime from, DateTime to, int percentage)
+        public JsonResult startDraw(int[] employees, DateTime? from, DateTime? to, int percentage)
         {
             
             foreach (int i in employees)
@@ -78,7 +172,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     from = from,
                     to = to,
-                    percentage = percentage
+                    percentage = percentage,
+                    drawing_date = DateTime.Today
                 };
                 db.she_observation_undian.Add(undian);
                 db.SaveChanges();
@@ -139,11 +234,12 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         [HttpPost]
-        public JsonResult saveResult(int she_obs, int id_undian, string reward, byte category)
+        public JsonResult saveResult(int she_obs, int id_undian, int reward, byte category)
         {
+            CultureInfo ci = new CultureInfo("id-ID");
             she_observation_undian_winner undian = new she_observation_undian_winner
             {
-                reward = Double.Parse(reward),
+                id_reward = reward,
                 category = category,
                 winner_observation = she_obs,
                 id_undian = id_undian
@@ -154,21 +250,73 @@ namespace StarEnergi.Controllers.FrontEnd
             var a = (from undians in db.she_observation_undian_winner
                      join obs in db.she_observation 
                      on undians.winner_observation equals obs.id
+                     join rewards in db.she_observation_undian_reward
+                     on undians.id_reward equals rewards.id
                      where undians.id_undian == id_undian
                      select new WinnerEntity
                      {
-                         reward = undians.reward.Value,
+                         reward = rewards.reward.Value,
                          category = undians.category == 0 ? "Quality" : "All",
                          winner = obs.observer
                      }).ToList();
+            foreach (WinnerEntity win in a)
+            {
+                win.reward_string = win.reward.ToString("c", ci);
+            }
             return Json(new {list_winner = a});
         }
 
+        [HttpPost]
+        public JsonResult getReward(byte category, int id_undian)
+        {
+            List<she_observation_undian_reward> list_reward = db.she_observation_undian_reward.OrderBy(p => p.id).ToList();
+            List<she_observation_undian_winner> list_winner = db.she_observation_undian_winner.Where(p => p.id_undian == id_undian && p.category == category).ToList();
+            CultureInfo ci = new CultureInfo("id-ID");
+            foreach (she_observation_undian_reward reward in list_reward)
+            {
+                if (list_winner.Where(p => p.id_reward == reward.id).FirstOrDefault() == null)
+                {
+                    return Json(new { id = reward.id, reward = reward.reward.Value.ToString("c",ci)});
+                }
+            }
+            return Json(false);
+
+        }
+
+        #region winner
         public ActionResult winner()
         {
             List<she_observation_undian> undian = db.she_observation_undian.OrderByDescending(p => p.from).ToList();
             ViewBag.undian = undian;
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.alpha_name
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name
+                       }).ToList();
+            ViewBag.user = has;
             return PartialView();
+        }
+
+        [HttpPost]
+        public JsonResult signer(int signer, int id_undian)
+        {
+            she_observation_undian undian = db.she_observation_undian.Find(id_undian);
+            undian.signature = signer;
+            db.Entry(undian).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(true);
+        }
+
+        [HttpPost]
+        public JsonResult changePeriod(int id)
+        {
+            she_observation_undian undian = db.she_observation_undian.Find(id);
+            return Json(undian.signature);
         }
 
         //
@@ -184,6 +332,7 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             List<she_observation_undian_winner> f = null;
             List<WinnerEntity> g = new List<WinnerEntity>();
+            CultureInfo ci = new CultureInfo("id-ID");
             if (id == null)
             {
                 she_observation_undian undian = db.she_observation_undian.OrderBy(p => p.from).ToList().LastOrDefault();
@@ -206,9 +355,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 WinnerEntity w = new WinnerEntity
                 {
                     id = she.id,
+                    reward_string = db.she_observation_undian_reward.Find(she.id_reward).reward.Value.ToString("c",ci),
                     winner = db.she_observation.Find(she.winner_observation).observer.Split('#')[0].ToString(),
-                    reward_string = she.reward.Value.ToString("C"),
-                    category = she.category == 0 ? "Quality" : "All"
+                    category = she.category == 0 ? "Quality SHE Observation Report" : "SHE Observation Report"
                 };
                 g.Add(w);
             }
@@ -227,7 +376,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult Print(int id)
         {
             WinnerReport report = new WinnerReport();
-
+            CultureInfo ci = new CultureInfo("id-ID");
             she_observation_undian undian = db.she_observation_undian.Find(id);
             report.from = undian.from;
             report.to = undian.to;
@@ -241,9 +390,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 WinnerEntity w = new WinnerEntity
                 {
                     id = she.id,
+                    reward_string = db.she_observation_undian_reward.Find(she.id_reward).reward.Value.ToString("c", ci),
                     winner = db.she_observation.Find(she.winner_observation).observer.Split('#')[0].ToString(),
-                    reward_string = she.reward.Value.ToString("C"),
-                    category = she.category == 0 ? "Quality" : "All"
+                    category = she.category == 0 ? "Quality SHE Observation Report" : "SHE Observation Report"
                 };
                 g.Add(w);
                 if (she.category == 0)
@@ -258,5 +407,13 @@ namespace StarEnergi.Controllers.FrontEnd
 
             return this.ViewPdf("", "Print", report);
         }
+
+        public ActionResult Certificate(int id)
+        {
+            ViewBag.id = id;
+            return PartialView();
+        }
+
+        #endregion
     }
 }

@@ -292,7 +292,7 @@ function SaveLog() {
             },
             success: function (data) {
                 $("#RaisePIR").data("tWindow").close();
-                $('#contentEventLog').load('pir/pageInitiator/?idRca=' + $('#edit_ids').val() + '&identity=' + (parseInt(data.in_ex) + 2) + '&requester=' + $('#requester').val() + '&reference=' + data.reference + '&finding=' + htmlEncode(data.finding));
+                $('#contentEventLog').load('pir/pageInitiator/?idRca=' + $('#edit_ids').val() + '&identity=' + (parseInt(data.in_ex) + 2) + '&requester=' + $('#requester').val() + '&reference=' + htmlEncode(data.reference) + '&finding=' + htmlEncode(data.finding));
                 
             }
         });

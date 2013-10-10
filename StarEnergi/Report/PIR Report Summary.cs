@@ -83,15 +83,7 @@ namespace StarEnergi.Reporting
             SqlDataAdapter adapter = new SqlDataAdapter(
             @"with procedure_reference_list(proc_ref_list) as
             (
-                select '4.2 Policy'
-                UNION ALL
-                select '4.3 Target & Programs'
-                UNION ALL
-                select '4.4 Operational Control'
-                UNION ALL
-                select '4.5 Monitoring'
-                UNION ALL
-                select '4.6 Management Review'
+                select (clause_no + ' ' + clause) from pir_clause
             )
             SELECT procedure_reference_list.proc_ref_list as procedure_reference, COUNT(pir.date_rise) as yeartodate
             from procedure_reference_list

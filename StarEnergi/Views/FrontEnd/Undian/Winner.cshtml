@@ -1,5 +1,7 @@
 ﻿@{
     Layout = null;
+    List<StarEnergi.Models.EmployeeEntity> ee = ViewBag.user as List<StarEnergi.Models.EmployeeEntity>;
+    List<StarEnergi.Models.she_observation_undian> und = ViewBag.undian as List<StarEnergi.Models.she_observation_undian>;
 }
 <style>
     .t-grid .t-grid-header .t-header,
@@ -9,6 +11,7 @@
 </style>
 <h2 style="margin-bottom:5px;">She Observation Lucky Draw<br />Winner of All Periods</h2>
 <br />
+<input type="hidden" id="signature" value="@(und.FirstOrDefault() != null ? und.FirstOrDefault().signature : 0)" />
 <div>
     Period : 
     <select id="period">
@@ -36,7 +39,7 @@
         {
             columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.winner).Title("Winner");
-            columns.Bound(o => o.category).Width(160).Title("Category");
+            columns.Bound(o => o.category).Width(250).Title("Category");
             columns.Bound(o => o.reward_string).Width(160).Title("Reward");
         })
         .Pageable(p => p.PageSize(15))
@@ -46,11 +49,34 @@
         .Filterable()
         .Groupable()
 )
+@(Html.Telerik().Window()
+    .Name("GenCertificate")
+    .Visible(false)
+    .Title("Choose Signer")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+                <div class="info_inside_left">Signer </div>
+		        <div class="infoFieldinput"><select id="signer" name="signer">
+                    <option value="0" selected disabled>Choose One</option>
+                    @foreach (StarEnergi.Models.EmployeeEntity e in ee)
+                    {
+                        <option value="@e.id">@e.alpha_name</option>
+                    }
+                </select></div>
+		            
+	            <p class="submit">
+		            <input name="Submit" value="Generate" type="submit" onclick="printCertificate();" />
+	            </p>
+	         </div>
+        </text>)
+)
 <div>
     <input type="button" id="back" value="Back" onclick="back()" style="margin-top:10px;margin-bottom:7px;"/>
     @if ((ViewBag.undian as List<StarEnergi.Models.she_observation_undian>).Count > 0) {
         <input type="button" id="print" value="Print Report" onclick="print()" style="margin-top:10px;margin-bottom:7px;"/>
-        <input type="button" id="certificate" value="Generate Certificate(s)" onclick="printCertificate()" style="margin-top:10px;margin-bottom:7px;"/>
+        <input type="button" id="certificate" value="Generate Certificate(s)" onclick="genCertificate()" style="margin-top:10px;margin-bottom:7px;"/>
     }
 </div>
 <script type="text/javascript">
@@ -62,9 +88,29 @@
         window.open("/Undian/Print?id=" + $('#period').val(),"_blank");
     }
 
+    function genCertificate() {
+        $("#signer").val($('#signature').val());
+        var detailWindow = $("#GenCertificate").data("tWindow");
+        detailWindow.center().open();
+    }
+
+    function printCertificate() {
+        var values = {
+            signer: $("#signer").val(),
+            id_undian: $('#period').val()
+        };
+        $.post("/Undian/Signer", values, function (data) {
+            $("#GenCertificate").data("tWindow").close();
+            $('#contentEventLog').load("/Undian/Certificate?id=" + $('#period').val());
+        });
+        
+    }
+
     $('#period').change(function () {
         var $grid = $("#SheObservationWinner").data("tGrid");
-        var param = { id: $(this).val() };
+        $.post("/Undian/ChangePeriod", param, function (data) {
+            $('#signature').val(data);
+        });
         $grid.rebind(param);
     });
 </script>

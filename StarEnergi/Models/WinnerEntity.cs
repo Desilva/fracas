@@ -14,6 +14,13 @@ namespace StarEnergi.Models
         public string winner;
     }
 
+    public class RewardEntity
+    {
+        public int id;
+        public double reward;
+        public string reward_string;
+    }
+
     public class WinnerReport
     {
         public DateTime? from;

@@ -1,0 +1,104 @@
+﻿@model StarEnergi.Models.WinnerReport
+<div class="container">
+	<header>
+        <table>
+            <tr>
+                <td width="20%">
+                    <img src="@Server.MapPath("~/Content/image/logo-01-01.png")" width="80"/>
+                </td>
+                <td style="font-size:10px;">
+                    STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED<br />
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center;font-size:14px;" colspan="2">
+                    <u>SHE OBSERVATION LUCKY DRAW REPORT</u><br />
+                    <i>Period: @(Model.from != null ? Model.from.Value.ToString("dd MMM yyyy") : "") - @(Model.to != null ? Model.to.Value.ToString("dd MMM yyyy") : "")</i>
+                </td>
+            </tr>
+        </table>
+	</header>
+    <br />
+    <div class="log-part1">
+		<table>
+			<tr border="0">
+                <td style="font-size:8px;" colspan="3">
+                    <b>Category: Quality SHE Observation Report</b>
+                </td>
+			</tr>
+            @if (Model.count_q > 0)
+            {
+            <tr border="0.5">
+                <td style="font-size:8px;" width="50%" align="center">
+                    <b><i>Name</i></b>
+                </td>
+                <td style="font-size:8px;" width="30%" align="center">
+                    <b><i>Reward</i></b>
+                </td>
+                <td style="font-size:8px;" width="20%" align="center">
+                    <b><i>Signature</i></b>
+                </td>
+			</tr>
+                foreach (StarEnergi.Models.WinnerEntity entity in Model.winners)
+                {
+                    if (entity.category == "Quality SHE Observation Report")
+                    {
+            <tr border="0.5">
+                <td style="font-size:8px;" width="50%">
+                    @entity.winner
+                </td>
+                <td style="font-size:8px;" width="30%" align="center">
+                    @entity.reward_string
+                </td>
+                <td style="font-size:8px;" width="20%">
+                    &nbsp;<br />&nbsp;<br />&nbsp;
+                </td>
+			</tr>
+                    }
+                }
+            }
+		</table>
+	</div>
+    <br />
+    <div class="log-part2">
+		<table>
+			<tr border="0">
+                <td style="font-size:8px;" colspan="3">
+                    <b>Category: SHE Observation Report</b>
+                </td>
+			</tr>
+            @if (Model.count > 0)
+            {
+            <tr border="0.5">
+                <td style="font-size:8px;" width="50%" align="center">
+                    <b><i>Name</i></b>
+                </td>
+                <td style="font-size:8px;" width="30%" align="center">
+                    <b><i>Reward</i></b>
+                </td>
+                <td style="font-size:8px;" width="20%" align="center">
+                    <b><i>Signature</i></b>
+                </td>
+			</tr>
+                foreach (StarEnergi.Models.WinnerEntity entity in Model.winners)
+                {
+                    if (entity.category == "SHE Observation Report")
+                    {
+            <tr border="0.5">
+                <td style="font-size:8px;" width="50%">
+                    @entity.winner
+                </td>
+                <td style="font-size:8px;" width="30%" align="center">
+                    @entity.reward_string
+                </td>
+                <td style="font-size:8px;" width="20%">
+                    &nbsp;<br />&nbsp;<br />&nbsp;
+                </td>
+			</tr>
+                    }
+                }
+            }
+		</table>
+	</div>
+</div>

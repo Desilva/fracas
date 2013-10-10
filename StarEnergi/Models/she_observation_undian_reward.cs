@@ -9,17 +9,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
-    public partial class she_observation_undian
+    public partial class she_observation_undian_reward
     {
         public int id { get; set; }
-        public Nullable<System.DateTime> from { get; set; }
-        public Nullable<System.DateTime> to { get; set; }
-        public Nullable<int> percentage { get; set; }
-        public Nullable<System.DateTime> drawing_date { get; set; }
-        public Nullable<int> signature { get; set; }
+
+        [DataType(DataType.Currency)]
+        public Nullable<double> reward { get; set; }
     }
     
 }

@@ -64,6 +64,43 @@
         </div>
         <br/>
     </div>
+    <br />
+    <label for="reward">Reward(s) : </label>
+    @( 
+     Html.Telerik().Grid<StarEnergi.Models.she_observation_undian_reward>()
+            .HtmlAttributes(new { style = "width:980px" })
+            .Localizable("id-ID")
+            .Name("SheObservationReward")
+            .DataKeys(keys =>
+            {
+                keys.Add(p => p.id);
+            })
+            .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("_SelectAjaxReward", "Undian")
+                    .Insert("_InsertAjaxReward", "Undian")
+                    .Update("_SaveAjaxReward", "Undian")
+                    .Delete("_DeleteAjaxReward", "Undian");
+            })
+            .Columns(columns =>
+            {
+                columns.Bound(o => o.id).Hidden();
+                columns.Bound(o => o.reward).Title("Reward (Rp)").Format("Rp{0:n0}");
+                columns.Command(commands =>
+                {
+                    commands.Edit().ButtonType(GridButtonType.Image);
+                    commands.Delete().ButtonType(GridButtonType.Image);
+                }).Width(80).Title("Commands");
+            })
+            .Pageable(p => p.PageSize(15))
+            .Sortable()
+            .Scrollable(c => c.Enabled(true))
+            .Selectable()
+            .Filterable()
+            .Groupable()
+    )
     <br/>
     <div>
         <input type="button" id="startDraw" value="Start Drawing" onclick="startDraw()"/>
@@ -109,7 +146,6 @@
                 employee_id.push($(this).val());
             }
         });
-
 
         $.ajax({
             type: "POST",

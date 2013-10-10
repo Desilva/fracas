@@ -48,11 +48,11 @@ namespace StarEnergi.Reporting
             this.textBox7 = new Telerik.Reporting.TextBox();
             this.textBox1 = new Telerik.Reporting.TextBox();
             this.textBox2 = new Telerik.Reporting.TextBox();
+            this.textBox8 = new Telerik.Reporting.TextBox();
+            this.textBox12 = new Telerik.Reporting.TextBox();
             this.textBox48 = new Telerik.Reporting.TextBox();
             this.textBox25 = new Telerik.Reporting.TextBox();
             this.textBox32 = new Telerik.Reporting.TextBox();
-            this.textBox8 = new Telerik.Reporting.TextBox();
-            this.textBox12 = new Telerik.Reporting.TextBox();
             this.DataReportParameters = new Telerik.Reporting.SqlDataSource();
             this.detail = new Telerik.Reporting.DetailSection();
             this.panel1 = new Telerik.Reporting.Panel();
@@ -133,6 +133,24 @@ namespace StarEnergi.Reporting
             this.textBox2.StyleName = "Normal.TableHeader";
             this.textBox2.Value = "year to date";
             // 
+            // textBox8
+            // 
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.3999999761581421D), Telerik.Reporting.Drawing.Unit.Inch(0.29999998211860657D));
+            this.textBox8.Style.Font.Bold = true;
+            this.textBox8.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Inch(0.019999999552965164D);
+            this.textBox8.StyleName = "Normal.TableHeader";
+            this.textBox8.Value = "Status";
+            // 
+            // textBox12
+            // 
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.3999999761581421D), Telerik.Reporting.Drawing.Unit.Inch(0.29999998211860657D));
+            this.textBox12.Style.Font.Bold = true;
+            this.textBox12.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
+            this.textBox12.StyleName = "Normal.TableHeader";
+            this.textBox12.Value = "year to date";
+            // 
             // textBox48
             // 
             this.textBox48.Name = "textBox48";
@@ -161,24 +179,6 @@ namespace StarEnergi.Reporting
             this.textBox32.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
             this.textBox32.StyleName = "Normal.GrandTotal";
             this.textBox32.Value = "year to date";
-            // 
-            // textBox8
-            // 
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.3999999761581421D), Telerik.Reporting.Drawing.Unit.Inch(0.29999998211860657D));
-            this.textBox8.Style.Font.Bold = true;
-            this.textBox8.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Inch(0.019999999552965164D);
-            this.textBox8.StyleName = "Normal.TableHeader";
-            this.textBox8.Value = "Status";
-            // 
-            // textBox12
-            // 
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.3999999761581421D), Telerik.Reporting.Drawing.Unit.Inch(0.29999998211860657D));
-            this.textBox12.Style.Font.Bold = true;
-            this.textBox12.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
-            this.textBox12.StyleName = "Normal.TableHeader";
-            this.textBox12.Value = "year to date";
             // 
             // DataReportParameters
             // 
@@ -428,7 +428,7 @@ namespace StarEnergi.Reporting
             this.panel5.KeepTogether = true;
             this.panel5.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(3.1000001430511475D), Telerik.Reporting.Drawing.Unit.Inch(3.0000393390655518D));
             this.panel5.Name = "panel5";
-            this.panel5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.68999981880188D), Telerik.Reporting.Drawing.Unit.Inch(3.1999998092651367D));
+            this.panel5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.9000003337860107D), Telerik.Reporting.Drawing.Unit.Inch(3.1999998092651367D));
             // 
             // ImprovementIndicatorChart
             // 
@@ -459,6 +459,7 @@ namespace StarEnergi.Reporting
             this.ImprovementIndicatorChart.Legend.Appearance.FillStyle.MainColor = System.Drawing.Color.Empty;
             this.ImprovementIndicatorChart.Legend.Appearance.ItemMarkerAppearance.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.ImprovementIndicatorChart.Legend.Appearance.ItemMarkerAppearance.Figure = "Square";
+            this.ImprovementIndicatorChart.Legend.Appearance.ItemTextAppearance.MaxLength = 20;
             this.ImprovementIndicatorChart.Legend.Appearance.Position.AlignedPosition = Telerik.Reporting.Charting.Styles.AlignedPositions.TopRight;
             this.ImprovementIndicatorChart.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.1000000610947609D));
             this.ImprovementIndicatorChart.Name = "ImprovementIndicatorChart";
@@ -483,7 +484,7 @@ namespace StarEnergi.Reporting
             this.ImprovementIndicatorChart.PlotArea.YAxis.Appearance.TextAppearance.TextProperties.Color = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.ImprovementIndicatorChart.PlotArea.YAxis.AxisLabel.TextBlock.Appearance.TextProperties.Color = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.ImprovementIndicatorChart.SeriesPalette = "Mac";
-            this.ImprovementIndicatorChart.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.690000057220459D), Telerik.Reporting.Drawing.Unit.Inch(3D));
+            this.ImprovementIndicatorChart.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.9000003337860107D), Telerik.Reporting.Drawing.Unit.Inch(3D));
             this.ImprovementIndicatorChart.Skin = "Mac";
             this.ImprovementIndicatorChart.NeedDataSource += new System.EventHandler(this.ImprovementIndicatorChart_NeedDataSource);
             // 
@@ -492,7 +493,7 @@ namespace StarEnergi.Reporting
             this.panel6.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.PIRYearToDateChart});
             this.panel6.KeepTogether = true;
-            this.panel6.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(6.9000000953674316D), Telerik.Reporting.Drawing.Unit.Inch(3D));
+            this.panel6.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(7.1000003814697266D), Telerik.Reporting.Drawing.Unit.Inch(3D));
             this.panel6.Name = "panel6";
             this.panel6.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.6899211406707764D), Telerik.Reporting.Drawing.Unit.Inch(3.2000389099121094D));
             // 

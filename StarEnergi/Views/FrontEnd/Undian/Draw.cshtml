@@ -13,22 +13,17 @@
 <input type="hidden" id="id_undian" value="@ViewBag.id"/>
 
 <div style="width:475px;float:left">
-    <label for="reward">Reward ($): </label>
-    @(Html.Telerik().NumericTextBox()
-        .Name("reward")
-        .InputHtmlAttributes(new { id = "reward" })
-        .HtmlAttributes(new { style = "margin-left:0px" })
-        .Spinners(true)
-        .MinValue(0)
-        .MaxValue(100000000)
-    )
+    <label for="reward">Reward: </label>
+    <input type="hidden" id="reward" />
+    <h4 id="reward-string" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;"></h4>
     <br />
-    Category: <label for="quality"> <input type="radio" name="category" id="category0" value="0" /> Quality</label>
-    <label for="All"> <input type="radio" name="category" id="category1" value="1" /> All</label>
+    Category: <label for="quality"> <input type="radio" name="category" id="category0" value="0" onclick="changeCat(0)"/> Quality</label>
+    <label for="All"> <input type="radio" name="category" id="category1" value="1" onclick="changeCat(1)"/> All</label>
     <h4 style="text-align:center;margin-bottom:2px;"></h4>
     <h2 id="winner" style="text-align:center;border:1px solid black;color:#FF6600;padding:10px 0;margin-top:2px;">Start Drawing!</h2>
     <input type="hidden" id="id_winner" />
     <div style="margin:0 auto;width:200px;text-align:center">
+        <input type="button" id="save" value="Save" onclick="save()" style="margin:0 auto;display:none"/>
         <input type="button" id="draw" value="Draw!" onclick="startDraw()" style="margin:0 auto"/>
         <input type="button" id="stop" value="Stop!" onclick="stop()" style="margin:0 auto;display:none"/>
     </div>
@@ -36,10 +31,10 @@
 <div style="width:475px;margin-left:30px;float:left">
     <h3 id="winner3" style="text-align:center;color:blue;padding:10px 0;margin-top:2px;">Congratulation to all winners.</h3>
     <div id="winnerss">
-        Category: Quality
+        Category: Quality SHE Observation Report
         <ul id="winners_q">
         </ul>
-        Category: All
+        Category: SHE Observation Report
         <ul id="winners">
         </ul>
     </div>
@@ -78,6 +73,29 @@
         }
     }
 
+    function changeCat(value) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("getReward", "Undian")",
+                traditional: true,
+                data: {
+                    category: value,
+                    id_undian: $('#id_undian').val() == '' ? '' : $('#id_undian').val()
+                },
+                success: function (data) {
+                    if (!data) {
+                        $('#draw').hide();
+                        $('#reward').val('');
+                        $('#reward-string').html('');
+                    } else {
+                        $('#reward').val(data.id);
+                        $('#reward-string').html(data.reward);
+                        $('#draw').show();
+                    }
+                }
+        });
+    }
+
     function startDraw() {
         var category = $('input[name="category"]:checked').val();
         if (category != null && $('#reward').val() != "") {
@@ -95,6 +113,20 @@
 
     function stop() {
         clearInterval(myVar);
+        var id = $('#id_winner').val();
+        if (id != null && id != '') {
+            $('#stop').hide();
+            $('#draw').show();
+            $('#draw').val("Redraw!");
+            $('#save').show();
+        } else {
+            $('#stop').hide();
+            $('#draw').show();
+        }
+        
+    }
+
+    function save() {
         var id = $('#id_winner').val();
         var category = $('input[name="category"]:checked').val();
         var she_obs_id, obs_name, obs_id;
@@ -172,7 +204,7 @@
                     $('#winners').empty();
                     for (var a in data.list_winner) {
                         var node = document.createElement("li");
-                        var textnode = document.createTextNode(data.list_winner[a].winner.slice(0, data.list_winner[a].winner.indexOf('#')) + ' (Reward: $ ' + data.list_winner[a].reward + ')');
+                        var textnode = document.createTextNode(data.list_winner[a].winner.slice(0, data.list_winner[a].winner.indexOf('#')) + ' (Reward: ' + data.list_winner[a].reward_string + ')');
                         node.appendChild(textnode);
                         if (data.list_winner[a].category == "Quality")
                             document.getElementById("winners_q").appendChild(node);
@@ -180,18 +212,23 @@
                             document.getElementById("winners").appendChild(node);
                     }
 
-                    $('#stop').hide();
-                    $('#draw').show();
+                    $('#save').hide();
+                    $('#draw').val("Draw!");
                     $('input[name="category"]').removeAttr('disabled');
+                    changeCat(category);
+                    $('#winner').html('Start Drawing!');
                     $('#reward').removeAttr('disabled');
                 }
             });
         } else {
             $('#stop').hide();
             $('#draw').show();
+            changeCat(category);
+            $('#winner').html('Start Drawing!');
             $('input[name="category"]').removeAttr('disabled');
             $('#reward').removeAttr('disabled');
         }
+
     }
 
     function drawing(category) {

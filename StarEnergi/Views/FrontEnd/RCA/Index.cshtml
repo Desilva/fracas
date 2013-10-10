@@ -6,32 +6,149 @@
     }
 }
 @model IEnumerable<StarEnergi.Models.RCAEntityModel>
+<style scoped>
+    .button-area {
+        width:1000px;
+        height: 32px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background: #F1F2F2;
+    }
+    .button-area > button {
+        margin: 0 6px;
+        background-size: 100% !important;
+        height: 32px !important;
+        width: 32px !important;
+        float:left !important;
+    }
+    .button-new {
+        background: url('/Content/image/button-new.png') no-repeat transparent !important;
+        
+    }
+
+    .button-open {
+        background: url('/Content/image/button-open.png') no-repeat transparent !important;
+    }
+
+    .button-edit {
+        background: url('/Content/image/button-properties.png') no-repeat transparent !important;
+    }
+
+    .button-copy {
+        background: url('/Content/image/button-copy.png') no-repeat transparent !important;
+    }
+
+    .button-copy[disabled] {
+        background: url('/Content/image/button-copy-disable.png') no-repeat transparent !important;
+        background-size: 100% !important;
+        cursor:auto;
+    }
+
+    .button-complete {
+        background: url('/Content/image/button-complete.png') no-repeat transparent !important;
+    }
+
+    .button-complete[disabled] {
+        background: url('/Content/image/button-complete-disable.png') no-repeat transparent !important;
+        background-size: 100% !important;
+        cursor:auto;
+    }
+
+    .button-report {
+        background: url('/Content/image/button-view.png') no-repeat transparent !important;
+    }
+
+    .button-print {
+        background: url('/Content/image/button-print.png') no-repeat transparent !important;
+    }
+
+    .button-to-iir {
+        background: url('/Content/image/button-to-iir.png') no-repeat transparent !important;
+    }
+
+    .button-to-iir[disabled] {
+        background: url('/Content/image/button-to-iir-disabled.png') no-repeat transparent !important;
+        background-size: 100% !important;
+        cursor:auto;
+    }
+
+    .strip {
+        float:left !important;
+        width: 1px;
+        margin: -8px 6px 0;
+        background: silver;
+        height: 48px;
+    }
+
+    .t-grouping-header,.t-grid-pager,.t-status {
+        background: #A7A9AC !important;
+        color: #fff;
+    }
+
+    .t-numeric a.t-link {
+        color: #58595B !important;
+    }
+
+    .t-numeric span {
+        background: none;
+        border: 0 !important;
+        color: #fff !important;
+    }
+
+    .t-header,.t-grid-header {
+        background: #0066CC;
+    }
+
+    .t-grid,.t-header,.t-grid td,.t-status {
+        border-color: #fff !important;
+    }
+
+    .t-grid-header-wrap {
+        border-color: #fff !important;
+    }
+
+    .t-grid-content tr {
+        background: #F1F2F2;
+    }
+
+    .t-grid-content tr.t-alt {
+        background: #E7E9EA;
+    }
+
+    .t-grid-content tr.t-state-hover {
+        background: #F9C373;
+    }
+
+    .t-grid-content tr.t-state-selected {
+        background: #ff8b29;
+    }
+
+    .t-header > a.t-link {
+        color: white;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #A7A9AC;
+    }
+    ::-webkit-scrollbar-track {
+        background: #58595B;
+    }
+
+    ::-webkit-scrollbar-corner,::-webkit-scrollbar  {
+        background: #808285;
+    }
+</style>
 <script type="text/javascript">
+    var selectedId = 0;
+    var isTree = null;
+    var isPublish = null;
+    var pa = null;
     function ondatabound(e) {
         var username = '@HttpContext.Current.Session["username"].ToString()';
         var dataItem = e.dataItem;
         var row = e.row;
-        row.childNodes[0].childNodes[5].style.display = 'none';
-        if (dataItem.is_publish == 1) {
-            if ('@li.Exists(p=>p.role==(int)StarEnergi.Config.role.RCA)' == 'True') {
-                row.childNodes[0].childNodes[2].style.display = 'none';
-                row.childNodes[0].childNodes[3].style.display = 'none';
-                if ('@li.Exists(p=>p.role==(int)StarEnergi.Config.role.IIR)' == 'True') {
-                    row.childNodes[0].childNodes[5].style.display = 'inline-block';
-                }
-            }
-
-            if (dataItem.member_name.indexOf(username) < 0) {
-                row.childNodes[0].childNodes[5].style.display = 'none';
-            }
-        }
-
-        if (dataItem.member_name.indexOf(username) < 0) {
-            row.childNodes[0].childNodes[3].style.display = 'none';
-        }
         if (dataItem.id_iir != null) {
-            row.cells[1].innerHTML = '<a onclick="editIIR(' + dataItem.id_iir + ')" style="color:blue;">IRN-' + dataItem.id_iir + '</a>';
-            row.childNodes[0].childNodes[5].style.display = 'none';
+            row.cells[0].innerHTML = '<a onclick="editIIR(' + dataItem.id_iir + ')" style="color:blue;">IRN-' + dataItem.id_iir + '</a>';
         }
     }
 
@@ -116,36 +233,173 @@
         });
 
     }
+
+    function onRowSelected(e) {
+        var ordersGrid = $('#RCA').data('tGrid');
+        selectedId = e.row.cells[1].innerHTML;
+        isTree = e.row.cells[19].innerHTML;
+        isPublish = e.row.cells[20].innerHTML;
+        pa = e.row.cells[21].innerHTML;
+        var username = '@HttpContext.Current.Session["username"].ToString()';
+        console.log(isPublish + '###' + typeof isPublish);
+        console.log(pa + '####' + typeof pa);
+        if (isPublish == "0" && pa == username) {
+            $('.button-complete').removeAttr('disabled');
+        } else {
+            $('.button-complete').attr('disabled', 'disabled');
+        }
+
+        if (isPublish == "1" && pa == username) {
+            $('.button-to-iir').removeAttr('disabled');
+        } else {
+            $('.button-to-iir').attr('disabled', 'disabled');
+        }
+
+        if (isPublish == "1") {
+            $('.button-copy').attr('disabled', 'disabled');
+        } else {
+            $('.button-copy').removeAttr('disabled');
+        }
+
+
+    }
+
+    function addRca() {
+        window.location = 'RCA/addRca';
+    }
+         
+    function openRca() {
+        if (selectedId == 0) {
+            alert("You hasn't chosen any RCA.");
+        } else {
+            if (isTree == '') {
+                if ('@li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA)' == 'True') {
+                    openChooser(selectedId);
+                } else {
+                    alert("Analysis hasn't been created yet");
+                }
+            } else {
+                switch (isTree) {
+                    case '0':
+                        window.location = 'RCA/open/' + selectedId;
+                        break;
+                    case '1':
+                        window.location = 'RCA/open/' + selectedId;
+                        break;
+                    case '2':
+                        window.location = 'RCA/test/' + selectedId;
+                        break;
+                }
+            }
+        }
+    }
+
+    function editRca() {
+        if (selectedId == 0) {
+            alert("You hasn't chosen any RCA.");
+        } else {
+            window.location = "RCA/addRca/" + selectedId;
+        }
+    }
+
+    function copyRca() {
+        if (selectedId == 0) {
+            alert("You hasn't chosen any RCA.");
+        } else {
+            var r = confirm("Are you sure want to Copy this analysis?");
+            if (r == true) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Copy", "RCA")",
+                    traditional: true,
+                    data: { id: selectedId },
+                    success: function (data) {
+                        var $grid = $("#RCA").data("tGrid");
+                        $grid.rebind();
+                        selectedId = null;
+                        isTree = null;
+                        isPublish = null;
+                        pa = null;
+                    }
+                });
+            }
+            else {
+                e.preventDefault();
+            }
+        }
+    }
+
+    function completeRca() {
+        if (selectedId == 0) {
+            alert("You hasn't chosen any RCA.");
+        } else {
+            var r = confirm("Are you sure want to Complete this analysis?");
+            if (r == true) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Publish", "RCA")",
+                    traditional: true,
+                    data: { id: selectedId },
+                    success: function (data) {
+                        var $grid = $("#RCA").data("tGrid");
+                        $grid.rebind();
+                        selectedId = null;
+                        isTree = null;
+                        isPublish = null;
+                        pa = null;
+                    }
+                });
+            }
+            else {
+                e.preventDefault();
+            }
+        }
+    }
+
+    function toIIRRca() {
+        if (selectedId == 0) {
+            alert("You hasn't chosen any RCA.");
+        } else {
+            window.location = "Investigation/addInvestigation/?id_rca=" + selectedId;
+        }
+    }
+
+    function reportRca() {
+        if (selectedId == 0) {
+            alert("You hasn't chosen any RCA.");
+        } else {
+            window.location = "RCA/report/" + selectedId;
+        }
+    }
 </script>
 <div id="contentEventLog">   
 <br/>
 <h2>Root Cause Analysis
     <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
 </h2>
-
+<div class="button-area">
+ @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA)) {
+    <button type="button" class="button-new" onclick="addRca()" title="New Analysis"></button>
+    <div class="strip"></div>
+}
+    <button type="button" class="button-open" onclick="openRca()" title="Open Analysis"></button>
+    <button type="button" class="button-edit" onclick="editRca()" title="Edit Analysis"></button>
+@if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA)) {
+    <button type="button" class="button-copy" onclick="copyRca()" title="Copy Analysis"></button>
+    <div class="strip"></div>
+    <button type="button" class="button-complete" onclick="completeRca()" disabled title="Complete Analysis"></button>
+    <button type="button" class="button-to-iir" onclick="toIIRRca()" disabled title="Create IIR"></button>
+}
+    <div class="strip"></div>
+    <button type="button" class="button-report" onclick="reportRca()" title="Report"></button>
+    <button type="button" class="button-print" onclick="exportRca()" title="Export Excel"></button>
+</div>
 @(Html.Telerik().Grid<StarEnergi.Models.RCAEntityModel>(Model)
         .Name("RCA")
         .DataKeys(keys =>
         {
             keys.Add(o => o.id);
         })
-        .ToolBar(commands =>
-                {
-                    if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
-                    {
-                        commands
-                            .Custom()
-                            .HtmlAttributes(new { id = "new" })
-                            .Text("New")
-                            .Action("addRCA", "RCA");
-                    }
-                    commands
-                        .Custom()
-                        .HtmlAttributes(new { id = "print" })
-                        .Text("Print")
-                        .Action("importExcelIndex", "RCA");
-                }
-        )
         .DataBinding(dataBinding =>
         {
             dataBinding.Ajax()
@@ -156,50 +410,51 @@
         })
         .Columns(columns =>
         {
-            columns.Command(commands =>
-            {
-                commands.Custom("Open")
-                        .Text("Open")
-                        .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Open Analysis", id = "open" })
-                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
-                        .Ajax(true)
-                        .Action("open", "RCA");
-                commands.Custom("Edit")
-                        .Text("Edit")
-                        .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconEdit.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 70%;margin-right: -5px;margin-right: -10px;", title = li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) ? "Edit Analysis" : "View Analysis" })
-                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
-                        .Action("addRCA", "RCA");
-                //if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
-                //{
-                //    commands.Delete().HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconDelete.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Delete Analysis" });
-                //}
-                commands.Custom("Copy")
-                        .Text("Copy")
-                        .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/iconCopy.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Copy Analysis" })
-                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
-                        .Ajax(true)
-                        .Action("copy", "RCA");
-                if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
-                {
-                    commands.Custom("Publish")
-                        .Text("Publish")
-                        .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/iconPublish.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Complete Analysis" })
-                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
-                        .Ajax(true)
-                        .Action("publish", "RCA");
-                }
-                commands.Custom("Report")
-                       .Text("Report")
-                       .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/Custom-Icon-Design-Pretty-Office-3-Distributor-report.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Report" })
-                       .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
-                       .Action("report", "RCA");
-                commands.Custom("To_IIR")
-                        .Text("ToIIR")
-                        .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/add_iir.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Create IIR" })
-                        .DataRouteValues(route => route.Add(o => o.id).RouteKey("id_rca"))
-                        .Action("AddInvestigation", "Investigation");
-            }).Width(200).Title("Action");
+            //columns.Command(commands =>
+            //{
+            //    commands.Custom("Open")
+            //            .Text("Open")
+            //            .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconOpen.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: 0px;", title = "Open Analysis", id = "open" })
+            //            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+            //            .Ajax(true)
+            //            .Action("open", "RCA");
+            //    commands.Custom("Edit")
+            //            .Text("Edit")
+            //            .HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconEdit.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 70%;margin-right: -5px;margin-right: -10px;", title = li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) ? "Edit Analysis" : "View Analysis" })
+            //            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+            //            .Action("addRCA", "RCA");
+            //    //if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
+            //    //{
+            //    //    commands.Delete().HtmlAttributes(new { style = "color: transparent;min-width: 4px;background: url(../../Content/image/iconDelete.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Delete Analysis" });
+            //    //}
+            //    commands.Custom("Copy")
+            //            .Text("Copy")
+            //            .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/iconCopy.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Copy Analysis" })
+            //            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+            //            .Ajax(true)
+            //            .Action("copy", "RCA");
+            //    if (li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA))
+            //    {
+            //        commands.Custom("Publish")
+            //            .Text("Publish")
+            //            .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/iconPublish.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Complete Analysis" })
+            //            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+            //            .Ajax(true)
+            //            .Action("publish", "RCA");
+            //    }
+            //    commands.Custom("Report")
+            //           .Text("Report")
+            //           .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/Custom-Icon-Design-Pretty-Office-3-Distributor-report.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Report" })
+            //           .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+            //           .Action("report", "RCA");
+            //    commands.Custom("To_IIR")
+            //            .Text("ToIIR")
+            //            .HtmlAttributes(new { style = "color: transparent;min-width: 10px;background: url(../../Content/image/add_iir.png) no-repeat;height: 30px;border: none;width: 20px;background-size: 80%;margin-right: -5px;", title = "Create IIR" })
+            //            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id_rca"))
+            //            .Action("AddInvestigation", "Investigation");
+            //}).Width(200).Title("Action");
             columns.Bound(o => o.id_iir).Width(150).Title("IIR");
+            columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.rca_code).Width(150).Title("RCA Code");
             columns.Bound(o => o.name).Width(150).Title("Analysis Title");
             columns.Bound(o => o.description).Width(400).Title("Analysis Description");
@@ -220,10 +475,12 @@
             columns.Bound(o => o.comment).Width(400).Title("Comment");
             columns.Bound(o => o.start_date).Width(200).Title("Analysis Start Date");
             columns.Bound(o => o.completion_date).Width(200).Title("Expedited Completion Date");
-            
+            columns.Bound(o => o.is_tree).Hidden();
+            columns.Bound(o => o.is_publish).Hidden();
+            columns.Bound(o => o.member_name).Hidden();
 
         })
-        .ClientEvents(events => events.OnRowDataBound("ondatabound").OnComplete("onComplete").OnCommand("onCommand"))
+        .ClientEvents(events => events.OnRowDataBound("ondatabound").OnComplete("onComplete").OnCommand("onCommand").OnRowSelected("onRowSelected"))
         .Pageable(p => p.PageSize(20))
         .Sortable()
         .Groupable()
