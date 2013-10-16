@@ -189,13 +189,14 @@ namespace StarEnergi.Reporting
             // 
             // detail
             // 
-            this.detail.Height = Telerik.Reporting.Drawing.Unit.Inch(9.90000057220459D);
+            this.detail.Height = Telerik.Reporting.Drawing.Unit.Inch(13.600001335144043D);
             this.detail.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.panel7,
             this.panel1,
             this.panel2,
             this.panel3,
-            this.panel4});
+            this.panel4,
+            this.panel6});
             this.detail.Name = "detail";
             // 
             // panel7
@@ -562,7 +563,7 @@ namespace StarEnergi.Reporting
             this.panel3.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox20,
             this.table2});
-            this.panel3.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.19999997317790985D), Telerik.Reporting.Drawing.Unit.Inch(4D));
+            this.panel3.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(3.3000001907348633D), Telerik.Reporting.Drawing.Unit.Inch(3D));
             this.panel3.Name = "panel3";
             this.panel3.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.7999999523162842D), Telerik.Reporting.Drawing.Unit.Inch(0.80000019073486328D));
             // 
@@ -635,11 +636,10 @@ namespace StarEnergi.Reporting
             // panel4
             // 
             this.panel4.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
-            this.panel5,
-            this.panel6});
-            this.panel4.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(3.1000394821166992D), Telerik.Reporting.Drawing.Unit.Inch(3D));
+            this.panel5});
+            this.panel4.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.19999997317790985D), Telerik.Reporting.Drawing.Unit.Inch(6.4000000953674316D));
             this.panel4.Name = "panel4";
-            this.panel4.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(8.3999605178833D), Telerik.Reporting.Drawing.Unit.Inch(3.1000006198883057D));
+            this.panel4.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(11.300000190734863D), Telerik.Reporting.Drawing.Unit.Inch(7D));
             // 
             // panel5
             // 
@@ -648,7 +648,7 @@ namespace StarEnergi.Reporting
             this.panel5.KeepTogether = true;
             this.panel5.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0D));
             this.panel5.Name = "panel5";
-            this.panel5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.9998824596405029D), Telerik.Reporting.Drawing.Unit.Inch(3.1000001430511475D));
+            this.panel5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(11.300000190734863D), Telerik.Reporting.Drawing.Unit.Inch(7D));
             // 
             // ImprovementIndicatorChart
             // 
@@ -681,7 +681,7 @@ namespace StarEnergi.Reporting
             this.ImprovementIndicatorChart.Legend.Appearance.ItemMarkerAppearance.Figure = "Square";
             this.ImprovementIndicatorChart.Legend.Appearance.ItemTextAppearance.MaxLength = 20;
             this.ImprovementIndicatorChart.Legend.Appearance.Position.AlignedPosition = Telerik.Reporting.Charting.Styles.AlignedPositions.TopRight;
-            this.ImprovementIndicatorChart.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.1000000610947609D));
+            this.ImprovementIndicatorChart.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0D));
             this.ImprovementIndicatorChart.Name = "ImprovementIndicatorChart";
             this.ImprovementIndicatorChart.PlotArea.Appearance.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.ImprovementIndicatorChart.PlotArea.Appearance.FillStyle.FillType = Telerik.Reporting.Charting.Styles.FillType.Solid;
@@ -704,7 +704,7 @@ namespace StarEnergi.Reporting
             this.ImprovementIndicatorChart.PlotArea.YAxis.Appearance.TextAppearance.TextProperties.Color = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.ImprovementIndicatorChart.PlotArea.YAxis.AxisLabel.TextBlock.Appearance.TextProperties.Color = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.ImprovementIndicatorChart.SeriesPalette = "Mac";
-            this.ImprovementIndicatorChart.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.9998824596405029D), Telerik.Reporting.Drawing.Unit.Inch(3D));
+            this.ImprovementIndicatorChart.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(11.300000190734863D), Telerik.Reporting.Drawing.Unit.Inch(7D));
             this.ImprovementIndicatorChart.Skin = "Mac";
             this.ImprovementIndicatorChart.NeedDataSource += new System.EventHandler(this.ImprovementIndicatorChart_NeedDataSource);
             // 
@@ -713,7 +713,7 @@ namespace StarEnergi.Reporting
             this.panel6.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.PIRYearToDateChart});
             this.panel6.KeepTogether = true;
-            this.panel6.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(3.9999608993530273D), Telerik.Reporting.Drawing.Unit.Inch(0D));
+            this.panel6.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(6.4000000953674316D), Telerik.Reporting.Drawing.Unit.Inch(3D));
             this.panel6.Name = "panel6";
             this.panel6.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.8900001049041748D), Telerik.Reporting.Drawing.Unit.Inch(3.1000010967254639D));
             // 

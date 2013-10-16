@@ -249,10 +249,10 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             string username = Session["username"].ToString();
             List<user_per_role> li = db.user_per_role.Where(p => p.username == username).ToList();
-            var model = db.pirs.Where(a => a.initiate_by == username).Where(a => a.status != "FROM INITIATOR");
+            var model = db.pirs.Where(a => a.initiate_by == username).Where(a => a.status != "FROM INITIATOR").OrderByDescending(p => p.id);
             if (li.Exists(p => p.role == (int)Config.role.FULLPIR))
             {
-                model = db.pirs.Where(a => a.status != "FROM INITIATOR");
+                model = db.pirs.Where(a => a.status != "FROM INITIATOR").OrderByDescending(p => p.id);
             }
 
             List<PIREntity> ret = new List<PIREntity>();

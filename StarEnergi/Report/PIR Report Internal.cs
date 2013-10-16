@@ -98,6 +98,66 @@ namespace StarEnergi.Reporting
             defChart.Series.Add(series);
             series.Clear();
             series.Appearance.LegendDisplayMode = ChartSeriesLegendDisplayMode.ItemLabels;
+            Color[] colors = new Color[] { 
+                ColorTranslator.FromHtml("#512F1C"),
+                ColorTranslator.FromHtml("#6B471E"),
+                ColorTranslator.FromHtml("#865F1F"),
+                ColorTranslator.FromHtml("#A07621"),
+                ColorTranslator.FromHtml("#BA8E22"),
+                ColorTranslator.FromHtml("#D19F2F"),
+                ColorTranslator.FromHtml("#B47127"),
+                ColorTranslator.FromHtml("#97441E"),
+                ColorTranslator.FromHtml("#7A1616"),
+                ColorTranslator.FromHtml("#9E2038"),
+                ColorTranslator.FromHtml("#BE1E2D"),
+                ColorTranslator.FromHtml("#CC3C29"),
+                ColorTranslator.FromHtml("#DB5926"),
+                ColorTranslator.FromHtml("#E97722"),
+                ColorTranslator.FromHtml("#F7941E"),
+                ColorTranslator.FromHtml("#F9A718"),
+                ColorTranslator.FromHtml("#FABA12"),
+                ColorTranslator.FromHtml("#FCCC0C"),
+                ColorTranslator.FromHtml("#FDDF06"),
+                ColorTranslator.FromHtml("#FFF200"),
+                ColorTranslator.FromHtml("#D7DF23"),
+                ColorTranslator.FromHtml("#A1CC2B"),
+                ColorTranslator.FromHtml("#6CBA34"),
+                ColorTranslator.FromHtml("#36A73C"),
+                ColorTranslator.FromHtml("#009444"),
+                ColorTranslator.FromHtml("#098054"),
+                ColorTranslator.FromHtml("#126C63"),
+                ColorTranslator.FromHtml("#1C5973"),
+                ColorTranslator.FromHtml("#254582"),
+                ColorTranslator.FromHtml("#2E3192"),
+                ColorTranslator.FromHtml("#26469F"),
+                ColorTranslator.FromHtml("#1E5BAC"),
+                ColorTranslator.FromHtml("#176FB9"),
+                ColorTranslator.FromHtml("#0F84C6"),
+                ColorTranslator.FromHtml("#0799D3"),
+                ColorTranslator.FromHtml("#069FC8"),
+                ColorTranslator.FromHtml("#04A4BD"),
+                ColorTranslator.FromHtml("#03AAB1"),
+                ColorTranslator.FromHtml("#01AFA6"),
+                ColorTranslator.FromHtml("#00B59B"),
+                ColorTranslator.FromHtml("#262262"),
+                ColorTranslator.FromHtml("#582468"),
+                ColorTranslator.FromHtml("#8A266F"),
+                ColorTranslator.FromHtml("#BC2875"),
+                ColorTranslator.FromHtml("#EE2A7B"),
+                ColorTranslator.FromHtml("#F14785"),
+                ColorTranslator.FromHtml("#F5658F"),
+                ColorTranslator.FromHtml("#F8829A"),
+                ColorTranslator.FromHtml("#FCA0A4"),
+                ColorTranslator.FromHtml("#FFBDAE")
+            };
+            Palette pal = new Palette();
+            foreach (var color in colors)
+            {
+                pal.Items.Add(new PaletteItem(color, color));
+            }
+            pal.Name = "MyPalette";
+            this.ImprovementIndicatorChart.CustomPalettes.Add(pal);
+            this.ImprovementIndicatorChart.SeriesPalette = "MyPalette";
             foreach (DataRow row in table.Rows)
             {
                 ChartSeriesItem item = new ChartSeriesItem();

@@ -1544,5 +1544,18 @@
 
     $(document).ready(function () {
         bindatch();
+
+        $('input[type="radio"]').mousedown(function() {
+            if (this.checked) {
+                $(this).mouseup(function(e) {
+                    var radio = this;
+                    setTimeout(function() {
+                        radio.checked = false;
+                    }, 5);
+                    $(this).unbind('mouseup');
+                });
+            }
+        });
+
     });
 </script>

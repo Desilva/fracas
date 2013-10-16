@@ -1300,29 +1300,23 @@ namespace StarEnergi.Utilities
         private string saveEquipmentTableReport(int id_report,int? id_equipment, List<object> data)
         {
             string err = "";
-            if (id_equipment != null)
+            equipment_daily_report_table eq = new equipment_daily_report_table()
             {
-                equipment_daily_report_table eq = new equipment_daily_report_table()
-                {
-                    id_equipment_daily_report = id_report,
-                    id_equipment = id_equipment,
-                    barcode = data[2].ToString().PadLeft(8, '0'),
-                    min_limit = data[4].ToString(),
-                    max_limit = data[5].ToString(),
-                    tag_value = data[6].ToString(),
-                    unit = data[7].ToString(),
-                    time = data[9].ToString().Remove(0,1),
-                    name_operator = data[12].ToString(),
-                    keterangan = data[13].ToString()
-                };
+                id_equipment_daily_report = id_report,
+                tag_id = data[1].ToString(),
+                description = data[3].ToString(),
+                barcode = data[2].ToString().PadLeft(8, '0'),
+                min_limit = data[4].ToString(),
+                max_limit = data[5].ToString(),
+                tag_value = data[6].ToString(),
+                unit = data[7].ToString(),
+                time = data[9].ToString().Remove(0,1),
+                name_operator = data[12].ToString(),
+                keterangan = data[13].ToString()
+            };
 
-                db.equipment_daily_report_table.Add(eq);
-                db.SaveChanges();
-            }
-            else
-            {
-                err = "Equipment dengan tag number " + data[1].ToString() + " tidak ditemukan.";
-            }
+            db.equipment_daily_report_table.Add(eq);
+            db.SaveChanges();
 
             return err;
         }

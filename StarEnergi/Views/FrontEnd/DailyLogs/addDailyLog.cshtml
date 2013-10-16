@@ -1311,20 +1311,9 @@
                     .Value(isEdit2 ? dl2.date : null)
                     .Enable(isEdit2 && dl2.is_approve == 1 ? false : true))
 				</td>
-				<td rowspan="2" class="no-border-btm center"><input type="text" id="sh2_grup" name="sh2_grup" style="width:50px" value="@(isEdit2 ? dl2.grup : "")" @if (isEdit2)
+				<td rowspan="2" class="no-border-btm center"><input type="text" id="sh2_grup" name="sh2_grup" style="width:50px" value="@(isEdit2 ? dl2.grup : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                         {
-                                                                                                                                                            if (userShift == 1)
-                                                                                                                                                            {
-                                                                                                                                                                if (dl.grup == null || !dl.grup.Contains("sh1_"))
-                                                                                                                                                                {<text>disabled</text>}
-                                                                                                                                                            }
-                                                                                                                                                            else if (userShift == 2)
-                                                                                                                                                            {
-                                                                                                                                                                if (dl.grup != null && dl.grup.Contains("sh1_"))
-                                                                                                                                                                {<text>disabled</text>}
-                                                                                                                                                            }
-                                                                                                                                                            else if (userShift == 3)
-                                                                                                                                                            {<text>disabled</text>}
+                                                                                                                                                            <text>disabled</text>
                                                                                                                                                         }/></td>
 				<td rowspan="2" class="no-border-btm center"><input type="text" id="sh2_production_foreman" name="sh2_production_foreman" style="width:135px" value="@(isEdit2 ? dl2.production_foreman : "")" @if (isEdit2 && dl2.is_approve == 1)
                                                                                                                                                                                                    {<text>disabled</text>}/></td>
@@ -2680,7 +2669,7 @@
      {
 						<text>$('input:radio[name="sh2_wma_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_wma_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_2_fcv').val('@(Double.TryParse(dl.wma_2_fcv,out a) ? a.ToString("f2") : dl.wma_2_fcv)');
+					$('#sh2_wma_2_fcv').val('@(Double.TryParse(dl2.wma_2_fcv,out a) ? a.ToString("f2") : dl2.wma_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_wma_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2690,9 +2679,9 @@
 								$('#sh2_wma_2_flow').attr('disabled', 'disabled');
 								$('#sh2_wma_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_2_fcv').val('@(Double.TryParse(dl.wma_2_fcv,out a) ? a.ToString("f2") : dl.wma_2_fcv)');
-					$('#sh2_wma_2_flow').val('@(Double.TryParse(dl.wma_2_flow,out a) ? a.ToString("f2") : dl.wma_2_flow)');
-					$('#sh2_wma_2_whp').val('@(Double.TryParse(dl.wma_2_whp,out a) ? a.ToString("f2") : dl.wma_2_whp)');
+					$('#sh2_wma_2_fcv').val('@(Double.TryParse(dl2.wma_2_fcv,out a) ? a.ToString("f2") : dl2.wma_2_fcv)');
+					$('#sh2_wma_2_flow').val('@(Double.TryParse(dl2.wma_2_flow,out a) ? a.ToString("f2") : dl2.wma_2_flow)');
+					$('#sh2_wma_2_whp').val('@(Double.TryParse(dl2.wma_2_whp,out a) ? a.ToString("f2") : dl2.wma_2_whp)');
 				}
                 if ('@dl2.wma_4_is_text' == '1') {
 					$('input:radio[name="sh2_wma_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2701,7 +2690,7 @@
      {
 						<text>$('input:radio[name="sh2_wma_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_wma_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_4_fcv').val('@(Double.TryParse(dl.wma_4_fcv,out a) ? a.ToString("f2") : dl.wma_4_fcv)');
+					$('#sh2_wma_4_fcv').val('@(Double.TryParse(dl2.wma_4_fcv,out a) ? a.ToString("f2") : dl2.wma_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_wma_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2711,9 +2700,9 @@
 								$('#sh2_wma_4_flow').attr('disabled', 'disabled');
 								$('#sh2_wma_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_4_fcv').val('@(Double.TryParse(dl.wma_4_fcv,out a) ? a.ToString("f2") : dl.wma_4_fcv)');
-					$('#sh2_wma_4_flow').val('@(Double.TryParse(dl.wma_4_flow,out a) ? a.ToString("f2") : dl.wma_4_flow)');
-					$('#sh2_wma_4_whp').val('@(Double.TryParse(dl.wma_4_whp,out a) ? a.ToString("f2") : dl.wma_4_whp)');
+					$('#sh2_wma_4_fcv').val('@(Double.TryParse(dl2.wma_4_fcv,out a) ? a.ToString("f2") : dl2.wma_4_fcv)');
+					$('#sh2_wma_4_flow').val('@(Double.TryParse(dl2.wma_4_flow,out a) ? a.ToString("f2") : dl2.wma_4_flow)');
+					$('#sh2_wma_4_whp').val('@(Double.TryParse(dl2.wma_4_whp,out a) ? a.ToString("f2") : dl2.wma_4_whp)');
 				}
                 if ('@dl2.wma_6_is_text' == '1') {
 					$('input:radio[name="sh2_wma_6_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2722,7 +2711,7 @@
      {
 						<text>$('input:radio[name="sh2_wma_6_is_text"]').attr('disabled', 'disabled'); $('#sh2_wma_6_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_6_fcv').val('@(Double.TryParse(dl.wma_6_fcv,out a) ? a.ToString("f2") : dl.wma_6_fcv)');
+					$('#sh2_wma_6_fcv').val('@(Double.TryParse(dl2.wma_6_fcv,out a) ? a.ToString("f2") : dl2.wma_6_fcv)');
 				} else {
 					$('input:radio[name="sh2_wma_6_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2732,9 +2721,9 @@
 								$('#sh2_wma_6_flow').attr('disabled', 'disabled');
 								$('#sh2_wma_6_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wma_6_fcv').val('@(Double.TryParse(dl.wma_6_fcv,out a) ? a.ToString("f2") : dl.wma_6_fcv)');
-					$('#sh2_wma_6_flow').val('@(Double.TryParse(dl.wma_6_flow,out a) ? a.ToString("f2") : dl.wma_6_flow)');
-					$('#sh2_wma_6_whp').val('@(Double.TryParse(dl.wma_6_whp,out a) ? a.ToString("f2") : dl.wma_6_whp)');
+					$('#sh2_wma_6_fcv').val('@(Double.TryParse(dl2.wma_6_fcv,out a) ? a.ToString("f2") : dl2.wma_6_fcv)');
+					$('#sh2_wma_6_flow').val('@(Double.TryParse(dl2.wma_6_flow,out a) ? a.ToString("f2") : dl2.wma_6_flow)');
+					$('#sh2_wma_6_whp').val('@(Double.TryParse(dl2.wma_6_whp,out a) ? a.ToString("f2") : dl2.wma_6_whp)');
 				}
                 if ('@dl2.mbd_1_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2743,7 +2732,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_1_fcv').val('@(Double.TryParse(dl.mbd_1_fcv,out a) ? a.ToString("f2") : dl.mbd_1_fcv)');
+					$('#sh2_mbd_1_fcv').val('@(Double.TryParse(dl2.mbd_1_fcv,out a) ? a.ToString("f2") : dl2.mbd_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2753,9 +2742,9 @@
 								$('#sh2_mbd_1_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_1_fcv').val('@(Double.TryParse(dl.mbd_1_fcv,out a) ? a.ToString("f2") : dl.mbd_1_fcv)');
-					$('#sh2_mbd_1_flow').val('@(Double.TryParse(dl.mbd_1_flow,out a) ? a.ToString("f2") : dl.mbd_1_flow)');
-					$('#sh2_mbd_1_whp').val('@(Double.TryParse(dl.mbd_1_whp,out a) ? a.ToString("f2") : dl.mbd_1_whp)');
+					$('#sh2_mbd_1_fcv').val('@(Double.TryParse(dl2.mbd_1_fcv,out a) ? a.ToString("f2") : dl2.mbd_1_fcv)');
+					$('#sh2_mbd_1_flow').val('@(Double.TryParse(dl2.mbd_1_flow,out a) ? a.ToString("f2") : dl2.mbd_1_flow)');
+					$('#sh2_mbd_1_whp').val('@(Double.TryParse(dl2.mbd_1_whp,out a) ? a.ToString("f2") : dl2.mbd_1_whp)');
 				}
                 if ('@dl2.mbd_2_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2764,7 +2753,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_2_fcv').val('@(Double.TryParse(dl.mbd_2_fcv,out a) ? a.ToString("f2") : dl.mbd_2_fcv)');
+					$('#sh2_mbd_2_fcv').val('@(Double.TryParse(dl2.mbd_2_fcv,out a) ? a.ToString("f2") : dl2.mbd_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2774,9 +2763,9 @@
 								$('#sh2_mbd_2_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_2_fcv').val('@(Double.TryParse(dl.mbd_2_fcv,out a) ? a.ToString("f2") : dl.mbd_2_fcv)');
-					$('#sh2_mbd_2_flow').val('@(Double.TryParse(dl.mbd_2_flow,out a) ? a.ToString("f2") : dl.mbd_2_flow)');
-					$('#sh2_mbd_2_whp').val('@(Double.TryParse(dl.mbd_2_whp,out a) ? a.ToString("f2") : dl.mbd_2_whp)');
+					$('#sh2_mbd_2_fcv').val('@(Double.TryParse(dl2.mbd_2_fcv,out a) ? a.ToString("f2") : dl2.mbd_2_fcv)');
+					$('#sh2_mbd_2_flow').val('@(Double.TryParse(dl2.mbd_2_flow,out a) ? a.ToString("f2") : dl2.mbd_2_flow)');
+					$('#sh2_mbd_2_whp').val('@(Double.TryParse(dl2.mbd_2_whp,out a) ? a.ToString("f2") : dl2.mbd_2_whp)');
 				}
                 if ('@dl2.mbd_3_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2785,7 +2774,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_3_fcv').val('@(Double.TryParse(dl.mbd_3_fcv,out a) ? a.ToString("f2") : dl.mbd_3_fcv)');
+					$('#sh2_mbd_3_fcv').val('@(Double.TryParse(dl2.mbd_3_fcv,out a) ? a.ToString("f2") : dl2.mbd_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2795,9 +2784,9 @@
 								$('#sh2_mbd_3_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_3_fcv').val('@(Double.TryParse(dl.mbd_3_fcv,out a) ? a.ToString("f2") : dl.mbd_3_fcv)');
-					$('#sh2_mbd_3_flow').val('@(Double.TryParse(dl.mbd_3_flow,out a) ? a.ToString("f2") : dl.mbd_3_flow)');
-					$('#sh2_mbd_3_whp').val('@(Double.TryParse(dl.mbd_3_whp,out a) ? a.ToString("f2") : dl.mbd_3_whp)');
+					$('#sh2_mbd_3_fcv').val('@(Double.TryParse(dl2.mbd_3_fcv,out a) ? a.ToString("f2") : dl2.mbd_3_fcv)');
+					$('#sh2_mbd_3_flow').val('@(Double.TryParse(dl2.mbd_3_flow,out a) ? a.ToString("f2") : dl2.mbd_3_flow)');
+					$('#sh2_mbd_3_whp').val('@(Double.TryParse(dl2.mbd_3_whp,out a) ? a.ToString("f2") : dl2.mbd_3_whp)');
 				}
                 if ('@dl2.mbd_4_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2806,7 +2795,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_4_fcv').val('@(Double.TryParse(dl.mbd_4_fcv,out a) ? a.ToString("f2") : dl.mbd_4_fcv)');
+					$('#sh2_mbd_4_fcv').val('@(Double.TryParse(dl2.mbd_4_fcv,out a) ? a.ToString("f2") : dl2.mbd_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2816,9 +2805,9 @@
 								$('#sh2_mbd_4_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_4_fcv').val('@(Double.TryParse(dl.mbd_4_fcv,out a) ? a.ToString("f2") : dl.mbd_4_fcv)');
-					$('#sh2_mbd_4_flow').val('@(Double.TryParse(dl.mbd_4_flow,out a) ? a.ToString("f2") : dl.mbd_4_flow)');
-					$('#sh2_mbd_4_whp').val('@(Double.TryParse(dl.mbd_4_whp,out a) ? a.ToString("f2") : dl.mbd_4_whp)');
+					$('#sh2_mbd_4_fcv').val('@(Double.TryParse(dl2.mbd_4_fcv,out a) ? a.ToString("f2") : dl2.mbd_4_fcv)');
+					$('#sh2_mbd_4_flow').val('@(Double.TryParse(dl2.mbd_4_flow,out a) ? a.ToString("f2") : dl2.mbd_4_flow)');
+					$('#sh2_mbd_4_whp').val('@(Double.TryParse(dl2.mbd_4_whp,out a) ? a.ToString("f2") : dl2.mbd_4_whp)');
 				}
                 if ('@dl2.mbd_5_is_text' == '1') {
 					$('input:radio[name="sh2_mbd_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2827,7 +2816,7 @@
      {
 						<text>$('input:radio[name="sh2_mbd_5_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbd_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_5_fcv').val('@(Double.TryParse(dl.mbd_5_fcv,out a) ? a.ToString("f2") : dl.mbd_5_fcv)');
+					$('#sh2_mbd_5_fcv').val('@(Double.TryParse(dl2.mbd_5_fcv,out a) ? a.ToString("f2") : dl2.mbd_5_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbd_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2837,9 +2826,9 @@
 								$('#sh2_mbd_5_flow').attr('disabled', 'disabled');
 								$('#sh2_mbd_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbd_5_fcv').val('@(Double.TryParse(dl.mbd_5_fcv,out a) ? a.ToString("f2") : dl.mbd_5_fcv)');
-					$('#sh2_mbd_5_flow').val('@(Double.TryParse(dl.mbd_5_flow,out a) ? a.ToString("f2") : dl.mbd_5_flow)');
-					$('#sh2_mbd_5_whp').val('@(Double.TryParse(dl.mbd_5_whp,out a) ? a.ToString("f2") : dl.mbd_5_whp)');
+					$('#sh2_mbd_5_fcv').val('@(Double.TryParse(dl2.mbd_5_fcv,out a) ? a.ToString("f2") : dl2.mbd_5_fcv)');
+					$('#sh2_mbd_5_flow').val('@(Double.TryParse(dl2.mbd_5_flow,out a) ? a.ToString("f2") : dl2.mbd_5_flow)');
+					$('#sh2_mbd_5_whp').val('@(Double.TryParse(dl2.mbd_5_whp,out a) ? a.ToString("f2") : dl2.mbd_5_whp)');
 				}
                 if ('@dl2.wwq_1_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2848,7 +2837,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_1_fcv').val('@(Double.TryParse(dl.wwq_1_fcv,out a) ? a.ToString("f2") : dl.wwq_1_fcv)');
+					$('#sh2_wwq_1_fcv').val('@(Double.TryParse(dl2.wwq_1_fcv,out a) ? a.ToString("f2") : dl2.wwq_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2858,9 +2847,9 @@
 								$('#sh2_wwq_1_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_1_fcv').val('@(Double.TryParse(dl.wwq_1_fcv,out a) ? a.ToString("f2") : dl.wwq_1_fcv)');
-					$('#sh2_wwq_1_flow').val('@(Double.TryParse(dl.wwq_1_flow,out a) ? a.ToString("f2") : dl.wwq_1_flow)');
-					$('#sh2_wwq_1_whp').val('@(Double.TryParse(dl.wwq_1_whp,out a) ? a.ToString("f2") : dl.wwq_1_whp)');
+					$('#sh2_wwq_1_fcv').val('@(Double.TryParse(dl2.wwq_1_fcv,out a) ? a.ToString("f2") : dl2.wwq_1_fcv)');
+					$('#sh2_wwq_1_flow').val('@(Double.TryParse(dl2.wwq_1_flow,out a) ? a.ToString("f2") : dl2.wwq_1_flow)');
+					$('#sh2_wwq_1_whp').val('@(Double.TryParse(dl2.wwq_1_whp,out a) ? a.ToString("f2") : dl2.wwq_1_whp)');
 				}
                 if ('@dl2.wwq_2_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2869,7 +2858,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_2_fcv').val('@(Double.TryParse(dl.wwq_2_fcv,out a) ? a.ToString("f2") : dl.wwq_2_fcv)');
+					$('#sh2_wwq_2_fcv').val('@(Double.TryParse(dl2.wwq_2_fcv,out a) ? a.ToString("f2") : dl2.wwq_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2879,9 +2868,9 @@
 								$('#sh2_wwq_2_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_2_fcv').val('@(Double.TryParse(dl.wwq_2_fcv,out a) ? a.ToString("f2") : dl.wwq_2_fcv)');
-					$('#sh2_wwq_2_flow').val('@(Double.TryParse(dl.wwq_2_flow,out a) ? a.ToString("f2") : dl.wwq_2_flow)');
-					$('#sh2_wwq_2_whp').val('@(Double.TryParse(dl.wwq_2_whp,out a) ? a.ToString("f2") : dl.wwq_2_whp)');
+					$('#sh2_wwq_2_fcv').val('@(Double.TryParse(dl2.wwq_2_fcv,out a) ? a.ToString("f2") : dl2.wwq_2_fcv)');
+					$('#sh2_wwq_2_flow').val('@(Double.TryParse(dl2.wwq_2_flow,out a) ? a.ToString("f2") : dl2.wwq_2_flow)');
+					$('#sh2_wwq_2_whp').val('@(Double.TryParse(dl2.wwq_2_whp,out a) ? a.ToString("f2") : dl2.wwq_2_whp)');
 				}
                 if ('@dl2.wwq_3_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2890,7 +2879,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_3_fcv').val('@(Double.TryParse(dl.wwq_3_fcv,out a) ? a.ToString("f2") : dl.wwq_3_fcv)');
+					$('#sh2_wwq_3_fcv').val('@(Double.TryParse(dl2.wwq_3_fcv,out a) ? a.ToString("f2") : dl2.wwq_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2900,9 +2889,9 @@
 								$('#sh2_wwq_3_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_3_fcv').val('@(Double.TryParse(dl.wwq_3_fcv,out a) ? a.ToString("f2") : dl.wwq_3_fcv)');
-					$('#sh2_wwq_3_flow').val('@(Double.TryParse(dl.wwq_3_flow,out a) ? a.ToString("f2") : dl.wwq_3_flow)');
-					$('#sh2_wwq_3_whp').val('@(Double.TryParse(dl.wwq_3_whp,out a) ? a.ToString("f2") : dl.wwq_3_whp)');
+					$('#sh2_wwq_3_fcv').val('@(Double.TryParse(dl2.wwq_3_fcv,out a) ? a.ToString("f2") : dl2.wwq_3_fcv)');
+					$('#sh2_wwq_3_flow').val('@(Double.TryParse(dl2.wwq_3_flow,out a) ? a.ToString("f2") : dl2.wwq_3_flow)');
+					$('#sh2_wwq_3_whp').val('@(Double.TryParse(dl2.wwq_3_whp,out a) ? a.ToString("f2") : dl2.wwq_3_whp)');
 				}
                 if ('@dl2.wwq_4_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2911,7 +2900,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_4_fcv').val('@(Double.TryParse(dl.wwq_4_fcv,out a) ? a.ToString("f2") : dl.wwq_4_fcv)');
+					$('#sh2_wwq_4_fcv').val('@(Double.TryParse(dl2.wwq_4_fcv,out a) ? a.ToString("f2") : dl2.wwq_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2921,9 +2910,9 @@
 								$('#sh2_wwq_4_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_4_fcv').val('@(Double.TryParse(dl.wwq_4_fcv,out a) ? a.ToString("f2") : dl.wwq_4_fcv)');
-					$('#sh2_wwq_4_flow').val('@(Double.TryParse(dl.wwq_4_flow,out a) ? a.ToString("f2") : dl.wwq_4_flow)');
-					$('#sh2_wwq_4_whp').val('@(Double.TryParse(dl.wwq_4_whp,out a) ? a.ToString("f2") : dl.wwq_4_whp)');
+					$('#sh2_wwq_4_fcv').val('@(Double.TryParse(dl2.wwq_4_fcv,out a) ? a.ToString("f2") : dl2.wwq_4_fcv)');
+					$('#sh2_wwq_4_flow').val('@(Double.TryParse(dl2.wwq_4_flow,out a) ? a.ToString("f2") : dl2.wwq_4_flow)');
+					$('#sh2_wwq_4_whp').val('@(Double.TryParse(dl2.wwq_4_whp,out a) ? a.ToString("f2") : dl2.wwq_4_whp)');
 				}
                 if ('@dl2.wwq_5_is_text' == '1') {
 					$('input:radio[name="sh2_wwq_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2932,7 +2921,7 @@
      {
 						<text>$('input:radio[name="sh2_wwq_5_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwq_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_5_fcv').val('@(Double.TryParse(dl.wwq_5_fcv,out a) ? a.ToString("f2") : dl.wwq_5_fcv)');
+					$('#sh2_wwq_5_fcv').val('@(Double.TryParse(dl2.wwq_5_fcv,out a) ? a.ToString("f2") : dl2.wwq_5_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwq_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2942,9 +2931,9 @@
 								$('#sh2_wwq_5_flow').attr('disabled', 'disabled');
 								$('#sh2_wwq_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwq_5_fcv').val('@(Double.TryParse(dl.wwq_5_fcv,out a) ? a.ToString("f2") : dl.wwq_5_fcv)');
-					$('#sh2_wwq_5_flow').val('@(Double.TryParse(dl.wwq_5_flow,out a) ? a.ToString("f2") : dl.wwq_5_flow)');
-					$('#sh2_wwq_5_whp').val('@(Double.TryParse(dl.wwq_5_whp,out a) ? a.ToString("f2") : dl.wwq_5_whp)');
+					$('#sh2_wwq_5_fcv').val('@(Double.TryParse(dl2.wwq_5_fcv,out a) ? a.ToString("f2") : dl2.wwq_5_fcv)');
+					$('#sh2_wwq_5_flow').val('@(Double.TryParse(dl2.wwq_5_flow,out a) ? a.ToString("f2") : dl2.wwq_5_flow)');
+					$('#sh2_wwq_5_whp').val('@(Double.TryParse(dl2.wwq_5_whp,out a) ? a.ToString("f2") : dl2.wwq_5_whp)');
 				}
                 if ('@dl2.mbe_3_is_text' == '1') {
 					$('input:radio[name="sh2_mbe_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2953,7 +2942,7 @@
      {
 						<text>$('input:radio[name="sh2_mbe_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbe_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbe_3_fcv').val('@(Double.TryParse(dl.mbe_3_fcv,out a) ? a.ToString("f2") : dl.mbe_3_fcv)');
+					$('#sh2_mbe_3_fcv').val('@(Double.TryParse(dl2.mbe_3_fcv,out a) ? a.ToString("f2") : dl2.mbe_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbe_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2963,9 +2952,9 @@
 								$('#sh2_mbe_3_flow').attr('disabled', 'disabled');
 								$('#sh2_mbe_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbe_3_fcv').val('@(Double.TryParse(dl.mbe_3_fcv,out a) ? a.ToString("f2") : dl.mbe_3_fcv)');
-					$('#sh2_mbe_3_flow').val('@(Double.TryParse(dl.mbe_3_flow,out a) ? a.ToString("f2") : dl.mbe_3_flow)');
-					$('#sh2_mbe_3_whp').val('@(Double.TryParse(dl.mbe_3_whp,out a) ? a.ToString("f2") : dl.mbe_3_whp)');
+					$('#sh2_mbe_3_fcv').val('@(Double.TryParse(dl2.mbe_3_fcv,out a) ? a.ToString("f2") : dl2.mbe_3_fcv)');
+					$('#sh2_mbe_3_flow').val('@(Double.TryParse(dl2.mbe_3_flow,out a) ? a.ToString("f2") : dl2.mbe_3_flow)');
+					$('#sh2_mbe_3_whp').val('@(Double.TryParse(dl2.mbe_3_whp,out a) ? a.ToString("f2") : dl2.mbe_3_whp)');
 				}
                 if ('@dl2.mbe_4_is_text' == '1') {
 					$('input:radio[name="sh2_mbe_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2974,7 +2963,7 @@
      {
 						<text>$('input:radio[name="sh2_mbe_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbe_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbe_4_fcv').val('@(Double.TryParse(dl.mbe_4_fcv,out a) ? a.ToString("f2") : dl.mbe_4_fcv)');
+					$('#sh2_mbe_4_fcv').val('@(Double.TryParse(dl2.mbe_4_fcv,out a) ? a.ToString("f2") : dl2.mbe_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbe_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -2984,9 +2973,9 @@
 								$('#sh2_mbe_4_flow').attr('disabled', 'disabled');
 								$('#sh2_mbe_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbe_4_fcv').val('@(Double.TryParse(dl.mbe_4_fcv,out a) ? a.ToString("f2") : dl.mbe_4_fcv)');
-					$('#sh2_mbe_4_flow').val('@(Double.TryParse(dl.mbe_4_flow,out a) ? a.ToString("f2") : dl.mbe_4_flow)');
-					$('#sh2_mbe_4_whp').val('@(Double.TryParse(dl.mbe_4_whp,out a) ? a.ToString("f2") : dl.mbe_4_whp)');
+					$('#sh2_mbe_4_fcv').val('@(Double.TryParse(dl2.mbe_4_fcv,out a) ? a.ToString("f2") : dl2.mbe_4_fcv)');
+					$('#sh2_mbe_4_flow').val('@(Double.TryParse(dl2.mbe_4_flow,out a) ? a.ToString("f2") : dl2.mbe_4_flow)');
+					$('#sh2_mbe_4_whp').val('@(Double.TryParse(dl2.mbe_4_whp,out a) ? a.ToString("f2") : dl2.mbe_4_whp)');
 				}
                 if ('@dl2.mba_1_is_text' == '1') {
 					$('input:radio[name="sh2_mba_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -2995,7 +2984,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_1_fcv').val('@(Double.TryParse(dl.mba_1_fcv,out a) ? a.ToString("f2") : dl.mba_1_fcv)');
+					$('#sh2_mba_1_fcv').val('@(Double.TryParse(dl2.mba_1_fcv,out a) ? a.ToString("f2") : dl2.mba_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3005,9 +2994,9 @@
 								$('#sh2_mba_1_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_1_fcv').val('@(Double.TryParse(dl.mba_1_fcv,out a) ? a.ToString("f2") : dl.mba_1_fcv)');
-					$('#sh2_mba_1_flow').val('@(Double.TryParse(dl.mba_1_flow,out a) ? a.ToString("f2") : dl.mba_1_flow)');
-					$('#sh2_mba_1_whp').val('@(Double.TryParse(dl.mba_1_whp,out a) ? a.ToString("f2") : dl.mba_1_whp)');
+					$('#sh2_mba_1_fcv').val('@(Double.TryParse(dl2.mba_1_fcv,out a) ? a.ToString("f2") : dl2.mba_1_fcv)');
+					$('#sh2_mba_1_flow').val('@(Double.TryParse(dl2.mba_1_flow,out a) ? a.ToString("f2") : dl2.mba_1_flow)');
+					$('#sh2_mba_1_whp').val('@(Double.TryParse(dl2.mba_1_whp,out a) ? a.ToString("f2") : dl2.mba_1_whp)');
 				}
                 if ('@dl2.mba_2_is_text' == '1') {
 					$('input:radio[name="sh2_mba_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3016,7 +3005,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_2_fcv').val('@(Double.TryParse(dl.mba_2_fcv,out a) ? a.ToString("f2") : dl.mba_2_fcv)');
+					$('#sh2_mba_2_fcv').val('@(Double.TryParse(dl2.mba_2_fcv,out a) ? a.ToString("f2") : dl2.mba_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3026,9 +3015,9 @@
 								$('#sh2_mba_2_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_2_fcv').val('@(Double.TryParse(dl.mba_2_fcv,out a) ? a.ToString("f2") : dl.mba_2_fcv)');
-					$('#sh2_mba_2_flow').val('@(Double.TryParse(dl.mba_2_flow,out a) ? a.ToString("f2") : dl.mba_2_flow)');
-					$('#sh2_mba_2_whp').val('@(Double.TryParse(dl.mba_2_whp,out a) ? a.ToString("f2") : dl.mba_2_whp)');
+					$('#sh2_mba_2_fcv').val('@(Double.TryParse(dl2.mba_2_fcv,out a) ? a.ToString("f2") : dl2.mba_2_fcv)');
+					$('#sh2_mba_2_flow').val('@(Double.TryParse(dl2.mba_2_flow,out a) ? a.ToString("f2") : dl2.mba_2_flow)');
+					$('#sh2_mba_2_whp').val('@(Double.TryParse(dl2.mba_2_whp,out a) ? a.ToString("f2") : dl2.mba_2_whp)');
 				}
                 if ('@dl2.mba_3_is_text' == '1') {
 					$('input:radio[name="sh2_mba_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3037,7 +3026,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_3_fcv').val('@(Double.TryParse(dl.mba_3_fcv,out a) ? a.ToString("f2") : dl.mba_3_fcv)');
+					$('#sh2_mba_3_fcv').val('@(Double.TryParse(dl2.mba_3_fcv,out a) ? a.ToString("f2") : dl2.mba_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3047,9 +3036,9 @@
 								$('#sh2_mba_3_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_3_fcv').val('@(Double.TryParse(dl.mba_3_fcv,out a) ? a.ToString("f2") : dl.mba_3_fcv)');
-					$('#sh2_mba_3_flow').val('@(Double.TryParse(dl.mba_3_flow,out a) ? a.ToString("f2") : dl.mba_3_flow)');
-					$('#sh2_mba_3_whp').val('@(Double.TryParse(dl.mba_3_whp,out a) ? a.ToString("f2") : dl.mba_3_whp)');
+					$('#sh2_mba_3_fcv').val('@(Double.TryParse(dl2.mba_3_fcv,out a) ? a.ToString("f2") : dl2.mba_3_fcv)');
+					$('#sh2_mba_3_flow').val('@(Double.TryParse(dl2.mba_3_flow,out a) ? a.ToString("f2") : dl2.mba_3_flow)');
+					$('#sh2_mba_3_whp').val('@(Double.TryParse(dl2.mba_3_whp,out a) ? a.ToString("f2") : dl2.mba_3_whp)');
 				}
                 if ('@dl2.mba_4_is_text' == '1') {
 					$('input:radio[name="sh2_mba_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3058,7 +3047,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_4_fcv').val('@(Double.TryParse(dl.mba_4_fcv,out a) ? a.ToString("f2") : dl.mba_4_fcv)');
+					$('#sh2_mba_4_fcv').val('@(Double.TryParse(dl2.mba_4_fcv,out a) ? a.ToString("f2") : dl2.mba_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3068,9 +3057,9 @@
 								$('#sh2_mba_4_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_4_fcv').val('@(Double.TryParse(dl.mba_4_fcv,out a) ? a.ToString("f2") : dl.mba_4_fcv)');
-					$('#sh2_mba_4_flow').val('@(Double.TryParse(dl.mba_4_flow,out a) ? a.ToString("f2") : dl.mba_4_flow)');
-					$('#sh2_mba_4_whp').val('@(Double.TryParse(dl.mba_4_whp,out a) ? a.ToString("f2") : dl.mba_4_whp)');
+					$('#sh2_mba_4_fcv').val('@(Double.TryParse(dl2.mba_4_fcv,out a) ? a.ToString("f2") : dl2.mba_4_fcv)');
+					$('#sh2_mba_4_flow').val('@(Double.TryParse(dl2.mba_4_flow,out a) ? a.ToString("f2") : dl2.mba_4_flow)');
+					$('#sh2_mba_4_whp').val('@(Double.TryParse(dl2.mba_4_whp,out a) ? a.ToString("f2") : dl2.mba_4_whp)');
 				}
                 if ('@dl2.mba_5_is_text' == '1') {
 					$('input:radio[name="sh2_mba_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3079,7 +3068,7 @@
      {
 						<text>$('input:radio[name="sh2_mba_5_is_text"]').attr('disabled', 'disabled'); $('#sh2_mba_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_5_fcv').val('@(Double.TryParse(dl.mba_5_fcv,out a) ? a.ToString("f2") : dl.mba_5_fcv)');
+					$('#sh2_mba_5_fcv').val('@(Double.TryParse(dl2.mba_5_fcv,out a) ? a.ToString("f2") : dl2.mba_5_fcv)');
 				} else {
 					$('input:radio[name="sh2_mba_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3089,9 +3078,9 @@
 								$('#sh2_mba_5_flow').attr('disabled', 'disabled');
 								$('#sh2_mba_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mba_5_fcv').val('@(Double.TryParse(dl.mba_5_fcv,out a) ? a.ToString("f2") : dl.mba_5_fcv)');
-					$('#sh2_mba_5_flow').val('@(Double.TryParse(dl.mba_5_flow,out a) ? a.ToString("f2") : dl.mba_5_flow)');
-					$('#sh2_mba_5_whp').val('@(Double.TryParse(dl.mba_5_whp,out a) ? a.ToString("f2") : dl.mba_5_whp)');
+					$('#sh2_mba_5_fcv').val('@(Double.TryParse(dl2.mba_5_fcv,out a) ? a.ToString("f2") : dl2.mba_5_fcv)');
+					$('#sh2_mba_5_flow').val('@(Double.TryParse(dl2.mba_5_flow,out a) ? a.ToString("f2") : dl2.mba_5_flow)');
+					$('#sh2_mba_5_whp').val('@(Double.TryParse(dl2.mba_5_whp,out a) ? a.ToString("f2") : dl2.mba_5_whp)');
 				}
                 if ('@dl2.mbb_1_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3100,7 +3089,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_1_fcv').val('@(Double.TryParse(dl.mbb_1_fcv,out a) ? a.ToString("f2") : dl.mbb_1_fcv)');
+					$('#sh2_mbb_1_fcv').val('@(Double.TryParse(dl2.mbb_1_fcv,out a) ? a.ToString("f2") : dl2.mbb_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3110,9 +3099,9 @@
 								$('#sh2_mbb_1_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_1_fcv').val('@(Double.TryParse(dl.mbb_1_fcv,out a) ? a.ToString("f2") : dl.mbb_1_fcv)');
-					$('#sh2_mbb_1_flow').val('@(Double.TryParse(dl.mbb_1_flow,out a) ? a.ToString("f2") : dl.mbb_1_flow)');
-					$('#sh2_mbb_1_whp').val('@(Double.TryParse(dl.mbb_1_whp,out a) ? a.ToString("f2") : dl.mbb_1_whp)');
+					$('#sh2_mbb_1_fcv').val('@(Double.TryParse(dl2.mbb_1_fcv,out a) ? a.ToString("f2") : dl2.mbb_1_fcv)');
+					$('#sh2_mbb_1_flow').val('@(Double.TryParse(dl2.mbb_1_flow,out a) ? a.ToString("f2") : dl2.mbb_1_flow)');
+					$('#sh2_mbb_1_whp').val('@(Double.TryParse(dl2.mbb_1_whp,out a) ? a.ToString("f2") : dl2.mbb_1_whp)');
 				}
                 if ('@dl2.mbb_2_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_2_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3121,7 +3110,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_2_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_2_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_2_fcv').val('@(Double.TryParse(dl.mbb_2_fcv,out a) ? a.ToString("f2") : dl.mbb_2_fcv)');
+					$('#sh2_mbb_2_fcv').val('@(Double.TryParse(dl2.mbb_2_fcv,out a) ? a.ToString("f2") : dl2.mbb_2_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_2_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3131,9 +3120,9 @@
 								$('#sh2_mbb_2_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_2_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_2_fcv').val('@(Double.TryParse(dl.mbb_2_fcv,out a) ? a.ToString("f2") : dl.mbb_2_fcv)');
-					$('#sh2_mbb_2_flow').val('@(Double.TryParse(dl.mbb_2_flow,out a) ? a.ToString("f2") : dl.mbb_2_flow)');
-					$('#sh2_mbb_2_whp').val('@(Double.TryParse(dl.mbb_2_whp,out a) ? a.ToString("f2") : dl.mbb_2_whp)');
+					$('#sh2_mbb_2_fcv').val('@(Double.TryParse(dl2.mbb_2_fcv,out a) ? a.ToString("f2") : dl2.mbb_2_fcv)');
+					$('#sh2_mbb_2_flow').val('@(Double.TryParse(dl2.mbb_2_flow,out a) ? a.ToString("f2") : dl2.mbb_2_flow)');
+					$('#sh2_mbb_2_whp').val('@(Double.TryParse(dl2.mbb_2_whp,out a) ? a.ToString("f2") : dl2.mbb_2_whp)');
 				}
                 if ('@dl2.mbb_3_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3142,7 +3131,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_3_fcv').val('@(Double.TryParse(dl.mbb_3_fcv,out a) ? a.ToString("f2") : dl.mbb_3_fcv)');
+					$('#sh2_mbb_3_fcv').val('@(Double.TryParse(dl2.mbb_3_fcv,out a) ? a.ToString("f2") : dl2.mbb_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3152,9 +3141,9 @@
 								$('#sh2_mbb_3_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_3_fcv').val('@(Double.TryParse(dl.mbb_3_fcv,out a) ? a.ToString("f2") : dl.mbb_3_fcv)');
-					$('#sh2_mbb_3_flow').val('@(Double.TryParse(dl.mbb_3_flow,out a) ? a.ToString("f2") : dl.mbb_3_flow)');
-					$('#sh2_mbb_3_whp').val('@(Double.TryParse(dl.mbb_3_whp,out a) ? a.ToString("f2") : dl.mbb_3_whp)');
+					$('#sh2_mbb_3_fcv').val('@(Double.TryParse(dl2.mbb_3_fcv,out a) ? a.ToString("f2") : dl2.mbb_3_fcv)');
+					$('#sh2_mbb_3_flow').val('@(Double.TryParse(dl2.mbb_3_flow,out a) ? a.ToString("f2") : dl2.mbb_3_flow)');
+					$('#sh2_mbb_3_whp').val('@(Double.TryParse(dl2.mbb_3_whp,out a) ? a.ToString("f2") : dl2.mbb_3_whp)');
 				}
                 if ('@dl2.mbb_4_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_4_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3163,7 +3152,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_4_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_4_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_4_fcv').val('@(Double.TryParse(dl.mbb_4_fcv,out a) ? a.ToString("f2") : dl.mbb_4_fcv)');
+					$('#sh2_mbb_4_fcv').val('@(Double.TryParse(dl2.mbb_4_fcv,out a) ? a.ToString("f2") : dl2.mbb_4_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_4_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3173,9 +3162,9 @@
 								$('#sh2_mbb_4_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_4_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_4_fcv').val('@(Double.TryParse(dl.mbb_4_fcv,out a) ? a.ToString("f2") : dl.mbb_4_fcv)');
-					$('#sh2_mbb_4_flow').val('@(Double.TryParse(dl.mbb_4_flow,out a) ? a.ToString("f2") : dl.mbb_4_flow)');
-					$('#sh2_mbb_4_whp').val('@(Double.TryParse(dl.mbb_4_whp,out a) ? a.ToString("f2") : dl.mbb_4_whp)');
+					$('#sh2_mbb_4_fcv').val('@(Double.TryParse(dl2.mbb_4_fcv,out a) ? a.ToString("f2") : dl2.mbb_4_fcv)');
+					$('#sh2_mbb_4_flow').val('@(Double.TryParse(dl2.mbb_4_flow,out a) ? a.ToString("f2") : dl2.mbb_4_flow)');
+					$('#sh2_mbb_4_whp').val('@(Double.TryParse(dl2.mbb_4_whp,out a) ? a.ToString("f2") : dl2.mbb_4_whp)');
 				}
                 if ('@dl2.mbb_5_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_5_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3184,7 +3173,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_5_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_5_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_5_fcv').val('@(Double.TryParse(dl.mbb_5_fcv,out a) ? a.ToString("f2") : dl.mbb_5_fcv)');
+					$('#sh2_mbb_5_fcv').val('@(Double.TryParse(dl2.mbb_5_fcv,out a) ? a.ToString("f2") : dl2.mbb_5_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_5_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3194,9 +3183,9 @@
 								$('#sh2_mbb_5_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_5_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_5_fcv').val('@(Double.TryParse(dl.mbb_5_fcv,out a) ? a.ToString("f2") : dl.mbb_5_fcv)');
-					$('#sh2_mbb_5_flow').val('@(Double.TryParse(dl.mbb_5_flow,out a) ? a.ToString("f2") : dl.mbb_5_flow)');
-					$('#sh2_mbb_5_whp').val('@(Double.TryParse(dl.mbb_5_whp,out a) ? a.ToString("f2") : dl.mbb_5_whp)');
+					$('#sh2_mbb_5_fcv').val('@(Double.TryParse(dl2.mbb_5_fcv,out a) ? a.ToString("f2") : dl2.mbb_5_fcv)');
+					$('#sh2_mbb_5_flow').val('@(Double.TryParse(dl2.mbb_5_flow,out a) ? a.ToString("f2") : dl2.mbb_5_flow)');
+					$('#sh2_mbb_5_whp').val('@(Double.TryParse(dl2.mbb_5_whp,out a) ? a.ToString("f2") : dl2.mbb_5_whp)');
 				}
                 if ('@dl2.mbb_6_is_text' == '1') {
 					$('input:radio[name="sh2_mbb_6_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3205,7 +3194,7 @@
      {
 						<text>$('input:radio[name="sh2_mbb_6_is_text"]').attr('disabled', 'disabled'); $('#sh2_mbb_6_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_6_fcv').val('@(Double.TryParse(dl.mbb_6_fcv,out a) ? a.ToString("f2") : dl.mbb_6_fcv)');
+					$('#sh2_mbb_6_fcv').val('@(Double.TryParse(dl2.mbb_6_fcv,out a) ? a.ToString("f2") : dl2.mbb_6_fcv)');
 				} else {
 					$('input:radio[name="sh2_mbb_6_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3215,9 +3204,9 @@
 								$('#sh2_mbb_6_flow').attr('disabled', 'disabled');
 								$('#sh2_mbb_6_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_mbb_6_fcv').val('@(Double.TryParse(dl.mbb_6_fcv,out a) ? a.ToString("f2") : dl.mbb_6_fcv)');
-					$('#sh2_mbb_6_flow').val('@(Double.TryParse(dl.mbb_6_flow,out a) ? a.ToString("f2") : dl.mbb_6_flow)');
-					$('#sh2_mbb_6_whp').val('@(Double.TryParse(dl.mbb_6_whp,out a) ? a.ToString("f2") : dl.mbb_6_whp)');
+					$('#sh2_mbb_6_fcv').val('@(Double.TryParse(dl2.mbb_6_fcv,out a) ? a.ToString("f2") : dl2.mbb_6_fcv)');
+					$('#sh2_mbb_6_flow').val('@(Double.TryParse(dl2.mbb_6_flow,out a) ? a.ToString("f2") : dl2.mbb_6_flow)');
+					$('#sh2_mbb_6_whp').val('@(Double.TryParse(dl2.mbb_6_whp,out a) ? a.ToString("f2") : dl2.mbb_6_whp)');
 				}
                 if ('@dl2.wwf_1_is_text' == '1') {
 					$('input:radio[name="sh2_wwf_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3226,7 +3215,7 @@
      {
 						<text>$('input:radio[name="sh2_wwf_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwf_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwf_1_fcv').val('@(Double.TryParse(dl.wwf_1_fcv,out a) ? a.ToString("f2") : dl.wwf_1_fcv)');
+					$('#sh2_wwf_1_fcv').val('@(Double.TryParse(dl2.wwf_1_fcv,out a) ? a.ToString("f2") : dl2.wwf_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwf_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3236,9 +3225,9 @@
 								$('#sh2_wwf_1_flow').attr('disabled', 'disabled');
 								$('#sh2_wwf_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwf_1_fcv').val('@(Double.TryParse(dl.wwf_1_fcv,out a) ? a.ToString("f2") : dl.wwf_1_fcv)');
-					$('#sh2_wwf_1_flow').val('@(Double.TryParse(dl.wwf_1_flow,out a) ? a.ToString("f2") : dl.wwf_1_flow)');
-					$('#sh2_wwf_1_whp').val('@(Double.TryParse(dl.wwf_1_whp,out a) ? a.ToString("f2") : dl.wwf_1_whp)');
+					$('#sh2_wwf_1_fcv').val('@(Double.TryParse(dl2.wwf_1_fcv,out a) ? a.ToString("f2") : dl2.wwf_1_fcv)');
+					$('#sh2_wwf_1_flow').val('@(Double.TryParse(dl2.wwf_1_flow,out a) ? a.ToString("f2") : dl2.wwf_1_flow)');
+					$('#sh2_wwf_1_whp').val('@(Double.TryParse(dl2.wwf_1_whp,out a) ? a.ToString("f2") : dl2.wwf_1_whp)');
 				}
                 if ('@dl2.wwf_3_is_text' == '1') {
 					$('input:radio[name="sh2_wwf_3_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3247,7 +3236,7 @@
      {
 						<text>$('input:radio[name="sh2_wwf_3_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwf_3_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwf_3_fcv').val('@(Double.TryParse(dl.wwf_3_fcv,out a) ? a.ToString("f2") : dl.wwf_3_fcv)');
+					$('#sh2_wwf_3_fcv').val('@(Double.TryParse(dl2.wwf_3_fcv,out a) ? a.ToString("f2") : dl2.wwf_3_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwf_3_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3257,9 +3246,9 @@
 								$('#sh2_wwf_3_flow').attr('disabled', 'disabled');
 								$('#sh2_wwf_3_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwf_3_fcv').val('@(Double.TryParse(dl.wwf_3_fcv,out a) ? a.ToString("f2") : dl.wwf_3_fcv)');
-					$('#sh2_wwf_3_flow').val('@(Double.TryParse(dl.wwf_3_flow,out a) ? a.ToString("f2") : dl.wwf_3_flow)');
-					$('#sh2_wwf_3_whp').val('@(Double.TryParse(dl.wwf_3_whp,out a) ? a.ToString("f2") : dl.wwf_3_whp)');
+					$('#sh2_wwf_3_fcv').val('@(Double.TryParse(dl2.wwf_3_fcv,out a) ? a.ToString("f2") : dl2.wwf_3_fcv)');
+					$('#sh2_wwf_3_flow').val('@(Double.TryParse(dl2.wwf_3_flow,out a) ? a.ToString("f2") : dl2.wwf_3_flow)');
+					$('#sh2_wwf_3_whp').val('@(Double.TryParse(dl2.wwf_3_whp,out a) ? a.ToString("f2") : dl2.wwf_3_whp)');
 				}
                 if ('@dl2.www_1_is_text' == '1') {
 					$('input:radio[name="sh2_www_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3268,7 +3257,7 @@
      {
 						<text>$('input:radio[name="sh2_www_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_www_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_www_1_fcv').val('@(Double.TryParse(dl.www_1_fcv,out a) ? a.ToString("f2") : dl.www_1_fcv)');
+					$('#sh2_www_1_fcv').val('@(Double.TryParse(dl2.www_1_fcv,out a) ? a.ToString("f2") : dl2.www_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_www_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3278,9 +3267,9 @@
 								$('#sh2_www_1_flow').attr('disabled', 'disabled');
 								$('#sh2_www_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_www_1_fcv').val('@(Double.TryParse(dl.www_1_fcv,out a) ? a.ToString("f2") : dl.www_1_fcv)');
-					$('#sh2_www_1_flow').val('@(Double.TryParse(dl.www_1_flow,out a) ? a.ToString("f2") : dl.www_1_flow)');
-					$('#sh2_www_1_whp').val('@(Double.TryParse(dl.www_1_whp,out a) ? a.ToString("f2") : dl.www_1_whp)');
+					$('#sh2_www_1_fcv').val('@(Double.TryParse(dl2.www_1_fcv,out a) ? a.ToString("f2") : dl2.www_1_fcv)');
+					$('#sh2_www_1_flow').val('@(Double.TryParse(dl2.www_1_flow,out a) ? a.ToString("f2") : dl2.www_1_flow)');
+					$('#sh2_www_1_whp').val('@(Double.TryParse(dl2.www_1_whp,out a) ? a.ToString("f2") : dl2.www_1_whp)');
 				}
                 if ('@dl2.wwp_1_is_text' == '1') {
 					$('input:radio[name="sh2_wwp_1_is_text"]').filter('[value="1"]').attr('checked', true);
@@ -3289,7 +3278,7 @@
      {
 						<text>$('input:radio[name="sh2_wwp_1_is_text"]').attr('disabled', 'disabled'); $('#sh2_wwp_1_fcv').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwp_1_fcv').val('@(Double.TryParse(dl.wwp_1_fcv,out a) ? a.ToString("f2") : dl.wwp_1_fcv)');
+					$('#sh2_wwp_1_fcv').val('@(Double.TryParse(dl2.wwp_1_fcv,out a) ? a.ToString("f2") : dl2.wwp_1_fcv)');
 				} else {
 					$('input:radio[name="sh2_wwp_1_is_text"]').filter('[value="0"]').attr('checked', true);
 					@if (dl2.is_approve == 1)
@@ -3299,9 +3288,9 @@
 								$('#sh2_wwp_1_flow').attr('disabled', 'disabled');
 								$('#sh2_wwp_1_whp').attr('disabled', 'disabled');</text>
      }
-					$('#sh2_wwp_1_fcv').val('@(Double.TryParse(dl.wwp_1_fcv,out a) ? a.ToString("f2") : dl.wwp_1_fcv)');
-					$('#sh2_wwp_1_flow').val('@(Double.TryParse(dl.wwp_1_flow,out a) ? a.ToString("f2") : dl.wwp_1_flow)');
-					$('#sh2_wwp_1_whp').val('@(Double.TryParse(dl.wwp_1_whp,out a) ? a.ToString("f2") : dl.wwp_1_whp)');
+					$('#sh2_wwp_1_fcv').val('@(Double.TryParse(dl2.wwp_1_fcv,out a) ? a.ToString("f2") : dl2.wwp_1_fcv)');
+					$('#sh2_wwp_1_flow').val('@(Double.TryParse(dl2.wwp_1_flow,out a) ? a.ToString("f2") : dl2.wwp_1_flow)');
+					$('#sh2_wwp_1_whp').val('@(Double.TryParse(dl2.wwp_1_whp,out a) ? a.ToString("f2") : dl2.wwp_1_whp)');
 				}
             }
         }

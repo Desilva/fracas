@@ -16,7 +16,7 @@ namespace StarEnergi.Models
     {
         public int id { get; set; }
         public Nullable<int> id_equipment_daily_report { get; set; }
-        public Nullable<int> id_equipment { get; set; }
+        public string tag_id { get; set; }
         public string min_limit { get; set; }
         public string max_limit { get; set; }
         public string unit { get; set; }
@@ -25,9 +25,9 @@ namespace StarEnergi.Models
         public string name_operator { get; set; }
         public string keterangan { get; set; }
         public string barcode { get; set; }
+        public string description { get; set; }
     
         public virtual equipment_daily_report equipment_daily_report { get; set; }
-        public virtual equipment equipment { get; set; }
     }
     
 }

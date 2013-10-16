@@ -110,7 +110,7 @@
     var listEq = new Array();
     @foreach (StarEnergi.Models.EquipmentTableReportEntity eq in etre)
     {
-        <text>listEq.push('@eq.id_equipment');</text>   
+        <text>listEq.push('@eq.tag_number');</text>   
     }
 
     function save() {
@@ -121,7 +121,7 @@
         if (validate()) {
             for (var s in listEq) {
                 list.push({
-                        id_equipment: listEq[s],
+                        tag_number: listEq[s],
                         barcode: $('#barcode_' + listEq[s]).val(),
                         min_limit: $('#min_' + listEq[s]).val(),
                         max_limit: $('#max_' + listEq[s]).val(),

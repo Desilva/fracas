@@ -218,6 +218,8 @@ function SaveLog() {
             arrClauses.push(document.getElementsByName("clauses")[i].value);
     }
 
+    $('#submit-log').attr('disabled', 'disabled');
+    $('#realmod_save_log').css("display", "block");
     $.ajax({
         type: "POST",
         url: "@Url.Action("addLogs", "HseAuditor")",
@@ -237,6 +239,8 @@ function SaveLog() {
                 var grid = $('#AuditLogEntity').data('tGrid');
                 grid.ajaxRequest();
                 clear();
+                $('#realmod_save_log').css("display", "none");
+                $('#submit-log').removeAttr('disabled');
                 $("#AddLogs").data("tWindow").close();
                 
             }
@@ -391,7 +395,7 @@ function SaveLog() {
         .Pageable(p => p.PageSize(10))
         .Sortable()
         .Filterable()
-        .Scrollable(c => c.Enabled(true).Height(200))
+        .Scrollable(c => c.Enabled(true).Height(600))
         .Selectable()
 )
 <br />
@@ -460,7 +464,8 @@ function SaveLog() {
 		        </div>
 		            
 	            <p class="submit">
-		            <input name="Submit" value="Add" type="submit" onclick="SaveLog();" />
+		            <input name="Submit" value="Add" type="submit" id="submit-log" onclick="SaveLog();" />
+                    <span id="realmod_save_log" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
 	            </p>
 	         </div>
         </text>)

@@ -15,14 +15,18 @@ namespace StarEnergi.Reporting
             Telerik.Reporting.TableGroup tableGroup3 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup4 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup5 = new Telerik.Reporting.TableGroup();
+            Telerik.Reporting.TableGroup tableGroup17 = new Telerik.Reporting.TableGroup();
+            Telerik.Reporting.TableGroup tableGroup18 = new Telerik.Reporting.TableGroup();
+            Telerik.Reporting.TableGroup tableGroup19 = new Telerik.Reporting.TableGroup();
+            Telerik.Reporting.TableGroup tableGroup20 = new Telerik.Reporting.TableGroup();
+            Telerik.Reporting.Charting.Styles.Corners corners2 = new Telerik.Reporting.Charting.Styles.Corners();
+            Telerik.Reporting.Charting.Styles.ChartMargins chartMargins2 = new Telerik.Reporting.Charting.Styles.ChartMargins();
+            Telerik.Reporting.Charting.Styles.Corners corners1 = new Telerik.Reporting.Charting.Styles.Corners();
+            Telerik.Reporting.Charting.Styles.ChartMargins chartMargins1 = new Telerik.Reporting.Charting.Styles.ChartMargins();
             Telerik.Reporting.TableGroup tableGroup6 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup7 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup8 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup9 = new Telerik.Reporting.TableGroup();
-            Telerik.Reporting.Charting.Styles.Corners corners1 = new Telerik.Reporting.Charting.Styles.Corners();
-            Telerik.Reporting.Charting.Styles.ChartMargins chartMargins1 = new Telerik.Reporting.Charting.Styles.ChartMargins();
-            Telerik.Reporting.Charting.Styles.Corners corners2 = new Telerik.Reporting.Charting.Styles.Corners();
-            Telerik.Reporting.Charting.Styles.ChartMargins chartMargins2 = new Telerik.Reporting.Charting.Styles.ChartMargins();
             Telerik.Reporting.TableGroup tableGroup10 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup11 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup12 = new Telerik.Reporting.TableGroup();
@@ -30,10 +34,6 @@ namespace StarEnergi.Reporting
             Telerik.Reporting.TableGroup tableGroup14 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup15 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup16 = new Telerik.Reporting.TableGroup();
-            Telerik.Reporting.TableGroup tableGroup17 = new Telerik.Reporting.TableGroup();
-            Telerik.Reporting.TableGroup tableGroup18 = new Telerik.Reporting.TableGroup();
-            Telerik.Reporting.TableGroup tableGroup19 = new Telerik.Reporting.TableGroup();
-            Telerik.Reporting.TableGroup tableGroup20 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.ReportParameter reportParameter1 = new Telerik.Reporting.ReportParameter();
             Telerik.Reporting.Drawing.StyleRule styleRule1 = new Telerik.Reporting.Drawing.StyleRule();
             Telerik.Reporting.Drawing.StyleRule styleRule2 = new Telerik.Reporting.Drawing.StyleRule();
@@ -188,14 +188,14 @@ namespace StarEnergi.Reporting
             // 
             // detail
             // 
-            this.detail.Height = Telerik.Reporting.Drawing.Unit.Inch(8.1000003814697266D);
+            this.detail.Height = Telerik.Reporting.Drawing.Unit.Inch(13D);
             this.detail.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.panel1,
             this.panel2,
-            this.panel3,
-            this.panel5,
             this.panel6,
-            this.panel4});
+            this.panel4,
+            this.panel5,
+            this.panel3});
             this.detail.Name = "detail";
             // 
             // panel1
@@ -351,7 +351,7 @@ namespace StarEnergi.Reporting
             this.panel3.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox20,
             this.table2});
-            this.panel3.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.19999997317790985D), Telerik.Reporting.Drawing.Unit.Inch(4D));
+            this.panel3.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(3.3000001907348633D), Telerik.Reporting.Drawing.Unit.Inch(3D));
             this.panel3.Name = "panel3";
             this.panel3.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.7999999523162842D), Telerik.Reporting.Drawing.Unit.Inch(0.80000019073486328D));
             // 
@@ -372,10 +372,10 @@ namespace StarEnergi.Reporting
             this.table2.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.30000004172325134D)));
             this.table2.Body.SetCellContent(0, 0, this.textBox14);
             this.table2.Body.SetCellContent(0, 1, this.textBox21);
-            tableGroup6.ReportItem = this.textBox8;
-            tableGroup7.ReportItem = this.textBox12;
-            this.table2.ColumnGroups.Add(tableGroup6);
-            this.table2.ColumnGroups.Add(tableGroup7);
+            tableGroup17.ReportItem = this.textBox8;
+            tableGroup18.ReportItem = this.textBox12;
+            this.table2.ColumnGroups.Add(tableGroup17);
+            this.table2.ColumnGroups.Add(tableGroup18);
             this.table2.DataSource = this.DataTableRekap;
             this.table2.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox14,
@@ -384,12 +384,12 @@ namespace StarEnergi.Reporting
             this.textBox12});
             this.table2.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.20000012218952179D));
             this.table2.Name = "table2";
-            tableGroup9.Name = "Group1";
-            tableGroup8.ChildGroups.Add(tableGroup9);
-            tableGroup8.Groupings.AddRange(new Telerik.Reporting.Data.Grouping[] {
+            tableGroup20.Name = "Group1";
+            tableGroup19.ChildGroups.Add(tableGroup20);
+            tableGroup19.Groupings.AddRange(new Telerik.Reporting.Data.Grouping[] {
             new Telerik.Reporting.Data.Grouping(null)});
-            tableGroup8.Name = "DetailGroup";
-            this.table2.RowGroups.Add(tableGroup8);
+            tableGroup19.Name = "DetailGroup";
+            this.table2.RowGroups.Add(tableGroup19);
             this.table2.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.7999999523162842D), Telerik.Reporting.Drawing.Unit.Inch(0.60000002384185791D));
             this.table2.StyleName = "Normal.TableNormal";
             // 
@@ -426,19 +426,19 @@ namespace StarEnergi.Reporting
             this.panel5.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.ImprovementIndicatorChart});
             this.panel5.KeepTogether = true;
-            this.panel5.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(3.1000001430511475D), Telerik.Reporting.Drawing.Unit.Inch(3.0000393390655518D));
+            this.panel5.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.19999997317790985D), Telerik.Reporting.Drawing.Unit.Inch(6.5D));
             this.panel5.Name = "panel5";
-            this.panel5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.9000003337860107D), Telerik.Reporting.Drawing.Unit.Inch(3.1999998092651367D));
+            this.panel5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(11.300000190734863D), Telerik.Reporting.Drawing.Unit.Inch(6.3000006675720215D));
             // 
             // ImprovementIndicatorChart
             // 
             this.ImprovementIndicatorChart.Appearance.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            corners1.BottomLeft = Telerik.Reporting.Charting.Styles.CornerType.Round;
-            corners1.BottomRight = Telerik.Reporting.Charting.Styles.CornerType.Round;
-            corners1.RoundSize = 6;
-            corners1.TopLeft = Telerik.Reporting.Charting.Styles.CornerType.Round;
-            corners1.TopRight = Telerik.Reporting.Charting.Styles.CornerType.Round;
-            this.ImprovementIndicatorChart.Appearance.Corners = corners1;
+            corners2.BottomLeft = Telerik.Reporting.Charting.Styles.CornerType.Round;
+            corners2.BottomRight = Telerik.Reporting.Charting.Styles.CornerType.Round;
+            corners2.RoundSize = 6;
+            corners2.TopLeft = Telerik.Reporting.Charting.Styles.CornerType.Round;
+            corners2.TopRight = Telerik.Reporting.Charting.Styles.CornerType.Round;
+            this.ImprovementIndicatorChart.Appearance.Corners = corners2;
             this.ImprovementIndicatorChart.Appearance.FillStyle.FillSettings.BackgroundImage = "{chart}";
             this.ImprovementIndicatorChart.Appearance.FillStyle.FillSettings.ImageDrawMode = Telerik.Reporting.Charting.Styles.ImageDrawMode.Flip;
             this.ImprovementIndicatorChart.Appearance.FillStyle.FillSettings.ImageFlip = Telerik.Reporting.Charting.Styles.ImageTileModes.FlipX;
@@ -453,9 +453,9 @@ namespace StarEnergi.Reporting
             this.ImprovementIndicatorChart.DefaultType = Telerik.Reporting.Charting.ChartSeriesType.Pie;
             this.ImprovementIndicatorChart.ImageFormat = System.Drawing.Imaging.ImageFormat.Emf;
             this.ImprovementIndicatorChart.Legend.Appearance.Border.Color = System.Drawing.Color.Transparent;
-            chartMargins1.Right = new Telerik.Reporting.Charting.Styles.Unit(3D, Telerik.Reporting.Charting.Styles.UnitType.Percentage);
-            chartMargins1.Top = new Telerik.Reporting.Charting.Styles.Unit(15.399999618530273D, Telerik.Reporting.Charting.Styles.UnitType.Percentage);
-            this.ImprovementIndicatorChart.Legend.Appearance.Dimensions.Margins = chartMargins1;
+            chartMargins2.Right = new Telerik.Reporting.Charting.Styles.Unit(3D, Telerik.Reporting.Charting.Styles.UnitType.Percentage);
+            chartMargins2.Top = new Telerik.Reporting.Charting.Styles.Unit(15.399999618530273D, Telerik.Reporting.Charting.Styles.UnitType.Percentage);
+            this.ImprovementIndicatorChart.Legend.Appearance.Dimensions.Margins = chartMargins2;
             this.ImprovementIndicatorChart.Legend.Appearance.FillStyle.MainColor = System.Drawing.Color.Empty;
             this.ImprovementIndicatorChart.Legend.Appearance.ItemMarkerAppearance.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.ImprovementIndicatorChart.Legend.Appearance.ItemMarkerAppearance.Figure = "Square";
@@ -484,7 +484,7 @@ namespace StarEnergi.Reporting
             this.ImprovementIndicatorChart.PlotArea.YAxis.Appearance.TextAppearance.TextProperties.Color = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.ImprovementIndicatorChart.PlotArea.YAxis.AxisLabel.TextBlock.Appearance.TextProperties.Color = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.ImprovementIndicatorChart.SeriesPalette = "Mac";
-            this.ImprovementIndicatorChart.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.9000003337860107D), Telerik.Reporting.Drawing.Unit.Inch(3D));
+            this.ImprovementIndicatorChart.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(11.300000190734863D), Telerik.Reporting.Drawing.Unit.Inch(6.1999998092651367D));
             this.ImprovementIndicatorChart.Skin = "Mac";
             this.ImprovementIndicatorChart.NeedDataSource += new System.EventHandler(this.ImprovementIndicatorChart_NeedDataSource);
             // 
@@ -493,19 +493,19 @@ namespace StarEnergi.Reporting
             this.panel6.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.PIRYearToDateChart});
             this.panel6.KeepTogether = true;
-            this.panel6.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(7.1000003814697266D), Telerik.Reporting.Drawing.Unit.Inch(3D));
+            this.panel6.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(6.4000000953674316D), Telerik.Reporting.Drawing.Unit.Inch(3D));
             this.panel6.Name = "panel6";
             this.panel6.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.6899211406707764D), Telerik.Reporting.Drawing.Unit.Inch(3.2000389099121094D));
             // 
             // PIRYearToDateChart
             // 
             this.PIRYearToDateChart.Appearance.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            corners2.BottomLeft = Telerik.Reporting.Charting.Styles.CornerType.Round;
-            corners2.BottomRight = Telerik.Reporting.Charting.Styles.CornerType.Round;
-            corners2.RoundSize = 6;
-            corners2.TopLeft = Telerik.Reporting.Charting.Styles.CornerType.Round;
-            corners2.TopRight = Telerik.Reporting.Charting.Styles.CornerType.Round;
-            this.PIRYearToDateChart.Appearance.Corners = corners2;
+            corners1.BottomLeft = Telerik.Reporting.Charting.Styles.CornerType.Round;
+            corners1.BottomRight = Telerik.Reporting.Charting.Styles.CornerType.Round;
+            corners1.RoundSize = 6;
+            corners1.TopLeft = Telerik.Reporting.Charting.Styles.CornerType.Round;
+            corners1.TopRight = Telerik.Reporting.Charting.Styles.CornerType.Round;
+            this.PIRYearToDateChart.Appearance.Corners = corners1;
             this.PIRYearToDateChart.Appearance.FillStyle.FillSettings.BackgroundImage = "{chart}";
             this.PIRYearToDateChart.Appearance.FillStyle.FillSettings.ImageDrawMode = Telerik.Reporting.Charting.Styles.ImageDrawMode.Flip;
             this.PIRYearToDateChart.Appearance.FillStyle.FillSettings.ImageFlip = Telerik.Reporting.Charting.Styles.ImageTileModes.FlipX;
@@ -520,9 +520,9 @@ namespace StarEnergi.Reporting
             this.PIRYearToDateChart.DefaultType = Telerik.Reporting.Charting.ChartSeriesType.Pie;
             this.PIRYearToDateChart.ImageFormat = System.Drawing.Imaging.ImageFormat.Emf;
             this.PIRYearToDateChart.Legend.Appearance.Border.Color = System.Drawing.Color.Transparent;
-            chartMargins2.Right = new Telerik.Reporting.Charting.Styles.Unit(3D, Telerik.Reporting.Charting.Styles.UnitType.Percentage);
-            chartMargins2.Top = new Telerik.Reporting.Charting.Styles.Unit(15.399999618530273D, Telerik.Reporting.Charting.Styles.UnitType.Percentage);
-            this.PIRYearToDateChart.Legend.Appearance.Dimensions.Margins = chartMargins2;
+            chartMargins1.Right = new Telerik.Reporting.Charting.Styles.Unit(3D, Telerik.Reporting.Charting.Styles.UnitType.Percentage);
+            chartMargins1.Top = new Telerik.Reporting.Charting.Styles.Unit(15.399999618530273D, Telerik.Reporting.Charting.Styles.UnitType.Percentage);
+            this.PIRYearToDateChart.Legend.Appearance.Dimensions.Margins = chartMargins1;
             this.PIRYearToDateChart.Legend.Appearance.FillStyle.MainColor = System.Drawing.Color.Empty;
             this.PIRYearToDateChart.Legend.Appearance.ItemMarkerAppearance.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.PIRYearToDateChart.Legend.Appearance.ItemMarkerAppearance.Figure = "Square";
@@ -594,24 +594,24 @@ namespace StarEnergi.Reporting
             this.crosstab3.Body.SetCellContent(3, 0, this.textBox62);
             this.crosstab3.Body.SetCellContent(3, 1, this.textBox63);
             this.crosstab3.Body.SetCellContent(3, 2, this.textBox67);
-            tableGroup11.Name = "Group2";
-            tableGroup10.ChildGroups.Add(tableGroup11);
-            tableGroup10.Name = "Group1";
-            tableGroup10.ReportItem = this.textBox48;
-            tableGroup13.ChildGroups.Add(tableGroup14);
-            tableGroup13.Name = "Group6";
-            tableGroup13.ReportItem = this.textBox25;
-            tableGroup12.ChildGroups.Add(tableGroup13);
-            tableGroup12.Groupings.AddRange(new Telerik.Reporting.Data.Grouping[] {
+            tableGroup7.Name = "Group2";
+            tableGroup6.ChildGroups.Add(tableGroup7);
+            tableGroup6.Name = "Group1";
+            tableGroup6.ReportItem = this.textBox48;
+            tableGroup9.ChildGroups.Add(tableGroup10);
+            tableGroup9.Name = "Group6";
+            tableGroup9.ReportItem = this.textBox25;
+            tableGroup8.ChildGroups.Add(tableGroup9);
+            tableGroup8.Groupings.AddRange(new Telerik.Reporting.Data.Grouping[] {
             new Telerik.Reporting.Data.Grouping("=Fields.NamaBulan")});
-            tableGroup12.Name = "process_owner1";
-            tableGroup12.Sortings.AddRange(new Telerik.Reporting.Data.Sorting[] {
+            tableGroup8.Name = "process_owner1";
+            tableGroup8.Sortings.AddRange(new Telerik.Reporting.Data.Sorting[] {
             new Telerik.Reporting.Data.Sorting("=Fields.Bulan", Telerik.Reporting.Data.SortDirection.Asc)});
-            tableGroup15.ChildGroups.Add(tableGroup16);
-            tableGroup15.ReportItem = this.textBox32;
-            this.crosstab3.ColumnGroups.Add(tableGroup10);
-            this.crosstab3.ColumnGroups.Add(tableGroup12);
-            this.crosstab3.ColumnGroups.Add(tableGroup15);
+            tableGroup11.ChildGroups.Add(tableGroup12);
+            tableGroup11.ReportItem = this.textBox32;
+            this.crosstab3.ColumnGroups.Add(tableGroup6);
+            this.crosstab3.ColumnGroups.Add(tableGroup8);
+            this.crosstab3.ColumnGroups.Add(tableGroup11);
             this.crosstab3.DataSource = this.DataTableKBP;
             this.crosstab3.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox40,
@@ -631,13 +631,13 @@ namespace StarEnergi.Reporting
             this.textBox32});
             this.crosstab3.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.20011822879314423D));
             this.crosstab3.Name = "crosstab3";
-            tableGroup18.Name = "Group3";
-            tableGroup19.Name = "Group4";
-            tableGroup20.Name = "Group5";
-            this.crosstab3.RowGroups.Add(tableGroup17);
-            this.crosstab3.RowGroups.Add(tableGroup18);
-            this.crosstab3.RowGroups.Add(tableGroup19);
-            this.crosstab3.RowGroups.Add(tableGroup20);
+            tableGroup14.Name = "Group3";
+            tableGroup15.Name = "Group4";
+            tableGroup16.Name = "Group5";
+            this.crosstab3.RowGroups.Add(tableGroup13);
+            this.crosstab3.RowGroups.Add(tableGroup14);
+            this.crosstab3.RowGroups.Add(tableGroup15);
+            this.crosstab3.RowGroups.Add(tableGroup16);
             this.crosstab3.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.2283337116241455D), Telerik.Reporting.Drawing.Unit.Inch(1.4999997615814209D));
             this.crosstab3.StyleName = "Normal.TableNormal";
             // 

@@ -31,11 +31,16 @@ namespace StarEnergi.Models
         public string recommendation { get; set; }
         public string inspector_name { get; set; }
         public string inspector_signature { get; set; }
-        public string approval_name { get; set; }
-        public string approval_signature { get; set; }
+        public string supervisor_approval_name { get; set; }
+        public string supervisor_approval_signature { get; set; }
         public Nullable<System.DateTime> inspector_date { get; set; }
-        public Nullable<System.DateTime> approval_date { get; set; }
+        public Nullable<System.DateTime> supervisor_approval_date { get; set; }
         public Nullable<int> id_ir { get; set; }
+        public string superintendent_approval_name { get; set; }
+        public string superintendent_approval_signature { get; set; }
+        public Nullable<System.DateTime> superintendent_approval_date { get; set; }
+        public string superintendent_delegate { get; set; }
+        public string supervisor_delegate { get; set; }
     }
     
 }

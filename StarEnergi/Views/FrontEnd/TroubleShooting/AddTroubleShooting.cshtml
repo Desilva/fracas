@@ -1,14 +1,27 @@
 ﻿@{
     int? id = null;
     bool isEdit = false;
-    StarEnergi.Models.trouble_shooting ts = new StarEnergi.Models.trouble_shooting();
+    bool isView = false;
+    StarEnergi.Models.trouble_shooting ts = null;
+    int? superintendent_id = null;
+    int? supervisor_id = null;
+    int? superintendent_id_del = null;
+    int? supervisor_id_del = null;
+    string user_id = HttpContext.Current.Session["id"].ToString();
     if (ViewBag.mod != null)
     {
         id = ViewBag.mod as Nullable<Int32>;
         ts = ViewBag.datas as StarEnergi.Models.trouble_shooting;
         isEdit = true;
+        isView = ts.superintendent_approval_signature != null || (user_id != ts.inspector_name && (user_id != ts.supervisor_approval_name || ts.supervisor_approval_signature != null) && (user_id != ts.superintendent_approval_name || ts.superintendent_approval_signature != null) &&
+            (user_id != ts.superintendent_delegate || ts.superintendent_approval_signature != null) && (user_id != ts.supervisor_delegate || ts.supervisor_approval_signature != null));
+    
+    } else {
+        supervisor_id = ViewBag.supervisor_id as Nullable<int>;
+        superintendent_id = ViewBag.superintendent_id as Nullable<int>;
+        supervisor_id_del = ViewBag.supervisor_id_del as Nullable<int>;
+        superintendent_id_del = ViewBag.superintendent_id_del as Nullable<int>;
     }
-
     List<StarEnergi.Models.EmployeeEntity> has = null;
     if (ViewData["users"] != null)
     {
@@ -22,6 +35,7 @@
 <link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
 <script>
     var isEdit = '@isEdit';
+    var isView = '@isView';
     var isSave = false;
     function setIframeHeight(sel, h) {
         $(sel).height(h);
@@ -35,7 +49,8 @@
 
     function save() {
         isSave = true;
-
+        var supervisor_delegate = $('#supervisor_delegate').val();
+        var sup_delegate = $('#sup_delegate').val();
         if (validate()) {
             var as_found_condition = htmlEncode(CKEDITOR.instances.as_found_condition.getData());
             var analysis = htmlEncode(CKEDITOR.instances.analysis.getData());
@@ -55,10 +70,13 @@
                 action: $('#action').val(),
                 recommendation: $('#recommendation').val(),
                 inspector_name: $('#inspector_name').val(),
-                approval_name: $('#approval_name').val(),
+                supervisor_approval_name: $('#supervisor_approval_name').val(),
+                supervisor_delegate: isEdit == 'False' ? $('#supervisor_delegate_name').val() : (supervisor_delegate == 'True' ? $('#supervisor_name').val() : $('#supervisor_delegate_name').val()),
+                superintendent_approval_name: $('#superintendent_approval_name').val(),
+                superintendent_delegate: isEdit == 'False' ? $('#sup_delegate_name').val() : (sup_delegate == 'True' ? $('#sup_name').val() : $('#sup_delegate_name').val()),
                 inspector_date: $('#inspector_date').val(),
-                approval_date: $('#approval_date').val(),
-                inspector_signature: $('#img_inspector_signature').attr('src'),
+                supervisor_approval_date: $('#supervisor_approval_date').val(),
+                superintendent_approval_date: $('#superintendent_approval_date').val(),
                 id_ir: '@(ViewBag.id_ir != null ? ViewBag.id_ir as string : null)'
             }
 
@@ -122,10 +140,10 @@ function validate() {
 			<tr>
                 <td class="no-border-right">TAG/Equipment No</td>
                 <td class="no-border-right no-border-left">:</td>
-				<td class="no-border-left" colspan="3"><input type="text" name="equipment_no" id="equipment_no" value="@(isEdit ? ts.equipment_no : "")"/></td>
+				<td class="no-border-left" colspan="3"><input type="text" name="equipment_no" id="equipment_no" value="@(isEdit ? ts.equipment_no : "")" @(isView ? "disabled" : "") /></td>
                 <td class="no-border-right">Equipment Desc.</td>
                 <td class="no-border-right no-border-left">:</td>
-				<td class="no-border-left"><input type="text" name="equipment_description" id="equipment_description" value="@(isEdit ? ts.equipment_description : "")" /></td>
+				<td class="no-border-left"><input type="text" name="equipment_description" id="equipment_description" value="@(isEdit ? ts.equipment_description : "")" @(isView ? "disabled" : "") /></td>
 			</tr>
             <tr>
                 <td class="no-border-right">Date of Trouble</td>
@@ -135,7 +153,7 @@ function validate() {
                     .Name("date_of_trouble")
                     .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
                     .Value(isEdit ? ts.date_of_trouble : null)
-                    .Enable(true))
+                    .Enable(!isView))
 				</td>
                 <td class="no-border-right">Time of Trouble</td>
                 <td class="no-border-right no-border-left">:</td>
@@ -145,7 +163,7 @@ function validate() {
                     .HtmlAttributes(new { id = "time_wrapper", style = "width:90px" })
                     .Interval(1)
                     .Value(isEdit ? ts.time_of_trouble : null)
-                    .Enable(true))
+                    .Enable(!isView))
 				</td>
 			</tr>
             <tr>
@@ -156,7 +174,7 @@ function validate() {
                     .Name("start_date_repair")
                     .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
                     .Value(isEdit ? ts.start_date_repair : null)
-                    .Enable(true))
+                    .Enable(!isView))
 				</td>
                 <td class="no-border-right no-border-left">
                     -
@@ -166,24 +184,24 @@ function validate() {
                     .Name("end_date_repair")
                     .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
                     .Value(isEdit ? ts.end_date_repair : null)
-                    .Enable(true))
+                    .Enable(!isView))
 				</td>
                 <td class="no-border-right">Time of Repaired</td>
                 <td class="no-border-right no-border-left">:</td>
 				<td class="no-border-left">
-                    <input type="text" name="time_repaired" id="time_repaired" value="@(isEdit ? ts.time_repaired : "")" />
+                    <input type="text" name="time_repaired" id="time_repaired" value="@(isEdit ? ts.time_repaired : "")" @(isView ? "disabled" : "") />
 				</td>
 			</tr>
 			<tr>
                 <td class="no-border-right">WO Number</td>
                 <td class="no-border-right no-border-left">:</td>
-				<td class="no-border-left" colspan="3"><input type="text" name="wo_number" id="wo_number" value="@(isEdit ? ts.wo_number : "")" /></td>
+				<td class="no-border-left" colspan="3"><input type="text" name="wo_number" id="wo_number" value="@(isEdit ? ts.wo_number : "")" @(isView ? "disabled" : "") /></td>
                 <td colspan="3">&nbsp;</td>
 			</tr>
             <tr>
                 <td colspan="8">
                     Description of Trouble :
-                    <textarea name="description_trouble" id="description_trouble" cols="118" rows="5" style="resize:none">@(isEdit ? ts.description_trouble : "")</textarea>
+                    <textarea name="description_trouble" id="description_trouble" cols="118" rows="5" style="resize:none" @(isView ? "disabled" : "")>@(isEdit ? ts.description_trouble : "")</textarea>
                 </td>
 			</tr>
 		</table>
@@ -193,7 +211,7 @@ function validate() {
 	<div class="log-part2">
         <table class="w-border" style="width:980px">
 		    <tr>
-			    <td><textarea cols="118" id="as_found_condition" name="as_found_condition" rows="10">@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ts.as_found_condition)).ToHtmlString() : "")</textarea></td>
+			    <td><textarea cols="118" id="as_found_condition" name="as_found_condition" rows="10" @(isView ? "disabled" : "")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ts.as_found_condition)).ToHtmlString() : "")</textarea></td>
 		    </tr>
 	    </table>
 	</div>
@@ -202,7 +220,7 @@ function validate() {
 	<div class="log-part3">
         <table class="w-border" style="width:980px">
 		    <tr>
-			    <td><textarea cols="118" id="analysis" name="analysis" rows="10">@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ts.analysis)).ToHtmlString() : "")</textarea></td>
+			    <td><textarea cols="118" id="analysis" name="analysis" rows="10" @(isView ? "disabled" : "")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ts.analysis)).ToHtmlString() : "")</textarea></td>
 		    </tr>
 	    </table>
 	</div>
@@ -211,7 +229,7 @@ function validate() {
 	<div class="log-part4">
         <table class="w-border" style="width:980px">
 		    <tr>
-			    <td><textarea cols="118" id="action" name="action" rows="5" style="resize:none">@(isEdit ? ts.action : "")</textarea></td>
+			    <td><textarea cols="118" id="action" name="action" rows="5" style="resize:none" @(isView ? "disabled" : "")>@(isEdit ? ts.action : "")</textarea></td>
 		    </tr>
 	    </table>
 	</div>
@@ -220,7 +238,7 @@ function validate() {
 	<div class="log-part5">
         <table class="w-border" style="width:980px">
 		    <tr>
-			    <td><textarea cols="118" id="recommendation" name="recommendation" rows="10" style="resize:none">@(isEdit ? ts.recommendation : "")</textarea></td>
+			    <td><textarea cols="118" id="recommendation" name="recommendation" rows="10" style="resize:none" @(isView ? "disabled" : "")>@(isEdit ? ts.recommendation : "")</textarea></td>
 		    </tr>
 	    </table>
 	</div>
@@ -231,70 +249,60 @@ function validate() {
                 <td>
                     Inspector Signature
                     <br />
-                    @*if (!isView)
-                    {*@
-                        @if (ts != null && ts.inspector_signature == null)
-                        {
-                            @(Html.Telerik().Upload()
-                                .Name("inspector_signature")
-                                .Async(async => async
-                                    .Save("approveInspector","TroubleShooting", new { id = id })
-                                    .AutoUpload(true)
-                                    )
-                                .ClientEvents(events => events
-                                    .OnSuccess("onSuccessApproveIns"))
-                                .ShowFileList(false)
-                            )
-                        }
-                            <img id="img_inspector_signature" width="50" height="50" @(ts.inspector_signature != null ? "style=display:block;" : "style=display:none;")  src="@ts.inspector_signature"/>
-                    @*}
-                    else
-                    {
-                        <input type="text" name="inspector_name" id="inspector_name" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ts.inspector_name)).alpha_name : "")" disabled style="width:166px"/>
-                        <img id="img_inspector_signature" width="50" height="50" @(ts.inspector_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@ts.inspector_signature"/>
-                    }*@
+                    @if (isEdit) {
+                        <img id="img_inspector_signature" width="50" height="50" @(ts.inspector_signature != null ? "style=display:block;" : "style=display:none;")  src="@ts.inspector_signature"/>
+                    }
                 </td>
                 <td>
-                    Approval Signature
+                    Supervisor Approval Signature
                     <br />
-                    @*if (!isView)
-                    {*@
-                        @if (isEdit) {
-                            if (has.Find(p => p.username == username).id == Int32.Parse(ts.approval_name == null ? "0" : ts.approval_name))
-                            {
-                                if (ts.approval_signature == null)
-                                {
-                                    @(Html.Telerik().Upload()
-                                        .Name("approval_signature")
-                                        .Async(async => async
-                                            .Save("approvalSignature","TroubleShooting", new { id = id })
-                                            .AutoUpload(true)
-                                            )
-                                        .ClientEvents(events => events
-                                            .OnSuccess("onSuccessApprovalSign"))
-                                        .ShowFileList(false)
-                                    )
-                                }
-                            }
-                            <img id="img_approval_signature" width="50" height="50" @(ts.approval_signature != null ? "style=display:block;" : "style=display:none;" )  src="@ts.approval_signature"/>
-                        }
-                    @*}
-                    else
+                    @if (isEdit)
                     {
-                        <input type="text" name="inspector_name" id="inspector_name" value="@(isEdit ? has.Find(p => p.id == Int32.Parse(ts.inspector_name)).alpha_name : "")" disabled style="width:166px"/>
-                        <img id="img_inspector_signature" width="50" height="50" @(ts.inspector_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@ts.inspector_signature"/>
-                    }*@
+                        if (has.Find(p => p.username == username).id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) || has.Find(p => p.username == username).id == Int32.Parse(ts.supervisor_delegate == null ? "0" : ts.supervisor_delegate))
+                        {
+                            if (ts.supervisor_approval_signature == null)
+                            {
+                            <div id="button_supervisor_approve">
+                                <input type="button" id="approve_supervisor" onclick="approveSupervisor('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                <input type="button" id="reject_supervisor" onclick="reject('1')" value="Reject" />
+                            </div>
+                            }
+                        }
+                    <img id="img_approve_supervisor" width="50" height="50" @(ts.supervisor_approval_signature == null ? "style=display:none;" : "style=display:block;")  src="@(ts.supervisor_approval_signature == null ? "" : ts.supervisor_approval_signature.Substring(1))"/>
+                    }
+                </td>
+                <td>
+                    Superintendent Approval Signature
+                    <br />
+                    @if (isEdit && (ts.supervisor_approval_signature != null || ts.supervisor_approval_name == null))
+                    {
+                        if (has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) || has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_delegate == null ? "0" : ts.superintendent_delegate))
+                        {
+                            if (ts.superintendent_approval_signature == null)
+                            {
+                            <div id="button_superintendent_approve">
+                                <input type="button" id="approve_superintendent" onclick="approveSuperintendent('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                <input type="button" id="reject_superintendent" onclick="reject('2')" value="Reject" />
+                            </div>
+                            }
+                        }
+                    <img id="img_approve_superintendent" width="50" height="50" @(ts.superintendent_approval_signature == null ? "style=display:none;" : "style=display:block;")  src="@(ts.superintendent_approval_signature == null ? "" : ts.superintendent_approval_signature.Substring(1))"/>
+                    }
                 </td>
             </tr>
             <tr>
                 <td>
                     PRINT NAME
                     <br />
-                    <select id="inspector_name" name="inspector_name"  @(isEdit && ts.inspector_signature != null ? "disabled" : "")>
+                    <select id="inspector_name" name="inspector_name"  disabled>
                         <option value="" selected disabled>Choose One</option>
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (isEdit && user.id == Int32.Parse(ts.inspector_name == null ? "0" : ts.inspector_name))
+                            if (!isEdit && user.username == HttpContext.Current.Session["username"].ToString())
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ts.inspector_name == null ? "0" : ts.inspector_name))
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
@@ -308,20 +316,116 @@ function validate() {
                 <td>
                     PRINT NAME
                     <br />
-                    <select id="approval_name" name="approval_name"  @(isEdit && ts.approval_signature != null ? "disabled" : "")>
+                    @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(string.IsNullOrWhiteSpace(ts.supervisor_approval_name) ? "0" : ts.supervisor_approval_name) && (string.IsNullOrWhiteSpace(ts.supervisor_approval_signature) ? true : ts.supervisor_approval_signature.Substring(0, 1) == "a"))
+                    {
+                    }
+                    else if (ts != null && ts.supervisor_delegate != null && (ts.supervisor_approval_signature == null ? true : ts.supervisor_approval_signature.Substring(0, 1) == "d"))
+                    {
+                        <text>a/n </text>
+                    }
+                    <select id="supervisor_approval_name" name="supervisor_approval_name"  disabled>
                         <option value="" selected disabled>Choose One</option>
+                        @{bool supervisor_isDelegate = false; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (isEdit && user.id == Int32.Parse(ts.approval_name == null ? "0" : ts.approval_name))
+                            if (isEdit && user.id == Int32.Parse(ts.supervisor_delegate == null ? "0" : ts.supervisor_delegate))
+                            {
+                                supervisor_isDelegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (user.id == supervisor_id)
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else
+                            else if (user.approval_level == 1)
                             {
-                                <option value="@user.id">@user.alpha_name</option>
+                                if (isEdit && user.id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && (ts.supervisor_delegate == null || (ts.supervisor_approval_signature == null ? false : ts.supervisor_approval_signature.Substring(0, 1) != "d")))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else if (isEdit && user.id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && has.Find(p => p.username == username).id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && (ts.supervisor_approval_signature == null ? true : ts.supervisor_approval_signature.Substring(0, 1) == "a"))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.id">@user.alpha_name</option>
+                                }
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && (ts.supervisor_delegate == null || (ts.supervisor_approval_signature == null ? false : ts.supervisor_approval_signature.Substring(0, 1) != "d")))
+                            {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && has.Find(p => p.username == username).id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && (ts.supervisor_approval_signature == null ? true : ts.supervisor_approval_signature.Substring(0, 1) == "a"))
+                            {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (user.id == supervisor_id_del)
+                            {
+                                supervisor_isDelegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
                             }
                         }
                     </select>
+                    <input type="hidden" id="supervisor_delegate" value="@supervisor_isDelegate" />
+                    <input type="hidden" id="supervisor_delegate_name" value="@(ts != null ? (supervisor_isDelegate ? ts.supervisor_approval_name : "") : supervisor_id_del.ToString())" />
+                </td>
+                <td>
+                    PRINT NAME
+                    <br />
+                    @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_approval_name == null || ts.superintendent_approval_name == "" ? "0" : ts.superintendent_approval_name) && (ts.superintendent_approval_signature == null ? true : ts.superintendent_approval_signature.Substring(0, 1) == "a"))
+                    {
+                    }
+                    else if (ts != null && ts.superintendent_delegate != null && (ts.superintendent_approval_signature == null ? true : ts.superintendent_approval_signature.Substring(0, 1) == "d"))
+                    {
+                        <text>a/n </text>
+                    }
+                    <select id="superintendent_approval_name" name="superintendent_approval_name" disabled>
+                        <option value="" selected disabled>Choose One</option>
+                        @{bool sup_isDelegate = false; }
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (isEdit && user.id == Int32.Parse(ts.superintendent_delegate == null ? "0" : ts.superintendent_delegate))
+                            {
+                                sup_isDelegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (user.id == superintendent_id)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (user.approval_level == 2)
+                            {
+                                if (isEdit && user.id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && (ts.superintendent_delegate == null || (ts.superintendent_approval_signature == null ? false : ts.superintendent_approval_signature.Substring(0, 1) != "d")))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else if (isEdit && user.id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && (ts.superintendent_approval_signature == null ? true : ts.superintendent_approval_signature.Substring(0, 1) == "a"))
+                                {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.id">@user.alpha_name</option>
+                                }
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && (ts.superintendent_delegate == null || (ts.superintendent_approval_signature == null ? false : ts.superintendent_approval_signature.Substring(0, 1) != "d")))
+                            {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && (ts.superintendent_approval_signature == null ? true : ts.superintendent_approval_signature.Substring(0, 1) == "a"))
+                            {
+                                    <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == superintendent_id_del)
+                            {
+                                sup_isDelegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                    <input type="hidden" id="sup_delegate" value="@sup_isDelegate" />
+                    <input type="hidden" id="sup_delegate_name" value="@(ts != null ? (sup_isDelegate ? ts.superintendent_approval_name : "") : superintendent_id_del.ToString())" />
                 </td>
             </tr>
             <tr>
@@ -331,17 +435,26 @@ function validate() {
                     @(Html.Telerik().DatePicker()
                     .Name("inspector_date")
                     .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
-                    .Value(isEdit ? ts.inspector_date : null)
-                    .Enable(true))
+                    .Value(isEdit ? ts.inspector_date : DateTime.Today)
+                    .Enable(false))
                 </td>
                 <td>
                     DATE
                     <br />
                     @(Html.Telerik().DatePicker()
-                    .Name("approval_date")
+                    .Name("supervisor_approval_date")
                     .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
-                    .Value(isEdit ? ts.approval_date : null)
-                    .Enable(true))
+                    .Value(isEdit ? (ts.supervisor_approval_signature != null ? ts.supervisor_approval_date : DateTime.Today) : null)
+                    .Enable(!isView && (isEdit && ts.supervisor_approval_signature == null)))
+                </td>
+                <td>
+                    DATE
+                    <br />
+                    @(Html.Telerik().DatePicker()
+                    .Name("superintendent_approval_date")
+                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
+                    .Value(isEdit ? (ts.superintendent_approval_signature != null ? ts.superintendent_approval_date : DateTime.Today) : null)
+                    .Enable(!isView && (isEdit && ts.superintendent_approval_signature == null)))
                 </td>
             </tr>
 	    </table>
@@ -349,15 +462,37 @@ function validate() {
 </div>
 <br/>
 <div class="submit">
+    @if (!isView) {
 	<input name="Submit" value="Save" type="submit" onclick="save()"/>
+    }
     <input type="button" value="Cancel" onclick="back()"/>
-    @if (isEdit) {
+    @if (isEdit)
+    {
     <button type="button" value="Print Troubleshooting">
-        @Html.ActionLink("Print Trouble Shooting", "printTroubleShooting", "TroubleShooting", new {id = id},  new { target = "_blank" })
+        @Html.ActionLink("Print Trouble Shooting", "printTroubleShooting", "TroubleShooting", new { id = id }, new { target = "_blank" })
     </button>
     }
 </div>
 <br/>
+@(Html.Telerik().Window()
+    .Name("RejectComment")
+    .Visible(false)
+    .Title("Reject")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Comment </div>
+		            <div class="infoFieldinput"><textarea id="comment" cols="25" rows="4" name="comment"></textarea></div>
+
+	            <p class="submit">
+		            <input name="Submit" value="Reject" type="submit" onclick="reject_ajax();" />
+                    <span id="reject_ts" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+                    <input name="type" value="" type="hidden" id="type_reject"/>
+	            </p>
+	         </div>
+        </text>)
+)
 <script type="text/javascript">
     function onSuccessApproveIns(data) {
         $('#inspector_signature').parent().parent().hide();
@@ -390,4 +525,72 @@ function validate() {
         filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
         removePlugins: 'about'
     });
+
+    function approveSuperintendent(employee_id) {
+        var r = confirm("Are you sure want to Approve this trouble shooting report?");
+        if (r == true) {
+            var date = $('#superintendent_approval_date').val();
+            $.post("TroubleShooting/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+                if (data.success) {
+                    var has = data.path;
+                    $('#approve_superintendent').parent().hide();
+                    $('#img_approve_superintendent').attr('src', has);
+                    $('#img_approve_superintendent').css('display', 'block');
+                    $('#superintendent_approval_date').prop('disabled', true);
+                } else {
+                    alert("You do not supply your signature");
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
+    function approveSupervisor(employee_id) {
+        var r = confirm("Are you sure want to Approve this trouble shooting report?");
+        if (r == true) {
+            var date = $('#supervisor_approval_date').val();
+            $.post("TroubleShooting/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+                if (data.success) {
+                    var has = data.path;
+                    $('#approve_supervisor').parent().hide();
+                    $('#img_approve_supervisor').attr('src', has);
+                    $('#img_approve_supervisor').css('display', 'block');
+                    $('#supervisor_approval_date').prop('disabled', true);
+                } else {
+                    alert("You do not supply your signature");
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
+    function reject(type) {
+        $("#type_reject").val(type);
+        $("#comment").val("");
+        $('#RejectComment').data('tWindow').center().open();
+    }
+
+    function reject_ajax() {
+        var type = $('#type_reject').val();
+        var route = type == 1 ? "@Url.Action("rejectSupervisor", "Incident")" : type == 2 ? "@Url.Action("rejectSuperintendent", "Incident")" : "";
+        $('#reject_ts').css("display", "inline");
+        $.ajax({
+            type: "POST",
+            url: route,
+            traditional: true,
+            data: {
+                comment: $('#comment').val(), 
+                id: '@id'
+            },
+            success: function (data) {
+                $('#reject_ts').css("display", "none");
+                alert("Comment sent!");
+                $("#RejectComment").data("tWindow").close();
+            }
+        });
+    }
 </script>

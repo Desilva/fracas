@@ -21,7 +21,6 @@ namespace StarEnergi.Models
             this.equipment_readiness_nav = new HashSet<equipment_readiness_nav>();
             this.equipment_part = new HashSet<equipment_part>();
             this.equipment_event = new HashSet<equipment_event>();
-			this.equipment_daily_report_table = new HashSet<equipment_daily_report_table>();
             status = 1;
             mtbf = 0;
             mttr = 0;
@@ -111,7 +110,6 @@ namespace StarEnergi.Models
         public virtual ICollection<equipment_part> equipment_part { get; set; }
         public virtual ICollection<equipment_readiness_nav> equipment_readiness_nav { get; set; }
         public virtual tag_types tag_types { get; set; }
-        public virtual ICollection<equipment_daily_report_table> equipment_daily_report_table { get; set; }
     }
     
 }

@@ -1,4 +1,5 @@
 ﻿using ReportManagement;
+using StarEnergi.Controllers.Utilities;
 using StarEnergi.Models;
 using System;
 using System.Collections.Generic;
@@ -63,13 +64,16 @@ namespace StarEnergi.Controllers.FrontEnd
                            dept_name = dept.dept_name,
                            dept_id = employees.dept_id,
                            username = (ue.username == null ? String.Empty : ue.username),
-                           employee = employees.employee2
+                           employee = employees.employee2,
+                           delagate = employees.delagate,
+                           employee_delegate = employees.employee_delegate,
+                           approval_level = employees.approval_level
                        }).ToList();
             List<EmployeeEntity> bind = has;
             foreach (EmployeeEntity ee in bind)
             {
                 int level = 0;
-
+                ee.role = db.user_per_role.Where(p => p.username == (ee.username != null ? ee.username : "")).ToList();
                 if (ee.employee != null)
                 {
                     employee temp = ee.employee;
@@ -111,9 +115,104 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 ViewBag.mod = id;
                 ViewBag.datas = db.trouble_shooting.Find(id);
+                ViewBag.superintendent_del = string.IsNullOrWhiteSpace(ts.superintendent_approval_signature) == null ? (string.IsNullOrWhiteSpace(ts.superintendent_approval_name) ? null : db.employees.Find(Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name)).employee_delegate) : null;
+                ViewBag.supervisor_del = string.IsNullOrWhiteSpace(ts.supervisor_approval_signature) == null ? (string.IsNullOrWhiteSpace(ts.supervisor_approval_name) ? null : db.employees.Find(Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name)).employee_delegate) : null;
             }
             else
             {
+                int cur_user_id = Int32.Parse(HttpContext.Session["id"].ToString());
+                int? cur_dept_id = db.employees.Find(cur_user_id).dept_id;
+                employee cur_user_boss = db.employees.Find(cur_user_id).employee2;
+                int? superintendent_id = null;
+                int? superintendent_id_del = null;
+                int? supervisor_id = null;
+                int? supervisor_id_del = null;
+                string supervisor_position = null;
+                while (cur_user_boss != null)
+                {
+                    if (cur_user_boss.approval_level == 1)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (supervisor_id == null && cur_user_boss.approval_level == 2)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (cur_user_boss.approval_level == 2)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (supervisor_id == null && superintendent_id == null && cur_user_boss.employee2 == null)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+
+                    cur_user_boss = cur_user_boss.employee2;
+                }
+                if (superintendent_id == null)
+                {
+                    superintendent_id = supervisor_id;
+                    superintendent_id_del = supervisor_id_del;
+                }
+                ViewBag.superintendent_id = superintendent_id;
+                ViewBag.supervisor_id = supervisor_id;
+                ViewBag.superintendent_id_del = superintendent_id_del;
+                ViewBag.supervisor_id_del = supervisor_id_del;
                 int last_id = db.trouble_shooting.ToList().Count == 0 ? 0 : db.trouble_shooting.Max(p => p.id);
                 last_id++;
                 string subPath = "~/Attachment/trouble_shooting/" + last_id + "/signatures"; // your code goes here
@@ -137,7 +236,7 @@ namespace StarEnergi.Controllers.FrontEnd
         private ViewResult bindingTroubleShooting()
         {
             List<trouble_shooting> f = new List<trouble_shooting>();
-            f = db.trouble_shooting.ToList();
+            f = db.trouble_shooting.OrderByDescending(p => p.no).ToList();
 
             return View(new GridModel<trouble_shooting>
             {
@@ -172,7 +271,9 @@ namespace StarEnergi.Controllers.FrontEnd
                     ts_no = "W-O-EAI-TSR-" + year + "-" + refs.ToString().PadLeft(4, '0');
                 }
             }
+            string sign = db.employees.Find(Int32.Parse(troubleShooting.inspector_name)).signature;
             troubleShooting.no = ts_no;
+            troubleShooting.inspector_signature = sign;
             db.trouble_shooting.Add(troubleShooting);
             db.SaveChanges();
             int id = db.trouble_shooting.Max(p => p.id);
@@ -236,64 +337,153 @@ namespace StarEnergi.Controllers.FrontEnd
             ts.analysis = troubleShooting.analysis;
             ts.action = troubleShooting.action;
             ts.recommendation = troubleShooting.recommendation;
-            ts.inspector_name = troubleShooting.inspector_name;
-            ts.approval_name = troubleShooting.approval_name;
-            ts.inspector_date = troubleShooting.inspector_date;
-            ts.approval_date = troubleShooting.approval_date;
 
             db.Entry(ts).State = EntityState.Modified;
             db.SaveChanges();
             return Json(true);
         }
 
+        #region approval reject
         [HttpPost]
-        public ActionResult approveInspector(HttpPostedFileBase inspector_signature, int? id)
+        public ActionResult approveSuperintendent(int id, int employee_id, DateTime date)
         {
-            var currpath = "";
-            if (id == null)
+            string sign = db.employees.Find(employee_id).signature;
+            if (sign != null)
             {
-                id = db.trouble_shooting.Max(p => p.id) + 1;
-            }
-            if (inspector_signature != null && inspector_signature.ContentLength > 0)
-            {
-                currpath = Path.Combine(
-                    Server.MapPath("~/Attachment/trouble_shooting/" + id + "/signatures"),
-                    inspector_signature.FileName
-                );
-                inspector_signature.SaveAs(currpath);
-
-                trouble_shooting ir = db.trouble_shooting.Find(id);
-                if (ir != null)
-                {
-                    currpath = "/Attachment/trouble_shooting/" + id + "/signatures/" + inspector_signature.FileName;
-                    ir.inspector_signature = currpath;
-                    db.Entry(ir).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-            }
-            return Json(new { success = true, path = currpath });
-        }
-
-        [HttpPost]
-        public ActionResult approvalSignature(HttpPostedFileBase approval_signature, int id)
-        {
-            var currpath = "";
-            if (approval_signature != null && approval_signature.ContentLength > 0)
-            {
-                currpath = Path.Combine(
-                    Server.MapPath("~/Attachment/trouble_shooting/" + id + "/signatures"),
-                    approval_signature.FileName
-                );
-                approval_signature.SaveAs(currpath);
-
                 trouble_shooting ts = db.trouble_shooting.Find(id);
-                currpath = "/Attachment/trouble_shooting/" + id + "/signatures/" + approval_signature.FileName;
-                ts.approval_signature = currpath;
+                if (ts.superintendent_approval_name == employee_id.ToString())
+                {
+                    ts.superintendent_approval_signature = "a" + sign;
+                }
+                else
+                {
+                    ts.superintendent_approval_signature = "d" + sign;
+                }
+                ts.superintendent_approval_date = date;
                 db.Entry(ts).State = EntityState.Modified;
                 db.SaveChanges();
+
+                return Json(new { success = true, path = sign });
             }
-            return Json(new { success = true, path = currpath });
+            else
+            {
+                return Json(new { success = false });
+            }
+
         }
+
+        [HttpPost]
+        public ActionResult approveSupervisor(int id, int employee_id, DateTime date)
+        {
+            string sign = db.employees.Find(employee_id).signature;
+            if (sign != null)
+            {
+                trouble_shooting ts = db.trouble_shooting.Find(id);
+                if (ts.supervisor_approval_name == employee_id.ToString())
+                {
+                    ts.supervisor_approval_signature = "a" + sign;
+                }
+                else
+                {
+                    ts.supervisor_approval_signature = "d" + sign;
+                }
+                ts.supervisor_approval_date = date;
+                db.Entry(ts).State = EntityState.Modified;
+                db.SaveChanges();
+                if (ts.superintendent_approval_name != null && ts.superintendent_delegate == null)
+                    SendEmailApprove(ts, Int32.Parse(ts.superintendent_approval_name));
+                else if (ts.superintendent_delegate != null)
+                    SendEmailApprove(ts, Int32.Parse(ts.superintendent_delegate));
+
+                return Json(new { success = true, path = sign });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult rejectSuperintendent(int id, string comment)
+        {
+            trouble_shooting ts = db.trouble_shooting.Find(id);
+            List<String> s = new List<string>();
+            var sendEmail = new SendEmailController();
+            SendEmailToAll(ts, 2, comment);
+            return Json(new { success = true });
+
+        }
+
+        [HttpPost]
+        public ActionResult rejectSupervisor(int id, string comment)
+        {
+            trouble_shooting ts = db.trouble_shooting.Find(id);
+            List<String> s = new List<string>();
+            var sendEmail = new SendEmailController();
+            SendEmailToAll(ts, 2, comment);
+            return Json(new { success = true });
+        }
+
+        public void SendEmailApprove(trouble_shooting ts, int employeeId)
+        {
+            var sendEmail = new SendEmailController();
+            employee e = db.employees.Find(employeeId);
+            if (e.email != null)
+            {
+                List<string> s = new List<string>();
+                s.Add(e.email);
+                sendEmail.Send(s, "Bapak/Ibu,<br />Mohon review dan approval untuk Troubleshooting Report dengan nomor referensi " + ts.no + ".Terima Kasih.<br /><br /><i>Dear Sir/Madam,<br />Please review and approval for Troubleshooting Report with reference number " + ts.no + ".Thank you.</i><br /><br />Salam,<br /><i>Regards,</i><br /> Sytem Fracas Application", "Approving Troubleshooting Report " + ts.no);
+            }
+        }
+
+        //reject type = 2
+        public void SendEmailToAll(trouble_shooting ts, int type = 1, string comment = "")
+        {
+            employee e;
+            List<String> s = new List<string>();
+            var sendEmail = new SendEmailController();
+            if (ts.superintendent_approval_name != null && ts.superintendent_delegate == null)
+            {
+                e = db.employees.Find(Int32.Parse(ts.superintendent_approval_name));
+                if (e.email != null)
+                    s.Add(e.email);
+
+            }
+            else if (ts.superintendent_delegate != null)
+            {
+                e = db.employees.Find(Int32.Parse(ts.superintendent_delegate));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+
+            if (ts.supervisor_approval_name != null && ts.supervisor_delegate == null)
+            {
+                e = db.employees.Find(Int32.Parse(ts.supervisor_approval_name));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+            else if (ts.supervisor_delegate != null)
+            {
+                e = db.employees.Find(Int32.Parse(ts.supervisor_delegate));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+
+            if (ts.inspector_name != null)
+            {
+                e = db.employees.Find(Int32.Parse(ts.inspector_name));
+                if (e.email != null)
+                    s.Add(e.email);
+            }
+            if (s.Count > 0)
+            {
+                if (type == 2)
+                    sendEmail.Send(s, "Bapak/Ibu,<br />Dokumen berikut dengan no referensi " + ts.no + " kami kembalikan untuk diperbaiki sesuai dengan alasan di bawah.Terima Kasih.<br />Alasan :<br />" + comment + "<br /><br /><i>Dear Sir/Madam,<br />Document with reference number " + ts.no + " need to be reviewed in accordance with the following reasons .Thank you.<br />Reasons :<br />" + comment + "</i><br /><br />Salam,<br /><i>Regards,</i><br />" + db.employees.Find(Int32.Parse(HttpContext.Session["id"].ToString())).alpha_name, "Rejected Troubleshooting Report " + ts.no);
+            }
+        }
+
+        #endregion
 
         public ActionResult printTroubleShooting(int id)
         {
@@ -316,8 +506,12 @@ namespace StarEnergi.Controllers.FrontEnd
                            dept_id = employees.dept_id
                        }).ToList();
             trouble_shooting ts = db.trouble_shooting.Find(id);
-            if (ts.approval_name != null) {
-                ts.approval_name = has.Find(p => p.id == Int32.Parse(ts.approval_name)).alpha_name;
+            if (ts.supervisor_approval_name != null) {
+                ts.supervisor_approval_name = has.Find(p => p.id == Int32.Parse(ts.supervisor_approval_name)).alpha_name;
+            }
+            if (ts.superintendent_approval_name != null)
+            {
+                ts.superintendent_approval_name = has.Find(p => p.id == Int32.Parse(ts.superintendent_approval_name)).alpha_name;
             }
             if (ts.inspector_name != null)
             {

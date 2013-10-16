@@ -248,12 +248,26 @@
                     <table>
                         <tr border="0" style="font-size:8px;">
                             <td>
-                                Approval Signature
+                                Supervisor Approval Signature
                             </td>
                         </tr>
                         <tr border="0" style="font-size:8px;">
                             <td>
-                                <img width="50" height="50" @(Model.approval_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.approval_signature != null ? Server.MapPath("~/"+Model.approval_signature) : Server.MapPath("~/Content/image/blank.png"))"/>
+                                <img width="50" height="50" @(Model.supervisor_approval_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.supervisor_approval_signature != null ? Server.MapPath("~/"+Model.supervisor_approval_signature) : Server.MapPath("~/Content/image/blank.png"))"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                Superintendent Approval Signature
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                <img width="50" height="50" @(Model.superintendent_approval_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.superintendent_approval_signature != null ? Server.MapPath("~/"+Model.superintendent_approval_signature) : Server.MapPath("~/Content/image/blank.png"))"/>
                             </td>
                         </tr>
                     </table>
@@ -283,7 +297,21 @@
                         </tr>
                         <tr border="0" style="font-size:8px;">
                             <td>
-                                @Model.approval_name
+                                @(Model.supervisor_approval_signature != null ? (Model.supervisor_approval_signature.Substring(0,1) != "a" ? "a/n " : "") : "") @Model.supervisor_approval_name
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                PRINT NAME
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                @(Model.superintendent_approval_signature != null ? (Model.superintendent_approval_signature.Substring(0,1) != "a" ? "a/n " : "") : "") @Model.superintendent_approval_name
                             </td>
                         </tr>
                     </table>
@@ -313,7 +341,21 @@
                         </tr>
                         <tr border="0" style="font-size:8px;">
                             <td>
-                                @(Model.approval_date != null ? Model.approval_date.Value.ToShortDateString() : "")
+                                @(Model.supervisor_approval_date != null ? Model.supervisor_approval_date.Value.ToShortDateString() : "")
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                DATE
+                            </td>
+                        </tr>
+                        <tr border="0" style="font-size:8px;">
+                            <td>
+                                @(Model.superintendent_approval_date != null ? Model.superintendent_approval_date.Value.ToShortDateString() : "")
                             </td>
                         </tr>
                     </table>

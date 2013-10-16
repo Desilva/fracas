@@ -65,20 +65,19 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.mod = id;
                 equipment_daily_report es = db.equipment_daily_report.Find(id);
 
-                var equip = (from e in db.equipments
+                var equip = ((from e in db.equipment_daily_report_table
                          select new EquipmentTableReportEntity
                          {
-                             id_equipment = e.id,
-                             tag_number = e.tag_num,
-                             description = e.nama
-                         }
+                             tag_number = e.tag_id,
+                             description = e.description
+                         }).Distinct()
                     );
 
                 var x = (from e in db.equipment_daily_report_table
                          where e.id_equipment_daily_report == id
                          select new EquipmentTableReportEntity
                          {
-                             id_equipment = e.id_equipment
+                             tag_number = e.tag_id
                          }
                     );
                 List<EquipmentTableReportEntity> etre = equip.ToList();
@@ -87,11 +86,12 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     foreach (EquipmentTableReportEntity e in etre)
                     {
-                        if (xxx.Find(p => p.id_equipment == e.id_equipment) == null)
+                        if (xxx.Find(p => p.tag_number == e.tag_number) == null)
                         {
                             equipment_daily_report_table edrt = new equipment_daily_report_table
                             {
-                                id_equipment = e.id_equipment,
+                                tag_id = e.tag_number,
+                                description = e.description,
                                 id_equipment_daily_report = id
                             };
 
@@ -103,15 +103,13 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
 
                 var r = (from e in db.equipment_daily_report_table
-                         join f in db.equipments on e.id_equipment equals f.id
                          where e.id_equipment_daily_report == id
                          select new EquipmentTableReportEntity
                          {
                              id = e.id,
                              id_equipment_daily_report = e.id_equipment_daily_report,
-                             id_equipment = e.id_equipment,
-                             tag_number = f.tag_num,
-                             description = f.nama,
+                             tag_number = e.tag_id,
+                             description = e.description,
                              barcode = e.barcode,
                              min_limit = e.min_limit,
                              max_limit = e.max_limit,
@@ -134,20 +132,19 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             else
             {
-                var r = (from e in db.equipments
-                         select new EquipmentTableReportEntity
-                        {
-                            id_equipment = e.id,
-                            tag_number = e.tag_num,
-                            description = e.nama
-                        }
+                var r = ((from e in db.equipment_daily_report_table
+                          select new EquipmentTableReportEntity
+                          {
+                              tag_number = e.tag_id,
+                              description = e.description
+                          }).Distinct()
                     );
 
                 var x = (from e in db.equipment_daily_report_table
                          where e.id_equipment_daily_report == null
                          select new EquipmentTableReportEntity
                          {
-                             id_equipment = e.id_equipment
+                             tag_number = e.tag_id
                          }
                     );
                 List<EquipmentTableReportEntity> etre = r.ToList();
@@ -156,11 +153,12 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     foreach (EquipmentTableReportEntity e in etre)
                     {
-                        if (xxx.Find(p => p.id_equipment == e.id_equipment) == null)
+                        if (xxx.Find(p => p.tag_number == e.tag_number) == null)
                         {
                             equipment_daily_report_table es = new equipment_daily_report_table
                             {
-                                id_equipment = e.id_equipment
+                                tag_id = e.tag_number,
+                                description = e.description
                             };
 
                             db.equipment_daily_report_table.Add(es);
@@ -180,20 +178,19 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.mod = id;
             equipment_daily_report es = db.equipment_daily_report.Find(id);
 
-            var equip = (from e in db.equipments
-                            select new EquipmentTableReportEntity
-                            {
-                                id_equipment = e.id,
-                                tag_number = e.tag_num,
-                                description = e.nama
-                            }
-                );
+            var equip = ((from e in db.equipment_daily_report_table
+                          select new EquipmentTableReportEntity
+                          {
+                              tag_number = e.tag_id,
+                              description = e.description
+                          }).Distinct()
+                    );
 
             var x = (from e in db.equipment_daily_report_table
                         where e.id_equipment_daily_report == id
                         select new EquipmentTableReportEntity
                         {
-                            id_equipment = e.id_equipment
+                            tag_number = e.tag_id
                         }
                 );
             List<EquipmentTableReportEntity> etre = equip.ToList();
@@ -202,11 +199,12 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 foreach (EquipmentTableReportEntity e in etre)
                 {
-                    if (xxx.Find(p => p.id_equipment == e.id_equipment) == null)
+                    if (xxx.Find(p => p.tag_number == e.tag_number) == null)
                     {
                         equipment_daily_report_table edrt = new equipment_daily_report_table
                         {
-                            id_equipment = e.id_equipment,
+                            tag_id = e.tag_number,
+                            description = e.description,
                             id_equipment_daily_report = id
                         };
 
@@ -218,15 +216,13 @@ namespace StarEnergi.Controllers.FrontEnd
             }
 
             var r = (from e in db.equipment_daily_report_table
-                        join f in db.equipments on e.id_equipment equals f.id
                         where e.id_equipment_daily_report == id
                         select new EquipmentTableReportEntity
                         {
                             id = e.id,
                             id_equipment_daily_report = e.id_equipment_daily_report,
-                            id_equipment = e.id_equipment,
-                            tag_number = f.tag_num,
-                            description = f.nama,
+                            tag_number = e.tag_id,
+                            description = e.description,
                             barcode = e.barcode,
                             min_limit = e.min_limit,
                             max_limit = e.max_limit,
@@ -339,12 +335,12 @@ namespace StarEnergi.Controllers.FrontEnd
             db.equipment_daily_report.Add(edr);
             db.SaveChanges();
 
-            int id = db.equipment_daily_report.Max(p => p.id);
+            int id = edr.id;
 
             List<equipment_daily_report_table> li = db.equipment_daily_report_table.Where(p => p.id_equipment_daily_report == null).ToList();
             foreach (equipment_daily_report_table l in li)
             {
-                EquipmentTableReportEntity etre = ere.table.Find(p => p.id_equipment == l.id_equipment);
+                EquipmentTableReportEntity etre = ere.table.Find(p => p.tag_number == l.tag_id);
                 l.id_equipment_daily_report = id;
                 l.barcode = etre.barcode;
                 l.min_limit = etre.min_limit;
@@ -375,7 +371,7 @@ namespace StarEnergi.Controllers.FrontEnd
             foreach (EquipmentTableReportEntity l in ere.table)
             {
 
-                equipment_daily_report_table etre = li.Find(p => p.id_equipment == l.id_equipment);
+                equipment_daily_report_table etre = li.Find(p => p.tag_id == l.tag_number);
                 if (etre != null)
                 {
                     etre.barcode = l.barcode;
@@ -400,15 +396,13 @@ namespace StarEnergi.Controllers.FrontEnd
             equipment_daily_report edr = db.equipment_daily_report.Find(id);
 
             var r = (from e in db.equipment_daily_report_table
-                    join f in db.equipments on e.id_equipment equals f.id
                     where e.id_equipment_daily_report == id
                     select new EquipmentTableReportEntity
                     {
                         id = e.id,
                         id_equipment_daily_report = e.id_equipment_daily_report,
-                        id_equipment = e.id_equipment,
-                        tag_number = f.tag_num,
-                        description = f.nama,
+                        tag_number = e.tag_id,
+                        description = e.description,
                         barcode = e.barcode,
                         min_limit = e.min_limit,
                         max_limit = e.max_limit,
