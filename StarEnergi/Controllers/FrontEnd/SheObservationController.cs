@@ -542,7 +542,7 @@ namespace StarEnergi.Controllers.FrontEnd
                          department = emp.department
                      }).ToList();
             result = r;
-            toD.AddDays(1);
+            toD = toD.AddDays(1);
             foreach (SheObservationPersonReport emp in result)
             {
                 List<she_observation> list_obs = new List<she_observation>();
@@ -563,7 +563,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 emp.total_observation = list_obs.Count;
                 emp.total_quality_obs = list_obs.Where(p => p.is_quality == 1).Count();
             }
-            toD.AddDays(-1);
+            toD = toD.AddDays(-1);
             GridView gv = new GridView();
             gv.Caption = "SHE Observation Report By Person From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();
             gv.DataSource = result;
@@ -587,7 +587,7 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             List<SheObservationPersonReport> result = new List<SheObservationPersonReport>();
             string department = db.employees.Find(emp_id).department;
-            toD.AddDays(1);
+            toD = toD.AddDays(1);
             List<she_observation> temp = db.she_observation.ToList();
             List<she_observation> list_obs = new List<she_observation>();
             foreach (she_observation she_obs in temp)
@@ -618,11 +618,15 @@ namespace StarEnergi.Controllers.FrontEnd
                 };
                 result.Add(she_report);
             }
-            
-            toD.AddDays(-1);
+
+            toD = toD.AddDays(-1);
             GridView gv = new GridView();
             gv.Caption = "SHE Observation Report By Person for " + department + " From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();
             gv.DataSource = result;
+            if (result.Count == 0)
+            {
+                return new JavaScriptResult();
+            }
             gv.DataBind();
             gv.HeaderRow.Cells[0].Text = "ID";
             gv.HeaderRow.Cells[1].Text = "Name";

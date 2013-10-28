@@ -204,9 +204,10 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         //Select ajax binding
         [GridAction]
-        public ActionResult _SelectAjaxEditing()
+        public ActionResult _SelectAjaxEditing(int? id)
         {
-            return binding();
+            int a = id == null ? 0 : id.Value;
+            return binding(a);
         }
 
         //
@@ -245,14 +246,33 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         //select pir initiator
-        private ViewResult binding()
+        private ViewResult binding(int a)
         {
             string username = Session["username"].ToString();
             List<user_per_role> li = db.user_per_role.Where(p => p.username == username).ToList();
-            var model = db.pirs.Where(a => a.initiate_by == username).Where(a => a.status != "FROM INITIATOR").OrderByDescending(p => p.id);
+            var model = db.pirs.Where(p => p.initiate_by == username).Where(p => p.status != "FROM INITIATOR").OrderByDescending(p => p.id);
             if (li.Exists(p => p.role == (int)Config.role.FULLPIR))
             {
-                model = db.pirs.Where(a => a.status != "FROM INITIATOR").OrderByDescending(p => p.id);
+                if (a == 0)
+                {
+                    model = db.pirs.OrderByDescending(p => p.id);
+                }
+                else if (a == 1)
+                {
+                    model = db.pirs.Where(p => p.status == "VERIFIED" && p.date_rise.Value.Year == DateTime.Today.Year).OrderByDescending(p => p.id);
+                }
+                else if (a == 2)
+                {
+                    model = db.pirs.Where(p => p.date_rise.Value.Year == DateTime.Today.Year).OrderByDescending(p => p.id);
+                }
+                else if (a == 3)
+                {
+                    model = db.pirs.Where(p => p.initiator_verified_date == null || p.date_rise != null || p.initiator_verified_date.Value <= p.date_rise.Value).OrderByDescending(p => p.id);
+                }
+                else if (a == 4)
+                {
+                    model = db.pirs.Where(p => p.initiator_verified_date != null && p.date_rise != null && p.initiator_verified_date.Value > p.date_rise.Value).OrderByDescending(p => p.id);
+                }
             }
 
             List<PIREntity> ret = new List<PIREntity>();
@@ -317,7 +337,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult _DeleteAjaxEditing(int id)
         {
             delete(id);
-            return binding();
+            return binding(0);
         }
 
         //delete data failure mode

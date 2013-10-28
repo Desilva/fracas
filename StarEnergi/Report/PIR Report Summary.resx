@@ -254,7 +254,7 @@ group by proc_ref_list
         RGF0YVNvdXJjZVBhcmFtZXRlcgMAAAACAAAACQQAAAAFBAAAAEtTeXN0ZW0uQ29sbGVjdGlvbnMuR2Vu
         ZXJpYy5MaXN0YDFbW1RlbGVyaWsuUmVwb3J0aW5nLlNxbERhdGFTb3VyY2VQYXJhbWV0ZXIDAAAABl9p
         dGVtcwVfc2l6ZQhfdmVyc2lvbgQAACpUZWxlcmlrLlJlcG9ydGluZy5TcWxEYXRhU291cmNlUGFyYW1l
-        dGVyW10CAAAACAgDAAAACQUAAAABAAAAEwAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
+        dGVyW10CAAAACAgDAAAACQUAAAABAAAAFQAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
         Zy5TcWxEYXRhU291cmNlUGFyYW1ldGVyAgAAAAkGAAAADQMMBwAAAE5TeXN0ZW0uRGF0YSwgVmVyc2lv
         bj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkM
         CAAAAElTeXN0ZW0sIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tl
@@ -272,7 +272,7 @@ group by proc_ref_list
    where YEAR(date_rise) = @YEAR
 UNION ALL
 SELECT 'Raised' AS [Status],
-        COUNT(CASE WHEN pir.status != 'VERIFIED' THEN 1 END) as yeartodate
+        COUNT(CASE WHEN year(pir.date_rise) = @YEAR THEN 1 END) as yeartodate
    FROM pir
    where YEAR(date_rise) = @YEAR
 UNION ALL
@@ -298,7 +298,7 @@ SELECT 'Overdue' AS [Status],
         RGF0YVNvdXJjZVBhcmFtZXRlcgMAAAACAAAACQQAAAAFBAAAAEtTeXN0ZW0uQ29sbGVjdGlvbnMuR2Vu
         ZXJpYy5MaXN0YDFbW1RlbGVyaWsuUmVwb3J0aW5nLlNxbERhdGFTb3VyY2VQYXJhbWV0ZXIDAAAABl9p
         dGVtcwVfc2l6ZQhfdmVyc2lvbgQAACpUZWxlcmlrLlJlcG9ydGluZy5TcWxEYXRhU291cmNlUGFyYW1l
-        dGVyW10CAAAACAgDAAAACQUAAAABAAAAEgAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
+        dGVyW10CAAAACAgDAAAACQUAAAABAAAAFAAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
         Zy5TcWxEYXRhU291cmNlUGFyYW1ldGVyAgAAAAkGAAAADQMMBwAAAE5TeXN0ZW0uRGF0YSwgVmVyc2lv
         bj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkM
         CAAAAElTeXN0ZW0sIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tl
@@ -325,7 +325,7 @@ select cr.mnuum as Bulan, DATENAME(month ,cast(CAST(year(getdate()) as varchar(4
 from (
 select m.mnuum as mnuum,
 	COUNT(CASE WHEN p.status = 'VERIFIED' THEN 1 END) as Closed,
-	COUNT(CASE WHEN p.status != 'VERIFIED' THEN 1 END) as Raised
+	COUNT(CASE WHEN month(p.date_rise) = m.mnuum THEN 1 END) as Raised
 from mnth m
 left join (Select * from pir where YEAR(date_rise) = @YEAR) as p on m.mnuum = month(p.date_rise)
 where m.mnuum &lt;= (CASE WHEN @YEAR &lt; YEAR(GETDATE()) THEN 12 ELSE MONTH(GETDATE()) END)

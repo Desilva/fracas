@@ -25114,7 +25114,7 @@
         RGF0YVNvdXJjZVBhcmFtZXRlcgMAAAACAAAACQQAAAAFBAAAAEtTeXN0ZW0uQ29sbGVjdGlvbnMuR2Vu
         ZXJpYy5MaXN0YDFbW1RlbGVyaWsuUmVwb3J0aW5nLlNxbERhdGFTb3VyY2VQYXJhbWV0ZXIDAAAABl9p
         dGVtcwVfc2l6ZQhfdmVyc2lvbgQAACpUZWxlcmlrLlJlcG9ydGluZy5TcWxEYXRhU291cmNlUGFyYW1l
-        dGVyW10CAAAACAgDAAAACQUAAAABAAAACgAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
+        dGVyW10CAAAACAgDAAAACQUAAAABAAAADAAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
         Zy5TcWxEYXRhU291cmNlUGFyYW1ldGVyAgAAAAkGAAAADQMMBwAAAE5TeXN0ZW0uRGF0YSwgVmVyc2lv
         bj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkM
         CAAAAElTeXN0ZW0sIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tl
@@ -25127,7 +25127,7 @@
 </value>
   </metadata>
   <data name="sqlDataSource1.SelectCommand" xml:space="preserve">
-    <value>SELECT        employee.alpha_name, employee.signature, format(she_observation_undian.[from],'dd MMM yyyy','en-US') as [from], format(she_observation_undian.[to],'dd MMM yyyy','en-US') as [to], format(she_observation_undian.drawing_date,'dd MMMM yyyy','en-US') as drawing_date, she_observation_undian_winner.id, she_observation_undian_winner.category, format(she_observation_undian_reward.reward,'C','id-ID') as reward, substring(she_observation.observer,0,charindex('#',she_observation.observer)) as observer
+    <value>SELECT        employee.alpha_name, employee.signature, convert(varchar(12),she_observation_undian.[from],106) as [from], convert(varchar(12),she_observation_undian.[to],106) as [to], convert(varchar(12),she_observation_undian.drawing_date,106) as drawing_date, she_observation_undian_winner.id, she_observation_undian_winner.category, 'Rp'+replace(replace(convert(varchar,convert(Money,she_observation_undian_reward.reward),1),'.00',''),',','.') as reward, substring(she_observation.observer,0,charindex('#',she_observation.observer)) as observer
 FROM            she_observation_undian LEFT JOIN she_observation_undian_winner on she_observation_undian.id = she_observation_undian_winner.id_undian LEFT OUTER JOIN
                          she_observation_undian_reward ON she_observation_undian_winner.id_reward = she_observation_undian_reward.id LEFT OUTER JOIN
                          she_observation ON she_observation_undian_winner.winner_observation = she_observation.id left join employee on she_observation_undian.signature = employee.id

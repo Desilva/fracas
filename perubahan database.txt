@@ -1,20 +1,24 @@
 database baru
-- rca_csf_connector
-	-	custom varchar(255)
+- trouble shooting
+	supervisor_approval_name	varchar(50)
+	supervisor_approval_signature	varchar(255)
+	supervisor_approval_date	date
+	superintendent_approval_name	varchar(50)
+	superintendent_approval_signature	varchar(255)
+	superintendent_approval_date	date
+	superintendent_delegate	varchar(255)
+	supervisor_delegate	varchar(255)
 
-- she_observation_undian
-	- id	int primary key identity
-	- [from]	date
-	- [to]	date
-	- percentage	int
-
-- she_observation_undian_winner
-	- id	int	primary key identity
-	- id_undian	int
-	- reward	float
-	- category	tinyint
-	- winner_observation	int
-
-- she_observation_undian_exception
-	- id	int	primary key identity
-	- id_employee	int
+- equipment_daily_report
+	id	int primary key identity
+	id_equipment_daily_report	int
+	tag_id	varchar(255)
+	description	varchar(255)
+	barcode	varchar(10)
+	min_limit	varchar(20)
+	max_limit	varchar(20)
+	unit	varchar(20)
+	tag_value	varchar(50)
+	time	varchar(10)
+	name_operator	varchar(255)
+	keterangan	varchar(255)
