@@ -62,7 +62,7 @@
     var isPublish = '@isPublish';
     var pathes = [];
     var treeNode = null;
-    var isExistRCA = '@li.Exists(p => p.role == 2)' == 'True' ? true : false;
+    var isExistRCA = '@(li.Exists(p => p.role == 2) && ViewBag.isView != null)' == 'True' ? true : false;
     isPublish = parseInt(isPublish);
     var isBone = false;
     var master = [];
@@ -390,7 +390,8 @@
 		            graph.getModel().beginUpdate();
 		            try {
 		                var xmlDoc = null;
-		                xmlDoc = mxUtils.load('/Content/xml/rca_template/' + name + '?version=100010055').getXml();
+		                var version = new Date().getTime();
+		                xmlDoc = mxUtils.load('/Content/xml/rca_template/' + name + '?version='+version).getXml();
 		                var node = xmlDoc.documentElement;
 		                var dec = new mxCodec(node.ownerDocument);
 		                dec.decode(node, graph.getModel());
@@ -451,15 +452,18 @@
 		        graph.getModel().beginUpdate();
 		        try {
 		            var xmlDoc = null;
+		            var version = new Date().getTime();
 		            if (fileName == "template_" + '@equipmentType' + ".xml") {
+		                
 		                if ('@is_template' == 'True') {
 		                    var name = '@(template != null ? template.name : "")' + '.xml';
-		                    xmlDoc = mxUtils.load('/Content/xml/rca_template/' + name + '?version=100010055').getXml();
+		                    
+		                    xmlDoc = mxUtils.load('/Content/xml/rca_template/' + name + '?version='+version).getXml();
 		                } else {
-		                    xmlDoc = mxUtils.load('/Content/xml/fishbone_template/' + fileName + '?version=100010055').getXml();
+		                    xmlDoc = mxUtils.load('/Content/xml/fishbone_template/' + fileName + '?version='+version).getXml();
 		                }
 		            } else {
-		                xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=100010055').getXml();
+		                xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version='+version).getXml();
 		            }
 		            var node = xmlDoc.documentElement;
 		            var dec = new mxCodec(node.ownerDocument);
@@ -2178,10 +2182,11 @@
             graph2.getModel().beginUpdate();
             try {
                 var xmlDoc = null;
+                var version = new Date().getTime();
                 if (fileName == "template_" + '@equipmentType' + ".xml") {
-		            xmlDoc = mxUtils.load('/Content/xml/fishbone_template/' + fileName + '?version=100010055').getXml();
+		            xmlDoc = mxUtils.load('/Content/xml/fishbone_template/' + fileName + '?version='+version).getXml();
 		        } else {
-		            xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=100010055').getXml();
+		            xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version='+version).getXml();
 		        }
 		        var node = xmlDoc.documentElement;
 		        var dec = new mxCodec(node.ownerDocument);

@@ -1230,20 +1230,10 @@ namespace StarEnergi.Utilities
             bool add = true;
             bool isFirst = true;
             int id_report = 0;
+            DateTime date = DateTime.Today;
 
             app = new Excel.Application();
             book = app.Workbooks.Open(Filename: filename);
-
-            var r = (from e in db.equipments
-                     select new EquipmentTableReportEntity
-                     {
-                         id_equipment = e.id,
-                         tag_number = e.tag_num.Replace("\n",""),
-                         description = e.nama
-                     }
-                    );
-
-            List<EquipmentTableReportEntity> etre = r.ToList();
 
             err = new List<string>();
             foreach (Excel.Worksheet sheet in book.Sheets)
@@ -1272,18 +1262,12 @@ namespace StarEnergi.Utilities
                         s = s.Remove(0,1);
                         //string[] dateArray = s.Split('/');
                         //s = dateArray[1] + "-" + dateArray[2] + "-" + dateArray[0];
-                        DateTime date = Convert.ToDateTime(s);
+                        date = Convert.ToDateTime(s);
                         id_report = saveEquipmentReport(date);
                         isFirst = false;
                     }
-
-                    EquipmentTableReportEntity e = etre.Find(p => p.tag_number == temp.ElementAt(1).ToString());
                     
-                    int? id_equipment = e == null ? null : e.id_equipment;
-
-                    
-                    
-                    if (add) errTemp = saveEquipmentTableReport(id_report,id_equipment,temp);
+                    if (add) errTemp = saveEquipmentTableReport(id_report,temp, date, out date);
                     if (errTemp != "")
                     {
                         err.Add(errTemp);
@@ -1291,13 +1275,19 @@ namespace StarEnergi.Utilities
                     add = true;
                 }
             }
+
+            equipment_daily_report edr = db.equipment_daily_report.Find(id_report);
+            edr.date = date;
+            db.Entry(edr).State = EntityState.Modified;
+            db.SaveChanges();
+
             book.Close(true, Missing.Value, Missing.Value);
             app.Quit();
 
             return err;
         }
 
-        private string saveEquipmentTableReport(int id_report,int? id_equipment, List<object> data)
+        private string saveEquipmentTableReport(int id_report, List<object> data, DateTime date, out DateTime dateOut)
         {
             string err = "";
             equipment_daily_report_table eq = new equipment_daily_report_table()
@@ -1310,10 +1300,20 @@ namespace StarEnergi.Utilities
                 max_limit = data[5].ToString(),
                 tag_value = data[6].ToString(),
                 unit = data[7].ToString(),
+                date = data[8].ToString().Remove(0,1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().Remove(0,1)),
                 time = data[9].ToString().Remove(0,1),
                 name_operator = data[12].ToString(),
                 keterangan = data[13].ToString()
             };
+
+            if (eq.date > date)
+            {
+                dateOut = eq.date.Value;
+            }
+            else
+            {
+                dateOut = date;
+            }
 
             db.equipment_daily_report_table.Add(eq);
             db.SaveChanges();

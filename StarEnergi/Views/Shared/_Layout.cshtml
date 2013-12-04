@@ -149,7 +149,7 @@
                                            {
                                                item.Add().Text("SHE Audit").Action("Index", "HseAuditor");   
                                            }
-                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)Config.role.IIR || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.SHEOBSERVATION || p.role == (int)Config.role.ADMINSHEOBSERVATION || p.role == (int)Config.role.ADMINMASTERSHE))
                                            {
                                                item.Add().Text("SHE Observation Form").Action("Index", "SheObservation");
                                            }
@@ -164,6 +164,7 @@
                                                 });
                                                item.Add().Text("SHE Observation Lucky Draw").Action("Index", "Undian");
                                            }
+                                           item.Add().Text("Monthly Project SHE Report").Action("Index", "SheProject");
                                        });
                                }
                                menu.Add().Text("Daily Log").Action("Index", "DailyLogs");

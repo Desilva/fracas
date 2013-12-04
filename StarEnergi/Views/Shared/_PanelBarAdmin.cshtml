@@ -51,6 +51,10 @@
             $('#content').load('RCATemplate');
         } else if (item.find('> .t-link').text() == "SBS BOM") {
             $('#content').load('LoadExcel/BOM');
+        } else if (item.find('> .t-link').text() == "Contractors") {
+            $('#content').load('SheContractor');
+        } else if (item.find('> .t-link').text() == "RCA Preserve Category") {
+            $('#content').load('RCAPreserveCategory');
         }
     }
 </script>
@@ -82,10 +86,12 @@
                     item.Add().Text("Department");
                     item.Add().Text("Section");
                     item.Add().Text("Analysis Type");
+                    item.Add().Text("RCA Preserve Category");
                     item.Add().Text("Fishbone Diagram Master");
                     item.Add().Text("RCA Template");
                     item.Add().Text("PIR Clause");
                     item.Add().Text("User Management");
+                    item.Add().Text("Contractors");
                 })
                 .Expanded(true);
             panelBarItem.Add().Text("Load Data From Excel")

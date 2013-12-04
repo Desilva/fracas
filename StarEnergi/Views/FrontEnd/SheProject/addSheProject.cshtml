@@ -1,0 +1,1444 @@
+﻿@{
+    List<StarEnergi.Models.monthly_she_contractor> has = ViewData["users"] as List<StarEnergi.Models.monthly_she_contractor>;
+    StarEnergi.Models.monthly_project_she_report mpsr = new StarEnergi.Models.monthly_project_she_report();
+    bool isEdit = false;
+    int id = 0;
+    if (ViewBag.model != null) {
+        isEdit = true;
+        mpsr = ViewBag.model as StarEnergi.Models.monthly_project_she_report;
+        id = mpsr.id;
+    }
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<script type="text/javascript">
+    function onChange(e) {
+        $('#incident_frequency_rate_mh').val(frequencyRate());
+        $('#incident_severity_rate_mh').val(severityRate());
+    }
+</script>
+<div class="container">
+    <header>
+        <div class="page-title" style="width:980px">
+            <h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED</h1>
+        </div>
+        <div class="clearfix" style="width:768px"></div>
+        <b>Monthly Project SHE Report</b>
+    </header>
+
+    <div class="log-part1">
+        <table class="w-border" style="width:1000px">
+            <tr>
+                <td class="gray-bg" colspan="2"><b>Company Contractor Name</b></td>
+                <td colspan="8">
+                    <select id="contractor_name" name="contractor_name" style="width:400px">
+                        <option value="" selected disabled>-Select Contractor-</option>
+                        @foreach (StarEnergi.Models.monthly_she_contractor cont in has)
+                        {
+                            <option value="@cont.id" @(isEdit ? (mpsr.contractor_id == cont.id ? "selected" : "") : "")>@cont.name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="gray-bg" colspan="2"><b>No Contract</b></td>
+                <td colspan="8">
+                    <input type="text" id="no_contract" name="no_contract" class="01#02" value="@(isEdit ? mpsr.no_contract : "")" style="width:200px" onkeyup="findContractNo()"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="gray-bg" colspan="2"><b>Periodes</b></td>
+                <td colspan="4">@(Html.Telerik().DatePicker()
+                            .Name("period_start")
+                            .HtmlAttributes(new { id = "date_wrapper", style = "margin-left:5px" })
+                            .Value(isEdit ? mpsr.period_start : null)
+                        ) - @(Html.Telerik().DatePicker()
+                            .Name("period_end")
+                            .HtmlAttributes(new { id = "date_wrapper", style = "margin-left:5px" })
+                            .Value(isEdit ? mpsr.period_end : null)
+                        )</td>
+                <td class="gray-bg" colspan="2"><b>Month / Year</b></td>
+                <td colspan="2">
+                    <select id="month" name="month" style="width:75px">
+                        <option value="" selected disabled>-MM-</option>
+                        <option value="1" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 1 ? "selected" : "") : "") : "")>Jan</option>
+                        <option value="2" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 2 ? "selected" : "") : "") : "")>Feb</option>
+                        <option value="3" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 3 ? "selected" : "") : "") : "")>Mar</option>
+                        <option value="4" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 4 ? "selected" : "") : "") : "")>Apr</option>
+                        <option value="5" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 5 ? "selected" : "") : "") : "")>May</option>
+                        <option value="6" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 6 ? "selected" : "") : "") : "")>Jun</option>
+                        <option value="7" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 7 ? "selected" : "") : "") : "")>Jul</option>
+                        <option value="8" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 8 ? "selected" : "") : "") : "")>Aug</option>
+                        <option value="9" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 9 ? "selected" : "") : "") : "")>Sep</option>
+                        <option value="10" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 10 ? "selected" : "") : "") : "")>Oct</option>
+                        <option value="11" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 11 ? "selected" : "") : "") : "")>Nov</option>
+                        <option value="12" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Month == 12 ? "selected" : "") : "") : "")>Dec</option>
+                    </select> / 
+                    <select id="year" name="year" style="width:75px">
+                        <option value="" selected disabled>-YYYY-</option>
+                        @for (int i = 2000; i <= 2100; i++)
+                        {
+                            <option value="@i" @(isEdit ? (mpsr.month_year != null ? (mpsr.month_year.Value.Year == i ? "selected" : "") : "") : (DateTime.Today.Year == i ? "selected" : ""))>@i</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="gray-bg" colspan="2"><b>Project Name</b></td>
+                <td colspan="4"><input type="text" id="project_name" name="project_name" class="01#03" value="@(isEdit ? mpsr.project_name : "")" style="width:200px" /></td>
+                <td class="gray-bg" colspan="2"><b>Project Location</b></td>
+                <td colspan="2"><input type="text" id="project_location" name="project_location" class="05#03" value="@(isEdit ? mpsr.project_location : "")" style="width:200px" /></td>
+            </tr>
+            <tr>
+                <td class="gray-bg" colspan="2"><b>Project Manager</b></td>
+                <td colspan="4"><input type="text" id="project_manager" name="project_manager" class="01#04" value="@(isEdit ? mpsr.project_manager : "")" style="width:200px" /></td>
+                <td class="gray-bg" colspan="2"><b>SE Contract Supervisor</b></td>
+                <td colspan="2"><input type="text" id="contract_supervisor" name="contract_supervisor" class="05#04" value="@(isEdit ? mpsr.contract_supervisor : "")" style="width:200px" /></td>
+            </tr>
+            <tr>
+                <td class="gray-bg" colspan="2"><b>Project SHE Representative</b></td>
+                <td colspan="4"><input type="text" id="project_she_representative" name="project_she_representative" class="01#05" value="@(isEdit ? mpsr.project_she_representative : "")" style="width:200px" /></td>
+                <td class="gray-bg" colspan="2"><b>SE SHE Representative</b></td>
+                <td colspan="2"><input type="text" id="se_she_representative" name="se_she_representative" class="05#05" value="@(isEdit ? mpsr.se_she_representative : "")" style="width:200px" /></td>
+            </tr>
+            <tr>
+                <td class="orange-bg" colspan="2"><b>SHE Incident Statistic</b></td>
+                <td class="orange-bg text-center"><b>Total</b></td>
+                <td class="orange-bg text-center"><b>Cost</b></td>
+                <td class="orange-bg text-center"><b>YTD</b></td>
+                <td class="orange-bg text-center"><b>YTD Cost</b></td>
+                <td class="orange-bg" colspan="2"><b>Operational Safety Issue</b></td>
+                <td class="orange-bg text-center"><b>Total</b></td>
+                <td class="orange-bg text-center"><b>YTD</b></td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right"><b>1</b></td>
+                <td class="gray-bg no-border-left"><b>Injury / Illnesses</b></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="dyellow-bg no-border-right"><b>1</b></td>
+                <td class="dyellow-bg no-border-left"><b>Safety Meeting</b></td>
+                <td class="dyellow-bg">&nbsp;</td>
+                <td class="dyellow-bg">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">a. Minor - FAC</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("incident_minor_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.incident_minor_total : null)
+                        .ClientEvents(events => events
+                            .OnChange("onChange")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("incident_minor_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.incident_minor_cost : null)
+                    )
+                </td>
+                <td id="incident_minor_ytd">@(isEdit ? (mpsr.incident_minor_ytd != null ? mpsr.incident_minor_ytd.ToString() : "") : "")</td>
+                <td id="incident_minor_ytd_cost">@(isEdit ? (mpsr.incident_minor_ytd != null ? mpsr.incident_minor_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">a. Tool Box Meeting</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("toolbox_meeting_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.toolbox_meeting_total : null)
+                    )
+                </td>
+                <td id="toolbox_meeting_ytd">@(isEdit ? (mpsr.toolbox_meeting_ytd != null ? mpsr.toolbox_meeting_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">b. Moderate - MTC - RWC</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("incident_moderate_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.incident_moderate_total : null)
+                        .ClientEvents(events => events
+                            .OnChange("onChange")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("incident_moderate_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.incident_moderate_cost : null)
+                    )
+                </td>
+                <td id="incident_moderate_ytd">@(isEdit ? (mpsr.incident_moderate_ytd != null ? mpsr.incident_moderate_ytd.ToString() : "") : "")</td>
+                <td id="incident_moderate_ytd_cost">@(isEdit ? (mpsr.incident_moderate_ytd_cost != null ? mpsr.incident_moderate_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">b. Weekly SHE Meeting</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("weekly_she_meeting_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.weekly_she_meeting_total : null)
+                    )
+                </td>
+                <td id="weekly_she_meeting_ytd">@(isEdit ? (mpsr.weekly_she_meeting_ytd != null ? mpsr.weekly_she_meeting_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">c. Serious - LWC</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("incident_serious_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.incident_serious_total : null)
+                        .ClientEvents(events => events
+                            .OnChange("onChange")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("incident_serious_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.incident_serious_cost : null)
+                    )
+                </td>
+                <td id="incident_serious_ytd">@(isEdit ? (mpsr.incident_serious_ytd != null ? mpsr.incident_serious_ytd.ToString() : "") : "")</td>
+                <td id="incident_serious_ytd_cost">@(isEdit ? (mpsr.incident_serious_ytd_cost != null ? mpsr.incident_serious_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">c. Attend Monthly contr mig</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("monthly_contr_mig_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.monthly_contr_mig_total : null)
+                    )
+                </td>
+                <td id="monthly_contr_mig_ytd">@(isEdit ? (mpsr.monthly_contr_mig_ytd != null ? mpsr.monthly_contr_mig_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">d. Major - Fatality</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("incident_major_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.incident_major_total : null)
+                        .ClientEvents(events => events
+                            .OnChange("onChange")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("incident_major_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.incident_major_cost : null)
+                    )
+                </td>
+                <td id="incident_major_ytd">@(isEdit ? (mpsr.incident_major_ytd != null ? mpsr.incident_major_ytd.ToString() : "") : "")</td>
+                <td id="incident_major_ytd_cost">@(isEdit ? (mpsr.incident_major_ytd_cost != null ? mpsr.incident_major_ytd_cost.ToString() : "") : "")</td>
+                <td class="dyellow-bg no-border-right"><b>2</b></td>
+                <td class="dyellow-bg no-border-left"><b>Risk Management</b></td>
+                <td class="dyellow-bg">&nbsp;</td>
+                <td class="dyellow-bg">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right"><b>2</b></td>
+                <td class="gray-bg no-border-left"><b>Environmental Loss</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("environmental_loss_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.environmental_loss_total : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("environmental_loss_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.environmental_loss_cost : null)
+                    )
+                </td>
+                <td id="environmental_loss_ytd">@(isEdit ? (mpsr.environmental_loss_ytd != null ? mpsr.environmental_loss_ytd.ToString() : "") : "")</td>
+                <td id="environmental_loss_ytd_cost">@(isEdit ? (mpsr.environmental_loss_ytd_cost != null ? mpsr.environmental_loss_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">a. SHE Observation Card</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("she_observation_card_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.she_observation_card_total : null)
+                    )
+                </td>
+                <td id="she_observation_card_ytd">@(isEdit ? (mpsr.she_observation_card_ytd != null ? mpsr.she_observation_card_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right"><b>3</b></td>
+                <td class="gray-bg no-border-left"><b>Property Damage</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("property_damage_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.property_damage_total : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("property_damage_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.property_damage_cost : null)
+                    )
+                </td>
+                <td id="property_damage_ytd">@(isEdit ? (mpsr.property_damage_ytd != null ? mpsr.property_damage_ytd.ToString() : "") : "")</td>
+                <td id="property_damage_ytd_cost">@(isEdit ? (mpsr.property_damage_ytd_cost != null ? mpsr.property_damage_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">b. New JSA / HIRA</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("new_jsa_hira_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.new_jsa_hira_total : null)
+                    )
+                </td>
+                <td id="new_jsa_hira_ytd">@(isEdit ? (mpsr.new_jsa_hira_ytd != null ? mpsr.new_jsa_hira_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right"><b>4</b></td>
+                <td class="gray-bg no-border-left"><b>Process Loss/Disturb</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("process_loss_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.process_loss_total : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("process_loss_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.process_loss_cost : null)
+                    )
+                </td>
+                <td id="process_loss_ytd">@(isEdit ? (mpsr.process_loss_ytd != null ? mpsr.process_loss_ytd.ToString() : "") : "")</td>
+                <td id="process_loss_ytd_cost">@(isEdit ? (mpsr.process_loss_ytd_cost != null ? mpsr.process_loss_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">c. Permit to Work Issued</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("ptw_issued_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.ptw_issued_total : null)
+                    )
+                </td>
+                <td id="ptw_issued_ytd">@(isEdit ? (mpsr.ptw_issued_ytd != null ? mpsr.ptw_issued_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right"><b>5</b></td>
+                <td class="gray-bg no-border-left"><b>External Relation</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("external_relation_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.external_relation_total : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("external_relation_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.external_relation_cost : null)
+                    )
+                </td>
+                <td id="external_relation_ytd">@(isEdit ? (mpsr.external_relation_ytd != null ? mpsr.external_relation_ytd.ToString() : "") : "")</td>
+                <td id="external_relation_ytd_cost">@(isEdit ? (mpsr.external_relation_ytd_cost != null ? mpsr.external_relation_ytd_cost.ToString() : "") : "")</td>
+                <td class="dyellow-bg no-border-right"><b>3</b></td>
+                <td class="dyellow-bg no-border-left"><b>Inspection & Audit</b></td>
+                <td class="dyellow-bg">&nbsp;</td>
+                <td class="dyellow-bg">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right"><b>6</b></td>
+                <td class="gray-bg no-border-left"><b>Theft / Crime</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("theft_crime_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.theft_crime_total : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("theft_crime_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.theft_crime_cost : null)
+                    )
+                </td>
+                <td id="theft_crime_ytd">@(isEdit ? (mpsr.theft_crime_ytd != null ? mpsr.theft_crime_ytd.ToString() : "") : "")</td>
+                <td id="theft_crime_ytd_cost">@(isEdit ? (mpsr.theft_crime_ytd_cost != null ? mpsr.theft_crime_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">a. Facility Inspection</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("facility_inspection_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.facility_inspection_total : null)
+                    )
+                </td>
+                <td id="facility_inspection_ytd">@(isEdit ? (mpsr.facility_inspection_ytd != null ? mpsr.facility_inspection_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right"><b>7</b></td>
+                <td class="gray-bg no-border-left"><b>Vehicular</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("vehicular_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.vehicular_total : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("vehicular_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.vehicular_cost.Value : null)
+                    )
+                </td>
+                <td id="vehicular_ytd">@(isEdit ? (mpsr.vehicular_ytd != null ? mpsr.vehicular_ytd.ToString() : "") : "")</td>
+                <td id="vehicular_ytd_cost">@(isEdit ? (mpsr.vehicular_ytd_cost != null ? mpsr.vehicular_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">b. Vehicle/HDE Inspection</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("vehicular_inspection_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.vehicular_inspection_total : null)
+                    )
+                </td>
+                <td id="vehicular_inspection_ytd">@(isEdit ? (mpsr.vehicular_inspection_ytd != null ? mpsr.vehicular_inspection_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right"><b>8</b></td>
+                <td class="gray-bg no-border-left"><b>Near Miss</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("near_miss_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.near_miss_total : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("near_miss_cost")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? (int?)mpsr.near_miss_cost : null)
+                    )
+                </td>
+                <td id="near_miss_ytd">@(isEdit ? (mpsr.near_miss_ytd != null ? mpsr.near_miss_ytd.ToString() : "") : "")</td>
+                <td id="near_miss_ytd_cost">@(isEdit ? (mpsr.near_miss_ytd_cost != null ? mpsr.near_miss_ytd_cost.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">c. PPE Inspection</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("ppe_inspection_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.ppe_inspection_total : null)
+                    )
+                </td>
+                <td id="ppe_inspection_ytd">@(isEdit ? (mpsr.ppe_inspection_ytd != null ? mpsr.ppe_inspection_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="orange-bg" colspan="2"><b>Hours Record</b></td>
+                <td class="orange-bg text-center" colspan="2"><b>Man hours</b></td>
+                <td class="orange-bg text-center" colspan="2"><b>YTD</b></td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">d. Lifting Eq Inspection</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("lifting_eq_inspection_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.lifting_eq_inspection_total : null)
+                    )
+                </td>
+                <td id="lifting_eq_inspection_ytd">@(isEdit ? (mpsr.lifting_eq_inspection_ytd != null ? mpsr.lifting_eq_inspection_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Man hours(hrs)</b></td>
+                <td colspan="2">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("man_hours_mh")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.man_hours_mh : null)
+                        .ClientEvents(events => events
+                            .OnChange("onChange")
+                        )
+                    )
+                </td>
+                <td id="man_hours_ytd" colspan="2">@(isEdit ? (mpsr.man_hours_ytd != null ? mpsr.man_hours_ytd.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">e. Fire Extinguish Inspection</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("fire_inspection_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.fire_inspection_total : null)
+                    )
+                </td>
+                <td id="fire_inspection_ytd">@(isEdit ? (mpsr.fire_inspection_ytd != null ? mpsr.fire_inspection_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Days without LTI (days)</b></td>
+                <td colspan="2">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("days_mh")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.days_mh : null)
+                    )
+                </td>
+                <td id="days_ytd" colspan="2">@(isEdit ? (mpsr.days_ytd != null ? mpsr.days_ytd.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">f. Vehicle CO2 Emission</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("vehicle_emission_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.vehicle_emission_total : null)
+                    )
+                </td>
+                <td id="vehicle_emission_ytd">@(isEdit ? (mpsr.vehicle_emission_ytd != null ? mpsr.vehicle_emission_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Incident Frequency Rate</b></td>
+                <td colspan="2"><input type="number" disabled style="width:75px" id="incident_frequency_rate_mh" name="incident_frequency_rate_mh" value="@(isEdit ? mpsr.incident_frequency_rate_mh : null)" />
+                </td>
+                <td id="incident_frequency_rate_ytd" colspan="2">@(isEdit ? (mpsr.incident_frequency_rate_ytd != null ? mpsr.incident_frequency_rate_ytd.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">g. Welding Eq Inspection</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("welding_eq_inspection_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.welding_eq_inspection_total : null)
+                    )
+                </td>
+                <td id="welding_eq_inspection_ytd">@(isEdit ? (mpsr.welding_eq_inspection_ytd != null ? mpsr.welding_eq_inspection_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Incident Severity Rate</b></td>
+                <td colspan="2"><input type="number" disabled style="width:75px" id="incident_severity_rate_mh" name="incident_severity_rate_mh" value="@(isEdit ? mpsr.incident_severity_rate_mh : null)" />
+                </td>
+                <td id="incident_severity_rate_ytd" colspan="2">@(isEdit ? (mpsr.incident_severity_rate_ytd != null ? mpsr.incident_severity_rate_ytd.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">h. HDE Inspection</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("hde_inspection_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.hde_inspection_total : null)
+                    )
+                </td>
+                <td id="hde_inspection_ytd">@(isEdit ? (mpsr.hde_inspection_ytd != null ? mpsr.hde_inspection_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Last date & time of LTI</b></td>
+                <td colspan="2">
+                    @(Html.Telerik().DateTimePicker()
+                            .Name("last_date_time_lti")
+                            .HtmlAttributes(new { id = "datetime_wrapper", style = "margin-left:5px" })
+                            .Value(isEdit ? mpsr.last_date_time_lti : null)
+                        )
+                </td>
+                <td colspan="2">
+                    @(isEdit ? (mpsr.lti_ytd != null ? mpsr.lti_ytd.ToString() : "") : "")
+                </td>
+                <td class="dyellow-bg no-border-right"><b>4</b></td>
+                <td class="dyellow-bg no-border-left"><b>Emergency Drill</b></td>
+                <td class="dyellow-bg">&nbsp;</td>
+                <td class="dyellow-bg">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Light vehicle travel (km)</b></td>
+                <td colspan="2">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("light_vehicle_travel_mh")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.light_vehicle_travel_mh : null)
+                    )
+                </td>
+                <td id="light_vehicle_travel_ytd" colspan="2">@(isEdit ? (mpsr.light_vehicle_travel_ytd != null ? mpsr.light_vehicle_travel_ytd.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">a. Fire Emergency & Fighting</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("fire_emergency_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.fire_emergency_total : null)
+                    )
+                </td>
+                <td id="fire_emergency_ytd">@(isEdit ? (mpsr.fire_emergency_ytd != null ? mpsr.fire_emergency_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="orange-bg" colspan="2"><b>Number of Workers</b></td>
+                <td class="orange-bg text-center"><b>workers</b></td>
+                <td class="orange-bg text-center"><b>Lead</b></td>
+                <td class="orange-bg text-center"><b>> Supervisor</b></td>
+                <td class="orange-bg text-center"><b>Total</b></td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">b. H2S Emergency & Resc</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("h2s_emergency_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.h2s_emergency_total : null)
+                    )
+                </td>
+                <td id="h2s_emergency_ytd">@(isEdit ? (mpsr.h2s_emergency_ytd != null ? mpsr.h2s_emergency_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Local - Pangalengan</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("local_workers")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.local_workers : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("local_lead")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.local_lead : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("local_spv")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.local_spv : null)
+                    )
+                </td>
+                <td id="local_total">
+                    @(isEdit ? (mpsr.local_total != null ? mpsr.local_total.ToString() : "") : "")
+                </td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">c. Environmental Spill</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("environmental_spill_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.environmental_spill_total : null)
+                    )
+                </td>
+                <td id="environmental_spill_ytd">@(isEdit ? (mpsr.environmental_spill_ytd != null ? mpsr.environmental_spill_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Non Local</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("non_local_workers")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.non_local_workers : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("non_local_lead")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.non_local_lead : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("non_local_spv")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.non_local_spv : null)
+                    )
+                </td>
+                <td id="non_local_total">@(isEdit ? (mpsr.non_local_total != null ? mpsr.non_local_total.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left">d. Medical Evacuation</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("medical_evacuation_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.medical_evacuation_total : null)
+                    )
+                </td>
+                <td id="medical_evacuation_ytd">@(isEdit ? (mpsr.medical_evacuation_ytd != null ? mpsr.medical_evacuation_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Expatriates</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("expatriates_workers")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.expatriates_workers : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("expatriates_lead")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.expatriates_lead : null)
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("expatriates_spv")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.expatriates_spv : null)
+                    )
+                </td>
+                <td id="expatriates_total">@(isEdit ? (mpsr.expatriates_total != null ? mpsr.expatriates_total.ToString() : "") : "")</td>
+                <td class="orange-bg no-border-right">&nbsp;</td>
+                <td class="orange-bg no-border-left"><b>Occupational Health</b></td>
+                <td class="orange-bg"><b>Total</b></td>
+                <td class="orange-bg"><b>YTD</b></td>
+            </tr>
+            <tr>
+                <td class="orange-bg" colspan="2"><b>Environmental Protection</b></td>
+                <td class="orange-bg text-center" colspan="2"><b>Total</b></td>
+                <td class="orange-bg text-center" colspan="2"><b>YTD</b></td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Fit for day / MCU (person)</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("fit_for_day_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.fit_for_day_total : null)
+                    )
+                </td>
+                <td id="fit_for_day_ytd">@(isEdit ? (mpsr.fit_for_day_ytd != null ? mpsr.fit_for_day_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Domestic Waste (kg)</b></td>
+                <td colspan="2">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("domestic_waste_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.domestic_waste_total : null)
+                    )
+                </td>
+                <td id="domestic_waste_ytd" colspan="2">@(isEdit ? (mpsr.domestic_waste_ytd != null ? mpsr.domestic_waste_ytd.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Clinic Visit</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("clinic_visit_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.clinic_visit_total : null)
+                    )
+                </td>
+                <td id="clinic_visit_ytd">@(isEdit ? (mpsr.clinic_visit_ytd != null ? mpsr.clinic_visit_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Hazardous Waste / B3 (kg)</b></td>
+                <td colspan="2">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("hazardous_waste_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.hazardous_waste_total : null)
+                    )
+                </td>
+                <td id="hazardous_waste_ytd" colspan="2">@(isEdit ? (mpsr.hazardous_waste_ytd != null ? mpsr.hazardous_waste_ytd.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>No of work related illness</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("no_work_illness_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.no_work_illness_total : null)
+                    )
+                </td>
+                <td id="no_work_illness_ytd">@(isEdit ? (mpsr.no_work_illness_ytd != null ? mpsr.no_work_illness_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>New MSDS</b></td>
+                <td colspan="2">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("new_msds_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.new_msds_total : null)
+                    )
+                </td>
+                <td id="new_msds_ytd" colspan="2">@(isEdit ? (mpsr.new_msds_ytd != null ? mpsr.new_msds_ytd.ToString() : "") : "")</td>
+                <td class="gray-bg no-border-right">&nbsp;</td>
+                <td class="gray-bg no-border-left"><b>Ill monitoring Program</b></td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("ill_monitoring_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:75px"})
+                        .Value(isEdit ? mpsr.ill_monitoring_total : null)
+                    )
+                </td>
+                <td id="ill_monitoring_ytd">@(isEdit ? (mpsr.ill_monitoring_ytd != null ? mpsr.ill_monitoring_ytd.ToString() : "") : "")</td>
+            </tr>
+            <tr>
+                <td class="orange-bg" colspan="10"><b>Activities Summary & Notes</b></td>
+            </tr>
+            <tr>
+                <td colspan="10" class="activity"><input type="hidden" id="totalActivity" value="0" /><input type="button" value="Add" id="add0" name="add0" onclick="addActivity(0)"/></td>
+            </tr>
+            <tr>
+                <td class="orange-bg" colspan="10"><b>Outstanding Task List & Areas for Improvement</b></td>
+            </tr>
+            <tr>
+                <td colspan="10" class="outstanding"><input type="hidden" id="totalOutstanding" value="0" /><input type="button" value="Add" id="addO0" name="addO0" onclick="addOutstanding(0)"/></td>
+            </tr>
+        </table>
+    </div>
+    <br />
+</div>
+<div class="submit">
+    <input name="Submit" value="Save" type="submit" onclick="save()"/>
+    <input type="button" value="Cancel" onclick="back()"/>
+</div>
+<br />
+<script type="text/javascript">
+
+    jQuery.fn.getSelectionStart = function () {
+        if (this.lengh == 0) return -1;
+        input = this[0];
+
+        var pos = input.value.length;
+
+        if (input.createTextRange) {
+            var r = document.selection.createRange().duplicate();
+            r.moveEnd('character', input.value.length);
+            if (r.text == '')
+                pos = input.value.length;
+            pos = input.value.lastIndexOf(r.text);
+        } else if (typeof (input.selectionStart) != "undefined")
+            pos = input.selectionStart;
+
+        return pos;
+    }
+
+    jQuery.fn.setSelection = function (selectionStart, selectionEnd) {
+        if (this.lengh == 0) return this;
+        input = this[0];
+
+        if (input.createTextRange) {
+            var range = input.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', selectionEnd);
+            range.moveStart('character', selectionStart);
+            range.select();
+        } else if (input.setSelectionRange) {
+            input.focus();
+            input.setSelectionRange(selectionStart, selectionEnd);
+        }
+
+        return this;
+    }
+
+    jQuery.fn.getCursorPosition = function () {
+        if (this.lengh == 0) return -1;
+        return $(this).getSelectionStart();
+    }
+
+    jQuery.fn.setCursorPosition = function (position) {
+        if (this.lengh == 0) return this;
+        return $(this).setSelection(position, position);
+    }
+
+    function back() {
+        window.location = "/SheProject";
+    }
+
+    //$("input[type='text']").keydown(function (e) {
+    //    var keyCode = e.keyCode;
+    //    var thisClass = $(this).attr('class');
+    //    if (thisClass.charAt(2) == "#") {
+    //        var part = thisClass.split("#");
+    //        var column = parseInt(part[0]);
+    //        var row = parseInt(part[1]);
+
+    //        switch (keyCode) {
+    //            case 37:
+    //                if (e.ctrlKey || e.shiftKey || e.altKey) {
+    //                    if (e.altKey) {
+    //                        e.preventDefault();
+    //                        var caret = $(this).getCursorPosition();
+    //                        if (caret > 0) {
+    //                            $(this).setCursorPosition(caret - 1);
+    //                        }
+    //                    }
+    //                    break;
+    //                }
+    //                column -= 1;
+    //                if (column != 0) {
+    //                    var pad = "00";
+    //                    var cl = (pad.substring(0, pad.length - column.toString().length) + column.toString()) +
+    //                        "#" + (pad.substring(0, pad.length - row.toString().length) + row.toString());
+    //                    var brea = false;
+    //                    while ($("input[class='" + cl + "']").length == 0 && !brea) {
+    //                        column--;
+    //                        if (column >= 1)
+    //                            cl = (pad.substring(0, pad.length - column.toString().length) + column.toString()) +
+    //                                "#" + (pad.substring(0, pad.length - row.toString().length) + row.toString());
+    //                        else
+    //                            brea = true;
+    //                    }
+    //                    if (!brea) {
+    //                        $("input[class='" + cl + "']").focus();
+    //                    }
+    //                }
+    //                break;
+    //            case 38:
+    //                if ((row == 10 || row == 14 || row == 23 || row == 28) && (column == 5 || column == 6)) {
+    //                    row -= 2;
+    //                } else if ((row == 18 || row == 25 || row == 29) && (column >= 1 && column <= 4)) {
+    //                    row -= 2;
+    //                } else {
+    //                    row -= 1;
+    //                }
+    //                if (row != 0) {
+    //                    var pad = "00";
+    //                    var cl = (pad.substring(0, pad.length - column.toString().length) + column.toString()) +
+    //                        "#" + (pad.substring(0, pad.length - row.toString().length) + row.toString());
+    //                    var brea = false;
+    //                    while ($("input[class='" + cl + "']").length == 0 && !brea) {
+    //                        column -= 1;
+    //                        if (column != 0)
+    //                            cl = (pad.substring(0, pad.length - column.toString().length) + column.toString()) +
+    //                            "#" + (pad.substring(0, pad.length - row.toString().length) + row.toString());
+    //                        else
+    //                            brea = true;
+    //                    }
+    //                    if (!brea) {
+    //                        $("input[class='" + cl + "']").focus();
+    //                    }
+    //                }
+    //                break;
+    //            case 39:
+    //                if (e.ctrlKey || e.shiftKey || e.altKey) {
+    //                    if (e.altKey) {
+    //                        e.preventDefault();
+    //                        var caret = $(this).getCursorPosition();
+    //                        $(this).setCursorPosition(caret + 1);
+    //                    }
+    //                    break;
+    //                }
+    //                column += 1;
+    //                if (column != 0) {
+    //                    var pad = "00";
+    //                    var cl = (pad.substring(0, pad.length - column.toString().length) + column.toString()) +
+    //                        "#" + (pad.substring(0, pad.length - row.toString().length) + row.toString());
+    //                    var brea = false;
+    //                    while ($("input[class='" + cl + "']").length == 0 && !brea) {
+    //                        column++;
+    //                        if (column <= 6)
+    //                            cl = (pad.substring(0, pad.length - column.toString().length) + column.toString()) +
+    //                                "#" + (pad.substring(0, pad.length - row.toString().length) + row.toString());
+    //                        else
+    //                            brea = true;
+    //                    }
+    //                    if (!brea) {
+    //                        $("input[class='" + cl + "']").focus();
+    //                    }
+    //                }
+    //                break;
+    //            case 40:
+    //                if ((row == 8 || row == 12 || row == 21 || row == 26) && (column == 5 || column == 6)) {
+    //                    row += 2;
+    //                } else if ((row == 16 || row == 23 || row == 27) && (column >= 1 && column <= 4)) {
+    //                    row += 2;
+    //                } else {
+    //                    row += 1;
+    //                }
+    //                if (row != 0) {
+    //                    var pad = "00";
+    //                    var cl = (pad.substring(0, pad.length - column.toString().length) + column.toString()) +
+    //                        "#" + (pad.substring(0, pad.length - row.toString().length) + row.toString());
+    //                    var brea = false;
+    //                    while ($("input[class='" + cl + "']").length == 0 && !brea) {
+    //                        column -= 1;
+    //                        if (column != 0)
+    //                            cl = (pad.substring(0, pad.length - column.toString().length) + column.toString()) +
+    //                            "#" + (pad.substring(0, pad.length - row.toString().length) + row.toString());
+    //                        else
+    //                            brea = true;
+    //                    }
+    //                    if (!brea) {
+    //                        $("input[class='" + cl + "']").focus();
+    //                    }
+    //                }
+    //                break;
+    //            default:
+    //                // do nothing
+    //                break;
+    //        }
+    //    }
+    //});
+
+    
+
+    var isEdit = '@isEdit';
+    function save() {
+        var activities = [];
+        var total = parseInt($('#totalActivity').val());
+
+        for (var i = 1; i <= total; i++) {
+            activities.push($('#activity' + i).val());
+        }
+
+        var outstandings = [];
+        var total = parseInt($('#totalOutstanding').val());
+
+        for (var i = 1; i <= total; i++) {
+            outstandings.push($('#outstanding' + i).val());
+        }
+
+        if (validate()) {
+            var values = {
+                contractor_id: $('#contractor_name').val(),
+                no_contract: $('#no_contract').val(),
+                period_start: $('#period_start').val(),
+                period_end: $('#period_end').val(),
+                month_year: $('#month').val() + '/1/' + $('#year').val(),
+                project_name: $('#project_name').val(),
+                project_location: $('#project_location').val(),
+                project_manager: $('#project_manager').val(),
+                contract_supervisor: $('#contract_supervisor').val(),
+                project_she_representative: $('#project_she_representative').val(),
+                se_she_representative: $('#se_she_representative').val(),
+                incident_minor_total: $('#incident_minor_total').val() == "" || $('#incident_minor_total').val() == "null" ? 0 : $('#incident_minor_total').val(),
+                incident_minor_cost: $('#incident_minor_cost').val() == "" || $('#incident_minor_cost').val() == "null" ? 0 : $('#incident_minor_cost').val(),
+                toolbox_meeting_total: $('#toolbox_meeting_total').val() == "" || $('#toolbox_meeting_total').val() == "null" ? 0 : $('#toolbox_meeting_total').val(),
+                incident_moderate_total: $('#incident_moderate_total').val() == "" || $('#incident_moderate_total').val() == "null" ? 0 : $('#incident_moderate_total').val(),
+                incident_moderate_cost: $('#incident_moderate_cost').val() == "" || $('#incident_moderate_cost').val() == "null" ? 0 : $('#incident_moderate_cost').val(),
+                weekly_she_meeting_total: $('#weekly_she_meeting_total').val() == "" || $('#weekly_she_meeting_total').val() == "null" ? 0 : $('#weekly_she_meeting_total').val(),
+                incident_serious_total: $('#incident_serious_total').val() == "" || $('#incident_serious_total').val() == "null" ? 0 : $('#incident_serious_total').val(),
+                incident_serious_cost: $('#incident_serious_cost').val() == "" || $('#incident_serious_cost').val() == "null" ? 0 : $('#incident_serious_cost').val(),
+                monthly_contr_mig_total: $('#monthly_contr_mig_total').val() == "" || $('#monthly_contr_mig_total').val() == "null" ? 0 : $('#monthly_contr_mig_total').val(),
+                incident_major_total: $('#incident_major_total').val() == "" || $('#incident_major_total').val() == "null" ? 0 : $('#incident_major_total').val(),
+                incident_major_cost: $('#incident_major_cost').val() == "" || $('#incident_major_cost').val() == "null" ? 0 : $('#incident_major_cost').val(),
+                environmental_loss_total: $('#environmental_loss_total').val() == "" || $('#environmental_loss_total').val() == "null" ? 0 : $('#environmental_loss_total').val(),
+                environmental_loss_cost: $('#environmental_loss_cost').val() == "" || $('#environmental_loss_cost').val() == "null" ? 0 : $('#environmental_loss_cost').val(),
+                she_observation_card_total: $('#she_observation_card_total').val() == "" || $('#she_observation_card_total').val() == "null" ? 0 : $('#she_observation_card_total').val(),
+                property_damage_total: $('#property_damage_total').val() == "" || $('#property_damage_total').val() == "null" ? 0 : $('#property_damage_total').val(),
+                property_damage_cost: $('#property_damage_cost').val() == "" || $('#property_damage_cost').val() == "null" ? 0 : $('#property_damage_cost').val(),
+                new_jsa_hira_total: $('#new_jsa_hira_total').val() == "" || $('#new_jsa_hira_total').val() == "null" ? 0 : $('#new_jsa_hira_total').val(),
+                process_loss_total: $('#process_loss_total').val() == "" || $('#process_loss_total').val() == "null" ? 0 : $('#process_loss_total').val(),
+                process_loss_cost: $('#process_loss_cost').val() == "" || $('#process_loss_cost').val() == "null" ? 0 : $('#process_loss_cost').val(),
+                ptw_issued_total: $('#ptw_issued_total').val() == "" || $('#ptw_issued_total').val() == "null" ? 0 : $('#ptw_issued_total').val(),
+                external_relation_total: $('#external_relation_total').val() == "" || $('#external_relation_total').val() == "null" ? 0 : $('#external_relation_total').val(),
+                external_relation_cost: $('#external_relation_cost').val() == "" || $('#external_relation_cost').val() == "null" ? 0 : $('#external_relation_cost').val(),
+                theft_crime_total: $('#theft_crime_total').val() == "" || $('#theft_crime_total').val() == "null" ? 0 : $('#theft_crime_total').val(),
+                theft_crime_cost: $('#theft_crime_cost').val() == "" || $('#theft_crime_cost').val() == "null" ? 0 : $('#theft_crime_cost').val(),
+                facility_inspection_total: $('#facility_inspection_total').val() == "" || $('#facility_inspection_total').val() == "null" ? 0 : $('#facility_inspection_total').val(),
+                vehicular_total: $('#vehicular_total').val() == "" || $('#vehicular_total').val() == "null" ? 0 : $('#vehicular_total').val(),
+                vehicular_cost: $('#vehicular_cost').val() == "" || $('#vehicular_cost').val() == "null" ? 0 : $('#vehicular_cost').val(),
+                vehicular_inspection_total: $('#vehicular_inspection_total').val() == "" || $('#vehicular_inspection_total').val() == "null" ? 0 : $('#vehicular_inspection_total').val(),
+                near_miss_total: $('#near_miss_total').val() == "" || $('#near_miss_total').val() == "null" ? 0 : $('#near_miss_total').val(),
+                near_miss_cost: $('#near_miss_cost').val() == "" || $('#near_miss_cost').val() == "null" ? 0 : $('#near_miss_cost').val(),
+                ppe_inspection_total: $('#ppe_inspection_total').val() == "" || $('#ppe_inspection_total').val() == "null" ? 0 : $('#ppe_inspection_total').val(),
+                lifting_eq_inspection_total: $('#lifting_eq_inspection_total').val() == "" || $('#lifting_eq_inspection_total').val() == "null" ? 0 : $('#lifting_eq_inspection_total').val(),
+                man_hours_mh: $('#man_hours_mh').val() == "" || $('#man_hours_mh').val() == "null" ? 0 : $('#man_hours_mh').val(),
+                fire_inspection_total: $('#fire_inspection_total').val() == "" || $('#fire_inspection_total').val() == "null" ? 0 : $('#fire_inspection_total').val(),
+                days_mh: $('#days_mh').val() == "" || $('#days_mh').val() == "null" ? 0 : $('#days_mh').val(),
+                vehicle_emission_total: $('#vehicle_emission_total').val() == "" || $('#vehicle_emission_total').val() == "null" ? 0 : $('#vehicle_emission_total').val(),
+                incident_frequency_rate_mh: $('#incident_frequency_rate_mh').val() == "" || $('#incident_frequency_rate_mh').val() == "null" ? 0 : $('#incident_frequency_rate_mh').val(),
+                welding_eq_inspection_total: $('#welding_eq_inspection_total').val() == "" || $('#welding_eq_inspection_total').val() == "null" ? 0 : $('#welding_eq_inspection_total').val(),
+                incident_severity_rate_mh: $('#incident_severity_rate_mh').val() == "" || $('#incident_severity_rate_mh').val() == "null" ? 0 : $('#incident_severity_rate_mh').val(),
+                hde_inspection_total: $('#hde_inspection_total').val() == "" || $('#hde_inspection_total').val() == "null" ? 0 : $('#hde_inspection_total').val(),
+                last_date_time_lti: $('#last_date_time_lti').val() == "" || $('#last_date_time_lti').val() == "null" ? 0 : $('#last_date_time_lti').val(),
+                light_vehicle_travel_mh: $('#light_vehicle_travel_mh').val() == "" || $('#light_vehicle_travel_mh').val() == "null" ? 0 : $('#light_vehicle_travel_mh').val(),
+                fire_emergency_total: $('#fire_emergency_total').val() == "" || $('#fire_emergency_total').val() == "null" ? 0 : $('#fire_emergency_total').val(),
+                h2s_emergency_total: $('#h2s_emergency_total').val() == "" || $('#h2s_emergency_total').val() == "null" ? 0 : $('#h2s_emergency_total').val(),
+                local_workers: $('#local_workers').val() == "" || $('#local_workers').val() == "null" ? 0 : $('#local_workers').val(),
+                local_lead: $('#local_lead').val() == "" || $('#local_lead').val() == "null" ? 0 : $('#local_lead').val(),
+                local_spv: $('#local_spv').val() == "" || $('#local_spv').val() == "null" ? 0 : $('#local_spv').val(),
+                environmental_spill_total: $('#environmental_spill_total').val() == "" || $('#environmental_spill_total').val() == "null" ? 0 : $('#environmental_spill_total').val(),
+                non_local_workers: $('#non_local_workers').val() == "" || $('#non_local_workers').val() == "null" ? 0 : $('#non_local_workers').val(),
+                non_local_lead: $('#non_local_lead').val() == "" || $('#non_local_lead').val() == "null" ? 0 : $('#non_local_lead').val(),
+                non_local_spv: $('#non_local_spv').val() == "" || $('#non_local_spv').val() == "null" ? 0 : $('#non_local_spv').val(),
+                medical_evacuation_total: $('#medical_evacuation_total').val() == "" || $('#medical_evacuation_total').val() == "null" ? 0 : $('#medical_evacuation_total').val(),
+                expatriates_workers: $('#expatriates_workers').val() == "" || $('#expatriates_workers').val() == "null" ? 0 : $('#expatriates_workers').val(),
+                expatriates_lead: $('#expatriates_lead').val() == "" || $('#expatriates_lead').val() == "null" ? 0 : $('#expatriates_lead').val(),
+                expatriates_spv: $('#expatriates_spv').val() == "" || $('#expatriates_spv').val() == "null" ? 0 : $('#expatriates_spv').val(),
+                fit_for_day_total: $('#fit_for_day_total').val() == "" || $('#fit_for_day_total').val() == "null" ? 0 : $('#fit_for_day_total').val(),
+                domestic_waste_total: $('#domestic_waste_total').val() == "" || $('#domestic_waste_total').val() == "null" ? 0 : $('#domestic_waste_total').val(),
+                clinic_visit_total: $('#clinic_visit_total').val() == "" || $('#clinic_visit_total').val() == "null" ? 0 : $('#clinic_visit_total').val(),
+                hazardous_waste_total: $('#hazardous_waste_total').val() == "" || $('#hazardous_waste_total').val() == "null" ? 0 : $('#hazardous_waste_total').val(),
+                no_work_illness_total: $('#no_work_illness_total').val() == "" || $('#no_work_illness_total').val() == "null" ? 0 : $('#no_work_illness_total').val(),
+                new_msds_total: $('#new_msds_total').val() == "" || $('#new_msds_total').val() == "null" ? 0 : $('#new_msds_total').val(),
+                ill_monitoring_total: $('#ill_monitoring_total').val() == "" || $('#ill_monitoring_total').val() == "null" ? 0 : $('#ill_monitoring_total').val(),
+                activities: activities,
+                outstanding: outstandings,
+            }
+
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.post("SheProject/Add", $.param(values, true), function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        $('#realmod_save').css("display", "none");
+                        alert('Monthly Project SHE Report successfully saved');
+                        //back();
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to add Monthly Project SHE Report');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.post("SheProject/Edit", $.param(values, true), function (data) {
+                    if (data != undefined) {
+                        $('#realmod_save').css("display", "none");
+                        alert('Monthly Project SHE Report successfully updated');
+                        $('#contentEventLog').load('SheProject/AddSheProject/' + ids);
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to update Monthly Project SHE Report');
+                    }
+                });
+            }
+        }
+    }
+
+    function frequencyRate() {
+        var fac = parseInt($('#incident_minor_total').val() == null ? 0 : $('#incident_minor_total').val()),
+            mtc = parseInt($('#incident_moderate_total').val() == null ? 0 : $('#incident_moderate_total').val()),
+            lwc = parseInt($('#incident_serious_total').val() == null ? 0 : $('#incident_serious_total').val()),
+            lti = parseInt($('#incident_major_total').val() == null ? 0 : $('#incident_major_total').val()),
+            man_hours = parseInt($('#man_hours_mh').val() == null ? 0 : $('#man_hours_mh').val());
+
+        var value = man_hours != 0 ? ((fac + mtc + lwc + lti) *200000 / (man_hours)) : 0;
+
+        return value;
+    }
+
+    function severityRate() {
+        var mtc = parseInt($('#incident_moderate_total').val() == null ? 0 : $('#incident_moderate_total').val()),
+            lwc = parseInt($('#incident_serious_total').val() == null ? 0 : $('#incident_serious_total').val()),
+            lti = parseInt($('#incident_major_total').val() == null ? 0 : $('#incident_major_total').val()),
+            man_hours = parseInt($('#man_hours_mh').val() == null ? 0 : $('#man_hours_mh').val());
+
+        var value = man_hours != 0 ? ((mtc + lwc + lti) * 200000 / (man_hours)) : 0;
+
+        return value;
+    }
+
+    function findContractNo() {
+        $.post("SheProject/FindContract", { no_contract: $('#no_contract').val() }, function (data) {
+            if (data != undefined) {
+                $('#period_start').data('tDatePicker').value(data.period_start);
+                $('#period_end').data('tDatePicker').value(data.period_end);
+                $('#project_name').val(data.project_name);
+                $('#project_location').val(data.project_location);
+                $('#project_manager').val(data.project_manager);
+                $('#contract_supervisor').val(data.contract_supervisor);
+                $('#project_she_representative').val(data.project_she_representative);
+                $('#se_she_representative').val(data.se_she_representative);
+            }
+        });
+    }
+
+    function addActivity(curId, value) {
+
+        console.log(value);
+        value = value || "";
+        var newId = curId + 1;
+        var docs = document.getElementsByClassName("activity")[0];
+        var root = document.createElement("div");
+        root.setAttribute("id", "ins" + newId);
+
+        var newDiv = document.createElement("div");
+
+        var input1 = document.createElement("input");
+
+        input1.setAttribute("type", "text");
+        input1.setAttribute("id", "activity" + newId);
+        input1.setAttribute("name", "activity" + newId);
+        input1.value = value;
+        input1.style.width = "800px";
+        newDiv.appendChild(input1);
+
+        var input2 = document.createElement("input");
+        input2.setAttribute("type", "button");
+        input2.setAttribute("id", "add" + newId);
+        input2.setAttribute("name", "add" + newId);
+        input2.setAttribute("value", "add");
+        input2.onclick = function () { addActivity(newId); };
+        newDiv.appendChild(input2);
+
+        var input3 = document.createElement("input");
+        input3.setAttribute("type", "button");
+        input3.setAttribute("id", "del" + newId);
+        input3.setAttribute("name", "del" + newId);
+        input3.setAttribute("value", "del");
+        input3.onclick = function () { delActivity(newId); };
+        newDiv.appendChild(input3);
+
+        root.appendChild(newDiv);
+        root.appendChild(document.createElement("br"));
+        docs.appendChild(root);
+
+        var adds = document.getElementById("add" + curId);
+        adds.style.visibility = 'hidden';
+
+        document.getElementById("totalActivity").value = newId;
+    };
+
+    function delActivity(curId) {
+        var total = parseInt(document.getElementById("totalActivity").value.toString(), 10);
+        if (curId == total) {
+            document.getElementsByClassName("activity")[0].removeChild(document.getElementById("ins" + curId));
+            document.getElementById("add" + (curId - 1)).style.visibility = 'visible';
+        } else {
+            var div = document.getElementById("ins" + curId);
+            document.getElementsByClassName("activity")[0].removeChild(div);
+            for (var i = curId + 1; i <= total; i++) {
+                document.getElementById("ins" + i).setAttribute("id", "ins" + (i - 1));
+                document.getElementById("activity" + i).setAttribute("name", "activity" + (i - 1));
+                document.getElementById("activity" + i).setAttribute("id", "activity" + (i - 1));
+                document.getElementById("add" + i).onclick = function () { addActivity(parseInt(this.getAttribute("id").charAt(3))); };
+                document.getElementById("add" + i).setAttribute("name", "add" + (i - 1));
+                document.getElementById("add" + i).setAttribute("id", "add" + (i - 1));
+
+                document.getElementById("del" + i).setAttribute("name", "del" + (i - 1));
+                document.getElementById("del" + i).setAttribute("id", "del" + (i - 1));
+                document.getElementById("del" + (i - 1)).onclick = function () { delActivity(parseInt(this.getAttribute("id").charAt(3))); };
+            }
+        }
+
+        document.getElementById("totalActivity").value = total - 1;
+    }
+
+    function addOutstanding(curId, value) {
+        value = value || "";
+        var newId = curId + 1;
+        var docs = document.getElementsByClassName("outstanding")[0];
+        var root = document.createElement("div");
+        root.setAttribute("id", "insO" + newId);
+
+        var newDiv = document.createElement("div");
+
+        var input1 = document.createElement("input");
+
+        input1.setAttribute("type", "text");
+        input1.setAttribute("id", "outstanding" + newId);
+        input1.setAttribute("name", "outstanding" + newId);
+        input1.value = value;
+        input1.style.width = "800px";
+        newDiv.appendChild(input1);
+
+        var input2 = document.createElement("input");
+        input2.setAttribute("type", "button");
+        input2.setAttribute("id", "addO" + newId);
+        input2.setAttribute("name", "addO" + newId);
+        input2.setAttribute("value", "add");
+        input2.onclick = function () { addOutstanding(newId); };
+        newDiv.appendChild(input2);
+
+        var input3 = document.createElement("input");
+        input3.setAttribute("type", "button");
+        input3.setAttribute("id", "delO" + newId);
+        input3.setAttribute("name", "delO" + newId);
+        input3.setAttribute("value", "del");
+        input3.onclick = function () { delOutstanding(newId); };
+        newDiv.appendChild(input3);
+
+        root.appendChild(newDiv);
+        root.appendChild(document.createElement("br"));
+        docs.appendChild(root);
+
+        var adds = document.getElementById("addO" + curId);
+        adds.style.visibility = 'hidden';
+
+        document.getElementById("totalOutstanding").value = newId;
+    };
+
+    function delOutstanding(curId) {
+        var total = parseInt(document.getElementById("totalOutstanding").value.toString(), 10);
+        if (curId == total) {
+            document.getElementsByClassName("outstanding")[0].removeChild(document.getElementById("insO" + curId));
+            document.getElementById("addO" + (curId - 1)).style.visibility = 'visible';
+        } else {
+            var div = document.getElementById("insO" + curId);
+            document.getElementsByClassName("outstanding")[0].removeChild(div);
+            for (var i = curId + 1; i <= total; i++) {
+                document.getElementById("insO" + i).setAttribute("id", "ins" + (i - 1));
+                document.getElementById("outstanding" + i).setAttribute("name", "outstanding" + (i - 1));
+                document.getElementById("outstanding" + i).setAttribute("id", "outstanding" + (i - 1));
+                document.getElementById("addO" + i).onclick = function () { addOutstanding(parseInt(this.getAttribute("id").charAt(3))); };
+                document.getElementById("addO" + i).setAttribute("name", "addO" + (i - 1));
+                document.getElementById("addO" + i).setAttribute("id", "addO" + (i - 1));
+
+                document.getElementById("delO" + i).setAttribute("name", "delO" + (i - 1));
+                document.getElementById("delO" + i).setAttribute("id", "delO" + (i - 1));
+                document.getElementById("delO" + (i - 1)).onclick = function () { delOutstanding(parseInt(this.getAttribute("id").charAt(3))); };
+            }
+        }
+
+        document.getElementById("totalOutstanding").value = total - 1;
+    }
+
+    function validate() {
+        return true;
+    }
+
+    $(document).ready(function () {
+        var act = [];
+        @foreach(StarEnergi.Models.monthly_project_activity mpa in ViewBag.activities as List<StarEnergi.Models.monthly_project_activity>) {
+            <text>act.push('@mpa.activity');</text>
+        }
+        var i = 0;
+        for (var a in act) {
+            addActivity(i, act[a]);
+            i++;
+        }
+
+        var out = [];
+        @foreach (StarEnergi.Models.monthly_project_outstanding_activity mpoa in ViewBag.outstandings as List<StarEnergi.Models.monthly_project_outstanding_activity>)
+        {
+            <text>out.push('@mpoa.activity');</text>
+        }
+        var i = 0;
+        for (var a in act) {
+            addOutstanding(i, out[a]);
+            i++;
+        }
+    });
+</script>

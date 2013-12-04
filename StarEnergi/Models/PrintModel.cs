@@ -63,7 +63,7 @@ namespace StarEnergi.Models
         public string basic_causes { get; set; }
         public string additional_observation { get; set; }
         public string cost_estimate { get; set; }
-        public string investigator { get; set; }
+        public List<string> investigator { get; set; }
         public Nullable<System.DateTime> investigator_date { get; set; }
         public string loss_control { get; set; }
         public Nullable<System.DateTime> loss_control_date { get; set; }
@@ -71,7 +71,10 @@ namespace StarEnergi.Models
         public Nullable<System.DateTime> field_manager_date { get; set; }
         public string field_manager_approve { get; set; }
         public string loss_control_approve { get; set; }
-        public string investigator_approve { get; set; }
+        public List<string> investigator_approve { get; set; }
+        public string safety_officer { get; set; }
+        public Nullable<System.DateTime> safety_officer_date { get; set; }
+        public string safety_officer_approve { get; set; }
 
         public List<iir_recommendations> iir_recommendations { get; set; }
     }

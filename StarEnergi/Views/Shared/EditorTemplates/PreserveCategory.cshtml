@@ -1,0 +1,14 @@
+﻿@model byte?
+
+@(Html.Telerik().DropDownList()
+        .Name("Dampak")
+        .Items(items =>
+        {
+            items.Add().Text("Major").Value("1");
+            items.Add().Text("Serious").Value("2");
+            items.Add().Text("Moderate").Value("3");
+            items.Add().Text("Minor").Value("4");
+        })
+) 
+
+

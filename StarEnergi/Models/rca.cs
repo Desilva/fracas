@@ -53,6 +53,8 @@ namespace StarEnergi.Models
         public Nullable<int> id_iir { get; set; }
         public Nullable<System.DateTime> publish_date { get; set; }
         public Nullable<int> id_ir { get; set; }
+        public Nullable<System.DateTime> actual_start_date { get; set; }
+        public Nullable<System.DateTime> due_date { get; set; }
     
         public virtual pir pir { get; set; }
         public virtual ICollection<rca_csf_conector> rca_csf_conector { get; set; }

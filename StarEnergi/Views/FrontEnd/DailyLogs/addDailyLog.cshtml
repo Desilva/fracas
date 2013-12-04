@@ -56,6 +56,30 @@
         }
     }
 
+    function onSelectAttachment2(data) {
+        var has = data.files;
+        for (var f in has) {
+            ext = has[f].name.split(".").pop().toLowerCase();
+            if (ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "bmp") {
+
+            } else {
+                alert("Warning! Only image files that can be shown in report. Another types of file should be downloaded");
+            }
+        }
+    }
+
+    function onSelectAttachment1(data) {
+        var has = data.files;
+        for (var f in has) {
+            ext = has[f].name.split(".").pop().toLowerCase();
+            if (ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "bmp") {
+
+            } else {
+                alert("Warning! Only image files that can be shown in report. Another types of file should be downloaded");
+            }
+        }
+    }
+
     function changeInput(radio,shift) {
         var radios = document.getElementsByName(radio.name);
         var val = -1;
@@ -1279,7 +1303,7 @@
             .AutoUpload(true)
             )
         .ClientEvents(events => events
-            .OnSuccess("onSuccessAttachment1"))
+            .OnSuccess("onSuccessAttachment1").OnSelect("onSelectAttachment1"))
         .ShowFileList(false)
     )
 </div>
@@ -1917,19 +1941,17 @@
         <button type="button" value="Print Daily Log">
             @Html.ActionLink("Print Daily Log", "printDL", "DailyLogs", new { id = id1 }, new { target = "_blank" })
         </button>
-        if (dl2.is_approve != 1) {
-            @(Html.Telerik().Upload()
-                .Name("attachment2")
-                .Multiple(true)
-                .Async(async => async
-                    .Save("attachment2", "DailyLogs", new { id = id2 })
-                    .AutoUpload(true)
-                    )
-                .ClientEvents(events => events
-                    .OnSuccess("onSuccessAttachment2"))
-                .ShowFileList(false)
-            )
-        }
+        @(Html.Telerik().Upload()
+            .Name("attachment2")
+            .Multiple(true)
+            .Async(async => async
+                .Save("attachment2", "DailyLogs", new { id = id2 })
+                .AutoUpload(true)
+                )
+            .ClientEvents(events => events
+                .OnSuccess("onSuccessAttachment2").OnSelect("onSelectAttachment2"))
+            .ShowFileList(false)
+        )
     }
 </div>
 <br />

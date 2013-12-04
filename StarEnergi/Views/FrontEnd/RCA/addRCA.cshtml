@@ -53,15 +53,15 @@
                 <input type="hidden" name="types" id="i" value="@i" />
                 <input type="hidden" name="types" id="l" value="@ViewBag.l" />
                 <div class="info_new_left">Analysis Title <a class="bintang">*</a></div>
-                <div class="infonewinput"><input id="analysisName" type="text" name="analysis_Name" value="@(ViewBag.a != null ? ViewBag.a : ViewBag.analysis_Name)" @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.a == null)
+                <div class="infonewinput"><input id="analysisName" type="text" name="analysis_Name" value="@(ViewBag.a != null ? ViewBag.a : ViewBag.analysis_Name)" @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.a == null && ViewBag.isView != null)
                                                                                                                                    { <text></text> } else { <text>disabled</text> }/>@if (ViewBag.a != null){<input id="analysisNameHidden" type="hidden" name="analysis_Name" value="@ViewBag.a" />}@Html.ValidationMessage("name", "Analysis title required")</div>
                 <br />
                 <div class="info_new_left">Analysis Description</div>
-                <div class="infonewinput"><textarea rows="5" cols="22" id="analysisDescription" name="analysis_Description" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")>@ViewBag.analysis_Description</textarea></div>
+                <div class="infonewinput"><textarea rows="5" cols="22" id="analysisDescription" name="analysis_Description" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? "" : "disabled")>@ViewBag.analysis_Description</textarea></div>
                 <br />
                 <div class="info_new_left">Analysis Type <a class="bintang">*</a></div>
                 <div class="infonewinput">
-                        @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                        @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                         {
                         <select name="id_type" id="id_type">
                             @foreach (StarEnergi.Models.rca_analisys_type a in Model) {
@@ -90,7 +90,8 @@
                         .HtmlAttributes(new { style = "margin-left:100px" })
                         .Spinners(false)
                         .MinValue(0)
-                        .MaxValue(100000000).Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                        .MaxValue(100000000)
+                        .Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                         .Value(ViewBag.c != null ? Double.Parse(ViewBag.c) : ViewBag.benefit == null ? 0 : Double.Parse(ViewBag.benefit))
                     )&nbsp;USD</div>
                 <br />

@@ -115,6 +115,7 @@ namespace StarEnergi.Controllers.FrontEnd
                              max_limit = e.max_limit,
                              tag_value = e.tag_value,
                              unit = e.unit,
+                             date = e.date,
                              time = e.time,
                              name_operator = e.name_operator,
                              keterangan = e.keterangan
@@ -228,6 +229,7 @@ namespace StarEnergi.Controllers.FrontEnd
                             max_limit = e.max_limit,
                             tag_value = e.tag_value,
                             unit = e.unit,
+                            date = e.date,
                             time = e.time,
                             name_operator = e.name_operator,
                             keterangan = e.keterangan

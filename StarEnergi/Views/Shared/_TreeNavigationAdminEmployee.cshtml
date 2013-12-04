@@ -187,34 +187,38 @@
                         }
                         else
                             item.ImageUrl = ("~/Content/image/file.png");
-                    })
-                    .Children(plant => plant.employee_dept));
-            mappings.For<StarEnergi.Models.employee_dept>(binding => binding
-                    .ItemDataBound((item, dept) =>
-                    {
-                        item.Text = dept.dept_name;
-                        item.Value = "DEPARTMENT" + ";" + dept.id.ToString();
-                        if (dept.employees.Count != 0) {
-                            item.ImageUrl = ("~/Content/image/folder.png");
-                        }else
-                            item.ImageUrl = ("~/Content/image/file.png");
-                    })
-                    .Children(dept => dept.employees));
-            mappings.For<StarEnergi.Models.employee>(binding => binding
-                    .ItemDataBound((item, employee) =>
-                    {
-                        item.Text = employee.alpha_name;
-                        item.Value = (employee.employee_boss == null ? "EMPLOYEEBOSS" : "EMPLOYEE") + ";" + employee.id.ToString();
-                        if (employee.employee1.Count != 0)
-                        {
-                            item.ImageUrl = ("~/Content/image/folder.png");
-                        }
-                        else
-                            item.ImageUrl = ("~/Content/image/file.png");
+                        item.LoadOnDemand = plant.employee_dept.Count > 0;
+                    }));
+                    //.Children(plant => plant.employee_dept));
+            //mappings.For<StarEnergi.Models.employee_dept>(binding => binding
+            //        .ItemDataBound((item, dept) =>
+            //        {
+            //            item.Text = dept.dept_name;
+            //            item.Value = "DEPARTMENT" + ";" + dept.id.ToString();
+            //            if (dept.employees.Count != 0) {
+            //                item.ImageUrl = ("~/Content/image/folder.png");
+            //            }else
+            //                item.ImageUrl = ("~/Content/image/file.png");
+            //        })
+            //        .Children(dept => dept.employees));
+            //mappings.For<StarEnergi.Models.employee>(binding => binding
+            //        .ItemDataBound((item, employee) =>
+            //        {
+            //            item.Text = employee.alpha_name;
+            //            item.Value = (employee.employee_boss == null ? "EMPLOYEEBOSS" : "EMPLOYEE") + ";" + employee.id.ToString();
+            //            if (employee.employee1.Count != 0)
+            //            {
+            //                item.ImageUrl = ("~/Content/image/folder.png");
+            //            }
+            //            else
+            //                item.ImageUrl = ("~/Content/image/file.png");
 
-                    })
-                    .Children(employee => employee.employee1));
+            //        })
+            //        .Children(employee => employee.employee1));
         })
+        .DataBinding(dataBinding => dataBinding
+                .Ajax().Select("_AjaxLoadingTreeViewEmployee", "Admin")
+        )
         .ClientEvents(eventsTree =>
                    eventsTree.OnSelect("onSelectTreeEmployee")
                   .OnLoad("onLoadEmployee")

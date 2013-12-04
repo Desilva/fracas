@@ -66,7 +66,7 @@
     var isPublish = '@isPublish';
     var pathes = [];
     var treeNode = null;
-    var isExistRCA = '@li.Exists(p => p.role == 2)' == 'True' ? true : false;
+    var isExistRCA = '@(li.Exists(p => p.role == 2) && ViewBag.isView != null)' == 'True' ? true : false;
     isPublish = parseInt(isPublish);
     
     $(document).ready(function() {
@@ -340,18 +340,35 @@
 			        var c = Array();
 			        c[0] = cell;
 			        if (cell.getAttribute('type', '') == "X") {
-			            graph.setCellStyle("image;",c);
-			        } else if (cell.getAttribute('type', '') == "P") {
-			            graph.setCellStyle("strokeColor=green;fillColor=green;gradientColor=white",c);
+			            graph.setCellStyle("image;whiteSpace=wrap",c);
+			        } else if (cell.getAttribute('type', '') == "PR") {
+			            graph.setCellStyle("strokeColor=green;fillColor=green;gradientColor=white;whiteSpace=wrap",c);
+			        } else if (cell.getAttribute('type', '') == "HR") {
+			            graph.setCellStyle("strokeColor=yellow;fillColor=yellow;whiteSpace=wrap",c);
+			        } else if (cell.getAttribute('type', '') == "LR") {
+			            graph.setCellStyle("strokeColor=yellow;fillColor=purple;whiteSpace=wrap",c);
 			        } else if (cell.getAttribute('type', '') == "H") {
-			            graph.setCellStyle("strokeColor=yellow;fillColor=yellow;",c);
-			        } else if (cell.getAttribute('type', '') == "L") {
-			            graph.setCellStyle("strokeColor=yellow;fillColor=purple;",c);
+			            graph.setCellStyle("strokeColor=blue;fillColor=orange;whiteSpace=wrap",c);
 			        }
+
+			        var description = cell.getAttribute('deskripsi', 'no description').split(' ');
+			        var new_desc = "";
+			        var i = 0;
+			        for (var a in description) {
+			            console.log("i = " + i);
+			            i += description[a].length + 1;
+			            if (i < 40) {
+			                new_desc += description[a] + " ";
+			            } else {
+			                new_desc += "<br />" + description[a] + " ";
+			                i = description[a].length;
+			            }
+			        }
+
 			        return "<p style=\"margin:0px;width:115px\">&nbsp;</p>" +
-                        "<h4 style=\"margin:0px;color:#1d258f;text-align:center;\">" + cell.getAttribute('deskripsi', 'no description') + 
+                        "<h4 style=\"margin:0;margin-right:12px;color:#1d258f;text-align:center\">" + new_desc + 
                         "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" + 
-			            cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;margin:0px;color:black;\">" + 
+			            cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;float:right;margin-top:0;color:black;margin-right:12px\">" + 
 			            cell.getAttribute('type', '') + "</p>";
 			        //return cell.getAttribute('deskripsi', 'no description');
 			    }
@@ -401,7 +418,7 @@
 			var node = doc.createElement('TreeRoot');
 			node.setAttribute('deskripsi', '@evv');
 			node.setAttribute('level', '0');
-			node.setAttribute('type', 'e');
+			node.setAttribute('type', 'E');
 			node.setAttribute('bobot', '1');
 			node.setAttribute('path','');
 			node.setAttribute('fracasir','@(fracasir == null ? 0 : fracasir)');
@@ -412,7 +429,8 @@
 		            var name = '@(template != null ? template.name : "")' + '.xml';
 		            graph.getModel().beginUpdate();
 		            try {
-		                var xmlDoc = mxUtils.load('/Content/xml/rca_template/' + name + '?version=100010055').getXml();
+		                var version = new Date().getTime();
+		                var xmlDoc = mxUtils.load('/Content/xml/rca_template/' + name + '?version='+version).getXml();
 		                var node = xmlDoc.documentElement;
 		                var dec = new mxCodec(node.ownerDocument);
 		                dec.decode(node, graph.getModel());
@@ -450,7 +468,8 @@
 		    } else {
 		        graph.getModel().beginUpdate();
 		        try {
-		            var xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=100010055').getXml();
+		            var version = new Date().getTime();
+		            var xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=' + version).getXml();
 		            var node = xmlDoc.documentElement;
 		            var dec = new mxCodec(node.ownerDocument);
 		            dec.decode(node, graph.getModel());
@@ -484,7 +503,10 @@
 		        if (result != null)
 		        {
 		            result.width = Math.max(120, result.width);
-		            result.height = 40;
+		            result.width = Math.min(300, result.width);
+		            result.height = Math.max(40, result.height);
+		            console.log(result.height);
+		            //result.height = 40;
 		        }
 
 		        return result;
@@ -589,50 +611,52 @@
     var myVar=setInterval(function(){myTimer()},60000);
     function myTimer()
     {
-        if (isTree == '1') {
-            findPath(graph);
-            if (treeNode != null) {
-                if (treeNode.getAttribute('path','') != JSON.stringify(pathes)) {
-                    delDesc();
-                    treeNode.setAttribute('path',JSON.stringify(pathes));
+        if (isPublish != 1 && isExistRCA) {
+            if (isTree == '1') {
+                findPath(graph);
+                if (treeNode != null) {
+                    if (treeNode.getAttribute('path','') != JSON.stringify(pathes)) {
+                        delDesc();
+                        treeNode.setAttribute('path',JSON.stringify(pathes));
+                    }
                 }
+                createGraph();
+                var enc = new mxCodec(mxUtils.createXmlDocument());
+                var node = enc.encode(graph.getModel());
+                var xml = mxUtils.getXml(node);
+                var xmlString = encodeURIComponent(xml);
+                var url = '@Url.Action("save", "RCA")';
+                var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
+                var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
+                mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
+                    if (req.getStatus() == "200")
+                        var d=new Date();
+                    var t=d.toLocaleTimeString();
+                    $('div.lastSave').text('Last auto save at: ' + t);
+                    // Process server response using req of type mxXmlRequest
+                });
+            } else {
+                items = [];
+                events = $("#event").val();
+                $(".why").each(function () {
+                    var vals = $(this).val();
+                    items.push(vals);
+                });
+                var fracasir = $("input[name=fracasir]:checked").val();
+                var fracasirid = $("#selec").val();
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("saveWhy", "RCA")",
+                    traditional: true,
+                    data: {filename: 'analysis' + id + '.xml', events: events, item: items, id: id, fracasir : fracasir, fracasirid : fracasirid},
+                    success: function () {
+                        var d=new Date();
+                        var t=d.toLocaleTimeString();
+                        $('div.lastSave').text('Last auto save at: ' + t);
+                    }
+                });
+                createGraph();
             }
-            createGraph();
-            var enc = new mxCodec(mxUtils.createXmlDocument());
-            var node = enc.encode(graph.getModel());
-            var xml = mxUtils.getXml(node);
-            var xmlString = encodeURIComponent(xml);
-            var url = '@Url.Action("save", "RCA")';
-            var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
-            var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
-            mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
-                if (req.getStatus() == "200")
-                    var d=new Date();
-                    var t=d.toLocaleTimeString();
-                    $('div.lastSave').text('Last auto save at: ' + t);
-                // Process server response using req of type mxXmlRequest
-            });
-        } else {
-            items = [];
-            events = $("#event").val();
-            $(".why").each(function () {
-                var vals = $(this).val();
-                items.push(vals);
-            });
-            var fracasir = $("input[name=fracasir]:checked").val();
-            var fracasirid = $("#selec").val();
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("saveWhy", "RCA")",
-                traditional: true,
-                data: {filename: 'analysis' + id + '.xml', events: events, item: items, id: id, fracasir : fracasir, fracasirid : fracasirid},
-                success: function () {
-                    var d=new Date();
-                    var t=d.toLocaleTimeString();
-                    $('div.lastSave').text('Last auto save at: ' + t);
-                }
-            });
-            createGraph();
         }
     }
 
@@ -879,7 +903,7 @@
                 // the cell label
                 var val = attrs[i].nodeValue;
                 if (attrs[i].nodeName == 'deskripsi') {
-                    if (attrs[2].nodeValue == 'e') {
+                    if (attrs[2].nodeValue == 'E' || attrs[2].nodeValue == 'e') {
                         var div = document.createElement('div');
                         fracas_rad = document.createElement('input');
                         fracas_rad.type = 'radio';
@@ -1030,15 +1054,19 @@
                     }
                 } else if (attrs[i].nodeName == 'level') {
                 } else if (attrs[i].nodeName == 'type') {
-                    if (val == 'e' || val == 'M') {
+                    if (val == 'E' || val == 'M') {
                         texts[i] = form.addText('Tipe', val);
+                        texts[i].readOnly = true;
+                    } else if (val == 'e') {
+                        texts[i] = form.addText('Tipe', 'E');
                         texts[i].readOnly = true;
                     } else {
                         var com = form.addCombo('Tipe', false, 1);
-                        form.addOption(com, 'physical', 'P', (val === 'P') ? true : false);
-                        form.addOption(com, 'human', 'H', (val === 'H') ? true : false);
-                        form.addOption(com, 'latent', 'L', (val === 'L') ? true : false);
-                        form.addOption(com, 'not true', 'X', (val === 'X') ? true : false);
+                        form.addOption(com, 'Physical Root', 'PR', (val === 'PR') ? true : false);
+                        form.addOption(com, 'Human Root', 'HR', (val === 'HR') ? true : false);
+                        form.addOption(com, 'Latent Root', 'LR', (val === 'LR') ? true : false);
+                        form.addOption(com, 'Not True', 'X', (val === 'X') ? true : false);
+                        form.addOption(com, 'Hypotesis', 'H', (val === 'H') ? true : false);
                         texts[i] = com;
                     }
                 } else if (attrs[i].nodeName == 'bobot') {
@@ -1492,7 +1520,7 @@
                 if (cell.getAttribute('type', 'o') == "X") {
                     graph.setCellStyle("image;",c);
                 } else if (cell.getAttribute('type', 'o') == "P") {
-                    graph.setCellStyle("strokeColor=green;fillColor=green;",c);
+                    graph.setCellStyle("strokeColor=green;fillColor=green;WhiteSpace=wrap",c);
                 } else if (cell.getAttribute('type', 'o') == "H") {
                     graph.setCellStyle("strokeColor=yellow;fillColor=yellow;",c);
                 } else if (cell.getAttribute('type', 'o') == "L") {
@@ -1526,7 +1554,7 @@
         var node = doc.createElement('TreeRoot');
         node.setAttribute('deskripsi', events);
         node.setAttribute('level', '0');
-        node.setAttribute('type', 'e');
+        node.setAttribute('type', 'E');
         node.setAttribute('bobot', '1');
 
 
@@ -1665,7 +1693,7 @@
         style = new Object();
         style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
         style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
-        style[mxConstants.STYLE_IMAGE] = '/Content/image/3graph/nottrue.jpg';
+        style[mxConstants.STYLE_IMAGE] = '/Content/image/3graph/silang.jpg';
         style[mxConstants.STYLE_FONTCOLOR] = '#1d258f';
         style[mxConstants.STYLE_IMAGE_WIDTH] = 100;
         graphs.getStylesheet().putCellStyle('image', style);
@@ -1687,16 +1715,16 @@
         style = graphs.getStylesheet().getDefaultEdgeStyle();
         style[mxConstants.STYLE_ROUNDED] = true;
         style[mxConstants.STYLE_STROKEWIDTH] = 3;
-        style[mxConstants.STYLE_EXIT_X] = 1.0; // centSer
-        style[mxConstants.STYLE_EXIT_Y] = 0.5; // bottom
+        style[mxConstants.STYLE_EXIT_X] = 0.5; // centSer
+        style[mxConstants.STYLE_EXIT_Y] = 1; // bottom
         style[mxConstants.STYLE_EXIT_PERIMETER] = 0; // disabled
-        style[mxConstants.STYLE_ENTRY_X] = 0; // center
-        style[mxConstants.STYLE_ENTRY_Y] = 0.5; // top
+        style[mxConstants.STYLE_ENTRY_X] = 0.5; // center
+        style[mxConstants.STYLE_ENTRY_Y] = 0; // top
         style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
         style[mxConstants.STYLE_STROKECOLOR] = 'red';
 
         // Disable the following for straight lines
-        style[mxConstants.STYLE_EDGE] = mxEdgeStyle.SideToSide;
+        style[mxConstants.STYLE_EDGE] = mxEdgeStyle.TopToBottom;
 
         // Enables automatic sizing for vertices after editing and
         // panning by using the left mouse button.
@@ -1717,7 +1745,7 @@
         // Enables automatic layout on the graphs and installs
         // a tree layout for all groups who's children are
         // being changed, added or removed.
-        var layout = new mxCompactTreeLayout(graphs, true);
+        var layout = new mxCompactTreeLayout(graphs, false);
         layout.useBoundingBox = false;
         layout.edgeRouting = false;
         layout.levelDistance = 25;
@@ -1744,19 +1772,38 @@
                 var c = Array();
                 c[0] = cell;
                 if (cell.getAttribute('type', 'o') == "X") {
-                    graphs.setCellStyle("image;", c);
-                } else if (cell.getAttribute('type', 'o') == "P") {
-                    graphs.setCellStyle("strokeColor=green;fillColor=green;", c);
-                } else if (cell.getAttribute('type', 'o') == "H") {
-                    graphs.setCellStyle("strokeColor=yellow;fillColor=yellow;", c);
-                } else if (cell.getAttribute('type', 'o') == "L") {
-                    graphs.setCellStyle("strokeColor=yellow;fillColor=purple;", c);
+                    graphs.setCellStyle("image;whiteSpace=wrap;fontSize=11", c);
+                } else if (cell.getAttribute('type', 'o') == "PR") {
+                    graphs.setCellStyle("strokeColor=green;fillColor=green;whiteSpace=wrap;fontSize=11", c);
+                } else if (cell.getAttribute('type', 'o') == "HR") {
+                    graphs.setCellStyle("strokeColor=yellow;fillColor=yellow;whiteSpace=wrap;fontSize=11", c);
+                } else if (cell.getAttribute('type', 'o') == "LR") {
+                    graphs.setCellStyle("strokeColor=yellow;fillColor=purple;whiteSpace=wrap;fontSize=11", c);
+                } else if (cell.getAttribute('type', '') == "H") {
+                    graph.setCellStyle("strokeColor=blue;fillColor=orange;whiteSpace=wrap;fontSize=11",c);
+                } else {
+                    graph.setCellStyle("strokeColor=blue;fillColor=orange;whiteSpace=wrap;fontSize=11",c);
                 }
+
+                var description = cell.getAttribute('deskripsi', 'no description').split(' ');
+                var new_desc = "";
+                var i = 0;
+                for (var a in description) {
+                    console.log("i = " + i);
+                    i += description[a].length + 1;
+                    if (i < 30) {
+                        new_desc += description[a] + " ";
+                    } else {
+                        new_desc += "<br />" + description[a] + " ";
+                        i = description[a].length;
+                    }
+                }
+
                 return "<p style=\"margin:0px;width:115px\">&nbsp;</p>" +
-                    "<h4 style=\"margin:0px;color:#1d258f;text-align:center;\">" + cell.getAttribute('deskripsi', 'no description') +
-                    "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" +
-                    cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;margin:0px;color:black;\">" +
-                    cell.getAttribute('type', '') + "</p>";
+                        "<h4 style=\"margin:0;margin-right:12px;color:#1d258f;text-align:center\">" + new_desc + 
+                        "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" + 
+			            cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;float:right;margin-top:0;color:black;margin-right:12px\">" + 
+			            cell.getAttribute('type', '') + "</p>";
                 //return cell.getAttribute('deskripsi', 'no description');
             }
         };
@@ -1780,7 +1827,7 @@
         var node = doc.createElement('TreeRoot');
         node.setAttribute('deskripsi', events);
         node.setAttribute('level', '0');
-        node.setAttribute('type', 'e');
+        node.setAttribute('type', 'E');
         node.setAttribute('bobot', '1');
 
         if (isTree == "1") {
@@ -1804,7 +1851,8 @@
             } else {
                 graphs.getModel().beginUpdate();
                 try {
-                    var xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version=100010055').getXml();
+                    var version = new Date().getTime();
+                    var xmlDoc = mxUtils.load('/Content/xml/' + fileName + '?version='+version).getXml();
                     var node = xmlDoc.documentElement;
                     var dec = new mxCodec(node.ownerDocument);
                     dec.decode(node, graphs.getModel());
@@ -1882,7 +1930,8 @@
 
             if (result != null) {
                 result.width = Math.max(120, result.width);
-                result.height = 40;
+                result.width = Math.min(320, result.width);
+                result.height = Math.max(40, result.height+30);
             }
 
             return result;

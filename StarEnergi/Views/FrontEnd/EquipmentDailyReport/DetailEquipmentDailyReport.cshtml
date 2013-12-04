@@ -47,6 +47,7 @@
                 <td class="yellow-bg center" style="width:50px"><b>Max. Limit</b></td>
                 <td class="yellow-bg center" style="width:50px"><b>Tag Value</b></td>
                 <td class="yellow-bg center" style="width:50px"><b>Unit</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Date</b></td>
                 <td class="yellow-bg center" style="width:50px"><b>Time</b></td>
                 <td class="yellow-bg center" style="width:180px"><b>Notes</b></td>
 			</tr>
@@ -62,8 +63,9 @@
                 <td class="number" style="width:50px">@e.max_limit</td>
                 <td class="number" style="width:50px">@e.tag_value</td>
                 <td class="number" style="width:50px">@e.unit</td>
+                <td style="width:50px">@(e.date != null ? e.date.Value.ToShortDateString() : "-")</td>
                 <td style="width:50px">@e.time</td>
-                <td style="width:230px">@e.keterangan</td>
+                <td style="width:180px">@e.keterangan</td>
 			</tr>
             }
 		</table>

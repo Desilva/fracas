@@ -1,0 +1,73 @@
+﻿@model IEnumerable<StarEnergi.Models.she_observation>
+@{
+    ViewBag.Title = "Monthly Porject SHE Report";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+
+@( 
+ Html.Telerik().Grid<StarEnergi.Models.monthly_project_she_report>()
+        .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
+        .Name("SheProject")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxSheProject", "SheProject");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+            }).Width(80).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.contractor_name).Width(200).Title("Contractor Company Name");
+            columns.Bound(o => o.month_year).Width(175).Title("Month / Year").Format("{0:MMM / yyyy}");
+            columns.Bound(o => o.no_contract).Width(175).Title("No. Contract & Periodes");
+            
+        })
+        .ClientEvents(
+            events => events
+                .OnRowDataBound("OnRowDataBoundEq")
+        )
+        .Pageable(p => p.PageSize(10))
+        .Sortable()
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+        .Filterable()
+        .Groupable()
+)
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="Edit Monthly Porject SHE Report" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>';
+
+        var i = 0;
+        for (var a in row.cells) {
+            if (row.cells[a].className == "t-group-cell") {
+                i++;
+            }
+        }
+        row.cells[i].innerHTML = templateComplete;
+    }
+
+    function Edit(id) {
+        $('#contentEventLog').load('SheProject/AddSheProject', { 'id': id });
+    }
+
+</script>

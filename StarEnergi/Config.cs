@@ -46,7 +46,9 @@ namespace StarEnergi
             DAILYLOG,
             DAILYLOGWEEKLYTARGET,
             DAILYLOGLEADER,
-            DAILYLOGSUPERVISOR
+            DAILYLOGSUPERVISOR,
+            SHEOBSERVATION,
+            ENVIRONMENTAL
         };
 
         public enum MenuFrontEnd

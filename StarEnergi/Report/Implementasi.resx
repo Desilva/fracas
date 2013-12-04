@@ -139,6 +139,9 @@
 FROM            rca_implementation INNER JOIN
                          employee ON rca_implementation.pic = employee.id</value>
   </data>
+  <data name="textBox5.Value" xml:space="preserve">
+    <value>=Fields.due_date.Day + '-' + Iif(Fields.due_date.Month = 1,'Jan',Iif(Fields.due_date.Month = 2,'Feb',Iif(Fields.due_date.Month = 3,'Mar',Iif(Fields.due_date.Month = 4,'Apr',Iif(Fields.due_date.Month = 5,'May',Iif(Fields.due_date.Month = 6,'Jun',Iif(Fields.due_date.Month = 7,'Jul',Iif(Fields.due_date.Month = 8,'Aug',Iif(Fields.due_date.Month = 9,'Sep',Iif(Fields.due_date.Month = 10,'Oct',Iif(Fields.due_date.Month = 11,'Nov',Iif(Fields.due_date.Month = 12,'Dec','')))))))))))) + '-' + Fields.due_date.Year</value>
+  </data>
   <data name="pictureBox1.Value" xml:space="preserve">
     <value>= IIf(Fields.is_complete = 0, IIf(Fields.due_date.Date &gt;= Now(),ResolveUrl("~/Content/image/icon/green.png"),ResolveUrl("~/Content/image/icon/red.png")), IIf(Fields.complete_date.Date &gt; Fields.due_date.Date,ResolveUrl("~/Content/image/icon/red.png"),ResolveUrl("~/Content/image/icon/green.png")))</value>
   </data>

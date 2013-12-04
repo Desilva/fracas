@@ -29,15 +29,6 @@
 	</header>
 	<div class="log-part1">
 		<table class="w-border" style="width:980px">
-			<tr>
-				<td style="width:100px"><b>Date</b></td>
-                <td>
-                    @(Html.Telerik().DatePicker()
-                    .Name("date")
-                    .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
-                    .Value(isEdit ? dl.date : DateTime.Now))
-                </td>
-			</tr>
             <tr>
 				<td style="width:100px"><b>Operator Name</b></td>
                 <td>
@@ -68,6 +59,7 @@
                 <td class="yellow-bg center" style="width:50px"><b>Max. Limit</b></td>
                 <td class="yellow-bg center" style="width:50px"><b>Tag Value</b></td>
                 <td class="yellow-bg center" style="width:50px"><b>Unit</b></td>
+                <td class="yellow-bg center" style="width:50px"><b>Date</b></td>
                 <td class="yellow-bg center" style="width:50px"><b>Time</b></td>
                 <td class="yellow-bg center" style="width:180px"><b>Notes</b></td>
 			</tr>
@@ -83,8 +75,12 @@
                 <td class="number" style="width:50px"><input type="text" id="max_@(e.id_equipment)" name="max_@(e.id_equipment)" value="@e.max_limit" style="width:50px"/></td>
                 <td class="number" style="width:50px"><input type="text" id="tag_@(e.id_equipment)" name="tag_@(e.id_equipment)" value="@e.tag_value" style="width:50px"/></td>
                 <td class="number" style="width:50px"><input type="text" id="unit_@(e.id_equipment)" name="unit_@(e.id_equipment)" value="@e.unit" style="width:50px"/></td>
+                <td style="width:50px">@(Html.Telerik().DatePicker()
+                    .Name("date_"+e.id_equipment)
+                    .HtmlAttributes(new { id = "date_wrapper", style = "width:50px" })
+                    .Value(isEdit ? e.date : DateTime.Today))</td> 
                 <td style="width:50px"><input type="text" id="time_@(e.id_equipment)" name="time_@(e.id_equipment)" value="@e.time" style="width:50px"/></td>
-                <td style="width:230px"><input type="text" id="ket_@(e.id_equipment)" name="ket_@(e.id_equipment)" value="@e.keterangan" style="width:230px"/></td>
+                <td style="width:180px"><input type="text" id="ket_@(e.id_equipment)" name="ket_@(e.id_equipment)" value="@e.keterangan" style="width:180px"/></td>
 			</tr>
             }
 		</table>
@@ -127,12 +123,12 @@
                         max_limit: $('#max_' + listEq[s]).val(),
                         tag_value: $('#tag_' + listEq[s]).val(),
                         unit: $('#unit_' + listEq[s]).val(),
+                        date: $('#date_' + listEq[s]).val(),
                         time: $('#time_' + listEq[s]).val(),
                         keterangan: $('#ket_' + listEq[s]).val()
                 });
             }
             var values = {
-                date: $('#date').val(),
                 operator_name: $('#operator_name').val(),
                 table: list
             }

@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Safe Man Hours";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+<script type="text/javascript">
+
+    function addEvent() {
+        $('#contentEventLog').load('SheSafeManHours/AddSheSafeManHours');
+    }
+
+    function causeIncident() {
+        var today = new Date();
+        var today_str = (today.getMonth() + 1) + '/' + (today.getDate()) + '/' + today.getFullYear();
+        var r = confirm("Are you sure today (" + today_str + ") there is loss time incident (LTI)?");
+
+        if (r == true) {
+            $.post("SheSafeManHours/AddIncident", null, function (data) {
+                alert("Data saved!");
+            });
+        }
+    }
+
+    function showSheSafeManHours() {
+        $('#sheSafeManHours').load('SheSafeManHours/Report');
+    }
+
+    $(document).ready(function () {
+        showSheSafeManHours();
+    });
+</script>
+<div id="contentEventLog">
+    <h2 class="adminH2">Safe Man Hours</h2>
+    
+    <div>
+        <input type="button" id="addEvent" value="Add Safe Man Hours" onclick="addEvent()"/>
+        <input type="button" id="incidentButton" value="Incident (LTI)" onclick="causeIncident()"/>
+        Last Incident (LTI) Occured:<span style="font-size:18px;color:red">@(ViewBag.date_incident != null ? (ViewBag.date_incident as DateTime?).Value.ToString("dd MMM yyyy") : "")</span>
+    </div>
+    <br/>
+    <div id="sheSafeManHours">
+    </div>
+    <br />
+</div>

@@ -7,6 +7,11 @@
     function edit() {
         $('#content').load('employee/edit/'+ @Model.id);
     }
+
+    $(document).ready(function() {
+        $('#delegate_name').attr('disabled', 'disabled');
+    });
+    
 </script>
 <h2>Details</h2>
 
@@ -52,7 +57,12 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.email)
     </div>
-
+    <div class="editor-label">
+        @Html.Label("Delegate")
+    </div>
+    <div class="editor-field">
+        <input type="checkbox" id="delegate" name="delegate" value="1" @(Model.delagate == 1 ? "checked" : "") disabled/>&nbsp;@Html.DropDownList("delegate_name")
+    </div>
     <div class="display-label">Signature</div>
     <div class="display-field">
         <img id="img_signature" width="100" height="100" @(Model.signature == null ? "style=display:none;" : "style=display:block;")  src="@Model.signature"/>

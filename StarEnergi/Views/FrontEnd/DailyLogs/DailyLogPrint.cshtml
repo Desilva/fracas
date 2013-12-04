@@ -941,30 +941,25 @@
     </tr>
     @foreach (string s in Model.attach)
     {
-        if (s.Substring(s.LastIndexOf('.') + 1) == "pdf")
+        string ext = s.Substring(s.LastIndexOf('.') + 1).ToLower();
+        if (ext == "jpeg" || ext == "jpg" || ext == "png" || ext == "bmp")
         {
-            @*<tr style="font-size:10px">
-            <td>
-                @s
-            </td>
-            </tr>
             <tr style="font-size:10px">
                 <td>
-                    @StarEnergi.Controllers.FrontEnd.PirController.readPdf(Server.MapPath("~/Attachment/pir/" + Model.id + "/" + s),
-                    Server.MapPath("~/Attachment/pdf_print/output.htm"),Server.MapPath("~/Content/image/atch/pdftotext.exe"));
+                    @s
                 </td>
-            </tr>*@
-        }
-        else
-        {
-            <tr style="font-size:10px">
-            <td>
-                @s
-            </td>
             </tr>
             <tr style="font-size:10px">
                 <td>
                     <img src="@Server.MapPath("~/Attachment/daily_log/" + Model.id + "/" + s)" width="500"/>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr style="font-size:10px">
+                <td>
+                    @s
                 </td>
             </tr>
         }
@@ -1770,21 +1765,8 @@
     </tr>
     @foreach (string s in Model.daily_log_shift2.attach)
     {
-        if (s.Substring(s.LastIndexOf('.') + 1) == "pdf")
-        {
-            @*<tr style="font-size:10px">
-            <td>
-                @s
-            </td>
-            </tr>
-            <tr style="font-size:10px">
-                <td>
-                    @StarEnergi.Controllers.FrontEnd.PirController.readPdf(Server.MapPath("~/Attachment/pir/" + Model.id + "/" + s),
-                    Server.MapPath("~/Attachment/pdf_print/output.htm"),Server.MapPath("~/Content/image/atch/pdftotext.exe"));
-                </td>
-            </tr>*@
-        }
-        else
+        string ext = s.Substring(s.LastIndexOf('.') + 1).ToLower();
+        if (ext == "jpeg" || ext == "jpg" || ext == "png" || ext == "bmp")
         {
             <tr style="font-size:10px">
             <td>
@@ -1794,6 +1776,14 @@
             <tr style="font-size:10px">
                 <td>
                     <img src="@Server.MapPath("~/Attachment/daily_log/" + Model.daily_log_shift2.id + "/" + s)" width="500"/>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr style="font-size:10px">
+                <td>
+                    @s
                 </td>
             </tr>
         }

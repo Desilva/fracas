@@ -225,7 +225,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="facts" name="facts" rows="7" cols="119" style="resize:none" "@(li.Exists(p => p.role == 6) && !isView ? "" : "disabled")>@(isEdit ? ir.factual_information : "")</textarea>
+                <textarea id="facts" name="facts" rows="7" cols="119" style="resize:none" "@(li.Exists(p => p.role == 6) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ir.factual_information)).ToHtmlString() : "")</textarea>
             </td>
         </tr>
         <tr>
@@ -243,7 +243,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 6) && !isView ? "" : "disabled")>@(isEdit ? ir.immediate_action : "")</textarea>
+                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == 6) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ir.immediate_action)).ToHtmlString() : "")</textarea>
             </td>
         </tr>
     </tbody>
@@ -873,5 +873,21 @@ function save() {
     function bindack() {
         document.getElementById('ack_job').innerHTML = has[document.getElementById('ack').value];
     }
+
+    var editor_factual_information = CKEDITOR.replace('factual_information', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+
+    var editor_immediate_action = CKEDITOR.replace('immediate_action', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
 
 </script>

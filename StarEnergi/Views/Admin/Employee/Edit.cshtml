@@ -37,7 +37,9 @@
             "department":$('#department').val(),
             "employee_boss": eval('@ViewBag.employee_id'),
             "signature": $('#img_sign_src').val(),
-            "approval_level": approval_level
+            "approval_level": approval_level,
+            "delagate": '@Model.delagate',
+            "employee_delegate": '@Model.employee_delegate',
         }
 
         $.post("Employee/Edit", values, function (data) {
@@ -46,7 +48,39 @@
                     var html = $('#TreeSBSEmployee').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().find('img').attr('src');
                     var image = '<img class="t-image" src="' + html + '" alt="image">';
                     $('#TreeSBSEmployee').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().html(image + $('#alpha_name').val());
-                    $('#content').load('Employee/details/' + $('#id').val());
+                    var value =
+                    {
+                        "Id": $('#id').val(),
+                        "delagate": $('#delegate').is(':checked') == true ? 1 : 0,
+                        "employee_delegate": $('#delegate').is(':checked') == true ? $('#delegate_name').val() : ""
+                    }
+                    console.log(value.employee_delegate != '@Model.employee_delegate');
+                    if (value.delagate != '@Model.delagate' || value.employee_delegate != '@Model.employee_delegate') {
+                        $.post('@Url.Content("~/Account/Delegate")', value, function (data) {
+                            if (data != undefined) {
+                                if (data["status"] == 0) {
+                                    if (value.delagate == 1)
+                                        alert('You have delegated ' + $('#alpha_name').val() + ' approval');
+                                    else
+                                        alert('You have removed ' + $('#alpha_name').val() + ' delegation');
+
+                                    $('#content').load('Employee/details/' + $('#id').val());
+                                } else {
+                                    clearError();
+                                    $.each(data, function (index, value) {
+                                        if (index != "status") {
+                                            //error render
+                                            $('#' + index).next('div').html(value);
+                                        }
+                                    });
+                                }
+                            } else {
+                                alert('Error edited data');
+                            }
+                        });
+                    } else {
+                        $('#content').load('Employee/details/' + $('#id').val());
+                    }
                 } else {
                     clearError();
                     $.each(data, function (index, value) {
@@ -60,8 +94,37 @@
                 alert('Gagal mengedit data employee');
             }
         });
-
     }
+
+    function click() {
+        if ($('#delegate').is(':checked')) {
+            alert('a');
+            $('#delegate_name').removeAttr('disabled');
+        } else {
+            alert("b");
+            $('#delegate_name').val('');
+            $('#delegate_name').attr('disabled', 'disabled');
+
+        }
+    };
+
+    $(document).ready(function () {
+        $(":checkbox").change(function () {
+            if ($(this).is(':checked')) {
+                $('#delegate_name').removeAttr('disabled');
+            } else {
+                $('#delegate_name').val('');
+                $('#delegate_name').attr('disabled', 'disabled');
+            }
+        });
+
+        if ($(":checkbox").is(':checked')) {
+            $('#delegate_name').removeAttr('disabled');
+        } else {
+            $('#delegate_name').val('');
+            $('#delegate_name').attr('disabled', 'disabled');
+        }
+    });
 
     function clearError() {
         var field = ["alpha_name", "employee_no", "location", "work_location", "dob","email","department"];
@@ -135,6 +198,12 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.email)
             <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.Label("Delegate")
+        </div>
+        <div class="editor-field">
+            <input type="checkbox" id="delegate" name="delegate" value="1" @(Model.delagate == 1 ? "checked" : "") />&nbsp;@Html.DropDownList("delegate_name")
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.signature)
