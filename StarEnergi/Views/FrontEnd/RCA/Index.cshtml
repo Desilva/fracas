@@ -148,7 +148,7 @@
         var dataItem = e.dataItem;
         var row = e.row;
         if (dataItem.id_iir != null) {
-            row.cells[0].innerHTML = '<a onclick="editIIR(' + dataItem.id_iir + ')" style="color:blue;">IRN-' + dataItem.id_iir + '</a>';
+            row.cells[0].innerHTML = '<a onclick="editIIR(' + dataItem.id_iir + ')" style="color:blue;">' + dataItem.pir_number + '</a>';
         }
     }
 
@@ -233,13 +233,16 @@
         });
 
     }
-
+    var isView = 0;
     function onRowSelected(e) {
         var ordersGrid = $('#RCA').data('tGrid');
         selectedId = e.row.cells[1].innerHTML;
         isTree = e.row.cells[19].innerHTML;
         isPublish = e.row.cells[20].innerHTML;
         pa = e.row.cells[21].innerHTML;
+        isImplement = e.row.cells[22].innerHTML;
+        isView = e.row.cells[23].innerHTML;
+        iir_number = e.row.cells[0].innerHTML;
         var username = '@HttpContext.Current.Session["username"].ToString()';
         console.log(isPublish + '###' + typeof isPublish);
         console.log(pa + '####' + typeof pa);
@@ -248,14 +251,13 @@
         } else {
             $('.button-complete').attr('disabled', 'disabled');
         }
-
-        if (isPublish == "1" && pa == username) {
+        if (isImplement && pa == username && iir_number == "") {
             $('.button-to-iir').removeAttr('disabled');
         } else {
             $('.button-to-iir').attr('disabled', 'disabled');
         }
 
-        if (isPublish == "1") {
+        if (isPublish == "1" && isView == "1") {
             $('.button-copy').attr('disabled', 'disabled');
         } else {
             $('.button-copy').removeAttr('disabled');
@@ -273,7 +275,7 @@
             alert("You hasn't chosen any RCA.");
         } else {
             if (isTree == '') {
-                if ('@li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA)' == 'True') {
+                if ('@li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA)' == 'True' && isView == "0") {
                     openChooser(selectedId);
                 } else {
                     alert("Analysis hasn't been created yet");
@@ -453,7 +455,7 @@
             //            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id_rca"))
             //            .Action("AddInvestigation", "Investigation");
             //}).Width(200).Title("Action");
-            columns.Bound(o => o.id_iir).Width(150).Title("IIR");
+            columns.Bound(o => o.pir_number).Width(150).Title("IIR Reference Number");
             columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.rca_code).Width(150).Title("RCA Code");
             columns.Bound(o => o.name).Width(150).Title("Analysis Title");
@@ -478,7 +480,8 @@
             columns.Bound(o => o.is_tree).Hidden();
             columns.Bound(o => o.is_publish).Hidden();
             columns.Bound(o => o.member_name).Hidden();
-
+            columns.Bound(o => o.is_implement).Hidden();
+            columns.Bound(o => o.isView).Hidden();
         })
         .ClientEvents(events => events.OnRowDataBound("ondatabound").OnComplete("onComplete").OnCommand("onCommand").OnRowSelected("onRowSelected"))
         .Pageable(p => p.PageSize(20))

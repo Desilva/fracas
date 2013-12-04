@@ -327,10 +327,10 @@
     </tr>
     <tr>
         <td>
-           @Session["username"], @DateTime.Now.ToShortDateString()
+            @(Model.initiate_by != null ? Model.initiate_by : Session["username"]), @(Model.initiator_sign_date != null ? Model.initiator_sign_date.Value.ToString("dd MMMM yyy") : DateTime.Today.ToString("dd MMMM yyy"))
         </td>
         <td>
-            @DateTime.Now.Date.ToShortDateString()
+            @(Model.kpbo_sign_date_init != null ? Model.kpbo_sign_date_init.Value.ToString("dd MMMM yyy") : DateTime.Today.ToString("dd MMMM yyy"))
         </td>
         <td colspan="2">
         @{ if (Model.target_completion_init != null)

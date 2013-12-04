@@ -74,23 +74,13 @@
         <tr border="1">
             <td style="text-align:left;font-size:9px">
                 @{int countCol = 0; int countRow = 0;}
-                @if (Model.factual_information != null) {
-                    foreach (char a in Model.factual_information){if (a == '\n'){countRow++;countCol=0;<br />}
-                    else
-                    {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
-                    if (Model.factual_information.Length / 117 < 10 - countRow)
-                    {
-                        for (int b = 0; b < 10 - countRow - Model.factual_information.Length / 117; b++)
-                        {
-                            <br /><text>&nbsp;</text>
-                        }
-                    }
-                } else {
-                    for (int b = 0; b < 10; b++)
-                    {
-                        <br /><text>&nbsp;</text>
-                    }  
+                @{
+                    string pattern =  "style=\"height:([0-9]+)px; width:([0-9]+)px\"";
+                    string input = Model.factual_information == null ? "" : Model.factual_information;
+                    string replacement = "height=\"$1\" width=\"$2\"";
+                    System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(pattern);
                 }
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))
             </td>
         </tr>
     </tbody>
@@ -106,24 +96,10 @@
     <tbody style="width:100%">
         <tr border="1">
             <td style="text-align:left;font-size:9px">
-                @{countCol = 0; countRow = 0;}
-                @if (Model.immediate_action != null) {
-                    foreach (char a in Model.immediate_action){if (a == '\n'){countRow++;countCol=0;<br />}
-                    else
-                    {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
-                    if (Model.immediate_action.Length / 117 < 7 - countRow)
-                    {
-                        for (int b = 0; b < 7 - countRow - Model.immediate_action.Length / 117; b++)
-                        {
-                            <br /><text>&nbsp;</text>
-                        }
-                    }
-                } else {
-                    for (int b = 0; b < 7; b++)
-                    {
-                        <br /><text>&nbsp;</text>
-                    }
-                }
+            @{
+                input = Model.immediate_action == null ? "" : Model.immediate_action;
+            }
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))
             </td>
         </tr>
     </tbody>
@@ -150,24 +126,10 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align:left;font-size:9px">
-                            @{countCol = 0; countRow = 0;}
-                            @if (Model.immediate_causes != null) {
-                                foreach (char a in Model.immediate_causes){if (a == '\n'){countRow++;countCol=0;<br />}
-                                else
-                                {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
-                                if (Model.immediate_causes.Length / 117 < 4 - countRow)
-                                {
-                                    for (int b = 0; b < 4 - countRow - Model.immediate_causes.Length / 117; b++)
-                                    {
-                                        <br /><text>&nbsp;</text>
-                                    }
-                                }
-                            } else {
-                                for (int b = 0; b < 4; b++)
-                                {
-                                    <br /><text>&nbsp;</text>
-                                }
+                            @{
+                                input = Model.immediate_causes == null ? "" : Model.immediate_causes;
                             }
+                            @Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))
                         </td>
                     </tr>
                 </table>
@@ -186,24 +148,10 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align:left;font-size:9px">
-                            @{countCol = 0; countRow = 0;}
-                            @if (Model.basic_causes != null) {
-                                foreach (char a in Model.basic_causes){if (a == '\n'){countRow++;countCol=0;<br />}
-                                else
-                                {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
-                                if (Model.basic_causes.Length / 117 < 4 - countRow)
-                                {
-                                    for (int b = 0; b < 4 - countRow - Model.basic_causes.Length / 117; b++)
-                                    {
-                                        <br /><text>&nbsp;</text>
-                                    }
-                                }
-                            } else {
-                                for (int b = 0; b < 4; b++)
-                                {
-                                    <br /><text>&nbsp;</text>
-                                }
+                            @{
+                                input = Model.basic_causes == null ? "" : Model.basic_causes;
                             }
+                            @Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))
                         </td>
                     </tr>
                 </table>
@@ -222,24 +170,10 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align:left;font-size:9px">
-                            @{countCol = 0; countRow = 0;}
-                            @if (Model.additional_observation != null) {
-                                foreach (char a in Model.additional_observation){if (a == '\n'){countRow++;countCol=0;<br />}
-                                else
-                                {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
-                                if (Model.additional_observation.Length / 117 < 4 - countRow)
-                                {
-                                    for (int b = 0; b < 4 - countRow - Model.additional_observation.Length / 117; b++)
-                                    {
-                                        <br /><text>&nbsp;</text>
-                                    }
-                                }
-                            } else {
-                                for (int b = 0; b < 4; b++)
-                                {
-                                    <br /><text>&nbsp;</text>
-                                }
+                            @{
+                                input = Model.additional_observation == null ? "" : Model.additional_observation;
                             }
+                            @Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))
                         </td>
                     </tr>
                 </table>
@@ -258,24 +192,10 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align:left;font-size:9px">
-                            @{countCol = 0; countRow = 0;}
-                            @if (Model.cost_estimate != null) {
-                                foreach (char a in Model.cost_estimate){if (a == '\n'){countRow++;countCol=0;<br />}
-                                else
-                                {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@a</text>}}
-                                if (Model.cost_estimate.Length / 117 < 4 - countRow)
-                                {
-                                    for (int b = 0; b < 4 - countRow - Model.cost_estimate.Length / 117; b++)
-                                    {
-                                        <br /><text>&nbsp;</text>
-                                    }
-                                }
-                            } else {
-                                for (int b = 0; b < 4; b++)
-                                {
-                                    <br /><text>&nbsp;</text>
-                                }
+                            @{
+                                input = Model.cost_estimate == null ? "" : Model.cost_estimate;
                             }
+                            @Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))
                         </td>
                     </tr>
                 </table>
@@ -316,25 +236,89 @@
 <br />
 <table id="tabApp" class="tabs" style="width:750px" cellspacing="3" cellpadding="3" style="text-align:left;font-size:9px">
     <tbody style="width:100%">
+        @{int j = 0;}
+        @for (j = 0; j < Model.investigator.Count; j++)
+        {
+            if (j % 5 == 0)
+            {
+                <text><tr border="1">
+                    <td style="width:16.67%" class="right"><b>Investigator(s) Signature</b></td>
+                    <td style="width:16.67%" class="right">
+                        <table>
+                            <tr border="0">
+                                <td>
+                                    @if (Model.investigator_approve.ElementAt(j) != "") {
+                                        <img width="50" height="50"  src="@(Model.investigator_approve.ElementAt(j) != "" ? Server.MapPath("~/"+Model.investigator_approve.ElementAt(j).ToString()) : Server.MapPath("~/Content/image/blank.png"))"/>
+                                    }
+                                </td>
+                            </tr>
+                            <tr border =" 0">
+                                <td style="text-align:left;font-size:9px">
+                                    @Model.investigator.ElementAt(j)
+                                </td>
+                            </tr>
+                        </table>
+                    </td></text>
+            } else if (j % 5 == 4) {
+                <text><td style="width:16.67%" class="right">
+                        <table>
+                            <tr border="0">
+                                <td>
+                                    @if (Model.investigator_approve.ElementAt(j) != "") {
+                                        <img width="50" height="50"  src="@(Model.investigator_approve.ElementAt(j) != "" ? Server.MapPath("~/"+Model.investigator_approve.ElementAt(j).ToString()) : Server.MapPath("~/Content/image/blank.png"))"/>
+                                    }
+                                </td>
+                            </tr>
+                            <tr border =" 0">
+                                <td style="text-align:left;font-size:9px">
+                                    @Model.investigator.ElementAt(j)
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                <tr border="1">
+                    <td style="width:16.67%" class="right"><b>Name & Date</b></td>
+                    <td style="width:16.67%" class="right" colspan="5">
+                        @Model.investigator_date.Value.ToShortDateString()
+                    </td>
+                </tr></text>
+            } else {
+                    <td style="width:16.67%" class="right">
+                        <table>
+                            <tr border="0">
+                                <td>
+                                    @if (Model.investigator_approve.ElementAt(j) != "") {
+                                        <img width="50" height="50"  src="@(Model.investigator_approve.ElementAt(j) != "" ? Server.MapPath("~/"+Model.investigator_approve.ElementAt(j).ToString()) : Server.MapPath("~/Content/image/blank.png"))"/>
+                                    }
+                                </td>
+                            </tr>
+                            <tr border =" 0">
+                                <td style="text-align:left;font-size:9px">
+                                    @Model.investigator.ElementAt(j)
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+            }
+        }
+        
+        @if (j % 5 != 0)
+        {
+            for (int k = (j % 5); k < 5; k++)
+            {
+                <td style="width:16.67%" class="right">
+                    &nbsp;
+                </td>
+            }
+            <tr border="1">
+                <td style="width:16.67%" class="right"><b>Name & Date</b></td>
+                <td style="width:16.67%" class="right" colspan="5">
+                    @Model.investigator_date.Value.ToShortDateString()
+                </td>
+            </tr>
+        }
         <tr border="1">
-            <td style="width:16.67%" class="right"><b>Investigator Signature</b></td>
-            <td style="width:16.67%" class="right">
-                <table>
-                    <tr border="0">
-                        <td>
-                            @if (Model.investigator_approve != null) {
-                                <img width="50" height="50" @(Model.investigator_approve != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.investigator_approve != null ? Server.MapPath("~/"+Model.investigator_approve) : Server.MapPath("~/Content/image/blank.png"))"/>
-                            }
-                        </td>
-                    </tr>
-                    <tr border =" 0">
-                        <td style="text-align:left;font-size:9px">
-                            @Model.investigator
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td style="width:16.67%" class="right" rowspan="2"><b>Recieved by<br />Safety Supervisor</b></td>
+            <td style="width:16.67%" class="right"><b>Recieved by<br />Safety Supervisor</b></td>
             <td style="width:16.67%" class="right">
                 <table>
                     <tr border="0">
@@ -347,6 +331,24 @@
                     <tr border =" 0">
                         <td style="text-align:left;font-size:9px">
                             @(Model.loss_control_approve != null ? Model.loss_control_approve.Substring(0,1) != "a" ? "a/n " : "" : "")@Model.loss_control
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:16.67%" class="right" rowspan="2"><b>Reviewed by<br />SHE Superintendent</b></td>
+            <td style="width:16.67%" class="right">
+                <table>
+                    <tr border="0">
+                        <td>
+                            @if (Model.safety_officer_approve != null)
+                            {
+                                <img width="50" height="50" @(Model.safety_officer_approve != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.safety_officer_approve != null ? Server.MapPath("~/"+Model.safety_officer_approve.Substring(1)) : Server.MapPath("~/Content/image/blank.png"))"/>
+                            }
+                        </td>
+                    </tr>
+                    <tr border =" 0">
+                        <td style="text-align:left;font-size:9px">
+                            @Model.safety_officer
                         </td>
                     </tr>
                 </table>
@@ -372,10 +374,10 @@
         <tr border="1">
             <td style="width:16.67%" class="right"><b>Name & Date</b></td>
             <td style="width:16.67%" class="right">
-                @Model.investigator_date.Value.ToShortDateString()
+                @Model.loss_control_date.Value.ToShortDateString()
             </td>
             <td style="width:16.67%" class="right">
-                @Model.loss_control_date.Value.ToShortDateString()
+                @Model.safety_officer_date.Value.ToShortDateString()
             </td>
             <td style="width:16.67%" class="right">
                 @Model.field_manager_date.Value.ToShortDateString()

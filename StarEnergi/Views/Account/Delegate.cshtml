@@ -57,10 +57,8 @@
 
     function click() {
         if ($('#delegate').is(':checked')) {
-            alert('a');
             $('#delegate_name').removeAttr('disabled');
         } else {
-            alert("b");
             $('#delegate_name').val('');
             $('#delegate_name').attr('disabled', 'disabled');
 
@@ -95,5 +93,6 @@
         </div>
         <p>
             <input type="submit" value="Save" onclick="save()"/>
+
         </p>
     </fieldset>

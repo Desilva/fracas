@@ -108,6 +108,7 @@
 
     $('#period').change(function () {
         var $grid = $("#SheObservationWinner").data("tGrid");
+        var param = { id: $('#period').val() }
         $.post("/Undian/ChangePeriod", param, function (data) {
             $('#signature').val(data);
         });

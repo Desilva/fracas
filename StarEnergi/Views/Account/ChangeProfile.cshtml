@@ -24,7 +24,9 @@
             "dob": $('#dob').val(),
             "email": $('#email').val(),
             "dept_id": eval('@ViewBag.dept_id'),
-            "employee_boss": eval('@ViewBag.employee_id')
+            "employee_boss": eval('@ViewBag.employee_id'),
+            "signature": $('#signature').val(),
+            "employee_dept": $('#employee_dept').val(),
         }
 
         $.post('@Url.Content("~/Account/Edit")', values, function (data) {
@@ -104,6 +106,15 @@
             @Html.EditorFor(model => model.email)
             <div class="errorM"></div>
         </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.signature)
+        </div>
+        <div class="editor-field">
+            <img src="@Model.signature" alt="Signature" width="100" height="100"/>
+            <div class="errorM"></div>
+        </div>
+        @Html.HiddenFor(model => model.signature)
+        @Html.HiddenFor(model => model.employee_dept)
         <p>
             <input type="submit" value="Save" onclick="save()"/>
         </p>

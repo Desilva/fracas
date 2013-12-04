@@ -1,0 +1,42 @@
+﻿@model IEnumerable<StarEnergi.Models.CategoryEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>RCA Preserve Category (5-P's)</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.CategoryEntity>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("RCAPreserveCategory")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "RCAPreserveCategory")
+                .Insert("_InsertAjaxEditing", "RCAPreserveCategory")
+                .Update("_SaveAjaxEditing", "RCAPreserveCategory")
+                .Delete("_DeleteAjaxEditing", "RCAPreserveCategory");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.name).Title("Category");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

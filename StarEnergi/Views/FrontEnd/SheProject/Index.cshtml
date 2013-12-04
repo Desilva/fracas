@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Monthly Porject SHE Report";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+<script type="text/javascript">
+
+    function addEvent() {
+        $('#contentEventLog').load('SheProject/AddSheProject');
+    }
+
+    function showSheProject() {
+        $('#sheProject').load('SheProject/Report');
+    }
+
+    $(document).ready(function () {
+        showSheProject();
+    });
+</script>
+<div id="contentEventLog">
+    <h2 class="adminH2">Monthly Project SHE Report</h2>
+    
+    <div>
+        <input type="button" id="addEvent" value="Add Monthly Project SHE Report" onclick="addEvent()"/>
+    </div>
+    <br/>
+    <div id="sheProject">
+    </div>
+    <br />
+</div>

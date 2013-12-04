@@ -12,7 +12,8 @@ using StarEnergi.Controllers.Utilities;
 using System.IO;
 using System.Web.UI.WebControls;
 using StarEnergi.Utilities;
-
+using System.Collections;
+using System.Data.Objects.SqlClient;
 namespace StarEnergi.Controllers.FrontEnd
 {
     public class IncidentController : PdfViewController
@@ -21,7 +22,7 @@ namespace StarEnergi.Controllers.FrontEnd
         // GET: /Incident/
         public relmon_star_energiEntities db = new relmon_star_energiEntities();
         public static List<user_per_role> li;
-
+        private static int count;
 
         public ActionResult Index()
         {
@@ -34,11 +35,21 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewData["users"] = has;
             string username = (String)Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
+            if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
+            {
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
+            }
             ViewData["user_role"] = li;
             return View();
         }
 
         public ActionResult addIncident(int? id) {
+            string username = (String)Session["username"].ToString();
+            li = db.user_per_role.Where(p => p.username == username).ToList();
+            if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
+            {
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
+            }
             var has = (from employees in db.employees
                        join dept in db.employee_dept on employees.dept_id equals dept.id 
                        join users in db.users on employees.id equals users.employee_id into user_employee
@@ -109,10 +120,10 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.mod = id;
                 incident_report ir = db.incident_report.Find(id);
                 ViewBag.datas = ir;
-                ViewBag.superintendent_del = string.IsNullOrWhiteSpace(ir.superintendent_approve) == null ? (string.IsNullOrWhiteSpace(ir.superintendent) ? null : db.employees.Find(Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent)).employee_delegate) : null;
-                ViewBag.she_superintendent_del = string.IsNullOrWhiteSpace(ir.she_superintendent_approve) == null ? db.employees.Find(Int32.Parse(string.IsNullOrWhiteSpace(ir.superintendent) == null ? "0" : ir.she_superintendent)).employee_delegate : null;
-                ViewBag.loss_control_del = string.IsNullOrWhiteSpace(ir.loss_control_approve) == null ? db.employees.Find(Int32.Parse(string.IsNullOrWhiteSpace(ir.loss_control) == null ? "0" : ir.loss_control)).employee_delegate : null;
-                ViewBag.field_manager_del = string.IsNullOrWhiteSpace(ir.field_manager_approve) == null ? db.employees.Find(Int32.Parse(string.IsNullOrWhiteSpace(ir.field_manager) ? "0" : ir.field_manager)).employee_delegate : null;
+                ViewBag.superintendent_del = String.IsNullOrWhiteSpace(ir.superintendent_approve) == false ? (String.IsNullOrWhiteSpace(ir.superintendent) ? null : db.employees.Find(Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent)).employee_delegate) : null;
+                ViewBag.she_superintendent_del = String.IsNullOrWhiteSpace(ir.she_superintendent_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.superintendent) ? "0" : ir.she_superintendent)).employee_delegate : null;
+                ViewBag.loss_control_del = String.IsNullOrWhiteSpace(ir.loss_control_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.loss_control) ? "0" : ir.loss_control)).employee_delegate : null;
+                ViewBag.field_manager_del = String.IsNullOrWhiteSpace(ir.field_manager_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.field_manager) ? "0" : ir.field_manager)).employee_delegate : null;
             }
             else
             {
@@ -246,6 +257,7 @@ namespace StarEnergi.Controllers.FrontEnd
                        }).ToList();
             ViewData["users"] = has;
             ViewData["user_role"] = li;
+            ViewData["total"] = count;
             return PartialView();
         }
 
@@ -300,6 +312,120 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 Data = f.OrderByDescending(p => p.reference_number)
             });
+        }
+
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult _CustomBinding(GridCommand command)
+        {
+            IEnumerable data = GetData(command);
+            foreach (IREntity i in data)
+            {
+                //if (i.id_rca != null)
+                //{
+                //    var r = (from rcas in db.rcas
+                //             where rcas.id == i.id_rca
+                //             select new
+                //             {
+                //                 rca_number = rcas.rca_code
+                //             }).ToList();
+                //    i.rca_number = r.FirstOrDefault().rca_number;
+                //}
+                //i.inves = i.investigation == 1 ? "Yes" : "No";
+                //i.type_report = i.type_of_report == 1 ? "On the job" : i.type_of_report == 0 ? "Off the job" : "";
+                //i.actual_loss = i.actual_loss_severity == 1 ? "Major" : i.actual_loss_severity == 2 ? "Serious" : i.actual_loss_severity == 3 ? "Moderate" : i.actual_loss_severity == 4 ? "Minor" : "";
+                //i.potential_loss = i.potential_loss_severity == 1 ? "Major" : i.potential_loss_severity == 2 ? "Serious" : i.potential_loss_severity == 3 ? "Moderate" : i.potential_loss_severity == 4 ? "Minor" : "";
+                //i.probability_str = i.probability == 1 ? "Frequent" : i.probability == 2 ? "Occasional" : i.probability == 3 ? "Seldom" : i.probability == 4 ? "Rare" : "";
+                //i.prepared_by = i.prepared_by != "" ? db.employees.Find(int.Parse((i.prepared_by == "" || i.prepared_by == null) ? "0" : i.prepared_by)).alpha_name : "";
+            }
+            return View(new GridModel
+            {
+                Data = data,
+                Total = count
+            });
+        }
+
+        private static IEnumerable GetData(GridCommand command)
+        {
+            var dataContext = new relmon_star_energiEntities();
+            IQueryable<IREntity> data = (from p in dataContext.incident_report
+                                                join rcass in dataContext.rcas
+                                                on p.id_rca equals rcass.id into pr
+                                                from ir_rca in pr.DefaultIfEmpty()
+                                                join employeei in dataContext.employees
+                                                on p.prepared_by equals SqlFunctions.StringConvert((double)employeei.id) into ps
+                                                from emp in ps.DefaultIfEmpty()
+                                                select new IREntity
+                                                {
+                                                    id = p.id,
+                                                    facility = p.facility,
+                                                    incident_location = p.incident_location,
+                                                    reference_number = p.reference_number,
+                                                    type_of_report = p.type_of_report,
+                                                    date_incident = p.date_incident,
+                                                    title = p.title,
+                                                    incident_type = p.incident_type,
+                                                    actual_loss_severity = p.actual_loss_severity,
+                                                    potential_loss_severity = p.potential_loss_severity,
+                                                    probability = p.probability,
+                                                    factual_information = p.factual_information,
+                                                    cost_estimate = p.cost_estimate,
+                                                    immediate_action = p.immediate_action,
+                                                    ack_supervisor = p.ack_supervisor,
+                                                    prepare_date = p.prepare_date,
+                                                    ack_date = p.ack_date,
+                                                    superintendent = p.superintendent,
+                                                    loss_control = p.loss_control,
+                                                    field_manager = p.field_manager,
+                                                    she_superintendent = p.she_superintendent,
+                                                    superintendent_date = p.superintendent_date,
+                                                    loss_date = p.loss_date,
+                                                    field_manager_date = p.field_manager_date,
+                                                    she_superintendent_date = p.she_superintendent_date,
+                                                    investigation = p.investigation,
+                                                    investigation_req = p.investigation_req,
+                                                    id_rca = p.id_rca,
+                                                    superintendent_approve = p.superintendent_approve,
+                                                    field_manager_approve = p.field_manager_approve,
+                                                    loss_control_approve = p.loss_control_approve,
+                                                    she_superintendent_approve = p.she_superintendent_approve,
+                                                    lead_name = p.lead_name,
+                                                    superintendent_delegate = p.superintendent_delegate,
+                                                    field_manager_delegate = p.field_manager_delegate,
+                                                    loss_control_delegate = p.loss_control_delegate,
+                                                    she_superintendent_delegate = p.she_superintendent_delegate,
+                                                    supervisor_approve = p.supervisor_approve,
+                                                    supervisor_delegate = p.supervisor_delegate,
+                                                    kontraktor_seg = p.kontraktor_seg,
+                                                    rca_number = ir_rca.rca_code != null ? ir_rca.rca_code : "",
+                                                    inves = p.investigation == 1 ? "Yes" : "No",
+                                                    type_report = p.type_of_report == 1 ? "On the job" : p.type_of_report == 0 ? "Off the job" : "",
+                                                    actual_loss = p.actual_loss_severity == 1 ? "Major" : p.actual_loss_severity == 2 ? "Serious" : p.actual_loss_severity == 3 ? "Moderate" : p.actual_loss_severity == 4 ? "Minor" : "",
+                                                    potential_loss = p.potential_loss_severity == 1 ? "Major" : p.potential_loss_severity == 2 ? "Serious" : p.potential_loss_severity == 3 ? "Moderate" : p.potential_loss_severity == 4 ? "Minor" : "",
+                                                    probability_str = p.probability == 1 ? "Frequent" : p.probability == 2 ? "Occasional" : p.probability == 3 ? "Seldom" : p.probability == 4 ? "Rare" : "",
+                                                    prepared_by = emp.alpha_name,
+                                                });
+            data = data.ApplyFiltering(command.FilterDescriptors);
+            count = data.FirstOrDefault() == null ? 0 : data.Count();
+            //Apply sorting
+            data = data.ApplySorting(command.GroupDescriptors, command.SortDescriptors);
+            //Apply paging
+            data = data.ApplyPaging(command.Page, command.PageSize);
+            //Apply grouping
+            if (command.GroupDescriptors.Any())
+            {
+                return data.ApplyGrouping(command.GroupDescriptors);
+            }
+
+            List<IREntity> retVal = data.FirstOrDefault() == null ? new List<IREntity>() : data.ToList();
+
+            return retVal;
+        }
+        private static int GetCount()
+        {
+            using (relmon_star_energiEntities dataContext = new relmon_star_energiEntities())
+            {
+                return dataContext.incident_report.Count();
+            }
         }
 
         [HttpPost]
@@ -680,7 +806,11 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
-            SendEmailToAll(incidentReport, 2,comment);
+
+            incidentReport.supervisor_approve = null;
+            db.Entry(incidentReport).State = EntityState.Modified;
+            db.SaveChanges();
+            SendEmailToAll(incidentReport, 2, comment, 2);
             return Json(new { success = true });
 
         }
@@ -702,7 +832,8 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
-            SendEmailToAll(incidentReport, 2, comment);
+
+            SendEmailToAll(incidentReport, 2, comment, 1);
             return Json(new { success = true });
         }
 
@@ -723,7 +854,11 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
-            SendEmailToAll(incidentReport, 2, comment);
+
+            incidentReport.superintendent_approve = null;
+            db.Entry(incidentReport).State = EntityState.Modified;
+            db.SaveChanges();
+            SendEmailToAll(incidentReport, 2, comment, 3);
             return Json(new { success = true });
 
         }
@@ -745,7 +880,11 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
-            SendEmailToAll(incidentReport, 2, comment);
+
+            incidentReport.loss_control_approve = null;
+            db.Entry(incidentReport).State = EntityState.Modified;
+            db.SaveChanges();
+            SendEmailToAll(incidentReport, 2, comment, 4);
             return Json(new { success = true });
 
         }
@@ -767,7 +906,11 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
-            SendEmailToAll(incidentReport, 2, comment);
+
+            incidentReport.she_superintendent_approve = null;
+            db.Entry(incidentReport).State = EntityState.Modified;
+            db.SaveChanges();
+            SendEmailToAll(incidentReport, 2, comment, 5);
             return Json(new { success = true });
 
         }
@@ -1299,7 +1442,7 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         //reject type = 2
-        public void SendEmailToAll(incident_report incidentReport, int type = 1, string comment = "")
+        public void SendEmailToAll(incident_report incidentReport, int type = 1, string comment = "", int rejectType = 0)
         {
             employee e;
             List<String> s = new List<string>();

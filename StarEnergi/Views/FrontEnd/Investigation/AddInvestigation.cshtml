@@ -2,19 +2,41 @@
     string immse = "";
     StarEnergi.Models.investigation_report iir = null;
     bool isEdit = false;
+    bool isView = true;
     int? id = null;
     int? id_rca = ViewBag.id_ir as Nullable<Int32>;
+    StarEnergi.Models.incident_report ir = null;
+    
+    if (ViewBag.ir != null) {
+        ir = ViewBag.ir as StarEnergi.Models.incident_report;    
+    }
+    
     if (ViewBag.mod != null)
     {
         id = ViewBag.mod as Nullable<Int32>;
         ViewBag.Title = "Edit Incident Investigation Report";
         iir = ViewBag.datas as StarEnergi.Models.investigation_report;
         isEdit = true;
+        string user_id = HttpContext.Current.Session["id"].ToString();
+        if (iir.investigator.Split(';').First() == user_id && iir.loss_control_approve == null) {
+            isView = false;
+        } else if ((iir.loss_control == user_id || iir.loss_control_delegate == user_id) && iir.safety_officer_approve == null && !iir.investigator_approve.Contains(";;") && iir.loss_control_approve == null) {
+            isView = false;
+        }
+        else if ((iir.safety_officer == user_id || iir.safety_officer_delegate == user_id) && iir.field_manager_approve == null && iir.loss_control_approve != null && iir.safety_officer_approve == null)
+        {
+            isView = false;
+        }
+        else if ((iir.field_manager == user_id || iir.field_manager_delegate == user_id) && iir.field_manager_approve == null && iir.safety_officer_approve != null)
+        {
+            isView = false;
+        }
     }
     else
     {
         ViewBag.Title = "Add Incident Investigation Report";
         immse = ViewBag.datas as string;
+        isView = false;
     }
     List<StarEnergi.Models.user_per_role> li = null;
     if (ViewData["user_role"] != null)
@@ -93,10 +115,13 @@
     }
 
 </style>
+
 <script type="text/javascript">
     var isEdit = '@isEdit';
     var isSave = false;
     var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR)';
+    var isView = '@isView' == 'True';
+    var user_id = '@HttpContext.Current.Session["id"].ToString()';
 
     function reject(type) {
         $("#type_reject").val(type);
@@ -106,7 +131,7 @@
 
     function reject_ajax() {
         var type = $('#type_reject').val();
-        var route = type == 1 ? "@Url.Action("rejectInvestigator", "Investigation")" : type == 2 ? "@Url.Action("rejectLossControl", "Investigation")" : type == 3 ? "@Url.Action("rejectFieldManager", "Investigation")" : "";
+        var route = type == 1 ? "@Url.Action("rejectInvestigator", "Investigation")" : type == 2 ? "@Url.Action("rejectLossControl", "Investigation")" : type == 3 ? "@Url.Action("rejectFieldManager", "Investigation")" : type == 4 ? "@Url.Action("rejectSafetyOfficer", "Investigation")" : "";
         $.ajax({
             type: "POST",
             url: route,
@@ -117,19 +142,19 @@
             },
             success: function (data) {
                 $("#RejectComment").data("tWindow").close();
+                window.location = "/Investigation/AddInvestigation/@id";
             }
         });
     }
 
-    function approveInvestigator(employee_id) {
+    function approveInvestigator(employee_id,id) {
         $.post("/Investigation/approveInvestigator", { id: '@id', employee_id: employee_id }, function (data) {
             if (data.success) {
                 var has = data.path;
-                $('#approve_investigator').parent().hide();
-                $('#img_approve_investigator').attr('src', has);
-                $('#img_approve_investigator').css('display', 'block');
-                $('#investigator').prop('disabled', true);
-                $('#date_inves').prop('disabled', true);
+                $('#approve_investigator'+id).hide();
+                $('#img_approve_investigator'+id).attr('src', has);
+                $('#img_approve_investigator'+id).css('display', 'block');
+                $('#investigator'+id).prop('disabled', true);
             } else {
                 alert("You do not supply your signature");
             }
@@ -166,6 +191,21 @@
         });
     }
 
+    function approveSO(employee_id) {
+        $.post("/Investigation/approveSafetyOfficer", { id: '@id', employee_id: employee_id }, function (data) {
+            if (data.success) {
+                var has = data.path;
+                $('#approve_safety_officer').parent().hide();
+                $('#img_approve_safety_officer').attr('src', has);
+                $('#img_approve_safety_officer').css('display', 'block');
+                $('#safety_officer').prop('disabled', true);
+                $('#date_safety_officer').prop('disabled', true);
+            } else {
+                alert("You do not supply your signature");
+            }
+        });
+    }
+
     function OnComplete(e) {
         if (e.name == null) {
             if (isInv == "True") {
@@ -181,7 +221,7 @@
                         if (value != null)
                             $('#edit_' + index).val((value.getMonth() + 1) + '/' + value.getDate() + '/' + value.getFullYear());
                     } else if (index == "has_pir") {
-                        if (value != null) {
+                        if (value != null && value == 1) {
                             $('#edit_pir').attr('checked', true);
                         } else {
                             $('#edit_pir').attr('checked', false);
@@ -200,10 +240,32 @@
         var row = e.row;
     }
 
+    function htmlEncode(value) {
+        //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+        //then grab the encoded contents back out.  The div never exists on the page.
+        return $('<div/>').text(value).html();
+    }
+
     function save() {
 
         var loss_control_delegate = $('#loss_control_delegate').val();
         var field_manager_delegate = $('#field_manager_delegate').val();
+        var safety_officer_delegate = $('#safety_officer_delegate').val();
+
+        var investigators = [];
+        var total = parseInt($('#totalInvestigator').val());
+
+        for (var i = 1; i <= total; i++) {
+            investigators.push($('#investigator' + i).val());
+        }
+
+        var factual_information = htmlEncode(CKEDITOR.instances.facts.getData());
+        var immediate_action = htmlEncode(CKEDITOR.instances.imme_action.getData());
+        var immediate_causes = htmlEncode(CKEDITOR.instances.imme_causes.getData());
+        var basic_cause = htmlEncode(CKEDITOR.instances.basic_causes.getData());
+        var additional_information = htmlEncode(CKEDITOR.instances.add_observation.getData());
+        var cost = htmlEncode(CKEDITOR.instances.cost_estimate.getData());
+
         if (validate()) {
             var values = {
                 facility: $('#bus_unit').val(),
@@ -215,17 +277,20 @@
                 actual_loss: $('#actual_loss').val(),
                 potential_loss: $('#potential_loss').val(),
                 probability: $('#probability').val(),
-                factual_information: $('#facts').val(),
-                cost_estimate: $('#cost_estimate').val(),
-                immediate_action: $('#imme_action').val(),
-                immediate_causes: $('#imme_causes').val(),
-                basic_causes: $('#basic_causes').val(),
-                additional_observation: $('#add_observation').val(),
-                investigator: $('#investigator').val(),
+                factual_information: factual_information,
+                cost_estimate: cost,
+                immediate_action: immediate_action,
+                immediate_causes: immediate_causes,
+                basic_causes: basic_cause,
+                additional_observation: additional_information,
+                investigators: investigators,
                 investigator_date: $('#date_inves').val(),
                 loss_control: isEdit == 'False' ? $('#loss_control').val() : (loss_control_delegate == 'True' ? $('#loss_control_delegate_name').val() : $('#loss_control').val()),
                 loss_control_delegate: isEdit == 'False' ? $('#loss_control_delegate_name').val() : (loss_control_delegate == 'True' ? $('#loss_control').val() : $('#loss_control_delegate_name').val()),
                 loss_control_date: $('#date_loss_control').val(),
+                safety_officer: isEdit == 'False' ? $('#safety_officer').val() : (safety_officer_delegate == 'True' ? $('#safety_officer_delegate_name').val() : $('#safety_officer').val()),
+                safety_officer_delegate: isEdit == 'False' ? $('#safety_officer_delegate_name').val() : (safety_officer_delegate == 'True' ? $('#safety_officer').val() : $('#safety_officer_delegate_name').val()),
+                safety_officer_date: $('#date_safety_officer').val(),
                 field_manager: isEdit == 'False' ? $('#field_manager').val() : (field_manager_delegate == 'True' ? $('#field_manager_delegate_name').val() : $('#field_manager').val()),
                 field_manager_delegate: isEdit == 'False' ? $('#field_manager_delegate_name').val() : (field_manager_delegate == 'True' ? $('#field_manager').val() : $('#field_manager_delegate_name').val()),
                 field_manager_date: $('#date_field_manager').val(),
@@ -234,7 +299,7 @@
             if (isEdit == 'False') {
                 var id_rca = '@id_rca';
                 values.id_rca = id_rca;
-                $.post("/Investigation/Add", values, function (data) {
+                $.post("/Investigation/Add", $.param(values, true), function (data) {
                     if (data != undefined) {
                         isSave = true;
                         $('#realmod_save').css("display", "none");
@@ -249,7 +314,7 @@
                 isSave = true;
                 var ids = '@id';
                 values.id = ids;
-                $.post("/Investigation/Edit", values, function (data) {
+                $.post("/Investigation/Edit", $.param(values, true), function (data) {
                     if (data != undefined) {
                         $('#realmod_save').css("display", "none");
                         alert('Incident Investigation Report successfully updated');
@@ -267,6 +332,16 @@
             $.post("Investigation/DeleteAllRecommend", function (data) {});
         }
         window.location = "/Investigation";
+    }
+
+    function email() {
+        $.post("/Investigation/SendEmail", {id : '@id'}, function (data) {
+            if (data != undefined) {
+                alert('Email sent.');
+            } else {
+                alert('Send email failed.');
+            }
+        });
     }
 
     function validate() {
@@ -317,12 +392,125 @@
         });
     }
 
+    function addInvestigator(value,appr) {
+        value = value || "";
+        var curId = parseInt($('#totalInvestigator').val());
+        var newId = curId + 1;
+        var docs = document.getElementsByClassName("investigators")[0];
+        var a = document.createElement("div");
+        a.setAttribute("id","inves"+newId);
+
+        var root = document.createElement("select");
+        root.setAttribute("id", "investigator" + newId);
+        root.setAttribute("class", "investigator");
+        if (appr != "" && appr != null) root.setAttribute("disabled","disabled");
+        if (isView) root.setAttribute('disabled','disabled');
+
+        var opt = document.createElement("option");
+        opt.setAttribute("value","");
+        opt.setAttribute("selected","selected");
+        opt.setAttribute("value","");
+        
+        opt.innerHTML = "Choose One";
+        root.appendChild(opt);
+
+        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+        {
+           <text>
+            var opt = document.createElement("option");
+            opt.setAttribute("value","@user.id");
+            opt.innerHTML = "@user.alpha_name";
+            if ("@user.id" == value) opt.setAttribute("selected","selected");
+            root.appendChild(opt);
+        </text>
+        }        
+        a.appendChild(root);
+        $('#deleteInvestigator').css('display','inline');
+        if (value != "" && value == "@HttpContext.Current.Session["id"].ToString()") {
+            var b = document.createElement("div");
+            b.setAttribute("id","button_investigator_approve"+newId);
+            if (appr != "") {
+                var c = document.createElement("img");
+                c.setAttribute("width","50");
+                c.setAttribute("height","50");
+                c.setAttribute("src",appr);
+
+                b.appendChild(c);
+            } else {
+                var c = document.createElement("input");
+                c.setAttribute("type","button");
+                c.setAttribute("id","approve_investigator"+newId);
+                c.setAttribute("onclick","approveInvestigator('@HttpContext.Current.Session["id"].ToString()'," + newId + ")");
+                c.value = "Approve";
+                
+
+                var d = document.createElement("img");
+                d.setAttribute("width","50");
+                d.setAttribute("height","50");
+                d.setAttribute("id","img_approve_investigator"+newId);
+                d.setAttribute("src",appr);
+                d.style.display = "none";
+
+                b.appendChild(c);
+                b.appendChild(d);
+            }
+            a.appendChild(b);
+        } else if (value != "") {
+            var b = document.createElement("div");
+            b.setAttribute("id","button_investigator_approve"+newId);
+            var c = document.createElement("img");
+            c.setAttribute("width","50");
+            c.setAttribute("height","50");
+            c.setAttribute("id","img_approve_investigator"+newId);
+            c.setAttribute("src",appr);
+            if (appr == "") c.style.display = "none";
+            b.appendChild(c);
+            a.appendChild(b);
+        }
+        
+        docs.appendChild(a);
+
+        document.getElementById("totalInvestigator").value = newId;
+    }
+
+    function delInvestigator() {
+        var curId = parseInt($('#totalInvestigator').val());
+        
+        if (curId != 1) {
+            document.getElementsByClassName("investigators")[0].removeChild(document.getElementById("inves" + curId));
+            var newId = curId - 1;
+            document.getElementById("totalInvestigator").value = newId;
+
+            if (newId == 1) {
+                $('#deleteInvestigator').hide();
+            }
+        }
+
+    }
+
     function clear() {
         $('#desc').val('');
         var now = new Date();
         $('#completion_date').val('' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear());
         $('#pic').val();
     }
+
+    $(document).ready(function() {
+        var inves = '@(isEdit ? iir.investigator : "")';
+        var inves_appr = '@(isEdit ? iir.investigator_approve : "")';
+        var a = inves.split(";");
+        var a_appr = inves_appr.split(";");
+        console.log(a_appr);
+        var isFirst = true;
+        for (var b in a) {
+            if (!isFirst)
+                addInvestigator(a[b],a_appr[b]);
+            else {
+                isFirst = false;
+            }
+        }
+
+    });
 </script>
 <h2>@ViewBag.Title</h2>
 <div id="content-inc">
@@ -332,11 +520,11 @@
         <tr>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Business Unit / Facility</h5><br />
-                <input type="text" id="bus_unit" name="bus_unit" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.facility : "")"/>
+                <input type="text" id="bus_unit" name="bus_unit" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled") value="@(isEdit ? iir.facility : (ir != null ? ir.facility : ""))"/>
             </td>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Title</h5><br />
-                <input type="text" id="titles" name="titles" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.title : "")"/>
+                <input type="text" id="titles" name="titles" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled") value="@(isEdit ? iir.title : (ir != null ? ir.title : ""))"/>
             </td>
             <td colspan="6" style="width:33%">
                 <h5>Reference Number</h5><br />
@@ -349,31 +537,31 @@
                 @(Html.Telerik().DateTimePicker()
                         .Name("date_incident")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:310px;margin-left:5px" })
-                        .Value(isEdit ? iir.date_incident : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? true : false)
+                        .Value(isEdit ? iir.date_incident : (ir != null ? ir.date_incident.Value : DateTime.Now))
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? true : false)
                 )
             </td>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Incident Location</h5><br />
-                <input type="text" id="inc_loc" name="inc_loc" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.incident_location : "")"/>
+                <input type="text" id="inc_loc" name="inc_loc" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled") value="@(isEdit ? iir.incident_location : (ir != null ? ir.incident_location : ""))"/>
             </td>
             <td colspan="6" style="width:33%">
                 <h5>Incident Type</h5><br />
-                <input type="text" id="incident_type" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.incident_type : "")"/>
+                <input type="text" id="incident_type" name="incident_type" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled") value="@(isEdit ? iir.incident_type : (ir != null ? ir.incident_type : ""))"/>
             </td>
         </tr>
         <tr>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Actual Loss Severity</h5><br />
-                <input type="text" id="actual_loss" name="actual_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.actual_loss : "")"/>
+                <input type="text" id="actual_loss" name="actual_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled") value="@(isEdit ? iir.actual_loss : (ir != null ? (ir.actual_loss_severity == 1 ? "Major" : (ir.actual_loss_severity == 2 ? "Serious" : (ir.actual_loss_severity == 3 ? "Moderate" : (ir.actual_loss_severity == 4 ? "Minor" : "")))) : ""))"/>
             </td>
             <td colspan="6" class="right" style="width:33%">
                 <h5>Potential Loss Severity</h5><br />
-                <input type="text" id="potential_loss" name="potential_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.potential_loss : "")"/>
+                <input type="text" id="potential_loss" name="potential_loss" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled") value="@(isEdit ? iir.potential_loss : (ir != null ? (ir.potential_loss_severity == 1 ? "Major" : (ir.potential_loss_severity == 2 ? "Serious" : (ir.potential_loss_severity == 3 ? "Moderate" : (ir.potential_loss_severity == 4 ? "Minor" : "")))) : ""))"/>
             </td>
             <td colspan="6" style="width:33%">
                 <h5>Probability of Recurrence</h5><br />
-                <input type="text" id="probability" name="probability" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@(isEdit ? iir.probability : "")"/>
+                <input type="text" id="probability" name="probability" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled") value="@(isEdit ? iir.probability : (ir != null ? (ir.probability == 1 ? "Frequent" : (ir.probability == 2 ? "Occasional" : (ir.probability == 3 ? "Seldom" : (ir.probability == 4 ? "Rare" : "")))) : ""))"/>
             </td>
         </tr>
     </tbody>
@@ -386,7 +574,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="facts" name="facts" rows="15" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.factual_information : "")</textarea>
+                <textarea id="facts" name="facts" rows="15" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.factual_information)).ToHtmlString() : "")</textarea>
             </td>
         </tr>
     </tbody>
@@ -398,7 +586,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.immediate_action : immse)</textarea>
+                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.immediate_action)).ToHtmlString() : immse)</textarea>
             </td>
         </tr>
     </tbody>
@@ -411,25 +599,25 @@
         <tr>
             <td>
                 <h5>Immediate Causes</h5><small>(These include <b>acts</b> [personal actions] and/or <b>conditions</b> [jobsite circumstances]. Attach additional pages if necessary)</small><br />
-                <textarea id="imme_causes" name="imme_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.immediate_causes : "")</textarea>
+                <textarea id="imme_causes" name="imme_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.immediate_causes)).ToHtmlString() : "")</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Basic Causes</h5><small>(These include the <b>personal factors</b> and/or <b>job factors</b> which allow the immediate causes to occur. Attach additional pages if necessary)</small><br />
-               <textarea id="basic_causes" name="basic_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.basic_causes : "")</textarea>
+               <textarea id="basic_causes" name="basic_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.basic_causes)).ToHtmlString() : "")</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Additional Observations</h5><small>(List additional observations related to the incident. Attach additional pages if necessary)</small><br />
-                <textarea id="add_observation" name="add_observation" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.additional_observation : "")</textarea>
+                <textarea id="add_observation" name="add_observation" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.additional_observation)).ToHtmlString() : "")</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Cost Estimate</h5><small>(Estimated cost for medical treatment, rehabilitation, damage to property, loss to process, etc.)</small><br />
-                <textarea id="cost_estimate" name="cost_estimate" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled")>@(isEdit ? iir.cost_estimate : "")</textarea>
+                <textarea id="cost_estimate" name="cost_estimate" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.cost_estimate)).ToHtmlString() : (ir != null ? Html.Raw(System.Web.HttpUtility.HtmlDecode("$ " + ir.cost_estimate)).ToHtmlString() : ""))</textarea>
             </td>
         </tr>
     </tbody>
@@ -446,13 +634,15 @@
         {
             keys.Add(p => p.id);
         })
-        .ToolBar(commands => commands
-            .Custom()
-            .HtmlAttributes(new { id = "addRecommend" })
-            .Text("Add Recommendation")
-            .Ajax(true)
-            .Action("addRecommendation", "Investigation", new { id = id })
-        )
+        .ToolBar(commands => {
+            if (!isView) {
+                commands.Custom()
+                .HtmlAttributes(new { id = "addRecommend" })
+                .Text("Add Recommendation")
+                .Ajax(true)
+                .Action("addRecommendation", "Investigation", new { id = id });
+            }
+        })
         .DataBinding(dataBinding =>
         {
             dataBinding.Ajax()
@@ -466,7 +656,7 @@
             columns.Bound(o => o.PIC).Width(150).Title("Who / PIC / Dept / Sect");
             columns.Bound(o => o.completion_date).Width(150).Title("Completion Date");
             columns.Bound(o => o.pir_number).Width(80).Title("PIR No.");
-            if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
+            if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView)
             {
                 columns.Command(commands =>
                 {
@@ -496,39 +686,49 @@
                 <h5>Investigator(s) Signature</h5>
             </td>
             <td style="width:16.67%" class="right">
+                <input type="hidden" id="totalInvestigator" value="1" />
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                 {
-                    <select id="investigator" name="investigator"@(isEdit && iir.investigator_approve != null ? "disabled" : "")>
-                        <option value="" selected disabled>Choose One</option>
-                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
-                        {
-                            if (isEdit && user.id == Int32.Parse(iir.investigator == null ? "0" : iir.investigator))
-                            {
-                                <option value="@user.id" selected>@user.alpha_name</option>
-                            }
-                            else if (!isEdit && user.id == Int32.Parse(Session["id"].ToString()))
-                            {
-                                <option value="@user.id" selected>@user.alpha_name</option>
-                            }
-                            else
-                            {
-                                <option value="@user.id">@user.alpha_name</option>
-                            }
-                        }
-                    </select>
-                        if (isEdit)
-                        {
-                            if (has.Find(p => p.username == username).id == Int32.Parse(iir.investigator == null ? "0" : iir.investigator))
-                            {
-                                if (iir.investigator_approve == null)
+                    <div class="investigators">
+                        <div class="inves1">
+                            <select id="investigator1" name="investigator1" @(isEdit && iir.investigator_approve.Split(';').First() != null ? "disabled" : "")>
+                                <option value="" selected disabled>Choose One</option>
+                                @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                                 {
-                            <div id="button_investigator_approve">
-                                <input type="button" id="approve_investigator" onclick="approveInvestigator('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
-                            </div>
+                                    if (isEdit && user.id == Int32.Parse(iir.investigator.Split(';').First() == null ? "0" : iir.investigator.Split(';').First()))
+                                    {
+                                        <option value="@user.id" selected>@user.alpha_name</option>
+                                    }
+                                    else if (!isEdit && user.id == Int32.Parse(Session["id"].ToString()))
+                                    {
+                                        <option value="@user.id" selected>@user.alpha_name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.id">@user.alpha_name</option>
+                                    }
                                 }
+                            </select>
+                            @if (isEdit)
+                            {
+                                if (has.Find(p => p.username == username).id == Int32.Parse(iir.investigator.Split(';').First() == null ? "0" : iir.investigator.Split(';').First()))
+                                {
+                                    if (iir.investigator_approve.Split(';').First() == null)
+                                    {
+                                <div id="button_investigator_approve">
+                                    <input type="button" id="approve_investigator" onclick="approveInvestigator('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                </div>
+                                    }
+                                }
+                                // @(iir.investigator_approve.Split(';').First() == "" ? "style=display:none;" : "style=display:block;") 
+                            <img id="img_approve_investigator1" width="50" height="50" src="@iir.investigator_approve.Split(';').First()"/>
                             }
-                    <img id="img_approve_investigator" width="50" height="50" @(iir.investigator_approve == null ? "style=display:none;" : "style=display:block;")  src="@iir.investigator_approve"/>
-                        }
+                        </div>
+                    </div>
+                    if (!isView) {
+                        <input type="button" id="addInvestigator" onclick="addInvestigator()" value="add" />
+                        <input type="button" id="deleteInvestigator" onclick="delInvestigator()" value="del" style="display:none"/>                            
+                    }
                 }
                 else
                 {
@@ -585,11 +785,27 @@
                     </select>
                     <input type="hidden" id="loss_control_delegate" value="@loss_control_delegate" />
                     <input type="hidden" id="loss_control_delegate_name" value="@(iir != null ? loss_control_delegate ? iir.loss_control : "" : loss_control_delegate_name.ToString())" />
-                        if (isEdit)
+                    if (isEdit)
                         {
+                            bool isInvestigatorApprove = true;
+                            bool isFirst = true;
+                            foreach (string s in iir.investigator_approve.Split(';'))
+                            {
+                                if (isFirst)
+                                {
+                                    isFirst = false;
+                                }
+                                else
+                                {
+                                    if (s == "")
+                                    {
+                                        isInvestigatorApprove = false;
+                                    }
+                                }
+                            }
                             if (has.Find(p => p.username == username).id == Int32.Parse(iir.loss_control == null ? "0" : iir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(iir.loss_control_delegate == null ? "0" : iir.loss_control_delegate))
                             {
-                                if (iir.loss_control_approve == null)
+                                if (iir.loss_control_approve == null && isInvestigatorApprove)
                                 {
                             <div id="button_loss_control_approve">
                                 <input type="button" id="approve_loss_control" onclick="approveLC('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
@@ -598,6 +814,71 @@
                                 }
                             }
                     <img id="img_approve_loss_control" width="50" height="50" @(iir.loss_control_approve == null ? "style=display:none;" : "style=display:block;")  src="@(iir.loss_control_approve == null ? "" : iir.loss_control_approve.Substring(1))"/>
+                        }
+                }
+            </td>
+            <td style="width:16.67%" class="right" rowspan="2">
+                <h5>Reviewed by<br />SHE Superintendent</h5>
+            </td>
+            <td style="width:16.67%" class="right">
+                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(iir.safety_officer == null ? "0" : iir.safety_officer) && (iir.safety_officer_approve == null ? true : iir.safety_officer_approve.Substring(0, 1) == "a"))
+                {
+                }
+                else if (iir != null && iir.safety_officer_delegate != null && (iir.safety_officer_approve == null ? true : iir.safety_officer_approve.Substring(0, 1) == "d"))
+                {
+                    <text>a/n </text>
+                }
+                @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
+                {
+                    <select id="safety_officer" name="safety_officer" @(isEdit && iir.safety_officer_approve != null ? "disabled" : "") disabled>
+                        <option value="" selected disabled>Choose One</option>
+                        @{bool safety_officer_delegate = false; string safety_officer_delegate_name = ""; }
+                        @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            if (!isEdit && user.position.ToLower() == "she superintendent" && user.delagate != 1)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (!isEdit && user.position.ToLower() == "she superintendent" && user.delagate == 1)
+                            {
+                                safety_officer_delegate = true;
+                                safety_officer_delegate_name = user.employee_delegate.ToString();
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(iir.safety_officer == null ? "0" : iir.safety_officer) && (iir.safety_officer_delegate == null || (iir.safety_officer_approve == null ? false : iir.safety_officer_approve.Substring(0, 1) != "d")))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(iir.safety_officer == null ? "0" : iir.safety_officer) && has.Find(p => p.username == username).id == Int32.Parse(iir.safety_officer == null ? "0" : iir.safety_officer) && (iir.safety_officer_approve == null ? true : iir.safety_officer_approve.Substring(0, 1) == "a"))
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id == Int32.Parse(iir.safety_officer_delegate == null ? "0" : iir.safety_officer_delegate))
+                            {
+                                safety_officer_delegate = true;
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else
+                            {
+                                <option value="@user.id">@user.alpha_name</option>
+                            }
+                        }
+                    </select>
+                    <input type="hidden" id="safety_officer_delegate" value="@safety_officer_delegate" />
+                    <input type="hidden" id="safety_officer_delegate_name" value="@(iir != null ? safety_officer_delegate ? iir.loss_control : "" : safety_officer_delegate_name.ToString())" />
+                        if (isEdit)
+                        {
+                            if (has.Find(p => p.username == username).id == Int32.Parse(iir.safety_officer == null ? "0" : iir.safety_officer) || has.Find(p => p.username == username).id == Int32.Parse(iir.safety_officer_delegate == null ? "0" : iir.safety_officer_delegate))
+                            {
+                                if (iir.safety_officer_approve == null && iir.loss_control_approve != null)
+                                {
+                            <div id="button_safety_officer_approve">
+                                <input type="button" id="approve_safety_officer" onclick="approveSO('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                <input type="button" id="reject_safety_officer" onclick="reject('4')" value="Reject" />
+                            </div>
+                                }
+                            }
+                    <img id="img_approve_safety_officer" width="50" height="50" @(iir.safety_officer_approve == null ? "style=display:none;" : "style=display:block;")  src="@(iir.safety_officer_approve == null ? "" : iir.safety_officer_approve.Substring(1))"/>
                         }
                 }
             </td>
@@ -654,7 +935,7 @@
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(iir.field_manager == null ? "0" : iir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(iir.field_manager_delegate == null ? "0" : iir.field_manager_delegate))
                             {
-                                if (iir.field_manager_approve == null)
+                                if (iir.field_manager_approve == null && iir.safety_officer_approve != null)
                                 {
                             <div id="button_field_manager_approve">
                                 <input type="button" id="approve_field_manager" onclick="approveFM('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
@@ -684,7 +965,15 @@
                         .Name("date_loss_control")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
                         .Value(isEdit ? iir.loss_control_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.loss_control_approve == null) ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.loss_control_approve == null) && !isView ? true : false)
+                )
+            </td>
+            <td style="width:16.67%" class="right">
+                @(Html.Telerik().DatePicker()
+                        .Name("date_safety_officer")
+                        .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
+                        .Value(isEdit ? iir.loss_control_date : DateTime.Now)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.loss_control_approve == null) && !isView ? true : false)
                 )
             </td>
             <td style="width:16.67%" class="right">
@@ -692,7 +981,7 @@
                         .Name("date_field_manager")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
                         .Value(isEdit ? iir.field_manager_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.field_manager_approve == null) ? true : false)
+                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.field_manager_approve == null) && !isView ? true : false)
                 )
             </td>
         </tr>
@@ -700,11 +989,15 @@
 </table>
 <br />
 <div class="submit">
-        @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
+        @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView)
         {
 	        <input name="Submit" value="Save" type="submit" onclick="save()"/>
         }
-        <input type="button" value="Cancel" onclick="back()"/>
+        <input type="button" value="Back" onclick="back()"/>
+        @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView)
+        {
+            <input type="button" value="Email" onclick="email()"/>
+        }
         @if (isEdit && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE))
         {
             <button type="button" value="Print Incident Investigation Report">
@@ -715,7 +1008,55 @@
 </div>
 <br/><br/>
 </div>
+<script type="text/javascript">
+    var editor_factual_information = CKEDITOR.replace('facts', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
 
+    var editor_immediate_action = CKEDITOR.replace('imme_action', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+
+    var editor_imme_causes = CKEDITOR.replace('imme_causes', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+
+    var editor_basic_causes = CKEDITOR.replace('basic_causes', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+
+    var editor_add_observation = CKEDITOR.replace('add_observation', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+
+    var editor_cost = CKEDITOR.replace('cost_estimate', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+</script>
 @(Html.Telerik().Window()
     .Name("AddRecommends")
     .Visible(false)
@@ -771,7 +1112,7 @@
                 <div class="info_inside_left">PIC </div>
 		        <div class="infoFieldinput"><select id="edit_PIC" name="pic">
                     <option value="" selected disabled>Choose One</option>
-                    @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                    @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["pic"] as List<StarEnergi.Models.EmployeeEntity>)
                     {
                         <option value="@user.id">@user.alpha_name</option>
                     }
@@ -791,7 +1132,7 @@
 		            
 	            <p class="submit">
                     <input id="edit_id" type="hidden" name="pir" value="" />
-		            <input name="Submit" value="Edit" type="submit" onclick="EditRecommend(id);" />
+		            <input name="Submit" value="Save" type="submit" onclick="EditRecommend(id);" />
 	            </p>
 	         </div>
         </text>)

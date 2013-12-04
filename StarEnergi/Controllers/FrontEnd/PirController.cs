@@ -62,15 +62,25 @@ namespace StarEnergi.Controllers.FrontEnd
                     ViewBag.totalPir = totalPir;
                     ViewBag.totalOverdue = totalOverdue;
                     ViewBag.pir_target = pir_target;
+
+                    ViewBag.user_role = li;
+                    
                     ViewBag.nama = "Performance Improvement Request Inititator";
                     return View("ListInitiator");
                 }
                 else
                 {
+                    ViewBag.header = true;
                     ViewBag.nama = "Performance Improvement Request Process";
                     return View("ListProcess");
                 }
             }
+        }
+
+        public ActionResult ListProcess()
+        {
+            ViewBag.nama = "Performance Improvement Request Process";
+            return PartialView();
         }
 
 
@@ -713,10 +723,19 @@ namespace StarEnergi.Controllers.FrontEnd
         private ViewResult bindingTaskPir()
         {
             string id = Session["id"].ToString();
-            
-            var model = from p in db.iir_recommendations
-                        where p.PIC == id && (p.has_pir == 1)
-                        select p;
+            IQueryable<iir_recommendations> model;
+            if (id == "277")
+            {
+                model = from p in db.iir_recommendations
+                            where (p.has_pir == 1)
+                            select p;
+            }
+            else
+            {
+                model = from p in db.iir_recommendations
+                            where p.PIC == ""
+                            select p;
+            }
 
             List<RCAEntityModel> ret = new List<RCAEntityModel>();
             foreach (iir_recommendations x in model.ToList())

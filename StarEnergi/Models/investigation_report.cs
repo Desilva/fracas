@@ -46,6 +46,10 @@ namespace StarEnergi.Models
         public string field_manager_approve { get; set; }
         public string loss_control_delegate { get; set; }
         public string field_manager_delegate { get; set; }
+        public string safety_officer { get; set; }
+        public Nullable<System.DateTime> safety_officer_date { get; set; }
+        public string safety_officer_approve { get; set; }
+        public string safety_officer_delegate { get; set; }
     
         public virtual ICollection<iir_recommendations> iir_recommendations { get; set; }
     }

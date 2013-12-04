@@ -22,9 +22,64 @@
         ViewBag.Title = "Edit Incident Report";
         ir = ViewBag.datas as StarEnergi.Models.incident_report;
         isEdit = true;
-        isView = ir.field_manager_approve != null || (user_id != ir.prepared_by && (user_id != ir.ack_supervisor || ir.supervisor_approve != null) && (user_id != ir.superintendent || ir.superintendent_approve != null) && (user_id != ir.loss_control || ir.loss_control_approve != null)
+        isView = ir.field_manager_approve != null || 
+            (user_id != ir.prepared_by && (user_id != ir.ack_supervisor || ir.supervisor_approve != null) && (user_id != ir.superintendent || ir.superintendent_approve != null) && (user_id != ir.loss_control || ir.loss_control_approve != null)
             && (user_id != ir.she_superintendent || ir.she_superintendent_approve != null) && (user_id != ir.field_manager || ir.field_manager_approve != null) && user_id != ir.lead_name && (user_id != ir.superintendent_delegate || ir.superintendent_approve != null) && (user_id != ir.she_superintendent_delegate || ir.she_superintendent_approve != null) &&
              (user_id != ir.supervisor_delegate || ir.supervisor_approve != null) && (user_id != ir.loss_control_delegate || ir.loss_control_approve != null) && (user_id != ir.field_manager_delegate || ir.field_manager_approve != null));
+
+        if ((user_id == ir.field_manager || user_id == ir.field_manager_delegate) && ir.field_manager_approve == null)
+        {
+            if (ir.she_superintendent_approve == null)
+            {
+                isView = true;
+            } else {
+                isView = false;
+            }
+        }
+
+        if ((user_id == ir.she_superintendent || user_id == ir.she_superintendent_delegate) && ir.she_superintendent_approve == null)
+        {
+            if (ir.loss_control_approve == null)
+            {
+                isView = true;
+            }
+            else
+            {
+                isView = false;
+            }
+        }
+
+        if ((user_id == ir.loss_control || user_id == ir.loss_control_delegate) && ir.loss_control_approve == null)
+        {
+            if (ir.superintendent_approve == null)
+            {
+                isView = true;
+            }
+            else
+            {
+                isView = false;
+            }
+        }
+         
+        if ((user_id == ir.superintendent || user_id == ir.superintendent_delegate) && ir.superintendent_approve == null) {
+            if (ir.supervisor_approve == null) {
+                isView = true;
+            }
+            else
+            {
+                isView = false;
+            }
+        }
+
+        
+        if ((user_id == ir.ack_supervisor || user_id == ir.supervisor_approve) && ir.supervisor_approve == null) {
+            isView = false;
+        }
+
+        if (user_id == ir.prepared_by && ir.supervisor_approve != null) {
+            isView = true;    
+        }
+        
     }
     else
     {
@@ -242,7 +297,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="facts" name="facts" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled")>@(isEdit ? ir.factual_information : "")</textarea>
+                <textarea id="facts" name="facts" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ir.factual_information)).ToHtmlString() : "")</textarea>
             </td>
         </tr>
         <tr>
@@ -268,7 +323,7 @@
     <tbody style="width:100%">
         <tr>
             <td>
-                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled")>@(isEdit ? ir.immediate_action : "")</textarea>
+                <textarea id="imme_action" name="imme_action" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(ir.immediate_action)).ToHtmlString() : "")</textarea>
             </td>
         </tr>
     </tbody>
@@ -422,7 +477,8 @@
                         .Name("date_ack")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:166px" })
                         .Value(isEdit && ir.supervisor_approve != null ? ir.ack_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.supervisor_approve == null) && !isView ? true : false)
+                        //.Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.supervisor_approve == null) && !isView ? true : false)
+                        .Enable(false)
                 )
             </td>
         </tr>
@@ -538,7 +594,8 @@
                         .Name("date_sup")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
                         .Value(isEdit && ir.superintendent_approve != null ? ir.superintendent_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.superintendent_approve == null) && !isView ? true : false)
+                        //.Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.superintendent_approve == null) && !isView ? true : false)
+                        .Enable(false)
                 )
             </td>
             <td style="width:16.67%" class="right">
@@ -616,7 +673,8 @@
                         .Name("date_she_sup")
                         .HtmlAttributes(new { id = "ddatetime_wrapper", style = "width:100px" })
                         .Value(isEdit && ir.she_superintendent_approve != null ? ir.she_superintendent_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.she_superintendent_approve == null) && !isView ? true : false)
+                        //.Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.she_superintendent_approve == null) && !isView ? true : false)
+                        .Enable(false)
                 )
             </td>
         </tr>
@@ -696,7 +754,8 @@
                         .Name("date_loss_control")
                         .HtmlAttributes(new { id = "datetime_wrapper", style = "width:100px" })
                         .Value(isEdit && ir.loss_control_approve != null ? ir.loss_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.loss_control_approve == null) && !isView ? true : false)
+                        //.Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.loss_control_approve == null) && !isView ? true : false)
+                        .Enable(false)
                 )
             </td>
             <td style="width:16.67%" class="right">
@@ -774,7 +833,8 @@
                         .Name("date_field_man")
                         .HtmlAttributes(new { id = "ddatetime_wrapper", style = "width:100px" })
                         .Value(isEdit && ir.field_manager_approve != null ? ir.field_manager_date : DateTime.Now)
-                        .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.field_manager_approve == null) && !isView ? true : false)
+                        //.Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && (!isEdit || ir.field_manager_approve == null) && !isView ? true : false)
+                        .Enable(false)
                 )
             </td>
         </tr>
@@ -788,10 +848,10 @@
                 <h5>Investigation Required?</h5>
             </td>
             <td style="width:8.33%">
-                <input type="radio" name="investigation" id="investigation_1" value="1" @(isEdit ? ((has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)) ? "" : "disabled") : "disabled") @(isEdit ? ir.investigation == 1 ? "checked" : "" : "") onclick="investigations(1)"/>yes
+                <input type="radio" name="investigation" id="investigation_1" value="1" @(isEdit ? ((has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)) ? "" : "disabled") : "disabled") @(isEdit ? ir.investigation == 1 ? "checked" : "" : "") onclick="investigations(1)"/>Yes
             </td>
             <td style="width:8.33%" class="right">
-                <input type="radio" name="investigation" id="investigation_0" value="0" @(isEdit ? ((has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)) ? "" : "disabled") : "disabled") @(isEdit ? (ir.investigation == 0 || ir.investigation == null) ? "checked" : "" : "checked") onclick="investigations(0)"/>no
+                <input type="radio" name="investigation" id="investigation_0" value="0" @(isEdit ? ((has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager == null || ir.field_manager == "" ? "0" : ir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(ir.field_manager_delegate == null || ir.field_manager_delegate == "" ? "0" : ir.field_manager_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent == null || ir.she_superintendent == "" ? "0" : ir.she_superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.she_superintendent_delegate == null || ir.she_superintendent_delegate == "" ? "0" : ir.she_superintendent_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control_delegate == null || ir.loss_control_delegate == "" ? "0" : ir.loss_control_delegate) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null || ir.superintendent == "" ? "0" : ir.superintendent) || has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent_delegate == null || ir.superintendent_delegate == "" ? "0" : ir.superintendent_delegate)) ? "" : "disabled") : "disabled") @(isEdit ? (ir.investigation == 0 || ir.investigation == null) ? "checked" : "" : "checked") onclick="investigations(0)"/>No
             </td>
             <td style="width:16.67%" class="right">
                 <h5>Investigation Request by  <div id="request_req" style="display:none;color:red;">* required</div></h5>
@@ -819,7 +879,7 @@
                 }
                 else
                 {
-                    <input type="text" name="request_name" id="request_name" value="@(isEdit ? ir.investigation_req == null ? "" : has.Find(p => p.id == Int32.Parse(ir.investigation_req == null ? "0" : ir.investigation_req)).alpha_name : "")" disabled style="width:166px"/>
+                    <input type="text" name="request_name" id="request_name" value="@(isEdit ? ir.investigation_req == null || ir.investigation_req == "null" ? "" : has.Find(p => p.id == Int32.Parse(ir.investigation_req == null || ir.investigation_req == "null" ? "0" : ir.investigation_req)).alpha_name : "")" disabled style="width:166px"/>
                 }
             
             </td>
@@ -849,7 +909,7 @@
                 }
                 else
                 {
-                    <input type="text" name="lead_name" id="lead_name" value="@(isEdit ? ir.lead_name == null ? "" : has.Find(p => p.id == Int32.Parse(ir.lead_name == null ? "0" : ir.lead_name)).alpha_name : "")" disabled style="width:166px"/>
+                    <input type="text" name="lead_name" id="lead_name" value="@(isEdit ? ir.lead_name == null || ir.lead_name == "null" ? "" : has.Find(p => p.id == Int32.Parse(ir.lead_name == null ? "0" : ir.lead_name)).alpha_name : "")" disabled style="width:166px"/>
                 }
             </td>
         </tr>
@@ -943,6 +1003,7 @@
                 $('#reject_ir').css("display", "none");
                 alert("Comment sent!");
                 $("#RejectComment").data("tWindow").close();
+                $('#contentEventLog').load('Incident/addIncident/@id');
             }
         });
     }
@@ -959,6 +1020,7 @@
                     $('#img_approve_superintendent').css('display', 'block');
                     $('#sup_name').prop('disabled', true);
                     $('#date_sup').prop('disabled', true);
+                    save();
                 } else {
                     alert("You do not supply your signature");
                 }
@@ -972,6 +1034,7 @@
     function approveSupervisor(employee_id) {
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
+            
             var date = $('#date_ack').val();
             $.post("Incident/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
@@ -981,6 +1044,7 @@
                     $('#img_approve_supervisor').css('display', 'block');
                     $('#ack').prop('disabled', true);
                     $('#date_ack').prop('disabled', true);
+                    save();
                 } else {
                     alert("You do not supply your signature");
                 }
@@ -1003,8 +1067,7 @@
                     $('#img_approve_field_manager').css('display', 'block');
                     $('#field_man_name').prop('disabled', true);
                     $('#date_field_man').prop('disabled', true);
-                    window.location = "/Incident";
-                    $('#contentEventLog').load('Incident/AddIncident/@id');
+                    save();
                 } else {
                     alert("You do not supply your signature");
                 }
@@ -1027,6 +1090,7 @@
                     $('#img_approve_she_superintendent').css('display', 'block');
                     $('#she_sup_name').prop('disabled', true);
                     $('#date_she_sup').prop('disabled', true);
+                    save();
                 } else {
                     alert("You do not supply your signature");
                 }
@@ -1049,6 +1113,7 @@
                     $('#img_approve_loss_control').css('display', 'block');
                     $('#loss_control_name').prop('disabled', true);
                     $('#date_loss_control').prop('disabled', true);
+                    save();
                 } else {
                     alert("You do not supply your signature");
                 }
@@ -1158,8 +1223,14 @@
             } else {
                 $('#investigation_0').attr('checked', true);
             }
+        }
     }
-}
+
+    function htmlEncode(value) {
+        //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+        //then grab the encoded contents back out.  The div never exists on the page.
+        return $('<div/>').text(value).html();
+    }
 
     function save() {
         if (isInv == 'True') {
@@ -1216,6 +1287,9 @@
                     }
                 });
 
+                var factual_information = htmlEncode(CKEDITOR.instances.facts.getData());
+                var immediate_action = htmlEncode(CKEDITOR.instances.imme_action.getData());
+
                 var supervisor_delegate = $('#supervisor_delegate').val();
                 var sup_delegate = $('#sup_delegate').val();
                 var she_sup_delegate = $('#she_sup_delegate').val();
@@ -1233,9 +1307,9 @@
                     actual_loss_severity: actual_loss,
                     potential_loss_severity: potential_loss,
                     probability: probability,
-                    factual_information: $('#facts').val(),
+                    factual_information: factual_information,
                     cost_estimate: $('#cost').val(),
-                    immediate_action: $('#imme_action').val(),
+                    immediate_action: immediate_action,
                     prepared_by: $('#prepared').val(),
                     ack_supervisor: $('#ack').val(),
                     supervisor_delegate: isEdit == 'False' ? $('#supervisor_delegate_name').val() : (supervisor_delegate == 'True' ? $('#supervisor_name').val() : $('#supervisor_delegate_name').val()),
@@ -1277,7 +1351,7 @@
                     $.post("Incident/Edit", values, function (data) {
                         if (data != undefined) {
                             $('#realmod_save').css("display", "none");
-                            alert('incident report changed');
+                            alert('Incident report changed');
                             back();
                         } else {
                             $('#realmod_save').css("display", "none");
@@ -1314,7 +1388,10 @@
             $('#title_req').css('display','none');
         }
 
-        if ($('#facts').val() == "") {
+        var factual_information = htmlEncode(CKEDITOR.instances.facts.getData());
+        var immediate_action = htmlEncode(CKEDITOR.instances.imme_action.getData());
+
+        if (factual_information == "") {
             $('#facts_req').css('display','inline');
             validate = false;
         } else {
@@ -1328,7 +1405,7 @@
             $('#cost_req').css('display','none');
         }
 
-        if ($('#imme_action').val() == "") {
+        if (immediate_action == "") {
             $('#imme_req').css('display','inline');
             validate = false;
         } else {
@@ -1491,5 +1568,21 @@
             $('#lead_name').attr('disabled','disabled');
         }
     }
+
+    var editor_factual_information = CKEDITOR.replace('facts', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
+
+    var editor_immediate_action = CKEDITOR.replace('imme_action', {
+        uiColor: '#14B8C4',
+        filebrowserBrowseUrl: '/Scripts/Filemanager/index.html',
+        filebrowserImageBrowseUrl: '/Scripts/Filemanager/index.html?type=Images',
+        filebrowserFlashBrowseUrl: '/Scripts/Fileanager/index.html?type=Flash',
+        removePlugins: 'about'
+    });
 
 </script>

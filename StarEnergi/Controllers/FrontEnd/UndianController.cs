@@ -3,6 +3,7 @@ using StarEnergi.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Objects.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -187,9 +188,34 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult draw(int id)
         {
             she_observation_undian undian = db.she_observation_undian.Find(id);
-            DateTime from = undian.from.Value;
-            DateTime to = undian.to.Value.AddDays(1);
-            List<she_observation> list_she_obs = db.she_observation.Where(p => p.date_time >= from.Date && p.date_time <= to.Date).ToList();
+            DateTime froms = undian.from.Value;
+            DateTime tos = undian.to.Value.AddDays(1);
+            //var data = (from she_obs in db.she_observation
+            //            join emp in db.employees
+            //            on she_obs.observer. equals SqlFunctions.StringConvert((double)emp.id)
+            //            where she_obs.date_time >= froms.Date && she_obs.date_time <= tos.Date
+            //            select new she_observation
+            //            {
+            //                observer = she_obs.observer,
+            //                is_quality = she_obs.is_quality,
+            //                id = she_obs.id,
+            //                is_contractor = emp.employee_dept == 25 ? 1 : 0,
+            //            }).ToList();
+            List<she_observation> list_she_obs = db.she_observation.Where(p => p.date_time >= froms.Date && p.date_time <= tos.Date).ToList();
+
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.dept_id
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           dept_id = employees.employee_dept,
+                       }).ToList();
+            List<EmployeeEntity> bind = has;
+            //List<she_observation> list_she_obs = data;
             List<she_observation_undian_exception> list_ex = db.she_observation_undian_exception.ToList();
             for (int i = 0; i < list_she_obs.Count; i++)
             {
@@ -198,25 +224,29 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (a.Length > 1)
                 {
                     int emp_id = Int32.Parse(a.ElementAt(1));
-                    employee emp = db.employees.Find(emp_id);
-                    if (emp != null && emp.employee_dept == 25)
-                    {
-                        she_obs.is_contractor = 1;
-                    }
-                    else
-                    {
-                        she_obs.is_contractor = 0;
-                    }
                     if (list_ex.Exists(p => p.id_employee == Int32.Parse(a.ElementAt(1))))
                     {
                         list_she_obs.Remove(she_obs);
                         i--;
                     }
+                    else
+                    {
+                        EmployeeEntity emp = bind.Where(p => p.id == emp_id).FirstOrDefault();
+                        if (emp != null && emp.dept_id == 25)
+                        {
+                            she_obs.is_contractor = 1;
+                        }
+                        else
+                        {
+                            she_obs.is_contractor = 0;
+                        }
+                    }
+                    
                 }
                 else
                 {
                     string emp_name = a.ElementAt(0);
-                    employee emp = db.employees.Where(p => p.alpha_name == emp_name).FirstOrDefault();
+                    EmployeeEntity emp = bind.Where(p => p.alpha_name == emp_name).FirstOrDefault();
                     int id_emp = emp != null ? emp.id : 0;
                     if (list_ex.Exists(p => p.id_employee == id_emp))
                     {
@@ -226,8 +256,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             ViewBag.list_she_obs = list_she_obs;
-            ViewBag.date_from = from;
-            ViewBag.date_to = to;
+            ViewBag.date_from = froms;
+            ViewBag.date_to = tos;
             ViewBag.id = id;
             ViewBag.percentage = undian.percentage;
             return PartialView();
@@ -270,7 +300,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public JsonResult getReward(byte category, int id_undian)
         {
             List<she_observation_undian_reward> list_reward = db.she_observation_undian_reward.OrderBy(p => p.id).ToList();
-            List<she_observation_undian_winner> list_winner = db.she_observation_undian_winner.Where(p => p.id_undian == id_undian && p.category == category).ToList();
+            List<she_observation_undian_winner> list_winner = db.she_observation_undian_winner.Where(p => p.id_undian == id_undian).ToList();
             CultureInfo ci = new CultureInfo("id-ID");
             foreach (she_observation_undian_reward reward in list_reward)
             {
@@ -355,7 +385,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 WinnerEntity w = new WinnerEntity
                 {
                     id = she.id,
-                    reward_string = db.she_observation_undian_reward.Find(she.id_reward).reward.Value.ToString("c",ci),
+                    reward_string = (db.she_observation_undian_reward.Find(she.id_reward) == null ? "" : db.she_observation_undian_reward.Find(she.id_reward).reward.Value.ToString("c",ci)),
                     winner = db.she_observation.Find(she.winner_observation).observer.Split('#')[0].ToString(),
                     category = she.category == 0 ? "Quality SHE Observation Report" : "SHE Observation Report"
                 };

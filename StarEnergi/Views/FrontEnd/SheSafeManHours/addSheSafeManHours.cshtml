@@ -1,0 +1,525 @@
+﻿@{
+    StarEnergi.Models.safe_man_hours mpsr = new StarEnergi.Models.safe_man_hours();
+    bool isEdit = false;
+    int id = 0;
+    if (ViewBag.model != null)
+    {
+        isEdit = true;
+        mpsr = ViewBag.model as StarEnergi.Models.safe_man_hours;
+        id = mpsr.id;
+    }
+}
+
+<link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
+<style>
+    .t-state-disabled .t-formatted-value {
+        color: #555555;
+    }
+</style>
+<script type="text/javascript">
+    function countTotalWorkHourSEGS() {
+        var segs = parseInt($('#seg_shift').val() == '' ? 0 : $('#seg_shift').val()),
+            segns = parseInt($('#seg_non_shift').val() == '' ? 0 : $('#seg_non_shift').val()),
+            segwhs = parseInt($('#seg_work_hr_shift').val() == '' ? 0 : $('#seg_work_hr_shift').val()),
+            segwhns = parseInt($('#seg_total_work_hr_non_shift').val() == '' ? 0 : $('#seg_total_work_hr_non_shift').val()),
+            conttotal = parseInt($('#cont_total').val() == '' ? 0 : $('#cont_total').val()),
+            contwhtotal = parseInt($('#cont_total_work_hr').val() == '' ? 0 : $('#cont_total_work_hr').val());
+
+        $('#seg_total_work_hr_shift').data("tTextBox").value(segs * segwhs);
+        $('#seg_total').data("tTextBox").value(segs + segns);
+        $('#seg_total_work_hr').data("tTextBox").value(segs * segwhs + segwhns);
+        $('#grand_total').val(segs + segns + conttotal);
+        $('#work_hr_total').val(segs * segwhs + segwhns + contwhtotal);
+    }
+
+    function countTotalWorkHourSEGNS() {
+        var segs = parseInt($('#seg_shift').val() == '' ? 0 : $('#seg_shift').val()),
+            segns = parseInt($('#seg_non_shift').val() == '' ? 0 : $('#seg_non_shift').val()),
+            segwhs = parseInt($('#seg_total_work_hr_shift').val() == '' ? 0 : $('#seg_total_work_hr_shift').val()),
+            segwhns = parseInt($('#seg_work_hr_non_shift').val() == '' ? 0 : $('#seg_work_hr_non_shift').val()),
+            conttotal = parseInt($('#cont_total').val() == '' ? 0 : $('#cont_total').val()),
+            contwhtotal = parseInt($('#cont_total_work_hr').val() == '' ? 0 : $('#cont_total_work_hr').val());
+
+        $('#seg_total_work_hr_non_shift').data("tTextBox").value(segns * segwhns);
+        $('#seg_total').data("tTextBox").value(segs + segns);
+        $('#seg_total_work_hr').data("tTextBox").value(segwhs + segns * segwhns);
+        $('#grand_total').data("tTextBox").value(segs + segns + conttotal);
+        $('#work_hr_total').data("tTextBox").value(segwhs + segns * segwhns + contwhtotal);
+    }
+
+    function countTotalWorkHourContS() {
+        var conts = parseInt($('#cont_shift').val() == '' ? 0 : $('#cont_shift').val()),
+            contns = parseInt($('#cont_non_shift').val() == '' ? 0 : $('#cont_non_shift').val()),
+            contwhs = parseInt($('#cont_work_hr_shift').val() == '' ? 0 : $('#cont_work_hr_shift').val()),
+            contwhns = parseInt($('#cont_total_work_hr_non_shift').val() == '' ? 0 : $('#cont_total_work_hr_non_shift').val()),
+            segtotal = parseInt($('#seg_total').val() == '' ? 0 : $('#seg_total').val()),
+            segwhtotal = parseInt($('#seg_total_work_hr').val() == '' ? 0 : $('#seg_total_work_hr').val());
+
+        $('#cont_total_work_hr_shift').data("tTextBox").value(conts * contwhs);
+        $('#cont_total').data("tTextBox").value(conts + contns);
+        $('#cont_total_work_hr').data("tTextBox").value(conts * contwhs + contwhns);
+        $('#grand_total').data("tTextBox").value(conts + contns + segtotal);
+        $('#work_hr_total').data("tTextBox").value(conts * contwhs + contwhns + segwhtotal);
+    }
+
+    function countTotalWorkHourContNS() {
+        var conts = parseInt($('#cont_shift').val() == '' ? 0 : $('#cont_shift').val()),
+            contns = parseInt($('#cont_non_shift').val() == '' ? 0 : $('#cont_non_shift').val()),
+            contwhs = parseInt($('#cont_total_work_hr_shift').val() == '' ? 0 : $('#cont_total_work_hr_shift').val()),
+            contwhns = parseInt($('#cont_work_hr_non_shift').val() == '' ? 0 : $('#cont_work_hr_non_shift').val()),
+            segtotal = parseInt($('#seg_total').val() == '' ? 0 : $('#seg_total').val()),
+            segwhtotal = parseInt($('#seg_total_work_hr').val() == '' ? 0 : $('#seg_total_work_hr').val());
+
+        $('#cont_total_work_hr_non_shift').data("tTextBox").value(contns * contwhns);
+        $('#cont_total').data("tTextBox").value(conts + contns);
+        $('#cont_total_work_hr').data("tTextBox").value(contwhs + contns * contwhns);
+        $('#grand_total').data("tTextBox").value(conts + contns + segtotal);
+        $('#work_hr_total').data("tTextBox").value(contwhs + contns * contwhns + segwhtotal);
+    }
+</script>
+<div class="container">
+    <header>
+        <div class="page-title" style="width:980px">
+            <h1>STAR ENERGY GEOTHERMAL (WAYANG WINDU) LIMITED</h1>
+        </div>
+        <div class="clearfix" style="width:768px"></div>
+        <b>Safe Man Hours</b>
+    </header>
+
+    <div class="log-part1">
+        <table class="w-border" style="width:1000px">
+            <tr>
+                <td>Period</td>
+                <td colspan="3">
+                    <select id="month" name="month" style="width:75px" onchange="selectMonth()">
+                        <option value="" selected disabled>-MM-</option>
+                        <option value="1" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 1 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 1 ? "selected" : ""))>Jan</option>
+                        <option value="2" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 2 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 2 ? "selected" : ""))>Feb</option>
+                        <option value="3" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 3 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 3 ? "selected" : ""))>Mar</option>
+                        <option value="4" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 4 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 4 ? "selected" : ""))>Apr</option>
+                        <option value="5" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 5 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 5 ? "selected" : ""))>May</option>
+                        <option value="6" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 6 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 6 ? "selected" : ""))>Jun</option>
+                        <option value="7" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 7 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 7 ? "selected" : ""))>Jul</option>
+                        <option value="8" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 8 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 8 ? "selected" : ""))>Aug</option>
+                        <option value="9" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 9 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 9 ? "selected" : ""))>Sep</option>
+                        <option value="10" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 10 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 10 ? "selected" : ""))>Oct</option>
+                        <option value="11" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 11 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 11 ? "selected" : ""))>Nov</option>
+                        <option value="12" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Month == 12 ? "selected" : "") : "") : (ViewBag.month != null && ViewBag.month as int? == 12 ? "selected" : ""))>Dec</option>
+                    </select> / 
+                    <select id="year" name="year" style="width:75px" onchange="selectMonth()">
+                        <option value="" selected disabled>-YYYY-</option>
+                        @for (int i = 2000; i <= 2100; i++)
+                        {
+                            <option value="@i" @(isEdit ? (mpsr.month != null ? (mpsr.month.Value.Year == i ? "selected" : "") : "") : (ViewBag.year != null && ViewBag.year as int? == i ? "selected" : (DateTime.Today.Year == i ? "selected" : "")))>@i</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="orange-bg"><b>&nbsp;</b></td>
+                <td class="orange-bg"><b>Number of Employee</b></td>
+                <td class="orange-bg"><b>Working Hours / Employee</b></td>
+                <td class="orange-bg"><b>Working Hours This Month</b></td>
+            </tr>
+            <tr>
+                <td>SEG - Shift</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("seg_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.seg_shift : null)
+                        .ClientEvents(events => events
+                            .OnChange("countTotalWorkHourSEGS")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("seg_work_hr_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.seg_work_hr_shift : null)
+                        .ClientEvents(events => events
+                            .OnChange("countTotalWorkHourSEGS")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("seg_total_work_hr_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.seg_total_work_hr_shift : 0)
+                        .Enable(false)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>SEG - Non-Shift</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("seg_non_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.seg_non_shift : null)
+                        .ClientEvents(events => events
+                            .OnChange("countTotalWorkHourSEGNS")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("seg_work_hr_non_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.seg_work_hr_non_shift : null)
+                        .ClientEvents(events => events
+                            .OnChange("countTotalWorkHourSEGNS")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("seg_total_work_hr_non_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.seg_total_work_hr_non_shift : 0)
+                        .Enable(false)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td class="gray-bg"><b>SEG - Total</b></td>
+                <td class="gray-bg">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("seg_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.seg_total : 0)
+                        .Enable(false)
+                    )
+                </td>
+                <td class="gray-bg">
+                    &nbsp;
+                </td>
+                <td class="gray-bg">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("seg_total_work_hr")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.seg_total_work_hr : 0)
+                        .Enable(false)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>Contractor - Shift</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("cont_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.cont_shift : null)
+                        .ClientEvents(events => events
+                            .OnChange("countTotalWorkHourContS")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("cont_work_hr_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.cont_work_hr_shift : null)
+                        .ClientEvents(events => events
+                            .OnChange("countTotalWorkHourContS")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("cont_total_work_hr_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.cont_total_work_hr_shift : 0)
+                        .Enable(false)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>Contractor - Non-Shift</td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("cont_non_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.cont_non_shift : null)
+                        .ClientEvents(events => events
+                            .OnChange("countTotalWorkHourContNS")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("cont_work_hr_non_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.cont_work_hr_non_shift : null)
+                        .ClientEvents(events => events
+                            .OnChange("countTotalWorkHourContNS")
+                        )
+                    )
+                </td>
+                <td>
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("cont_total_work_hr_non_shift")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.cont_total_work_hr_non_shift : 0)
+                        .Enable(false)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td class="gray-bg"><b>Contractor - Total</b></td>
+                <td class="gray-bg">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("cont_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.cont_total : (ViewBag.cont_total != null ? ViewBag.cont_total as int? : 0))
+                        .Enable(false)
+                    )
+                </td>
+                <td class="gray-bg">
+                    &nbsp;
+                </td>
+                <td class="gray-bg">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("cont_total_work_hr")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? (mpsr.cont_total_work_hr) : (ViewBag.cont_mh != null ? ViewBag.cont_mh as int? : 0))
+                        .Enable(false)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td class="orange-bg"><b>Grand Total</b></td>
+                <td class="orange-bg">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("grand_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.grand_total : 0)
+                        .Enable(false)
+                    )
+                </td>
+                <td class="orange-bg">
+                    &nbsp;
+                </td>
+                <td class="orange-bg">
+                    @(Html.Telerik().IntegerTextBox()
+                        .Name("work_hr_total")
+                        .MinValue(0)
+                        .MaxValue(100000000)
+                        .InputHtmlAttributes(new {style = "width:200px"})
+                        .Value(isEdit ? mpsr.work_hr_total : 0)
+                        .Enable(false)
+                    )
+                </td>
+            </tr>
+        </table>
+        <br />
+        @if (isEdit)
+        {
+            <div style="display:inline-block;width:480px;float:left">
+                <b>Safe Man Hours since @ViewBag.accident (Total Days : @mpsr.days_smh)</b>
+                <table class="w-border" style="width:480px">
+                    <tr>
+                        <td class="orange-bg"><b>&nbsp;</b></td>
+                        <td class="orange-bg"><b>Number of Employee</b></td>
+                        <td class="orange-bg"><b>Man Hours</b></td>
+                    </tr>
+                    <tr>
+                        <td>SEG</td>
+                        <td style="text-align:right">
+                            @mpsr.seg_emp_smh.Value.ToString("N0")
+                        </td>
+                        <td style="text-align:right">
+                            @mpsr.seg_mh_smh.Value.ToString("N0")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Contractor</td>
+                        <td style="text-align:right">
+                            @mpsr.cont_emp_smh.Value.ToString("N0")
+                        </td>
+                        <td style="text-align:right">
+                            @mpsr.cont_mh_smh.Value.ToString("N0")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td style="text-align:right">
+                            @mpsr.emp_total_smh.Value.ToString("N0")
+                        </td>
+                        <td style="text-align:right">
+                            @mpsr.mh_total_smh.Value.ToString("N0")
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div style="display:inline-block;width:480px;margin-left:40px">
+                <b>Year To Date</b>
+                <table class="w-border" style="width:480px">
+                    <tr>
+                        <td class="orange-bg"><b>&nbsp;</b></td>
+                        <td class="orange-bg"><b>Number of Employee</b></td>
+                        <td class="orange-bg"><b>Man Hours</b></td>
+                    </tr>
+                    <tr>
+                        <td>SEG</td>
+                        <td style="text-align:right">
+                            @mpsr.seg_emp_ytd.Value.ToString("N0")
+                        </td>
+                        <td style="text-align:right">
+                            @mpsr.seg_mh_ytd.Value.ToString("N0")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Contractor</td>
+                        <td style="text-align:right">
+                            @mpsr.cont_emp_ytd.Value.ToString("N0")
+                        </td>
+                        <td style="text-align:right">
+                            @mpsr.cont_mh_ytd.Value.ToString("N0")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td style="text-align:right">
+                            @mpsr.emp_total_ytd.Value.ToString("N0")
+                        </td>
+                        <td style="text-align:right">
+                            @mpsr.mh_total_ytd.Value.ToString("N0")
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+        }
+    </div>
+    <br />
+</div>
+<div class="submit">
+    <input name="Submit" value="Save" type="submit" onclick="save()"/>
+    <input type="button" value="Cancel" onclick="back()"/>
+    @if (isEdit)
+    {
+            <button type="button" value="Generate Report">
+                @Html.ActionLink("Generate Report", "generateReport", "SheSafeManHours", null, new { target = "_blank" })
+            </button>
+    }
+</div>
+<br />
+<script type="text/javascript">
+
+    var isEdit = '@isEdit';
+    function save() {
+        if (validate()) {
+            var values = {
+                month: $('#month').val() + '/1/' + $('#year').val(),
+                seg_shift: $('#seg_shift').val(),
+                seg_non_shift: $('#seg_non_shift').val(),
+                seg_work_hr_shift: $('#seg_work_hr_shift').val(),
+                seg_work_hr_non_shift: $('#seg_work_hr_non_shift').val(),
+                seg_total_work_hr_shift: $('#seg_total_work_hr_shift').val(),
+                seg_total_work_hr_non_shift: $('#seg_total_work_hr_non_shift').val(),
+                seg_total_work_hr: $('#seg_total_work_hr').val(),
+                seg_total: $('#seg_total').val(),
+                cont_shift: $('#cont_shift').val(),
+                cont_non_shift: $('#cont_non_shift').val(),
+                cont_work_hr_shift: $('#cont_work_hr_shift').val(),
+                cont_work_hr_non_shift: $('#cont_work_hr_non_shift').val(),
+                cont_total_work_hr_shift: $('#cont_total_work_hr_shift').val(),
+                cont_total_work_hr_non_shift: $('#cont_total_work_hr_non_shift').val(),
+                cont_total_work_hr: $('#cont_total_work_hr').val(),
+                cont_total: $('#cont_total').val(),
+                grand_total: $('#grand_total').val(),
+                work_hr_total: $('#work_hr_total').val(),
+            }
+
+            $('#realmod_save').css("display", "block");
+            if (isEdit == 'False') {
+                $.post("SheSafeManHours/Add", values, function (data) {
+                    if (data != undefined) {
+                        isSave = true;
+                        $('#realmod_save').css("display", "none");
+                        alert('Safe Man Hours successfully saved');
+                        $('#contentEventLog').load('SheSafeManHours/AddSheSafeManHours/' + data.id);
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to add Safe Man Hours');
+                    }
+                });
+            } else if (isEdit == 'True') {
+                isSave = true;
+                var ids = '@id';
+                values.id = ids;
+                $.post("SheSafeManHours/Edit", values, function (data) {
+                    if (data != undefined) {
+                        $('#realmod_save').css("display", "none");
+                        alert('Safe Man Hours successfully updated');
+                        $('#contentEventLog').load('SheSafeManHours/AddSheSafeManHours/' + ids);
+                    } else {
+                        $('#realmod_save').css("display", "none");
+                        alert('Fail to update Safe Man Hours');
+                    }
+                });
+            }
+        }
+    }
+
+    function validate() {
+        return true;
+    }
+
+    function selectMonth() {
+        var month = $('#month').val();
+        var year = $('#year').val();
+
+        $.post("SheSafeManHours/CheckMonthYear", { month: month, year: year }, function (data) {
+            console.log(data);
+            if (data.id != undefined) {
+                $('#contentEventLog').load('SheSafeManHours/AddSheSafeManHours/' + data.id);
+            } else {
+                $('#contentEventLog').load('SheSafeManHours/AddSheSafeManHours?month=' + month + '&year=' + year + '&cont_total=' + data.cont_emp + '&cont_mh=' + data.cont_mh);
+            }
+        });
+    }
+
+    function back() {
+        window.location = "/SheSafeManHours";
+    }
+</script>

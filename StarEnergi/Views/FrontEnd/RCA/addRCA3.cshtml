@@ -97,7 +97,7 @@
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
             <div class="info_new_left">Equipment Class</div>
             <div class="infonewinput">
-                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                 {
                     <select name="equipment_type" id="equipment_type">
                         <option value="" disabled selected>Choose Equipment Class</option>
@@ -126,7 +126,7 @@
             <br />
             <div class="info_new_left">Equipment Sub Class</div>
             <div class="infonewinput">
-                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                 {
                     <select name="equipment_class" id="equipment_class">
                         <option value="" disabled selected>Choose Equipment Sub Class</option>
@@ -158,7 +158,7 @@
             <br />
             <div class="info_new_left">Equipment Code</div>
             <div class="infonewinput">
-                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                 {
                 <select name="equipment_code" id="equipment_code" style="max-width:250px">
                     <option value="" disabled selected>Choose Equipment Type and Class</option>
@@ -191,10 +191,10 @@
             
             <br />
             <div class="info_new_left">Other</div>
-            <div class="infonewinput"><input id="other" type="text" name="other" value="@ViewBag.other" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/></div>
+            <div class="infonewinput"><input id="other" type="text" name="other" value="@ViewBag.other" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? "" : "disabled")/></div>
             <br />
             <div class="info_new_left">Manufacturer</div>
-            <div class="infonewinput"><input id="manufacture" type="text" name="manufacture" value="@ViewBag.manufacture" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/></div>
+            <div class="infonewinput"><input id="manufacture" type="text" name="manufacture" value="@ViewBag.manufacture" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? "" : "disabled")/></div>
             <br />
             <div class="addSubmit">
 	            <input name="cancel" value="Cancel" type="submit"/>

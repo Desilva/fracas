@@ -183,7 +183,7 @@
         })
         .ToolBar(commands =>
         {
-            if (li.Exists(p => p.role == 2))
+            if (li.Exists(p => p.role == 2) && ViewBag.isView != null)
             {
                 commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" });
             }
@@ -209,7 +209,7 @@
             columns.Bound(o => o.id).Width(100).ClientTemplate("<#= status(is_complete,due_date,complete_date) #>").Title("Status").HtmlAttributes(new { align = "center" });
             columns.Command(commands =>
             {
-                if (li.Exists(p => p.role == 2))
+                if (li.Exists(p => p.role == 2) && ViewBag.isView != null)
                 {
                     commands.Edit().ButtonType(GridButtonType.Image);
                     commands.Delete().ButtonType(GridButtonType.Image);

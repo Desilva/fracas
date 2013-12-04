@@ -50,7 +50,7 @@
             <div class="charter">
                 <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
                 <input type="hidden" name="types" id="types" value="@ViewBag.types" />
-                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                 {
                 <div class="center">Charter (Terminal Objective)</div>@(Html.Telerik().Upload()
                         .Name("Charter")
@@ -63,12 +63,12 @@
                         )
                 )
                 }
-                <input name="insert" id="insert" type="button" value="Insert Sample Charter" onclick="insertCharter()" />
-                <textarea name="charter" id="charter" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")>@ViewBag.charter</textarea>
+                <input name="insert" id="insert" type="button" value="Insert Sample Charter" onclick="insertCharter()"  @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? "" : "style=display:none;") />
+                <textarea name="charter" id="charter" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2)  && ViewBag.isView != null ? "" : "disabled")>@ViewBag.charter</textarea>
             </div>
             <div class="comment">
                 <div class="center">Comments</div>
-                <textarea name="comment" id="comment" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")>@ViewBag.comment</textarea>
+                <textarea name="comment" id="comment" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2)  && ViewBag.isView != null ? "" : "disabled")>@ViewBag.comment</textarea>
             </div>
             <br />
             <div class="addSubmit">

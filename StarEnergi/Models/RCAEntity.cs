@@ -41,6 +41,7 @@ namespace StarEnergi.Models
         public string comment { get; set; }
         public int? id_team { get; set; }
         public int identity { get; set; }
+        public int isView { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
@@ -58,6 +59,9 @@ namespace StarEnergi.Models
         public string rca_code { get; set; }
         public int? id_iir { get; set; }
         public DateTime? publish_date { get; set; }
+        public bool is_implement { get; set; }
+        public Nullable<System.DateTime> actual_start_date { get; set; }
+        public Nullable<System.DateTime> due_date { get; set; }
 
         public List<string> member_name { get; set; }
     }

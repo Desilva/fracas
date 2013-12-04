@@ -2,6 +2,7 @@
 using StarEnergi.Models;
 using StarEnergi.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -18,6 +19,7 @@ namespace StarEnergi.Controllers.FrontEnd
     {
         private relmon_star_energiEntities db = new relmon_star_energiEntities();
         public static List<user_per_role> li;
+        private static int count;
         //
         // GET: /HseObservationForm/
 
@@ -30,6 +32,10 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.Nama = "SHE Observation Form";
             string username = Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
+            if (!li.Exists(p => p.role == (int)Config.role.SHEOBSERVATION))
+            {
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/SheObservation" });
+            }
             ViewData["user_role"] = li;
             var processUserList = new List<employee>();
             var query = (from a in db.employees
@@ -41,19 +47,26 @@ namespace StarEnergi.Controllers.FrontEnd
                 //if (a.position.ToLower().Contains("superintendent"))
                 processUserList.Add(new employee { alpha_name = a.alpha_name, id = a.id });
             }
+            ViewData["total"] = GetCount();
             ViewBag.emp_id = new SelectList(processUserList, "id", "alpha_name");
             return View();
         }
 
         public ActionResult report()
         {
+            ViewData["user_role"] = li;
+            ViewData["total"] = GetCount();
             return PartialView();
         }
 
         public ActionResult addSheObservation(int? id)
         {
             string username = Session["username"].ToString();
-            li = db.user_per_role.Where(p => p.username == username).ToList(); 
+            li = db.user_per_role.Where(p => p.username == username).ToList();
+            if (!li.Exists(p => p.role == (int)Config.role.SHEOBSERVATION))
+            {
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/SheObservation" });
+            }
             var has = (from employees in db.employees
                        join dept in db.employee_dept on employees.dept_id equals dept.id
                        join users in db.users on employees.id equals users.employee_id into user_employee
@@ -239,6 +252,106 @@ namespace StarEnergi.Controllers.FrontEnd
             });
         }
 
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult _CustomBinding(GridCommand command)
+        {
+            string username = Session["username"].ToString();
+            int id = int.Parse(Session["id"].ToString());
+            li = db.user_per_role.Where(p => p.username == username).ToList();
+            string name = db.employees.Find(id).alpha_name;
+            IEnumerable data = GetData(command,li,id,name);
+            return View(new GridModel
+            {
+                Data = data,
+                Total = count
+            });
+        }
+
+        private static IEnumerable GetData(GridCommand command,List<user_per_role> li, int id, string name)
+        {
+            var dataContext = new relmon_star_energiEntities();
+            IQueryable<she_observation> data = dataContext.she_observation;
+
+            if (!li.Exists(p => p.role == (int)Config.role.ADMINMASTERSHE))
+            {
+                data = data.ApplyUserFiltering(id,name);
+            }
+            //Apply filtering
+            data = data.ApplyFiltering(command.FilterDescriptors);
+            count = data.Count();
+            //Apply sorting
+            data = data.ApplySorting(command.GroupDescriptors, command.SortDescriptors);
+            //Apply paging
+            data = data.ApplyPaging(command.Page, command.PageSize);
+            //Apply grouping
+            if (command.GroupDescriptors.Any())
+            {
+                return data.ApplyGrouping(command.GroupDescriptors);
+            }
+
+            List<she_observation> retVal = data.ToList();
+
+            Debug.WriteLine(retVal.Count);
+
+            foreach (she_observation o in retVal)
+            {
+                if (o.is_quality == 1)
+                {
+                    o.quality = "Yes";
+                }
+                else if (o.is_quality == 0)
+                {
+                    o.quality = "No";
+                }
+                else
+                {
+                    o.quality = "";
+                }
+                if (o.observer != null)
+                    o.observer = o.observer.Split('#').First();
+
+                if (o.equipment_employee == 0)
+                {
+                    o.equipment_name = "";
+                    if (o.equipment_id != null)
+                        o.employee_name = o.equipment_name = dataContext.equipments.Find(o.equipment_id == null ? 0 : o.equipment_id).nama;
+                }
+                else if (o.equipment_employee == 1)
+                {
+                    o.employee_name = "";
+                    if (o.employee_id != null)
+                    {
+                        string[] em = o.employee_id.Split(',');
+                        foreach (string s in em)
+                        {
+                            if (s != "")
+                                o.employee_name += dataContext.employees.Find(Int32.Parse(s)).alpha_name + ", ";
+                        }
+                        o.employee_name = o.employee_name.Remove(o.employee_name.Length > 2 ? o.employee_name.Length - 2 : 0);
+                    }
+                }
+
+                switch (o.type_equipment)
+                {
+                    case 0: o.ppe_name = "Safety helmet"; break;
+                    case 1: o.ppe_name = "Safety gloves"; break;
+                    case 2: o.ppe_name = "Safety glasses"; break;
+                    case 3: o.ppe_name = "Safety shoes"; break;
+                    case 4: o.ppe_name = "Safety ear protection"; break;
+                    default: o.ppe_name = ""; break;
+                }
+            }
+
+            return retVal;
+        }
+        private static int GetCount()
+        {
+            using (relmon_star_energiEntities dataContext = new relmon_star_energiEntities())
+            {
+                return dataContext.she_observation.Count();
+            }
+        }
+
         [HttpPost]
         public JsonResult Add(she_observation sheObservation)
         {
@@ -374,11 +487,11 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         // Ajax delete binding she observation report
         [AcceptVerbs(HttpVerbs.Post)]
-        [GridAction]
-        public ActionResult _DeleteAjaxSheObservation(int id)
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult _DeleteAjaxSheObservation(int id, GridCommand command)
         {
             deleteSheObservation(id);
-            return bindingSheObservation();
+            return _CustomBinding(command);
         }
 
         //delete data she observation report

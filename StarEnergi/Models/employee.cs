@@ -19,6 +19,7 @@ namespace StarEnergi.Models
         {
             this.employee1 = new HashSet<employee>();
             this.rca_implementation = new HashSet<rca_implementation>();
+            this.rca_pre_task = new HashSet<rca_pre_task>();
             this.users = new HashSet<user>();
         }
     
@@ -68,6 +69,7 @@ namespace StarEnergi.Models
         public virtual employee employee2 { get; set; }
         public virtual employee_dept employee_dept1 { get; set; }
         public virtual ICollection<rca_implementation> rca_implementation { get; set; }
+        public virtual ICollection<rca_pre_task> rca_pre_task { get; set; }
         public virtual ICollection<user> users { get; set; }
     }
     

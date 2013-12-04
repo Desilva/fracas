@@ -160,7 +160,7 @@
             success: function (data) {
                 console.log(data);
                 if (data == null || data == "") {
-                    alert("The period has existed, please choose another period");
+                    alert("The period has existed, please choose another period.\nYou already draw at the chosen period.");
                     $('#realmod_save').css("display", "none");
                     $('#startDraw').removeAttr('disabled');
                 } else {

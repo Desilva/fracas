@@ -1,8 +1,10 @@
-﻿<div id = "contentPirProcessList">
+﻿<div id = "contentPirInitiatorList">
 @model IEnumerable<StarEnergi.Models.pir>
+@if (ViewBag.header != null) {
 <h2>@ViewBag.nama
     <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
 </h2>
+}
 
 <script type="text/javascript">
     function openHelp() {
@@ -11,7 +13,7 @@
 
     function onRowSelect(e) {
         var row = e.row;
-        $('#contentPirProcessList').load('pir/pageProcess/' + row.cells[0].innerHTML);
+        $('#contentPirInitiatorList').load('pir/pageProcess/' + row.cells[0].innerHTML);
     }
 
     function onDataBound(e) {

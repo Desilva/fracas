@@ -17,11 +17,117 @@
             ViewBag.Title = "view RCA - 7";
         }
     }
+
+    string id = HttpContext.Current.Session["id_analysis"].ToString();
 }
 @model StarEnergi.Models.RCAEntityModel
+<style>
+    .t-icon.t-EditPreserveRecord
+    {
+        background-image: url("/Content/2012.1.214/Default/sprite.png");
+        background-position: 0 -336px;
+    }
+</style>
 <script type="text/javascript" src="../../../Scripts/MicrosoftAjax.js"></script>
 <script type="text/javascript" src="../../../Scripts/MicrosoftMvcValidation.js"></script>
 @{Html.EnableClientValidation();}
+<script type="text/javascript">
+    function ondatabound(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+    }
+
+    function onEdit(e) {
+    }
+
+    function OnComplete(e) {
+        if (e.name == null) {
+            clear();
+            var detailWindow = $("#AddPreserveRecords").data("tWindow");
+            detailWindow.center().open();
+        } else {
+            if (e.name == "EditPreserveRecord") {
+                clear();
+                var detailWindow = $("#EditPreserveRecords").data("tWindow");
+                user = e.response;
+                console.log(user);
+                $.each(user, function (index, value) {
+                    if (index == "target_date") {
+                        if (value != null)
+                            $('#edit_date').val((value.getMonth() + 1) + '/' + value.getDate() + '/' + value.getFullYear());
+                    } else if (index != "id_rca") {
+                        $('#edit_' + index).val(value);
+                    }
+                });
+                detailWindow.center().open();
+            }
+        }
+    }
+
+    function SavePreserveRecord() {
+
+        $('#submit-log').attr('disabled', 'disabled');
+        $('#realmod_save_log').css("display", "block");
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("addPreserveRecord", "RCA")",
+            traditional: true,
+            data: {
+                data_to_collect: $('#data_to_collect').val(),
+                task: $('#task').val(),
+                id_category: $('#id_category').val(),
+                target_date: $('#date').val(),
+                pic: $('#pic').val(),
+                },
+            success: function (data) {
+                var grid = $('#PreTask').data('tGrid');
+                grid.ajaxRequest();
+                clear();
+                $('#realmod_save_log').css("display", "none");
+                $('#submit-preserve-record').removeAttr('disabled');
+                $("#AddPreserveRecords").data("tWindow").close();
+
+            }
+        });
+    }
+
+    function EditPreserveRecord() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("editPreserveRecord", "RCA")",
+            traditional: true,
+            data: {
+                id: $('#edit_id').val(),
+                data_to_collect: $('#edit_data_to_collect').val(),
+                task: $('#edit_task').val(),
+                id_category: $('#edit_id_category').val(),
+                target_date: $('#edit_date').val(),
+                pic: $('#edit_pic').val(),
+            },
+            success: function (data) {
+                var grid = $('#PreTask').data('tGrid');
+                grid.ajaxRequest();
+                $("#EditPreserveRecords").data("tWindow").close();
+            }
+        });
+    }
+
+    function clear() {
+        $('#data_to_collect').val('');
+        $('#task').val('');
+        $('#id_category').val('');
+        $('#pic').val('');
+        var now = new Date();
+        $('#date').val('' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear());
+        $('#edit_data_to_collect').val('');
+        $('#edit_task').val('');
+        $('#edit_id_category').val('');
+        $('#edit_pic').val('');
+        var now = new Date();
+        $('#edit_date').val('' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear());
+
+    }
+</script>
 <br />
 @using(Html.BeginForm()) {
 <div class="addContent">
@@ -38,21 +144,96 @@
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
             <div class="info_inside_left">Analysis Start Date <a class="bintang">*</a></div>
             <div class="infoFieldinput longField">
-                    @Html.Telerik().DateTimePickerFor(o => o.start_date).Name("start_date").InputHtmlAttributes(new { id = "start_date", name = "start_date" }).Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? true : false)
+                    @Html.Telerik().DateTimePickerFor(o => o.start_date).Name("start_date").InputHtmlAttributes(new { id = "start_date", name = "start_date" }).Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? true : false)
                     @Html.ValidationMessage("start_date", "*")
-                )<br />   
+                <br />   
             </div>
             <br />
-            <div class="info_inside_left">Expected Completion Date </div>
+            <div class="info_inside_left">Actual Start Date </div>
+            <div class="infoFieldinput longField">
+                    @Html.Telerik().DateTimePickerFor(o => o.actual_start_date).Name("actual_start_date").InputHtmlAttributes(new { id = "actual_start_date", name = "actual_start_date" }).Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? true : false)
+                <br />   
+            </div>
+            <br />
+            <div class="info_inside_left">Due Date </div>
+            <div class="infoFieldinput longField">
+                    @Html.Telerik().DateTimePickerFor(o => o.due_date).Name("due_date").InputHtmlAttributes(new { id = "due_date", name = "due_date" }).Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? true : false)
+                <br />   
+            </div>
+            <br />
+            <div class="info_inside_left">Completion Date </div>
             <div class="infoFieldinput longField">
                     @(Html.Telerik().DateTimePickerFor(o => o.completion_date)
                     .Name("end_date")
                     .InputHtmlAttributes(new { id = "completion_date", name="completion_date"})
-                    .Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? true : false)
+                    .Enable((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? true : false)
                     //.Value(ViewBag.completion_date as DateTime?)
                 )<br /> 
             </div>
-        </div> 
+            <br />
+            <div class="info_inside_left">Preserve Records</div>
+            @(Html.Telerik().Grid<StarEnergi.Models.rca_pre_task>()
+                .Name("PreTask")
+                .DataKeys(keys =>
+                {
+                    keys.Add(o => o.id);
+                })
+                .ToolBar(commands =>
+                {
+                    if (li.Exists(p => p.role == 2) && ViewBag.isView != null)
+                    {
+                        commands
+                        .Custom()
+                        .HtmlAttributes(new { id = "addPreserveRecord" })
+                        .Text("Add Preserve Record")
+                        .Ajax(true)
+                        .Action("AddPreserveRecords", "RCA", new { id = id });
+                    }
+                }
+                )
+                .DataBinding(dataBinding =>
+                {
+                    dataBinding.Ajax()
+                        .Select("_SelectPreTask", "RCA", new { ids = id })
+                        .Delete("_DeletePreTask", "RCA", new { ids = id });
+                })
+                .Columns(columns =>
+                {
+                    columns.ForeignKey(o => o.id_category, (System.Collections.IEnumerable)ViewData["category"],
+                           "id", "name").Width(75).Title("Data Category");
+                    columns.Bound(o => o.data_to_collect).Title("Data To Collect");
+                    columns.Bound(o => o.task).Title("Collection Strategy");
+                    columns.ForeignKey(o => o.pic, (System.Collections.IEnumerable)ViewData["users"],
+                           "id", "alpha_name").Width(75).Title("PIC");
+                    columns.Bound(o => o.target_date).Width(100).Title("Target Date");
+                    columns.Command(commands =>
+                    {
+                        if (li.Exists(p => p.role == 2) && ViewBag.isView != null)
+                        {
+                            commands.Custom("EditPreserveRecord")
+                            .ButtonType(GridButtonType.Image).ImageHtmlAttributes(new { @class = "t-icon t-edit" })
+                            .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
+                            .HtmlAttributes(new { title = "Edit Preserve Records" })
+                            .Ajax(true)
+                            .Action("GetPreserveRecord", "RCA");
+                            commands.Delete().ButtonType(GridButtonType.Image);
+                        }
+                    }).Width(80).Title("Action");
+
+
+                })
+                .ClientEvents(events => events.OnRowDataBound("ondatabound").OnEdit("onEdit").OnComplete("OnComplete"))
+                .Pageable(p => p.PageSize(20))
+                .Sortable()
+                .Groupable()
+                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                .Scrollable(c => c.Enabled(true))
+                .Selectable()
+                .Filterable()
+               )
+        </div>
+
+        
         
         <div class="addSubmit">
 	        <input name="cancel" value="Cancel" type="submit"/>
@@ -62,3 +243,110 @@
     </div>
 </div>
 }
+
+@(Html.Telerik().Window()
+    .Name("AddPreserveRecords")
+    .Visible(false)
+    .Title("Add Preserve Record")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+		            <div class="info_inside_left">Data Category </div>
+		            <div class="infoFieldinput">
+                        <select id="id_category" name="id_category">
+                            @foreach(StarEnergi.Models.CategoryEntity ce in ViewData["category"] as List<StarEnergi.Models.CategoryEntity>) {
+                                <option value="@ce.id">@ce.name</option>    
+                            }
+                        </select>
+		            </div>
+		
+                    <div class="info_inside_left">Data To Collect</div>
+		            <div class="infoFieldinput"><input id="data_to_collect" type="text" name="data_to_collect" value="" /></div>
+
+                    <div class="info_inside_left">Collection Strategy</div>
+		            <div class="infoFieldinput">
+                        <textarea id="task" name="task" cols="20" rows="3"></textarea>
+		            </div>
+
+                    <div class="info_inside_left">PIC</div>
+		            <div class="infoFieldinput">
+                        <select id="pic" name="pic">
+                            @foreach (StarEnergi.Models.EmployeeEntity ce in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                            {
+                                <option value="@ce.id">@ce.alpha_name</option>    
+                            }
+                        </select>
+                    </div>
+
+                   <div class="info_inside_left">Target Date</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("date")
+                            .HtmlAttributes(new { id = "datetime_wrapper" })
+                            .Value(DateTime.Today)
+                            .Enable(true)
+                        )
+                    </div>                  
+
+	            <p class="submit">
+		            <input name="Submit" id="submit-preserve-record" value="Add" type="submit" onclick="SavePreserveRecord();" />
+                    <span id="realmod_save_log" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+	            </p>
+	         </div>
+        </text>)
+)
+
+@(Html.Telerik().Window()
+    .Name("EditPreserveRecords")
+    .Visible(false)
+    .Title("Edit Preserve Record")
+    .Modal(true)
+    .Width(400)
+    .Content(@<text>
+               <div class="info">
+
+		            <div class="info_inside_left">Data Category </div>
+		            <div class="infoFieldinput">
+                        <select id="edit_id_category" name="edit_id_category">
+                            @foreach(StarEnergi.Models.CategoryEntity ce in ViewData["category"] as List<StarEnergi.Models.CategoryEntity>) {
+                                <option value="@ce.id">@ce.name</option>    
+                            }
+                        </select>
+		            </div>
+		
+                    <div class="info_inside_left">Data To Collect</div>
+		            <div class="infoFieldinput"><input id="edit_data_to_collect" type="text" name="edit_data_to_collect" value="" /></div>
+
+                    <div class="info_inside_left">Collection Strategy</div>
+		            <div class="infoFieldinput">
+                        <textarea id="edit_task" name="edit_task" cols="20" rows="3"></textarea>
+		            </div>
+
+                    <div class="info_inside_left">PIC</div>
+		            <div class="infoFieldinput">
+                        <select id="edit_pic" name="edit_pic">
+                            @foreach (StarEnergi.Models.EmployeeEntity ce in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                            {
+                                <option value="@ce.id">@ce.alpha_name</option>    
+                            }
+                        </select>
+                    </div>
+
+                   <div class="info_inside_left">Target Date</div>
+		            <div class="infoFieldinput">
+                        @(Html.Telerik().DatePicker()
+                            .Name("edit_date")
+                            .HtmlAttributes(new { id = "datetime_wrapper" })
+                            .Value(DateTime.Today)
+                            .Enable(true)
+                        )
+                    </div>
+
+	            <p class="submit">
+                    <input id="edit_id" type="hidden" name="edit_id" value="" />
+		            <input name="Submit" value="Save" type="submit" onclick="EditPreserveRecord();" />
+	            </p>
+	         </div>
+        </text>)
+)

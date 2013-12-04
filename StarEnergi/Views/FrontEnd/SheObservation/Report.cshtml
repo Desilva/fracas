@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<StarEnergi.Models.she_observation>
 @{
     ViewBag.Title = "Add Daily Log";
-    //List<StarEnergi.Models.user_per_role> li = null;
-    //if (ViewData["user_role"] != null)
-    //{
-    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
-    //}
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
 }
 <style>
     .t-grid .t-grid-header .t-header,
@@ -15,23 +15,25 @@
 </style>
 
 @( 
- Html.Telerik().Grid<StarEnergi.Models.she_observation>()
+ Html.Telerik().Grid(Model)
         .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
         .Name("SheObservation")
         .DataKeys(keys =>
         {
             keys.Add(p => p.id);
         })
+        .EnableCustomBinding(true)
         .DataBinding(dataBinding =>
         {
             dataBinding.Ajax()
                 .Delete("_DeleteAjaxSheObservation", "SheObservation")
-                .Select("_SelectAjaxSheObservation", "SheObservation");
+                .Select("_CustomBinding", "SheObservation");
         })
         .Columns(columns =>
         {
             columns.Command(commands =>
             {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
             }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
             columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.date_time).Width(200).Title("Date/Time");
@@ -46,7 +48,7 @@
             events => events
                 .OnRowDataBound("OnRowDataBoundEq")
         )
-        .Pageable(p => p.PageSize(10))
+        .Pageable(paging => paging.Total((int)ViewData["total"]).PageSize(10))
         .Sortable()
         .Scrollable(c => c.Enabled(true))
         .Selectable()
@@ -60,6 +62,10 @@
         var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="View SHE Observation" >'
                                 + '<span class="t-icon t-edit"></span>'
                                 + '</a>';
+
+        if ('@li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)' == 'True') {
+            templateComplete += '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#" title="Delete SHE Observation"><span class="t-icon t-delete"></span></a>';
+        }
 
         var i = 0;
         for (var a in row.cells) {

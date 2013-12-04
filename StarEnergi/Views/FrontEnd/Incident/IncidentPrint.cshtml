@@ -321,24 +321,13 @@
     <tbody style="width:100%">
         <tr border="1">
             <td style="text-align:left;font-size:9px">
-                @{int countCol = 0; int countRow = 0;}
-                @if (Model.factual_information != null) {
-                    foreach (char i in Model.factual_information){if (i == '\n'){countRow++;countCol=0;<br />}
-                    else
-                    {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@i</text>}}
-                    if (Model.factual_information.Length / 117 < 4 - countRow)
-                    {
-                        for (int i = 0; i < 4 - countRow - Model.factual_information.Length / 117; i++)
-                        {
-                            <br /><text>&nbsp;</text>
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        <br /><text>&nbsp;</text>
-                    }
+                @{
+                    string pattern =  "style=\"height:([0-9]+)px; width:([0-9]+)px\"";
+                    string input = Model.factual_information == null ? "" : Model.factual_information;
+                    string replacement = "height=\"$1\" width=\"$2\"";
+                    System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(pattern);
                 }
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))
             </td>
         </tr>
         <tr border="1">
@@ -359,25 +348,11 @@
     <table id="tabImAct" class="tabs" style="width:750px" cellspacing="3" cellpadding="3">
     <tbody style="width:100%">
         <tr border="1">
+            @{
+                input = Model.immediate_action == null ? "" : Model.immediate_action;
+            }
             <td style="text-align:left;font-size:9px">
-                @{countCol = 0; countRow = 0;}
-                @if (Model.immediate_action != null) {
-                    foreach (char i in Model.immediate_action){if (i == '\n'){countRow++;countCol=0;<br />}
-                    else
-                    {countCol++; if (countCol > 117) { countRow++; countCol = 0; }<text>@i</text>}}
-                    if (Model.immediate_action.Length / 117 < 4 - countRow)
-                    {
-                        for (int i = 0; i < 4 - countRow - Model.immediate_action.Length / 117; i++)
-                        {
-                            <br /><text>&nbsp;</text>
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        <br /><text>&nbsp;</text>
-                    }
-                }
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(rgx.Replace(input,replacement)))
             </td>
         </tr>
     </tbody>
@@ -521,11 +496,11 @@
 <table id="tabImAct4" class="tabs" style="width:750px" cellspacing="3" cellpadding="3">
     <tbody style="width:100%">
         <tr border="1">
-            <td style="width:20%;text-align:left;font-size:9px" class="right"><b>Investigation Required?</b></td>
-            <td colspan="2" style="width:13.33%;text-align:left;font-size:9px">
+            <td style="text-align:left;font-size:9px" class="right" width="15%"><b>Investigation Required?</b></td>
+            <td style="text-align:left;font-size:9px" width="18.3%">
                 <table border="0">
                     <tr>
-                        <td width="10%">
+                        <td width="15%">
                             @if (Model.investigation == 1)
                             {
                                 <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
@@ -533,10 +508,10 @@
                                 <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
                             }
                         </td>
-                        <td style="text-align:left;font-size:9px" width="40%">
+                        <td style="text-align:left;font-size:9px" width="35%">
                             Yes
                         </td>
-                        <td width="10%">
+                        <td width="15%">
                             @if (Model.investigation == 0)
                             {
                                 <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="9"/>
@@ -544,18 +519,18 @@
                                 <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="9"/>
                             }
                         </td>
-                        <td style="text-align:left;font-size:9px" width="40%">
+                        <td style="text-align:left;font-size:9px" width="35%">
                             No
                         </td>
                     </tr>
                 </table>
             </td>
-            <td style="width:20%;text-align:left;font-size:9px" class="right"><b>Investigation Request by</b></td>
-            <td colspan="2" style="width:13.33%;text-align:left;font-size:9px" class="right">
+            <td style="text-align:left;font-size:9px" class="right" width="15%"><b>Investigation Request by</b></td>
+            <td style="text-align:left;font-size:9px" class="right" width="18.3%">
                 @Model.investigation_req
             </td>
-            <td style="width:20%;text-align:left;font-size:9px" class="right"><b>Investigation Lead by</b></td>
-            <td colspan="2" style="width:13.33%;text-align:left;font-size:9px" class="right">
+            <td style="text-align:left;font-size:9px" class="right" width="15%"><b>Investigation Lead by</b></td>
+            <td style="text-align:left;font-size:9px" class="right" width="18.3%">
                 @Model.lead_name
             </td>
         </tr>

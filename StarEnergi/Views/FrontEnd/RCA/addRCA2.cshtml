@@ -150,7 +150,7 @@
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
             <div class="info_new_left">Facility</div>
             <div class="infonewinput">
-                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                     {
                     <select name="id_facility" id="id_facility">
                         <!-- <option value="" disabled selected>Choose Facility</option> -->
@@ -183,7 +183,7 @@
             <br />
             <div class="info_new_left">Department</div>
             <div class="infonewinput">
-                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                     {
                     <select name="id_division" id="id_division">
                         <option value="" disabled selected>Choose Department</option>
@@ -212,7 +212,7 @@
             <br />
             <div class="info_new_left">Section</div>
             <div class="infonewinput">
-                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2))
+                @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null)
                 {
                 <select name="id_department" id="id_department">
                     <option value="" disabled>Choose Department</option>
@@ -308,8 +308,8 @@
             <br />-->
             <div class="info_new_left"><div>Functional Location</div><div> (ID Number)</div></div>
             <div class="infonewinput">
-                <input id="functional_location" type="text" name="functional_location" value="@ViewBag.functional_location" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) ? "" : "disabled")/>
-                <input id="browse" name="browse" type="button" style="display:inline" onclick="browseEquipment()" value="Browse" />
+                <input id="functional_location" type="text" name="functional_location" value="@ViewBag.functional_location" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? "" : "disabled")/>
+                <input id="browse" name="browse" type="button" style="@((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.isView != null ? "display:inline" : "display:none;")" onclick="browseEquipment()" value="Browse" />
             </div>
             <br />
             <div class="addSubmit">

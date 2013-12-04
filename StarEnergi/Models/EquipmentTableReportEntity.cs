@@ -16,6 +16,7 @@ namespace StarEnergi.Models
         public string max_limit { get; set; }
         public string unit { get; set; }
         public string tag_value { get; set; }
+        public DateTime? date { get; set; }
         public string time { get; set; }
         public string name_operator { get; set; }
         public string keterangan { get; set; }

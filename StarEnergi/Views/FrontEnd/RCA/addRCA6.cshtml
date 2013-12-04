@@ -55,7 +55,7 @@
     function check(name) {
         var isFind = false;
         
-        if (isPublish == "0") {
+        if (isPublish == "0" && '@(ViewBag.isView != null)' == 'True') {
             for (var i = 0; i < arrayChoose.length && isFind == false; i++) {
                 if (arrayChoose[i] == name) {
                     isFind = true;
@@ -137,7 +137,7 @@
     });
 
     $(document).ready(function() {
-        if ('@((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.analyst == null)' == 'True') {
+        if ('@((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.analyst == null && ViewBag.isView != null)' == 'True') {
             $('#next').attr('disabled','disabled');
             $('#prev').attr('disabled','disabled');
         }
@@ -234,7 +234,7 @@
             <div style="float: left;">
                 <div class="info_new_left">Principal Analyst <a class="bintang">*</a></div>
                 <div class="infonewinput">
-                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.analyst == null)
+                    @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == 2) && ViewBag.analyst == null && ViewBag.isView != null)
                     {
                     <select name="analyst" id="analyst">
                         <option value="" disabled selected>Choose Principal Analyst</option>

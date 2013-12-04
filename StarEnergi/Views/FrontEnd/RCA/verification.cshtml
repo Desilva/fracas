@@ -110,7 +110,7 @@
     var items = [];
     var events = "";
     var isPublish = '@isPublish';
-    var isExistRCA = '@li.Exists(p => p.role == 2)' == 'True' ? true : false;
+    var isExistRCA = '@(li.Exists(p => p.role == 2) && ViewBag.isView != null)' == 'True' ? true : false;
 
     @if (list != null) {
         i = 0;
@@ -320,11 +320,11 @@
             style[mxConstants.STYLE_ENTRY_Y] = 0.5; // top
             style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
         } else {
-            style[mxConstants.STYLE_EXIT_X] = 1.0; // centSer
-            style[mxConstants.STYLE_EXIT_Y] = 0.5; // bottom
+            style[mxConstants.STYLE_EXIT_X] = 0.5; // centSer
+            style[mxConstants.STYLE_EXIT_Y] = 1; // bottom
             style[mxConstants.STYLE_EXIT_PERIMETER] = 0; // disabled
-            style[mxConstants.STYLE_ENTRY_X] = 0; // center
-            style[mxConstants.STYLE_ENTRY_Y] = 0.5; // top
+            style[mxConstants.STYLE_ENTRY_X] = 0.5; // center
+            style[mxConstants.STYLE_ENTRY_Y] = 0; // top
             style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
             style[mxConstants.STYLE_STROKECOLOR] = 'red';
         }
@@ -334,7 +334,7 @@
             style[mxConstants.STYLE_EDGE] = mxEdgeStyle.MyStyle;
         } else {
             // Disable the following for straight lines
-            style[mxConstants.STYLE_EDGE] = mxEdgeStyle.SideToSide;
+            style[mxConstants.STYLE_EDGE] = mxEdgeStyle.TopToBottom;
         }
 
         // Enables automatic sizing for vertices after editing and
@@ -356,7 +356,11 @@
         // Enables automatic layout on the graph and installs
         // a tree layout for all groups who's children are
         // being changed, added or removed.
-        var layout = new mxCompactTreeLayout(graph, true);
+        if (isTree == '2') {
+            var layout = new mxCompactTreeLayout(graph, true);
+        } else {
+            var layout = new mxCompactTreeLayout(graph, false);
+        }
         layout.useBoundingBox = false;
         layout.edgeRouting = false;
         if (isTree == '2') {
@@ -397,20 +401,42 @@
                     var c = Array();
                     c[0] = cell;
                     if (cell.getAttribute('type', 'o') == "X") {
-                        graph.setCellStyle("image;", c);
-                    } else if (cell.getAttribute('type', 'o') == "P") {
-                        graph.setCellStyle("strokeColor=green;fillColor=green;", c);
-                    } else if (cell.getAttribute('type', 'o') == "H") {
-                        graph.setCellStyle("strokeColor=yellow;fillColor=yellow;", c);
-                    } else if (cell.getAttribute('type', 'o') == "L") {
-                        graph.setCellStyle("strokeColor=yellow;fillColor=purple;", c);
+                        graph.setCellStyle("image;whiteSpace=wrap;fontSize=11", c);
+                    } else if (cell.getAttribute('type', 'o') == "PR") {
+                        graph.setCellStyle("strokeColor=green;fillColor=green;whiteSpace=wrap;fontSize=11", c);
+                    } else if (cell.getAttribute('type', 'o') == "HR") {
+                        graph.setCellStyle("strokeColor=yellow;fillColor=yellow;whiteSpace=wrap;fontSize=11", c);
+                    } else if (cell.getAttribute('type', 'o') == "LR") {
+                        graph.setCellStyle("strokeColor=yellow;fillColor=purple;whiteSpace=wrap;fontSize=11", c);
+                    } else if (cell.getAttribute('type', '') == "H") {
+                        graph.setCellStyle("strokeColor=blue;fillColor=orange;whiteSpace=wrap;fontSize=11",c);
+                    } else {
+                        graph.setCellStyle("fontSize=11",c);
                     }
+
+                    var description = cell.getAttribute('deskripsi', 'no description').split(' ');
+                    var new_desc = "";
+                    var i = 0;
+                    for (var a in description) {
+                        console.log("i = " + i);
+                        i += description[a].length + 1;
+                        if (i < 30) {
+                            new_desc += description[a] + " ";
+                        } else {
+                            new_desc += "<br />" + description[a] + " ";
+                            i = description[a].length;
+                        }
+                    }
+
                     return "<p style=\"margin:0px;width:115px\">&nbsp;</p>" +
-                        "<h4 style=\"margin:0px;color:#1d258f;text-align:center;\">" + cell.getAttribute('deskripsi', 'no description') +
-                        "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" +
-                        cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;margin:0px;color:black;\">" +
-                        cell.getAttribute('type', '') + "</p>";
+                            "<h4 style=\"margin:0;margin-right:12px;color:#1d258f;text-align:center\">" + new_desc + 
+                            "&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">" + 
+                            cell.getAttribute('bobot', '') + "</p><p style=\"text-align:right;float:right;margin-top:0;color:black;margin-right:12px\">" + 
+                            cell.getAttribute('type', '') + "</p>";
                 }
+                //var size = graph.getPreferredSizeForCell(vertex);
+                graph.getView().clear(cell, false, false);
+                graph.getView().validate();
                 //return cell.getAttribute('deskripsi', 'no description');
             }
         };
@@ -616,7 +642,16 @@
 
             if (result != null) {
                 result.width = Math.max(120, result.width);
-                result.height = 40;
+                result.width = Math.min(200, result.width);
+                result.height = Math.max(40, result.height+30);
+                if (isTree == '2') {
+                    result.width = Math.max(120, result.width);
+                    result.height = 40;
+                } else {
+                    result.width = Math.max(120, result.width);
+                    result.width = Math.min(200, result.width);
+                    result.height = Math.max(40, result.height+30);
+                }
             }
 
             return result;

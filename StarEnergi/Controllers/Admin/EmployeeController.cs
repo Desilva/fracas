@@ -34,6 +34,23 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Details(int id)
         {
             employee employee = db.employees.Find(id);
+
+            Dictionary<int, string> delegate_name = new Dictionary<int, string>();
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       orderby employee.alpha_name
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                       }).ToList();
+            foreach (EmployeeEntity e in has)
+            {
+                delegate_name.Add(e.id, e.alpha_name);
+            }
+            ViewBag.delegate_name = new SelectList(delegate_name, "Key", "Value", employee.employee_delegate);
+
             return PartialView(employee);
         }
 
@@ -97,6 +114,23 @@ namespace StarEnergi.Controllers.Admin
             employee employee = db.employees.Find(id);
             ViewBag.employee_id = employee.employee_boss;
             ViewBag.dept_id = employee.dept_id;
+
+            Dictionary<int, string> delegate_name = new Dictionary<int, string>();
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       orderby employees.alpha_name
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                       }).ToList();
+            foreach (EmployeeEntity e in has)
+            {
+                delegate_name.Add(e.id, e.alpha_name);
+            }
+            ViewBag.delegate_name = new SelectList(delegate_name, "Key", "Value", employee.employee_delegate);
+
             return PartialView(employee);
         }
 
