@@ -464,5 +464,10 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
+        public ActionResult ProjectReport()
+        {
+            return View();
+        }
+
     }
 }
