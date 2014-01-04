@@ -1421,8 +1421,10 @@
 
     $(document).ready(function () {
         var act = [];
-        @foreach(StarEnergi.Models.monthly_project_activity mpa in ViewBag.activities as List<StarEnergi.Models.monthly_project_activity>) {
+        @if(id != 0) {
+            foreach(StarEnergi.Models.monthly_project_activity mpa in ViewBag.activities as List<StarEnergi.Models.monthly_project_activity>) {
             <text>act.push('@mpa.activity');</text>
+            }
         }
         var i = 0;
         for (var a in act) {
@@ -1431,9 +1433,11 @@
         }
 
         var out = [];
-        @foreach (StarEnergi.Models.monthly_project_outstanding_activity mpoa in ViewBag.outstandings as List<StarEnergi.Models.monthly_project_outstanding_activity>)
-        {
-            <text>out.push('@mpoa.activity');</text>
+        @if(id != 0) {
+            foreach (StarEnergi.Models.monthly_project_outstanding_activity mpoa in ViewBag.outstandings as List<StarEnergi.Models.monthly_project_outstanding_activity>)
+            {
+                <text>out.push('@mpoa.activity');</text>
+            }
         }
         var i = 0;
         for (var a in act) {

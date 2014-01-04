@@ -164,7 +164,14 @@
                                                 });
                                                item.Add().Text("SHE Observation Lucky Draw").Action("Index", "Undian");
                                            }
-                                           item.Add().Text("Monthly Project SHE Report").Action("Index", "SheProject");
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)) {
+                                               item.Add().Text("SHE Safe Man Hours").Items(item2 =>
+                                                {
+                                                    item2.Add().Text("Monthly Project SHE Report").Action("Index", "SheProject");
+                                                    item2.Add().Text("Monthly Project SHE Recap").Action("ProjectReport", "SheProject");
+                                                    item2.Add().Text("Safe Man Hours").Action("Index", "SheSafeManHours");
+                                                });
+                                           }
                                        });
                                }
                                menu.Add().Text("Daily Log").Action("Index", "DailyLogs");
