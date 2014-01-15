@@ -266,7 +266,20 @@
 		</tr>
         <tr border="0.5">
 			<td bgcolor="yellow" rowspan="3" style="font-size:8px;">Disability</td>
-            <td colspan="2" rowspan="3" style="font-size:8px;">Alert Responds to</td>
+            <td colspan="2" rowspan="3" style="font-size:8px;">
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.disability == 3) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                        <td>Alert Responds to</td>
+                    </tr>
+                </table>
+            </td>
             <td colspan="2" style="font-size:8px;">
                 <table>
                     <tr border="0">
@@ -642,7 +655,19 @@
 		</tr>
         <tr style="font-size:8px;" border="0.5">
             <td bgcolor="yellow" colspan="2">2 Normal</td>
-            <td>&nbsp;</td>
+            <td>
+                <table>
+                    <tr border="0">
+                        <td width="15%">
+                            @if (Model.pupil_normal == 1) {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box-c.png")" width="5"/>
+                            } else {
+                                <img src="@Server.MapPath("~/Content/image/illnessReport/box.png")" width="5"/>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </td>
             <td>&nbsp;</td>
 		</tr>
         <tr border="0.5">

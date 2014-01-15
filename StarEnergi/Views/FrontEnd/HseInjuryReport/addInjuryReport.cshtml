@@ -224,7 +224,8 @@
                 respiratory_rate: $('#respiratory_rate').val(),
                 oxygen_saturation: $('#oxygen_saturation').val(),
                 blood_pressure: $('#blood_pressure').val(),
-                pulse_rate: $('#pulse_rate').val()
+                pulse_rate: $('#pulse_rate').val(),
+                pupil_normal: $('#pupil_normal').is(":checked")== true ? 1 : 0,
             }
 
             if (isEdit == 'False') {
@@ -276,7 +277,7 @@ function validate() {
                         .Interval(1)
                 )</td>
                 <td class="yellow-bg"><b>Sex / Nation</b></td>
-                <td colspan="3"><input type="radio" name="sex" value="1" @(isEdit ? dl.sex == 1 ? "checked" : "" : "")/>L<input type="radio" name="sex" value="0" @(isEdit ? dl.sex == 0 ? "checked" : "" : "")/>P&nbsp;/&nbsp;<input type="text" id="nation" name="nation" value="@(isEdit ? dl.nation : "")" /></td>
+                <td colspan="3"><label><input type="radio" name="sex" value="1" @(isEdit ? dl.sex == 1 ? "checked" : "" : "")/>L</label><label><input type="radio" name="sex" value="0" @(isEdit ? dl.sex == 0 ? "checked" : "" : "")/>P</label>&nbsp;/&nbsp;<input type="text" id="nation" name="nation" value="@(isEdit ? dl.nation : "")" /></td>
 			</tr>
             <tr>
 				<td class="yellow-bg" colspan="2"><b>Name / ID Number</b></td>
@@ -354,114 +355,114 @@ function validate() {
 			</tr>
             <tr>
 				<td class="yellow-bg"><b>Airway</b></td>
-                <td colspan="2"><input type="radio" name="airway" value="0" @(isEdit ? dl.airway == 0 ? "checked" : "" : "")/>Clear</td>
-                <td colspan="2"><input type="radio" name="airway" value="1" @(isEdit ? dl.airway == 1 ? "checked" : "" : "")/>Obstructed</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="airway" value="0" @(isEdit ? dl.airway == 0 ? "checked" : "" : "")/>Clear</label></td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="airway" value="1" @(isEdit ? dl.airway == 1 ? "checked" : "" : "")/>Obstructed</label></td>
                 <td class="yellow-bg" colspan="2"><b>Respiratory Rate --</b></td>
                 <td colspan="2"><input type="text" id="respiratory_rate" name="respiratory_rate" value="@(isEdit ? dl.respiratory_rate : "")" style="width:100px" /></td>
 			</tr>
             <tr>
 				<td class="yellow-bg"><b>C. Spine</b></td>
-                <td colspan="2"><input type="radio" name="c_spine" value="0" @(isEdit ? dl.c_spine == 0 ? "checked" : "" : "")/>Normal</td>
-                <td colspan="2"><input type="radio" name="c_spine" value="1" @(isEdit ? dl.c_spine == 1 ? "checked" : "" : "")/>Possible Injury</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="c_spine" value="0" @(isEdit ? dl.c_spine == 0 ? "checked" : "" : "")/>Normal</label></td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="c_spine" value="1" @(isEdit ? dl.c_spine == 1 ? "checked" : "" : "")/>Possible Injury</label></td>
                 <td class="yellow-bg" colspan="2"><b>Oxygen Saturation : Sa O2 %</b></td>
                 <td colspan="2"><input type="text" id="oxygen_saturation" name="oxygen_saturation" value="@(isEdit ? dl.oxygen_saturation : "")" style="width:100px" /></td>
 			</tr>
             <tr>
 				<td class="yellow-bg"><b>Breathing</b></td>
-                <td colspan="2"><input type="radio" name="breathing" value="0" @(isEdit ? dl.breathing == 0 ? "checked" : "" : "")/>Spontaneous</td>
-                <td colspan="2"><input type="radio" name="breathing" value="1" @(isEdit ? dl.breathing == 1 ? "checked" : "" : "")/>Problem</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="breathing" value="0" @(isEdit ? dl.breathing == 0 ? "checked" : "" : "")/>Spontaneous</label></td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="breathing" value="1" @(isEdit ? dl.breathing == 1 ? "checked" : "" : "")/>Problem</label></td>
                 <td class="yellow-bg" colspan="2"><b>Blood Pressure:</b></td>
                 <td colspan="2"><input type="text" id="blood_pressure" name="blood_pressure" value="@(isEdit ? dl.blood_pressure : "")" style="width:100px" /></td>
 			</tr>
             <tr>
 				<td class="yellow-bg"><b>Circulation</b></td>
-                <td colspan="2"><input type="radio" name="circulation" value="0" @(isEdit ? dl.circulation == 0 ? "checked" : "" : "")/>External</td>
-                <td colspan="2"><input type="radio" name="circulation" value="1" @(isEdit ? dl.circulation == 1 ? "checked" : "" : "")/>Possible Internal</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="circulation" value="0" @(isEdit ? dl.circulation == 0 ? "checked" : "" : "")/>External</label></td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="circulation" value="1" @(isEdit ? dl.circulation == 1 ? "checked" : "" : "")/>Possible Internal</label></td>
                 <td class="yellow-bg" colspan="2" rowspan="2"><b>Pulse Rate:</b></td>
                 <td colspan="2"><input type="text" id="pulse_rate" name="pulse_rate" value="@(isEdit ? dl.pulse_rate : "")" style="width:100px" /></td>
 			</tr>
             <tr>
 				<td class="yellow-bg"><b>Hmorhage</b></td>
-                <td colspan="2"><input type="radio" name="hmorhage" value="0" @(isEdit ? dl.hmorhage == 0 ? "checked" : "" : "")/>None / slight</td>
-                <td><input type="radio" name="hmorhage" value="1" @(isEdit ? dl.hmorhage == 1 ? "checked" : "" : "")/>Moderate</td>
-                <td><input type="radio" name="hmorhage" value="2" @(isEdit ? dl.hmorhage == 2 ? "checked" : "" : "")/>Severe</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="hmorhage" value="0" @(isEdit ? dl.hmorhage == 0 ? "checked" : "" : "")/>None / slight</label></td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="hmorhage" value="1" @(isEdit ? dl.hmorhage == 1 ? "checked" : "" : "")/>Moderate</label></td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="hmorhage" value="2" @(isEdit ? dl.hmorhage == 2 ? "checked" : "" : "")/>Severe</label></td>
                 <td colspan="2">&nbsp;</td>
 			</tr>
             <tr>
 				<td class="yellow-bg" rowspan="3"><b>Disability</b></td>
-                <td colspan="2" rowspan="3">Alert Responds to</td>
-                <td colspan="2"><input type="radio" name="disability" value="0" @(isEdit ? dl.disability == 0 ? "checked" : "" : "")/>Visual stimuli</td>
+                <td colspan="2" rowspan="3" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="disability" value="3" @(isEdit ? dl.disability == 3 ? "checked" : "" : "")/>Alert Responds to</label></td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="disability" value="0" @(isEdit ? dl.disability == 0 ? "checked" : "" : "")/>Visual stimuli</label></td>
                 <td class="green-bg" colspan="4"><b>SECONDARY SURVEY</b></td>
 			</tr>
             <tr>
-                <td colspan="2"><input type="radio" name="disability" value="1" @(isEdit ? dl.disability == 1 ? "checked" : "" : "")/>Pain</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="disability" value="1" @(isEdit ? dl.disability == 1 ? "checked" : "" : "")/>Pain</label></td>
                 <td class="yellow-bg" rowspan="4"><b>Eye Opening</b></td>
                 <td colspan="2">Spontaneous</td>
-                <td><input type="radio" name="eye_opening" value="4" @(isEdit ? dl.eye_opening == 4 ? "checked" : "" : "")/>4</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="eye_opening" value="4" @(isEdit ? dl.eye_opening == 4 ? "checked" : "" : "")/>4</label></td>
 			</tr>
             <tr>
-                <td colspan="2"><input type="radio" name="disability" value="2" @(isEdit ? dl.disability == 2 ? "checked" : "" : "")/>Unresponsive</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="disability" value="2" @(isEdit ? dl.disability == 2 ? "checked" : "" : "")/>Unresponsive</label></td>
                 <td colspan="2">To Voice</td>
-                <td><input type="radio" name="eye_opening" value="3" @(isEdit ? dl.eye_opening == 3 ? "checked" : "" : "")/>3</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="eye_opening" value="3" @(isEdit ? dl.eye_opening == 3 ? "checked" : "" : "")/>3</label></td>
 			</tr>
             <tr>
                 <td colspan="5" class="no-border-btm"><b>Exposure / Injuries</b></td>
                 <td colspan="2">To Pain</td>
-                <td><input type="radio" name="eye_opening" value="2" @(isEdit ? dl.eye_opening == 2 ? "checked" : "" : "")/>2</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="eye_opening" value="2" @(isEdit ? dl.eye_opening == 2 ? "checked" : "" : "")/>2</label></td>
 			</tr>
             <tr>
                 <td colspan="5" class="no-border-btm no-border-top" rowspan="11">
                     <img src="../../../Content/image/illnessReport/injury.png" alt="injury" width="540" height="260"/>
                 </td>
                 <td colspan="2">None</td>
-                <td><input type="radio" name="eye_opening" value="1" @(isEdit ? dl.eye_opening == 1 ? "checked" : "" : "")/>1</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="eye_opening" value="1" @(isEdit ? dl.eye_opening == 1 ? "checked" : "" : "")/>1</label></td>
 			</tr>
             <tr>
                 <td class="yellow-bg" rowspan="5"><b>Best Verbal Response</b></td>
                 <td colspan="2">Oriented</td>
-                <td><input type="radio" name="verbal_response" value="5" @(isEdit ? dl.verbal_response == 5 ? "checked" : "" : "")/>5</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="verbal_response" value="5" @(isEdit ? dl.verbal_response == 5 ? "checked" : "" : "")/>5</label></td>
 			</tr>
             <tr>
                 <td colspan="2">Confused</td>
-                <td><input type="radio" name="verbal_response" value="4" @(isEdit ? dl.verbal_response == 4 ? "checked" : "" : "")/>4</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="verbal_response" value="4" @(isEdit ? dl.verbal_response == 4 ? "checked" : "" : "")/>4</label></td>
 			</tr>
             <tr>
                 <td colspan="2">Inappropriate</td>
-                <td><input type="radio" name="verbal_response" value="3" @(isEdit ? dl.verbal_response == 3 ? "checked" : "" : "")/>3</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="verbal_response" value="3" @(isEdit ? dl.verbal_response == 3 ? "checked" : "" : "")/>3</label></td>
 			</tr>
             <tr>
                 <td colspan="2">Incomprehensible</td>
-                <td><input type="radio" name="verbal_response" value="2" @(isEdit ? dl.verbal_response == 2 ? "checked" : "" : "")/>2</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="verbal_response" value="2" @(isEdit ? dl.verbal_response == 2 ? "checked" : "" : "")/>2</label></td>
 			</tr>
             <tr>
                 <td colspan="2">None</td>
-                <td><input type="radio" name="verbal_response" value="1" @(isEdit ? dl.verbal_response == 1 ? "checked" : "" : "")/>1</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="verbal_response" value="1" @(isEdit ? dl.verbal_response == 1 ? "checked" : "" : "")/>1</label></td>
 			</tr>
             <tr>
                 <td class="yellow-bg" rowspan="6"><b>Motor Response</b></td>
                 <td colspan="2">Obeys command</td>
-                <td><input type="radio" name="motor_response" value="6" @(isEdit ? dl.motor_response == 6 ? "checked" : "" : "")/>6</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="motor_response" value="6" @(isEdit ? dl.motor_response == 6 ? "checked" : "" : "")/>6</label></td>
 			</tr>
             <tr>
                 <td colspan="2">Localizes pain</td>
-                <td><input type="radio" name="motor_response" value="5" @(isEdit ? dl.motor_response == 5 ? "checked" : "" : "")/>5</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="motor_response" value="5" @(isEdit ? dl.motor_response == 5 ? "checked" : "" : "")/>5</label></td>
 			</tr>
             <tr>
                 <td colspan="2">Withdrawal (pain)</td>
-                <td><input type="radio" name="motor_response" value="4" @(isEdit ? dl.motor_response == 4 ? "checked" : "" : "")/>4</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="motor_response" value="4" @(isEdit ? dl.motor_response == 4 ? "checked" : "" : "")/>4</label></td>
 			</tr>
             <tr>
                 <td colspan="2">Flexion (pain)</td>
-                <td><input type="radio" name="motor_response" value="3" @(isEdit ? dl.motor_response == 3 ? "checked" : "" : "")/>3</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="motor_response" value="3" @(isEdit ? dl.motor_response == 3 ? "checked" : "" : "")/>3</label></td>
 			</tr>
             <tr>
                 <td colspan="2">Extension (pain)</td>
-                <td><input type="radio" name="motor_response" value="2" @(isEdit ? dl.motor_response == 2 ? "checked" : "" : "")/>2</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="motor_response" value="2" @(isEdit ? dl.motor_response == 2 ? "checked" : "" : "")/>2</label></td>
 			</tr>
             <tr>
                 <td colspan="5" class="no-border-btm no-border-top">C # Closed Fracture</td>
                 <td colspan="2">None</td>
-                <td><input type="radio" name="motor_response" value="1" @(isEdit ? dl.motor_response == 1 ? "checked" : "" : "")/>1</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><label><input type="radio" name="motor_response" value="1" @(isEdit ? dl.motor_response == 1 ? "checked" : "" : "")/>1</label></td>
 			</tr>
             <tr>
                 <td colspan="5" class="no-border-btm no-border-top">O # Open Fracture</td>
@@ -479,26 +480,26 @@ function validate() {
                 <td colspan="2" class="no-border-btm no-border-top no-border-left">A = Abrasion</td>
                 <td class="yellow-bg" colspan="2"><b>1 Constricted</b></td>
                 <td>Size R</td>
-                <td><input type="text" id="pupils_size_r" name="pupils_size_r" value="@(isEdit ? dl.pupils_size_r.ToString() : "")" style="width:100px" /></td>
+                <td><input type="text" id="pupils_size_r" name="pupils_size_r" value="@(isEdit ? dl.pupils_size_r : "")" style="width:100px" /></td>
 			</tr>
             <tr>
                 <td colspan="3" class="no-border-top no-border-right">&nbsp;</td>
                 <td colspan="2" class="no-border-top no-border-left">E = Ecymosis (bruising)</td>
                 <td class="yellow-bg" colspan="2"><b>2 Normal</b></td>
-                <td>&nbsp;</td>
+                <td><input type="checkbox" id="pupil_normal" name="pupil_normal" value="1" @(isEdit ? dl.pupil_normal == 1 ? "checked" : "" : "") /></td>
                 <td>&nbsp;</td>
 			</tr>
             <tr>
                 <td colspan="5" class="green-bg"><b>PRIMARY MANAGEMENT</b></td>
                 <td class="yellow-bg" colspan="2"><b>3 Dilated</b></td>
                 <td>Size L</td>
-                <td><input type="text" id="pupils_size_l" name="pupils_size_l" value="@(isEdit ? dl.pupils_size_l.ToString() : "")" style="width:100px" /></td>
+                <td><input type="text" id="pupils_size_l" name="pupils_size_l" value="@(isEdit ? dl.pupils_size_l : "")" style="width:100px" /></td>
 			</tr>
             <tr>
                 <td class="yellow-bg" rowspan="2"><b>Airway</b></td>
-                <td colspan="2"><input type="radio" name="pm_airway" value="0" @(isEdit ? dl.pm_airway == 0 ? "checked" : "" : "")/>Oropharyngeal</td>
-                <td><input type="radio" name="pm_airway" value="1" @(isEdit ? dl.pm_airway == 1 ? "checked" : "" : "")/>Nasal</td>
-                <td><input type="radio" name="pm_airway" value="2" @(isEdit ? dl.pm_airway == 2 ? "checked" : "" : "")/>E Tube</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_airway" value="0" @(isEdit ? dl.pm_airway == 0 ? "checked" : "" : "")/>Oropharyngeal</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_airway" value="1" @(isEdit ? dl.pm_airway == 1 ? "checked" : "" : "")/>Nasal</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_airway" value="2" @(isEdit ? dl.pm_airway == 2 ? "checked" : "" : "")/>E Tube</td>
                 <td class="no-border-right"><b>Trauma Score:</b></td>
                 <td class="no-border-left"><input type="text" id="trauma_score" name="trauma_score" value="@(isEdit ? dl.trauma_score.ToString() : "")" style="width:100px" /></td>
                 <td>Time</td>
@@ -510,21 +511,21 @@ function validate() {
                 )</td>
 			</tr>
             <tr>
-                <td colspan="2"><input type="radio" name="pm_airway" value="3" @(isEdit ? dl.pm_airway == 3 ? "checked" : "" : "")/>C/Thyrotomy</td>
-                <td><input type="radio" name="pm_airway" value="4" @(isEdit ? dl.pm_airway == 4 ? "checked" : "" : "")/>Oxygen</td>
-                <td><input type="radio" name="pm_airway" value="5" @(isEdit ? dl.pm_airway == 5 ? "checked" : "" : "")/>Suction</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_airway" value="3" @(isEdit ? dl.pm_airway == 3 ? "checked" : "" : "")/>C/Thyrotomy</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_airway" value="4" @(isEdit ? dl.pm_airway == 4 ? "checked" : "" : "")/>Oxygen</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_airway" value="5" @(isEdit ? dl.pm_airway == 5 ? "checked" : "" : "")/>Suction</td>
                 <td class="no-border-btm" colspan="4"><b>COMMENTS</b></td>
 			</tr>
             <tr>
                 <td class="yellow-bg"><b>C. Spine</b></td>
-                <td colspan="2"><input type="radio" name="pm_c_spine" value="0" @(isEdit ? dl.pm_c_spine == 0 ? "checked" : "" : "")/>C. Collar</td>
-                <td colspan="2"><input type="radio" name="pm_c_spine" value="1" @(isEdit ? dl.pm_c_spine == 1 ? "checked" : "" : "")/>Spine board</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_c_spine" value="0" @(isEdit ? dl.pm_c_spine == 0 ? "checked" : "" : "")/>C. Collar</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_c_spine" value="1" @(isEdit ? dl.pm_c_spine == 1 ? "checked" : "" : "")/>Spine board</td>
                 <td colspan="4" rowspan="10"><textarea cols="50" rows="15" id="comments" name="comments" style="resize:none">@(isEdit ? dl.comments : "")</textarea></td>
 			</tr>
             <tr>
                 <td class="yellow-bg"><b>Breathing</b></td>
-                <td colspan="2"><input type="radio" name="pm_breathing" value="0" @(isEdit ? dl.pm_breathing == 0 ? "checked" : "" : "")/>Ventilate</td>
-                <td colspan="2"><input type="radio" name="pm_breathing" value="1" @(isEdit ? dl.pm_breathing == 1 ? "checked" : "" : "")/>Chest drain</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_breathing" value="0" @(isEdit ? dl.pm_breathing == 0 ? "checked" : "" : "")/>Ventilate</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="pm_breathing" value="1" @(isEdit ? dl.pm_breathing == 1 ? "checked" : "" : "")/>Chest drain</td>
 			</tr>
             <tr>
                 <td class="yellow-bg" rowspan="4"><b>Circulation</b></td>
@@ -569,15 +570,22 @@ function validate() {
 			</tr>
             <tr>
                 <td class="yellow-bg" rowspan="2"><b>Splinting</b></td>
-                <td><input type="radio" name="splinting" value="Frac Strap" @(isEdit ? dl.splinting == "Frac Strap" ? "checked" : "" : "")/>Frac Strap</td>
-                <td><input type="radio" name="splinting" value="KED" @(isEdit ? dl.splinting == "KED" ? "checked" : "" : "")/>KED</td>
-                <td colspan="2"><input type="radio" name="splinting" value="Traction" @(isEdit ? dl.splinting == "Traction" ? "checked" : "" : "")/>Traction</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="splinting" value="Frac Strap" @(isEdit ? dl.splinting == "Frac Strap" ? "checked" : "" : "")/>Frac Strap</td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="splinting" value="KED" @(isEdit ? dl.splinting == "KED" ? "checked" : "" : "")/>KED</td>
+                <td colspan="2" onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="splinting" value="Traction" @(isEdit ? dl.splinting == "Traction" ? "checked" : "" : "")/>Traction</td>
                 <td colspan="2" class="no-border-btm"><b>Signed</b></td>
-                <td colspan="2" class="no-border-btm"><input type="text" id="signed" name="signed" value="@(isEdit ? dl.signed : "")" style="width:100px" /></td>
+                <td colspan="2" class="no-border-btm">
+                    <select id="signed" name="signed" value="@(isEdit ? dl.signed : "")" style="width:100px">
+                        @foreach (StarEnergi.Models.EmployeeEntity emp in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
+                        {
+                            <option value="@emp.id" @(isEdit && dl.signed == emp.id.ToString() ? "selected" : "")>@emp.alpha_name</option>
+                        }
+                    </select>
+                </td>
 			</tr>
             <tr>
-                <td><input type="radio" name="splinting" value="Box" @(isEdit ? dl.splinting == "Box" ? "checked" : "" : "")/>Box</td>
-                <td colspan="3"><input type="radio" name="splinting" value="other" @(isEdit ? dl.splinting != "Frac Strap" && dl.splinting != "KED" && dl.splinting != "Traction" && dl.splinting != "Box" ? "checked" : "" : "")/>Other (specify) <input type="text" id="splinting_other" name="splinting_other" value="@(isEdit ? dl.splinting != "Frac Strap" && dl.splinting != "KED" && dl.splinting != "Traction" && dl.splinting != "Box" ? dl.splinting : ""  : "")" style="width:100px" /></td>
+                <td onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="splinting" value="Box" @(isEdit ? dl.splinting == "Box" ? "checked" : "" : "")/>Box</td>
+                <td colspan="3" onclick="$('input:radio', this).attr('checked', true);"><input type="radio" name="splinting" value="other" @(isEdit ? dl.splinting != "Frac Strap" && dl.splinting != "KED" && dl.splinting != "Traction" && dl.splinting != "Box" ? "checked" : "" : "")/>Other (specify) <input type="text" id="splinting_other" name="splinting_other" value="@(isEdit ? dl.splinting != "Frac Strap" && dl.splinting != "KED" && dl.splinting != "Traction" && dl.splinting != "Box" ? dl.splinting : ""  : "")" style="width:100px" /></td>
                 <td colspan="2" class="no-border-top"><b>Crew</b></td>
                 <td colspan="2" class="no-border-top"><input type="text" id="crew" name="crew" value="@(isEdit ? dl.crew : "")" style="width:100px" /></td>
 			</tr>
@@ -593,11 +601,61 @@ function validate() {
                 @Html.ActionLink("Print Injury Report", "printInjuryReport", "HseInjuryReport", new {id = id},  new { target = "_blank" })
             </button>
         }
+    <br />
+    @(Html.Telerik().Upload()
+        .Name("attachment")
+        .Multiple(true)
+        .Async(async => async
+            .Save("attachment", "HseInjuryReport", new { id = id })
+            .AutoUpload(true)
+            )
+        .ClientEvents(events => events
+            .OnSuccess("onSuccessAttachment").OnSelect("onSelectUpload"))
+        .ShowFileList(false)
+    )
 </div>
 <br />
+<b>Attachment(s):</b>
+<div class="attachment" id="atch">
+
+</div>
+<br/>
 <script type="text/javascript">
+    $("td").has("input:checkbox").click(function (event) {
+        if (event.target === this) {
+            var $checkbox = $(this).children("input:checkbox");
+            $checkbox.attr('checked', !$checkbox.attr('checked'));
+        }
+    });
+
+    $(document).ready(function () {
+        bindatch();
+    });
+
+    function bindatch() {
+        $.post("HseInjuryReport/Atch", { id: '@id' }, function (data) {
+            var has = data.files.split(";;");
+            $('#atch').empty();
+            for (var f in has) {
+                if (has[f] != "") {
+                    $('#atch').append('<a href="' + data.path + has[f] + '">' + has[f] + '</a><br/>');
+                }
+            }
+        });
+    }
 
     function back() {
         window.location = "/HseInjuryReport";
+    }
+
+    function onSuccessAttachment(data) {
+        var dat = jQuery.parseJSON(data.response);
+        var has = data.response.files.split(";;");
+        $('#atch').empty();
+        for (var f in has) {
+            if (has[f] != "") {
+                $('#atch').append('<a href="' + data.response.path + has[f] + '">' + has[f] + '</a><br/>');
+            }
+        }
     }
 </script>

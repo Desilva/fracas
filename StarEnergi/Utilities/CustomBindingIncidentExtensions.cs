@@ -90,6 +90,27 @@ namespace StarEnergi.Utilities
                             break;
                     }
                     break;
+                case "tsr_number":
+                    value = f.Value.ToString();
+                    switch (f.Operator)
+                    {
+                        case FilterOperator.Contains:
+                            data = data.Where(p => p.tsr_number.Contains(value));
+                            break;
+                        case FilterOperator.StartsWith:
+                            data = data.Where(p => p.tsr_number.StartsWith(value));
+                            break;
+                        case FilterOperator.EndsWith:
+                            data = data.Where(p => p.tsr_number.EndsWith(value));
+                            break;
+                        case FilterOperator.IsNotEqualTo:
+                            data = data.Where(p => p.tsr_number != value);
+                            break;
+                        default:
+                            data = data.Where(p => p.tsr_number == value);
+                            break;
+                    }
+                    break;
                 case "title":
                     value = f.Value.ToString();
                     switch (f.Operator)
@@ -303,24 +324,24 @@ namespace StarEnergi.Utilities
                             break;
                     }
                     break;
-                case "prepared_by":
+                case "prepared_by_name":
                     value = f.Value.ToString();
                     switch (f.Operator)
                     {
                         case FilterOperator.Contains:
-                            data = data.Where(p => p.prepared_by.Contains(value));
+                            data = data.Where(p => p.prepared_by_name.Contains(value));
                             break;
                         case FilterOperator.StartsWith:
-                            data = data.Where(p => p.prepared_by.StartsWith(value));
+                            data = data.Where(p => p.prepared_by_name.StartsWith(value));
                             break;
                         case FilterOperator.EndsWith:
-                            data = data.Where(p => p.prepared_by.EndsWith(value));
+                            data = data.Where(p => p.prepared_by_name.EndsWith(value));
                             break;
                         case FilterOperator.IsNotEqualTo:
-                            data = data.Where(p => p.prepared_by != value);
+                            data = data.Where(p => p.prepared_by_name != value);
                             break;
                         default:
-                            data = data.Where(p => p.prepared_by == value);
+                            data = data.Where(p => p.prepared_by_name == value);
                             break;
                     }
                     break;
@@ -404,9 +425,9 @@ namespace StarEnergi.Utilities
                     {
                         selector = orders => BuildInnerGroup(orders, o => o.probability);
                     }
-                    else if (group.Member == "prepared_by")
+                    else if (group.Member == "prepared_by_name")
                     {
-                        selector = orders => BuildInnerGroup(orders, o => o.prepared_by);
+                        selector = orders => BuildInnerGroup(orders, o => o.prepared_by_name);
                     }
                     else if (group.Member == "prepare_date")
                     {
@@ -459,9 +480,9 @@ namespace StarEnergi.Utilities
                     {
                         selector = BuildGroup(o => o.probability, selector);
                     }
-                    else if (group.Member == "prepared_by")
+                    else if (group.Member == "prepared_by_name")
                     {
-                        selector = BuildGroup(o => o.prepared_by, selector);
+                        selector = BuildGroup(o => o.prepared_by_name, selector);
                     }
                     else if (group.Member == "prepare_date")
                     {
@@ -565,14 +586,17 @@ namespace StarEnergi.Utilities
                     case "probability_str":
                         data = data.OrderBy(order => order.probability);
                         break;
-                    case "prepared_by":
-                        data = data.OrderBy(order => order.prepared_by);
+                    case "prepared_by_name":
+                        data = data.OrderBy(order => order.prepared_by_name);
                         break;
                     case "prepare_date":
                         data = data.OrderBy(order => order.prepare_date);
                         break;
                     case "rca_number":
                         data = data.OrderBy(order => order.rca_number);
+                        break;
+                    case "tsr_number":
+                        data = data.OrderBy(order => order.tsr_number);
                         break;
                 }
             }
@@ -613,14 +637,17 @@ namespace StarEnergi.Utilities
                     case "probability_str":
                         data = data.OrderByDescending(order => order.probability);
                         break;
-                    case "prepared_by":
-                        data = data.OrderByDescending(order => order.prepared_by);
+                    case "prepared_by_name":
+                        data = data.OrderByDescending(order => order.prepared_by_name);
                         break;
                     case "prepare_date":
                         data = data.OrderByDescending(order => order.prepare_date);
                         break;
                     case "rca_number":
                         data = data.OrderByDescending(order => order.rca_number);
+                        break;
+                    case "tsr_number":
+                        data = data.OrderByDescending(order => order.tsr_number);
                         break;
                 }
             }

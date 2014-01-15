@@ -47,8 +47,8 @@ namespace StarEnergi.Models
         public Nullable<byte> motor_response { get; set; }
         public Nullable<byte> pupils_r { get; set; }
         public Nullable<byte> pupils_l { get; set; }
-        public Nullable<byte> pupils_size_r { get; set; }
-        public Nullable<byte> pupils_size_l { get; set; }
+        public string pupils_size_r { get; set; }
+        public string pupils_size_l { get; set; }
         public Nullable<byte> trauma_score { get; set; }
         public Nullable<System.TimeSpan> time_trauma { get; set; }
         public Nullable<byte> pm_airway { get; set; }
@@ -70,6 +70,10 @@ namespace StarEnergi.Models
         public string oxygen_saturation { get; set; }
         public string blood_pressure { get; set; }
         public string pulse_rate { get; set; }
+        public Nullable<byte> pupil_normal { get; set; }
+        public Nullable<int> id_ir { get; set; }
+
+        public string ir_number { get; set; }
     }
     
 }

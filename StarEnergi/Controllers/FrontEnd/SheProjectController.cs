@@ -187,28 +187,34 @@ namespace StarEnergi.Controllers.FrontEnd
             db.monthly_project_she_report.Add(mpsr);
             db.SaveChanges();
 
-            foreach (string s in activities)
+            if (activities != null)
             {
-                monthly_project_activity mpa = new monthly_project_activity
+                foreach (string s in activities)
                 {
-                    id_monthly_project = mpsr.id,
-                    activity = s
-                };
+                    monthly_project_activity mpa = new monthly_project_activity
+                    {
+                        id_monthly_project = mpsr.id,
+                        activity = s
+                    };
 
-                db.monthly_project_activity.Add(mpa);
-                db.SaveChanges();
+                    db.monthly_project_activity.Add(mpa);
+                    db.SaveChanges();
+                }
             }
 
-            foreach (string s in outstanding)
+            if (outstanding != null)
             {
-                monthly_project_outstanding_activity mpa = new monthly_project_outstanding_activity
+                foreach (string s in outstanding)
                 {
-                    id_monthly_project = mpsr.id,
-                    activity = s
-                };
+                    monthly_project_outstanding_activity mpa = new monthly_project_outstanding_activity
+                    {
+                        id_monthly_project = mpsr.id,
+                        activity = s
+                    };
 
-                db.monthly_project_outstanding_activity.Add(mpa);
-                db.SaveChanges();
+                    db.monthly_project_outstanding_activity.Add(mpa);
+                    db.SaveChanges();
+                }
             }
 
             return Json(true);
@@ -339,28 +345,34 @@ namespace StarEnergi.Controllers.FrontEnd
                 db.SaveChanges();
             }
 
-            foreach (string s in activities)
+            if (activities != null)
             {
-                monthly_project_activity mpa = new monthly_project_activity
+                foreach (string s in activities)
                 {
-                    id_monthly_project = mpsr.id,
-                    activity = s
-                };
+                    monthly_project_activity mpa = new monthly_project_activity
+                    {
+                        id_monthly_project = mpsr.id,
+                        activity = s
+                    };
 
-                db.monthly_project_activity.Add(mpa);
-                db.SaveChanges();
+                    db.monthly_project_activity.Add(mpa);
+                    db.SaveChanges();
+                }
             }
 
-            foreach (string s in outstanding)
+            if (outstanding != null)
             {
-                monthly_project_outstanding_activity mpa = new monthly_project_outstanding_activity
+                foreach (string s in outstanding)
                 {
-                    id_monthly_project = mpsr.id,
-                    activity = s
-                };
+                    monthly_project_outstanding_activity mpa = new monthly_project_outstanding_activity
+                    {
+                        id_monthly_project = mpsr.id,
+                        activity = s
+                    };
 
-                db.monthly_project_outstanding_activity.Add(mpa);
-                db.SaveChanges();
+                    db.monthly_project_outstanding_activity.Add(mpa);
+                    db.SaveChanges();
+                }
             }
 
             List<monthly_project_she_report> next_mpsr = db.monthly_project_she_report.Where(p => p.month_year > mpsr.month_year && p.month_year.Value.Year == mpsr.month_year.Value.Year && p.contractor_id == mpsr.contractor_id && p.no_contract == mpsr.no_contract).ToList();
@@ -460,7 +472,8 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             else
             {
-                return Json(new { period_start = mpsr.period_start.Value.ToShortDateString(), period_end = mpsr.period_end.Value.ToShortDateString(), project_name = mpsr.project_name, project_location = mpsr.project_location, project_manager = mpsr.project_manager, contract_supervisor = mpsr.contract_supervisor, project_she_representative = mpsr.project_she_representative, se_she_representative = mpsr.se_she_representative });
+                DateTime reportMonth = DateTime.Today.AddMonths(-1);
+                return Json(new { period_start = mpsr.period_start.Value.ToShortDateString(), period_end = mpsr.period_end.Value.ToShortDateString(), project_name = mpsr.project_name, project_location = mpsr.project_location, project_manager = mpsr.project_manager, contract_supervisor = mpsr.contract_supervisor, project_she_representative = mpsr.project_she_representative, se_she_representative = mpsr.se_she_representative, month = reportMonth.Month, year = reportMonth.Year, contractor_name = mpsr.contractor_id });
             }
         }
 

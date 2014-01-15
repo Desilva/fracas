@@ -43,7 +43,8 @@ namespace StarEnergi.Controllers.FrontEnd
             return View();
         }
 
-        public ActionResult addIncident(int? id) {
+        public ActionResult addIncident(int? id, int? id_fracas, int? id_injury)
+        {
             string username = (String)Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
             if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
@@ -221,6 +222,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.superintendent_id_del = superintendent_id_del;
                 ViewBag.supervisor_id_del = supervisor_id_del;
                 ViewBag.supervisor_position = supervisor_position;
+                ViewBag.id_fracas = id_fracas;
+                ViewBag.id_injury = id_injury;
                 int last_id = db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id);
                 last_id++;
                 string subPath = "~/Attachment/incident_report/" + last_id + "/signatures"; // your code goes here
@@ -352,8 +355,11 @@ namespace StarEnergi.Controllers.FrontEnd
                                                 on p.id_rca equals rcass.id into pr
                                                 from ir_rca in pr.DefaultIfEmpty()
                                                 join employeei in dataContext.employees
-                                                on p.prepared_by equals SqlFunctions.StringConvert((double)employeei.id) into ps
+                                                on p.prepared_by equals SqlFunctions.StringConvert((double)employeei.id).Trim() into ps
                                                 from emp in ps.DefaultIfEmpty()
+                                                join tsr in dataContext.trouble_shooting
+                                                on p.id_tsr equals tsr.id into pt
+                                                from ir_tsr in pt.DefaultIfEmpty()
                                                 select new IREntity
                                                 {
                                                     id = p.id,
@@ -396,13 +402,15 @@ namespace StarEnergi.Controllers.FrontEnd
                                                     supervisor_approve = p.supervisor_approve,
                                                     supervisor_delegate = p.supervisor_delegate,
                                                     kontraktor_seg = p.kontraktor_seg,
+                                                    prepared_by = p.prepared_by,
                                                     rca_number = ir_rca.rca_code != null ? ir_rca.rca_code : "",
                                                     inves = p.investigation == 1 ? "Yes" : "No",
                                                     type_report = p.type_of_report == 1 ? "On the job" : p.type_of_report == 0 ? "Off the job" : "",
                                                     actual_loss = p.actual_loss_severity == 1 ? "Major" : p.actual_loss_severity == 2 ? "Serious" : p.actual_loss_severity == 3 ? "Moderate" : p.actual_loss_severity == 4 ? "Minor" : "",
                                                     potential_loss = p.potential_loss_severity == 1 ? "Major" : p.potential_loss_severity == 2 ? "Serious" : p.potential_loss_severity == 3 ? "Moderate" : p.potential_loss_severity == 4 ? "Minor" : "",
                                                     probability_str = p.probability == 1 ? "Frequent" : p.probability == 2 ? "Occasional" : p.probability == 3 ? "Seldom" : p.probability == 4 ? "Rare" : "",
-                                                    prepared_by = emp.alpha_name,
+                                                    tsr_number = ir_tsr.no != null ? ir_tsr.no : "",
+                                                    prepared_by_name = emp.alpha_name
                                                 });
             data = data.ApplyFiltering(command.FilterDescriptors);
             count = data.FirstOrDefault() == null ? 0 : data.Count();
@@ -429,7 +437,7 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         [HttpPost]
-        public JsonResult Add(incident_report incidentReport)
+        public JsonResult Add(incident_report incidentReport, int? id_fracas, int? id_injury)
         {
             int id_before = (db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id)) + 1;
 
@@ -458,6 +466,24 @@ namespace StarEnergi.Controllers.FrontEnd
             incidentReport.reference_number = ir_ref;
             db.incident_report.Add(incidentReport);
             db.SaveChanges();
+
+            // add link to fracas
+            if (id_fracas != null)
+            {
+                equipment_event fracas = db.equipment_event.Find(id_fracas);
+                fracas.id_ir = incidentReport.id;
+                db.Entry(fracas).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            // add link to Injury
+            if (id_injury != null)
+            {
+                she_injury_report injury = db.she_injury_report.Find(id_injury);
+                injury.id_ir = incidentReport.id;
+                db.Entry(injury).State = EntityState.Modified;
+                db.SaveChanges();
+            }
             
             //send email
             SendEmailToAll(incidentReport);
@@ -1194,7 +1220,8 @@ namespace StarEnergi.Controllers.FrontEnd
                          cost_estimate = ir.cost_estimate,
                          prepared_by = ir.prepared_by,
                          title = ir.title,
-                         incident_type = ir.incident_type
+                         incident_type = ir.incident_type,
+                         reference_number = ir.reference_number
                      }).OrderBy(p => p.date_incident).ToList();
             result = r;
             foreach (incident_report_e ire in result)

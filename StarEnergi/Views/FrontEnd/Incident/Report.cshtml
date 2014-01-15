@@ -88,8 +88,8 @@
                                 + ((isApprove && !isAnalyst && isNeedRCA) ? '<a class="t-button t-rca t-button-icon" onClick="toRcas(' + dataItem.id + ');" title="Add to RCA">'
                                 + '<span class="t-icon t-rca"></span>'
                                 + '</a>' : '')
-                                + (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="AddFracas(' + dataItem.id + ');" title="To FRACAS">'
-                                + '<span class="t-icon t-fracas"></span></a>' : '')
+                                //+ (isCanEdit && dataItem.tsr_number == "" ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="AddTSR(' + dataItem.id + ');" title="Add TSR">'
+                                //+ '<span class="t-icon t-tsr"></span></a>' : '')
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Incident Report Log">'
                                 + '<span class="t-icon t-log"></span>'
                                 + '</a>';
@@ -99,8 +99,8 @@
                                 + ((isApprove && !isAnalyst && isNeedRCA) ? '<a class="t-button t-rca t-button-icon" onClick="toRcas(' + dataItem.id + ');" title="Add to RCA">'
                                 + '<span class="t-icon t-rca"></span>'
                                 + '</a>' : '')
-                                + (isCanEdit ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="AddFracas(' + dataItem.id + ');" title="To FRACAS">'
-                                + '<span class="t-icon t-fracas"></span></a>' : '')
+                                //+ (isCanEdit && dataItem.tsr_number == "" ? '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="AddTSR(' + dataItem.id + ');" title="Add TSR">'
+                                //+ '<span class="t-icon t-tsr"></span></a>' : '')
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Incident Report Log">'
                                 + '<span class="t-icon t-log"></span>'
                                 + '</a>';
@@ -153,7 +153,7 @@
         $('#contentEventLog').load('Investigation/addInvestigation', { 'id_ir': id });
     }
 
-    function AddTS(id) {
+    function AddTSR(id) {
         $('#contentEventLog').load('TroubleShooting/addTroubleShooting', { 'id_ir': id });
     }
 
@@ -216,6 +216,10 @@
         background-image:url("/Content/image/add_rca.png");
     }
 
+    .t-tsr {
+        background-image:url("/Content/image/add_tsr.png");
+    }
+
     .t-fracas {
         background-image:url("/Content/image/add_fracas.png");
     }
@@ -250,10 +254,10 @@
             columns.Command(commands =>
             {
             }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
-            columns.Bound(o => o.rca_number).Width(200).Title("RCA Number");
+            columns.Bound(o => o.rca_number).Width(165).Title("RCA Number");
             columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.investigation).Hidden();
-            columns.Bound(o => o.reference_number).Width(200).Title("Reference Number");
+            //columns.Bound(o => o.reference_number).Width(155).Title("Reference Number");
             columns.Bound(o => o.title).Width(175).Title("Title");
             columns.Bound(o => o.date_incident).Width(175).Title("Date / Time Incident");
             columns.Bound(o => o.inves).Width(100).Title("Investigation");
@@ -264,7 +268,7 @@
             columns.Bound(o => o.actual_loss).Width(200).Title("Actual Loss Severity");
             columns.Bound(o => o.potential_loss).Width(200).Title("Potential Loss Severity");
             columns.Bound(o => o.probability_str).Width(200).Title("Probability of Reccurence");
-            columns.Bound(o => o.prepared_by).Width(150).Title("Prepared By");
+            columns.Bound(o => o.prepared_by_name).Width(150).Title("Prepared By");
             columns.Bound(o => o.prepare_date).Width(150).Title("Prepared Date");
         })
         .ClientEvents(

@@ -7,6 +7,7 @@
     int? supervisor_id = null;
     int? superintendent_id_del = null;
     int? supervisor_id_del = null;
+    int? id_ir = ViewBag.id_ir as int?;
     string user_id = HttpContext.Current.Session["id"].ToString();
     if (ViewBag.mod != null)
     {
@@ -77,7 +78,7 @@
                 inspector_date: $('#inspector_date').val(),
                 supervisor_approval_date: $('#supervisor_approval_date').val(),
                 superintendent_approval_date: $('#superintendent_approval_date').val(),
-                id_ir: '@(ViewBag.id_ir != null ? ViewBag.id_ir as string : null)'
+                id_ir: '@id_ir.ToString()'
             }
 
             $('#realmod_save').css("display", "block");
@@ -125,7 +126,7 @@ function validate() {
 	</header>
     <br />
     <b>1. GENERAL INFORMATION</b>
-    <div style="float:right;margin-right:-31px;">
+    <div style="float:right;margin-right:19px;">
         <table class="w-border" style="width:100px">
             <tr>
                 <td class="no-border-right">No</td>

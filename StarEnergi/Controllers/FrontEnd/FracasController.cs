@@ -77,6 +77,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 temp = model.ToList();
             }
             List<FracasEventModel> f = new List<FracasEventModel>();
+            List<incident_report> list_ir = db.incident_report.ToList();
+            List<trouble_shooting> list_tsr = db.trouble_shooting.ToList();
             foreach (var item in temp)
             {
                 FracasEventModel fTemp = new FracasEventModel();
@@ -88,6 +90,12 @@ namespace StarEnergi.Controllers.FrontEnd
                 fTemp.tagNumber = item.equipment.tag_num;
                 fTemp.failureMode = item.failure_mode;
                 fTemp.status = item.status;
+                fTemp.id_ir = item.id_ir;
+                incident_report ir = list_ir.Find(p => p.id == item.id_ir);
+                trouble_shooting tsr = list_tsr.Find(p => p.id_ir == item.id);
+                fTemp.id_tsr = tsr != null ? tsr.id : 0;
+                fTemp.tsr_number = tsr != null ? tsr.no : "";
+                fTemp.ir_number = ir != null ? ir.reference_number : "";
                 f.Add(fTemp);
             }
 

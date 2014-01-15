@@ -524,5 +524,6 @@ namespace StarEnergi
         public static string fileIR = "IR_template.xls";
         public static string filePIR = "PIR_template.xls";
         public static string fileExcelBOM = "BOM_template.xls";
+        public static string fileExcelSafeManHours = "SafeManHours_template.xls";
     }
 }

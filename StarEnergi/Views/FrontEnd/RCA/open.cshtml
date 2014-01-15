@@ -48,6 +48,7 @@
 <link href="@Url.Content("~/Content/open.css")" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../../Scripts/jquery-1.4.4.js"></script>
 <script type="text/javascript" src="../../../Scripts/jquery-ui.js"></script>
+<script type="text/javascript" src="../../../Scripts/copy.js"></script>
 <!-- Sets the basepath for the library if not in same directory -->
 <script type="text/javascript">
 	mxBasePath = '@Url.Content("~/Content/image/3graph")';
@@ -58,6 +59,7 @@
 <script type="text/javascript">
     var graph = null;
     var editor = null;
+    var doc = null;
     var fileName = '@ViewBag.saveFile';
     var id = '@Model.id';
     var isTree = '@ViewBag.isTree.ToString()';
@@ -80,7 +82,16 @@
             return false;
         });
     });
-    
+
+    $(document).bind('paste', function(e) {
+        var cell = graph.getSelectionCell();
+        pasteFromClipboard(cell);
+    });
+
+    $(document).bind('copy', function(e) {
+        var cell = graph.getSelectionCell();
+        copyToClipboard(graph,cell);
+    });
 
     $(document).keydown(function(event) {
         //19 for Mac Command+S
@@ -355,7 +366,6 @@
 			        var new_desc = "";
 			        var i = 0;
 			        for (var a in description) {
-			            console.log("i = " + i);
 			            i += description[a].length + 1;
 			            if (i < 40) {
 			                new_desc += description[a] + " ";
@@ -414,7 +424,7 @@
 			// Gets the default parent for inserting new cells. This
 			// is normally the first child of the root (ie. layer 0).
 			var parent = graph.getDefaultParent();
-			var doc = mxUtils.createXmlDocument();
+		    doc = mxUtils.createXmlDocument();
 			var node = doc.createElement('TreeRoot');
 			node.setAttribute('deskripsi', '@evv');
 			node.setAttribute('level', '0');
@@ -771,6 +781,134 @@
         //editor.execute("exportImage");
     }
 
+    //function to copy to clipboard
+    function copyToClipboard(graph,cell) {
+        var model = graph.getModel();
+        var value = "";
+        var attrbiutes = "";
+        var array = [];
+        graph.traverse(cell, true, function(vertex, edge)
+        {
+            value = model.getValue(vertex);
+            var id = vertex.id;
+            var ee = edge != null ? edge.source.id : 0;
+            attributes = value.attributes;
+            console.log(attributes);
+            var val = {
+                deskripsi : attributes.deskripsi.value,
+                type : attributes.type.value,
+                bobot : attributes.bobot.value,
+                level: attributes.level.value,
+                id : id,
+                parent_id : ee
+            };
+            array.push(val);
+        });
+        
+        var values = {
+            treediagram : "Treediagram",
+            result : array
+        }
+        console.log(values);
+        var str = JSON.stringify(values);
+        //$.post('/Rca/copytoclipboard', { text : str },function(e) {
+
+        //});
+        localStorage.clipboardData = str;
+        //copyFrom.remove();
+    }
+
+    function pasteFromClipboard(cell) {
+        var clipboardData = localStorage.clipboardData;
+        var values = null;
+        if (clipboardData.charAt(0) == "{" && clipboardData.slice(-1) == "}") {
+            var values = JSON.parse(clipboardData);
+            if (values.treediagram != "Treediagram") {
+                return;
+            }
+        } else {
+            return;
+        }
+
+        var model = graph.getModel();
+        var cell = cell || graph.getSelectionCell();
+        var value = model.getValue(cell);
+        var attributes = attributes = value.attributes;
+        var temp_value = [];
+        var isFirst = true;
+        for (var i in values.result) {
+            if (isFirst) {
+                if (values.result[i].type == 'M') {
+                    if (attributes.type.value == 'M') {
+                        model.beginUpdate();
+                        try {
+                            for (var j in values.result[i]) {
+                                if (j == "bobot" || j == "deskripsi") {
+                                    var edit = new mxCellAttributeChange(
+                                    cell, j,
+                                    values.result[i][j]);
+                                    model.execute(edit);
+                                }
+                            }
+                            
+                            if (graph.isAutoSizeCell(cell)) {
+                                graph.updateCellSize(cell);
+                            }
+                        }
+                        finally {
+                            model.endUpdate();
+                            graph.updateCellSize(cell);
+                            hideProperties(graph);
+                        }
+                        
+                    } else {
+                        alert('Can not copy the tree. Root of the tree that you copy must be the same type as \'M\'!');
+                        break;
+                    }
+                } else if (values.result[i].type == 'E') {
+                    alert('Can not copy the tree. You can not copy all tree!');
+                    break;
+                } else {
+                    model.beginUpdate();
+                    try {
+                        for (var j in values.result[i]) {
+                            if (j == "bobot" || j == "deskripsi" || j == "type") {
+                                var edit = new mxCellAttributeChange(
+                                cell, j,
+                                values.result[i][j]);
+                                model.execute(edit);
+                            }
+                        }
+                        if (graph.isAutoSizeCell(cell)) {
+                            graph.updateCellSize(cell);
+                        }
+                    }
+                    finally {
+                        model.endUpdate();
+                        graph.updateCellSize(cell);
+                        hideProperties(graph);
+                    }
+                }
+                //var a = addChild(graph, cell, doc, values.result[i].deskripsi, false, values.result[i].bobot, values.result[i].type);
+                //var temp = {
+                //    id : values.result[i].id,
+                //    cell : a
+                //};
+                temp_value[values.result[i].id] = cell;
+                isFirst = false;
+            } else {
+                cell = temp_value[values.result[i].parent_id];
+                var a = addChild(graph, cell, doc, values.result[i].deskripsi, false, values.result[i].bobot, values.result[i].type);
+                var temp = {
+                    id : values.result[i].id,
+                    cell : a
+                };
+                temp_value[id] = a;
+            }
+        }
+        // $(document).trigger('paste');
+    }
+
     // Function to create the entries in the popupmenu
     function createPopupMenu(graph, menu, cell, evt, doc)
     {
@@ -814,6 +952,16 @@
 	    {
 		    var preview = new mxPrintPreview(graph, 1);
 		    preview.open();
+	    });
+
+	    menu.addItem('Copy', '/Content/image/3graph/images/print.gif', function ()
+	    {
+	        copyToClipboard(graph,cell);
+	    });
+
+	    menu.addItem('Paste', '/Content/image/3graph/images/print.gif', function ()
+	    {
+	        pasteFromClipboard(cell);
 	    });
 
 	    if (isPublish != 1 && isExistRCA) {
@@ -1205,20 +1353,21 @@
         }
     };
 
-    function addChild(graph, cell, doc, desc, dd, bobots)
+    function addChild(graph, cell, doc, desc, dd, bobots,type)
     {
 	    var model = graph.getModel();
 	    var parent = graph.getDefaultParent();
 	    var level = parseInt(cell.getAttribute('level'), 10) + 1;
 	    var desc = desc || "";
 	    var dd = dd || false;
+	    var type = type || "";
 	    var node = doc.createElement('CellNode');
 	    node.setAttribute('deskripsi', desc);
 	    node.setAttribute('level', level);
 	    if (level == 1) {
 	        node.setAttribute('type', 'M');
 	    }  else {
-	        node.setAttribute('type', 'o');
+	        node.setAttribute('type', type == "" ? "o" : type);
 	    }
 	    node.setAttribute('bobot', bobots || '0');
 	    if (dd) {
@@ -1261,6 +1410,8 @@
 	    {
 		    model.endUpdate();
 	    }
+
+	    return vertex;
     };
 
     function deleteSubtree(graph, cell)
@@ -1789,7 +1940,6 @@
                 var new_desc = "";
                 var i = 0;
                 for (var a in description) {
-                    console.log("i = " + i);
                     i += description[a].length + 1;
                     if (i < 30) {
                         new_desc += description[a] + " ";

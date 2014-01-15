@@ -105,9 +105,9 @@
             <tr>
                 <td class="orange-bg" colspan="2"><b>SHE Incident Statistic</b></td>
                 <td class="orange-bg text-center"><b>Total</b></td>
-                <td class="orange-bg text-center"><b>Cost</b></td>
+                <td class="orange-bg text-center"><b>Cost ($)</b></td>
                 <td class="orange-bg text-center"><b>YTD</b></td>
-                <td class="orange-bg text-center"><b>YTD Cost</b></td>
+                <td class="orange-bg text-center"><b>YTD Cost ($)</b></td>
                 <td class="orange-bg" colspan="2"><b>Operational Safety Issue</b></td>
                 <td class="orange-bg text-center"><b>Total</b></td>
                 <td class="orange-bg text-center"><b>YTD</b></td>
@@ -1271,6 +1271,9 @@
                 $('#contract_supervisor').val(data.contract_supervisor);
                 $('#project_she_representative').val(data.project_she_representative);
                 $('#se_she_representative').val(data.se_she_representative);
+                $('#month').val(data.month);
+                $('#year').val(data.year);
+                $('#contractor_name').val(data.contractor_name);
             }
         });
     }

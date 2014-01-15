@@ -4,6 +4,7 @@ using StarEnergi.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Objects.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -186,6 +187,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 ViewBag.datas = dat;
                 ViewBag.id_ir = id_rca;
+                string id_user = Session["username"].ToString();
+                List<string> team = db.rca_team_connector.Where(p => p.id_rca == id_rca && p.id_user != id_user).Join(db.users, q => q.id_user, p => p.username, (q, p) => new { id_user = SqlFunctions.StringConvert((double)p.employee_id).Trim() }).Select(p => p.id_user).Distinct().ToList();
+                ViewBag.investigator_team = team;
 
                 List<rca_implementation> imps = db.rca_implementation.Where(p => p.id_rca == id_rca).ToList();
                 foreach (rca_implementation imp in imps)
@@ -314,8 +318,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (e.email != null)
                     s.Add(e.email);
             }
-            if (s.Count > 0)
-                sendEmail.Send(s, "Bapak/Ibu,<br />Mohon review dan approval untuk Incident Investigation Report dengan nomor referensi " + investigationReport.reference_number + ".Terima Kasih.<br /><br /><i>Dear Sir/Madam,<br />Please review and approval for Incident Investigation Report with reference number " + investigationReport.reference_number + ".Thank you.</i><br /><br />Salam,<br /><i>Regards,</i><br />" + db.employees.Find(Int32.Parse(HttpContext.Session["id"].ToString())).alpha_name, "Approving Incident Investigation Report " + investigationReport.reference_number);
+            //if (s.Count > 0)
+            //    sendEmail.Send(s, "Bapak/Ibu,<br />Mohon review dan approval untuk Incident Investigation Report dengan nomor referensi " + investigationReport.reference_number + ".Terima Kasih.<br /><br /><i>Dear Sir/Madam,<br />Please review and approval for Incident Investigation Report with reference number " + investigationReport.reference_number + ".Thank you.</i><br /><br />Salam,<br /><i>Regards,</i><br />" + db.employees.Find(Int32.Parse(HttpContext.Session["id"].ToString())).alpha_name, "Approving Incident Investigation Report " + investigationReport.reference_number);
 
             id = investigationReport.id;
             if (id_rca != null)

@@ -55,6 +55,16 @@
             $('#content').load('SheContractor');
         } else if (item.find('> .t-link').text() == "RCA Preserve Category") {
             $('#content').load('RCAPreserveCategory');
+        } else if (item.find('> .t-link').text() == "PTW Department") {
+            $('#content').load('PermitDepartment');
+        } else if (item.find('> .t-link').text() == "PTW Holder No") {
+            $('#content').load('PermitHolderNo');
+        } else if (item.find('> .t-link').text() == "PTW Section") {
+            $('#content').load('PermitSection');
+        } else if (item.find('> .t-link').text() == "PTW Facility Owner") {
+            $('#content').load('PermitFO');
+        } else if (item.find('> .t-link').text() == "PTW Assessor") {
+            $('#content').load('PermitAssessor');
         }
     }
 </script>
@@ -94,6 +104,15 @@
                     item.Add().Text("Contractors");
                 })
                 .Expanded(true);
+            panelBarItem.Add().Text("PTW Master Data")
+                .Items(item =>
+                {
+                    item.Add().Text("PTW Department");
+                    item.Add().Text("PTW Section");
+                    item.Add().Text("PTW Holder No");
+                    item.Add().Text("PTW Facility Owner");
+                    item.Add().Text("PTW Assessor");
+                });
             panelBarItem.Add().Text("Load Data From Excel")
                 .Items(item =>
                 {

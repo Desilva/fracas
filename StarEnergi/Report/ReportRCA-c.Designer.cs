@@ -41,6 +41,7 @@ namespace StarEnergi.Report
             this.textBox65 = new Telerik.Reporting.TextBox();
             this.subReport1 = new Telerik.Reporting.SubReport();
             this.implementasi1 = new StarEnergi.Report.Implementasi();
+            this.pictureBox1 = new Telerik.Reporting.PictureBox();
             this.group1 = new Telerik.Reporting.Group();
             this.groupFooterSection1 = new Telerik.Reporting.GroupFooterSection();
             this.groupHeaderSection1 = new Telerik.Reporting.GroupHeaderSection();
@@ -231,7 +232,8 @@ namespace StarEnergi.Report
             this.textBox64,
             this.textBox16,
             this.textBox65,
-            this.subReport1});
+            this.subReport1,
+            this.pictureBox1});
             this.panel8.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.11458206176757813D), Telerik.Reporting.Drawing.Unit.Inch(0.1145884171128273D));
             this.panel8.Name = "panel8";
             this.panel8.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.5937504768371582D), Telerik.Reporting.Drawing.Unit.Inch(8.99162769317627D));
@@ -300,7 +302,7 @@ namespace StarEnergi.Report
             // 
             // textBox62
             // 
-            this.textBox62.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.0833333358168602D), Telerik.Reporting.Drawing.Unit.Inch(8.3333330154418945D));
+            this.textBox62.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.16666793823242188D), Telerik.Reporting.Drawing.Unit.Inch(8.3333330154418945D));
             this.textBox62.Name = "textBox62";
             this.textBox62.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.6666673421859741D), Telerik.Reporting.Drawing.Unit.Inch(0.21250002086162567D));
             this.textBox62.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.None;
@@ -312,7 +314,7 @@ namespace StarEnergi.Report
             // 
             // textBox63
             // 
-            this.textBox63.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.0833333358168602D), Telerik.Reporting.Drawing.Unit.Inch(8.4791669845581055D));
+            this.textBox63.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.16666793823242188D), Telerik.Reporting.Drawing.Unit.Inch(8.4791669845581055D));
             this.textBox63.Name = "textBox63";
             this.textBox63.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.6541668176651D), Telerik.Reporting.Drawing.Unit.Inch(0.19996054470539093D));
             this.textBox63.Style.Font.Bold = true;
@@ -323,7 +325,7 @@ namespace StarEnergi.Report
             // 
             // textBox67
             // 
-            this.textBox67.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.09375D), Telerik.Reporting.Drawing.Unit.Inch(8.6145830154418945D));
+            this.textBox67.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.16666793823242188D), Telerik.Reporting.Drawing.Unit.Inch(8.6145830154418945D));
             this.textBox67.Name = "textBox67";
             this.textBox67.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.6666673421859741D), Telerik.Reporting.Drawing.Unit.Inch(0.21250002086162567D));
             this.textBox67.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.None;
@@ -331,7 +333,8 @@ namespace StarEnergi.Report
             this.textBox67.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(9D);
             this.textBox67.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Left;
             this.textBox67.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
-            this.textBox67.Value = "Date: __ / __ / ____";
+            this.textBox67.Value = "= Iif (Fields.is_sign = 0, \"Date: __ / __ / ____\", \"Date : \" + Fields.sign_date.D" +
+    "ay + \" / \" + Fields.sign_date.Month + \" / \" + Fields.sign_date.Year)";
             // 
             // textBox15
             // 
@@ -390,6 +393,16 @@ namespace StarEnergi.Report
             // implementasi1
             // 
             this.implementasi1.Name = "Implementasi";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.16666793823242188D), Telerik.Reporting.Drawing.Unit.Inch(7.6791281700134277D));
+            this.pictureBox1.MimeType = "";
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.5D), Telerik.Reporting.Drawing.Unit.Inch(0.65412646532058716D));
+            this.pictureBox1.Sizing = Telerik.Reporting.Drawing.ImageSizeMode.ScaleProportional;
+            this.pictureBox1.Value = "= IIf(Fields.is_sign = 0, ResolveUrl(\"~/Content/image/blank.png\"), ResolveUrl(\"~/" +
+    "\" + Fields.pa_sign))";
             // 
             // group1
             // 
@@ -676,5 +689,6 @@ namespace StarEnergi.Report
         private Telerik.Reporting.SqlDataSource sqlDataSource1;
         private Telerik.Reporting.SubReport subReport1;
         private Implementasi implementasi1;
+        private Telerik.Reporting.PictureBox pictureBox1;
     }
 }

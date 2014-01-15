@@ -88,8 +88,8 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.totalIROps = totalIROps;
 
             ViewBag.success = totalCardAft >= totalCardBef + totalCardBef * (int)ViewBag.obs_target / 100;
-            ViewBag.successQuality = totalQualityCardAft * 100 / totalCardAft >= (int)ViewBag.obs_target_quality;
-            ViewBag.successIR = totalIRBef == 0 ? true : (totalIRHuman + totalIROps) * 100 / totalIRBef >= (int)ViewBag.ir_target;
+            ViewBag.successQuality = totalCardAft == 0 ? false : (totalQualityCardAft * 100 / totalCardAft >= (int)ViewBag.obs_target_quality);
+            ViewBag.successIR = totalIRBef == 0 ? false : (totalIRHuman + totalIROps) * 100 / totalIRBef >= (int)ViewBag.ir_target;
             return View();
         }
 

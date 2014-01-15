@@ -19,6 +19,7 @@ namespace StarEnergi.Models
         public Nullable<int> id_reward { get; set; }
         public Nullable<byte> category { get; set; }
         public Nullable<int> winner_observation { get; set; }
+        public string reward { get; set; }
     }
     
 }

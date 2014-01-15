@@ -55,7 +55,12 @@ namespace StarEnergi.Models
         public string supervisor_approve { get; set; }
         public string supervisor_delegate { get; set; }
         public Nullable<byte> kontraktor_seg { get; set; }
+        public Nullable<int> id_tsr { get; set; }
+        public Nullable<int> id_fracas { get; set; }
 
+        public string prepared_by_name { get; set; }
+        public string fracas_number { get; set; }
+        public string tsr_number { get; set; }
         public string rca_number { get; set; }
         public string type_report { get; set; }
         public string actual_loss { get; set; }

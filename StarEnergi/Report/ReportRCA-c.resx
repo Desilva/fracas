@@ -129,12 +129,12 @@
         RGF0YVNvdXJjZVBhcmFtZXRlcgMAAAACAAAACQQAAAAFBAAAAEtTeXN0ZW0uQ29sbGVjdGlvbnMuR2Vu
         ZXJpYy5MaXN0YDFbW1RlbGVyaWsuUmVwb3J0aW5nLlNxbERhdGFTb3VyY2VQYXJhbWV0ZXIDAAAABl9p
         dGVtcwVfc2l6ZQhfdmVyc2lvbgQAACpUZWxlcmlrLlJlcG9ydGluZy5TcWxEYXRhU291cmNlUGFyYW1l
-        dGVyW10CAAAACAgDAAAACQUAAAAAAAAACQAAAAcFAAAAAAEAAAAAAAAABChUZWxlcmlrLlJlcG9ydGlu
+        dGVyW10CAAAACAgDAAAACQUAAAAAAAAADQAAAAcFAAAAAAEAAAAAAAAABChUZWxlcmlrLlJlcG9ydGlu
         Zy5TcWxEYXRhU291cmNlUGFyYW1ldGVyAgAAAAs=
 </value>
   </metadata>
   <data name="sqlDataSource1.SelectCommand" xml:space="preserve">
-    <value>SELECT        rca.id, rca.name, rca.description, rca.analysis_file, employee.alpha_name, rca.start_date, rca.completion_date, lead.leader,facilitator.facilitator
+    <value>SELECT        rca.id, rca.name, rca.description, rca.analysis_file, employee.alpha_name, rca.start_date, rca.completion_date, lead.leader,facilitator.facilitator, rca.sign_date, isnull(rca.is_sign,0) as is_sign, isnull(rca.pa_sign,'Content/image/blank.png') as pa_sign
 FROM            rca LEFT OUTER JOIN
                          rca_team_connector ON rca.id_team = rca_team_connector.id JOIN users on rca_team_connector.id_user = users.username JOIN employee on users.employee_id = employee.id left outer join
 

@@ -242,6 +242,7 @@
         pa = e.row.cells[21].innerHTML;
         isImplement = e.row.cells[22].innerHTML;
         isView = e.row.cells[23].innerHTML;
+        isSign = e.row.cells[24].innerHTML;
         iir_number = e.row.cells[0].innerHTML;
         var username = '@HttpContext.Current.Session["username"].ToString()';
         console.log(isPublish + '###' + typeof isPublish);
@@ -263,7 +264,11 @@
             $('.button-copy').removeAttr('disabled');
         }
 
-
+        if (isPublish == "0" && (isSign == "" || isSign == "0") && pa == username) {
+            $('.button-sign').attr('disabled', 'disabled');
+        } else {
+            $('.button-sign').removeAttr('disabled');
+        }
     }
 
     function addRca() {
@@ -340,6 +345,33 @@
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("Publish", "RCA")",
+                    traditional: true,
+                    data: { id: selectedId },
+                    success: function (data) {
+                        var $grid = $("#RCA").data("tGrid");
+                        $grid.rebind();
+                        selectedId = null;
+                        isTree = null;
+                        isPublish = null;
+                        pa = null;
+                    }
+                });
+            }
+            else {
+                e.preventDefault();
+            }
+        }
+    }
+
+    function signRca() {
+        if (selectedId == 0) {
+            alert("You hasn't chosen any RCA.");
+        } else {
+            var r = confirm("Are you sure want to Sign this analysis?");
+            if (r == true) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Sign", "RCA")",
                     traditional: true,
                     data: { id: selectedId },
                     success: function (data) {
@@ -482,6 +514,7 @@
             columns.Bound(o => o.member_name).Hidden();
             columns.Bound(o => o.is_implement).Hidden();
             columns.Bound(o => o.isView).Hidden();
+            columns.Bound(o => o.is_sign).Hidden();
         })
         .ClientEvents(events => events.OnRowDataBound("ondatabound").OnComplete("onComplete").OnCommand("onCommand").OnRowSelected("onRowSelected"))
         .Pageable(p => p.PageSize(20))
