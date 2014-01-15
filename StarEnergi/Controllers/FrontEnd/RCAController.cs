@@ -21,9 +21,12 @@ using System.Data;
 using StarEnergi.Controllers.Utilities;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
+    [AuthorizeUser("/rca", AuthorizedRoles = new [] {(int)Config.role.RCA,  (int)Config.role.RCAVIEW})]
     public class RCAController : Controller
     {
         public static List<user_per_role> li;
@@ -35,22 +38,16 @@ namespace StarEnergi.Controllers.FrontEnd
         // GET: /RCA/
         public ActionResult Index()
         {
-            if (Session["username"] == null)
-            {
-                return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
-            }
-            else
-            {
-                string username = (String)Session["username"].ToString();
-                li = RCASessionRepository.db.user_per_role.Where(p => p.username == username).ToList();
-                if (!(li.Exists(p => p.role == (int)Config.role.RCA)) && !(li.Exists(p => p.role == (int)Config.role.RCAVIEW)))
-                {
-                    return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
-                }
+            // in Index page, showing list of RCA
+            
+            // getting required data (roles) for checking if user is RCAView or RCA
+            string username = (String)Session["username"].ToString();
+            li = RCASessionRepository.db.user_per_role.Where(p => p.username == username).ToList();
 
-                ViewBag.stat = "rca";
-            }
+            ViewBag.stat = "rca";
 
+            // this don't need anymore if we have delete function for each wizard part
+            // -- DEPRECATED
             if (HttpContext.Session["done"] != null && HttpContext.Session["done"].ToString() == "done")
             {
                 if (HttpContext.Session["id_analysis"] != null)
@@ -76,108 +73,120 @@ namespace StarEnergi.Controllers.FrontEnd
         #region addRCA1
         //
         // GET: /RCA/addRCA
-
+        // controller view for wizard part 1 of 7
+        // id (int, nullable) : id of the RCA, especially for edit
+        // id_eq (int, nullable) : id Equipment if RCA started from FRACAS, -- DEPRECATED
+        // i (int, nullable) : id of IR or FRACAS, if RCA started from FRACAS or IR, -- DEPRECATED for FRACAS
+        // a (string) : title of the RCA, if RCA started from IR
+        // c (string) : cost/benefit of the RCA, if RCA started from IR
+        // l (string) : Principal Analyst of the RCA, if RCA started from IR
         public ActionResult addRCA(int? id, int? id_eq, int? i, string a, string c, string l)
         {
-            if (Session["username"] == null)
-            {
-                return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca/addRCA?id_eq=" + id_eq + "&i=" + i + "&a=" + a });
-            }
-            else
-            {
+            //if (Session["username"] == null)
+            //{
+            //    return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca/addRCA?id_eq=" + id_eq + "&i=" + i + "&a=" + a });
+            //}
+            //else
+            //{
                 string username = (String)Session["username"].ToString();
                 li = RCASessionRepository.db.user_per_role.Where(p => p.username == username).ToList();
-                if (!(li.Exists(p => p.role == (int)Config.role.RCA)) && !(li.Exists(p => p.role == (int)Config.role.RCAVIEW)))
-                {
-                    return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca/addRCA?id_eq=" + id_eq + "&i=" + i + "&a=" + a });
-                }
+                //if (!(li.Exists(p => p.role == (int)Config.role.RCA)) && !(li.Exists(p => p.role == (int)Config.role.RCAVIEW)))
+                //{
+                //    return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca/addRCA?id_eq=" + id_eq + "&i=" + i + "&a=" + a });
+                //}
 
                 ViewBag.stat = "rca";
-            }
+            //}
             int ids = 0;
-            Debug.WriteLine("ids = " + id);
-            if (HttpContext.Session["id_analysis"] != null)
-                ids = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
 
-            if (id != null && id != 0)
-            {
-                HttpContext.Session["id_analysis"] = id.ToString();
-                ids = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
-                ViewBag.types = "edit";
-                string user_id = Session["username"].ToString();
-                List<string> team = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == ids).Select(p => p.id_user).ToList();
-                Debug.WriteLine(team.ElementAt(0));
-                if (team.Exists(p => p == user_id))
-                {
-                    ViewBag.isView = true;
-                }
-            }
-            else
-            {
-                ViewBag.types = "add";
-                ViewBag.isView = true;
-            }
+            // check it's in add mode or edit mode
+            ids = checkIsAddOrEdit(id);
 
+            // saving parameter to be shown in view
             if (id_eq != null) ViewBag.id_eq = id_eq;
             if (i != null) ViewBag.i = i;
             if (a != null) ViewBag.a = a;
             if (c != null) ViewBag.c = c;
             if (l != null) ViewBag.l = l;
+
+            // get the model from ids, whether it's existed or not
             RCAEntityModel rca = RCASessionRepository.OneView(p => p.id == ids);
-            if (rca != null)
-            {
-                ViewBag.analysis_Description = rca.description;
-                ViewBag.analysis_Name = rca.name;
-                ViewBag.id_type = rca.id_type.ToString();
-                ViewBag.type_name = rca.type_name;
-                ViewBag.benefit = rca.cost;
-                ViewBag.isPublish = rca.is_publish;
-            }
+            //if (rca != null)
+            //{
+            //    //ViewBag.analysis_Description = rca.description;
+            //    //ViewBag.analysis_Name = rca.name;
+            //    //ViewBag.id_type = rca.id_type.ToString();
+            //    //ViewBag.type_name = rca.type_name;
+            //    //ViewBag.benefit = rca.cost;
+            //    //ViewBag.isPublish = rca.is_publish;
+            //}
 
             List<rca_analisys_type> result = RCASessionRepository.db.rca_analisys_type.ToList();
+            ViewBag.listAnalysisType = result;
             ViewData["user_role"] = li;
-            return View(result);
+            return View(rca);
         }
 
         //
         // POST: /RCA/addRCA
-
+        // controller view for wizard part 1 of 7 (saving or cancellation)
+        // next (string) : button next clicked, then it contains "Next"
+        // cancel (string) : button cancel clicked, then it contains "Cancel"
+        // analysis_Name (string) : the analysis name from the form in wizard part 1
+        // analysis_Description (string) : the analysis description from the form in wizard part 1
+        // id_type (string) : the analysis type in id mode from the form in wizard part 1
+        // benefit (string) : the benefit from the form in wizard part 1
+        // types (string) : contains only "add" or "edit" to state user is add new RCA or just editting it
+        // isPublish (string) : contains value ('0' or '1') to state if RCA is already publish (completed) or not
+        // id_eq (string) : contains value of id_equipment that only exist if RCA from FRACAS, only have value if it's in add mode, -- DEPRECATED
+        // i (string) : contains the id of IR or FRACAS, only have value if it's in add mode, -- DEPRECATED for FRACAS
+        // l (string) : contains the principal analyst of RCA based on data from IR, only have value if it's in add mode 
         [HttpPost]
         public ActionResult addRCA(string next, string cancel,
             string analysis_Name, string analysis_Description, string id_type,
             string benefit, string types, string isPublish, string id_eq, string i, string l)
         {
             var button = next ?? cancel;
+            // if user click next button, then it must save the value from the form, then next to wizard part 2 of 7
             if (button == "Next")
             {
                 RCAEntityModel rcas = new RCAEntityModel();
+                // check if id_analysis in session already exist or not
+                // if it's not exist, then it must be the first part user click add new RCA
                 if (HttpContext.Session["id_analysis"] == null)
                 {
+                    // save all the value to the model
                     rcas.is_publish = 0;
                     rcas.name = analysis_Name;
                     rcas.description = analysis_Description;
                     rcas.id_type = Int32.Parse(id_type);
                     rcas.cost = benefit;
-                    
+
+                    // validation if analysis name exist or not, if not then must stay on wizard part 1 of 7
                     if (analysis_Name == null || analysis_Name == "")
                     {
                         ViewData["user_role"] = li;
-                        ViewBag.types = types;
-                        ViewBag.analysis_Description = rcas.description;
-                        ViewBag.analysis_Name = rcas.name;
-                        ViewBag.id_type = rcas.id_type.ToString();
-                        ViewBag.type_name = rcas.type_name;
-                        ViewBag.benefit = rcas.cost;
+                        //ViewBag.types = types;
+                        //ViewBag.analysis_Description = rcas.description;
+                        //ViewBag.analysis_Name = rcas.name;
+                        //ViewBag.id_type = rcas.id_type.ToString();
+                        //ViewBag.type_name = rcas.type_name;
+                        //ViewBag.benefit = rcas.cost;
                         List<rca_analisys_type> result = RCASessionRepository.db.rca_analisys_type.ToList();
+                        ViewBag.listAnalysisType = result;
                         ModelState.AddModelError("name", "Analysis title required");
-                        return View(result);
+
+                        ViewBag.isView = true;
+                        return View(rcas);
                     }
+                    // else it should save the value
                     else
                     {
-                        if (HttpContext.Session["username"].ToString() == null)
-                            return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
+                        //if (HttpContext.Session["username"].ToString() == null)
+                        //    return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
                         rcas.has_pir = 0;
 
+                        // if id_eq exist, it also means that RCA created from FRACAS then must be stated that it is from FRACAS -- DEPRECATED
                         if (id_eq != null && id_eq != "" && i != null)
                         {
                             equipment eq = RCASessionRepository.db.equipments.Find(Int32.Parse(id_eq));
@@ -187,13 +196,19 @@ namespace StarEnergi.Controllers.FrontEnd
                             rcas.fracas_ir_id = Int32.Parse(i);
                             rcas.fracas_ir = 1;
                         }
+                        // else if i exist, but id_eq empty, then it must be from IR. State that RCA is from IR
                         else if (i != null && i != "")
                         {
                             rcas.fracas_ir_id = Int32.Parse(i);
                             rcas.fracas_ir = 2;
                         }
+                        
+                        // save new RCA to database, then the id is saved in session
                         HttpContext.Session["id_analysis"] = RCASessionRepository.Insert(rcas);
-                        if (l != null && l != "") {
+
+                        // if l (principal analyst) exist, save that to the RCA
+                        if (l != null && l != "")
+                        {
                             int id_emp = Int32.Parse(l);
                             int id_rca = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
                             string user = RCASessionRepository.db.users.Where(p => p.employee_id == id_emp).FirstOrDefault().username;
@@ -209,18 +224,24 @@ namespace StarEnergi.Controllers.FrontEnd
                             rcas.id = id_rca;
                             RCASessionRepository.UpdateTeam(rcas);
                         }
-                        
-                        
+
+                        // move to RCA part 2 of 7
                         return RedirectToAction("addRCA2");
                     }
                 }
+                // else (the id_analysis must be existed) then update the RCA based on value in form
                 else
                 {
                     string user_id = Session["username"].ToString();
                     List<string> team = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == rcas.id).Select(p => p.id_user).ToList();
+
+                    
                     rcas.id = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
+
+                    // if not publish and also the user is the RCA team
                     if (isPublish == "0" && team.Exists(p => p == user_id))
-                    {   
+                    {
+                        // saving value to database
                         rcas.name = analysis_Name;
                         rcas.description = analysis_Description;
                         rcas.id_type = Int32.Parse(id_type);
@@ -228,35 +249,33 @@ namespace StarEnergi.Controllers.FrontEnd
 
                         RCASessionRepository.UpdateRCA(rcas);
                     }
+
                     if (types == "add")
                     {
+                        // if the types is add, then it must not pass any id value
                         return RedirectToAction("addRCA2");
-                    } else {
+                    }
+                    else
+                    {
+                        // if the types is edit, then pass id
                         return RedirectToAction("addRCA2", new { id = rcas.id });
                     }
-                    
+
                 }
 
             }
+            // else if the cancel button clicked
             else
             {
+                // if the type is add
                 if (types == "add")
                 {
-                    if (HttpContext.Session["id_analysis"] != null)
-                    {
-                        RCAEntityModel rca = new RCAEntityModel();
-                        rca.id = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
-                        rca.name = analysis_Name;
-                        rca.description = analysis_Description;
-                        rca.id_type = Int32.Parse(id_type);
-                        rca.cost = benefit;
-
-                        RCASessionRepository.Delete(rca);
-                        HttpContext.Session.Remove("id_analysis");
-                    }
+                    // remove already saved data in database because it isn't needed
+                    // the state based on if id_analysis already saved if session
+                    DeleteTemporaryRCA();
                 }
 
-
+                // back to Index Page
                 return RedirectToAction("Index");
             }
 
@@ -268,10 +287,12 @@ namespace StarEnergi.Controllers.FrontEnd
 
         #region addRCA2
         //
-        // POST: /RCA/getDivision
-
+        // POST: /RCA/getDepartment
+        // get the department based on selected facility
+        // selectedFacility (string) : the id of facility that is selected from dropdown
+        // return value : of type JSON and contains all department that the facility is selectedFacility
         [HttpPost]
-        public JsonResult getDivision(string selectedFacility)
+        public JsonResult getDepartment(string selectedFacility)
         {
             int selectFacility = 0;
             if (selectedFacility != null)
@@ -282,234 +303,217 @@ namespace StarEnergi.Controllers.FrontEnd
                                d => d.id_facility,
                                (f, d) =>
                                    new { id_division = d.id, value = d.name });
-            Debug.WriteLine("selected Facility = " + selectedFacility);
             return Json(query);
         }
 
         //
-        // POST: /RCA/getDepartment
-
+        // POST: /RCA/getSection
+        // get the section based on selected department
+        // selectedDepartment (string) : the id of department that is selected from dropdown
+        // return value : of type JSON and contains all section that the department is selectedDepartment
         [HttpPost]
-        public JsonResult getDepartment(string selectedDivision)
+        public JsonResult getSection(string selectedDepartment)
         {
-            int selectFacility = 0;
-            if (selectedDivision != null)
-                selectFacility = Int32.Parse(selectedDivision);
-            var query = RCASessionRepository.db.rca_department.Where(p => p.id == selectFacility).Join(RCASessionRepository.db.rca_section,
+            int selectDepartment = 0;
+            if (selectedDepartment != null)
+                selectDepartment = Int32.Parse(selectedDepartment);
+            var query = RCASessionRepository.db.rca_department.Where(p => p.id == selectDepartment).Join(RCASessionRepository.db.rca_section,
                                f => f.id,
                                d => d.id_department,
                                (f, d) =>
                                    new { id_department = d.id, value = d.name });
-            Debug.WriteLine("selected Division = " + selectedDivision);
             return Json(query);
         }
 
         //
         // POST: /RCA/getBuilding
-
+        // get the department based on selected section -- DEPRECATED (not in used anymore)
+        // selectedSection (string) : the id of section that is selected from dropdown
+        // return value : of type JSON and contains all building that the section is selectedSection
         [HttpPost]
-        public JsonResult getBuilding(string selectedDepartment)
+        public JsonResult getBuilding(string selectedSection)
         {
-            int selectFacility = 0;
-            if (selectedDepartment != null)
-                selectFacility = Int32.Parse(selectedDepartment);
-            var query = RCASessionRepository.db.rca_department.Where(p => p.id == selectFacility).Join(RCASessionRepository.db.rca_building,
+            int selectSection = 0;
+            if (selectedSection != null)
+                selectSection = Int32.Parse(selectedSection);
+            var query = RCASessionRepository.db.rca_department.Where(p => p.id == selectSection).Join(RCASessionRepository.db.rca_building,
                                f => f.id,
                                d => d.id_department,
                                (f, d) =>
                                    new { id_building = d.id, value = d.name });
-            Debug.WriteLine("selected Division = " + selectedDepartment);
+            Debug.WriteLine("selected Division = " + selectedSection);
             return Json(query);
         }
 
         //
         // POST: /RCA/getFloor
-
+        // get the floor based on selected building -- DEPRECATED (not in used anymore)
+        // selectedBuilding (string) : the id of building that is selected from dropdown
+        // return value : of type JSON and contains all building that the section is selectedBuilding
         [HttpPost]
         public JsonResult getFloor(string selectedBuilding)
         {
-            int selectFacility = 0;
+            int selectBuilding = 0;
             if (selectedBuilding != null)
-                selectFacility = Int32.Parse(selectedBuilding);
-            var query = RCASessionRepository.db.rca_building.Where(p => p.id == selectFacility).Join(RCASessionRepository.db.rca_floor,
+                selectBuilding = Int32.Parse(selectedBuilding);
+            var query = RCASessionRepository.db.rca_building.Where(p => p.id == selectBuilding).Join(RCASessionRepository.db.rca_floor,
                                f => f.id,
                                d => d.id_building,
                                (f, d) =>
                                    new { id_floor = d.id, value = d.name });
-            Debug.WriteLine("selected Division = " + selectedBuilding);
             return Json(query);
         }
 
+
+        //
+        // POST: /RCA/getFuncLocation
+        // get the tag number of a equipment based on passing id that is getted from tree
+        // id (int) : the id of a equipment
+        // return value : tag number of the equipment in JSON format
         [HttpPost]
         public JsonResult getFuncLocation(int id)
         {
             string tag_number = RCASessionRepository.db.equipments.Find(id).tag_num;
-            return Json(new {tag_number = tag_number});
+            return Json(new { tag_number = tag_number });
         }
 
         //
         // GET: /RCA/addRCA2
-
+        // controller view for wizard part 2 of 7
+        // id (int, nullable) : id of the RCA, especially for edit
         public ActionResult addRCA2(int? id)
         {
             int ids = 0;
-            if (HttpContext.Session["id_analysis"] != null)
-                ids = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
 
-            if (id != null && id != 0)
-            {
-                HttpContext.Session["id_analysis"] = id.ToString();
-                ids = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
-                ViewBag.types = "edit";
-                string user_id = Session["username"].ToString();
-                List<string> team = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == ids).Select(p => p.id_user).ToList();
-                if (team.Exists(p => p == user_id))
-                {
-                    ViewBag.isView = true;
-                }
-            }
-            else
-            {
-                ViewBag.types = "add";
-                ViewBag.isView = true;
-            }
+            // check it's in add mode or edit mode
+            ids = checkIsAddOrEdit(id);
 
-            ViewData["divisions"] = RCASessionRepository.db.rca_department.Where(p => p.id_facility == 1).ToList();
+            // contains all division that facility is 1 or 'Wayang Windu'
+            ViewData["departments"] = RCASessionRepository.db.rca_department.Where(p => p.id_facility == 1).ToList();
+
+            // get the model from ids, whether it's existed or not
             RCAEntityModel rca = RCASessionRepository.OneView(p => p.id == ids);
             if (rca != null)
             {
-                ViewBag.id_facility = rca.id_facility.ToString();
                 if (rca.id_facility != null)
                 {
-                    ViewBag.facilities = rca.facility;
-                    ViewData["divisions"] = RCASessionRepository.db.rca_department.Where(p => p.id_facility == rca.id_facility).ToList();
+                    // contains all department that facility is on id_facility of this RCA
+                    ViewData["departments"] = RCASessionRepository.db.rca_department.Where(p => p.id_facility == rca.id_facility).ToList();
                 }
-                ViewBag.id_division = rca.id_division.ToString();
                 if (rca.id_division != null)
                 {
-                    ViewBag.division = rca.division;
-                    ViewData["departments"] = RCASessionRepository.db.rca_section.Where(p => p.id_department == rca.id_division).ToList();
+                    // contains all section that facility is on id_divison of this RCA
+                    ViewData["sections"] = RCASessionRepository.db.rca_section.Where(p => p.id_department == rca.id_division).ToList();
                 }
-                ViewBag.id_department = rca.id_department.ToString();
+                // below is DEPRECATED function
                 if (rca.id_department != null)
                 {
-                    ViewBag.department = rca.department;
                     ViewData["buildings"] = RCASessionRepository.db.rca_building.Where(p => p.id_department == rca.id_department).ToList();
                 }
-                ViewBag.id_building = rca.id_building.ToString();
                 if (rca.id_building != null)
                 {
-                    ViewBag.building = rca.building;
                     ViewData["floors"] = RCASessionRepository.db.rca_floor.Where(p => p.id_building == rca.id_building).ToList();
                 }
-                ViewBag.id_floor = rca.id_floor.ToString();
-                if (rca.id_floor != null)
-                {
-                    ViewBag.floor = rca.floor;
-                }
-                ViewBag.functional_location = rca.functional_location;
-                ViewBag.isPublish = rca.is_publish;
-                Debug.WriteLine("division = " + rca.id_division + ";");
             }
+
+            // contains all facilities
             ViewData["facility"] = RCASessionRepository.db.rca_facility.ToList();
             ViewData["user_role"] = li;
-
+            
+            // listing plant to used in tree for functional location
             List<plant> plant = RCASessionRepository.db.plants.ToList();
             plant = plant.OrderBy(a => a.nama).ToList();
             foreach (plant p in plant)
             {
                 p.focs = p.focs.OrderBy(a => a.nama).ToList();
             }
+            ViewBag.plant = plant;
 
-            return View(plant);
+            return View(rca);
         }
 
         //
         // POST: /RCA/addRCA2
-
+        // controller view for wizard part 2 of 7 (saving or cancellation)
+        // next (string) : button next clicked, then it contains "Next"
+        // cancel (string) : button cancel clicked, then it contains "Cancel"
+        // previous (string) : button previous clicked, then it contains "Previous"
+        // id_facility (string) : the facility id from the form in wizard part 2
+        // id_division (string) : the department id from the form in wizard part 2
+        // id_department (string) : the section id type in id mode from the form in wizard part 2
+        // id_building (string) : the building id from the form in wizard part 2 -- DEPRECATED
+        // id_floor (string) : the floor id from the form in wizard part 2 -- DEPRECATED
+        // id_wing (string) : the wing id from the form in wizard part 2 -- DEPRECATED
+        // types (string) : contains only "add" or "edit" to state user is add new RCA or just editting it
+        // isPublish (string) : contains value ('0' or '1') to state if RCA is already publish (completed) or not
         [HttpPost]
         public ActionResult addRCA2(string next, string cancel, string previous,
             string id_facility, string id_division, string id_department, string id_building,
             string id_floor, string id_wing, string functional_location, string types, string isPublish)
         {
             var button = next ?? cancel ?? previous;
-            if (button == "Next")
+            // check the button user click, if the button is "Next" or is "Previous"
+            if (button == "Next" || button == "Previous")
             {
-                
+
                 RCAEntityModel rca = new RCAEntityModel();
                 rca.id = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
                 string user_id = Session["username"].ToString();
                 List<string> team = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == rca.id).Select(p => p.id_user).ToList();
+
+                // if the RCA not published yet
                 if (isPublish == "0")
                 {
+                    // if it's add or user is in team
                     if (types == "add" || team.Exists(p => p == user_id))
                     {
                         if (id_facility != null && id_facility != "")
-                            rca.id_facility = Int32.Parse(id_facility);
+                            rca.id_facility = Int32.Parse(id_facility); // save facility id if it exist
                         if (id_division != null && id_division != "")
-                            rca.id_division = Int32.Parse(id_division);
+                            rca.id_division = Int32.Parse(id_division); // save department id if it exist
                         if (id_department != null && id_department != "")
-                            rca.id_department = Int32.Parse(id_department);
+                            rca.id_department = Int32.Parse(id_department); // save section id if it exist
                         if (id_building != null && id_building != "")
-                            rca.id_building = Int32.Parse(id_building);
+                            rca.id_building = Int32.Parse(id_building); // save building id if it exist
                         if (id_floor != null && id_floor != "")
-                            rca.id_floor = Int32.Parse(id_floor);
-                        rca.functional_location = functional_location;
+                            rca.id_floor = Int32.Parse(id_floor); // save floor id if it exist
+                        rca.functional_location = functional_location; // save functional location if it exist
 
                         RCASessionRepository.UpdateRCA2(rca);
                     }
                 }
 
-                if (types == "add")
-                    return RedirectToAction("addRCA3");
-                else
-                    return RedirectToAction("addRCA3", new { id = rca.id });
-            }
-            else if (button == "Previous")
-            {
-                RCAEntityModel rca = new RCAEntityModel();
-                rca.id = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
-                string user_id = Session["username"].ToString();
-                List<string> team = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == rca.id).Select(p => p.id_user).ToList();
-                if (isPublish == "0")
+                if (button == "Next")
                 {
-                    if (types == "add" || team.Exists(p => p == user_id))
-                    {
-                        Debug.WriteLine("id = " + rca.id);
-                        if (id_facility != null && id_facility != "")
-                            rca.id_facility = Int32.Parse(id_facility);
-                        if (id_division != null && id_division != "")
-                            rca.id_division = Int32.Parse(id_division);
-                        if (id_department != null && id_department != "")
-                            rca.id_department = Int32.Parse(id_department);
-                        if (id_building != null && id_building != "")
-                            rca.id_building = Int32.Parse(id_building);
-                        if (id_floor != null && id_floor != "")
-                            rca.id_floor = Int32.Parse(id_floor);
-                        rca.functional_location = functional_location;
-
-                        RCASessionRepository.UpdateRCA2(rca);
-                    }
+                    if (types == "add")
+                        // if the types is add, then it must not pass any id value
+                        return RedirectToAction("addRCA3");
+                    else
+                        // if the types is edit, then pass id
+                        return RedirectToAction("addRCA3", new { id = rca.id });
                 }
-                if (types == "add")
-                    return RedirectToAction("addRCA");
                 else
-                    return RedirectToAction("addRCA", new { id = rca.id });
+                {
+                    if (types == "add")
+                        // if the types is add, then it must not pass any id value
+                        return RedirectToAction("addRCA");
+                    else
+                        // if the types is edit, then pass id
+                        return RedirectToAction("addRCA", new { id = rca.id });
+                }
             }
+            // else if cancel button clicked
             else
             {
+                // if the type is add
                 if (types == "add")
                 {
-                    if (HttpContext.Session["id_analysis"] != null)
-                    {
-                        RCAEntityModel rca = new RCAEntityModel();
-                        rca.id = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
-
-                        RCASessionRepository.Delete(rca);
-                        HttpContext.Session.Remove("id_analysis");
-                    }
+                    // remove already saved data in database because it isn't needed
+                    // the state based on if id_analysis already saved if session
+                    DeleteTemporaryRCA();
                 }
 
+                // back to Index Page
                 return RedirectToAction("Index");
             }
         }
@@ -522,46 +526,26 @@ namespace StarEnergi.Controllers.FrontEnd
 
         //
         // GET: /RCA/addRCA3
-
+        // controller view for wizard part 3 of 7
+        // id (int, nullable) : id of the RCA, especially for edit
         public ActionResult addRCA3(int? id)
         {
             int ids = 0;
-            if (HttpContext.Session["id_analysis"] != null)
-                ids = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
 
-            if (id != null && id != 0)
-            {
-                HttpContext.Session["id_analysis"] = id.ToString();
-                ids = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
-                ViewBag.types = "edit";
-                string user_id = Session["username"].ToString();
-                List<string> team = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == ids).Select(p => p.id_user).ToList();
-                if (team.Exists(p => p == user_id))
-                {
-                    ViewBag.isView = true;
-                }
-            }
-            else
-            {
-                ViewBag.types = "add";
-                ViewBag.isView = true;
-                ids = RCASessionRepository.db.rcas.Max(p => p.id);
-            }
+            // check it's in add mode or edit mode
+            ids = checkIsAddOrEdit(id);
 
-            
+            // get the model from ids, whether it's existed or not
             RCAEntityModel rca = RCASessionRepository.OneView(p => p.id == ids);
-            ViewBag.id_equipment_type = rca.id_type_equipment.ToString();
-            ViewBag.equipment_type = rca.equipment_type;
-            ViewBag.id_equipment_class = rca.id_equipment_class.ToString();
-            ViewBag.equipment_class = rca.equipment_class;
-            if (rca.equipment_code != "")
-                ViewBag.equipment_code = rca.equipment_code;
+            
             if (rca.equipment_code != null)
             {
+                // contains all equipment codes based on id_equipment_class and id_equipment_type
                 ViewData["equipmentCodes"] = RCASessionRepository.db.equipments.Where(p => p.id_tag_type == rca.id_type_equipment && p.id_discipline == rca.id_equipment_class).Distinct().ToList();
             }
             if (rca.equipment_class != null)
             {
+                // contains all equipment class based on id_equipment_type
                 ViewData["equipmentClass"] = (from disciplines in RCASessionRepository.db.disciplines
                                               where disciplines.id_tag_type == rca.id_type_equipment
                                               select new DisciplineEntity
@@ -571,61 +555,65 @@ namespace StarEnergi.Controllers.FrontEnd
                                                   id_tag_type = disciplines.id_tag_type
                                               }).ToList();
             }
-            ViewBag.other = rca.other;
-            ViewBag.manufacture = rca.manufacture;
-            ViewBag.isPublish = rca.is_publish;
 
+            // contains all equipment types
             ViewData["equipments"] = RCASessionRepository.db.tag_types.ToList();
             //ViewData["equipmentClass"] = RCASessionRepository.db.disciplines.ToList();
             ViewData["user_role"] = li;
-            return View();
+            return View(rca);
         }
 
         //
         // POST: /RCA/getEquipmentSubClass
-
+        // get the equipment sub class based on selected equipment class
+        // selectedClass (string) : the id of equipment class that is selected from dropdown
+        // return value : of type JSON and contains all equipment sub class that the class is selectedClass
         [HttpPost]
-        public JsonResult getEquipmentSubClass(string selectedType)
+        public JsonResult getEquipmentSubClass(string selectedClass)
         {
-            int selectType = 0;
-            if (selectedType != null && selectedType != "")
-                selectType = Int32.Parse(selectedType);
-            var query = (from disciplines in RCASessionRepository.db.disciplines
-                        where disciplines.id_tag_type == selectType
-                        select new DisciplineEntity
-                        {
-                            id = disciplines.id,
-                            title = disciplines.title,
-                            id_tag_type = disciplines.id_tag_type
-                        }).ToList();
-            return Json(query);
-        }
-
-        //
-        // POST: /RCA/getEquipmentClass
-
-        [HttpPost]
-        public JsonResult getEquipmentCode(string selectedType, string selectedClass)
-        {
-            int selectType = 0;
-            if (selectedType != null && selectedType != "")
-                selectType = Int32.Parse(selectedType);
             int selectClass = 0;
             if (selectedClass != null && selectedClass != "")
                 selectClass = Int32.Parse(selectedClass);
-            var query = RCASessionRepository.db.equipments.Where(p => p.id_tag_type == selectType && p.id_discipline == selectClass).Select(p => new { tag_num = p.tag_num, nama = p.nama }).Distinct();
-            Debug.WriteLine("selected Class = " + selectedClass);
+            var query = (from disciplines in RCASessionRepository.db.disciplines
+                         where disciplines.id_tag_type == selectClass
+                         select new DisciplineEntity
+                         {
+                             id = disciplines.id,
+                             title = disciplines.title,
+                             id_tag_type = disciplines.id_tag_type
+                         }).ToList();
             return Json(query);
         }
 
         //
         // POST: /RCA/getEquipmentClass
+        // get the equipment code based on selected equipment class and equipment sub class
+        // selectedClass (string) : the id of equipment class that is selected from dropdown
+        // selectedSubClass (string) : the id of equipment sub class that is selected from dropdown
+        // return value : of type JSON and contains all equipment code that the class is selectedClass and sub class is selectedSubClass
+        [HttpPost]
+        public JsonResult getEquipmentCode(string selectedClass, string selectedSubClass)
+        {
+            int selectClass = 0;
+            if (selectedClass != null && selectedClass != "")
+                selectClass = Int32.Parse(selectedClass);
+            int selectSubClass = 0;
+            if (selectedSubClass != null && selectedSubClass != "")
+                selectSubClass = Int32.Parse(selectedSubClass);
+            var query = RCASessionRepository.db.equipments.Where(p => p.id_tag_type == selectClass && p.id_discipline == selectSubClass).Select(p => new { tag_num = p.tag_num, nama = p.nama }).Distinct();
+            return Json(query);
+        }
 
+        //
+        // POST: /RCA/getEquipmentClass
+        // get the equipment manufacturer (vendor) based on selected equipment code
+        // selectedCode (string) : the id of equipment code that is selected from dropdown
+        // return value : of type JSON that contains the manufacturer (vendor) of the equipment based on selectedCode
         [HttpPost]
         public JsonResult getEquipmentManufacture(string selectedCode)
         {
             var s = RCASessionRepository.db.equipments.Where(p => p.tag_num == selectedCode).FirstOrDefault().vendor;
-            return Json(new {manufacture = s});
+            return Json(new { manufacture = s });
         }
 
         //
@@ -1256,7 +1244,7 @@ namespace StarEnergi.Controllers.FrontEnd
                         {
                             rca.id_team = rcas.id_team;
                         }
-                        
+
                         RCASessionRepository.UpdateRCA6(rca);
                         if (checkedRecords != null)
                         {
@@ -1303,7 +1291,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     //        {
                     //            if (e.email != null) t.Add(e.email);
                     //        }
-                            
+
                     //    }
                     //}
                     //if (s.Count > 0) sendEmail.Send(s, "Bapak/Ibu,<br />Anda terpilih dan mendapat tugas sebagai Leader Team Investigator untuk Root Cause Analysis dengan nomor referensi " + rca.rca_code + ".<br />"
@@ -1871,6 +1859,77 @@ namespace StarEnergi.Controllers.FrontEnd
 
         #endregion
 
+        // =============================================================
+
+        #region function for all addRCA
+
+        // function for checking the RCA wizard is in add mode or edit mode
+        // id (int, nullable) : the id that is passed from main function parameter
+        // return value : of type integer that contains the id of RCA that the value will be '0' if the wizard on add mode,
+        //                or in any other values
+        public int checkIsAddOrEdit(int? id)
+        {
+            int ids = 0;
+            // if id of RCA is exist in session, save it to ids
+            if (HttpContext.Session["id_analysis"] != null)
+                ids = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
+
+            // if id from function parameter exist
+            if (id != null && id != 0)
+            {
+                // save it to session
+                HttpContext.Session["id_analysis"] = id.ToString();
+                // change the value of ids, then it must be the edit
+                ids = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
+                ViewBag.types = "edit";
+                string user_id = Session["username"].ToString();
+                List<string> team = RCASessionRepository.db.rca_team_connector.Where(p => p.id_rca == ids).Select(p => p.id_user).ToList();
+                // Debug.WriteLine(team.ElementAt(0));
+
+                // if user is in team of RCA, then the user also can edit the RCA else, it's only view
+                if (team.Exists(p => p == user_id))
+                {
+                    ViewBag.isView = true;
+                }
+            }
+            else
+            {
+                // it is add version and also all user can edit it
+                ViewBag.types = "add";
+                ViewBag.isView = true;
+            }
+
+            return ids;
+        }
+
+        // function for delete temporary saved RCA because the user cancel the wizard on adding mode
+        public int DeleteTemporaryRCA()
+        {
+            if (HttpContext.Session["id_analysis"] != null)
+            {
+                RCAEntityModel rca = new RCAEntityModel();
+                rca.id = Int32.Parse(HttpContext.Session["id_analysis"].ToString());
+
+                RCASessionRepository.Delete(rca);
+            }
+            HttpContext.Session.Remove("id_analysis");
+
+            return 1;
+        }
+
+        //
+        // POST: /Rca/DeleteCurrentRCA
+        // this function is used to delete uncomplete RCA because user
+        // exit the RCA using link on menu, or anything
+        [HttpPost]
+        public JsonResult DeleteCurrentRCA()
+        {
+            DeleteTemporaryRCA();
+            return Json(true);
+        }
+
+        #endregion
+
         #endregion
 
         //==============================================================
@@ -1898,7 +1957,7 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.isPublish = rcass.is_publish;
             ViewBag.isTree = rcass.is_tree;
             if (HttpContext.Session["username"].ToString() == null)
-                return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca"});
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
             if (rcass.fracas_ir_id != null && rcass.fracas_ir == 1)
                 ViewBag.events = RCASessionRepository.db.equipment_event.Find(rcass.fracas_ir_id).event_description == null ? "" : RCASessionRepository.db.equipment_event.Find(rcass.fracas_ir_id).event_description;
             else if (rcass.fracas_ir_id != null && rcass.fracas_ir == 2)
@@ -1993,7 +2052,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     ViewBag.list_template = RCASessionRepository.db.rca_template.Where(p => p.type == 0).ToList();
                 }
             }
-            
+
             Debug.WriteLine(rcass.fracas_ir);
             ViewBag.fracasir = rcass.fracas_ir;
             ViewBag.fracasirid = rcass.fracas_ir_id;
@@ -2148,6 +2207,22 @@ namespace StarEnergi.Controllers.FrontEnd
             return View(new GridModel(RCASessionRepository.AllView().Reverse()));
         }
 
+        //
+        // GET: /RCA/publish/5
+        //
+        [GridAction]
+        public ActionResult sign(int id)
+        {
+            RCAEntityModel rcas = RCASessionRepository.OneView(p => p.id == id);
+            employee emp = RCASessionRepository.db.employees.Find(Int32.Parse(HttpContext.Session["id"].ToString()));
+            RCASessionRepository.UpdateSign(rcas,emp);
+
+            //if ( == null)
+            //    return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
+
+            return View(new GridModel(RCASessionRepository.AllView().Reverse()));
+        }
+
         public JsonResult setAnalysisType(byte radio, int id)
         {
             RCAEntityModel rcas = RCASessionRepository.OneView(p => p.id == id);
@@ -2245,6 +2320,29 @@ namespace StarEnergi.Controllers.FrontEnd
         //==============================================================
 
         #region open.html
+
+        //
+        // POST: RCA/copytoclipboard
+        public string text = "";
+        [HttpPost]
+        public JsonResult copyToClipboard(string text)
+        {
+            this.text = text;
+            Thread cbThread = new Thread(new ThreadStart(CopyClipboard));
+            cbThread.SetApartmentState(ApartmentState.STA);
+            cbThread.Start();
+            cbThread.Join();
+            
+
+            return Json(true);
+        }
+
+        [STAThread]
+        protected void CopyClipboard()
+        {
+            Clipboard.SetText(this.text);
+        }
+
 
         // save in open.cshtml
         //
@@ -2397,7 +2495,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public JsonResult getAllFracas()
         {
             var ee = (from equipment in RCASessionRepository.db.equipment_event
-                      where equipment.datetime_stop != null 
+                      where equipment.datetime_stop != null
                       select new { id = equipment.id, event_description = equipment.event_description }).ToList();
             return Json(new { pir = ee });
         }
@@ -2576,7 +2674,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     RCASessionRepository.db.rca_desc.Remove(r);
                     RCASessionRepository.db.SaveChanges();
                 }
-
+                List<rca_implementation> list_imp = RCASessionRepository.db.rca_implementation.Where(p => p.id_rca == ids).ToList();
                 foreach (string s in desc)
                 {
                     rca_desc r = new rca_desc
@@ -2586,6 +2684,17 @@ namespace StarEnergi.Controllers.FrontEnd
                     };
                     RCASessionRepository.db.rca_desc.Add(r);
                     RCASessionRepository.db.SaveChanges();
+
+                    if (!list_imp.Exists(p => p.next_action == s))
+                    {
+                        rca_implementation imp = new rca_implementation
+                        {
+                            id_rca = ids,
+                            next_action = s,
+                        };
+                        RCASessionRepository.db.rca_implementation.Add(imp);
+                        RCASessionRepository.db.SaveChanges();
+                    }
                 }
             }
             return Json(true);
@@ -2671,7 +2780,7 @@ namespace StarEnergi.Controllers.FrontEnd
             int? fracasirid = (Nullable<Int32>)RCASessionRepository.db.rcas.Find(ids).fracas_ir_id;
 
             string s = "";
-            
+
 
             if (fracasir == 1)
             {
@@ -2689,7 +2798,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     {
                         s += ri.next_action + ", ";
                     }
-                    
+
                 }
 
                 if (s != "")
@@ -2830,7 +2939,7 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 equipment_event ee = RCASessionRepository.db.equipment_event.Find(fracasirid);
                 Debug.WriteLine(ee.long_term_act.Remove(ee.long_term_act.IndexOf(implementation.next_action) == 0 ? 0 : ee.long_term_act.IndexOf(implementation.next_action) - 2, implementation.next_action.Length + 2));
-                ee.long_term_act = ee.long_term_act.Remove(ee.long_term_act.IndexOf(implementation.next_action) == 0 ? 
+                ee.long_term_act = ee.long_term_act.Remove(ee.long_term_act.IndexOf(implementation.next_action) == 0 ?
                     0 : ee.long_term_act.IndexOf(implementation.next_action) - 2, implementation.next_action.Length + 2);
                 Debug.WriteLine(ee.long_term_act);
                 RCASessionRepository.db.Entry(ee).State = EntityState.Modified;
@@ -2911,11 +3020,11 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult SavePrio(string image, int id)
         {
             string dataUrl = image.Replace(' ', '+');
-            string data = dataUrl.Substring(dataUrl.IndexOf(',')+1);
+            string data = dataUrl.Substring(dataUrl.IndexOf(',') + 1);
             Debug.WriteLine("image = " + data);
 
             byte[] todecode_byte = Convert.FromBase64String(data);
-            
+
             string filename = "prio" + id + ".png";
             String filepath = Server.MapPath("~/Content/full_image/" + filename);
             FileStream fs = new FileStream(filepath, FileMode.Create);
@@ -2965,7 +3074,7 @@ namespace StarEnergi.Controllers.FrontEnd
                              start_date = o.start_date,
                              completion_date = o.completion_date,
                              equipment_code = o.equipment_code,
-                             
+
                          }
                 );
 
@@ -3074,7 +3183,12 @@ namespace StarEnergi.Controllers.FrontEnd
                         rca_code = o.rca_code,
                         id_iir = o.id_iir,
                         publish_date = o.publish_date,
-                        pir_number = (inves == null ? String.Empty : inves.reference_number)
+                        pir_number = (inves == null ? String.Empty : inves.reference_number),
+                        actual_start_date = o.actual_start_date,
+                        due_date = o.due_date,
+                        is_sign = o.is_sign,
+                        sign_date = o.sign_date,
+                        pa_sign = o.pa_sign
                     }
                 ).ToList();
 
@@ -3141,7 +3255,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 has_pir = analysis.has_pir,
                 fracas_ir = analysis.fracas_ir,
                 fracas_ir_id = analysis.fracas_ir_id,
-                rca_code = analysis.rca_code
+                rca_code = analysis.rca_code,
             };
 
             db.rcas.Add(anal);
@@ -3278,6 +3392,22 @@ namespace StarEnergi.Controllers.FrontEnd
                 target.publish_date = DateTime.Today;
                 rca.is_publish = 1;
                 rca.publish_date = DateTime.Today;
+                db.SaveChanges();
+            }
+        }
+
+        public static void UpdateSign(RCAEntityModel analysis, employee employee)
+        {
+            RCAEntityModel target = OneView(p => p.id == analysis.id);
+            rca rca = OneDb(p => p.id == analysis.id);
+            if (target != null)
+            {
+                target.is_sign = 1;
+                target.sign_date = DateTime.Today;
+                target.pa_sign = employee.signature;
+                rca.is_sign = 1;
+                rca.sign_date = DateTime.Today;
+                rca.pa_sign = employee.signature;
                 db.SaveChanges();
             }
         }

@@ -36,16 +36,13 @@ namespace StarEnergi.Report
             this.panel5 = new Telerik.Reporting.Panel();
             this.textBox10 = new Telerik.Reporting.TextBox();
             this.textBox9 = new Telerik.Reporting.TextBox();
-            this.textBox39 = new Telerik.Reporting.TextBox();
             this.textBox5 = new Telerik.Reporting.TextBox();
             this.panel2 = new Telerik.Reporting.Panel();
             this.textBox25 = new Telerik.Reporting.TextBox();
             this.textBox26 = new Telerik.Reporting.TextBox();
-            this.textBox58 = new Telerik.Reporting.TextBox();
             this.panel13 = new Telerik.Reporting.Panel();
             this.textBox27 = new Telerik.Reporting.TextBox();
             this.textBox28 = new Telerik.Reporting.TextBox();
-            this.textBox59 = new Telerik.Reporting.TextBox();
             this.panel14 = new Telerik.Reporting.Panel();
             this.textBox29 = new Telerik.Reporting.TextBox();
             this.subReport1 = new Telerik.Reporting.SubReport();
@@ -57,13 +54,13 @@ namespace StarEnergi.Report
             this.textBox60 = new Telerik.Reporting.TextBox();
             this.textBox61 = new Telerik.Reporting.TextBox();
             this.textBox20 = new Telerik.Reporting.TextBox();
+            this.textBox11 = new Telerik.Reporting.TextBox();
             this.implementasi1 = new StarEnergi.Report.Implementasi();
             this.teamMember1 = new StarEnergi.Report.TeamMember();
             this.panel10 = new Telerik.Reporting.Panel();
             this.group1 = new Telerik.Reporting.Group();
             this.groupFooterSection1 = new Telerik.Reporting.GroupFooterSection();
             this.groupHeaderSection1 = new Telerik.Reporting.GroupHeaderSection();
-            this.textBox11 = new Telerik.Reporting.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.teamMember2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.implementasi1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamMember1)).BeginInit();
@@ -289,11 +286,10 @@ namespace StarEnergi.Report
             // 
             this.panel5.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox10,
-            this.textBox9,
-            this.textBox39});
+            this.textBox9});
             this.panel5.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.1111111119389534D), Telerik.Reporting.Drawing.Unit.Inch(1.0901601314544678D));
             this.panel5.Name = "panel5";
-            this.panel5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.3770842552185059D), Telerik.Reporting.Drawing.Unit.Inch(0.5791667103767395D));
+            this.panel5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.3770842552185059D), Telerik.Reporting.Drawing.Unit.Inch(0.4437500536441803D));
             this.panel5.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.None;
             this.panel5.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
             // 
@@ -318,20 +314,9 @@ namespace StarEnergi.Report
             this.textBox9.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox9.Value = "= Fields.alpha_name";
             // 
-            // textBox39
-            // 
-            this.textBox39.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(1.6597223281860352D), Telerik.Reporting.Drawing.Unit.Inch(0D));
-            this.textBox39.Name = "textBox39";
-            this.textBox39.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.74291658401489258D), Telerik.Reporting.Drawing.Unit.Inch(0.43333339691162109D));
-            this.textBox39.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
-            this.textBox39.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
-            this.textBox39.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(9D);
-            this.textBox39.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
-            this.textBox39.Value = " ";
-            // 
             // textBox5
             // 
-            this.textBox5.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.1079760417342186D), Telerik.Reporting.Drawing.Unit.Inch(1.70355224609375D));
+            this.textBox5.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.1079760417342186D), Telerik.Reporting.Drawing.Unit.Inch(1.60980224609375D));
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.82144838571548462D), Telerik.Reporting.Drawing.Unit.Inch(0.17222225666046143D));
             this.textBox5.Style.Font.Bold = true;
@@ -342,9 +327,8 @@ namespace StarEnergi.Report
             // 
             this.panel2.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox25,
-            this.textBox26,
-            this.textBox58});
-            this.panel2.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.11111108213663101D), Telerik.Reporting.Drawing.Unit.Inch(1.8818269968032837D));
+            this.textBox26});
+            this.panel2.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.11111108213663101D), Telerik.Reporting.Drawing.Unit.Inch(1.7880769968032837D));
             this.panel2.Name = "panel2";
             this.panel2.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4.8458342552185059D), Telerik.Reporting.Drawing.Unit.Inch(0.43333339691162109D));
             this.panel2.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.None;
@@ -371,24 +355,12 @@ namespace StarEnergi.Report
             this.textBox26.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox26.Value = "= Fields.leader";
             // 
-            // textBox58
-            // 
-            this.textBox58.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(1.28125D), Telerik.Reporting.Drawing.Unit.Inch(0D));
-            this.textBox58.Name = "textBox58";
-            this.textBox58.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.74291658401489258D), Telerik.Reporting.Drawing.Unit.Inch(0.43333339691162109D));
-            this.textBox58.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
-            this.textBox58.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
-            this.textBox58.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(9D);
-            this.textBox58.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
-            this.textBox58.Value = " ";
-            // 
             // panel13
             // 
             this.panel13.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox27,
-            this.textBox28,
-            this.textBox59});
-            this.panel13.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.11111108213663101D), Telerik.Reporting.Drawing.Unit.Inch(2.3505771160125732D));
+            this.textBox28});
+            this.panel13.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.11111108213663101D), Telerik.Reporting.Drawing.Unit.Inch(2.2568271160125732D));
             this.panel13.Name = "panel13";
             this.panel13.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4.8458342552185059D), Telerik.Reporting.Drawing.Unit.Inch(0.43333339691162109D));
             this.panel13.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.None;
@@ -415,23 +387,12 @@ namespace StarEnergi.Report
             this.textBox28.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox28.Value = "= Fields.facilitator";
             // 
-            // textBox59
-            // 
-            this.textBox59.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(1.28125D), Telerik.Reporting.Drawing.Unit.Inch(0D));
-            this.textBox59.Name = "textBox59";
-            this.textBox59.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.74291658401489258D), Telerik.Reporting.Drawing.Unit.Inch(0.43333339691162109D));
-            this.textBox59.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
-            this.textBox59.Style.BorderWidth.Default = Telerik.Reporting.Drawing.Unit.Point(0.5D);
-            this.textBox59.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(9D);
-            this.textBox59.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
-            this.textBox59.Value = " ";
-            // 
             // panel14
             // 
             this.panel14.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox29,
             this.subReport1});
-            this.panel14.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.11111108213663101D), Telerik.Reporting.Drawing.Unit.Inch(2.8089103698730469D));
+            this.panel14.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.11111108213663101D), Telerik.Reporting.Drawing.Unit.Inch(2.7151603698730469D));
             this.panel14.Name = "panel14";
             this.panel14.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4.8453478813171387D), Telerik.Reporting.Drawing.Unit.Inch(5.99043607711792D));
             this.panel14.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.None;
@@ -536,6 +497,16 @@ namespace StarEnergi.Report
             this.textBox20.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
             this.textBox20.Value = "= \'Principal Analyst: \' + Fields.alpha_name";
             // 
+            // textBox11
+            // 
+            this.textBox11.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(9.9479169845581055D));
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4.9895834922790527D), Telerik.Reporting.Drawing.Unit.Inch(0.2395833283662796D));
+            this.textBox11.Style.Font.Bold = true;
+            this.textBox11.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(14D);
+            this.textBox11.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Left;
+            this.textBox11.Value = "= \'RCA Number: \' + Fields.rca_code";
+            // 
             // implementasi1
             // 
             this.implementasi1.Name = "Implementasi";
@@ -570,16 +541,6 @@ namespace StarEnergi.Report
             this.panel10});
             this.groupHeaderSection1.Name = "groupHeaderSection1";
             this.groupHeaderSection1.PageBreak = Telerik.Reporting.PageBreak.After;
-            // 
-            // textBox11
-            // 
-            this.textBox11.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(9.9479169845581055D));
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4.9895834922790527D), Telerik.Reporting.Drawing.Unit.Inch(0.2395833283662796D));
-            this.textBox11.Style.Font.Bold = true;
-            this.textBox11.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(14D);
-            this.textBox11.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Left;
-            this.textBox11.Value = "= \'RCA Number: \' + Fields.rca_code";
             // 
             // ReportRCA
             // 
@@ -668,9 +629,6 @@ namespace StarEnergi.Report
         private Telerik.Reporting.Panel panel14;
         private Telerik.Reporting.TextBox textBox29;
         private TeamMember teamMember2;
-        private Telerik.Reporting.TextBox textBox39;
-        private Telerik.Reporting.TextBox textBox58;
-        private Telerik.Reporting.TextBox textBox59;
         private Telerik.Reporting.TextBox textBox60;
         private Telerik.Reporting.TextBox textBox61;
         private Telerik.Reporting.Panel panel10;

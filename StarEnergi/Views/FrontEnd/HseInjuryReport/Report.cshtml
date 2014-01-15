@@ -14,7 +14,10 @@
         var row = e.row;
         var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="Edit Injury Report" >'
                                 + '<span class="t-icon t-edit"></span>'
-                                + '</a>';
+                                + '</a>'
+                                + (dataItem.id_ir == null ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Incident Report" onClick="AddIR(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-ir"></span>'
+                                + '</a>' : '');
 
 
         row.cells[0].innerHTML = templateComplete;
@@ -24,12 +27,20 @@
         $('#contentEventLog').load('HseInjuryReport/addInjuryReport', { 'id': id });
     }
 
+    function AddIR(id) {
+        $('#contentEventLog').load('Incident/addIncident', { 'id_injury': id });
+    }
+
 </script>
 
 <style>
     .t-grid .t-grid-header .t-header,
     .t-grid .t-grid-header .t-last-header {
         white-space: normal;
+    }
+
+    .t-ir {
+        background-image:url("/Content/image/add_ir.png");
     }
 </style>
 
@@ -52,6 +63,7 @@
             {
             }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
             columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.ir_number).Width(225).Title("IR Number");
             columns.Bound(o => o.date_time).Width(225).Title("Date / Time");
             columns.Bound(o => o.name).Width(225).Title("Name");
             

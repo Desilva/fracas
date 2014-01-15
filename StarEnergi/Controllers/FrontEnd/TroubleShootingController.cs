@@ -276,7 +276,15 @@ namespace StarEnergi.Controllers.FrontEnd
             troubleShooting.inspector_signature = sign;
             db.trouble_shooting.Add(troubleShooting);
             db.SaveChanges();
-            int id = db.trouble_shooting.Max(p => p.id);
+            int id = troubleShooting.id;
+
+            if (troubleShooting.id_ir != null)
+            {
+                //incident_report ir = db.incident_report.Find(troubleShooting.id_ir);
+                //ir.id_tsr = troubleShooting.id;
+                //db.Entry(ir).State = EntityState.Modified;
+                //db.SaveChanges();
+            }
 
             if (id != id_before)
             {

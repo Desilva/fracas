@@ -38,7 +38,7 @@ namespace StarEnergi.Controllers
             {
                 if (ValidateUser(model.UserName, model.Password))
                 {
-                    string err = ValidateUserAndRole(0,returnUrl,model.UserName);
+                    string err = ""; // ValidateUserAndRole(0, returnUrl, model.UserName);
                     if (err == "")
                     {
                         user a = db.users.Find(model.UserName);

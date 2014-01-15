@@ -38,5 +38,10 @@ namespace StarEnergi.Models
         public string name { get; set; }
 
         public int part { get; set; }//0 equipment 1 part
+
+        public string ir_number { get; set; }
+        public string tsr_number { get; set; }
+        public int? id_tsr { get; set; }
+        public int? id_ir { get; set; }
     }
 }

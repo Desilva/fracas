@@ -160,8 +160,8 @@ namespace StarEnergi.Report
             this.textBox93 = new Telerik.Reporting.TextBox();
             this.textBox36 = new Telerik.Reporting.TextBox();
             this.textBox3 = new Telerik.Reporting.TextBox();
-            this.ProjectRecap = new Telerik.Reporting.SqlDataSource();
             this.pictureBox2 = new Telerik.Reporting.PictureBox();
+            this.ProjectRecap = new Telerik.Reporting.SqlDataSource();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Contractors
@@ -2116,15 +2116,6 @@ namespace StarEnergi.Report
             this.textBox3.Style.Font.Bold = true;
             this.textBox3.Value = "Periods";
             // 
-            // ProjectRecap
-            // 
-            this.ProjectRecap.ConnectionString = "starenergygeo";
-            this.ProjectRecap.Name = "ProjectRecap";
-            this.ProjectRecap.Parameters.AddRange(new Telerik.Reporting.SqlDataSourceParameter[] {
-            new Telerik.Reporting.SqlDataSourceParameter("@contractor_id", System.Data.DbType.String, "=Parameters.contractor.Value"),
-            new Telerik.Reporting.SqlDataSourceParameter("@no_contract", System.Data.DbType.String, "=Parameters.no_contract.Value")});
-            this.ProjectRecap.SelectCommand = resources.GetString("ProjectRecap.SelectCommand");
-            // 
             // pictureBox2
             // 
             this.pictureBox2.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0.099999956786632538D), Telerik.Reporting.Drawing.Unit.Inch(0.099999956786632538D));
@@ -2133,6 +2124,15 @@ namespace StarEnergi.Report
             this.pictureBox2.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.8999212384223938D), Telerik.Reporting.Drawing.Unit.Inch(0.69992130994796753D));
             this.pictureBox2.Sizing = Telerik.Reporting.Drawing.ImageSizeMode.ScaleProportional;
             this.pictureBox2.Value = ((object)(resources.GetObject("pictureBox2.Value")));
+            // 
+            // ProjectRecap
+            // 
+            this.ProjectRecap.ConnectionString = "starenergygeo";
+            this.ProjectRecap.Name = "ProjectRecap";
+            this.ProjectRecap.Parameters.AddRange(new Telerik.Reporting.SqlDataSourceParameter[] {
+            new Telerik.Reporting.SqlDataSourceParameter("@contractor_id", System.Data.DbType.String, "=Parameters.contractor.Value"),
+            new Telerik.Reporting.SqlDataSourceParameter("@no_contract", System.Data.DbType.String, "=Parameters.no_contract.Value")});
+            this.ProjectRecap.SelectCommand = resources.GetString("ProjectRecap.SelectCommand");
             // 
             // ReportSafeManHours
             // 

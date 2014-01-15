@@ -2152,7 +2152,199 @@ namespace StarEnergi.Utilities
         }
 
         #endregion
-		
+
+        #region Safe Man Hours
+
+        public List<string> LoadSafeManHours(string filename)
+        {
+            Excel.Application app;
+            Excel.Workbook book;
+            Excel.Range ShtRange;
+            List<List<object>> temp;
+            List<object> temp_row;
+            List<string> err;
+            int i, j = 0;
+            bool add = true;
+
+            app = new Excel.Application();
+            book = app.Workbooks.Open(Filename: filename);
+
+            err = new List<string>();
+            foreach (Excel.Worksheet sheet in book.Sheets)
+            {
+                temp = new List<List<object>>();
+                ShtRange = sheet.UsedRange;
+                string a = sheet.Name;
+                for (i = 1; i <= ShtRange.Rows.Count; i++)
+                {
+                    temp_row = new List<object>();
+                    for (j = 1; j <= ShtRange.Columns.Count; j++)
+                    {
+                        if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
+                        {
+                            temp_row.Add(null);
+                        }
+                        else
+                            temp_row.Add((ShtRange.Cells[i, j] as Excel.Range).Value2.ToString());
+                    }
+                    temp.Add(temp_row);
+                }
+
+                string errTemp = "";
+                if (add) errTemp = saveSafeManHours(temp);
+                if (errTemp != "")
+                {
+                    err.Add(errTemp);
+                };
+                add = true;
+            }
+            book.Close(true, Missing.Value, Missing.Value);
+            app.Quit();
+
+            return err;
+        }
+
+        private string saveSafeManHours(List<List<object>> data)
+        {
+            string err = "";
+            Nullable<DateTime> dat = null;
+            Nullable<TimeSpan> ts = null;
+
+            monthly_project_she_report mpsr = new monthly_project_she_report();
+            monthly_project_she_report mpsrDummy = new monthly_project_she_report();
+            mpsr.no_contract = data[3][2].ToString();
+
+            if ((mpsrDummy = db.monthly_project_she_report.Where(p => p.no_contract == mpsr.no_contract).FirstOrDefault()) != null)
+            {
+                mpsr.contractor_id = mpsrDummy.contractor_id;
+                mpsr.project_name = mpsrDummy.project_name;
+                mpsr.project_location = mpsrDummy.project_location;
+                mpsr.project_manager = mpsrDummy.project_manager;
+                mpsr.period_start = mpsrDummy.period_start;
+                mpsr.period_end = mpsrDummy.period_end;
+                mpsr.project_she_representative = mpsrDummy.project_she_representative;
+                mpsr.se_she_representative = mpsrDummy.se_she_representative;
+                mpsr.contract_supervisor = mpsrDummy.contract_supervisor;
+            }
+            else
+            {
+                string contractor_name = data[2][2].ToString();
+                monthly_she_contractor contractor = db.monthly_she_contractor.Where(p => p.name == contractor_name).FirstOrDefault();
+
+                mpsr.contractor_id = contractor != null ? contractor.id as Nullable<int> : null;
+
+                mpsr.project_name = data[5][2].ToString();
+                mpsr.project_location = data[5][8].ToString();
+                mpsr.project_manager = data[6][2].ToString();
+                mpsr.period_start = DateTime.FromOADate(Double.Parse(data[4][2].ToString()));
+                mpsr.period_end = DateTime.FromOADate(Double.Parse(data[4][8].ToString()));
+                mpsr.project_she_representative = data[7][2].ToString();
+                mpsr.se_she_representative = data[7][8].ToString();
+                mpsr.contract_supervisor = data[6][8].ToString();
+            }
+
+            mpsr.month_year = new DateTime(Int32.Parse(data[3][9].ToString()), Int32.Parse(data[3][8].ToString()), 1);
+            mpsr.incident_minor_total = data[10][2] != null && data[10][2].ToString() != "" ? Int32.Parse(data[10][2].ToString()) : 0;
+            mpsr.incident_moderate_total = data[11][2] != null && data[11][2].ToString() != "" ? Int32.Parse(data[11][2].ToString()) : 0;
+            mpsr.incident_serious_total = data[12][2] != null && data[12][2].ToString() != "" ? Int32.Parse(data[12][2].ToString()) : 0;
+            mpsr.incident_major_total = data[13][2] != null && data[13][2].ToString() != "" ? Int32.Parse(data[13][2].ToString()) : 0;
+            mpsr.environmental_loss_total = data[14][2] != null && data[14][2].ToString() != "" ? Int32.Parse(data[14][2].ToString()) : 0;
+            mpsr.property_damage_total = data[15][2] != null && data[15][2].ToString() != "" ? Int32.Parse(data[15][2].ToString()) : 0;
+            mpsr.process_loss_total = data[16][2] != null && data[16][2].ToString() != "" ? Int32.Parse(data[16][2].ToString()) : 0;
+            mpsr.external_relation_total = data[17][2] != null && data[17][2].ToString() != "" ? Int32.Parse(data[17][2].ToString()) : 0;
+            mpsr.theft_crime_total = data[18][2] != null && data[18][2].ToString() != "" ? Int32.Parse(data[18][2].ToString()) : 0;
+            mpsr.vehicular_total = data[19][2] != null && data[19][2].ToString() != "" ? Int32.Parse(data[19][2].ToString()) : 0;
+            mpsr.near_miss_total = data[20][2] != null && data[20][2].ToString() != "" ? Int32.Parse(data[20][2].ToString()) : 0;
+            mpsr.incident_minor_cost = data[10][3] != null && data[10][3].ToString() != "" ? Int32.Parse(data[10][3].ToString()) : 0;
+            mpsr.incident_moderate_cost = data[11][3] != null && data[11][3].ToString() != "" ? Int32.Parse(data[11][3].ToString()) : 0;
+            mpsr.incident_serious_cost = data[12][3] != null && data[12][3].ToString() != "" ? Int32.Parse(data[12][3].ToString()) : 0;
+            mpsr.incident_major_cost = data[13][3] != null && data[13][3].ToString() != "" ? Int32.Parse(data[13][3].ToString()) : 0;
+            mpsr.environmental_loss_cost = data[14][3] != null && data[14][3].ToString() != "" ? Int32.Parse(data[14][3].ToString()) : 0;
+            mpsr.property_damage_cost = data[15][3] != null && data[15][3].ToString() != "" ? Int32.Parse(data[15][3].ToString()) : 0;
+            mpsr.process_loss_cost = data[16][3] != null && data[16][3].ToString() != "" ? Int32.Parse(data[16][3].ToString()) : 0;
+            mpsr.external_relation_cost = data[17][3] != null && data[17][3].ToString() != "" ? Int32.Parse(data[17][3].ToString()) : 0;
+            mpsr.theft_crime_cost = data[18][3] != null && data[18][3].ToString() != "" ? Int32.Parse(data[18][3].ToString()) : 0;
+            mpsr.vehicular_cost = data[19][3] != null && data[19][3].ToString() != "" ? Int32.Parse(data[19][3].ToString()) : 0;
+            mpsr.near_miss_cost = data[20][3] != null && data[20][3].ToString() != "" ? Int32.Parse(data[20][3].ToString()) : 0;
+            mpsr.man_hours_mh = data[22][2] != null && data[22][2].ToString() != "" ? Int32.Parse(data[22][2].ToString()) : 0;
+            mpsr.days_mh = data[23][2] != null && data[23][2].ToString() != "" ? Int32.Parse(data[23][2].ToString()) : 0;
+            mpsr.last_date_time_lti = data[26][2] != null && data[26][2].ToString() != "" ? DateTime.FromOADate(Double.Parse(data[26][2].ToString())) as Nullable<DateTime> : null;
+            mpsr.light_vehicle_travel_mh = data[27][2] != null && data[27][2].ToString() != "" ? Int32.Parse(data[27][2].ToString()) : 0;
+            mpsr.local_workers = data[29][2] != null && data[29][2].ToString() != "" ? Int32.Parse(data[29][2].ToString()) : 0;
+            mpsr.non_local_workers =  data[30][2] != null && data[30][2].ToString() != "" ? Int32.Parse(data[30][2].ToString()) : 0;
+            mpsr.expatriates_workers = data[31][2] != null && data[31][2].ToString() != "" ? Int32.Parse(data[31][2].ToString()) : 0;
+            mpsr.local_lead = data[29][3] != null && data[29][3].ToString() != "" ? Int32.Parse(data[29][3].ToString()) : 0;
+            mpsr.non_local_lead = data[30][3] != null && data[30][3].ToString() != "" ? Int32.Parse(data[30][3].ToString()) : 0;
+            mpsr.expatriates_lead = data[31][3] != null && data[31][3].ToString() != "" ? Int32.Parse(data[31][3].ToString()) : 0;
+            mpsr.local_spv = data[29][4] != null && data[29][4].ToString() != "" ? Int32.Parse(data[29][4].ToString()) : 0;
+            mpsr.non_local_spv = data[30][4] != null && data[30][4].ToString() != "" ? Int32.Parse(data[30][4].ToString()) : 0;
+            mpsr.expatriates_spv = data[31][4] != null && data[31][4].ToString() != "" ? Int32.Parse(data[31][4].ToString()) : 0;
+            mpsr.domestic_waste_total = data[33][2] != null && data[33][2].ToString() != "" ? Int32.Parse(data[33][2].ToString()) : 0;
+            mpsr.hazardous_waste_total = data[34][2] != null && data[34][2].ToString() != "" ? Int32.Parse(data[34][2].ToString()) : 0;
+            mpsr.new_msds_total = data[35][2] != null && data[35][2].ToString() != "" ? Int32.Parse(data[35][2].ToString()) : 0;
+
+            mpsr.toolbox_meeting_total = data[10][8] != null && data[10][8].ToString() != "" ? Int32.Parse(data[10][8].ToString()) : 0;
+            mpsr.weekly_she_meeting_total = data[11][8] != null && data[11][8].ToString() != "" ? Int32.Parse(data[11][8].ToString()) : 0;
+            mpsr.monthly_contr_mig_total = data[12][8] != null && data[12][8].ToString() != "" ? Int32.Parse(data[12][8].ToString()) : 0;
+            mpsr.she_observation_card_total = data[14][8] != null && data[14][8].ToString() != "" ? Int32.Parse(data[14][8].ToString()) : 0;
+            mpsr.new_jsa_hira_total = data[15][8] != null && data[15][8].ToString() != "" ? Int32.Parse(data[15][8].ToString()) : 0;
+            mpsr.ptw_issued_total = data[16][8] != null && data[16][8].ToString() != "" ? Int32.Parse(data[16][8].ToString()) : 0;
+            mpsr.facility_inspection_total = data[18][8] != null && data[18][8].ToString() != "" ? Int32.Parse(data[18][8].ToString()) : 0;
+            mpsr.vehicular_inspection_total = data[19][8] != null && data[19][8].ToString() != "" ? Int32.Parse(data[19][8].ToString()) : 0;
+            mpsr.ppe_inspection_total = data[20][8] != null && data[20][8].ToString() != "" ? Int32.Parse(data[20][8].ToString()) : 0;
+            mpsr.lifting_eq_inspection_total = data[21][8] != null && data[21][8].ToString() != "" ? Int32.Parse(data[21][8].ToString()) : 0;
+            mpsr.fire_inspection_total = data[22][8] != null && data[22][8].ToString() != "" ? Int32.Parse(data[22][8].ToString()) : 0;
+            mpsr.vehicle_emission_total = data[23][8] != null && data[23][8].ToString() != "" ? Int32.Parse(data[23][8].ToString()) : 0;
+            mpsr.welding_eq_inspection_total = data[24][8] != null && data[24][8].ToString() != "" ? Int32.Parse(data[24][8].ToString()) : 0;
+            mpsr.hde_inspection_total = data[25][8] != null && data[25][8].ToString() != "" ? Int32.Parse(data[25][8].ToString()) : 0;
+            mpsr.fire_emergency_total = data[27][8] != null && data[27][8].ToString() != "" ? Int32.Parse(data[27][8].ToString()) : 0;
+            mpsr.h2s_emergency_total = data[28][8] != null && data[28][8].ToString() != "" ? Int32.Parse(data[28][8].ToString()) : 0;
+            mpsr.environmental_spill_total = data[29][8] != null && data[29][8].ToString() != "" ? Int32.Parse(data[29][8].ToString()) : 0;
+            mpsr.medical_evacuation_total = data[30][8] != null && data[30][8].ToString() != "" ? Int32.Parse(data[30][8].ToString()) : 0;
+            mpsr.fit_for_day_total = data[32][8] != null && data[32][8].ToString() != "" ? Int32.Parse(data[32][8].ToString()) : 0;
+            mpsr.clinic_visit_total = data[33][8] != null && data[33][8].ToString() != "" ? Int32.Parse(data[33][8].ToString()) : 0;
+            mpsr.no_work_illness_total = data[34][8] != null && data[34][8].ToString() != "" ? Int32.Parse(data[34][8].ToString()) : 0;
+            mpsr.ill_monitoring_total = data[35][8] != null && data[35][8].ToString() != "" ? Int32.Parse(data[35][8].ToString()) : 0;
+
+            MPSRModel mpsrModel = new MPSRModel();
+            int id = mpsrModel.addMPSR(mpsr);
+
+            //db.monthly_project_she_report.Add(mpsr);
+            //db.SaveChanges();
+            int i = 38;
+            for (i = 38; data[i][0].ToString() != "Outstanding Task List & Areas for Improvement"; i++)
+            {
+                if (data[i][1] != null && data[i][1].ToString() != "")
+                {
+                    monthly_project_activity mpa = new monthly_project_activity
+                    {
+                        id_monthly_project = id,
+                        activity = data[i][1].ToString(),
+                    };
+                    db.monthly_project_activity.Add(mpa);
+                    db.SaveChanges();
+                }
+            }
+
+            for (i += 2; i < data.Count; i++)
+            {
+                if (data[i][1] != null && data[i][1].ToString() != "")
+                {
+                    monthly_project_outstanding_activity mpoa = new monthly_project_outstanding_activity
+                    {
+                        id_monthly_project = id,
+                        activity = data[i][1].ToString(),
+                    };
+                    db.monthly_project_outstanding_activity.Add(mpoa);
+                    db.SaveChanges();
+                }
+            }
+            return err;
+
+        }
+
+        #endregion
+
         public string generateError(List<string> err) {
             string html = "";
             if(err.Count > 0){

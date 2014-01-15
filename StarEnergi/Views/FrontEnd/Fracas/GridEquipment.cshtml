@@ -19,33 +19,43 @@
                                 + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Complete" onClick="Complete(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-complete"></span>'
                                 + '</a>'
-                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="To Trouble Shooting" onClick="AddTS(' + dataItem.id + ');">'
+                                + (dataItem.id_ir == null ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Incident Report" onClick="AddIR(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-ir"></span>'
+                                + '</a>' : '')
+                                + (dataItem.id_tsr == 0 ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Trouble Shooting Report" onClick="AddTSR(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-tsr"></span>'
-                                + '</a>'
-                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="To RCA" onClick="toRcas(' + dataItem.id + ');">'
-                                + '<span class="t-icon t-rca"></span>'
-                                + '</a>';
+                                + '</a>' : '');
         var templateRepair = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="Edit" onClick="Edit(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-edit"></span>'
                                 + '</a>'
-                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="To Trouble Shooting" onClick="AddTS(' + dataItem.id + ');">'
+                                + (dataItem.id_ir == null ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Incident Report" onClick="AddIR(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-ir"></span>'
+                                + '</a>' : '')
+                                + (dataItem.id_tsr == 0 ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Trouble Shooting Report" onClick="AddTSR(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-tsr"></span>'
-                                + '</a>'
-                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="To RCA" onClick="toRcas(' + dataItem.id + ');">'
-                                + '<span class="t-icon t-rca"></span>'
-                                + '</a>';
+                                + '</a>' : '');
                                 //+ '<a class="t-button t-grid-delete t-button-icon t-button-icon" title="Delete" href="#">'
                                 //+ '<span class="t-icon t-delete"></span>'
                                 //+ '</a>';
 
         if (dataItem.status == 1) { //complete
-            row.cells[8].innerHTML = '';
+            row.cells[10].innerHTML = '';
         } else if (dataItem.status == 0) { //uncomplete
-            row.cells[8].innerHTML = templateUnComplete;
+            row.cells[10].innerHTML = templateUnComplete;
         }
 
         if (dataItem.dateTimeStart == null) {
-            row.cells[8].innerHTML = templateRepair;
+            row.cells[10].innerHTML = templateRepair;
+        }
+
+        if (dataItem.id_ir != null) {
+            row.cells[8].innerHTML = '<a onclick="toIR(' + dataItem.id_ir + ')">' + dataItem.ir_number + '</a>';
+        }
+
+        if (dataItem.id_tsr != 0) {
+            row.cells[9].innerHTML = '<a onclick="toTSR(' + dataItem.id_tsr + ')">' + dataItem.tsr_number + '</a>';
+        } else {
+            row.cells[9].innerHTML = '';
         }
 
     }
@@ -86,7 +96,19 @@
         $('#content').load('Fracas/EditEvent', {'id':id});
     }
 
-    function AddTS(id) {
+    function toIR(id) {
+        $('#content').load('Incident/addIncident', { 'id': id });
+    }
+
+    function toTSR(id) {
+        $('#content').load('TroubleShooting/addTroubleShooting', { 'id': id });
+    }
+
+    function AddIR(id) {
+        $('#content').load('Incident/addIncident', { 'id_fracas': id });
+    }
+
+    function AddTSR(id) {
         $('#content').load('TroubleShooting/addTroubleShooting', { 'id_ir': id });
     }
 
@@ -98,6 +120,10 @@
 
     .t-tsr {
         background-image:url("/Content/image/add_tsr.png");
+    }
+
+    .t-ir {
+        background-image:url("/Content/image/add_ir.png");
     }
 </style>
 @( 
@@ -121,14 +147,16 @@
             columns.Bound(o => o.status).Hidden();
             columns.Bound(o => o.dateTimeStop).Title("Date/Time Stop");
             columns.Bound(o => o.dateTimeStart).Title("Date/Time Ops");
-            columns.Bound(o => o.durasi).Width(80).Title("Durasi");
-            columns.Bound(o => o.downtime).Width(80).Title("Downtime");
+            columns.Bound(o => o.durasi).Width(60).Title("Durasi");
+            columns.Bound(o => o.downtime).Width(75).Title("Downtime");
             columns.Bound(o => o.tagNumber).Width(105).Title("Tag Num");
             columns.Bound(o => o.failureMode).Width(115).Title("Failure Mode");
+            columns.Bound(o => o.id_ir).Width(155).Title("IR Number");
+            columns.Bound(o => o.id_tsr).Width(155).Title("TSR Number");
             columns.Command(commands =>
             {
                 commands.Delete().ButtonType(GridButtonType.BareImage);
-            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            }).Width(130).Title("Action").HtmlAttributes(new { style = "text-align: center" });
 
         })
         .ClientEvents(
@@ -140,6 +168,7 @@
         .Filterable()
         .Scrollable(c => c.Enabled(true).Height(200))
         .Selectable()
+        .Resizable(resizing => resizing.Columns(true))
 )
 
 

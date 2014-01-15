@@ -35,7 +35,9 @@
             columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.contractor_name).Width(200).Title("Contractor Company Name");
             columns.Bound(o => o.month_year).Width(175).Title("Month / Year").Format("{0:MMM / yyyy}");
-            columns.Bound(o => o.no_contract).Width(175).Title("No. Contract & Periodes");
+            columns.Bound(o => o.no_contract).Width(175).Title("No. Contract");
+            columns.Bound(o => o.period_start).Width(175).Title("Period (From)");
+            columns.Bound(o => o.period_end).Width(175).Title("Period (To)");
             
         })
         .ClientEvents(

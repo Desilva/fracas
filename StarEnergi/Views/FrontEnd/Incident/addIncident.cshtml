@@ -96,6 +96,8 @@
     {
         li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
     }
+
+    int? id_fracas = ViewBag.id_fracas as Nullable<int>;
 }
 <style>
     h5, h6 {
@@ -1334,6 +1336,8 @@
                 }
                 $('#realmod_save').css("display", "block");
                 if (isEdit == 'False') {
+                    values.id_fracas = '@(id_fracas != null ? id_fracas.ToString() : "")';
+                    values.id_injury = '@(ViewBag.id_injury != null ? (ViewBag.id_injury as int?).ToString() : "")';
                     $.post("Incident/Add", values, function (data) {
                         if (data != undefined) {
                             isSave = true;

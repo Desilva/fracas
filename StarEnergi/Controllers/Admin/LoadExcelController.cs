@@ -59,6 +59,8 @@ namespace StarEnergi.Controllers.Admin
                 err = SavePIR(path);
             else if (fileName == Config.fileExcelBOM)
                 err = SaveBOM(path);
+            else if (fileName == Config.fileExcelSafeManHours)
+                err = SaveSafeMan(path);
             return err;
         }
 
@@ -135,6 +137,13 @@ namespace StarEnergi.Controllers.Admin
         {
             ExcelReader excel = new ExcelReader();
             List<string> err = excel.LoadPIR(path);
+            return excel.generateError(err);
+        }
+
+        private string SaveSafeMan(string path)
+        {
+            ExcelReader excel = new ExcelReader();
+            List<string> err = excel.LoadSafeManHours(path);
             return excel.generateError(err);
         }
 
