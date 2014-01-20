@@ -90,6 +90,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 fTemp.tagNumber = item.equipment.tag_num;
                 fTemp.failureMode = item.failure_mode;
                 fTemp.status = item.status;
+                fTemp.eventDesc = item.event_description;
                 fTemp.id_ir = item.id_ir;
                 incident_report ir = list_ir.Find(p => p.id == item.id_ir);
                 trouble_shooting tsr = list_tsr.Find(p => p.id_ir == item.id);
@@ -179,6 +180,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 temp = model.ToList();
             }
             List<FracasEventModel> f = new List<FracasEventModel>();
+            List<incident_report> list_ir = db.incident_report.ToList();
+            List<trouble_shooting> list_tsr = db.trouble_shooting.ToList();
             foreach (var item in temp)
             {
                 FracasEventModel fTemp = new FracasEventModel();
@@ -189,6 +192,13 @@ namespace StarEnergi.Controllers.FrontEnd
                 fTemp.downtime = item.downtime;
                 fTemp.tagNumber = item.equipment_part.part.tag_number;
                 fTemp.failureMode = item.failure_mode;
+                fTemp.eventDesc = item.event_description;
+                fTemp.id_ir = item.id_ir;
+                incident_report ir = list_ir.Find(p => p.id == item.id_ir);
+                trouble_shooting tsr = list_tsr.Find(p => p.id_ir == item.id);
+                fTemp.id_tsr = tsr != null ? tsr.id : 0;
+                fTemp.tsr_number = tsr != null ? tsr.no : "";
+                fTemp.ir_number = ir != null ? ir.reference_number : "";
                 fTemp.status = item.status;
                 f.Add(fTemp);
             }
@@ -345,6 +355,49 @@ namespace StarEnergi.Controllers.FrontEnd
             return PartialView(e);
         }
 
+        public ActionResult ViewEvent(int id)
+        {
+            equipment_event e = db.equipment_event.Find(id);
+            var failureMode = from o in db.failure_modes
+                              join eq in db.equipments on o.id_tag_type equals eq.id_tag_type
+                              where eq.id == e.id_equipment
+                              select new FailureModeEntity
+                              {
+                                  id = o.id,
+                                  description = o.description
+                              };         
+
+            
+            var model = from o in db.equipment_event
+                        where o.id_equipment == e.id_equipment && o.id != id
+                        select o;
+            DateTime? temp = model.Where(x => x.datetime_ops <= e.datetime_stop).ToList().Max(x => x.datetime_ops).Value;
+
+            ViewBag.last_operation = temp.ToString();
+
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.alpha_name
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = (ue.username == null ? String.Empty : ue.username),
+                           delagate = employees.delagate,
+                           employee_delegate = employees.employee_delegate
+                       }).ToList();
+            ViewBag.list_employee = has;
+
+            return PartialView(e);
+        }
+
         public ActionResult EditEventP(int id)
         {
             part_unit_event e = db.part_unit_event.Find(id);
@@ -373,6 +426,70 @@ namespace StarEnergi.Controllers.FrontEnd
             DateTime? temp = model.Where(x => x.datetime_ops <= e.datetime_stop).ToList().Max(x => x.datetime_ops).Value;
 
             ViewBag.last_operation = temp.ToString();
+
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.alpha_name
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = (ue.username == null ? String.Empty : ue.username),
+                           delagate = employees.delagate,
+                           employee_delegate = employees.employee_delegate
+                       }).ToList();
+            ViewBag.list_employee = has;
+
+            return PartialView(e);
+        }
+
+        public ActionResult ViewEventP(int id)
+        {
+            part_unit_event e = db.part_unit_event.Find(id);
+            var failureMode = from o in db.failure_modes
+                              join eq in db.equipments on o.id_tag_type equals eq.id_tag_type
+                              where eq.id == e.equipment_part.id_equipment
+                              select new FailureModeEntity
+                              {
+                                  id = o.id,
+                                  description = o.description
+                              };
+
+            var model = from p in db.part_unit_event
+                        join o in db.equipment_part on p.id_equipment_part equals o.id
+                        where o.id == e.id_equipment_part
+                        select p;
+            DateTime? temp = model.Where(x => x.datetime_ops <= e.datetime_stop).ToList().Max(x => x.datetime_ops).Value;
+
+            ViewBag.last_operation = temp.ToString();
+
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.alpha_name
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = (ue.username == null ? String.Empty : ue.username),
+                           delagate = employees.delagate,
+                           employee_delegate = employees.employee_delegate
+                       }).ToList();
+            ViewBag.list_employee = has;
+
             return PartialView(e);
         }
 

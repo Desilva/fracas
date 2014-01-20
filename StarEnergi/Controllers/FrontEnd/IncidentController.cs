@@ -43,7 +43,7 @@ namespace StarEnergi.Controllers.FrontEnd
             return View();
         }
 
-        public ActionResult addIncident(int? id, int? id_fracas, int? id_injury)
+        public ActionResult addIncident(int? id, int? id_fracas, int? id_injury, int?id_fracas_part)
         {
             string username = (String)Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
@@ -224,6 +224,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.supervisor_position = supervisor_position;
                 ViewBag.id_fracas = id_fracas;
                 ViewBag.id_injury = id_injury;
+                ViewBag.id_fracas_part = id_fracas_part;
                 int last_id = db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id);
                 last_id++;
                 string subPath = "~/Attachment/incident_report/" + last_id + "/signatures"; // your code goes here
@@ -437,7 +438,7 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         [HttpPost]
-        public JsonResult Add(incident_report incidentReport, int? id_fracas, int? id_injury)
+        public JsonResult Add(incident_report incidentReport, int? id_fracas, int? id_injury, int? id_fracas_part)
         {
             int id_before = (db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id)) + 1;
 
@@ -471,6 +472,15 @@ namespace StarEnergi.Controllers.FrontEnd
             if (id_fracas != null)
             {
                 equipment_event fracas = db.equipment_event.Find(id_fracas);
+                fracas.id_ir = incidentReport.id;
+                db.Entry(fracas).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            // add link to fracas
+            if (id_fracas_part != null)
+            {
+                part_unit_event fracas = db.part_unit_event.Find(id_fracas_part);
                 fracas.id_ir = incidentReport.id;
                 db.Entry(fracas).State = EntityState.Modified;
                 db.SaveChanges();

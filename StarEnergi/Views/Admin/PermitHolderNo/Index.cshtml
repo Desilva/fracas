@@ -1,0 +1,131 @@
+﻿@model IEnumerable<StarEnergi.Models.PermitDeparmentModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript" src="../../../Scripts/md5.js"></script>
+<script type="text/javascript">
+    var url = 'http://localhost:7865/MasterDepartment/List/1388375768425/0af1e910d2ef63b05bbc39633a1c886c';
+
+    function onDataBindingHolderNo(e) {
+        var grid = $(this).data('tGrid');
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterPtwHolderNo');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        url = path + '/MasterPtwHolderNo/List/' + timestamp + '/' + seal;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            error: function (xhr, status) {
+                var json = $.parseJSON(xhr.responseText);
+                alert(json.message);
+            },
+            success: function (result) {
+                grid.total = result.total;
+                grid.dataBind(result.ptw_nos);
+                $('.t-status .t-icon', grid.element).removeClass('t-loading');
+            }
+        });
+    }
+
+    function onSaveHolderNo(e) {
+        e.preventDefault();
+        var values = e.values;
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterPtwHolderNo');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        url = path + '/MasterPtwHolderNo/List/' + timestamp + '/' + seal;
+        if (values.id == 0) {
+            url = path + '/MasterPtwHolderNo/Add/' + timestamp + '/' + seal;
+        } else {
+            url = path + '/MasterPtwHolderNo/Edit/' + timestamp + '/' + seal + '/' + values.id;
+        }
+        console.log(values);
+        var date = values.activated_date_until;
+        date = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: { ptw_holder_no: values.ptw_holder_no, id_employee: values.id_employee, activated_date_until : date },
+            error: function (xhr, status) {
+                var json = $.parseJSON(xhr.responseText);
+                alert(json.message);
+            },
+            success: function (result) {
+                $('#PermitHolderNo').data('tGrid').rebind();
+                //$('.t-status .t-icon', grid.element).removeClass('t-loading');
+            }
+        });
+    }
+
+    function onDeleteHolderNo(e) {
+        e.preventDefault();
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterPtwHolderNo');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        var r = confirm("Are you sure want to delete this record?");
+        if (r == true) {
+            var values = e.values;
+            url = path + '/MasterPtwHolderNo/Delete/' + timestamp + '/' + seal + '/' + values.id;
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: null,
+                error: function (xhr, status) {
+                    var json = $.parseJSON(xhr.responseText);
+                    alert(json.message);
+                },
+                success: function (result) {
+                    $('#PermitHolderNo').data('tGrid').rebind();
+                    //$('.t-status .t-icon', grid.element).removeClass('t-loading');
+                }
+            });
+        }
+    }
+</script>
+
+<h2>Requestor's PTW Holder No</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.PermitHolderNoModel>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("PermitHolderNo")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Insert("_InsertAjaxEditing", "Department")
+                .Update("_SaveAjaxEditing", "Department")
+                .Delete("_DeleteAjaxEditing", "Department");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+
+            columns.ForeignKey(o => o.id_employee, (IEnumerable<StarEnergi.Models.EmployeeEntity>)ViewData["employees"],
+                   "id", "alpha_name").Title("Employee");
+            columns.Bound(o => o.ptw_holder_no).Title("Holder No");
+            columns.Bound(o => o.activated_date_until).Title("Activated Until");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .ClientEvents(events => events.OnDataBinding("onDataBindingHolderNo").OnSave("onSaveHolderNo").OnDelete("onDeleteHolderNo"))
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+)

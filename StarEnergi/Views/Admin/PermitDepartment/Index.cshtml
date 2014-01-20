@@ -1,0 +1,127 @@
+﻿@model IEnumerable<StarEnergi.Models.PermitDeparmentModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript" src="../../../Scripts/md5.js"></script>
+<script type="text/javascript">
+    var url = 'http://localhost:7865/MasterDepartment/List/1388375768425/0af1e910d2ef63b05bbc39633a1c886c';
+
+    function onDataBindingDepartment(e) {
+        var grid = $(this).data('tGrid');
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterDepartment');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        url = path + '/MasterDepartment/List/' + timestamp + '/' + seal;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            error: function (xhr, status) {
+                var json = $.parseJSON(xhr.responseText);
+                alert(json.message);
+            },
+            success: function (result) {
+                grid.total = result.total;
+                grid.dataBind(result.departments);
+                $('.t-status .t-icon', grid.element).removeClass('t-loading');
+            }
+        });
+    }
+
+    function onSaveDepartment(e) {
+        e.preventDefault();
+        var values = e.values;
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterDepartment');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        url = path + '/MasterDepartment/List/' + timestamp + '/' + seal;
+        if (values.id == 0) {
+            url = path + '/MasterDepartment/Add/' + timestamp + '/' + seal;
+        } else {
+            url = path + '/MasterDepartment/Edit/' + timestamp + '/' + seal + '/' + values.id;
+        }
+        
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: { department : values.department },
+            error: function (xhr, status) {
+                var json = $.parseJSON(xhr.responseText);
+                alert(json.message);
+            },
+            success: function (result) {
+                $('#PermitDepartment').data('tGrid').rebind();
+                //$('.t-status .t-icon', grid.element).removeClass('t-loading');
+            }
+        });
+    }
+
+    function onDeleteDepartment(e) {
+        e.preventDefault();
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterDepartment');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        var r = confirm("Are you sure want to delete this record?");
+        if (r == true) {
+            var values = e.values;
+            url = path + '/MasterDepartment/Delete/' + timestamp + '/' + seal + '/' + values.id;
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: null,
+                error: function (xhr, status) {
+                    var json = $.parseJSON(xhr.responseText);
+                    alert(json.message);
+                },
+                success: function (result) {
+                    $('#PermitDepartment').data('tGrid').rebind();
+                    //$('.t-status .t-icon', grid.element).removeClass('t-loading');
+                }
+            });
+        }
+        
+    }
+</script>
+
+
+<h2>Department</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.PermitDeparmentModel>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("PermitDepartment")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Insert("_InsertAjaxEditing", "Department")
+                .Update("_SaveAjaxEditing", "Department")
+                .Delete("_DeleteAjaxEditing", "Department");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.Bound(o => o.department).Title("Department Name");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .ClientEvents(events => events.OnDataBinding("onDataBindingDepartment").OnSave("onSaveDepartment").OnDelete("onDeleteDepartment"))
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+)
