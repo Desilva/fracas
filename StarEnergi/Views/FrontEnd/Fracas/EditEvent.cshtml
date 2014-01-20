@@ -28,7 +28,7 @@
 
 <div class="info_inside_left">Equipment </div>
 <div class="infoField">
-    : @(Model.equipment.tag_num)
+    : @(Model.equipment.tag_num) - @(Model.equipment.nama)
 </div> 
 <br />
 
@@ -147,10 +147,10 @@
         <div class="info_inside_left">Failure Severity</div>
         <div class="infoFieldinput">
             <select name="id_severity" id="id_severity">
-                <option value="MAJOR">MAJOR</option>
-                <option value="SERIOUS">SERIOUS</option>
-                <option value="MODERATE">MODERATE</option>
-                <option value="MINOR">MINOR</option>
+                <option value="MAJOR" @(Model.failure_severity == "MAJOR" ? "selected" : "")>MAJOR</option>
+                <option value="SERIOUS" @(Model.failure_severity == "SERIOUS" ? "selected" : "")>SERIOUS</option>
+                <option value="MODERATE" @(Model.failure_severity == "MODERATE" ? "selected" : "")>MODERATE</option>
+                <option value="MINOR" @(Model.failure_severity == "MINOR" ? "selected" : "")>MINOR</option>
             </select>
         </div>	
     	
@@ -211,9 +211,7 @@
             .AutoFill(true)
             .HtmlAttributes(new { style = string.Format("width:200px") })
             .HighlightFirstMatch(true)
-            .Value(Model.engineer)
-            
-        )
+            .Value(Model.engineer))
         </div>
         <br />
     </div>

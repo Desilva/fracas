@@ -1338,6 +1338,7 @@
                 if (isEdit == 'False') {
                     values.id_fracas = '@(id_fracas != null ? id_fracas.ToString() : "")';
                     values.id_injury = '@(ViewBag.id_injury != null ? (ViewBag.id_injury as int?).ToString() : "")';
+                    values.id_fracas_part = '@(ViewBag.id_fracas_part != null ? (ViewBag.id_fracas_part as int?).ToString() : "")';
                     $.post("Incident/Add", values, function (data) {
                         if (data != undefined) {
                             isSave = true;

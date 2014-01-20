@@ -9,7 +9,9 @@
     function OnRowDataBoundEq(e) {
         var dataItem = e.dataItem;
         var row = e.row;
-        var templateComplete = '<a class="t-button t-grid-delete t-button-icon t-button-icon" title="Delete" href="#"><span class="t-icon t-delete"></span></a>';
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="View" onClick="View(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>';
         var templateUnComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="Edit" onClick="Edit(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-edit"></span>'
                                 + '</a>'
@@ -39,7 +41,7 @@
                                 //+ '</a>';
 
         if (dataItem.status == 1) { //complete
-            row.cells[10].innerHTML = '';
+            row.cells[10].innerHTML = templateComplete;
         } else if (dataItem.status == 0) { //uncomplete
             row.cells[10].innerHTML = templateUnComplete;
         }
@@ -96,6 +98,10 @@
         $('#content').load('Fracas/EditEvent', {'id':id});
     }
 
+    function View(id) {
+        $('#content').load('Fracas/ViewEvent', { 'id': id });
+    }
+
     function toIR(id) {
         $('#content').load('Incident/addIncident', { 'id': id });
     }
@@ -145,18 +151,18 @@
         {
             columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.status).Hidden();
-            columns.Bound(o => o.dateTimeStop).Title("Date/Time Stop");
-            columns.Bound(o => o.dateTimeStart).Title("Date/Time Ops");
+            columns.Bound(o => o.dateTimeStop).Width(110).Title("Date/Time Stop");
+            columns.Bound(o => o.dateTimeStart).Width(110).Title("Date/Time Ops");
             columns.Bound(o => o.durasi).Width(60).Title("Durasi");
             columns.Bound(o => o.downtime).Width(75).Title("Downtime");
             columns.Bound(o => o.tagNumber).Width(105).Title("Tag Num");
-            columns.Bound(o => o.failureMode).Width(115).Title("Failure Mode");
+            columns.Bound(o => o.eventDesc).Width(115).Title("Events");
             columns.Bound(o => o.id_ir).Width(155).Title("IR Number");
             columns.Bound(o => o.id_tsr).Width(155).Title("TSR Number");
             columns.Command(commands =>
             {
                 commands.Delete().ButtonType(GridButtonType.BareImage);
-            }).Width(130).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
 
         })
         .ClientEvents(

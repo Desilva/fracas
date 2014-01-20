@@ -1,6 +1,7 @@
 ﻿@model StarEnergi.Models.part_unit_event
 @{
-    ViewBag.Title = "Add Event";
+    ViewBag.Title = "Edit Event";
+    List<StarEnergi.Models.EmployeeEntity> list_employee = ViewBag.list_employee as List<StarEnergi.Models.EmployeeEntity>;
 }
 
 <h2 class="adminH2">Edit Event FRACAS</h2>
@@ -27,13 +28,13 @@
 
 <div class="info_inside_left">Equipment </div>
 <div class="infoField">
-    : @(Model.equipment_part.equipment.tag_num)
+    : @(Model.equipment_part.equipment.tag_num) - @Model.equipment_part.equipment.nama
 </div> 
 <br />
 
 <div class="info_inside_left">Part </div>
 <div class="infoField">
-    : @(Model.equipment_part.part.tag_number)
+    : @(Model.equipment_part.part.tag_number) - @Model.equipment_part.part.nama
 </div> 
 <br />
 
@@ -85,6 +86,19 @@
          </div>
 		
         <br />
+        <div id="eventdesc">
+            <div class="info_inside_left">Event Description</div>
+            <div class="infoFieldinput">
+                @Html.DropDownList("id_event_desc", "-- Select Event Description --")
+                <input name="Submit" value="+" type="button"  onclick="addEventDesc();"/>
+            </div> 		
+            <div class="info_inside_left"></div>
+            <div class="infoFieldinput">
+                <textarea id="area_event_desc" class="taFracas" rows=5>@(Model.event_description)</textarea>
+            </div>    
+        </div>
+
+        <br />
         <div id="mode">
 	        <div class="info_inside_left">Failure Mode </div>
             <div class="infoFieldinput">
@@ -122,8 +136,8 @@
                 <textarea id="area_failure_effect" class="taFracas" rows=5>@(Model.failure_effect)</textarea>
             </div> 
         </div>
-		
-        <br />
+    </div>
+    <div id="fracasRightEdit">
         <div id="secondaryeffect">
         <div class="info_inside_left">Secondary Effect</div>
             <div class="infoFieldinput">
@@ -135,27 +149,28 @@
                 <textarea id="area_secondary_effect" class="taFracas" rows=5>@(Model.secondary_effect)</textarea>
             </div>   
         </div>
-    </div>
-    <div id="fracasRightEdit">
+
+        <br />
         <div class="info_inside_left">Failure Severity</div>
         <div class="infoFieldinput">
             <select name="id_severity" id="id_severity">
-                <option value="MAJOR">MAJOR</option>
-                <option value="SERIOUS">SERIOUS</option>
-                <option value="MODERATE">MODERATE</option>
-                <option value="MINOR">MINOR</option>
+                <option value="MAJOR" @(Model.failure_severity == "MAJOR" ? "selected" : "")>MAJOR</option>
+                <option value="SERIOUS" @(Model.failure_severity == "SERIOUS" ? "selected" : "")>SERIOUS</option>
+                <option value="MODERATE" @(Model.failure_severity == "MODERATE" ? "selected" : "")>MODERATE</option>
+                <option value="MINOR" @(Model.failure_severity == "MINOR" ? "selected" : "")>MINOR</option>
             </select>
         </div>
-		
-        <br />
-        <div class="info_inside_left">Failure CLSSS</div>
+
+
+		<br />
+        <div class="info_inside_left">Failure CLASS</div>
         <div class="infoFieldinput">
             <select name="id_clsss" id="id_clsss">
-                <option value="PRIMARY">PRIMARY</option>
-                <option value="SECONDARY">SECONDARY</option>
+                <option value="PRIMARY" @(Model.failure_clss == "PRIMARY" ? "selected" : "")>PRIMARY</option>
+                <option value="SECONDARY" @(Model.failure_clss == "SECONDARY" ? "selected" : "")>SECONDARY</option>
             </select>
-        </div>	
-    	
+        </div>
+
         <br />
         <div id="immidiate">
         <div class="info_inside_left">Immidiate Cor. Action</div>
@@ -201,29 +216,23 @@
                         .InputHtmlAttributes(new { id = "financial_cost" })
             )
         </div>
-		
-			
         <br />
         <div class="info_inside_left">Person in charge</div>
-        <div class="infoFieldinput"><input id="engineer" name="engineer" type="text" value="@(Model.engineer)"/></div>
-
-        <br />		
-        <div id="eventdesc">
-            <div class="info_inside_left">Event Description</div>
-            <div class="infoFieldinput">
-                @Html.DropDownList("id_event_desc", "-- Select Event Description --")
-                <input name="Submit" value="+" type="button"  onclick="addEventDesc();"/>
-            </div> 		
-            <div class="info_inside_left"></div>
-            <div class="infoFieldinput">
-                <textarea id="area_event_desc" class="taFracas" rows=5>@(Model.event_description)</textarea>
-            </div>    
+        <div class="infoFieldinput">
+            @(Html.Telerik().AutoComplete()
+            .Name("engineer")
+            .Encode(false)
+            .BindTo(list_employee.Select(p => p.alpha_name))
+            .AutoFill(true)
+            .HtmlAttributes(new { style = string.Format("width:200px") })
+            .HighlightFirstMatch(true)
+            .Value(Model.engineer))
         </div>
     </div>
-    <div class="lineLeft edit"></div>
+    <div class="lineLeft edit" style="margin-top:-575px;"></div>
     <br />
     <div class="submit">
-	    <input name="Submit" value="Simpan" type="submit" onclick="saveFracasEditP(@(Model.id),@(Model.id_equipment_part));"/>
-        <input type="button" value="Batal" onclick="back()"/>
+	    <input name="Submit" value="Save" type="submit" onclick="saveFracasEditP(@(Model.id),@(Model.id_equipment_part));"/>
+        <input type="button" value="Cancel" onclick="back()"/>
         <span id="realmod_save" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
     </div>

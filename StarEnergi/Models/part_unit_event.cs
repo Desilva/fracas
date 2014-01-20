@@ -20,7 +20,7 @@ namespace StarEnergi.Models
             downtime = 0;
             status = 1;
         }
-
+        
         public int id { get; set; }
         public int id_equipment_part { get; set; }
         public Nullable<System.DateTime> datetime_stop { get; set; }
@@ -41,7 +41,8 @@ namespace StarEnergi.Models
         public string event_description { get; set; }
         public string type { get; set; }
         public Nullable<byte> status { get; set; }
-
+        public Nullable<int> id_ir { get; set; }
+    
         public virtual equipment_part equipment_part { get; set; }
     }
     
