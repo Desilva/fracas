@@ -1,0 +1,7 @@
+﻿@model string
+
+@(Html.Telerik().DropDownList()
+        .Name("id_employee")
+        .Value(Model)
+        .BindTo(new SelectList(ViewData["employees"] as IEnumerable<StarEnergi.Models.EmployeeEntity>, "id", "alpha_name"))
+) 

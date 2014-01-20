@@ -1,0 +1,200 @@
+﻿@model StarEnergi.Models.equipment_event
+@{
+    ViewBag.Title = "Edit Event";
+    List<StarEnergi.Models.EmployeeEntity> list_employee = ViewBag.list_employee as List<StarEnergi.Models.EmployeeEntity>;
+}
+
+<h2 class="adminH2">View Event FRACAS</h2>
+<style>
+    .taFracasView {
+        margin-top: 10px;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/fracas.js")" type="text/javascript"></script>
+
+<div class="info_inside_left">Plant </div>
+<div class="infoField">
+    : @(Model.equipment.equipment_groups.system.unit.foc.nama)
+</div>
+<br />
+		
+<div class="info_inside_left">Unit </div>
+<div class="infoField">
+    : @(Model.equipment.equipment_groups.system.unit.nama)
+</div> 
+<br />
+
+<div class="info_inside_left">System </div>
+<div class="infoField">
+    : @(Model.equipment.equipment_groups.system.nama)
+</div> 
+<br />
+
+<div class="info_inside_left">Equipment </div>
+<div class="infoField">
+    : @(Model.equipment.tag_num) - @(Model.equipment.nama)
+</div> 
+<br />
+
+<div class="line" id="lineFracas"/>
+<br />
+    <div id="fracasLeft">
+        <div class="info_inside_left">Last Operation </div>
+        <div class="infoFieldinput"><input id="last_operation" type="text" name="last_operation" value="@ViewBag.last_operation" readonly="readonly"/></div>
+        <br />
+		
+        <div class="info_inside_left">Date/Time Stop </div>
+        <div class="infoFieldinput">
+            @(Html.Telerik().DateTimePicker()
+                .Name("datetime_stop")
+                .Value(@Model.datetime_stop)
+                .InputHtmlAttributes(new { id = "datetime_stop", onchange="calculate_downtime();" })
+                .ClientEvents(o => o.OnChange("calculate_downtime"))
+                .Enable(false)
+            )<br /><div id="realmod_date_stop" style="margin-top:10px;"></div>       
+        </div>
+
+        <br />
+		
+        <div class="info_inside_left">Date/Time Ops </div>
+        <div class="infoFieldinput">
+                @(Html.Telerik().DateTimePicker()
+                .Name("datetime_ops")
+                .Value(@Model.datetime_ops)
+                .InputHtmlAttributes(new { id = "datetime_ops"})
+                .ClientEvents(o => o.OnChange("calculate_downtime"))
+                .Enable(false)
+            )<br /><div id="realmod_date_ops" style="margin-top:10px;"></div>     
+        </div>
+
+
+        <br />
+		
+        <div class="info_inside_left">Repair Duration</div>
+        <div class="infoFieldinput">
+            @(Html.Telerik().IntegerTextBox()
+                .Name("durasi")
+                .Value((int?)@Model.durasi)
+                .InputHtmlAttributes(new { id = "durasi" })
+                .Enable(false)
+            )&nbsp;Hours
+        </div>
+		
+        <br />
+        <div class="info_inside_left">Downtime </div>
+        <div class="infoFieldinput">
+            <input id="downtime" name="downtime" type="text" value="@Model.downtime" readonly="true" class="taFracasView"/>&nbsp;Hours
+         </div>
+        <br />
+		<div id="eventdesc">
+            <div class="info_inside_left">Event Description</div>
+            <div class="infoFieldinput">
+                <textarea id="area_event_desc" rows=5 disabled class="taFracasView">@(Model.event_description)</textarea>
+            </div>    
+        </div>
+        <br />
+        <div id="mode">
+	        <div class="info_inside_left">Failure Mode </div>
+            <div class="infoFieldinput">
+                <textarea id="area_failure_mode" rows="5" disabled class="taFracasView">@(Model.failure_mode)</textarea>
+            </div> 	
+        </div>
+		
+        <br />
+        <div id="cause">
+            <div class="info_inside_left">Failure Cause </div>
+            <div class="infoFieldinput">
+                <textarea id="area_failure_cause" rows=5 disabled class="taFracasView">@(Model.failure_cause)</textarea>
+            </div>
+        </div>
+		
+        <br />
+        <div id="effect">
+        <div class="info_inside_left">Failure Effect</div>
+            <div class="infoFieldinput">
+                <textarea id="area_failure_effect" rows=5 disabled class="taFracasView">@(Model.failure_effect)</textarea>
+            </div> 
+        </div>
+        <br />
+    </div>
+    <div id="fracasRightEdit" style="margin-top:-705px">
+        <div id="secondaryeffect">
+        <div class="info_inside_left">Secondary Effect</div>
+            <div class="infoFieldinput">
+                <textarea id="area_secondary_effect" rows=5 disabled class="taFracasView">@(Model.secondary_effect)</textarea>
+            </div>   
+        </div>
+        <br />
+
+        <div class="info_inside_left">Failure Severity</div>
+        <div class="infoFieldinput">
+            <select name="id_severity" id="id_severity" disabled>
+                <option value="MAJOR" @(Model.failure_severity == "MAJOR" ? "selected" : "")>MAJOR</option>
+                <option value="SERIOUS" @(Model.failure_severity == "SERIOUS" ? "selected" : "")>SERIOUS</option>
+                <option value="MODERATE" @(Model.failure_severity == "MODERATE" ? "selected" : "")>MODERATE</option>
+                <option value="MINOR" @(Model.failure_severity == "MINOR" ? "selected" : "")>MINOR</option>
+            </select>
+        </div>	
+    	
+        <br />
+        <div id="immidiate">
+        <div class="info_inside_left">Immidiate Cor. Action</div>
+            <div class="infoFieldinput">
+                <textarea id="area_immidiate" rows=5 disabled class="taFracasView">@(Model.immediate_act)</textarea>
+            </div>
+        </div>
+
+        <br />
+        <div id="longterm">
+            <div class="info_inside_left">Long Term Cor. Action</div>
+            <div class="infoFieldinput">
+                <textarea id="area_long_term" rows=5 disabled class="taFracasView">@(Model.long_term_act)</textarea>
+            </div> 
+        </div>
+
+        <br />		
+        <div class="info_inside_left">Repair Cost</div>
+         <div class="infoFieldinput">
+         @(Html.Telerik().IntegerTextBox()
+                    .Name("repair_cost")
+                    .Value((int?)@Model.repair_cost)
+                    .InputHtmlAttributes(new { id = "repair_cost" })
+                    .Enable(false)
+            )
+         </div>
+		
+        <br />		
+        <div class="info_inside_left">Financial Cost </div>
+        <div class="infoFieldinput">
+         @(Html.Telerik().IntegerTextBox()
+                        .Name("financial_cost")
+                        .Value((int?)@Model.financial_cost)
+                        .InputHtmlAttributes(new { id = "financial_cost" })
+                        .Enable(false)
+            )
+        </div>
+		
+			
+        <br />
+        <div class="info_inside_left">Person in charge</div>
+        <div class="infoFieldinput">
+            @(Html.Telerik().AutoComplete()
+            .Name("engineer")
+            .Encode(false)
+            .BindTo(list_employee.Select(p => p.alpha_name))
+            .AutoFill(true)
+            .HtmlAttributes(new { style = string.Format("width:200px") })
+            .HighlightFirstMatch(true)
+            .Value(Model.engineer)
+            .Enable(false)
+        )
+        </div>
+        <br />
+    </div>
+    <div class="lineLeft edit" style="margin-top:-532px;height: 725px;"></div>
+    <br />
+    <div class="submit">
+        <input type="button" value="Back" onclick="back()"/>
+        <span id="realmod_save" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+    </div>
+

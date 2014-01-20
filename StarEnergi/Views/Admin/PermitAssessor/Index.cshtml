@@ -1,0 +1,131 @@
+﻿@model IEnumerable<StarEnergi.Models.PermitAssessorModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript" src="../../../Scripts/md5.js"></script>
+<script type="text/javascript">
+    var url = 'http://localhost:7865/MasterDepartment/List/1388375768425/0af1e910d2ef63b05bbc39633a1c886c';
+
+    function onDataBindingAssessor(e) {
+        var grid = $(this).data('tGrid');
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterAssessor');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        url = path + '/MasterAssessor/List/' + timestamp + '/' + seal;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            error: function (xhr, status) {
+                var json = $.parseJSON(xhr.responseText);
+                alert(json.message);
+            },
+            success: function (result) {
+                grid.total = result.total;
+                grid.dataBind(result.assessors);
+                $('.t-status .t-icon', grid.element).removeClass('t-loading');
+            }
+        });
+    }
+
+    function onSaveAssessor(e) {
+        e.preventDefault();
+        var values = e.values;
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterAssessor');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        url = path + '/MasterAssessor/List/' + timestamp + '/' + seal;
+        if (values.id == 0) {
+            url = path + '/MasterAssessor/Add/' + timestamp + '/' + seal;
+        } else {
+            url = path + '/MasterAssessor/Edit/' + timestamp + '/' + seal + '/' + values.id;
+        }
+        
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: { id_employee : values.id_employee, assessor_code : values.assessor_code },
+            error: function (xhr, status) {
+                //alert(status);
+                var json = $.parseJSON(xhr.responseText);
+                alert(json.message);
+            },
+            success: function (result) {
+                $('#PermitAssessor').data('tGrid').rebind();
+                //$('.t-status .t-icon', grid.element).removeClass('t-loading');
+            }
+        });
+    }
+
+    function onDeleteAssessor(e) {
+        e.preventDefault();
+        var timestamp = (new Date()).getTime();
+        var seal = MD5(timestamp + '@System.Configuration.ConfigurationManager.AppSettings["salt"].ToString()' + 'MasterAssessor');
+        var path = '@System.Configuration.ConfigurationManager.AppSettings["ptw"].ToString()';
+        var r = confirm("Are you sure want to delete this record?");
+        if (r == true) {
+            var values = e.values;
+            url = path + '/MasterAssessor/Delete/' + timestamp + '/' + seal + '/' + values.id;
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: null,
+                error: function (xhr, status) {
+                    //alert(status);
+                    var json = $.parseJSON(xhr.responseText);
+                    alert(json.message);
+                },
+                success: function (result) {
+                    $('#PermitAssessor').data('tGrid').rebind();
+                    //$('.t-status .t-icon', grid.element).removeClass('t-loading');
+                }
+            });
+        }
+        
+    }
+</script>
+
+
+<h2>Assessor</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.PermitAssessorModel>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("PermitAssessor")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Insert("_InsertAjaxEditing", "Department")
+                .Update("_SaveAjaxEditing", "Department")
+                .Delete("_DeleteAjaxEditing", "Department");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.id).Hidden();
+            columns.ForeignKey(o => o.id_employee, (IEnumerable<StarEnergi.Models.EmployeeEntity>)ViewData["employees"],
+                   "id", "alpha_name").Title("Assessor");
+            columns.Bound(o => o.assessor_code).Title("FO Code");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .ClientEvents(events => events.OnDataBinding("onDataBindingAssessor").OnSave("onSaveAssessor").OnDelete("onDeleteAssessor"))
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+)
