@@ -1,0 +1,646 @@
+
+DATA LOGGER Daily Periode : Agustus-2013
+
+No.	TAG_ID	BARCODE	DESCRIPTION	MIN_LIMIT	MAX_LIMIT	UNIT	TAG_VALUE	TANGGAL	JAM	BULAN	TAHUN	NAMA_OPERATOR	KETERANGAN	
+ 1	A0-DPI-2231A	00122311	Comm. Dryer Pre Filter Diff.	1	1	Barg	0.33  	'2013/08/22	'05:55	08	2013	RIZAL KAHFI F	          	
+ 2	A0-DPI-2231A	00122311	Comm. Dryer Pre Filter Diff.	1	1	Barg	0.4   	'2013/08/24	'21:24	08	2013	R PANCA W	          	
+ 3	A0-DPI-2231A	00122311	Comm. Dryer Pre Filter Diff.	1	1	Barg	0.32  	'2013/08/25	'10:54	08	2013	BURHANUDIN H	          	
+ 4	A0-DPI-2231B	00122312	Comm. Dryer Pre Filter Diff.	0	1	Barg	0.04  	'2013/08/22	'05:55	08	2013	RIZAL KAHFI F	          	
+ 5	A0-DPI-2231B	00122312	Comm. Dryer Pre Filter Diff.	0	1	Barg	0.04  	'2013/08/25	'10:54	08	2013	BURHANUDIN H	          	
+ 6	A0-DPI-2231B	00122312	Comm. Dryer Pre Filter Diff.	0	1	Barg	0.08  	'2013/08/24	'21:25	08	2013	R PANCA W	          	
+ 7	A0-DPI-2232A	00122321	Comm. Dryer After Filter Diff.	0	1	Barg	0.09  	'2013/08/22	'05:55	08	2013	RIZAL KAHFI F	          	
+ 8	A0-DPI-2232A	00122321	Comm. Dryer After Filter Diff.	0	1	Barg	0.1   	'2013/08/24	'21:24	08	2013	R PANCA W	          	
+ 9	A0-DPI-2232A	00122321	Comm. Dryer After Filter Diff.	0	1	Barg	0.9   	'2013/08/25	'10:54	08	2013	BURHANUDIN H	          	
+ 10	A0-DPI-2232B	00122322	Comm. Dryer After Filter Diff.	0	1	Barg	0     	'2013/08/22	'05:55	08	2013	RIZAL KAHFI F	          	
+ 11	A0-DPI-2232B	00122322	Comm. Dryer After Filter Diff.	0	1	Barg	0     	'2013/08/24	'21:24	08	2013	R PANCA W	          	
+ 12	A0-DPI-2232B	00122322	Comm. Dryer After Filter Diff.	0	1	Barg	00    	'2013/08/25	'10:54	08	2013	BURHANUDIN H	          	
+ 13	A0-ESBFFS-02	00700020	Comm. ESB FFS Status	0	1	%	-	-	-	08	2013	-	-	
+ 14	A0-ESBHVAC-1	00700010	Comm. ESB HVAC In Service	0	2	%	-	-	-	08	2013	-	-	
+ 15	A0-FI-1001	00310010	Comm. PS Product Water Counter	0	9999999999	l	-	-	-	08	2013	-	-	
+ 16	A0-FI-1002	00310020	Comm. PS Concrete Flow Counter	0	9999999999	m3	-	-	-	08	2013	-	-	
+ 17	A0-FI-1003	00310030	Comm. Raw Water Flow Counter	0	9999999999	m3	-	-	-	08	2013	-	-	
+ 18	A0-FI-ESB-01	00300010	Comm. ESB Fresh Air Flow / Scr	0	0	Cfm	-	-	-	08	2013	-	-	
+ 19	A0-FI-RWP-1A	00300011	Comm. RWP-A Flow Meter Scala	0	25	%	22    	'2013/08/06	'17:00	08	2013	ANTON PK	OK        	
+ 20	A0-FI-RWP-1B	00300012	Comm. RWP-B Flow Meter Scala	0	50	%	550   	'2013/08/06	'16:25	08	2013	ANTON PK	ERROR     	
+ 21	A0-KWH-1002	00210020	Comm. KWH Meter WW Village	0	9999999999	kWH	-	-	-	08	2013	-	-	
+ 22	A0-LI-1001	00410010	Comm. PS Water Storage T. Leve	0	100	%	-	-	-	08	2013	-	-	
+ 23	A0-LI-1002	00410020	Comm. NaHSO3 / Antiscalant Lev	0	100	%	255   	'2013/08/06	'16:24	08	2013	ANTON PK	OK        	
+ 24	A0-LI-1003	00410030	Comm. NaOCL Tank Level	0	100	%	-	-	-	08	2013	-	-	
+ 25	A0-LI-1004	00410040	Comm. EDG Weekly Fuel T. Leve	0	100	%	-	-	-	08	2013	-	-	
+ 26	A0-LI-1006	00410060	Comm. RO Reductor T. Level	0	100	%	-	-	-	08	2013	-	-	
+ 27	A0-LI-RW-05	00410050	Comm. Raw Water Pond Level WWD	0	100	%	-	-	-	08	2013	-	-	
+ 28	A0-PI-2215A	00522151	Comm. Air Receiver A Pressure	0	10	Barg	6.6   	'2013/08/24	'21:25	08	2013	R PANCA W	          	
+ 29	A0-PI-2215A	00522151	Comm. Air Receiver A Pressure	0	10	Barg	6.4   	'2013/08/22	'05:56	08	2013	RIZAL KAHFI F	          	
+ 30	A0-PI-2215A	00522151	Comm. Air Receiver A Pressure	0	10	Barg	6.5   	'2013/08/25	'10:54	08	2013	BURHANUDIN H	          	
+ 31	A0-PI-2215B	00522152	Comm. Air Receiver B Pressure	0	10	Barg	6.8   	'2013/08/24	'21:25	08	2013	R PANCA W	          	
+ 32	A0-PI-2215B	00522152	Comm. Air Receiver B Pressure	0	10	Barg	6.4   	'2013/08/25	'10:53	08	2013	BURHANUDIN H	          	
+ 33	A0-PI-2215B	00522152	Comm. Air Receiver B Pressure	0	10	Barg	6.7   	'2013/08/22	'05:56	08	2013	RIZAL KAHFI F	          	
+ 34	A0-PI-2215C	00522153	Comm. Air Receiver C Pressure	0	10	Barg	7     	'2013/08/22	'05:55	08	2013	RIZAL KAHFI F	          	
+ 35	A0-PI-2215C	00522153	Comm. Air Receiver C Pressure	0	10	Barg	7.0   	'2013/08/25	'10:57	08	2013	BURHANUDIN H	          	
+ 36	A0-PI-AHU-02	00500020	Comm. AHU-1 (L) Comp. Suction	-1	15	Barg	4     	'2013/08/22	'05:40	08	2013	RIZAL KAHFI F	          	
+ 37	A0-PI-AHU-03	00500030	Comm. AHU-1 (R) Comp. Discharg	0	35	Barg	6     	'2013/08/22	'05:40	08	2013	RIZAL KAHFI F	          	
+ 38	A0-PI-AHU-04	00500040	Comm. AHU-1 (L) Comp. Discharg	0	35	Barg	11    	'2013/08/22	'05:40	08	2013	RIZAL KAHFI F	          	
+ 39	A0-PI-AHU-05	00500050	Comm. AHU-2 (R) Comp. Suction	-1	15	Barg	8.5   	'2013/08/24	'21:35	08	2013	R PANCA W	          	
+ 40	A0-PI-AHU-05	00500050	Comm. AHU-2 (R) Comp. Suction	-1	15	Barg	7.5   	'2013/08/25	'09:52	08	2013	BURHANUDIN H	          	
+ 41	A0-PI-AHU-06	00500060	Comm. AHU-2 (L) Comp. Suction	-1	15	Barg	4.1   	'2013/08/25	'09:53	08	2013	BURHANUDIN H	          	
+ 42	A0-PI-AHU-06	00500060	Comm. AHU-2 (L) Comp. Suction	-1	15	Barg	4     	'2013/08/24	'21:35	08	2013	R PANCA W	          	
+ 43	A0-PI-AHU-07	00500070	Comm. AHU-2 (R) Comp. Discharg	0	35	Barg	6.5   	'2013/08/24	'21:35	08	2013	R PANCA W	          	
+ 44	A0-PI-AHU-07	00500070	Comm. AHU-2 (R) Comp. Discharg	0	35	Barg	6.5   	'2013/08/25	'09:52	08	2013	BURHANUDIN H	          	
+ 45	A0-PI-AHU-08	00500080	Comm. AHU-2 (L) Comp. Discharg	0	35	Barg	11    	'2013/08/24	'21:35	08	2013	R PANCA W	          	
+ 46	A0-PI-AHU-08	00500080	Comm. AHU-2 (L) Comp. Discharg	0	35	Barg	13.3  	'2013/08/25	'09:53	08	2013	BURHANUDIN H	          	
+ 47	A0-PI-AHU-09	00500090	Comm. AHU Inlet Filter-1 DP  	0	2	Barg	0.25  	'2013/08/22	'05:40	08	2013	RIZAL KAHFI F	          	
+ 48	A0-PI-AHU-09	00500090	Comm. AHU Inlet Filter-1 DP  	0	2	Barg	0.35  	'2013/08/24	'21:36	08	2013	R PANCA W	          	
+ 49	A0-PI-AHU-09	00500090	Comm. AHU Inlet Filter-1 DP  	0	2	Barg	0.35  	'2013/08/25	'09:53	08	2013	BURHANUDIN H	          	
+ 50	A0-PI-AHU-10	00500100	Comm. AHU Inlet Filter-2 DP	0	2	Barg	0.64  	'2013/08/22	'05:40	08	2013	RIZAL KAHFI F	          	
+ 51	A0-PI-AHU-10	00500100	Comm. AHU Inlet Filter-2 DP	0	2	Barg	0.95  	'2013/08/24	'21:35	08	2013	R PANCA W	          	
+ 52	A0-PI-AHU-10	00500100	Comm. AHU Inlet Filter-2 DP	0	2	Barg	0.95  	'2013/08/25	'09:53	08	2013	BURHANUDIN H	          	
+ 53	A0-PI-RWP-1A	00500011	Comm. RWP-A Discharge Pressure	0	50	Barg	-	-	-	08	2013	-	-	
+ 54	A0-PI-RWP-1B	00500012	Comm. RWP-B Discharge Pressure	0	50	Barg	-	-	-	08	2013	-	-	
+ 55	A0-RH-ESB-01	00800010	Comm. ESB Room Relative Humidi	0	100	%	-	-	-	08	2013	-	-	
+ 56	A0-TI-ESB-01	00600010	Comm. ESB Room Temperature	0	100	oC	-	-	-	08	2013	-	-	
+ 57	A0-TI-TRF-02	00600020	Comm. ESB Transformer Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 58	A0-VM-1001	00210010	Comm. EDG Battery Voltage	0	50	Volt	-	-	-	08	2013	-	-	
+ 59	A0-VM-1003	00210030	Comm. ESB 6.3 kV Incoming Volt	0	10	KV	-	-	-	08	2013	-	-	
+ 60	A0-VM-1004	00210040	Comm. ESB Battery 110Vdc Outpt	0	200	Vdc	-	-	-	08	2013	-	-	
+ 61	A0-VM-1005	00210050	Comm. ESB UPS 110 Vac Output	0	200	Volt	-	-	-	08	2013	-	-	
+ 62	A1-LI-0600	01406000	Unit-1 Main Oil Tank Level	-100	50	mm	0     	'2013/08/24	'21:33	08	2013	R PANCA W	          	
+ 63	A1-LI-0600	01406000	Unit-1 Main Oil Tank Level	-100	50	mm	-0.1  	'2013/08/22	'05:51	08	2013	RIZAL KAHFI F	          	
+ 64	A1-LI-0600	01406000	Unit-1 Main Oil Tank Level	-100	50	mm	00    	'2013/08/25	'11:00	08	2013	BURHANUDIN H	          	
+ 65	A1-LI-CTF-A	01400001	Unit-1 CTF-A Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 66	A1-LI-CTF-B	01400002	Unit-1 CTF-B Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 67	A1-LI-CTF-C	01400003	Unit-1 CTF-C Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 68	A1-LI-CTF-D	01400004	Unit-1 CTF-D Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 69	A1-LI-CTF-E	01400005	Unit-1 CTF-E Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 70	A1-LI-CTF-F	01400006	Unit-1 CTF-F Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 71	A1-LI-CTF-G	01400007	Unit-1 CTF-G Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 72	A1-LI-CTF-H	01400008	Unit-1 CTF-H Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 73	A1-PDI-0617	01106170	Unit-1 Lube Oil Differential P	0	2	Barg	0.42  	'2013/08/24	'21:33	08	2013	R PANCA W	          	
+ 74	A1-PDI-0617	01106170	Unit-1 Lube Oil Differential P	0	2	Barg	0.42  	'2013/08/25	'11:00	08	2013	BURHANUDIN H	          	
+ 75	A1-PDI-0617	01106170	Unit-1 Lube Oil Differential P	0	2	Barg	0.43  	'2013/08/22	'05:51	08	2013	RIZAL KAHFI F	          	
+ 76	A1-PDI-0640	01106400	Unit-1 Diff. Press. of Oil Fil	0	2	Barg	-	-	-	08	2013	-	-	
+ 77	A1-PI-0200	01502000	Unit-1 Gland Steam Inlet Press	0	0	mBar	0.1   	'2013/08/24	'21:35	08	2013	R PANCA W	          	
+ 78	A1-PI-0200	01502000	Unit-1 Gland Steam Inlet Press	0	0	mBar	1     	'2013/08/25	'11:01	08	2013	BURHANUDIN H	          	
+ 79	A1-PI-0200	01502000	Unit-1 Gland Steam Inlet Press	0	0	mBar	107.19	'2013/08/22	'05:50	08	2013	RIZAL KAHFI F	          	
+ 80	A1-PI-0211A	01502111	Unit-1 GRS A Inter Steam Inlet	33	16	Barg	9.5   	'2013/08/25	'10:38	08	2013	BURHANUDIN H	          	
+ 81	A1-PI-0211B	01502112	Unit-1 GRS B Inter Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 82	A1-PI-0211C	01502113	Unit-1 GRS C Inter Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 83	A1-PI-0212A	01502121	Unit-1 GRS A After Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 84	A1-PI-0212B	01502122	Unit-1 GRS B After Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 85	A1-PI-0212C	01502123	Unit-1 GRS C After Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 86	A1-PI-0310	01503100	Unit-1 Gland Steam Exhaust Pre	-0.15	0.15	Barg	-	-	-	08	2013	-	-	
+ 87	A1-PI-0600	01506000	Unit-1 AOP Disch. Pressure	0	100	Barg	-	-	-	08	2013	-	-	
+ 88	A1-PI-0601	01506010	Unit-1 EOP Disch. Pressure	0	100	Barg	-	-	-	08	2013	-	-	
+ 89	A1-PI-0612	01506120	Unit-1 Control Oil Pressure	0	16	Barg	10.3  	'2013/08/24	'21:23	08	2013	R PANCA W	          	
+ 90	A1-PI-0612	01506120	Unit-1 Control Oil Pressure	0	16	Barg	10.3  	'2013/08/25	'10:55	08	2013	BURHANUDIN H	          	
+ 91	A1-PI-0612	01506120	Unit-1 Control Oil Pressure	0	16	Barg	10    	'2013/08/22	'05:55	08	2013	RIZAL KAHFI F	          	
+ 92	A1-PI-0621	01506210	Unit-1 Lube Oil Pressure	0	4	Barg	2.7   	'2013/08/25	'11:00	08	2013	BURHANUDIN H	          	
+ 93	A1-PI-0621	01506210	Unit-1 Lube Oil Pressure	0	4	Barg	2.75  	'2013/08/22	'05:51	08	2013	RIZAL KAHFI F	          	
+ 94	A1-PI-0621	01506210	Unit-1 Lube Oil Pressure	0	4	Barg	2.7   	'2013/08/24	'21:32	08	2013	R PANCA W	          	
+ 95	A1-PI-0630	01506300	Unit-1 Turning Oil Inlet	0	100	Barg	-	-	-	08	2013	-	-	
+ 96	A1-PI-0641	01506410	Unit-1 Auxiliary Trip Oil Pres	0	15	Barg	8.9   	'2013/08/25	'09:42	08	2013	BURHANUDIN H	          	
+ 97	A1-PI-0641	01506410	Unit-1 Auxiliary Trip Oil Pres	0	15	Barg	9     	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 98	A1-PI-0641	01506410	Unit-1 Auxiliary Trip Oil Pres	0	15	Barg	9     	'2013/08/24	'21:38	08	2013	R PANCA W	          	
+ 99	A1-PI-0642	01506420	Unit-1 Trip Test Oil Pressure	0	100	Barg	0     	'2013/08/24	'21:38	08	2013	R PANCA W	          	
+ 100	A1-PI-0642	01506420	Unit-1 Trip Test Oil Pressure	0	100	Barg	0     	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 101	A1-PI-0643	01506430	Unit-1 Trip Oil Pressure	0	15	Barg	8.4   	'2013/08/25	'09:42	08	2013	BURHANUDIN H	          	
+ 102	A1-PI-0643	01506430	Unit-1 Trip Oil Pressure	0	15	Barg	8.4   	'2013/08/24	'21:38	08	2013	R PANCA W	          	
+ 103	A1-PI-0643	01506430	Unit-1 Trip Oil Pressure	0	15	Barg	8.4   	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 104	A1-PI-0644	01506440	Unit-1 Start Up Oil Pressure	0	100	Barg	0     	'2013/08/24	'21:38	08	2013	R PANCA W	          	
+ 105	A1-PI-0644	01506440	Unit-1 Start Up Oil Pressure	0	100	Barg	0.2   	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 106	A1-PI-0645	01506450	Unit-1 Secondary Oil Pressure 	0	10	Barg	4     	'2013/08/24	'21:38	08	2013	R PANCA W	          	
+ 107	A1-PI-0645	01506450	Unit-1 Secondary Oil Pressure 	0	10	Barg	4.2   	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 108	A1-PI-0645	01506450	Unit-1 Secondary Oil Pressure 	0	10	Barg	4.2   	'2013/08/25	'09:42	08	2013	BURHANUDIN H	          	
+ 109	A1-PI-0646	01506460	Unit-1 Secondary Oil Pressure 	0	10	Barg	3.7   	'2013/08/25	'09:42	08	2013	BURHANUDIN H	          	
+ 110	A1-PI-0646	01506460	Unit-1 Secondary Oil Pressure 	0	10	Barg	4     	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 111	A1-PI-0646	01506460	Unit-1 Secondary Oil Pressure 	0	10	Barg	3.7   	'2013/08/24	'21:38	08	2013	R PANCA W	          	
+ 112	A1-PI-0650	01506500	Unit-1 Jacking Oil Pressure	0	0	Barg	0     	'2013/08/22	'05:51	08	2013	RIZAL KAHFI F	          	
+ 113	A1-PI-0660	01506600	Unit-1 Turbine Front Drain Pre	0	250	Barg	30    	'2013/08/24	'21:37	08	2013	R PANCA W	          	
+ 114	A1-PI-0660	01506600	Unit-1 Turbine Front Drain Pre	0	250	Barg	31    	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 115	A1-PI-0660	01506600	Unit-1 Turbine Front Drain Pre	0	250	Barg	32    	'2013/08/25	'09:43	08	2013	BURHANUDIN H	          	
+ 116	A1-PI-0661	01506610	Unit-1 Jacking Oil Header	0	100	Barg	-	-	-	08	2013	-	-	
+ 117	A1-PI-0662	01506620	Unit-1 Turbine Rear Drain Pres	0	250	Barg	32    	'2013/08/25	'09:50	08	2013	BURHANUDIN H	          	
+ 118	A1-PI-0662	01506620	Unit-1 Turbine Rear Drain Pres	0	250	Barg	37    	'2013/08/22	'05:41	08	2013	RIZAL KAHFI F	          	
+ 119	A1-PI-0662	01506620	Unit-1 Turbine Rear Drain Pres	0	250	Barg	37    	'2013/08/24	'21:37	08	2013	R PANCA W	          	
+ 120	A1-PI-0663	01506630	Unit-1 Generator Front Drain P	0	250	Barg	23    	'2013/08/22	'05:41	08	2013	RIZAL KAHFI F	          	
+ 121	A1-PI-0663	01506630	Unit-1 Generator Front Drain P	0	250	Barg	23    	'2013/08/25	'09:51	08	2013	BURHANUDIN H	          	
+ 122	A1-PI-0663	01506630	Unit-1 Generator Front Drain P	0	250	Barg	23    	'2013/08/24	'21:36	08	2013	R PANCA W	          	
+ 123	A1-PI-0664	01506640	Unit-1 Generator Rear Drain Pr	0	250	Barg	140   	'2013/08/22	'05:41	08	2013	RIZAL KAHFI F	          	
+ 124	A1-PI-0664	01506640	Unit-1 Generator Rear Drain Pr	0	250	Barg	140   	'2013/08/24	'21:36	08	2013	R PANCA W	          	
+ 125	A1-PI-0664	01506640	Unit-1 Generator Rear Drain Pr	0	250	Barg	140   	'2013/08/25	'09:51	08	2013	BURHANUDIN H	          	
+ 126	A1-PI-0680	01506800	Unit-1 Oil Purifier Suction Pr	-1	2	Barg	0.09  	'2013/08/22	'05:54	08	2013	RIZAL KAHFI F	          	
+ 127	A1-PI-0680	01506800	Unit-1 Oil Purifier Suction Pr	-1	2	Barg	0.09  	'2013/08/24	'21:24	08	2013	R PANCA W	          	
+ 128	A1-PI-0680	01506800	Unit-1 Oil Purifier Suction Pr	-1	2	Barg	0.9   	'2013/08/25	'10:56	08	2013	BURHANUDIN H	          	
+ 129	A1-PI-0681	01506810	Unit-1 Oil Purifier Temperatur	0	100	oC	-	-	-	08	2013	-	-	
+ 130	A1-PI-0682	01506820	Unit-1 Oil Purifier Filter Pre	-1	10	Barg	1.2   	'2013/08/22	'05:54	08	2013	RIZAL KAHFI F	          	
+ 131	A1-PI-0682	01506820	Unit-1 Oil Purifier Filter Pre	-1	10	Barg	1.2   	'2013/08/24	'21:23	08	2013	R PANCA W	          	
+ 132	A1-PI-0682	01506820	Unit-1 Oil Purifier Filter Pre	-1	10	Barg	1.2   	'2013/08/25	'10:56	08	2013	BURHANUDIN H	          	
+ 133	A1-PI-1004	01510040	Unit-1 ACWP C/W Inlet Pressure	-0.1	0.1	Barg	0.009 	'2013/08/25	'10:58	08	2013	BURHANUDIN H	          	
+ 134	A1-PI-1004	01510040	Unit-1 ACWP C/W Inlet Pressure	-0.1	0.1	Barg	0.01  	'2013/08/22	'05:53	08	2013	RIZAL KAHFI F	          	
+ 135	A1-PI-1004	01510040	Unit-1 ACWP C/W Inlet Pressure	-0.1	0.1	Barg	0.01  	'2013/08/24	'21:21	08	2013	R PANCA W	          	
+ 136	A1-PI-1005	01510050	Unit-1 ACWP C/W Inlet Pressure	-0.1	0.1	Barg	-	-	-	08	2013	-	-	
+ 137	A1-PI-1030	01510300	Unit-1 HWP Suction Pressure(A)	-1	2	Barg	-0.24 	'2013/08/24	'21:19	08	2013	R PANCA W	          	
+ 138	A1-PI-1030	01510300	Unit-1 HWP Suction Pressure(A)	-1	2	Barg	-0.24 	'2013/08/25	'10:34	08	2013	BURHANUDIN H	          	
+ 139	A1-PI-1031	01510310	Unit-1 HWP Discharge Pressure(	0	6	Barg	2.45  	'2013/08/25	'10:34	08	2013	BURHANUDIN H	          	
+ 140	A1-PI-1035	01510350	Unit-1 HWP Seal Water Pressure	0	0	Barg	-	-	-	08	2013	-	-	
+ 141	A1-PI-1040	01510400	Unit-1 HWP Suction Pressure(B)	-1	2	Barg	-0.23 	'2013/08/24	'21:19	08	2013	R PANCA W	          	
+ 142	A1-PI-1040	01510400	Unit-1 HWP Suction Pressure(B)	-1	2	Barg	-0.22 	'2013/08/25	'10:33	08	2013	BURHANUDIN H	          	
+ 143	A1-PI-1041	01510410	Unit-1 HWP Discharge Pressure(	-1	3	Barg	2     	'2013/08/24	'21:18	08	2013	R PANCA W	          	
+ 144	A1-PI-1041	01510410	Unit-1 HWP Discharge Pressure(	-1	3	Barg	2.05  	'2013/08/25	'10:33	08	2013	BURHANUDIN H	          	
+ 145	A1-PI-1045	01510450	Unit-1 HWP Seal Water Pressure	0	0	Barg	-	-	-	08	2013	-	-	
+ 146	A1-PI-1301A	01513011	Unit-1 ACWP A Suction Pressure	0	6	Barg	-	-	-	08	2013	-	-	
+ 147	A1-PI-1301B	01513012	Unit-1 ACWP B Suction Pressure	0	6	Barg	-	-	-	08	2013	-	-	
+ 148	A1-PI-1302A	01513021	Unit-1 ACWP A Discharge Press.	0	6	Barg	-	-	-	08	2013	-	-	
+ 149	A1-PI-1302B	01513022	Unit-1 ACWP B Discharge Press.	0	6	Barg	-	-	-	08	2013	-	-	
+ 150	A1-PI-1347A	01513471	Unit-1 GRS A VP Seal Water Inl	-1	3	Barg	0.002 	'2013/08/25	'10:36	08	2013	BURHANUDIN H	          	
+ 151	A1-PI-1347A	01513471	Unit-1 GRS A VP Seal Water Inl	-1	3	Barg	0.05  	'2013/08/24	'21:18	08	2013	R PANCA W	          	
+ 152	A1-PI-1347B	01513472	Unit-1 GRS B VPSeal Water Inle	-1	3	Barg	-	-	-	08	2013	-	-	
+ 153	A1-PI-1510A	01515101	Unit-1 GRS A Inter Gas Inlet P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 154	A1-PI-1510B	01515102	Unit-1 GRS B Inter Gas Inlet P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 155	A1-PI-1510C	01515103	Unit-1 GRS C Inter Gas Inlet P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 156	A1-PI-1512A	01515121	Unit-1 GRS A Inter Condenser P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 157	A1-PI-1512B	01515122	Unit-1 GRS B Inter Condenser P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 158	A1-PI-1512C	01515123	Unit-1 GRS C Inter Condenser P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 159	A1-PI-1513A	01515131	Unit-1 GRS A After Gas Inlet P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 160	A1-PI-1513B	01515132	Unit-1 GRS B After Gas Inlet P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 161	A1-PI-1513C	01515133	Unit-1 GRS C After Gas Inlet P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 162	A1-PI-1515A	01515151	Unit-1 GRS A After Condenser P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 163	A1-PI-1515B	01515152	Unit-1 GRS B After Condenser P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 164	A1-PI-1515C	01515153	Unit-1 GRS C After Condenser P	-1	0	Barg	-	-	-	08	2013	-	-	
+ 165	A1-PI-1516A	01515161	Unit-1 GRS A VP Gas Inlet Pres	-1	0	Barg	-	-	-	08	2013	-	-	
+ 166	A1-PI-1516B	01515162	Unit-1 GRS B VPGas Inlet Press	-1	0	Barg	-	-	-	08	2013	-	-	
+ 167	A1-PI-1521A	01515211	Unit-1 GRS A VP Separator Pres	-1	3	Barg	-	-	-	08	2013	-	-	
+ 168	A1-PI-1521B	01515212	Unit-1 GRS B VPSeparator Press	-1	3	Barg	-	-	-	08	2013	-	-	
+ 169	A1-PI-1521C	01515213	Unit-1 GRS C NCG Aftr C. O. Pr	-1	3	Barg	-	-	-	08	2013	-	-	
+ 170	A1-T1-1513B	01615132	Unit-1 GRS B Inter Gas Inlet T	0	100	oC	-	-	-	08	2013	-	-	
+ 171	A1-T1-1531	01615310	Unit-1 GRS B LRVP Gear B. Temp	0	100	oC	-	-	-	08	2013	-	-	
+ 172	A1-TI-0401	01604010	Unit-1 Tust Front Drain Temp.	0	100	oC	50    	'2013/08/24	'21:39	08	2013	R PANCA W	          	
+ 173	A1-TI-0401	01604010	Unit-1 Tust Front Drain Temp.	0	100	oC	50    	'2013/08/25	'09:41	08	2013	BURHANUDIN H	          	
+ 174	A1-TI-0401	01604010	Unit-1 Tust Front Drain Temp.	0	100	oC	50    	'2013/08/22	'05:39	08	2013	RIZAL KAHFI F	          	
+ 175	A1-TI-0402	01604020	Unit-1 Trust Rear Drain Temp.	0	100	oC	50    	'2013/08/22	'05:39	08	2013	RIZAL KAHFI F	          	
+ 176	A1-TI-0402	01604020	Unit-1 Trust Rear Drain Temp.	0	100	oC	50    	'2013/08/24	'21:39	08	2013	R PANCA W	          	
+ 177	A1-TI-0402	01604020	Unit-1 Trust Rear Drain Temp.	0	100	oC	50    	'2013/08/25	'09:41	08	2013	BURHANUDIN H	          	
+ 178	A1-TI-0600	01606000	Unit-1 Main Oil Tank Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 179	A1-TI-0613	01606130	Unit-1 Oil Cooler Oil Inlet Te	0	100	oC	59    	'2013/08/25	'10:55	08	2013	BURHANUDIN H	          	
+ 180	A1-TI-0613	01606130	Unit-1 Oil Cooler Oil Inlet Te	0	100	oC	58    	'2013/08/24	'21:23	08	2013	R PANCA W	          	
+ 181	A1-TI-0613	01606130	Unit-1 Oil Cooler Oil Inlet Te	0	100	oC	58    	'2013/08/22	'05:55	08	2013	RIZAL KAHFI F	          	
+ 182	A1-TI-0614	01606140	Unit-1 Oil Cooler Oil Outlet T	0	100	oC	44    	'2013/08/24	'21:23	08	2013	R PANCA W	          	
+ 183	A1-TI-0614	01606140	Unit-1 Oil Cooler Oil Outlet T	0	100	oC	44    	'2013/08/25	'10:55	08	2013	BURHANUDIN H	          	
+ 184	A1-TI-0614	01606140	Unit-1 Oil Cooler Oil Outlet T	0	100	oC	44    	'2013/08/22	'05:55	08	2013	RIZAL KAHFI F	          	
+ 185	A1-TI-0625	01606250	Unit-1 Turbine Front Drain Tem	0	100	oC	56    	'2013/08/25	'09:43	08	2013	BURHANUDIN H	          	
+ 186	A1-TI-0625	01606250	Unit-1 Turbine Front Drain Tem	0	100	oC	58    	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 187	A1-TI-0625	01606250	Unit-1 Turbine Front Drain Tem	0	100	oC	58    	'2013/08/24	'21:37	08	2013	R PANCA W	          	
+ 188	A1-TI-0626	01606260	Unit-1 Turbine Rear Drain Temp	0	100	oC	56    	'2013/08/25	'09:51	08	2013	BURHANUDIN H	          	
+ 189	A1-TI-0626	01606260	Unit-1 Turbine Rear Drain Temp	0	100	oC	56    	'2013/08/22	'05:41	08	2013	RIZAL KAHFI F	          	
+ 190	A1-TI-0626	01606260	Unit-1 Turbine Rear Drain Temp	0	100	oC	56    	'2013/08/24	'21:37	08	2013	R PANCA W	          	
+ 191	A1-TI-0627	01606270	Unit-1 Generator Front Drain T	0	100	oC	55    	'2013/08/25	'09:51	08	2013	BURHANUDIN H	          	
+ 192	A1-TI-0627	01606270	Unit-1 Generator Front Drain T	0	100	oC	55    	'2013/08/22	'05:41	08	2013	RIZAL KAHFI F	          	
+ 193	A1-TI-0627	01606270	Unit-1 Generator Front Drain T	0	100	oC	55    	'2013/08/24	'21:36	08	2013	R PANCA W	          	
+ 194	A1-TI-0628	01606280	Unit-1 Generator Rear Drain Te	0	100	oC	54    	'2013/08/22	'05:41	08	2013	RIZAL KAHFI F	          	
+ 195	A1-TI-0628	01606280	Unit-1 Generator Rear Drain Te	0	100	oC	55    	'2013/08/24	'21:36	08	2013	R PANCA W	          	
+ 196	A1-TI-0628	01606280	Unit-1 Generator Rear Drain Te	0	100	oC	55    	'2013/08/25	'09:51	08	2013	BURHANUDIN H	          	
+ 197	A1-TI-0681	01606810	Unit-1 Oil Purifier Temperatur	0	100	oC	5     	'2013/08/25	'10:56	08	2013	BURHANUDIN H	          	
+ 198	A1-TI-0681	01606810	Unit-1 Oil Purifier Temperatur	0	100	oC	56    	'2013/08/22	'05:54	08	2013	RIZAL KAHFI F	          	
+ 199	A1-TI-0681	01606810	Unit-1 Oil Purifier Temperatur	0	100	oC	56    	'2013/08/24	'21:23	08	2013	R PANCA W	          	
+ 200	A1-TI-1001R	01610011	Unit-1 Gen. Side Phase R Temp.	0	150	oC	-	-	-	08	2013	-	-	
+ 201	A1-TI-1001S	01610012	Unit-1 Gen. Side Phase S Temp.	0	150	oC	-	-	-	08	2013	-	-	
+ 202	A1-TI-1001T	01610013	Unit-1 Gen. Side Phase T temp.	0	150	oC	-	-	-	08	2013	-	-	
+ 203	A1-TI-1321A	01613211	Unit-1 Oil Cooler(A) C/W Inlet	0	100	oC	27    	'2013/08/22	'05:54	08	2013	RIZAL KAHFI F	          	
+ 204	A1-TI-1321A	01613211	Unit-1 Oil Cooler(A) C/W Inlet	0	100	oC	27    	'2013/08/25	'10:55	08	2013	BURHANUDIN H	          	
+ 205	A1-TI-1321A	01613211	Unit-1 Oil Cooler(A) C/W Inlet	0	100	oC	28    	'2013/08/24	'21:23	08	2013	R PANCA W	          	
+ 206	A1-TI-1321B	01613212	Unit-1 Oil Cooler(B) C/W Inlet	0	100	oC	22    	'2013/08/25	'10:56	08	2013	BURHANUDIN H	          	
+ 207	A1-TI-1321B	01613212	Unit-1 Oil Cooler(B) C/W Inlet	0	100	oC	24    	'2013/08/22	'05:54	08	2013	RIZAL KAHFI F	          	
+ 208	A1-TI-1321B	01613212	Unit-1 Oil Cooler(B) C/W Inlet	0	100	oC	24    	'2013/08/24	'21:22	08	2013	R PANCA W	          	
+ 209	A1-TI-1322A	01613221	Unit-1 Oil Cooler(A) C/W Outle	0	100	oC	30    	'2013/08/22	'05:54	08	2013	RIZAL KAHFI F	          	
+ 210	A1-TI-1322A	01613221	Unit-1 Oil Cooler(A) C/W Outle	0	100	oC	30    	'2013/08/24	'21:23	08	2013	R PANCA W	          	
+ 211	A1-TI-1322A	01613221	Unit-1 Oil Cooler(A) C/W Outle	0	100	oC	29    	'2013/08/25	'10:55	08	2013	BURHANUDIN H	          	
+ 212	A1-TI-1322B	01613222	Unit-1 Oil Cooler(B) C/W Outle	0	100	oC	36    	'2013/08/24	'21:22	08	2013	R PANCA W	          	
+ 213	A1-TI-1322B	01613222	Unit-1 Oil Cooler(B) C/W Outle	0	100	oC	36    	'2013/08/25	'10:56	08	2013	BURHANUDIN H	          	
+ 214	A1-TI-1322B	01613222	Unit-1 Oil Cooler(B) C/W Outle	0	100	oC	36    	'2013/08/22	'05:54	08	2013	RIZAL KAHFI F	          	
+ 215	A1-TI-1330	01613300	Unit-1 Lube Oil C/W Inlet Temp	0	100	oC	24    	'2013/08/22	'05:52	08	2013	RIZAL KAHFI F	          	
+ 216	A1-TI-1330	01613300	Unit-1 Lube Oil C/W Inlet Temp	0	100	oC	24    	'2013/08/24	'21:32	08	2013	R PANCA W	          	
+ 217	A1-TI-1330	01613300	Unit-1 Lube Oil C/W Inlet Temp	0	100	oC	25    	'2013/08/25	'10:59	08	2013	BURHANUDIN H	          	
+ 218	A1-TI-1331A	01613311	Unit-1 Gen. Air Cooler Out A T	0	75	oC	-	-	-	08	2013	-	-	
+ 219	A1-TI-1331B	01613312	Unit-1 Gen. Air Cooler Out B T	0	75	oC	-	-	-	08	2013	-	-	
+ 220	A1-TI-1331C	01613313	Unit-1 Gen. Air Cooler Out C T	0	75	oC	-	-	-	08	2013	-	-	
+ 221	A1-TI-1331D	01613314	Unit-1 Gen. Air Cooler Out D T	0	75	oC	-	-	-	08	2013	-	-	
+ 222	A1-TI-1512A	01615121	Unit-1 GRS A Inter C/W Outlet 	0	100	oC	38    	'2013/08/25	'10:36	08	2013	BURHANUDIN H	          	
+ 223	A1-TI-1512A	01615121	Unit-1 GRS A Inter C/W Outlet 	0	100	oC	40    	'2013/08/24	'21:17	08	2013	R PANCA W	          	
+ 224	A1-TI-1512B	01615122	Unit-1 GRS B Inter C/W Outlet 	0	100	oC	39    	'2013/08/25	'10:37	08	2013	BURHANUDIN H	          	
+ 225	A1-TI-1512B	01615122	Unit-1 GRS B Inter C/W Outlet 	0	100	oC	42    	'2013/08/24	'21:17	08	2013	R PANCA W	          	
+ 226	A1-TI-1512C	01615123	Unit-1 GRS C Inter C/W Outlet 	0	100	oC	-	-	-	08	2013	-	-	
+ 227	A1-TI-1513A	01615131	Unit-1 GRS A Inter Gas Inlet T	0	100	oC	-	-	-	08	2013	-	-	
+ 228	A1-TI-1513C	01615133	Unit-1 GRS C Inter Gas Inlet T	0	100	oC	-	-	-	08	2013	-	-	
+ 229	A1-TI-1515A	01615151	Unit-1 GRS A After C/W Outlet 	0	100	oC	55    	'2013/08/24	'21:17	08	2013	R PANCA W	          	
+ 230	A1-TI-1515A	01615151	Unit-1 GRS A After C/W Outlet 	0	100	oC	53    	'2013/08/25	'10:37	08	2013	BURHANUDIN H	          	
+ 231	A1-TI-1515B	01615152	Unit-1 GRS B After C/W Outlet 	0	100	oC	51    	'2013/08/25	'10:38	08	2013	BURHANUDIN H	          	
+ 232	A1-TI-1515B	01615152	Unit-1 GRS B After C/W Outlet 	0	100	oC	53    	'2013/08/24	'21:17	08	2013	R PANCA W	          	
+ 233	A1-TI-1515C	01615153	Unit-1 GRS C After C/W Outlet 	0	100	oC	-	-	-	08	2013	-	-	
+ 234	A1-TI-1521A	01615211	Unit-1 GRS A VP Separator Drai	0	0	oC	-	-	-	08	2013	-	-	
+ 235	A1-TI-1521B	01615212	Unit-1 GRS B VPSeparator Drain	0	0	oC	-	-	-	08	2013	-	-	
+ 236	A1-TI-1530	01615300	Unit-1 GRS A LRVP Gear A. Temp	0	100	oC	-	-	-	08	2013	-	-	
+ 237	A1-TI-1530B	01615301	Unit 1 GRS B LRVP Gear B Temp	0	100	oC	-	-	-	08	2013	-	-	
+ 238	A1-TI-2601	01626010	Unit-1 Gen. Transf. Wind Temp.	0	150	oC	-	-	-	08	2013	-	-	
+ 239	A1-TI-2602	01626020	Unit-1 Gen. Transf. Oil Temp.	0	150	oC	-	-	-	08	2013	-	-	
+ 240	A1-TI-2603	01626030	Unit-1 Unit Transf. Wind. Temp	0	150	oC	-	-	-	08	2013	-	-	
+ 241	A1-TI-2604	01626040	Unit-1 Unit Transf. Oil Temp.	0	150	oC	-	-	-	08	2013	-	-	
+ 242	A1-TI-CT-Aa	01600011	Unit-1 CT Fan A-a Resistance	0	200	ohm	-	-	-	08	2013	-	-	
+ 243	A1-TI-CT-Ab	01600012	Unit-1 CT Fan A-b Resistance	0	10	ohm	-	-	-	08	2013	-	-	
+ 244	A1-TI-CT-Ba	01600021	Unit-1 CT Fan B-a Resistance	0	200	ohm	-	-	-	08	2013	-	-	
+ 245	A1-TI-CT-Bb	01600022	Unit-1 CT Fan B-b Resistance	0	10	ohm	-	-	-	08	2013	-	-	
+ 246	A1-TI-CT-Ca	01600031	Unit-1 CT Fan C-a Resistance 	0	200	ohm	-	-	-	08	2013	-	-	
+ 247	A1-TI-CT-Cb	01600032	Unit-1 CT Fan C-b Resistance	0	10	ohm	-	-	-	08	2013	-	-	
+ 248	A1-TI-CT-Da	01600041	Unit-1 CT Fan D-a Resistance	0	200	ohm	-	-	-	08	2013	-	-	
+ 249	A1-TI-CT-Db	01600042	Unit-1 CT Fan D-b Resistance	0	10	ohm	-	-	-	08	2013	-	-	
+ 250	A1-TI-CT-Ea	01600051	Unit-1 CT Fan E-a Resistance	0	200	ohm	-	-	-	08	2013	-	-	
+ 251	A1-TI-CT-Eb	01600052	Unit-1 CT Fan E-b Resistance	0	10	ohm	-	-	-	08	2013	-	-	
+ 252	A1-TI-CT-Fa	01600061	Unit-1 CT Fan F-a Resistance	0	200	ohm	-	-	-	08	2013	-	-	
+ 253	A1-TI-CT-Fb	01600062	Unit-1 CT Fan F-b Resistance	0	10	ohm	-	-	-	08	2013	-	-	
+ 254	A1-TI-CT-Ga	01600071	Unit-1 CT Fan G-a Resistance	0	200	ohm	-	-	-	08	2013	-	-	
+ 255	A1-TI-CT-Gb	01600072	Unit-1 CT Fan G-b Resistance	0	10	ohm	-	-	-	08	2013	-	-	
+ 256	A1-TI-CT-Ha	01600081	Unit-1 CT Fan H-a Resistance	0	200	ohm	-	-	-	08	2013	-	-	
+ 257	A1-TI-CT-Hb	01600082	Unit-1 CT Fan H-a Resistance	0	10	ohm	-	-	-	08	2013	-	-	
+ 258	A1-TI-TR101	01626050	Unit-1 6.3 kV Unit Trfo. W. T.	0	200	oC	-	-	-	08	2013	-	-	
+ 259	A1-TI-TR102	01626060	Unit-1 6.3 kV CT Transf Wind T	0	200	oC	-	-	-	08	2013	-	-	
+ 260	A1-TI-TR103	01626070	Unit-1 6.3 kV Station Tr. W. T	0	200	oC	-	-	-	08	2013	-	-	
+ 261	A1-VM-1001	01210010	Unit-1 6.3 KV Incom. Voltage  	0	10	KV	6.5   	'2013/08/22	'05:53	08	2013	RIZAL KAHFI F	          	
+ 262	A1-VM-1001	01210010	Unit-1 6.3 KV Incom. Voltage  	0	10	KV	6.4   	'2013/08/25	'10:57	08	2013	BURHANUDIN H	          	
+ 263	A1-VM-1001	01210010	Unit-1 6.3 KV Incom. Voltage  	0	10	KV	6.3   	'2013/08/24	'21:22	08	2013	R PANCA W	          	
+ 264	A1-VM-1002	01210020	Unit-1 230 Vdc Output Voltage	0	500	Vdc	260   	'2013/08/22	'05:50	08	2013	RIZAL KAHFI F	          	
+ 265	A1-VM-1002	01210020	Unit-1 230 Vdc Output Voltage	0	500	Vdc	260   	'2013/08/24	'21:34	08	2013	R PANCA W	          	
+ 266	A1-VM-1002	01210020	Unit-1 230 Vdc Output Voltage	0	500	Vdc	260   	'2013/08/25	'11:01	08	2013	BURHANUDIN H	          	
+ 267	A1-VM-1003	01210030	Unit-1 125 Vdc Output Voltage	0	250	Vdc	145   	'2013/08/24	'21:33	08	2013	R PANCA W	          	
+ 268	A1-VM-1003	01210030	Unit-1 125 Vdc Output Voltage	0	250	Vdc	146   	'2013/08/22	'05:51	08	2013	RIZAL KAHFI F	          	
+ 269	A1-VM-1003	01210030	Unit-1 125 Vdc Output Voltage	0	250	Vdc	146   	'2013/08/25	'11:01	08	2013	BURHANUDIN H	          	
+ 270	A1-VM-1004	01210040	Unit-1 110 Vdc Output Voltage	0	200	Vdc	112   	'2013/08/22	'05:51	08	2013	RIZAL KAHFI F	          	
+ 271	A1-VM-1004	01210040	Unit-1 110 Vdc Output Voltage	0	200	Vdc	112   	'2013/08/25	'11:01	08	2013	BURHANUDIN H	          	
+ 272	A1-VM-1004	01210040	Unit-1 110 Vdc Output Voltage	0	200	Vdc	118   	'2013/08/24	'21:34	08	2013	R PANCA W	          	
+ 273	A1-ZI-0015	01701160	Unit-1 MCV (L1) 	0	100	%	38    	'2013/08/24	'21:37	08	2013	R PANCA W	          	
+ 274	A1-ZI-0015	01701160	Unit-1 MCV (L1) 	0	100	%	38    	'2013/08/25	'09:50	08	2013	BURHANUDIN H	          	
+ 275	A1-ZI-0015	01701160	Unit-1 MCV (L1) 	0	100	%	47    	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 276	A1-ZI-0116	01701150	Unit-1 MCV (L2)	0	100	%	40    	'2013/08/24	'21:37	08	2013	R PANCA W	          	
+ 277	A1-ZI-0116	01701150	Unit-1 MCV (L2)	0	100	%	40    	'2013/08/25	'09:50	08	2013	BURHANUDIN H	          	
+ 278	A1-ZI-0116	01701150	Unit-1 MCV (L2)	0	100	%	52    	'2013/08/22	'05:42	08	2013	RIZAL KAHFI F	          	
+ 279	A1-ZI-0117	01701170	Unit-1 MCV (R1)	0	100	%	23    	'2013/08/25	'09:40	08	2013	BURHANUDIN H	          	
+ 280	A1-ZI-0117	01701170	Unit-1 MCV (R1)	0	100	%	27    	'2013/08/22	'05:40	08	2013	RIZAL KAHFI F	          	
+ 281	A1-ZI-0117	01701170	Unit-1 MCV (R1)	0	100	%	22    	'2013/08/24	'21:39	08	2013	R PANCA W	          	
+ 282	A1-ZI-0118	01701180	Unit-1 MCV (R2)	0	100	%	28    	'2013/08/25	'09:40	08	2013	BURHANUDIN H	          	
+ 283	A1-ZI-0118	01701180	Unit-1 MCV (R2)	0	100	%	33    	'2013/08/22	'05:40	08	2013	RIZAL KAHFI F	          	
+ 284	A1-ZI-0118	01701180	Unit-1 MCV (R2)	0	100	%	28    	'2013/08/24	'21:39	08	2013	R PANCA W	          	
+ 285	A1-ZI-1001	01701001	Unit-1 Shaft Pos. Turbine Fron	-8	8	mm	0     	'2013/08/22	'05:39	08	2013	RIZAL KAHFI F	          	
+ 286	A1-ZI-1001	01701001	Unit-1 Shaft Pos. Turbine Fron	-8	8	mm	0     	'2013/08/24	'21:39	08	2013	R PANCA W	          	
+ 287	A1-ZI-1001	01701001	Unit-1 Shaft Pos. Turbine Fron	-8	8	mm	0.0015	'2013/08/25	'09:41	08	2013	BURHANUDIN H	          	
+ 288	A1-ZI-1002	01701002	Unit-1 Shaft Pos. Turbine Rear	-8	8	mm	-	-	-	08	2013	-	-	
+ 289	A1-ZI-1003	01701003	Unit-1 Trb. Casing Diff. Expan	-5	25	mm	-	-	-	08	2013	-	-	
+ 290	A2-LI-0600	02406000	Unit-2 Main Oil Tank Lvel	-100	50	mm	0.1   	'2013/08/24	'21:30	08	2013	R PANCA W	          	
+ 291	A2-LI-0600	02406000	Unit-2 Main Oil Tank Lvel	-100	50	mm	-0.2  	'2013/08/22	'05:49	08	2013	RIZAL KAHFI F	          	
+ 292	A2-LI-0600	02406000	Unit-2 Main Oil Tank Lvel	-100	50	mm	000   	'2013/08/25	'11:04	08	2013	BURHANUDIN H	          	
+ 293	A2-LI-CTF-A	02400001	Unit-2 CTF-A Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 294	A2-LI-CTF-B	02400002	Unit-2 CTF-B Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 295	A2-LI-CTF-C	02400003	Unit-2 CTF-C Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 296	A2-LI-CTF-D	02400004	Unit-2 CTF-D Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 297	A2-LI-CTF-E	02400005	Unit-2 CTF-E Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 298	A2-LI-CTF-F	02400006	Unit-2 CTF-F Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 299	A2-LI-CTF-G	02400007	Unit-2 CTF-G Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 300	A2-LI-CTF-H	02400008	Unit-2 CTF-H Gear Box Oil Leve	0	100	%	-	-	-	08	2013	-	-	
+ 301	A2-PDI-0617	02106170	Unit-2 Lube Oil Differential P	0	2	Barg	1.15  	'2013/08/25	'11:03	08	2013	BURHANUDIN H	          	
+ 302	A2-PDI-0617	02106170	Unit-2 Lube Oil Differential P	0	2	Barg	1.15  	'2013/08/24	'21:30	08	2013	R PANCA W	          	
+ 303	A2-PDI-0617	02106170	Unit-2 Lube Oil Differential P	0	2	Barg	1.12  	'2013/08/22	'05:49	08	2013	RIZAL KAHFI F	          	
+ 304	A2-PDI-0635	02106350	Unit-2 Filter Diff. Press	0	2	Barg	0.03  	'2013/08/24	'21:43	08	2013	R PANCA W	          	
+ 305	A2-PDI-0635	02106350	Unit-2 Filter Diff. Press	0	2	Barg	0.03  	'2013/08/25	'11:08	08	2013	BURHANUDIN H	          	
+ 306	A2-PDI-0635	02106350	Unit-2 Filter Diff. Press	0	2	Barg	0.04  	'2013/08/22	'05:45	08	2013	RIZAL KAHFI F	          	
+ 307	A2-PDI-0640	02106400	Unit-2  Diff. Press. of oil Fi	0	2	Barg	0.12  	'2013/08/22	'05:44	08	2013	RIZAL KAHFI F	          	
+ 308	A2-PDI-0640	02106400	Unit-2  Diff. Press. of oil Fi	0	2	Barg	0.12  	'2013/08/24	'21:41	08	2013	R PANCA W	          	
+ 309	A2-PDI-0640	02106400	Unit-2  Diff. Press. of oil Fi	0	2	Barg	0.12  	'2013/08/25	'11:09	08	2013	BURHANUDIN H	          	
+ 310	A2-PDI-1303A	02113031	Unit-2 Suction Filter Differen	0	0.4	Bar	-	-	-	08	2013	-	-	
+ 311	A2-PDI-1303B	02113032	Unit-2 Suction Filter Differen	0	0.4	Bar	-	-	-	08	2013	-	-	
+ 312	A2-PI-0200	02502000	Unit-2 Gland Steam Inlet Press	-0.15	0.15	Barg	-	-	-	08	2013	-	-	
+ 313	A2-PI-0211A	02502111	Unit-2 GRS A Inter Steam Inlet	0	16	Barg	9.7   	'2013/08/25	'10:44	08	2013	BURHANUDIN H	          	
+ 314	A2-PI-0211B	02502112	Unit-2 GRS B Inter Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 315	A2-PI-0211C	02502113	Unit-2 GRS C Inter Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 316	A2-PI-0212A	02502121	Unit-2 GRS A After Steam Inlet	0	16	Barg	11.7  	'2013/08/25	'10:45	08	2013	BURHANUDIN H	          	
+ 317	A2-PI-0212B	02502122	Unit-2 GRS B After Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 318	A2-PI-0212C	02502123	Unit-2 GRS C After Steam Inlet	0	16	Barg	-	-	-	08	2013	-	-	
+ 319	A2-PI-0310	02503100	Unit-2 Gland Steam Exhaust Pre	-0.15	0.15	Barg	-0.03 	'2013/08/24	'21:31	08	2013	R PANCA W	          	
+ 320	A2-PI-0310	02503100	Unit-2 Gland Steam Exhaust Pre	-0.15	0.15	Barg	-0.03 	'2013/08/22	'05:48	08	2013	RIZAL KAHFI F	          	
+ 321	A2-PI-0310	02503100	Unit-2 Gland Steam Exhaust Pre	-0.15	0.15	Barg	-0.07 	'2013/08/25	'11:05	08	2013	BURHANUDIN H	          	
+ 322	A2-PI-0600	02506000	Unit-2 AOP Discharge Pressure	0	15	Barg	-	-	-	08	2013	-	-	
+ 323	A2-PI-0601	02506010	Unit-2 EOP Disch. Pressure	0	100	Barg	-	-	-	08	2013	-	-	
+ 324	A2-PI-0612	02506120	Unit-2 Control Oil Pressure	0	15	Barg	10.3  	'2013/08/24	'21:27	08	2013	R PANCA W	          	
+ 325	A2-PI-0612	02506120	Unit-2 Control Oil Pressure	0	15	Barg	10.3  	'2013/08/25	'10:52	08	2013	BURHANUDIN H	          	
+ 326	A2-PI-0612	02506120	Unit-2 Control Oil Pressure	0	15	Barg	10.4  	'2013/08/22	'05:59	08	2013	RIZAL KAHFI F	          	
+ 327	A2-PI-0621	02506210	Unit-2 Lube Oil Pressure	0	4	Barg	3     	'2013/08/22	'05:48	08	2013	RIZAL KAHFI F	          	
+ 328	A2-PI-0621	02506210	Unit-2 Lube Oil Pressure	0	4	Barg	3     	'2013/08/24	'21:31	08	2013	R PANCA W	          	
+ 329	A2-PI-0621	02506210	Unit-2 Lube Oil Pressure	0	4	Barg	3.0   	'2013/08/25	'11:04	08	2013	BURHANUDIN H	          	
+ 330	A2-PI-0630	02506300	Unit-2 Turning Oil Inlet Press	0	100	Barg	-	-	-	08	2013	-	-	
+ 331	A2-PI-0641	02506410	Unit-2 Auxiliary Trip Oil Pres	0	15	Barg	-	-	-	08	2013	-	-	
+ 332	A2-PI-0642	02506420	Unit-2 Oil Trip Test Oil Press	0	100	Barg	0.03  	'2013/08/25	'11:09	08	2013	BURHANUDIN H	          	
+ 333	A2-PI-0642	02506420	Unit-2 Oil Trip Test Oil Press	0	100	Barg	0     	'2013/08/24	'21:42	08	2013	R PANCA W	          	
+ 334	A2-PI-0642	02506420	Unit-2 Oil Trip Test Oil Press	0	100	Barg	0.02  	'2013/08/22	'05:45	08	2013	RIZAL KAHFI F	          	
+ 335	A2-PI-0643	02506430	Unit-2 Trip Oil Pressure	0	15	Barg	9     	'2013/08/22	'05:44	08	2013	RIZAL KAHFI F	          	
+ 336	A2-PI-0643	02506430	Unit-2 Trip Oil Pressure	0	15	Barg	9.1   	'2013/08/25	'11:09	08	2013	BURHANUDIN H	          	
+ 337	A2-PI-0643	02506430	Unit-2 Trip Oil Pressure	0	15	Barg	9.2   	'2013/08/24	'21:42	08	2013	R PANCA W	          	
+ 338	A2-PI-0644	02506440	Unit-2 Start Up Oil Pressure	0	100	Barg	0     	'2013/08/24	'21:42	08	2013	R PANCA W	          	
+ 339	A2-PI-0644	02506440	Unit-2 Start Up Oil Pressure	0	100	Barg	0.03  	'2013/08/25	'11:09	08	2013	BURHANUDIN H	          	
+ 340	A2-PI-0644	02506440	Unit-2 Start Up Oil Pressure	0	100	Barg	0.2   	'2013/08/22	'05:44	08	2013	RIZAL KAHFI F	          	
+ 341	A2-PI-0645	02506450	Unit-2 Secondary Oil Pressure 	0	10	Barg	-	-	-	08	2013	-	-	
+ 342	A2-PI-0646	02506460	Unit-2 Secondary Oil Pressure 	0	10	Barg	4.6   	'2013/08/24	'21:41	08	2013	R PANCA W	          	
+ 343	A2-PI-0646	02506460	Unit-2 Secondary Oil Pressure 	0	10	Barg	4.3   	'2013/08/22	'05:44	08	2013	RIZAL KAHFI F	          	
+ 344	A2-PI-0646	02506460	Unit-2 Secondary Oil Pressure 	0	10	Barg	4.5   	'2013/08/25	'11:09	08	2013	BURHANUDIN H	          	
+ 345	A2-PI-0650	02506500	Unit-2 Jacking Oil P. Disch. P	0	100	Barg	17    	'2013/08/22	'05:49	08	2013	RIZAL KAHFI F	          	
+ 346	A2-PI-0650	02506500	Unit-2 Jacking Oil P. Disch. P	0	100	Barg	20    	'2013/08/25	'11:04	08	2013	BURHANUDIN H	          	
+ 347	A2-PI-0660	02506600	Unit-2 Turbine Front Drain Pre	0	250	Barg	36    	'2013/08/25	'11:08	08	2013	BURHANUDIN H	          	
+ 348	A2-PI-0660	02506600	Unit-2 Turbine Front Drain Pre	0	250	Barg	37    	'2013/08/22	'05:45	08	2013	RIZAL KAHFI F	          	
+ 349	A2-PI-0660	02506600	Unit-2 Turbine Front Drain Pre	0	250	Barg	37    	'2013/08/24	'21:42	08	2013	R PANCA W	          	
+ 350	A2-PI-0661	02506610	Unit-2 Jacking Oil Pressure	0	250	Barg	7.0   	'2013/08/25	'11:07	08	2013	BURHANUDIN H	          	
+ 351	A2-PI-0662	02506620	Unit-2 Turbine Rear Drain Pres	0	250	Barg	30    	'2013/08/24	'21:43	08	2013	R PANCA W	          	
+ 352	A2-PI-0662	02506620	Unit-2 Turbine Rear Drain Pres	0	250	Barg	32    	'2013/08/22	'05:46	08	2013	RIZAL KAHFI F	          	
+ 353	A2-PI-0662	02506620	Unit-2 Turbine Rear Drain Pres	0	250	Barg	33    	'2013/08/25	'11:07	08	2013	BURHANUDIN H	          	
+ 354	A2-PI-0663	02506630	Unit-2 Generator Front Drain P	0	250	Barg	30    	'2013/08/24	'21:43	08	2013	R PANCA W	          	
+ 355	A2-PI-0663	02506630	Unit-2 Generator Front Drain P	0	250	Barg	32    	'2013/08/22	'05:46	08	2013	RIZAL KAHFI F	          	
+ 356	A2-PI-0663	02506630	Unit-2 Generator Front Drain P	0	250	Barg	32    	'2013/08/25	'11:07	08	2013	BURHANUDIN H	          	
+ 357	A2-PI-0664	02506640	Unit-2 Generator Rear Drain Pr	0	250	Barg	29    	'2013/08/22	'05:48	08	2013	RIZAL KAHFI F	          	
+ 358	A2-PI-0664	02506640	Unit-2 Generator Rear Drain Pr	0	250	Barg	30    	'2013/08/24	'21:44	08	2013	R PANCA W	          	
+ 359	A2-PI-0664	02506640	Unit-2 Generator Rear Drain Pr	0	250	Barg	30    	'2013/08/25	'11:07	08	2013	BURHANUDIN H	          	
+ 360	A2-PI-0680	02506800	Unit-2 Oil Purifier Supply Pre	0	100	Barg	0.9   	'2013/08/25	'10:51	08	2013	BURHANUDIN H	          	
+ 361	A2-PI-0680	02506800	Unit-2 Oil Purifier Supply Pre	0	100	Barg	0.9   	'2013/08/24	'21:28	08	2013	R PANCA W	          	
+ 362	A2-PI-0680	02506800	Unit-2 Oil Purifier Supply Pre	0	100	Barg	0.9   	'2013/08/22	'05:59	08	2013	RIZAL KAHFI F	          	
+ 363	A2-PI-0682	02506820	Unit-2 Oil Purifier Head Out P	0	100	Barg	1.6   	'2013/08/24	'21:28	08	2013	R PANCA W	          	
+ 364	A2-PI-0682	02506820	Unit-2 Oil Purifier Head Out P	0	100	Barg	1.6   	'2013/08/25	'10:51	08	2013	BURHANUDIN H	          	
+ 365	A2-PI-0682	02506820	Unit-2 Oil Purifier Head Out P	0	100	Barg	1.6   	'2013/08/22	'05:58	08	2013	RIZAL KAHFI F	          	
+ 366	A2-PI-0683	02506830	Unit-2 Oil Purifier Filtration	0	100	Bar	1.5   	'2013/08/22	'05:59	08	2013	RIZAL KAHFI F	          	
+ 367	A2-PI-0683	02506830	Unit-2 Oil Purifier Filtration	0	100	Bar	1.5   	'2013/08/24	'21:28	08	2013	R PANCA W	          	
+ 368	A2-PI-0683	02506830	Unit-2 Oil Purifier Filtration	0	100	Bar	1.5   	'2013/08/25	'10:51	08	2013	BURHANUDIN H	          	
+ 369	A2-PI-1004	02510040	Unit-2 C/W Inlet A Pressure	0	100	Barg	0.23  	'2013/08/25	'10:49	08	2013	BURHANUDIN H	          	
+ 370	A2-PI-1004	02510040	Unit-2 C/W Inlet A Pressure	0	100	Barg	0.21  	'2013/08/24	'21:26	08	2013	R PANCA W	          	
+ 371	A2-PI-1004	02510040	Unit-2 C/W Inlet A Pressure	0	100	Barg	0.22  	'2013/08/22	'05:57	08	2013	RIZAL KAHFI F	          	
+ 372	A2-PI-1005	02510050	Unit-2 C/W Inlet B Pressure	0	100	Barg	0.3   	'2013/08/22	'05:58	08	2013	RIZAL KAHFI F	          	
+ 373	A2-PI-1005	02510050	Unit-2 C/W Inlet B Pressure	0	100	Barg	0.31  	'2013/08/25	'10:50	08	2013	BURHANUDIN H	          	
+ 374	A2-PI-1030	02510300	Unit-2 HWP Suction Pressure(A)	-1	2	Barg	-0.19 	'2013/08/25	'10:41	08	2013	BURHANUDIN H	          	
+ 375	A2-PI-1030	02510300	Unit-2 HWP Suction Pressure(A)	-1	2	Barg	-0.2  	'2013/08/24	'21:15	08	2013	R PANCA W	          	
+ 376	A2-PI-1031	02510310	Unit-2 HWP Discharge Pressure(	0	6	Barg	2.2   	'2013/08/24	'21:15	08	2013	R PANCA W	          	
+ 377	A2-PI-1031	02510310	Unit-2 HWP Discharge Pressure(	0	6	Barg	2.3   	'2013/08/25	'10:40	08	2013	BURHANUDIN H	          	
+ 378	A2-PI-1035	02510350	Unit-2 HWP Seal Water Pressure	0	6	Barg	1.6   	'2013/08/25	'10:41	08	2013	BURHANUDIN H	          	
+ 379	A2-PI-1035	02510350	Unit-2 HWP Seal Water Pressure	0	6	Barg	1.7   	'2013/08/24	'21:15	08	2013	R PANCA W	          	
+ 380	A2-PI-1040	02510400	Unit-2 HWP Suction Pressure(B)	-1	2	Barg	-0.17 	'2013/08/25	'10:41	08	2013	BURHANUDIN H	          	
+ 381	A2-PI-1040	02510400	Unit-2 HWP Suction Pressure(B)	-1	2	Barg	-0.14 	'2013/08/24	'21:15	08	2013	R PANCA W	          	
+ 382	A2-PI-1041	02510410	Unit-2 HWP Discharge Pressure(	0	6	Barg	2.3   	'2013/08/24	'21:15	08	2013	R PANCA W	          	
+ 383	A2-PI-1041	02510410	Unit-2 HWP Discharge Pressure(	0	6	Barg	2.25  	'2013/08/25	'10:41	08	2013	BURHANUDIN H	          	
+ 384	A2-PI-1045	02510450	Unit-2 HWP Seal Water Pressure	0	6	Barg	1.9   	'2013/08/24	'21:15	08	2013	R PANCA W	          	
+ 385	A2-PI-1045	02510450	Unit-2 HWP Seal Water Pressure	0	6	Barg	1.9   	'2013/08/25	'10:41	08	2013	BURHANUDIN H	          	
+ 386	A2-PI-1071A	02510711	Unit-2 Blade Wash. A Disch. Pr	0	100	Barg	10    	'2013/08/24	'21:31	08	2013	R PANCA W	          	
+ 387	A2-PI-1071A	02510711	Unit-2 Blade Wash. A Disch. Pr	0	100	Barg	10.5  	'2013/08/25	'11:05	08	2013	BURHANUDIN H	          	
+ 388	A2-PI-1071A	02510711	Unit-2 Blade Wash. A Disch. Pr	0	100	Barg	9.4   	'2013/08/22	'05:48	08	2013	RIZAL KAHFI F	          	
+ 389	A2-PI-1071B	02510712	Unit-2 Blade Wash. B Disch. Pr	0	100	Barg	9.9   	'2013/08/24	'21:31	08	2013	R PANCA W	          	
+ 390	A2-PI-1071B	02510712	Unit-2 Blade Wash. B Disch. Pr	0	100	Barg	10    	'2013/08/25	'11:05	08	2013	BURHANUDIN H	          	
+ 391	A2-PI-1071B	02510712	Unit-2 Blade Wash. B Disch. Pr	0	100	Barg	9.2   	'2013/08/22	'05:48	08	2013	RIZAL KAHFI F	          	
+ 392	A2-PI-1301A	02513011	Unit-2 ACWP A Suction Pressure	0	100	Barg	-	-	-	08	2013	-	-	
+ 393	A2-PI-1301B	02513012	Unit-2 ACWP B Suction Pressure	0	100	Barg	-	-	-	08	2013	-	-	
+ 394	A2-PI-1302A	02513021	Unit-2 ACWP A Discharge Pressu	0	100	Barg	-	-	-	08	2013	-	-	
+ 395	A2-PI-1302B	02513022	Unit-2 ACWP B Discharge Pressu	0	100	Barg	-	-	-	08	2013	-	-	
+ 396	A2-PI-1347A	02513471	Unit-2 GRS A VP Seal Water Inl	0	4	Barg	-	-	-	08	2013	-	-	
+ 397	A2-PI-1347B	02513472	Unit-2 GRS B VP Seal Water Inl	0	4	Barg	-	-	-	08	2013	-	-	
+ 398	A2-PI-1510A	02515101	Unit-2 GRS A Inter Gas Inlet P	-1	1.6	Barg	-0.72 	'2013/08/24	'21:11	08	2013	R PANCA W	          	
+ 399	A2-PI-1510A	02515101	Unit-2 GRS A Inter Gas Inlet P	-1	1.6	Barg	-0.73 	'2013/08/25	'10:44	08	2013	BURHANUDIN H	          	
+ 400	A2-PI-1510B	02515102	Unit-2 GRS B Inter Gas Inlet P	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 401	A2-PI-1510C	02515103	Unit-2 GRS C Inter Gas Inlet P	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 402	A2-PI-1512A	02515121	Unit-2 GRS A Inter Condenser P	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 403	A2-PI-1512B	02515122	Unit-2 GRS B Inter Condenser P	-1	1.6	Barg	-0.44 	'2013/08/24	'21:12	08	2013	R PANCA W	          	
+ 404	A2-PI-1512B	02515122	Unit-2 GRS B Inter Condenser P	-1	1.6	Barg	-0.38 	'2013/08/25	'10:47	08	2013	BURHANUDIN H	          	
+ 405	A2-PI-1512C	02515123	Unit-2 GRS C Inter Condenser P	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 406	A2-PI-1513A	02515131	Unit-2 GRS A After Gas Inlet P	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 407	A2-PI-1513B	02515132	Unit-2 GRS B After Gas Inlet P	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 408	A2-PI-1513C	02515133	Unit-2 GRS C After Gas Inlet P	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 409	A2-PI-1515A	02515151	Unit-2 GRS A After Condenser P	-1	1.6	Barg	-0.35 	'2013/08/24	'21:12	08	2013	R PANCA W	          	
+ 410	A2-PI-1515A	02515151	Unit-2 GRS A After Condenser P	-1	1.6	Barg	-0.37 	'2013/08/25	'10:46	08	2013	BURHANUDIN H	          	
+ 411	A2-PI-1515B	02515152	Unit-2 GRS B After Condenser P	-1	1.6	Barg	-0.4  	'2013/08/24	'21:13	08	2013	R PANCA W	          	
+ 412	A2-PI-1515B	02515152	Unit-2 GRS B After Condenser P	-1	1.6	Barg	-0.47 	'2013/08/25	'10:46	08	2013	BURHANUDIN H	          	
+ 413	A2-PI-1515C	02515153	Unit-2 GRS C After Condenser P	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 414	A2-PI-1516A	02515161	Unit-2 GRS A VP Gas Inlet Pres	-1	1.6	Barg	-0.35 	'2013/08/24	'21:12	08	2013	R PANCA W	          	
+ 415	A2-PI-1516A	02515161	Unit-2 GRS A VP Gas Inlet Pres	-1	1.6	Barg	-0.37 	'2013/08/25	'10:46	08	2013	BURHANUDIN H	          	
+ 416	A2-PI-1516B	02515162	Unit-2 GRS B VP Gas Inlet Pres	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 417	A2-PI-1521A	02515211	Unit-2 GRS A VP Separator Pres	0	2	Barg	0.07  	'2013/08/25	'10:47	08	2013	BURHANUDIN H	          	
+ 418	A2-PI-1521A	02515211	Unit-2 GRS A VP Separator Pres	0	2	Barg	0.1   	'2013/08/24	'21:12	08	2013	R PANCA W	          	
+ 419	A2-PI-1521B	02515212	Unit-2 GRS B VP Separator Pres	0	2	Barg	-	-	-	08	2013	-	-	
+ 420	A2-T1-1512B	02615122	Unit-2 GRS B Inter C/W Outlet 	0	80	oC	40    	'2013/08/25	'10:43	08	2013	BURHANUDIN H	          	
+ 421	A2-T1-1512B	02615122	Unit-2 GRS B Inter C/W Outlet 	0	80	oC	40    	'2013/08/24	'21:14	08	2013	R PANCA W	          	
+ 422	A2-TI-0401	02604010	Unit-2 Trust Front Drain Tempe	0	100	oC	52    	'2013/08/25	'11:10	08	2013	BURHANUDIN H	          	
+ 423	A2-TI-0401	02604010	Unit-2 Trust Front Drain Tempe	0	100	oC	52    	'2013/08/22	'05:44	08	2013	RIZAL KAHFI F	          	
+ 424	A2-TI-0401	02604010	Unit-2 Trust Front Drain Tempe	0	100	oC	52    	'2013/08/24	'21:41	08	2013	R PANCA W	          	
+ 425	A2-TI-0402	02604020	Unit-2 Trust Rear Drain Temper	0	100	oC	52    	'2013/08/22	'05:44	08	2013	RIZAL KAHFI F	          	
+ 426	A2-TI-0402	02604020	Unit-2 Trust Rear Drain Temper	0	100	oC	52    	'2013/08/24	'21:41	08	2013	R PANCA W	          	
+ 427	A2-TI-0402	02604020	Unit-2 Trust Rear Drain Temper	0	100	oC	52    	'2013/08/25	'11:10	08	2013	BURHANUDIN H	          	
+ 428	A2-TI-0600	02606000	Unit-2 Main Oil Tank Temperatu	0	100	oC	58    	'2013/08/25	'11:04	08	2013	BURHANUDIN H	          	
+ 429	A2-TI-0613	02606130	Unit-2 Oil Cooler Oil Inlet Te	0	100	oC	60    	'2013/08/22	'05:59	08	2013	RIZAL KAHFI F	          	
+ 430	A2-TI-0613	02606130	Unit-2 Oil Cooler Oil Inlet Te	0	100	oC	60    	'2013/08/24	'21:27	08	2013	R PANCA W	          	
+ 431	A2-TI-0613	02606130	Unit-2 Oil Cooler Oil Inlet Te	0	100	oC	60    	'2013/08/25	'10:52	08	2013	BURHANUDIN H	          	
+ 432	A2-TI-0614	02606140	Unit-2 Oil Cooler Oil Outlet T	0	100	oC	-	-	-	08	2013	-	-	
+ 433	A2-TI-0625	02606250	Unit-2 Turbine Front Drain Tem	0	100	oC	60    	'2013/08/25	'11:08	08	2013	BURHANUDIN H	          	
+ 434	A2-TI-0625	02606250	Unit-2 Turbine Front Drain Tem	0	100	oC	60    	'2013/08/22	'05:45	08	2013	RIZAL KAHFI F	          	
+ 435	A2-TI-0625	02606250	Unit-2 Turbine Front Drain Tem	0	100	oC	60    	'2013/08/24	'21:42	08	2013	R PANCA W	          	
+ 436	A2-TI-0626	02606260	Unit-2 Turbine Rear Drain Temp	0	100	oC	60    	'2013/08/22	'05:46	08	2013	RIZAL KAHFI F	          	
+ 437	A2-TI-0626	02606260	Unit-2 Turbine Rear Drain Temp	0	100	oC	60    	'2013/08/24	'21:43	08	2013	R PANCA W	          	
+ 438	A2-TI-0626	02606260	Unit-2 Turbine Rear Drain Temp	0	100	oC	60    	'2013/08/25	'11:07	08	2013	BURHANUDIN H	          	
+ 439	A2-TI-0627	02606270	Unit-2 Generator Front Drain T	0	100	oC	58    	'2013/08/25	'11:07	08	2013	BURHANUDIN H	          	
+ 440	A2-TI-0627	02606270	Unit-2 Generator Front Drain T	0	100	oC	58    	'2013/08/22	'05:46	08	2013	RIZAL KAHFI F	          	
+ 441	A2-TI-0627	02606270	Unit-2 Generator Front Drain T	0	100	oC	58    	'2013/08/24	'21:43	08	2013	R PANCA W	          	
+ 442	A2-TI-0628	02606280	Unit-2 Generator Rear Drain Te	0	100	oC	58    	'2013/08/24	'21:43	08	2013	R PANCA W	          	
+ 443	A2-TI-0628	02606280	Unit-2 Generator Rear Drain Te	0	100	oC	57    	'2013/08/25	'11:07	08	2013	BURHANUDIN H	          	
+ 444	A2-TI-0628	02606280	Unit-2 Generator Rear Drain Te	0	100	oC	57    	'2013/08/22	'05:46	08	2013	RIZAL KAHFI F	          	
+ 445	A2-TI-0681	02606810	Unit-2 Oil Purifier Coaleser T	0	100	oC	56    	'2013/08/24	'21:28	08	2013	R PANCA W	          	
+ 446	A2-TI-0681	02606810	Unit-2 Oil Purifier Coaleser T	0	100	oC	57    	'2013/08/22	'05:58	08	2013	RIZAL KAHFI F	          	
+ 447	A2-TI-0681	02606810	Unit-2 Oil Purifier Coaleser T	0	100	oC	57    	'2013/08/25	'10:51	08	2013	BURHANUDIN H	          	
+ 448	A2-TI-1321A	02613211	Unit-2 Oil Cooler(A) C/W Inlet	0	100	oC	20    	'2013/08/22	'05:59	08	2013	RIZAL KAHFI F	          	
+ 449	A2-TI-1321A	02613211	Unit-2 Oil Cooler(A) C/W Inlet	0	100	oC	22    	'2013/08/24	'21:27	08	2013	R PANCA W	          	
+ 450	A2-TI-1321A	02613211	Unit-2 Oil Cooler(A) C/W Inlet	0	100	oC	22    	'2013/08/25	'10:51	08	2013	BURHANUDIN H	          	
+ 451	A2-TI-1321B	02613212	Unit-2 Oil Cooler(B) C/W Inlet	0	100	oC	20    	'2013/08/22	'05:58	08	2013	RIZAL KAHFI F	          	
+ 452	A2-TI-1321B	02613212	Unit-2 Oil Cooler(B) C/W Inlet	0	100	oC	21    	'2013/08/25	'10:52	08	2013	BURHANUDIN H	          	
+ 453	A2-TI-1321B	02613212	Unit-2 Oil Cooler(B) C/W Inlet	0	100	oC	22    	'2013/08/24	'21:27	08	2013	R PANCA W	          	
+ 454	A2-TI-1322A	02613221	Unit-2 Oil Cooler(A) C/W Outle	0	100	oC	20    	'2013/08/22	'05:59	08	2013	RIZAL KAHFI F	          	
+ 455	A2-TI-1322A	02613221	Unit-2 Oil Cooler(A) C/W Outle	0	100	oC	20    	'2013/08/25	'10:51	08	2013	BURHANUDIN H	          	
+ 456	A2-TI-1322A	02613221	Unit-2 Oil Cooler(A) C/W Outle	0	100	oC	22    	'2013/08/24	'21:28	08	2013	R PANCA W	          	
+ 457	A2-TI-1322B	02613222	Unit-2 Oil Cooler(B) C/W Outle	0	100	oC	31    	'2013/08/22	'05:58	08	2013	RIZAL KAHFI F	          	
+ 458	A2-TI-1322B	02613222	Unit-2 Oil Cooler(B) C/W Outle	0	100	oC	31    	'2013/08/25	'10:52	08	2013	BURHANUDIN H	          	
+ 459	A2-TI-1322B	02613222	Unit-2 Oil Cooler(B) C/W Outle	0	100	oC	32    	'2013/08/24	'21:27	08	2013	R PANCA W	          	
+ 460	A2-TI-1330	02613300	Unit-2 Air Cooler Inlet C/W Te	0	100	oC	21    	'2013/08/24	'21:29	08	2013	R PANCA W	          	
+ 461	A2-TI-1330	02613300	Unit-2 Air Cooler Inlet C/W Te	0	100	oC	21    	'2013/08/25	'11:03	08	2013	BURHANUDIN H	          	
+ 462	A2-TI-1330	02613300	Unit-2 Air Cooler Inlet C/W Te	0	100	oC	19    	'2013/08/22	'05:49	08	2013	RIZAL KAHFI F	          	
+ 463	A2-TI-1331A	02613311	Unit-2 Air Cooler (A) Inlet C/	0	100	oC	24    	'2013/08/24	'21:29	08	2013	R PANCA W	          	
+ 464	A2-TI-1331A	02613311	Unit-2 Air Cooler (A) Inlet C/	0	100	oC	24    	'2013/08/25	'11:03	08	2013	BURHANUDIN H	          	
+ 465	A2-TI-1331A	02613311	Unit-2 Air Cooler (A) Inlet C/	0	100	oC	22    	'2013/08/22	'05:49	08	2013	RIZAL KAHFI F	          	
+ 466	A2-TI-1331B	02613312	Unit-2 Air Cooler (B) Inlet C/	0	100	oC	23    	'2013/08/22	'05:49	08	2013	RIZAL KAHFI F	          	
+ 467	A2-TI-1331B	02613312	Unit-2 Air Cooler (B) Inlet C/	0	100	oC	25    	'2013/08/24	'21:29	08	2013	R PANCA W	          	
+ 468	A2-TI-1331B	02613312	Unit-2 Air Cooler (B) Inlet C/	0	100	oC	25    	'2013/08/25	'11:03	08	2013	BURHANUDIN H	          	
+ 469	A2-TI-1331C	02613313	Unit-2 Air Cooler (C) Inlet C/	0	100	oC	23    	'2013/08/25	'11:03	08	2013	BURHANUDIN H	          	
+ 470	A2-TI-1331C	02613313	Unit-2 Air Cooler (C) Inlet C/	0	100	oC	21    	'2013/08/22	'05:49	08	2013	RIZAL KAHFI F	          	
+ 471	A2-TI-1331C	02613313	Unit-2 Air Cooler (C) Inlet C/	0	100	oC	23    	'2013/08/24	'21:29	08	2013	R PANCA W	          	
+ 472	A2-TI-1331D	02613314	Unit-2 Air Cooler (D) Inlet C/	0	100	oC	24    	'2013/08/24	'21:29	08	2013	R PANCA W	          	
+ 473	A2-TI-1331D	02613314	Unit-2 Air Cooler (D) Inlet C/	0	100	oC	22    	'2013/08/22	'05:49	08	2013	RIZAL KAHFI F	          	
+ 474	A2-TI-1331D	02613314	Unit-2 Air Cooler (D) Inlet C/	0	100	oC	23    	'2013/08/25	'11:02	08	2013	BURHANUDIN H	          	
+ 475	A2-TI-1512A	02615121	Unit-2 GRS A Inter C/W Outlet 	0	80	oC	40    	'2013/08/25	'10:43	08	2013	BURHANUDIN H	          	
+ 476	A2-TI-1512A	02615121	Unit-2 GRS A Inter C/W Outlet 	0	80	oC	41    	'2013/08/24	'21:14	08	2013	R PANCA W	          	
+ 477	A2-TI-1512C	02615123	Unit-2 GRS C Inter C/W Outlet 	0	80	oC	21    	'2013/08/24	'21:14	08	2013	R PANCA W	          	
+ 478	A2-TI-1512C	02615123	Unit-2 GRS C Inter C/W Outlet 	0	80	oC	23    	'2013/08/25	'10:42	08	2013	BURHANUDIN H	          	
+ 479	A2-TI-1513A	02615131	Unit-2 GRS A After Steam Inlet	0	80	oC	51    	'2013/08/25	'10:45	08	2013	BURHANUDIN H	          	
+ 480	A2-TI-1513A	02615131	Unit-2 GRS A After Steam Inlet	0	80	oC	52    	'2013/08/24	'21:11	08	2013	R PANCA W	          	
+ 481	A2-TI-1513B	02615132	Unit-2 GRS B After Steam Inlet	0	80	oC	-	-	-	08	2013	-	-	
+ 482	A2-TI-1513C	02615133	Unit-2 GRS C After Steam Inlet	0	80	oC	-	-	-	08	2013	-	-	
+ 483	A2-TI-1515A	02615151	Unit-2 GRS A After C/W Outlet 	0	80	oC	44    	'2013/08/25	'10:43	08	2013	BURHANUDIN H	          	
+ 484	A2-TI-1515A	02615151	Unit-2 GRS A After C/W Outlet 	0	80	oC	46    	'2013/08/24	'21:14	08	2013	R PANCA W	          	
+ 485	A2-TI-1515B	02615152	Unit-2 GRS B After C/W Outlet 	0	80	oC	47    	'2013/08/24	'21:13	08	2013	R PANCA W	          	
+ 486	A2-TI-1515B	02615152	Unit-2 GRS B After C/W Outlet 	0	80	oC	47    	'2013/08/25	'10:43	08	2013	BURHANUDIN H	          	
+ 487	A2-TI-1515C	02615153	Unit-2 GRS C After C/W Outlet 	0	80	oC	-	-	-	08	2013	-	-	
+ 488	A2-TI-1516C	02615163	Unit-2 GRS C Gas Outlet Pressu	-1	1.6	Barg	-	-	-	08	2013	-	-	
+ 489	A2-TI-1521A	02615211	Unit-2 GRS A VP Separator Drai	0	80	oC	-	-	-	08	2013	-	-	
+ 490	A2-TI-1521B	02615212	Unit-2 GRS B VP Separator Drai	0	80	oC	-	-	-	08	2013	-	-	
+ 491	A2-TI-2601	02626010	Unit-2 Gen. Transf. Wind. T.  	0	160	oC	78    	'2013/08/24	'21:04	08	2013	R PANCA W	          	
+ 492	A2-TI-2602	02626020	Unit-2 Gen. Transf. Oil Temp.	-20	140	oC	58    	'2013/08/24	'21:04	08	2013	R PANCA W	          	
+ 493	A2-TI-2603	02626030	Unit-2 Unit Transf. Wind Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 494	A2-TI-2604	02626040	Unit-2 Unit Transf. Oil Temp.	0	160	oC	-	-	-	08	2013	-	-	
+ 495	A2-TI-TR202	02626050	Unit-2 6.3 kV CT Transf  W. T.	0	200	oC	-	-	-	08	2013	-	-	
+ 496	A2-TI-TR203	02626060	Unit-2 6.3 kV Station Tr. W. T	0	200	oC	-	-	-	08	2013	-	-	
+ 497	A2-VM-1001	02210010	Unit-2 6.3 KV Incoming Voltage	0	25	KV	6.3   	'2013/08/22	'05:57	08	2013	RIZAL KAHFI F	          	
+ 498	A2-VM-1001	02210010	Unit-2 6.3 KV Incoming Voltage	0	25	KV	6.3   	'2013/08/24	'21:27	08	2013	R PANCA W	          	
+ 499	A2-VM-1001	02210010	Unit-2 6.3 KV Incoming Voltage	0	25	KV	6300  	'2013/08/25	'10:53	08	2013	BURHANUDIN H	          	
+ 500	A2-VM-1002	02210020	Unit-2 230 Vdc Voltage	0	500	Vdc	262   	'2013/08/25	'11:01	08	2013	BURHANUDIN H	          	
+ 501	A2-VM-1002	02210020	Unit-2 230 Vdc Voltage	0	500	Vdc	262   	'2013/08/24	'21:33	08	2013	R PANCA W	          	
+ 502	A2-VM-1002	02210020	Unit-2 230 Vdc Voltage	0	500	Vdc	100   	'2013/08/22	'05:50	08	2013	RIZAL KAHFI F	          	
+ 503	A2-ZI-0115	02701150	Unit-2 MCV (L1)	0	100	oC	60    	'2013/08/24	'21:43	08	2013	R PANCA W	          	
+ 504	A2-ZI-0115	02701150	Unit-2 MCV (L1)	0	100	oC	66    	'2013/08/25	'11:08	08	2013	BURHANUDIN H	          	
+ 505	A2-ZI-0115	02701150	Unit-2 MCV (L1)	0	100	oC	44    	'2013/08/22	'05:45	08	2013	RIZAL KAHFI F	          	
+ 506	A2-ZI-0116	02701160	Unit-2 MCV (L2)	0	100	%	42    	'2013/08/22	'05:45	08	2013	RIZAL KAHFI F	          	
+ 507	A2-ZI-0116	02701160	Unit-2 MCV (L2)	0	100	%	60    	'2013/08/24	'21:43	08	2013	R PANCA W	          	
+ 508	A2-ZI-0116	02701160	Unit-2 MCV (L2)	0	100	%	67    	'2013/08/25	'11:08	08	2013	BURHANUDIN H	          	
+ 509	A2-ZI-0117	02701170	Unit-2 MCV (R1)	0	100	%	58    	'2013/08/25	'11:11	08	2013	BURHANUDIN H	          	
+ 510	A2-ZI-0117	02701170	Unit-2 MCV (R1)	0	100	%	3     	'2013/08/22	'05:44	08	2013	RIZAL KAHFI F	          	
+ 511	A2-ZI-0117	02701170	Unit-2 MCV (R1)	0	100	%	55    	'2013/08/24	'21:40	08	2013	R PANCA W	          	
+ 512	A2-ZI-0118	02701180	Unit-2 MCV (R2)	0	100	%	53    	'2013/08/25	'11:10	08	2013	BURHANUDIN H	          	
+ 513	A2-ZI-0118	02701180	Unit-2 MCV (R2)	0	100	%	33    	'2013/08/22	'05:43	08	2013	RIZAL KAHFI F	          	
+ 514	A2-ZI-0118	02701180	Unit-2 MCV (R2)	0	100	%	50    	'2013/08/24	'21:40	08	2013	R PANCA W	          	
+ 515	A2-ZI-1001	02701001	Unit-2 Shaft Post. Turbin Fron	-8	8	mm	0     	'2013/08/22	'05:44	08	2013	RIZAL KAHFI F	          	
+ 516	A2-ZI-1001	02701001	Unit-2 Shaft Post. Turbin Fron	-8	8	mm	0     	'2013/08/24	'21:41	08	2013	R PANCA W	          	
+ 517	A2-ZI-1001	02701001	Unit-2 Shaft Post. Turbin Fron	-8	8	mm	0.0015	'2013/08/25	'11:10	08	2013	BURHANUDIN H	          	
+ 518	A2-ZI-1002	02701002	Unit-2 Shaft Post. Turbin Rear	-8	8	mm	-	-	-	08	2013	-	-	
+ 519	A2-ZI-1003	02701003	Unit-2 Turb. Casing Diff. Expa	-5	25	mm	-	-	-	08	2013	-	-	
+ 520	AI-PI-ESB-11	00500110	Comm. ESB DP Scrubber Fan Fina	0	50	Pa	-	-	-	08	2013	-	-	
+ 521	LI-POND-J5	10400010	J-5 Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 522	LI-POND-J8	30400010	J-8 Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 523	LI-POND-MBA	25400000	MBA Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 524	LI-POND-MBB	23400000	MBB Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 525	LI-POND-MBD	18400000	MBD Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 526	LI-POND-MBE	17400000	MBE Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 527	LI-POND-WWA	10400000	WWA Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 528	LI-POND-WWF	32400000	WWF Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 529	LI-POND-WWQ	16400000	WWQ Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 530	LI-POND-WWW	30400000	WWW Pond Level	0	5	m	-	-	-	08	2013	-	-	
+ 531	PI-1002	16510020	WHP WWQ-5	0	60	Barg	-	-	-	08	2013	-	-	
+ 532	PI-1611A	00516111	NaOH Injection Pump A Disch. P	0	10	Barg	1.1   	'2013/08/24	'21:20	08	2013	R PANCA W	          	
+ 533	PI-1611B	00516112	NaOH Injection Pump B Disch. P	0	10	Barg	-	-	-	08	2013	-	-	
+ 534	PI-1611C	00516113	NaOH Injection Pump C Disch. P	0	10	Barg	-	-	-	08	2013	-	-	
+ 535	PI-2132	81521320	VS-81-009 Pressure	0	16	Barg	-	-	-	08	2013	-	-	
+ 536	PI-2135	81521350	VS-81-010 Pressure	0	16	Barg	-	-	-	08	2013	-	-	
+ 537	PI-2301	23523010	WHP MBB-1	0	100	Barg	-	-	-	08	2013	-	-	
+ 538	PI-2501	25525010	WHP MBA-1	0	100	Barg	-	-	-	08	2013	-	-	
+ 539	PI-2503	25525030	WHP MBA-2	0	100	Bar	-	-	-	08	2013	-	-	
+ 540	PI-2505	25525050	WHP MBA-3	0	100	Barg	-	-	-	08	2013	-	-	
+ 541	PI-2507	25525070	WHP MBA-4	0	100	Barg	-	-	-	08	2013	-	-	
+ 542	PI-2509	25525090	WHP MBA-5	0	100	Barg	-	-	-	08	2013	-	-	
+ 543	PI-348	81503480	SBS-1 Air Receiver Tank Press.	0	10	Barg	-	-	-	08	2013	-	-	
+ 544	PI-361	83503610	VVS-1 Instr. Air Receiver T. P	0	10	Barg	-	-	-	08	2013	-	-	
+ 545	PI-363	83503630	VVS-1 Instr. Air Receiver T. P	0	10	Barg	-	-	-	08	2013	-	-	
+ 546	PI-375	83503750	VVS-1 Instrument Air Inlet P. 	0	10	Barg	-	-	-	08	2013	-	-	
+ 547	PI-389	81503890	SBS-1 Air Receiver Tank Press.	0	10	Barg	-	-	-	08	2013	-	-	
+ 548	PI-444	81504440	VS-81-007 Pressure	0	16	Barg	-	-	-	08	2013	-	-	
+ 549	PI-470	80504700	SS-1 Wash Water Inlet Pressure	0	10	Barg	-	-	-	08	2013	-	-	
+ 550	PI-483	81504830	VS-81-008 Pressure	0	16	Barg	-	-	-	08	2013	-	-	
+ 551	PI-504	16505040	WHP WWQ-1	0	60	Barg	-	-	-	08	2013	-	-	
+ 552	PI-510	18505100	WHP MBD-4	0	60	Barg	-	-	-	08	2013	-	-	
+ 553	PI-515	18505150	WHP MBD-3	0	60	Barg	-	-	-	08	2013	-	-	
+ 554	PI-520	18505200	WHP MBD-2	0	60	Barg	-	-	-	08	2013	-	-	
+ 555	PI-532	17505320	WHP MBE-3	0	60	Barg	-	-	-	08	2013	-	-	
+ 556	PI-537	17505370	WHP MBE-2	0	60	Barg	-	-	-	08	2013	-	-	
+ 557	PI-549	16505490	WHP WWQ-3	0	60	Barg	-	-	-	08	2013	-	-	
+ 558	PI-554	16505540	WHP WWQ-2	0	60	Barg	-	-	-	08	2013	-	-	
+ 559	PI-564	16505640	WHP WWQ-4	0	60	Barg	-	-	-	08	2013	-	-	
+ 560	PI-637	10506370	WHP WWA-2	0	60	Barg	-	-	-	08	2013	-	-	
+ 561	PI-647	10506470	WHP WWA-3	0	60	Barg	-	-	-	08	2013	-	-	
+ 562	PI-652	18506520	WHP MBD-1	0	60	Barg	-	-	-	08	2013	-	-	
+ 563	PI-788	32507880	WHP WWF-1	-1	5	Barg	-	-	-	08	2013	-	-	
+ 564	PI-800	32508000	WHP WWF-3	-1	5	Barg	-	-	-	08	2013	-	-	
+ 565	PI-806	32508060	WHP WWP-1	0	100	Barg	-	-	-	08	2013	-	-	
+ 566	PI-823	30508230	WHP WWW-2	0	100	Barg	-	-	-	08	2013	-	-	
+ 567	PI-919	30509190	WHP WWW-1	0	0	Barg	-	-	-	08	2013	-	-	
+ 568	PI-994	10509940	WHP WWA-4	0	60	Barg	-	-	-	08	2013	-	-	
+ 569	SS	sss	SS	0	0	Bar	-	-	-	08	2013	-	-	
+ 570	TI-443	81604430	VS-81-007 Temperature	0	400	oC	-	-	-	08	2013	-	-	
+ 571	TI-482	81604820	VS-81-008 Temperature	0	400	oC	-	-	-	08	2013	-	-	
+ 572	TI-TRF-MBA	25600000	MBA Well Pad Trafo Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 573	TI-TRF-MBB	23600000	MBB Well Pad Trafo Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 574	TI-TRF-MBD	18600000	MBD Well Pad Trafo Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 575	TI-TRF-MBE	17600000	MBE Well Pad Trafo Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 576	TI-TRF-WWA	10600000	WWA Well Pad Trafo Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 577	TI-TRF-WWF	32600000	WWF Well pad Trafo Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 578	TI-TRF-WWQ	16600000	WWQ Well Pad Trafo Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 579	TI-TRF-WWW	30600000	WWW Well Pad Trafo Oil Temp.	0	100	oC	-	-	-	08	2013	-	-	
+ 580	xBATT-SPR-01	90219001	Battery Spare (Handheld Lamp)	0	100	%	-	-	-	08	2013	-	-	
+ 581	xBATT-SPR-02	90219002	Battery Spare (for Head Lamp)	0	100	%	-	-	-	08	2013	-	-	
+ 582	xCHIN-IRN-01	90309001	Chain Iron (for LOTO System)	0	100	%	-	-	-	08	2013	-	-	
+ 583	xCHIN-PLS-01	90316001	Chain Plastic (for Safety Barr	0	100	%	-	-	-	08	2013	-	-	
+ 584	xCONE-RING	90318001	Ring Connection on Safety Cone	0	100	%	-	-	-	08	2013	-	-	
+ 585	xCUT-PLIER	90311011	Cutting Pliers	0	100	%	-	-	-	08	2013	-	-	
+ 586	xFLSH-LGT-01	90607001	Flash Light 01	0	100	%	-	-	-	08	2013	-	-	
+ 587	xFLSH-LGT-02	90607002	Flash Light 02	0	100	%	-	-	-	08	2013	-	-	
+ 588	xFLSH-LGT-03	90607003	Flash Light 03	0	100	%	-	-	-	08	2013	-	-	
+ 589	xFLSH-LGT-04	90607004	Flash Light 04	0	100	%	-	-	-	08	2013	-	-	
+ 590	xFLSH-LGT-05	90607005	Flash Light 05	0	100	%	-	-	-	08	2013	-	-	
+ 591	xFLSH-LGT-06	90607006	Flash Light 06	0	100	%	-	-	-	08	2013	-	-	
+ 592	xFLSH-LGT-07	90607007	Flash Light 07	0	100	%	-	-	-	08	2013	-	-	
+ 593	xFLSH-LGT-08	90607008	Flash Light 08	0	100	%	-	-	-	08	2013	-	-	
+ 594	xFLSH-LGT-09	90607009	Flash Light 09	0	100	%	-	-	-	08	2013	-	-	
+ 595	xFLSH-LGT-10	90607010	Flash Light 10	0	100	%	-	-	-	08	2013	-	-	
+ 596	xFLSH-LGT-11	90607011	Flash Light 11	0	100	%	-	-	-	08	2013	-	-	
+ 597	xFLSH-LGT-12	90607012	Flash Light 12	0	100	%	-	-	-	08	2013	-	-	
+ 598	xFLSH-LGT-13	90607013	Flash Light 13	0	100	%	-	-	-	08	2013	-	-	
+ 599	xFLSH-LGT-14	90607014	Flash Light 14	0	100	%	-	-	-	08	2013	-	-	
+ 600	xHND-RDIO-01	90813001	Communication Radio 01	0	100	%	-	-	-	08	2013	-	-	
+ 601	xHND-RDIO-02	90813002	Communication Radio 02	0	100	%	-	-	-	08	2013	-	-	
+ 602	xHND-RDIO-03	90813003	Communication Radio 03	0	100	%	-	-	-	08	2013	-	-	
+ 603	xHND-RDIO-04	90813004	Communication Radio 04	0	100	%	-	-	-	08	2013	-	-	
+ 604	xHND-RDIO-05	90813005	Communication Radio 05	0	100	%	-	-	-	08	2013	-	-	
+ 605	xHND-RDIO-06	90813006	Communication Radio 06	0	100	%	-	-	-	08	2013	-	-	
+ 606	xHND-RDIO-07	90813007	Communication Radio 07	0	100	%	-	-	-	08	2013	-	-	
+ 607	xLOCK-BOX-01	90702001	Lock Box 01 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 608	xLOCK-BOX-02	90702002	Lock Box 02 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 609	xLOCK-BOX-03	90702003	Lock Box 03 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 610	xLOCK-BOX-04	90702004	Lock Box 04 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 611	xLOCK-BOX-05	90702005	Lock Box 05 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 612	xLOCK-BOX-06	90702006	Lock Box 06 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 613	xLOCK-BOX-07	90702007	Lock Box 07 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 614	xLOCK-BOX-08	90702008	Lock Box 08 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 615	xLOCK-BOX-09	90702009	Lock Box 09 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 616	xLOCK-BOX-10	90702010	Lock Box 10 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 617	xLOCK-BOX-11	90702011	Lock Box 11 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 618	xLOCK-BOX-12	90702012	Lock Box 12 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 619	xLOCK-BOX-13	90702013	Lock Box 13 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 620	xLOCK-BOX-14	90702014	Lock Box 14 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 621	xLOCK-BOX-15	90702015	Lock Box 15 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 622	xLOCK-BOX-16	90702016	Lock Box 16 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 623	xLOCK-BOX-17	90702017	Lock Box 17 - PadLock	0	100	%	-	-	-	08	2013	-	-	
+ 624	xLTSY-BALLD	91202001	Ball Valve LockDevice	0	100	%	-	-	-	08	2013	-	-	
+ 625	xLTSY-CABLD	91203111	Sling / Cable Lock Device	0	100	%	-	-	-	08	2013	-	-	
+ 626	xLTSY-CBLD	91203001	Circuits Breaker Lock Device	0	100	%	-	-	-	08	2013	-	-	
+ 627	xLTSY-GVLD	91207001	Gate Valve Lock Device	0	100	%	-	-	-	08	2013	-	-	
+ 628	xLTSY-MLTLK	91213001	HASP/Safety Multi Lock Device	0	100	%	-	-	-	08	2013	-	-	
+ 629	xLTSY-TBVLD	91220001	Tight Ball Valve Lock Device	0	100	%	-	-	-	08	2013	-	-	
+ 630	xMLTI-GSDT01	91307001	Multi Gas Detector 01	0	100	%	-	-	-	08	2013	-	-	
+ 631	xPIPE-WRN01	91123001	Pipe Wrench 12"	0	100	%	-	-	-	08	2013	-	-	
+ 632	xPIPE-WRN02	91123002	Pipe Wrench 24"	0	100	%	-	-	-	08	2013	-	-	
+ 633	xPORT-GSDT01	91107001	Portable Gas Detector 01	0	100	%	-	-	-	08	2013	-	-	
+ 634	xPRT-RDIO-01	91113001	Portable Comm. Radio 01	0	100	%	-	-	-	08	2013	-	-	
+ 635	xPRT-RDIO-02	91113002	Portable Comm. Radio 02	0	100	%	-	-	-	08	2013	-	-	
+ 636	xPTW-FLDR01	91606001	PTW Folder 01	0	100	%	-	-	-	08	2013	-	-	
+ 637	xRAIN-COAT01	91803001	Rain Coat 01	0	100	%	-	-	-	08	2013	-	-	
+ 638	xSFTY-BALLD	91902001	Ball Valve LockDevice	0	100	%	-	-	-	08	2013	-	-	
+ 639	xSFTY-CONE	91903001	Safety Cone	0	100	%	-	-	-	08	2013	-	-	
+ 640	xTAG-BLUE	92002001	Tag (for Supervisory)	0	100	%	-	-	-	08	2013	-	-	
+ 641	xTAG-RED	92013001	Tag LOTO System	0	100	%	-	-	-	08	2013	-	-	
+ 642	xTAG-YELLW	92025001	Tag (Do Not Operate)	0	100	%	-	-	-	08	2013	-	-	

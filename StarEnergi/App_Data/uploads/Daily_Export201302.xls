@@ -1,0 +1,425 @@
+DATA LOGGER Daily Periode : Februari-2013													
+													
+No.	TAG_ID	BARCODE	DESCRIPTION	MIN_LIMIT	MAX_LIMIT	TAG_VALUE	UNIT	TANGGAL	JAM	TAHUN	BULAN	NAMA_OPERATOR	KETERANGAN
+1	A0-DPI-2231A	122311	Comm. Dryer Pre Filter Diff.	1	1	-999	Barg	'2013/02/13	'17:23	2013	2	SYSTEM	          
+2	A0-DPI-2231B	122312	Comm. Dryer Pre Filter Diff.	0	1	-	Barg	-	-	2013	2	-	-
+3	A0-DPI-2232A	122321	Comm. Dryer After Filter Diff.	0	1	-	Barg	-	-	2013	2	-	-
+4	A0-DPI-2232B	122322	Comm. Dryer After Filter Diff.	0	1	88	Barg	'2013/02/13	'17:26	2013	2	SYSTEM	NORMAL    
+5	A0-ESBFFS-02	700020	Comm. ESB FFS Status	0	1	-	%	-	-	2013	2	-	-
+6	A0-ESBHVAC-1	700010	Comm. ESB HVAC In Service	0	2	-	%	-	-	2013	2	-	-
+7	A0-FI-1001	310010	Comm. PS Product Water Counter	0	9999999999	-	l	-	-	2013	2	-	-
+8	A0-FI-1002	310020	Comm. PS Concrete Flow Counter	0	9999999999	-	m3	-	-	2013	2	-	-
+9	A0-FI-1003	310030	Comm. Raw Water Flow Counter	0	9999999999	-	m3	-	-	2013	2	-	-
+10	A0-FI-ESB-01	300010	Comm. ESB Fresh Air Flow / Scr	0	0	-	Cfm	-	-	2013	2	-	-
+11	A0-FI-RWP-1A	300011	Comm. RWP-A Flow Meter Scala	0	25	-	%	-	-	2013	2	-	-
+12	A0-FI-RWP-1B	300012	Comm. RWP-B Flow Meter Scala	0	50	-	%	-	-	2013	2	-	-
+13	A0-KWH-1002	210020	Comm. KWH Meter WW Village	0	9999999999	-	kWH	-	-	2013	2	-	-
+14	A0-LI-1001	410010	Comm. PS Water Storage T. Leve	0	100	-	%	-	-	2013	2	-	-
+15	A0-LI-1002	410020	Comm. NaHSO3 / Antiscalant Lev	0	100	-	%	-	-	2013	2	-	-
+16	A0-LI-1003	410030	Comm. NaOCL Tank Level	0	100	-	%	-	-	2013	2	-	-
+17	A0-LI-1004	410040	Comm. EDG Weekly Fuel T. Leve	0	100	-	%	-	-	2013	2	-	-
+18	A0-LI-1006	410060	Comm. RO Reductor T. Level	0	100	-	%	-	-	2013	2	-	-
+19	A0-LI-RW-05	410050	Comm. Raw Water Pond Level WWD	0	100	-	%	-	-	2013	2	-	-
+20	A0-PI-2215A	522151	Comm. Air Receiver A Pressure	0	10	-	Barg	-	-	2013	2	-	-
+21	A0-PI-2215B	522152	Comm. Air Receiver B Pressure	0	10	-	Barg	-	-	2013	2	-	-
+22	A0-PI-2215C	522153	Comm. Air Receiver C Pressure	0	10	-	Barg	-	-	2013	2	-	-
+23	A0-PI-AHU-02	500020	Comm. AHU-1 (L) Comp. Suction	-1	15	-	Barg	-	-	2013	2	-	-
+24	A0-PI-AHU-03	500030	Comm. AHU-1 (R) Comp. Discharg	0	35	-	Barg	-	-	2013	2	-	-
+25	A0-PI-AHU-04	500040	Comm. AHU-1 (L) Comp. Discharg	0	35	-	Barg	-	-	2013	2	-	-
+26	A0-PI-AHU-05	500050	Comm. AHU-2 (R) Comp. Suction	-1	15	-	Barg	-	-	2013	2	-	-
+27	A0-PI-AHU-06	500060	Comm. AHU-2 (L) Comp. Suction	-1	15	-	Barg	-	-	2013	2	-	-
+28	A0-PI-AHU-07	500070	Comm. AHU-2 (R) Comp. Discharg	0	35	-	Barg	-	-	2013	2	-	-
+29	A0-PI-AHU-08	500080	Comm. AHU-2 (L) Comp. Discharg	0	35	-	Barg	-	-	2013	2	-	-
+30	A0-PI-AHU-09	500090	Comm. AHU Inlet Filter-1 DP  	0	2	-	Barg	-	-	2013	2	-	-
+31	A0-PI-AHU-10	500100	Comm. AHU Inlet Filter-2 DP	0	2	-	Barg	-	-	2013	2	-	-
+32	A0-PI-RWP-1A	500011	Comm. RWP-A Discharge Pressure	0	50	-	Barg	-	-	2013	2	-	-
+33	A0-PI-RWP-1B	500012	Comm. RWP-B Discharge Pressure	0	50	-	Barg	-	-	2013	2	-	-
+34	A0-RH-ESB-01	800010	Comm. ESB Room Relative Humidi	0	100	-	%	-	-	2013	2	-	-
+35	A0-TI-ESB-01	600010	Comm. ESB Room Temperature	0	100	-	oC	-	-	2013	2	-	-
+36	A0-TI-TRF-02	600020	Comm. ESB Transformer Temp.	0	100	-	oC	-	-	2013	2	-	-
+37	A0-VM-1001	210010	Comm. EDG Battery Voltage	0	50	-	Volt	-	-	2013	2	-	-
+38	A0-VM-1003	210030	Comm. ESB 6.3 kV Incoming Volt	0	10	-	KV	-	-	2013	2	-	-
+39	A0-VM-1004	210040	Comm. ESB Battery 110Vdc Outpt	0	200	-	Vdc	-	-	2013	2	-	-
+40	A0-VM-1005	210050	Comm. ESB UPS 110 Vac Output	0	200	-	Volt	-	-	2013	2	-	-
+41	A1-LI-0600	1406000	Unit-1 Main Oil Tank Level	-100	50	-	mm	-	-	2013	2	-	-
+42	A1-LI-CTF-A	1400001	Unit-1 CTF-A Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+43	A1-LI-CTF-B	1400002	Unit-1 CTF-B Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+44	A1-LI-CTF-C	1400003	Unit-1 CTF-C Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+45	A1-LI-CTF-D	1400004	Unit-1 CTF-D Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+46	A1-LI-CTF-E	1400005	Unit-1 CTF-E Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+47	A1-LI-CTF-F	1400006	Unit-1 CTF-F Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+48	A1-LI-CTF-G	1400007	Unit-1 CTF-G Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+49	A1-LI-CTF-H	1400008	Unit-1 CTF-H Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+50	A1-PDI-0617	1106170	Unit-1 Lube Oil Differential P	0	2	-	Barg	-	-	2013	2	-	-
+51	A1-PDI-0640	1106400	Unit-1 Diff. Press. of Oil Fil	0	2	-	Barg	-	-	2013	2	-	-
+52	A1-PI-0200	1502000	Unit-1 Gland Steam Inlet Press	0	0	-	mBar	-	-	2013	2	-	-
+53	A1-PI-0211A	1502111	Unit-1 GRS A Inter Steam Inlet	33	16	-	Barg	-	-	2013	2	-	-
+54	A1-PI-0211B	1502112	Unit-1 GRS B Inter Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+55	A1-PI-0211C	1502113	Unit-1 GRS C Inter Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+56	A1-PI-0212A	1502121	Unit-1 GRS A After Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+57	A1-PI-0212B	1502122	Unit-1 GRS B After Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+58	A1-PI-0212C	1502123	Unit-1 GRS C After Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+59	A1-PI-0310	1503100	Unit-1 Gland Steam Exhaust Pre	-0.15	0.15	-	Barg	-	-	2013	2	-	-
+60	A1-PI-0600	1506000	Unit-1 AOP Disch. Pressure	0	100	-	Barg	-	-	2013	2	-	-
+61	A1-PI-0601	1506010	Unit-1 EOP Disch. Pressure	0	100	-	Barg	-	-	2013	2	-	-
+62	A1-PI-0612	1506120	Unit-1 Control Oil Pressure	0	16	-	Barg	-	-	2013	2	-	-
+63	A1-PI-0621	1506210	Unit-1 Lube Oil Pressure	0	4	-	Barg	-	-	2013	2	-	-
+64	A1-PI-0630	1506300	Unit-1 Turning Oil Inlet	0	100	-	Barg	-	-	2013	2	-	-
+65	A1-PI-0641	1506410	Unit-1 Auxiliary Trip Oil Pres	0	15	-	Barg	-	-	2013	2	-	-
+66	A1-PI-0642	1506420	Unit-1 Trip Test Oil Pressure	0	100	-	Barg	-	-	2013	2	-	-
+67	A1-PI-0643	1506430	Unit-1 Trip Oil Pressure	0	15	-	Barg	-	-	2013	2	-	-
+68	A1-PI-0644	1506440	Unit-1 Start Up Oil Pressure	0	100	-	Barg	-	-	2013	2	-	-
+69	A1-PI-0645	1506450	Unit-1 Secondary Oil Pressure 	0	10	-	Barg	-	-	2013	2	-	-
+70	A1-PI-0646	1506460	Unit-1 Secondary Oil Pressure 	0	10	-	Barg	-	-	2013	2	-	-
+71	A1-PI-0650	1506500	Unit-1 Jacking Oil Pressure	0	0	-	Barg	-	-	2013	2	-	-
+72	A1-PI-0660	1506600	Unit-1 Turbine Front Drain Pre	0	250	-	Barg	-	-	2013	2	-	-
+73	A1-PI-0661	1506610	Unit-1 Jacking Oil Header	0	100	-	Barg	-	-	2013	2	-	-
+74	A1-PI-0662	1506620	Unit-1 Turbine Rear Drain Pres	0	250	-	Barg	-	-	2013	2	-	-
+75	A1-PI-0663	1506630	Unit-1 Generator Front Drain P	0	250	-	Barg	-	-	2013	2	-	-
+76	A1-PI-0664	1506640	Unit-1 Generator Rear Drain Pr	0	250	-	Barg	-	-	2013	2	-	-
+77	A1-PI-0680	1506800	Unit-1 Oil Purifier Suction Pr	-1	2	-	Barg	-	-	2013	2	-	-
+78	A1-PI-0681	1506810	Unit-1 Oil Purifier Temperatur	0	100	-	oC	-	-	2013	2	-	-
+79	A1-PI-0682	1506820	Unit-1 Oil Purifier Filter Pre	-1	10	-	Barg	-	-	2013	2	-	-
+80	A1-PI-1004	1510040	Unit-1 ACWP C/W Inlet Pressure	-0.1	0.1	-	Barg	-	-	2013	2	-	-
+81	A1-PI-1005	1510050	Unit-1 ACWP C/W Inlet Pressure	-0.1	0.1	-	Barg	-	-	2013	2	-	-
+82	A1-PI-1030	1510300	Unit-1 HWP Suction Pressure(A)	-1	2	-	Barg	-	-	2013	2	-	-
+83	A1-PI-1031	1510310	Unit-1 HWP Discharge Pressure(	0	6	-	Barg	-	-	2013	2	-	-
+84	A1-PI-1035	1510350	Unit-1 HWP Seal Water Pressure	0	0	-	Barg	-	-	2013	2	-	-
+85	A1-PI-1040	1510400	Unit-1 HWP Suction Pressure(B)	-1	2	-	Barg	-	-	2013	2	-	-
+86	A1-PI-1041	1510410	Unit-1 HWP Discharge Pressure(	-1	3	-	Barg	-	-	2013	2	-	-
+87	A1-PI-1045	1510450	Unit-1 HWP Seal Water Pressure	0	0	-	Barg	-	-	2013	2	-	-
+88	A1-PI-1301A	1513011	Unit-1 ACWP A Suction Pressure	0	6	-	Barg	-	-	2013	2	-	-
+89	A1-PI-1301B	1513012	Unit-1 ACWP B Suction Pressure	0	6	-	Barg	-	-	2013	2	-	-
+90	A1-PI-1302A	1513021	Unit-1 ACWP A Discharge Press.	0	6	-	Barg	-	-	2013	2	-	-
+91	A1-PI-1302B	1513022	Unit-1 ACWP B Discharge Press.	0	6	-	Barg	-	-	2013	2	-	-
+92	A1-PI-1347A	1513471	Unit-1 GRS A VP Seal Water Inl	-1	3	-	Barg	-	-	2013	2	-	-
+93	A1-PI-1347B	1513472	Unit-1 GRS B VPSeal Water Inle	-1	3	-	Barg	-	-	2013	2	-	-
+94	A1-PI-1510A	1515101	Unit-1 GRS A Inter Gas Inlet P	-1	0	-	Barg	-	-	2013	2	-	-
+95	A1-PI-1510B	1515102	Unit-1 GRS B Inter Gas Inlet P	-1	0	-	Barg	-	-	2013	2	-	-
+96	A1-PI-1510C	1515103	Unit-1 GRS C Inter Gas Inlet P	-1	0	-	Barg	-	-	2013	2	-	-
+97	A1-PI-1512A	1515121	Unit-1 GRS A Inter Condenser P	-1	0	-	Barg	-	-	2013	2	-	-
+98	A1-PI-1512B	1515122	Unit-1 GRS B Inter Condenser P	-1	0	-	Barg	-	-	2013	2	-	-
+99	A1-PI-1512C	1515123	Unit-1 GRS C Inter Condenser P	-1	0	-	Barg	-	-	2013	2	-	-
+100	A1-PI-1513A	1515131	Unit-1 GRS A After Gas Inlet P	-1	0	-	Barg	-	-	2013	2	-	-
+101	A1-PI-1513B	1515132	Unit-1 GRS B After Gas Inlet P	-1	0	-	Barg	-	-	2013	2	-	-
+102	A1-PI-1513C	1515133	Unit-1 GRS C After Gas Inlet P	-1	0	-	Barg	-	-	2013	2	-	-
+103	A1-PI-1515A	1515151	Unit-1 GRS A After Condenser P	-1	0	-	Barg	-	-	2013	2	-	-
+104	A1-PI-1515B	1515152	Unit-1 GRS B After Condenser P	-1	0	-	Barg	-	-	2013	2	-	-
+105	A1-PI-1515C	1515153	Unit-1 GRS C After Condenser P	-1	0	-	Barg	-	-	2013	2	-	-
+106	A1-PI-1516A	1515161	Unit-1 GRS A VP Gas Inlet Pres	-1	0	-	Barg	-	-	2013	2	-	-
+107	A1-PI-1516B	1515162	Unit-1 GRS B VPGas Inlet Press	-1	0	-	Barg	-	-	2013	2	-	-
+108	A1-PI-1521A	1515211	Unit-1 GRS A VP Separator Pres	-1	3	-	Barg	-	-	2013	2	-	-
+109	A1-PI-1521B	1515212	Unit-1 GRS B VPSeparator Press	-1	3	-	Barg	-	-	2013	2	-	-
+110	A1-PI-1521C	1515213	Unit-1 GRS C NCG Aftr C. O. Pr	-1	3	-	Barg	-	-	2013	2	-	-
+111	A1-T1-1513B	1615132	Unit-1 GRS B Inter Gas Inlet T	0	100	-	oC	-	-	2013	2	-	-
+112	A1-T1-1531	1615310	Unit-1 GRS B LRVP Gear B. Temp	0	100	-	oC	-	-	2013	2	-	-
+113	A1-TI-0401	1604010	Unit-1 Tust Front Drain Temp.	0	100	-	oC	-	-	2013	2	-	-
+114	A1-TI-0402	1604020	Unit-1 Trust Rear Drain Temp.	0	100	-	oC	-	-	2013	2	-	-
+115	A1-TI-0600	1606000	Unit-1 Main Oil Tank Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+116	A1-TI-0613	1606130	Unit-1 Oil Cooler Oil Inlet Te	0	100	-	oC	-	-	2013	2	-	-
+117	A1-TI-0614	1606140	Unit-1 Oil Cooler Oil Outlet T	0	100	-	oC	-	-	2013	2	-	-
+118	A1-TI-0625	1606250	Unit-1 Turbine Front Drain Tem	0	100	-	oC	-	-	2013	2	-	-
+119	A1-TI-0626	1606260	Unit-1 Turbine Rear Drain Temp	0	100	-	oC	-	-	2013	2	-	-
+120	A1-TI-0627	1606270	Unit-1 Generator Front Drain T	0	100	-	oC	-	-	2013	2	-	-
+121	A1-TI-0628	1606280	Unit-1 Generator Rear Drain Te	0	100	-	oC	-	-	2013	2	-	-
+122	A1-TI-0681	1606810	Unit-1 Oil Purifier Temperatur	0	100	-	oC	-	-	2013	2	-	-
+123	A1-TI-1001R	1610011	Unit-1 Gen. Side Phase R Temp.	0	150	-	oC	-	-	2013	2	-	-
+124	A1-TI-1001S	1610012	Unit-1 Gen. Side Phase S Temp.	0	150	-	oC	-	-	2013	2	-	-
+125	A1-TI-1001T	1610013	Unit-1 Gen. Side Phase T temp.	0	150	-	oC	-	-	2013	2	-	-
+126	A1-TI-1321A	1613211	Unit-1 Oil Cooler(A) C/W Inlet	0	100	-	oC	-	-	2013	2	-	-
+127	A1-TI-1321B	1613212	Unit-1 Oil Cooler(B) C/W Inlet	0	100	-	oC	-	-	2013	2	-	-
+128	A1-TI-1322A	1613221	Unit-1 Oil Cooler(A) C/W Outle	0	100	-	oC	-	-	2013	2	-	-
+129	A1-TI-1322B	1613222	Unit-1 Oil Cooler(B) C/W Outle	0	100	-	oC	-	-	2013	2	-	-
+130	A1-TI-1330	1613300	Unit-1 Lube Oil C/W Inlet Temp	0	100	-	oC	-	-	2013	2	-	-
+131	A1-TI-1331A	1613311	Unit-1 Gen. Air Cooler Out A T	0	75	-	oC	-	-	2013	2	-	-
+132	A1-TI-1331B	1613312	Unit-1 Gen. Air Cooler Out B T	0	75	-	oC	-	-	2013	2	-	-
+133	A1-TI-1331C	1613313	Unit-1 Gen. Air Cooler Out C T	0	75	-	oC	-	-	2013	2	-	-
+134	A1-TI-1331D	1613314	Unit-1 Gen. Air Cooler Out D T	0	75	-	oC	-	-	2013	2	-	-
+135	A1-TI-1512A	1615121	Unit-1 GRS A Inter C/W Outlet 	0	100	-	oC	-	-	2013	2	-	-
+136	A1-TI-1512B	1615122	Unit-1 GRS B Inter C/W Outlet 	0	100	-	oC	-	-	2013	2	-	-
+137	A1-TI-1512C	1615123	Unit-1 GRS C Inter C/W Outlet 	0	100	-	oC	-	-	2013	2	-	-
+138	A1-TI-1513A	1615131	Unit-1 GRS A Inter Gas Inlet T	0	100	-	oC	-	-	2013	2	-	-
+139	A1-TI-1513C	1615133	Unit-1 GRS C Inter Gas Inlet T	0	100	-	oC	-	-	2013	2	-	-
+140	A1-TI-1515A	1615151	Unit-1 GRS A After C/W Outlet 	0	100	-	oC	-	-	2013	2	-	-
+141	A1-TI-1515B	1615152	Unit-1 GRS B After C/W Outlet 	0	100	-	oC	-	-	2013	2	-	-
+142	A1-TI-1515C	1615153	Unit-1 GRS C After C/W Outlet 	0	100	-	oC	-	-	2013	2	-	-
+143	A1-TI-1521A	1615211	Unit-1 GRS A VP Separator Drai	0	0	-	oC	-	-	2013	2	-	-
+144	A1-TI-1521B	1615212	Unit-1 GRS B VPSeparator Drain	0	0	-	oC	-	-	2013	2	-	-
+145	A1-TI-1530	1615300	Unit-1 GRS A LRVP Gear A. Temp	0	100	-	oC	-	-	2013	2	-	-
+146	A1-TI-1530B	1615301	Unit 1 GRS B LRVP Gear B Temp	0	100	-	oC	-	-	2013	2	-	-
+147	A1-TI-2601	1626010	Unit-1 Gen. Transf. Wind Temp.	0	150	-	oC	-	-	2013	2	-	-
+148	A1-TI-2602	1626020	Unit-1 Gen. Transf. Oil Temp.	0	150	-	oC	-	-	2013	2	-	-
+149	A1-TI-2603	1626030	Unit-1 Unit Transf. Wind. Temp	0	150	-	oC	-	-	2013	2	-	-
+150	A1-TI-2604	1626040	Unit-1 Unit Transf. Oil Temp.	0	150	-	oC	-	-	2013	2	-	-
+151	A1-TI-CT-Aa	1600011	Unit-1 CT Fan A-a Resistance	0	200	-	ohm	-	-	2013	2	-	-
+152	A1-TI-CT-Ab	1600012	Unit-1 CT Fan A-b Resistance	0	10	-	ohm	-	-	2013	2	-	-
+153	A1-TI-CT-Ba	1600021	Unit-1 CT Fan B-a Resistance	0	200	-	ohm	-	-	2013	2	-	-
+154	A1-TI-CT-Bb	1600022	Unit-1 CT Fan B-b Resistance	0	10	-	ohm	-	-	2013	2	-	-
+155	A1-TI-CT-Ca	1600031	Unit-1 CT Fan C-a Resistance 	0	200	-	ohm	-	-	2013	2	-	-
+156	A1-TI-CT-Cb	1600032	Unit-1 CT Fan C-b Resistance	0	10	-	ohm	-	-	2013	2	-	-
+157	A1-TI-CT-Da	1600041	Unit-1 CT Fan D-a Resistance	0	200	-	ohm	-	-	2013	2	-	-
+158	A1-TI-CT-Db	1600042	Unit-1 CT Fan D-b Resistance	0	10	-	ohm	-	-	2013	2	-	-
+159	A1-TI-CT-Ea	1600051	Unit-1 CT Fan E-a Resistance	0	200	-	ohm	-	-	2013	2	-	-
+160	A1-TI-CT-Eb	1600052	Unit-1 CT Fan E-b Resistance	0	10	-	ohm	-	-	2013	2	-	-
+161	A1-TI-CT-Fa	1600061	Unit-1 CT Fan F-a Resistance	0	200	-	ohm	-	-	2013	2	-	-
+162	A1-TI-CT-Fb	1600062	Unit-1 CT Fan F-b Resistance	0	10	-	ohm	-	-	2013	2	-	-
+163	A1-TI-CT-Ga	1600071	Unit-1 CT Fan G-a Resistance	0	200	-	ohm	-	-	2013	2	-	-
+164	A1-TI-CT-Gb	1600072	Unit-1 CT Fan G-b Resistance	0	10	-	ohm	-	-	2013	2	-	-
+165	A1-TI-CT-Ha	1600081	Unit-1 CT Fan H-a Resistance	0	200	-	ohm	-	-	2013	2	-	-
+166	A1-TI-CT-Hb	1600082	Unit-1 CT Fan H-a Resistance	0	10	-	ohm	-	-	2013	2	-	-
+167	A1-TI-TR101	1626050	Unit-1 6.3 kV Unit Trfo. W. T.	0	200	-	oC	-	-	2013	2	-	-
+168	A1-TI-TR102	1626060	Unit-1 6.3 kV CT Transf Wind T	0	200	-	oC	-	-	2013	2	-	-
+169	A1-TI-TR103	1626070	Unit-1 6.3 kV Station Tr. W. T	0	200	-	oC	-	-	2013	2	-	-
+170	A1-VM-1001	1210010	Unit-1 6.3 KV Incom. Voltage  	0	10	-	KV	-	-	2013	2	-	-
+171	A1-VM-1002	1210020	Unit-1 230 Vdc Output Voltage	0	500	-	Vdc	-	-	2013	2	-	-
+172	A1-VM-1003	1210030	Unit-1 125 Vdc Output Voltage	0	250	-	Vdc	-	-	2013	2	-	-
+173	A1-VM-1004	1210040	Unit-1 110 Vdc Output Voltage	0	200	-	Vdc	-	-	2013	2	-	-
+174	A1-ZI-0015	1701160	Unit-1 MCV (L1) 	0	100	-	%	-	-	2013	2	-	-
+175	A1-ZI-0116	1701150	Unit-1 MCV (L2)	0	100	-	%	-	-	2013	2	-	-
+176	A1-ZI-0117	1701170	Unit-1 MCV (R1)	0	100	-	%	-	-	2013	2	-	-
+177	A1-ZI-0118	1701180	Unit-1 MCV (R2)	0	100	-	%	-	-	2013	2	-	-
+178	A1-ZI-1001	1701001	Unit-1 Shaft Pos. Turbine Fron	-8	8	-	mm	-	-	2013	2	-	-
+179	A1-ZI-1002	1701002	Unit-1 Shaft Pos. Turbine Rear	-8	8	-	mm	-	-	2013	2	-	-
+180	A1-ZI-1003	1701003	Unit-1 Trb. Casing Diff. Expan	-5	25	-	mm	-	-	2013	2	-	-
+181	A2-LI-0600	2406000	Unit-2 Main Oil Tank Lvel	-100	50	-	mm	-	-	2013	2	-	-
+182	A2-LI-CTF-A	2400001	Unit-2 CTF-A Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+183	A2-LI-CTF-B	2400002	Unit-2 CTF-B Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+184	A2-LI-CTF-C	2400003	Unit-2 CTF-C Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+185	A2-LI-CTF-D	2400004	Unit-2 CTF-D Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+186	A2-LI-CTF-E	2400005	Unit-2 CTF-E Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+187	A2-LI-CTF-F	2400006	Unit-2 CTF-F Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+188	A2-LI-CTF-G	2400007	Unit-2 CTF-G Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+189	A2-LI-CTF-H	2400008	Unit-2 CTF-H Gear Box Oil Leve	0	100	-	%	-	-	2013	2	-	-
+190	A2-PDI-0617	2106170	Unit-2 Lube Oil Differential P	0	2	-	Barg	-	-	2013	2	-	-
+191	A2-PDI-0635	2106350	Unit-2 Filter Diff. Press	0	2	-	Barg	-	-	2013	2	-	-
+192	A2-PDI-0640	2106400	Unit-2  Diff. Press. of oil Fi	0	2	-	Barg	-	-	2013	2	-	-
+193	A2-PDI-1303A	2113031	Unit-2 Suction Filter Differen	0	0.4	-	Bar	-	-	2013	2	-	-
+194	A2-PDI-1303B	2113032	Unit-2 Suction Filter Differen	0	0.4	-	Bar	-	-	2013	2	-	-
+195	A2-PI-0200	2502000	Unit-2 Gland Steam Inlet Press	-0.15	0.15	-	Barg	-	-	2013	2	-	-
+196	A2-PI-0211A	2502111	Unit-2 GRS A Inter Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+197	A2-PI-0211B	2502112	Unit-2 GRS B Inter Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+198	A2-PI-0211C	2502113	Unit-2 GRS C Inter Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+199	A2-PI-0212A	2502121	Unit-2 GRS A After Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+200	A2-PI-0212B	2502122	Unit-2 GRS B After Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+201	A2-PI-0212C	2502123	Unit-2 GRS C After Steam Inlet	0	16	-	Barg	-	-	2013	2	-	-
+202	A2-PI-0310	2503100	Unit-2 Gland Steam Exhaust Pre	-0.15	0.15	-	Barg	-	-	2013	2	-	-
+203	A2-PI-0600	2506000	Unit-2 AOP Discharge Pressure	0	15	-	Barg	-	-	2013	2	-	-
+204	A2-PI-0601	2506010	Unit-2 EOP Disch. Pressure	0	100	-	Barg	-	-	2013	2	-	-
+205	A2-PI-0612	2506120	Unit-2 Control Oil Pressure	0	15	-	Barg	-	-	2013	2	-	-
+206	A2-PI-0621	2506210	Unit-2 Lube Oil Pressure	0	4	-	Barg	-	-	2013	2	-	-
+207	A2-PI-0630	2506300	Unit-2 Turning Oil Inlet Press	0	100	-	Barg	-	-	2013	2	-	-
+208	A2-PI-0641	2506410	Unit-2 Auxiliary Trip Oil Pres	0	15	-	Barg	-	-	2013	2	-	-
+209	A2-PI-0642	2506420	Unit-2 Oil Trip Test Oil Press	0	100	-	Barg	-	-	2013	2	-	-
+210	A2-PI-0643	2506430	Unit-2 Trip Oil Pressure	0	15	-	Barg	-	-	2013	2	-	-
+211	A2-PI-0644	2506440	Unit-2 Start Up Oil Pressure	0	100	-	Barg	-	-	2013	2	-	-
+212	A2-PI-0645	2506450	Unit-2 Secondary Oil Pressure 	0	10	-	Barg	-	-	2013	2	-	-
+213	A2-PI-0646	2506460	Unit-2 Secondary Oil Pressure 	0	10	-	Barg	-	-	2013	2	-	-
+214	A2-PI-0650	2506500	Unit-2 Jacking Oil P. Disch. P	0	100	-	Barg	-	-	2013	2	-	-
+215	A2-PI-0660	2506600	Unit-2 Turbine Front Drain Pre	0	250	-	Barg	-	-	2013	2	-	-
+216	A2-PI-0661	2506610	Unit-2 Jacking Oil Pressure	0	250	-	Barg	-	-	2013	2	-	-
+217	A2-PI-0662	2506620	Unit-2 Turbine Rear Drain Pres	0	250	-	Barg	-	-	2013	2	-	-
+218	A2-PI-0663	2506630	Unit-2 Generator Front Drain P	0	250	-	Barg	-	-	2013	2	-	-
+219	A2-PI-0664	2506640	Unit-2 Generator Rear Drain Pr	0	250	-	Barg	-	-	2013	2	-	-
+220	A2-PI-0680	2506800	Unit-2 Oil Purifier Supply Pre	0	100	-	Barg	-	-	2013	2	-	-
+221	A2-PI-0682	2506820	Unit-2 Oil Purifier Head Out P	0	100	-	Barg	-	-	2013	2	-	-
+222	A2-PI-0683	2506830	Unit-2 Oil Purifier Filtration	0	100	-	Bar	-	-	2013	2	-	-
+223	A2-PI-1004	2510040	Unit-2 C/W Inlet A Pressure	0	100	-	Barg	-	-	2013	2	-	-
+224	A2-PI-1005	2510050	Unit-2 C/W Inlet B Pressure	0	100	-	Barg	-	-	2013	2	-	-
+225	A2-PI-1030	2510300	Unit-2 HWP Suction Pressure(A)	-1	2	-	Barg	-	-	2013	2	-	-
+226	A2-PI-1031	2510310	Unit-2 HWP Discharge Pressure(	0	6	-	Barg	-	-	2013	2	-	-
+227	A2-PI-1035	2510350	Unit-2 HWP Seal Water Pressure	0	6	-	Barg	-	-	2013	2	-	-
+228	A2-PI-1040	2510400	Unit-2 HWP Suction Pressure(B)	-1	2	-	Barg	-	-	2013	2	-	-
+229	A2-PI-1041	2510410	Unit-2 HWP Discharge Pressure(	0	6	-	Barg	-	-	2013	2	-	-
+230	A2-PI-1045	2510450	Unit-2 HWP Seal Water Pressure	0	6	-	Barg	-	-	2013	2	-	-
+231	A2-PI-1071A	2510711	Unit-2 Blade Wash. A Disch. Pr	0	100	-	Barg	-	-	2013	2	-	-
+232	A2-PI-1071B	2510712	Unit-2 Blade Wash. B Disch. Pr	0	100	-	Barg	-	-	2013	2	-	-
+233	A2-PI-1301A	2513011	Unit-2 ACWP A Suction Pressure	0	100	-	Barg	-	-	2013	2	-	-
+234	A2-PI-1301B	2513012	Unit-2 ACWP B Suction Pressure	0	100	-	Barg	-	-	2013	2	-	-
+235	A2-PI-1302A	2513021	Unit-2 ACWP A Discharge Pressu	0	100	-	Barg	-	-	2013	2	-	-
+236	A2-PI-1302B	2513022	Unit-2 ACWP B Discharge Pressu	0	100	-	Barg	-	-	2013	2	-	-
+237	A2-PI-1347A	2513471	Unit-2 GRS A VP Seal Water Inl	0	4	-	Barg	-	-	2013	2	-	-
+238	A2-PI-1347B	2513472	Unit-2 GRS B VP Seal Water Inl	0	4	-	Barg	-	-	2013	2	-	-
+239	A2-PI-1510A	2515101	Unit-2 GRS A Inter Gas Inlet P	-1	1.6	-	Barg	-	-	2013	2	-	-
+240	A2-PI-1510B	2515102	Unit-2 GRS B Inter Gas Inlet P	-1	1.6	-	Barg	-	-	2013	2	-	-
+241	A2-PI-1510C	2515103	Unit-2 GRS C Inter Gas Inlet P	-1	1.6	-	Barg	-	-	2013	2	-	-
+242	A2-PI-1512A	2515121	Unit-2 GRS A Inter Condenser P	-1	1.6	-	Barg	-	-	2013	2	-	-
+243	A2-PI-1512B	2515122	Unit-2 GRS B Inter Condenser P	-1	1.6	-	Barg	-	-	2013	2	-	-
+244	A2-PI-1512C	2515123	Unit-2 GRS C Inter Condenser P	-1	1.6	-	Barg	-	-	2013	2	-	-
+245	A2-PI-1513A	2515131	Unit-2 GRS A After Gas Inlet P	-1	1.6	-	Barg	-	-	2013	2	-	-
+246	A2-PI-1513B	2515132	Unit-2 GRS B After Gas Inlet P	-1	1.6	-	Barg	-	-	2013	2	-	-
+247	A2-PI-1513C	2515133	Unit-2 GRS C After Gas Inlet P	-1	1.6	-	Barg	-	-	2013	2	-	-
+248	A2-PI-1515A	2515151	Unit-2 GRS A After Condenser P	-1	1.6	-	Barg	-	-	2013	2	-	-
+249	A2-PI-1515B	2515152	Unit-2 GRS B After Condenser P	-1	1.6	-	Barg	-	-	2013	2	-	-
+250	A2-PI-1515C	2515153	Unit-2 GRS C After Condenser P	-1	1.6	-	Barg	-	-	2013	2	-	-
+251	A2-PI-1516A	2515161	Unit-2 GRS A VP Gas Inlet Pres	-1	1.6	-	Barg	-	-	2013	2	-	-
+252	A2-PI-1516B	2515162	Unit-2 GRS B VP Gas Inlet Pres	-1	1.6	-	Barg	-	-	2013	2	-	-
+253	A2-PI-1521A	2515211	Unit-2 GRS A VP Separator Pres	0	2	-	Barg	-	-	2013	2	-	-
+254	A2-PI-1521B	2515212	Unit-2 GRS B VP Separator Pres	0	2	-	Barg	-	-	2013	2	-	-
+255	A2-T1-1512B	2615122	Unit-2 GRS B Inter C/W Outlet 	0	80	-	oC	-	-	2013	2	-	-
+256	A2-TI-0401	2604010	Unit-2 Trust Front Drain Tempe	0	100	-	oC	-	-	2013	2	-	-
+257	A2-TI-0402	2604020	Unit-2 Trust Rear Drain Temper	0	100	-	oC	-	-	2013	2	-	-
+258	A2-TI-0600	2606000	Unit-2 Main Oil Tank Temperatu	0	100	-	oC	-	-	2013	2	-	-
+259	A2-TI-0613	2606130	Unit-2 Oil Cooler Oil Inlet Te	0	100	-	oC	-	-	2013	2	-	-
+260	A2-TI-0614	2606140	Unit-2 Oil Cooler Oil Outlet T	0	100	-	oC	-	-	2013	2	-	-
+261	A2-TI-0625	2606250	Unit-2 Turbine Front Drain Tem	0	100	-	oC	-	-	2013	2	-	-
+262	A2-TI-0626	2606260	Unit-2 Turbine Rear Drain Temp	0	100	-	oC	-	-	2013	2	-	-
+263	A2-TI-0627	2606270	Unit-2 Generator Front Drain T	0	100	-	oC	-	-	2013	2	-	-
+264	A2-TI-0628	2606280	Unit-2 Generator Rear Drain Te	0	100	-	oC	-	-	2013	2	-	-
+265	A2-TI-0681	2606810	Unit-2 Oil Purifier Coaleser T	0	100	-	oC	-	-	2013	2	-	-
+266	A2-TI-1321A	2613211	Unit-2 Oil Cooler(A) C/W Inlet	0	100	-	oC	-	-	2013	2	-	-
+267	A2-TI-1321B	2613212	Unit-2 Oil Cooler(B) C/W Inlet	0	100	-	oC	-	-	2013	2	-	-
+268	A2-TI-1322A	2613221	Unit-2 Oil Cooler(A) C/W Outle	0	100	-	oC	-	-	2013	2	-	-
+269	A2-TI-1322B	2613222	Unit-2 Oil Cooler(B) C/W Outle	0	100	-	oC	-	-	2013	2	-	-
+270	A2-TI-1330	2613300	Unit-2 Air Cooler Inlet C/W Te	0	100	-	oC	-	-	2013	2	-	-
+271	A2-TI-1331A	2613311	Unit-2 Air Cooler (A) Inlet C/	0	100	-	oC	-	-	2013	2	-	-
+272	A2-TI-1331B	2613312	Unit-2 Air Cooler (B) Inlet C/	0	100	-	oC	-	-	2013	2	-	-
+273	A2-TI-1331C	2613313	Unit-2 Air Cooler (C) Inlet C/	0	100	-	oC	-	-	2013	2	-	-
+274	A2-TI-1331D	2613314	Unit-2 Air Cooler (D) Inlet C/	0	100	-	oC	-	-	2013	2	-	-
+275	A2-TI-1512A	2615121	Unit-2 GRS A Inter C/W Outlet 	0	80	-	oC	-	-	2013	2	-	-
+276	A2-TI-1512C	2615123	Unit-2 GRS C Inter C/W Outlet 	0	80	-	oC	-	-	2013	2	-	-
+277	A2-TI-1513A	2615131	Unit-2 GRS A After Steam Inlet	0	80	-	oC	-	-	2013	2	-	-
+278	A2-TI-1513B	2615132	Unit-2 GRS B After Steam Inlet	0	80	-	oC	-	-	2013	2	-	-
+279	A2-TI-1513C	2615133	Unit-2 GRS C After Steam Inlet	0	80	-	oC	-	-	2013	2	-	-
+280	A2-TI-1515A	2615151	Unit-2 GRS A After C/W Outlet 	0	80	-	oC	-	-	2013	2	-	-
+281	A2-TI-1515B	2615152	Unit-2 GRS B After C/W Outlet 	0	80	-	oC	-	-	2013	2	-	-
+282	A2-TI-1515C	2615153	Unit-2 GRS C After C/W Outlet 	0	80	-	oC	-	-	2013	2	-	-
+283	A2-TI-1516C	2615163	Unit-2 GRS C Gas Outlet Pressu	-1	1.6	-	Barg	-	-	2013	2	-	-
+284	A2-TI-1521A	2615211	Unit-2 GRS A VP Separator Drai	0	80	-	oC	-	-	2013	2	-	-
+285	A2-TI-1521B	2615212	Unit-2 GRS B VP Separator Drai	0	80	-	oC	-	-	2013	2	-	-
+286	A2-TI-2601	2626010	Unit-2 Gen. Transf. Wind. T.  	0	160	-	oC	-	-	2013	2	-	-
+287	A2-TI-2602	2626020	Unit-2 Gen. Transf. Oil Temp.	-20	140	-	oC	-	-	2013	2	-	-
+288	A2-TI-2603	2626030	Unit-2 Unit Transf. Wind Temp.	0	100	-	oC	-	-	2013	2	-	-
+289	A2-TI-2604	2626040	Unit-2 Unit Transf. Oil Temp.	0	160	-	oC	-	-	2013	2	-	-
+290	A2-TI-TR202	2626050	Unit-2 6.3 kV CT Transf  W. T.	0	200	-	oC	-	-	2013	2	-	-
+291	A2-TI-TR203	2626060	Unit-2 6.3 kV Station Tr. W. T	0	200	-	oC	-	-	2013	2	-	-
+292	A2-VM-1001	2210010	Unit-2 6.3 KV Incoming Voltage	0	25	-	KV	-	-	2013	2	-	-
+293	A2-VM-1002	2210020	Unit-2 230 Vdc Voltage	0	500	-	Vdc	-	-	2013	2	-	-
+294	A2-ZI-0115	2701150	Unit-2 MCV (L1)	0	100	-	oC	-	-	2013	2	-	-
+295	A2-ZI-0116	2701160	Unit-2 MCV (L2)	0	100	-	%	-	-	2013	2	-	-
+296	A2-ZI-0117	2701170	Unit-2 MCV (R1)	0	100	-	%	-	-	2013	2	-	-
+297	A2-ZI-0118	2701180	Unit-2 MCV (R2)	0	100	-	%	-	-	2013	2	-	-
+298	A2-ZI-1001	2701001	Unit-2 Shaft Post. Turbin Fron	-8	8	-	mm	-	-	2013	2	-	-
+299	A2-ZI-1002	2701002	Unit-2 Shaft Post. Turbin Rear	-8	8	-	mm	-	-	2013	2	-	-
+300	A2-ZI-1003	2701003	Unit-2 Turb. Casing Diff. Expa	-5	25	-	mm	-	-	2013	2	-	-
+301	AI-PI-ESB-11	500110	Comm. ESB DP Scrubber Fan Fina	0	50	-	Pa	-	-	2013	2	-	-
+302	LI-POND-J5	10400010	J-5 Pond Level	0	5	-	m	-	-	2013	2	-	-
+303	LI-POND-J8	30400010	J-8 Pond Level	0	5	-	m	-	-	2013	2	-	-
+304	LI-POND-MBA	25400000	MBA Pond Level	0	5	-	m	-	-	2013	2	-	-
+305	LI-POND-MBB	23400000	MBB Pond Level	0	5	-	m	-	-	2013	2	-	-
+306	LI-POND-MBD	18400000	MBD Pond Level	0	5	-	m	-	-	2013	2	-	-
+307	LI-POND-MBE	17400000	MBE Pond Level	0	5	-	m	-	-	2013	2	-	-
+308	LI-POND-WWA	10400000	WWA Pond Level	0	5	-	m	-	-	2013	2	-	-
+309	LI-POND-WWF	32400000	WWF Pond Level	0	5	-	m	-	-	2013	2	-	-
+310	LI-POND-WWQ	16400000	WWQ Pond Level	0	5	-	m	-	-	2013	2	-	-
+311	LI-POND-WWW	30400000	WWW Pond Level	0	5	-	m	-	-	2013	2	-	-
+312	PI-1002	16510020	WHP WWQ-5	0	60	-	Barg	-	-	2013	2	-	-
+313	PI-1611A	516111	NaOH Injection Pump A Disch. P	0	10	-	Barg	-	-	2013	2	-	-
+314	PI-1611B	516112	NaOH Injection Pump B Disch. P	0	10	-	Barg	-	-	2013	2	-	-
+315	PI-1611C	516113	NaOH Injection Pump C Disch. P	0	10	-	Barg	-	-	2013	2	-	-
+316	PI-2132	81521320	VS-81-009 Pressure	0	16	-	Barg	-	-	2013	2	-	-
+317	PI-2135	81521350	VS-81-010 Pressure	0	16	-	Barg	-	-	2013	2	-	-
+318	PI-2301	23523010	WHP MBB-1	0	100	-	Barg	-	-	2013	2	-	-
+319	PI-2501	25525010	WHP MBA-1	0	100	-	Barg	-	-	2013	2	-	-
+320	PI-2503	25525030	WHP MBA-2	0	100	-	Bar	-	-	2013	2	-	-
+321	PI-2505	25525050	WHP MBA-3	0	100	-	Barg	-	-	2013	2	-	-
+322	PI-2507	25525070	WHP MBA-4	0	100	-	Barg	-	-	2013	2	-	-
+323	PI-2509	25525090	WHP MBA-5	0	100	-	Barg	-	-	2013	2	-	-
+324	PI-348	81503480	SBS-1 Air Receiver Tank Press.	0	10	-	Barg	-	-	2013	2	-	-
+325	PI-361	83503610	VVS-1 Instr. Air Receiver T. P	0	10	-	Barg	-	-	2013	2	-	-
+326	PI-363	83503630	VVS-1 Instr. Air Receiver T. P	0	10	-	Barg	-	-	2013	2	-	-
+327	PI-375	83503750	VVS-1 Instrument Air Inlet P. 	0	10	-	Barg	-	-	2013	2	-	-
+328	PI-389	81503890	SBS-1 Air Receiver Tank Press.	0	10	-	Barg	-	-	2013	2	-	-
+329	PI-444	81504440	VS-81-007 Pressure	0	16	-	Barg	-	-	2013	2	-	-
+330	PI-470	80504700	SS-1 Wash Water Inlet Pressure	0	10	-	Barg	-	-	2013	2	-	-
+331	PI-483	81504830	VS-81-008 Pressure	0	16	-	Barg	-	-	2013	2	-	-
+332	PI-504	16505040	WHP WWQ-1	0	60	-	Barg	-	-	2013	2	-	-
+333	PI-510	18505100	WHP MBD-4	0	60	-	Barg	-	-	2013	2	-	-
+334	PI-515	18505150	WHP MBD-3	0	60	-	Barg	-	-	2013	2	-	-
+335	PI-520	18505200	WHP MBD-2	0	60	-	Barg	-	-	2013	2	-	-
+336	PI-532	17505320	WHP MBE-3	0	60	-	Barg	-	-	2013	2	-	-
+337	PI-537	17505370	WHP MBE-2	0	60	-	Barg	-	-	2013	2	-	-
+338	PI-549	16505490	WHP WWQ-3	0	60	-	Barg	-	-	2013	2	-	-
+339	PI-554	16505540	WHP WWQ-2	0	60	-	Barg	-	-	2013	2	-	-
+340	PI-564	16505640	WHP WWQ-4	0	60	-	Barg	-	-	2013	2	-	-
+341	PI-637	10506370	WHP WWA-2	0	60	-	Barg	-	-	2013	2	-	-
+342	PI-647	10506470	WHP WWA-3	0	60	-	Barg	-	-	2013	2	-	-
+343	PI-652	18506520	WHP MBD-1	0	60	-	Barg	-	-	2013	2	-	-
+344	PI-788	32507880	WHP WWF-1	-1	5	-	Barg	-	-	2013	2	-	-
+345	PI-800	32508000	WHP WWF-3	-1	5	-	Barg	-	-	2013	2	-	-
+346	PI-806	32508060	WHP WWP-1	0	100	-	Barg	-	-	2013	2	-	-
+347	PI-823	30508230	WHP WWW-2	0	100	-	Barg	-	-	2013	2	-	-
+348	PI-919	30509190	WHP WWW-1	0	0	-	Barg	-	-	2013	2	-	-
+349	PI-994	10509940	WHP WWA-4	0	60	-	Barg	-	-	2013	2	-	-
+350	TI-443	81604430	VS-81-007 Temperature	0	400	-	oC	-	-	2013	2	-	-
+351	TI-482	81604820	VS-81-008 Temperature	0	400	-	oC	-	-	2013	2	-	-
+352	TI-TRF-MBA	25600000	MBA Well Pad Trafo Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+353	TI-TRF-MBB	23600000	MBB Well Pad Trafo Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+354	TI-TRF-MBD	18600000	MBD Well Pad Trafo Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+355	TI-TRF-MBE	17600000	MBE Well Pad Trafo Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+356	TI-TRF-WWA	10600000	WWA Well Pad Trafo Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+357	TI-TRF-WWF	32600000	WWF Well pad Trafo Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+358	TI-TRF-WWQ	16600000	WWQ Well Pad Trafo Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+359	TI-TRF-WWW	30600000	WWW Well Pad Trafo Oil Temp.	0	100	-	oC	-	-	2013	2	-	-
+360	xBATT-SPR-01	90219001	Battery Spare (Handheld Lamp)	0	100	-	%	-	-	2013	2	-	-
+361	xBATT-SPR-02	90219002	Battery Spare (for Head Lamp)	0	100	-	%	-	-	2013	2	-	-
+362	xCHIN-IRN-01	90309001	Chain Iron (for LOTO System)	0	100	-	%	-	-	2013	2	-	-
+363	xCHIN-PLS-01	90316001	Chain Plastic (for Safety Barr	0	100	-	%	-	-	2013	2	-	-
+364	xCONE-RING	90318001	Ring Connection on Safety Cone	0	100	-	%	-	-	2013	2	-	-
+365	xCUT-PLIER	90311011	Cutting Pliers	0	100	-	%	-	-	2013	2	-	-
+366	xFLSH-LGT-01	90607001	Flash Light 01	0	100	-	%	-	-	2013	2	-	-
+367	xFLSH-LGT-02	90607002	Flash Light 02	0	100	-	%	-	-	2013	2	-	-
+368	xFLSH-LGT-03	90607003	Flash Light 03	0	100	-	%	-	-	2013	2	-	-
+369	xFLSH-LGT-04	90607004	Flash Light 04	0	100	-	%	-	-	2013	2	-	-
+370	xFLSH-LGT-05	90607005	Flash Light 05	0	100	-	%	-	-	2013	2	-	-
+371	xFLSH-LGT-06	90607006	Flash Light 06	0	100	-	%	-	-	2013	2	-	-
+372	xFLSH-LGT-07	90607007	Flash Light 07	0	100	-	%	-	-	2013	2	-	-
+373	xFLSH-LGT-08	90607008	Flash Light 08	0	100	-	%	-	-	2013	2	-	-
+374	xFLSH-LGT-09	90607009	Flash Light 09	0	100	-	%	-	-	2013	2	-	-
+375	xFLSH-LGT-10	90607010	Flash Light 10	0	100	-	%	-	-	2013	2	-	-
+376	xFLSH-LGT-11	90607011	Flash Light 11	0	100	-	%	-	-	2013	2	-	-
+377	xFLSH-LGT-12	90607012	Flash Light 12	0	100	-	%	-	-	2013	2	-	-
+378	xFLSH-LGT-13	90607013	Flash Light 13	0	100	-	%	-	-	2013	2	-	-
+379	xFLSH-LGT-14	90607014	Flash Light 14	0	100	-	%	-	-	2013	2	-	-
+380	xHND-RDIO-01	90813001	Communication Radio 01	0	100	-	%	-	-	2013	2	-	-
+381	xHND-RDIO-02	90813002	Communication Radio 02	0	100	-	%	-	-	2013	2	-	-
+382	xHND-RDIO-03	90813003	Communication Radio 03	0	100	-	%	-	-	2013	2	-	-
+383	xHND-RDIO-04	90813004	Communication Radio 04	0	100	-	%	-	-	2013	2	-	-
+384	xHND-RDIO-05	90813005	Communication Radio 05	0	100	-	%	-	-	2013	2	-	-
+385	xHND-RDIO-06	90813006	Communication Radio 06	0	100	-	%	-	-	2013	2	-	-
+386	xHND-RDIO-07	90813007	Communication Radio 07	0	100	-	%	-	-	2013	2	-	-
+387	xLOCK-BOX-01	90702001	Lock Box 01 - PadLock	0	100	-	%	-	-	2013	2	-	-
+388	xLOCK-BOX-02	90702002	Lock Box 02 - PadLock	0	100	-	%	-	-	2013	2	-	-
+389	xLOCK-BOX-03	90702003	Lock Box 03 - PadLock	0	100	-	%	-	-	2013	2	-	-
+390	xLOCK-BOX-04	90702004	Lock Box 04 - PadLock	0	100	-	%	-	-	2013	2	-	-
+391	xLOCK-BOX-05	90702005	Lock Box 05 - PadLock	0	100	-	%	-	-	2013	2	-	-
+392	xLOCK-BOX-06	90702006	Lock Box 06 - PadLock	0	100	-	%	-	-	2013	2	-	-
+393	xLOCK-BOX-07	90702007	Lock Box 07 - PadLock	0	100	-	%	-	-	2013	2	-	-
+394	xLOCK-BOX-08	90702008	Lock Box 08 - PadLock	0	100	-	%	-	-	2013	2	-	-
+395	xLOCK-BOX-09	90702009	Lock Box 09 - PadLock	0	100	-	%	-	-	2013	2	-	-
+396	xLOCK-BOX-10	90702010	Lock Box 10 - PadLock	0	100	-	%	-	-	2013	2	-	-
+397	xLOCK-BOX-11	90702011	Lock Box 11 - PadLock	0	100	-	%	-	-	2013	2	-	-
+398	xLOCK-BOX-12	90702012	Lock Box 12 - PadLock	0	100	-	%	-	-	2013	2	-	-
+399	xLOCK-BOX-13	90702013	Lock Box 13 - PadLock	0	100	-	%	-	-	2013	2	-	-
+400	xLOCK-BOX-14	90702014	Lock Box 14 - PadLock	0	100	-	%	-	-	2013	2	-	-
+401	xLOCK-BOX-15	90702015	Lock Box 15 - PadLock	0	100	-	%	-	-	2013	2	-	-
+402	xLOCK-BOX-16	90702016	Lock Box 16 - PadLock	0	100	-	%	-	-	2013	2	-	-
+403	xLOCK-BOX-17	90702017	Lock Box 17 - PadLock	0	100	-	%	-	-	2013	2	-	-
+404	xLTSY-BALLD	91202001	Ball Valve LockDevice	0	100	-	%	-	-	2013	2	-	-
+405	xLTSY-CABLD	91203111	Sling / Cable Lock Device	0	100	-	%	-	-	2013	2	-	-
+406	xLTSY-CBLD	91203001	Circuits Breaker Lock Device	0	100	-	%	-	-	2013	2	-	-
+407	xLTSY-GVLD	91207001	Gate Valve Lock Device	0	100	-	%	-	-	2013	2	-	-
+408	xLTSY-MLTLK	91213001	HASP/Safety Multi Lock Device	0	100	-	%	-	-	2013	2	-	-
+409	xLTSY-TBVLD	91220001	Tight Ball Valve Lock Device	0	100	-	%	-	-	2013	2	-	-
+410	xMLTI-GSDT01	91307001	Multi Gas Detector 01	0	100	-	%	-	-	2013	2	-	-
+411	xPIPE-WRN01	91123001	"Pipe Wrench 12"""	0	100	-	%	-	-	2013	2	-	-
+412	xPIPE-WRN02	91123002	"Pipe Wrench 24"""	0	100	-	%	-	-	2013	2	-	-
+413	xPORT-GSDT01	91107001	Portable Gas Detector 01	0	100	-	%	-	-	2013	2	-	-
+414	xPRT-RDIO-01	91113001	Portable Comm. Radio 01	0	100	-	%	-	-	2013	2	-	-
+415	xPRT-RDIO-02	91113002	Portable Comm. Radio 02	0	100	-	%	-	-	2013	2	-	-
+416	xPTW-FLDR01	91606001	PTW Folder 01	0	100	-	%	-	-	2013	2	-	-
+417	xRAIN-COAT01	91803001	Rain Coat 01	0	100	-	%	-	-	2013	2	-	-
+418	xSFTY-BALLD	91902001	Ball Valve LockDevice	0	100	-	%	-	-	2013	2	-	-
+419	xSFTY-CONE	91903001	Safety Cone	0	100	-	%	-	-	2013	2	-	-
+420	xTAG-BLUE	92002001	Tag (for Supervisory)	0	100	-	%	-	-	2013	2	-	-
+421	xTAG-RED	92013001	Tag LOTO System	0	100	-	%	-	-	2013	2	-	-
+422	xTAG-YELLW	92025001	Tag (Do Not Operate)	0	100	-	%	-	-	2013	2	-	-
