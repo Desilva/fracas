@@ -177,14 +177,15 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             if (id_rca != null)
             {
-                List<string> r = db.rca_implementation.Where(p => p.id_rca == id_rca).Select(p => p.next_action).ToList();
+                //List<string> r = db.rca_implementation.Where(p => p.id_rca == id_rca).Select(p => p.next_action).ToList();
                 incident_report ir = db.incident_report.Where(p => p.id_rca == id_rca).ToList().FirstOrDefault();
+                rca rca = db.rcas.Find(id_rca);
                 ViewBag.ir = ir;
                 string dat = "";
-                foreach (string s in r)
-                {
-                    //dat += s + "\r";
-                }
+                //foreach (string s in r)
+                //{
+                //    //dat += s + "\r";
+                //}
                 ViewBag.datas = dat;
                 ViewBag.id_ir = id_rca;
                 string id_user = Session["username"].ToString();
@@ -199,11 +200,15 @@ namespace StarEnergi.Controllers.FrontEnd
                         id_iir = null,
                         PIC = imp.pic.ToString(),
                         description = imp.next_action,
-                        completion_date = imp.due_date
+                        completion_date = imp.due_date,
+                        id_rca = id_rca
                     };
                     db.iir_recommendations.Add(rec);
                     db.SaveChanges();
                 }
+
+                ViewBag.immediate_cause = rca.immediate_cause;
+                ViewBag.basic_cause = rca.basic_cause;
             } else if (id != null)
             {
                 ViewBag.mod = id;
@@ -330,7 +335,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 db.SaveChanges();
             }
 
-            List<iir_recommendations> li = db.iir_recommendations.Where(p => p.id_iir == null).ToList();
+            List<iir_recommendations> li = db.iir_recommendations.Where(p => p.id_rca == id_rca ).ToList();
             string recommendation = "";
             int i = 1;
             foreach (iir_recommendations l in li)
@@ -433,22 +438,26 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         // Ajax select binding recommendation
         [GridAction]
-        public ActionResult _SelectAjaxRecommendation(int? id)
+        public ActionResult _SelectAjaxRecommendation(int? id,int? id_rca)
         {
-            return bindingRecommendation(id);
+            return bindingRecommendation(id,id_rca);
         }
 
         //select data incident report
-        private ViewResult bindingRecommendation(int? id)
+        private ViewResult bindingRecommendation(int? id, int? id_rca)
         {
             List<iir_recommendations> f = new List<iir_recommendations>();
             Debug.WriteLine(id == null);
             if (id == null)
             {
-                f = db.iir_recommendations.Where(p => p.id_iir == null).ToList();
-                foreach (iir_recommendations iir in f)
+                if (id_rca != null)
                 {
-                    iir.PIC = db.employees.Find(Int32.Parse(iir.PIC)).alpha_name;
+                    f = db.iir_recommendations.Where(p => p.id_rca == id_rca).ToList();
+                    foreach (iir_recommendations iir in f)
+                    {
+                        employee e = db.employees.Find(Int32.Parse(iir.PIC != null && iir.PIC != "" ? iir.PIC : "0"));
+                        iir.PIC = e != null ? e.alpha_name : "";
+                    }
                 }
             }
             else
@@ -456,7 +465,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 f = db.iir_recommendations.Where(p => p.id_iir == id).ToList();
                 foreach (iir_recommendations iir in f)
                 {
-                    iir.PIC = db.employees.Find(Int32.Parse(iir.PIC)).alpha_name;
+                    employee e = db.employees.Find(Int32.Parse(iir.PIC != null && iir.PIC != "" ? iir.PIC : "0"));
+                    iir.PIC = e != null ? e.alpha_name : "";
                 }
             }
 
@@ -473,7 +483,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult _DeleteAjaxRecommendation(int id, int? id_iir)
         {
             deleteRecommendation(id);
-            return bindingRecommendation(id_iir);
+            return bindingRecommendation(id_iir,null);
         }
 
         //delete data fracas equipment

@@ -607,13 +607,13 @@
         <tr>
             <td>
                 <h5>Immediate Causes</h5><small>(These include <b>acts</b> [personal actions] and/or <b>conditions</b> [jobsite circumstances]. Attach additional pages if necessary)</small><br />
-                <textarea id="imme_causes" name="imme_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.immediate_causes)).ToHtmlString() : "")</textarea>
+                <textarea id="imme_causes" name="imme_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.immediate_causes)).ToHtmlString() : Html.Raw(System.Web.HttpUtility.HtmlDecode(ViewBag.immediate_cause as string)).ToHtmlString())</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Basic Causes</h5><small>(These include the <b>personal factors</b> and/or <b>job factors</b> which allow the immediate causes to occur. Attach additional pages if necessary)</small><br />
-               <textarea id="basic_causes" name="basic_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.basic_causes)).ToHtmlString() : "")</textarea>
+               <textarea id="basic_causes" name="basic_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.basic_causes)).ToHtmlString() : Html.Raw(System.Web.HttpUtility.HtmlDecode(ViewBag.basic_cause as string)).ToHtmlString())</textarea>
             </td>
         </tr>
         <tr>
@@ -655,7 +655,7 @@
         {
             dataBinding.Ajax()
                 .Delete("_DeleteAjaxRecommendation", "Investigation", new { id_iir = id })
-                .Select("_SelectAjaxRecommendation", "Investigation", new { id = id });
+                .Select("_SelectAjaxRecommendation", "Investigation", new { id = id, id_rca = id_rca });
         })
         .Columns(columns =>
         {

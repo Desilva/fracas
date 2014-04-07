@@ -72,7 +72,8 @@
         for (var i = 1; i < form.length-3; i++) {
             if (form[i].checked == true) {
                 var node=document.createElement("li");
-                var textnode=document.createTextNode(arrayName[form[i].value]);
+                var textnode=document.createTextNode(arrayName[form[i].value].replace('&#39;','\''));
+                console.log(textnode);
                 node.appendChild(textnode);
                 document.getElementById("chosenList").appendChild(node);
             }

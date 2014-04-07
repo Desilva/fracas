@@ -150,7 +150,7 @@ function calculate_downtime() {
     if ($("#last_operation").val() != '')
         last_ops = (new Date($("#last_operation").val())).getTime();
     now = (new Date()).getTime();
-    
+    console.log(new Date());
     if (($("#datetime_stop").val() == '') && ($("#datetime_ops").val() == ''))
         return;
 
@@ -164,7 +164,7 @@ function calculate_downtime() {
             return;
         }
         if(ops != 0){
-            if ((ops - stop) > 0) {
+            if ((ops - stop) >= 0) {
                 valid = true;
                 $("#realmod_date_ops").html("");
                 $("#realmod_date_stop").html("");
@@ -172,6 +172,7 @@ function calculate_downtime() {
                 $("#realmod_date_ops").html("<font COLOR=\"red\">Date/Time Ops harus lebih besar dari<br /> Date/Time Stop</font>");
                 $("#datetime_ops").val("");
                 $("#downtime").val("");
+                $("#durasi").data("tTextBox").value("");
                 return;
             }
         }
@@ -189,10 +190,10 @@ function calculate_downtime() {
             if ($("#datetime_ops").val() != '') {
                 var downtime = (ops - stop) / (60 * 60 * 1000);
                 $("#downtime").val(downtime);
-                $("#durasi").val(downtime);
+                $("#durasi").data("tTextBox").value(downtime);
             } else {
                 $("#downtime").val("");
-                $("#durasi").val("");
+                $("#durasi").data("tTextBox").value("");
             }
         }
     }

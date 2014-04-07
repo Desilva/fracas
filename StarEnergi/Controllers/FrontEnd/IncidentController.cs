@@ -321,7 +321,8 @@ namespace StarEnergi.Controllers.FrontEnd
         [GridAction(EnableCustomBinding = true)]
         public ActionResult _CustomBinding(GridCommand command)
         {
-            IEnumerable data = GetData(command);
+            string idLogin = Session["id"].ToString();
+            IEnumerable data = GetData(command, idLogin);
             foreach (IREntity i in data)
             {
                 //if (i.id_rca != null)
@@ -348,7 +349,7 @@ namespace StarEnergi.Controllers.FrontEnd
             });
         }
 
-        private static IEnumerable GetData(GridCommand command)
+        private static IEnumerable GetData(GridCommand command, string idLogin)
         {
             var dataContext = new relmon_star_energiEntities();
             IQueryable<IREntity> data = (from p in dataContext.incident_report
@@ -413,6 +414,8 @@ namespace StarEnergi.Controllers.FrontEnd
                                                     tsr_number = ir_tsr.no != null ? ir_tsr.no : "",
                                                     prepared_by_name = emp.alpha_name
                                                 });
+            //data = data.Where(p => p.prepared_by == idLogin || p.ack_supervisor == idLogin || p.superintendent == idLogin || p.loss_control == idLogin || p.she_superintendent == idLogin || p.field_manager == idLogin ||
+            //    p.supervisor_delegate == idLogin || p.superintendent_delegate == idLogin || p.loss_control_delegate == idLogin || p.she_superintendent_delegate == idLogin || p.field_manager_delegate == idLogin);
             data = data.ApplyFiltering(command.FilterDescriptors);
             count = data.FirstOrDefault() == null ? 0 : data.Count();
             //Apply sorting

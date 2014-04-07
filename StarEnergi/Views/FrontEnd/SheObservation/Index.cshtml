@@ -97,7 +97,7 @@
     }
 
     function showSheObservation() {
-        $('#sheObservation').load('SheObservation/Report');
+        $('#sheObservation').load('SheObservation/Report?pg=' + '@ViewBag.page');
     }
 
     $(document).ready(function () {

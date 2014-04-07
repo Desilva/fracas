@@ -22,7 +22,6 @@
         valueDest = valueDest.split(';');
         var value = treeView.getItemValue(e.item);
         value = value.split(';');
-        console.log(value[0] + "  " + valueDest[0]);
         if (e.dropPosition == "before" || e.dropPosition == "after") {
             if (valueDest[0] == "PLANT" || (value[0] != "DEPARTMENT" && valueDest[0] == "DEPARTMENT")) {
                 e.isValid = false;
@@ -38,6 +37,8 @@
             }
         }
 
+        var parent_item = $(e.item).parent().closest(".t-item");
+
         if (e.isValid == false) {
             e.preventDefault();
         } else {
@@ -48,10 +49,12 @@
                         dest_id: valueDest[1],
                         type: 1
                     };
-
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEEBOSS;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 } else if (value[0] == "EMPLOYEEBOSS" && valueDest[0] == "EMPLOYEEBOSS") {
@@ -60,10 +63,12 @@
                         dest_id: valueDest[1],
                         type: 3
                     };
-
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEEBOSS;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 } else if (value[0] == "EMPLOYEE" && valueDest[0] == "EMPLOYEE") {
@@ -72,10 +77,12 @@
                         dest_id: valueDest[1],
                         type: 2
                     };
-
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEE;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 } else if (value[0] == "EMPLOYEEBOSS" && valueDest[0] == "EMPLOYEE") {
@@ -88,6 +95,9 @@
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEE;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 }
@@ -102,6 +112,10 @@
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEE;" + value[1]);
+                            e.preventDefault();
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 } else if (value[0] == "EMPLOYEE" && valueDest[0] == "DEPARTMENT") {
@@ -114,6 +128,9 @@
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEEBOSS;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 } else if (value[0] == "EMPLOYEE" && valueDest[0] == "EMPLOYEE") {
@@ -126,6 +143,9 @@
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEE;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 } else if (value[0] == "EMPLOYEEBOSS" && valueDest[0] == "DEPARTMENT") {
@@ -138,6 +158,9 @@
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEEBOSS;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 } else if (value[0] == "EMPLOYEEBOSS" && valueDest[0] == "EMPLOYEEBOSS") {
@@ -150,6 +173,9 @@
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEE;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 } else if (value[0] == "EMPLOYEEBOSS" && valueDest[0] == "EMPLOYEE") {
@@ -162,6 +188,9 @@
                     $.post("Employee/DragDrop", values, function (data) {
                         if (data != undefined) {
                             $(e.item).closest('.t-item').find(':input[name="itemValue"]').eq(0).val("EMPLOYEE;" + value[1]);
+                            treeView.ajaxRequest(parent_item);
+                            treeView.expand(parent_item);
+                            treeView.ajaxRequest($(e.item));
                         }
                     });
                 }

@@ -73,6 +73,7 @@
                 .Name("datetime_stop")
                 .InputHtmlAttributes(new { id = "datetime_stop", onchange="calculate_downtime();" })
                 .ClientEvents(o => o.OnChange("calculate_downtime"))
+                .Format("M/d/yyyy hh:mm tt")
             )<br /><div id="realmod_date_stop" style="margin-top:10px;"></div>       
         </div>
 
@@ -84,6 +85,7 @@
                 .Name("datetime_ops")
                 .InputHtmlAttributes(new { id = "datetime_ops"})
                 .ClientEvents(o => o.OnChange("calculate_downtime"))
+                .Format("M/d/yyyy hh:mm tt")
             )<br /><div id="realmod_date_ops" style="margin-top:10px;"></div>     
         </div>
 
@@ -92,7 +94,7 @@
 		
         <div class="info_inside_left">Repair Duration</div>
         <div class="infoFieldinput">
-            @(Html.Telerik().IntegerTextBox()
+            @(Html.Telerik().NumericTextBox()
                 .Name("durasi")
                 .InputHtmlAttributes(new { id = "durasi" })
             )&nbsp;Hours

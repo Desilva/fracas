@@ -254,7 +254,7 @@ group by proc_ref_list
         RGF0YVNvdXJjZVBhcmFtZXRlcgMAAAACAAAACQQAAAAFBAAAAEtTeXN0ZW0uQ29sbGVjdGlvbnMuR2Vu
         ZXJpYy5MaXN0YDFbW1RlbGVyaWsuUmVwb3J0aW5nLlNxbERhdGFTb3VyY2VQYXJhbWV0ZXIDAAAABl9p
         dGVtcwVfc2l6ZQhfdmVyc2lvbgQAACpUZWxlcmlrLlJlcG9ydGluZy5TcWxEYXRhU291cmNlUGFyYW1l
-        dGVyW10CAAAACAgDAAAACQUAAAABAAAAFQAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
+        dGVyW10CAAAACAgDAAAACQUAAAABAAAAGQAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
         Zy5TcWxEYXRhU291cmNlUGFyYW1ldGVyAgAAAAkGAAAADQMMBwAAAE5TeXN0ZW0uRGF0YSwgVmVyc2lv
         bj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkM
         CAAAAElTeXN0ZW0sIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tl
@@ -263,7 +263,7 @@ group by proc_ref_list
         K3ZhbHVlI0RhdGFTb3VyY2VQYXJhbWV0ZXIrUHJvcGVydHlDaGFuZ2VkBAECBBJTeXN0ZW0uRGF0YS5E
         YlR5cGUHAAAAMVN5c3RlbS5Db21wb25lbnRNb2RlbC5Qcm9wZXJ0eUNoYW5nZWRFdmVudEhhbmRsZXII
         AAAAAgAAAAX3////ElN5c3RlbS5EYXRhLkRiVHlwZQEAAAAHdmFsdWVfXwAIBwAAABAAAAAGCgAAAAVA
-        WUVBUgYLAAAABDIwMTMKCw==
+        WUVBUgYLAAAABDIwMTQKCw==
 </value>
   </metadata>
   <data name="DataTableRekap.SelectCommand" xml:space="preserve">
@@ -277,14 +277,14 @@ SELECT 'Raised' AS [Status],
    where YEAR(date_rise) = @YEAR
 UNION ALL
 SELECT 'Open' AS [Status],
-       COUNT(CASE WHEN DateDiff(day,date_rise,pir.initiator_verified_date) &lt;=0 OR (isnull(pir.initiator_verified_date,'') = '' AND isnull(pir.date_rise,'') &lt;&gt; '') THEN 1 END) as yeartodate
+       COUNT(CASE WHEN isnull(pir.target_completion_init,'') &lt;&gt; '' AND DateDiff(day,GETDATE(),pir.target_completion_init) &gt;= 0 AND isnull(pir.initiator_verified_date,'') = '' THEN 1 END) as yeartodate
   FROM pir
-  where month(date_rise) &lt;= month(GETDATE())
+  where DATEDIFF(day,GETDATE(),date_rise) &lt;= 0
 UNION ALL
 SELECT 'Overdue' AS [Status],
-       COUNT(CASE WHEN isnull(pir.initiator_verified_date,'') &lt;&gt; '' AND DateDiff(day,date_rise,pir.initiator_verified_date) &gt; 0 THEN 1 END) as yeartodate
+       COUNT(CASE WHEN isnull(pir.target_completion_init,'') &lt;&gt; '' AND DateDiff(day,GETDATE(),pir.target_completion_init) &lt; 0 THEN 1 END) as yeartodate
   FROM pir
-  where month(date_rise) &lt;= month(GETDATE())</value>
+  where DATEDIFF(day,GETDATE(),date_rise) &lt;= 0</value>
   </data>
   <metadata name="DataTableKBP.DefaultValues" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -298,7 +298,7 @@ SELECT 'Overdue' AS [Status],
         RGF0YVNvdXJjZVBhcmFtZXRlcgMAAAACAAAACQQAAAAFBAAAAEtTeXN0ZW0uQ29sbGVjdGlvbnMuR2Vu
         ZXJpYy5MaXN0YDFbW1RlbGVyaWsuUmVwb3J0aW5nLlNxbERhdGFTb3VyY2VQYXJhbWV0ZXIDAAAABl9p
         dGVtcwVfc2l6ZQhfdmVyc2lvbgQAACpUZWxlcmlrLlJlcG9ydGluZy5TcWxEYXRhU291cmNlUGFyYW1l
-        dGVyW10CAAAACAgDAAAACQUAAAABAAAAFAAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
+        dGVyW10CAAAACAgDAAAACQUAAAABAAAAGgAAAAcFAAAAAAEAAAAEAAAABChUZWxlcmlrLlJlcG9ydGlu
         Zy5TcWxEYXRhU291cmNlUGFyYW1ldGVyAgAAAAkGAAAADQMMBwAAAE5TeXN0ZW0uRGF0YSwgVmVyc2lv
         bj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkM
         CAAAAElTeXN0ZW0sIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tl
@@ -307,7 +307,7 @@ SELECT 'Overdue' AS [Status],
         K3ZhbHVlI0RhdGFTb3VyY2VQYXJhbWV0ZXIrUHJvcGVydHlDaGFuZ2VkBAECBBJTeXN0ZW0uRGF0YS5E
         YlR5cGUHAAAAMVN5c3RlbS5Db21wb25lbnRNb2RlbC5Qcm9wZXJ0eUNoYW5nZWRFdmVudEhhbmRsZXII
         AAAAAgAAAAX3////ElN5c3RlbS5EYXRhLkRiVHlwZQEAAAAHdmFsdWVfXwAIBwAAABAAAAAGCgAAAAVA
-        WUVBUgYLAAAABDIwMTMKCw==
+        WUVBUgYLAAAABDIwMTQKCw==
 </value>
   </metadata>
   <data name="DataTableKBP.SelectCommand" xml:space="preserve">
@@ -328,13 +328,13 @@ select m.mnuum as mnuum,
 	COUNT(CASE WHEN month(p.date_rise) = m.mnuum THEN 1 END) as Raised
 from mnth m
 left join (Select * from pir where YEAR(date_rise) = @YEAR) as p on m.mnuum = month(p.date_rise)
-where m.mnuum &lt;= (CASE WHEN @YEAR &lt; YEAR(GETDATE()) THEN 12 ELSE MONTH(GETDATE()) END)
+where m.mnuum &lt;= 12
     group by m.mnuum) as cr join
 (select m.mnuum as mnuum,
-	COUNT(CASE WHEN DateDiff(day,date_rise,p.initiator_verified_date) &lt;=0 OR (isnull(p.initiator_verified_date,'') = '' AND isnull(p.date_rise,'') &lt;&gt; '') THEN 1 END) as [Open],
-	COUNT(CASE WHEN isnull(p.initiator_verified_date,'') &lt;&gt; '' AND DateDiff(day,date_rise,p.initiator_verified_date) &gt; 0 THEN 1 END) as Overdue
+	COUNT(CASE WHEN isnull(p.target_completion_init,'') &lt;&gt; '' AND DateDiff(day,GETDATE(),p.target_completion_init) &gt; 0 AND isnull(p.initiator_verified_date,'') = '' THEN 1 END) as [Open],
+	COUNT(CASE WHEN isnull(p.target_completion_init,'') &lt;&gt; '' AND DateDiff(day,GETDATE(),p.target_completion_init) &lt;= 0 THEN 1 END) as Overdue
 from mnth m
-left join (Select * from pir) as p on m.mnuum = month(p.date_rise) where m.mnuum &lt;= (CASE WHEN @YEAR &lt; YEAR(GETDATE()) THEN 12 ELSE MONTH(GETDATE()) END) group by m.mnuum) as oo on oo.mnuum = cr.mnuum
+left join (Select * from pir) as p on m.mnuum = month(p.date_rise) where m.mnuum &lt;= 12 group by m.mnuum) as oo on oo.mnuum = cr.mnuum
 
 </value>
   </data>

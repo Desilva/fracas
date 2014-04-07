@@ -24,9 +24,9 @@
         var templateDel = '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#"><span class="t-icon t-delete"></span></a>';
         row.cells[1].title = dataItem.reference;
         if (dataItem.status == 'INITIATOR') { //complete
-            row.cells[6].innerHTML = templateDel+templateDefault;
+            row.cells[8].innerHTML = templateDel+templateDefault;
         } else {
-            row.cells[6].innerHTML = templateDefault;
+            row.cells[8].innerHTML = templateDefault;
         }
     }
 
@@ -76,6 +76,14 @@
         grid.rebind({id : $('#stat_pir').val()});
     }
 
+    function OnDataBinding(e) {
+        e.data = {id : $('#stat_pir').val()};
+    }
+
+    function exportData() {
+        window.location='@Url.Action("ExportExcelData","PIR")';
+    }
+
     /*function OnRowDataBoundList(e) {
         var dataItem = e.dataItem;
         var row = e.row;
@@ -93,8 +101,12 @@
 </script>
 <h3>Key Performance Indicator</h3>
 <div>
-    <span><b>Target (not over): <div id="pir_view_target" style="display:inline;">@ViewBag.pir_target</div>%  <div style="display:inline;"><input type="button" id="changeTarget" value="Change Target" onclick="changePirTarget()"/></div></b></span><br />
+    <span><b>Target (completed on time): <div id="pir_view_target" style="display:inline;">@ViewBag.pir_target</div>%  <div style="display:inline;"><input type="button" id="changeTarget" value="Change Target" onclick="changePirTarget()"/></div></b></span><br />
     <span><b>Total PIR : <div id="view_total_pir" style="display:inline;">@ViewBag.totalPir</div></span></b><br />
+    <span><b>Total Completed on Time PIR : <div id="view_total_complete" style="display:inline;">@ViewBag.totalCompleteOnTime</div></b></span><br />
+    <span><b>Total Close PIR : <div id="view_total_close" style="display:inline;">@ViewBag.totalClose</div></b></span><br />
+    <span><b>Total Raised PIR : <div id="view_total_raised" style="display:inline;">@ViewBag.totalRaised</div></b></span><br />
+    <span><b>Total Open PIR : <div id="view_total_open" style="display:inline;">@ViewBag.totalOpen</div></b></span><br />
     <span><b>Total Overdue PIR : <div id="view_total_overdue" style="display:inline;">@ViewBag.totalOverdue</div></b></span><br />
     <div>
         <img src="../../../Content/image/success.png" alt="Success" width="200" id="success" @((ViewBag.success as Nullable<bool>).Value == true ? "style=display:block" : "style=display:none") />
@@ -261,8 +273,12 @@
         <option value="2">Raised</option>
         <option value="3">Open</option>
         <option value="4">Overdue</option>
-    </select>				
+    </select>	
+    @if (Session["id"] != "277") {
+    <input type="button" id="exportExcel" value="Export PIR Data" onclick="exportData()"/>
+    }			
 </form>
+
 @(Html.Telerik().Grid<StarEnergi.Models.PIREntity>()
         .Name("pirInitiator")
         .DataKeys(keys =>
@@ -285,11 +301,13 @@
         .Columns(columns =>
         {
             columns.Bound(o => o.id).Hidden();
-            columns.Bound(o => o.no).Title("No");
-            columns.Bound(o => o.title).Title("Title");
-            columns.Bound(o => o.date_rise).Title("Date Raise");
-            columns.Bound(o => o.target_completion_init).Title("Target Completion");
-            columns.Bound(o => o.status).Title("Status");
+            columns.Bound(o => o.no).Width(175).Title("No");
+            columns.Bound(o => o.title).Width(250).Title("Title");
+            columns.Bound(o => o.date_rise).Width(175).Title("Date Raise");
+            columns.Bound(o => o.target_completion_init).Width(175).Title("Target Completion");
+            columns.Bound(o => o.status).Width(125).Title("Status");
+            columns.Bound(o => o.kbpo).Width(175).Title("KBPO");
+            columns.Bound(o => o.source).Width(100).Title("Source");
             columns.Command(commands =>
             {
                 commands.Custom("Log")
@@ -305,6 +323,7 @@
             .OnRowSelect("onRowSelect")
             .OnRowDataBound("OnRowDataBoundEq")
             .OnComplete("OnComplete")
+            .OnDataBinding("OnDataBinding")
         )
         .Pageable(p => p.PageSize(20))
         .Sortable()

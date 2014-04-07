@@ -23,7 +23,7 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         // GET: /HseObservationForm/
 
-        public ActionResult Index()
+        public ActionResult Index(int? pg)
         {
             if (Session["username"] == null)
             {
@@ -47,19 +47,21 @@ namespace StarEnergi.Controllers.FrontEnd
                 //if (a.position.ToLower().Contains("superintendent"))
                 processUserList.Add(new employee { alpha_name = a.alpha_name, id = a.id });
             }
+            ViewBag.page = pg;
             ViewData["total"] = GetCount();
             ViewBag.emp_id = new SelectList(processUserList, "id", "alpha_name");
             return View();
         }
 
-        public ActionResult report()
+        public ActionResult report(int? pg)
         {
             ViewData["user_role"] = li;
             ViewData["total"] = GetCount();
+            ViewBag.page = pg;
             return PartialView();
         }
 
-        public ActionResult addSheObservation(int? id)
+        public ActionResult addSheObservation(int? id, int? page)
         {
             string username = Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
@@ -95,7 +97,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else
                 {
-                    return DetailSheObservation(id.Value);
+                    return DetailSheObservation(id.Value,page.Value);
                 }
             }
             else
@@ -502,7 +504,7 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
         }
 
-        public ActionResult DetailSheObservation(int id)
+        public ActionResult DetailSheObservation(int id, int page)
         {
             she_observation details = new she_observation();
             details = db.she_observation.Find(id);
@@ -528,7 +530,7 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.user = has;
             string username = Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
-
+            ViewBag.page = page;
             ViewBag.list_equipment = db.equipments.ToList();
             ViewBag.nama = "Detail She Observation";
             return PartialView(details);

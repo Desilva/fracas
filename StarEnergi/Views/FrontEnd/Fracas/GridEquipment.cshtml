@@ -10,7 +10,7 @@
         var dataItem = e.dataItem;
         var row = e.row;
         var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="View" onClick="View(' + dataItem.id + ');">'
-                                + '<span class="t-icon t-edit"></span>'
+                                + '<span class="t-icon t-view-2"></span>'
                                 + '</a>';
         var templateUnComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="Edit" onClick="Edit(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-edit"></span>'
@@ -130,6 +130,10 @@
 
     .t-ir {
         background-image:url("/Content/image/add_ir.png");
+    }
+
+    .t-view-2 {
+        background-image:url("/Content/image/view-2.png");
     }
 </style>
 @( 

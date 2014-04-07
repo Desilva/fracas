@@ -1926,14 +1926,14 @@ namespace StarEnergi.Utilities
                 db.daily_log.Add(dl);
                 db.SaveChanges();
 
-                int id = db.daily_log.Max(p => p.id);
+                int id = dl.id;
                 string subPath = "~/Attachment/daily_log/" + id; // your code goes here
                 bool IsExists = System.IO.Directory.Exists(System.Web.HttpContext.Current.Server.MapPath(subPath));
                 if (!IsExists)
                     System.IO.Directory.CreateDirectory(System.Web.HttpContext.Current.Server.MapPath(subPath));
-                if (data[36][11] == null && data[36][11] == null && data[36][12] == null && data[37][12] == null)
+                if (shift == 2)
                 {
-                    daily_log shift1 = db.daily_log.Where(p => p.date == dat).FirstOrDefault();
+                    daily_log shift1 = db.daily_log.Where(p => p.date == dat && p.shift == 1).FirstOrDefault();
                     shift1.id_shift2 = id;
                     db.Entry(shift1).State = EntityState.Modified;
                     db.SaveChanges();
@@ -2165,41 +2165,52 @@ namespace StarEnergi.Utilities
             List<string> err;
             int i, j = 0;
             bool add = true;
-
+            err = new List<string>();
             app = new Excel.Application();
             book = app.Workbooks.Open(Filename: filename);
-
-            err = new List<string>();
-            foreach (Excel.Worksheet sheet in book.Sheets)
+            try
             {
-                temp = new List<List<object>>();
-                ShtRange = sheet.UsedRange;
-                string a = sheet.Name;
-                for (i = 1; i <= ShtRange.Rows.Count; i++)
+                foreach (Excel.Worksheet sheet in book.Sheets)
                 {
-                    temp_row = new List<object>();
-                    for (j = 1; j <= ShtRange.Columns.Count; j++)
+                    temp = new List<List<object>>();
+                    ShtRange = sheet.UsedRange;
+                    string a = sheet.Name;
+                    for (i = 1; i <= ShtRange.Rows.Count; i++)
                     {
-                        if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
+                        temp_row = new List<object>();
+                        for (j = 1; j <= ShtRange.Columns.Count; j++)
                         {
-                            temp_row.Add(null);
+                            if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
+                            {
+                                temp_row.Add(null);
+                            }
+                            else
+                            {
+                                string s = (ShtRange.Cells[i, j] as Excel.Range).Value2.ToString().Trim();
+                                temp_row.Add(s == "-" ? null : s);
+                            }
                         }
-                        else
-                            temp_row.Add((ShtRange.Cells[i, j] as Excel.Range).Value2.ToString());
+                        temp.Add(temp_row);
                     }
-                    temp.Add(temp_row);
-                }
 
-                string errTemp = "";
-                if (add) errTemp = saveSafeManHours(temp);
-                if (errTemp != "")
-                {
-                    err.Add(errTemp);
-                };
-                add = true;
+                    string errTemp = "";
+                    if (add) errTemp = saveSafeManHours(temp);
+                    if (errTemp != "")
+                    {
+                        err.Add(errTemp);
+                    };
+                    add = true;
+                }
             }
-            book.Close(true, Missing.Value, Missing.Value);
-            app.Quit();
+            catch (Exception e)
+            {
+                err.Add(e.StackTrace);
+            }
+            finally
+            {
+                book.Close(true, Missing.Value, Missing.Value);
+                app.Quit();
+            }
 
             return err;
         }
@@ -2212,7 +2223,7 @@ namespace StarEnergi.Utilities
 
             monthly_project_she_report mpsr = new monthly_project_she_report();
             monthly_project_she_report mpsrDummy = new monthly_project_she_report();
-            mpsr.no_contract = data[3][2].ToString();
+            mpsr.no_contract = data[3][2].ToString().Trim();
 
             if ((mpsrDummy = db.monthly_project_she_report.Where(p => p.no_contract == mpsr.no_contract).FirstOrDefault()) != null)
             {
@@ -2228,19 +2239,45 @@ namespace StarEnergi.Utilities
             }
             else
             {
-                string contractor_name = data[2][2].ToString();
+                string contractor_name = data[2][2].ToString().Trim();
                 monthly_she_contractor contractor = db.monthly_she_contractor.Where(p => p.name == contractor_name).FirstOrDefault();
 
                 mpsr.contractor_id = contractor != null ? contractor.id as Nullable<int> : null;
 
-                mpsr.project_name = data[5][2].ToString();
-                mpsr.project_location = data[5][8].ToString();
-                mpsr.project_manager = data[6][2].ToString();
-                mpsr.period_start = DateTime.FromOADate(Double.Parse(data[4][2].ToString()));
-                mpsr.period_end = DateTime.FromOADate(Double.Parse(data[4][8].ToString()));
-                mpsr.project_she_representative = data[7][2].ToString();
-                mpsr.se_she_representative = data[7][8].ToString();
-                mpsr.contract_supervisor = data[6][8].ToString();
+                if (mpsr.contractor_id == null)
+                {
+                    monthly_she_contractor msc = new monthly_she_contractor
+                    {
+                        name = contractor_name,
+                    };
+                    db.monthly_she_contractor.Add(msc);
+                    db.SaveChanges();
+
+                    mpsr.contractor_id = msc.id;
+                }
+
+                mpsr.project_name = data[5][2].ToString().Trim();
+                mpsr.project_location = data[5][8].ToString().Trim();
+                mpsr.project_manager = data[6][2].ToString().Trim();
+                if (data[4][2].ToString().Trim().Contains("/"))
+                {
+                    mpsr.period_start = DateTime.Parse(data[4][2].ToString().Trim());
+                }
+                else
+                {
+                    mpsr.period_start = DateTime.FromOADate(Double.Parse(data[4][2].ToString().Trim()));
+                }
+                if (data[4][8].ToString().Trim().Contains("/"))
+                {
+                    mpsr.period_end = DateTime.Parse(data[4][8].ToString().Trim());
+                }
+                else
+                {
+                    mpsr.period_end = DateTime.FromOADate(Double.Parse(data[4][8].ToString().Trim()));
+                }
+                mpsr.project_she_representative = data[7][2].ToString().Trim();
+                mpsr.se_she_representative = data[7][8].ToString().Trim();
+                mpsr.contract_supervisor = data[6][8].ToString().Trim();
             }
 
             mpsr.month_year = new DateTime(Int32.Parse(data[3][9].ToString()), Int32.Parse(data[3][8].ToString()), 1);
@@ -2312,7 +2349,7 @@ namespace StarEnergi.Utilities
             //db.monthly_project_she_report.Add(mpsr);
             //db.SaveChanges();
             int i = 38;
-            for (i = 38; data[i][0].ToString() != "Outstanding Task List & Areas for Improvement"; i++)
+            for (i = 38; data[i][0] == null || data[i][0].ToString() != "Outstanding Task List & Areas for Improvement"; i++)
             {
                 if (data[i][1] != null && data[i][1].ToString() != "")
                 {

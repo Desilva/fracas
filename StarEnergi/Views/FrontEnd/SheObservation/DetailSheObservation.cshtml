@@ -726,7 +726,7 @@
             <input name="Submit" value="Mark as Reviewed" type="submit" onclick="saveReview()"/>
         }
 	    <button type="button" value="Back">
-            @Html.ActionLink("Back", "Index", "SheObservation")
+            @Html.ActionLink("Back", "Index", "SheObservation", new { pg = ViewBag.page }, null)
         </button>
     </div>
     <br/>
@@ -752,8 +752,8 @@
                 if (data != undefined) {
                     isSave = true;
                     alert('SHE Observation reviewed. You can not change it anymore.');
-                    window.location = "/SheObservation";
-                    $('#contentEventLog').load('SheObservation/Index');
+                    window.location = "/SheObservation?pg=" + '@ViewBag.page';
+                    // $('#contentEventLog').load('SheObservation/Index');
                 } else {
                     alert('Fail to change');
                 }

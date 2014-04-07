@@ -962,7 +962,9 @@
         var w = Math.round((bounds.width + 4) * scale);
         var h = Math.round((bounds.height + 4) * scale);
         var xml = mxUtils.getXml(root);
-
+        if (xml.indexOf('<output>') != 0) {
+            xml = '<output>' + xml + '</output>';
+        }
         // Compression is currently not used in this example
         // Requires base64.js and redeflate.js
         // xml = encodeURIComponent(Base64.encode(RawDeflate.deflate(xml), true));

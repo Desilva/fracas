@@ -27,6 +27,7 @@
             "employee_boss": eval('@ViewBag.employee_id'),
             "signature": $('#signature').val(),
             "employee_dept": $('#employee_dept').val(),
+            "department": $('#department').val(),
         }
 
         $.post('@Url.Content("~/Account/Edit")', values, function (data) {
@@ -114,6 +115,7 @@
             <div class="errorM"></div>
         </div>
         @Html.HiddenFor(model => model.signature)
+        @Html.HiddenFor(model => model.department)
         @Html.HiddenFor(model => model.employee_dept)
         <p>
             <input type="submit" value="Save" onclick="save()"/>

@@ -64,6 +64,19 @@ namespace StarEnergi.Controllers.Admin
             return err;
         }
 
+        [HttpPost]
+        public string SafeManHours(HttpPostedFileBase userfile)
+        {
+            // extract only the fielname
+            var fileName = Path.GetFileName(userfile.FileName);
+            string err = "";
+            // store the file inside ~/App_Data/uploads folder
+            var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+            userfile.SaveAs(path);
+            err = SaveSafeMan(path);
+            return err;
+        }
+
         
         private string SaveExcel(string path)
         {

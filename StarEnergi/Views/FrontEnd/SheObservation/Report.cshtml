@@ -6,6 +6,8 @@
     {
         li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
     }
+    int? page = ViewBag.page as int?;
+    page = page == null ? 1 : page;
 }
 <style>
     .t-grid .t-grid-header .t-header,
@@ -40,15 +42,19 @@
             columns.Bound(o => o.observer).Width(175).Title("Observer");
             columns.Bound(o => o.department).Width(175).Title("Department");
             columns.Bound(o => o.location).Width(175).Title("Location");
-            columns.Bound(o => o.quality).Width(100).Title("Quality");
+            if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE))
+            {
+                columns.Bound(o => o.quality).Width(100).Title("Quality");
+            }
             columns.Bound(o => o.equipment_employee).Width(200).Title("Equipment / Employee");
             columns.Bound(o => o.equipment_employee).Width(200).Title("PPE");
         })
         .ClientEvents(
             events => events
                 .OnRowDataBound("OnRowDataBoundEq")
+                .OnDataBinding("onDataBinding")
         )
-        .Pageable(paging => paging.Total((int)ViewData["total"]).PageSize(10))
+        .Pageable(paging => paging.Total((int)ViewData["total"]).PageSize(10).PageTo(page.Value))
         .Sortable()
         .Scrollable(c => c.Enabled(true))
         .Selectable()
@@ -75,18 +81,22 @@
         }
         row.cells[i].innerHTML = templateComplete;
         if (dataItem.equipment_employee == 0) {
-            row.cells[7].innerHTML = dataItem.equipment_name;
+            row.cells[6].innerHTML = dataItem.equipment_name;
         } else if (dataItem.equipment_employee == 1) {
-            row.cells[7].innerHTML = dataItem.employee_name;
+            row.cells[6].innerHTML = dataItem.employee_name;
         }
-        row.cells[8].innerHTML = dataItem.ppe_name;
+        row.cells[7].innerHTML = dataItem.ppe_name;
         if (dataItem.is_review == 1) {
             row.style.background = 'orange';
         }
     }
 
+    function onDataBinding(e) {
+    }
+
     function Edit(id) {
-        $('#contentEventLog').load('SheObservation/DetailSheObservation', { 'id': id });
+        console.log($('.t-state-active').html());
+        $('#contentEventLog').load('SheObservation/DetailSheObservation', { 'id': id, 'page' : parseInt($('.t-state-active').html()) });
     }
 
 </script>

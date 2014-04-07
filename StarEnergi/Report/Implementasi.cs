@@ -33,5 +33,10 @@ namespace StarEnergi.Report
             Debug.WriteLine(path);
             return Image.FromFile(path);
         }
+
+        public static int DateComparer(DateTime From, DateTime To)
+        {
+            return From.CompareTo(To);
+        }
     }
 }

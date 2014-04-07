@@ -394,7 +394,11 @@
         if (selectedId == 0) {
             alert("You hasn't chosen any RCA.");
         } else {
-            window.location = "Investigation/addInvestigation/?id_rca=" + selectedId;
+            if ('@li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR)' == 'True') {
+                window.location = "Investigation/addInvestigation/?id_rca=" + selectedId;
+            } else {
+                alert('You don\'t have access to create IIR.\nYou can contact administrator to give that role to you');
+            }
         }
     }
 

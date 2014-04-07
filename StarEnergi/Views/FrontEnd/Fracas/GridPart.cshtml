@@ -10,7 +10,7 @@
         var dataItem = e.dataItem;
         var row = e.row;
         var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="ViewP(' + dataItem.id + ');" title="View">'
-                                + '<span class="t-icon t-edit"></span>'
+                                + '<span class="t-icon t-view-2"></span>'
                                 + '</a>';
         var templateUnComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="EditP(' + dataItem.id + ');" title="Edit">'
                                 + '<span class="t-icon t-edit"></span>'
@@ -110,7 +110,19 @@
         $('#content').load('TroubleShooting/addTroubleShooting', { 'id_ir': id });
     }
 </script>   
-           
+<style>
+    .t-tsr {
+        background-image:url("/Content/image/add_tsr.png");
+    }
+
+    .t-ir {
+        background-image:url("/Content/image/add_ir.png");
+    }
+
+    .t-view-2 {
+        background-image:url("/Content/image/view-2.png");
+    }
+</style>        
 @(Html.Telerik().Grid<StarEnergi.Models.FracasEventModel>()
         .HtmlAttributes(new { style = "width:980px" })
         .Name("fracasPart")

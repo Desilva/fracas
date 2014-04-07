@@ -11,7 +11,7 @@ namespace StarEnergi.Models
 
         public int addMPSR(monthly_project_she_report mpsr)
         {
-            List<monthly_project_she_report> prev_mpsr = this.db.monthly_project_she_report.Where(p => p.month_year < mpsr.month_year && p.month_year.Value.Year == mpsr.month_year.Value.Year && p.contractor_id == mpsr.contractor_id && p.no_contract == mpsr.no_contract).ToList();
+            List<monthly_project_she_report> prev_mpsr = this.db.monthly_project_she_report.Where(p => p.month_year.Value.CompareTo(mpsr.month_year.Value) < 0 && p.month_year.Value.Year == mpsr.month_year.Value.Year && p.contractor_id == mpsr.contractor_id && p.no_contract == mpsr.no_contract).ToList();
 
             mpsr.incident_minor_ytd = mpsr.incident_minor_total;
             mpsr.incident_minor_ytd_cost = mpsr.incident_minor_cost;

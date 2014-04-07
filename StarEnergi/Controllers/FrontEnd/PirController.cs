@@ -13,6 +13,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Web.UI;
 using StarEnergi.Controllers.Utilities;
+using System.Web.UI.WebControls;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -44,13 +45,15 @@ namespace StarEnergi.Controllers.FrontEnd
 
                 if (li.Exists(p => p.role == (int)Config.role.PIRINITIATOR || p.role == (int)Config.role.FULLPIR || p.role == (int)Config.role.AUDITOR))
                 {
-                    List<pir> list_pir = db.pirs.Where(p => p.date_rise.Value.Year == DateTime.Today.Year).ToList();
-                    int totalPir = list_pir.Count;
-                    int totalOverdue = list_pir.Where(a => a.target_completion_init < DateTime.Today).ToList().Count;
+                    List<pir> list_pir = db.pirs.ToList();
+                    int totalPir = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year).ToList().Count;
+                    int totalOverdue = list_pir.Where(a => a.target_completion_init != null && a.target_completion_init.Value.CompareTo(DateTime.Today) < 0).ToList().Count;
+                    int totalCompleteOnTime = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status == "VERIFIED" && a.sign_date_verified.Value.CompareTo(a.target_completion_init.Value) <= 0).ToList().Count;
                     double pir_target = db.she_KPI_target.Find(2).target != null ? db.she_KPI_target.Find(2).target.Value : 0;
-
-                    Debug.WriteLine(((double)totalOverdue / (double)totalPir) * (double)100);
-                    if (((double)totalOverdue / (double)totalPir) * (double)100 <= pir_target)
+                    int totalClose = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status == "VERIFIED").ToList().Count;
+                    int totalOpen = list_pir.Where(a => a.target_completion_init != null && a.target_completion_init.Value.CompareTo(DateTime.Today) >= 0).ToList().Count;
+                    int totalRaised = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status != "VERIFIED").ToList().Count;
+                    if (((double)totalCompleteOnTime / (double)totalPir) * (double)100 > pir_target || totalPir == 0)
                     {
                         ViewBag.success = true;
                     }
@@ -62,7 +65,10 @@ namespace StarEnergi.Controllers.FrontEnd
                     ViewBag.totalPir = totalPir;
                     ViewBag.totalOverdue = totalOverdue;
                     ViewBag.pir_target = pir_target;
-
+                    ViewBag.totalCompleteOnTime = totalCompleteOnTime;
+                    ViewBag.totalClose = totalClose;
+                    ViewBag.totalOpen = totalOpen;
+                    ViewBag.totalRaised = totalRaised;
                     ViewBag.user_role = li;
                     
                     ViewBag.nama = "Performance Improvement Request Inititator";
@@ -277,16 +283,34 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else if (a == 3)
                 {
-                    model = db.pirs.Where(p => p.initiator_verified_date == null || p.date_rise != null || p.initiator_verified_date.Value <= p.date_rise.Value).OrderByDescending(p => p.id);
+                    model = db.pirs.Where(p => p.initiator_verified_date == null && p.target_completion_init != null && DateTime.Today.CompareTo(p.target_completion_init.Value) <= 0).OrderByDescending(p => p.id);
                 }
                 else if (a == 4)
                 {
-                    model = db.pirs.Where(p => p.initiator_verified_date != null && p.date_rise != null && p.initiator_verified_date.Value > p.date_rise.Value).OrderByDescending(p => p.id);
+                    model = db.pirs.Where(p => p.initiator_verified_date == null && p.target_completion_init != null && DateTime.Today.CompareTo(p.target_completion_init.Value) > 0).OrderByDescending(p => p.id);
                 }
             }
-
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.dept_id
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = ue.username,
+                           employee = employees.employee2,
+                           approval_level = employees.approval_level
+                       }).ToList();
             List<PIREntity> ret = new List<PIREntity>();
             foreach (pir x in model.ToList()) {
+                EmployeeEntity e = has.Find(p => p.id == x.process_user);
                 ret.Add(new PIREntity { 
                     id = x.id,
                     no = x.no,
@@ -294,7 +318,9 @@ namespace StarEnergi.Controllers.FrontEnd
                     date_rise = x.date_rise,
                     target_completion_init = x.target_completion_init,
                     status = x.status,
-                    reference = x.reference
+                    reference = x.reference,
+                    source = x.from == 1 ? "IIR" : x.from == 2 ? "Internal Audit" : x.from == 3 ? "External Audit" : "",
+                    kbpo = e != null ? e.alpha_name : "",
                 });
             }
 
@@ -948,14 +974,119 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
 
             List<pir> list_pir = db.pirs.ToList();
-            int totalPir = list_pir.Count;
-            int totalOverdue = list_pir.Where(a => a.target_completion_init < DateTime.Today).ToList().Count;
-            bool success = ((double)totalOverdue / (double)totalPir) * (double)100 <= target;
+            int totalPir = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year).ToList().Count;
+            int totalOverdue = list_pir.Where(a => a.target_completion_init != null && a.target_completion_init.Value.CompareTo(DateTime.Today) < 0).ToList().Count;
+            int totalCompleteOnTime = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status == "VERIFIED" && a.sign_date_verified.Value.CompareTo(a.target_completion_init.Value) <= 0).ToList().Count;
+            double pir_target = db.she_KPI_target.Find(2).target != null ? db.she_KPI_target.Find(2).target.Value : 0;
+            int totalClose = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status == "VERIFIED").ToList().Count;
+            int totalOpen = list_pir.Where(a => a.target_completion_init != null && a.target_completion_init.Value.CompareTo(DateTime.Today) >= 0).ToList().Count;
+            int totalRaised = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status != "VERIFIED").ToList().Count;
+            bool success = false;
+            if (((double)totalCompleteOnTime / (double)totalPir) * (double)100 > pir_target || totalPir == 0)
+            {
+                success = true;
+            }
+            else
+            {
+                success = false;
+
+            }
             return Json(new { success = true, totalPir = totalPir, totalOverdue = totalOverdue, successFail = success });
 
         }
 
         #endregion
+
+        public ActionResult ExportExcelData()
+        {
+            var model = db.pirs.OrderByDescending(p => p.id);
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.dept_id
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = ue.username,
+                           employee = employees.employee2,
+                           approval_level = employees.approval_level
+                       }).ToList();
+            List<PIREntityExport> ret = new List<PIREntityExport>();
+            foreach (pir x in model.ToList())
+            {
+                EmployeeEntity e = has.Find(p => p.id == x.process_user);
+                ret.Add(new PIREntityExport
+                {
+                    no = x.no,
+                    title = x.title,
+                    improvement_request = x.improvement_request,
+                    date_rise = x.date_rise,
+                    initiate_by = x.initiate_by,
+                    reference = x.reference,
+                    procedure_reference = x.procedure_reference,
+                    target_completion_init = x.target_completion_init,
+                    desc_prob = x.desc_prob,
+                    investigator = x.investigator,
+                    improvement_plant = x.improvement_plant,
+                    start_implement_date = x.start_implement_date,
+                    process_owner = x.process_owner,
+                    target_completion_process = x.target_completion_process,
+                    action_by = x.action_by,
+                    require_dokument = x.require_dokument,
+                    hira_require = x.hira_require,
+                    result_of_action = x.result_of_action,
+                    sign_date_verified = x.sign_date_verified,
+                    verified_desc = x.verified_desc,
+                    status = x.status,
+                    source = x.from == 1 ? "IIR" : x.from == 2 ? "Internal Audit" : x.from == 3 ? "External Audit" : "",
+                    kbpo = e != null ? e.alpha_name : "",
+                    PIRStatus = x.status == "VERIFIED" ? "Closed" : (x.target_completion_init != null && DateTime.Today.CompareTo(x.target_completion_init.Value) > 0 ? "Overdue" : (x.target_completion_init != null && DateTime.Today.CompareTo(x.target_completion_init.Value) <= 0 ? "Open" : "")),
+                });
+            }
+            GridView gv = new GridView();
+            gv.Caption = "Performance Improvement Request Data";
+            gv.DataSource = ret;
+            gv.DataBind();
+            gv.HeaderRow.Cells[0].Text = "PIR No.";
+            gv.HeaderRow.Cells[1].Text = "Title";
+            gv.HeaderRow.Cells[2].Text = "Improvement Request";
+            gv.HeaderRow.Cells[3].Text = "Date Raised";
+            gv.HeaderRow.Cells[4].Text = "Initiated By";
+            gv.HeaderRow.Cells[5].Text = "Reference";
+            gv.HeaderRow.Cells[6].Text = "Procedure Reference";
+            gv.HeaderRow.Cells[7].Text = "Proposed Completion Date";
+            gv.HeaderRow.Cells[8].Text = "Problem Description";
+            gv.HeaderRow.Cells[9].Text = "Investigator";
+            gv.HeaderRow.Cells[10].Text = "Improvement Plan";
+            gv.HeaderRow.Cells[11].Text = "Start Implementation Date";
+            gv.HeaderRow.Cells[12].Text = "Process Owner Code";
+            gv.HeaderRow.Cells[13].Text = "Target Completion Date";
+            gv.HeaderRow.Cells[14].Text = "Action By";
+            gv.HeaderRow.Cells[15].Text = "Required Document?";
+            gv.HeaderRow.Cells[16].Text = "Hira Required?";
+            gv.HeaderRow.Cells[17].Text = "Result of Action";
+            gv.HeaderRow.Cells[18].Text = "Verified Description";
+            gv.HeaderRow.Cells[19].Text = "Actual Completion Date";
+            gv.HeaderRow.Cells[20].Text = "Status";
+            gv.HeaderRow.Cells[21].Text = "Source";
+            gv.HeaderRow.Cells[22].Text = "Process Owner";
+            gv.HeaderRow.Cells[23].Text = "PIR Status";
+            if (gv != null)
+            {
+                return new DownloadFileActionResult(gv, "PIR Data (From WW-FRACAS) " + DateTime.Today.ToString("ddmmyyyy") + ".xls");
+            }
+            else
+            {
+                return new JavaScriptResult();
+            }
+        }
 
     }
 
@@ -996,4 +1127,6 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
     }
+
+
 }

@@ -20,7 +20,7 @@ using System.Threading;
             //
             // Required for telerik Reporting designer support
             //
-            Thread t = new Thread(Run, 4194304); // 4M of stack size
+            Thread t = new Thread(Run, 419430400); // 4M of stack size
             t.Start();
             t.Join();
             //

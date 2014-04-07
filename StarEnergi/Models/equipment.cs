@@ -59,7 +59,6 @@ namespace StarEnergi.Models
         [Display(Name = "Lamda")]
         public Nullable<double> lamda { get; set; }
 
-        [Required]
         [Display(Name = "Sub Class")]
         public Nullable<int> id_discipline { get; set; }
 
@@ -92,7 +91,6 @@ namespace StarEnergi.Models
         [Display(Name = "Manufacture")]
         public string vendor { get; set; }
 
-        [Required]
         [Display(Name = "Equipment Class")]
         public Nullable<int> id_tag_type { get; set; }
         public Nullable<byte> status_read_nav { get; set; }
