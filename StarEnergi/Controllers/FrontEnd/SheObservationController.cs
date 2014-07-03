@@ -757,6 +757,73 @@ namespace StarEnergi.Controllers.FrontEnd
                 return new JavaScriptResult();
             }
         }
+
+        public ActionResult ExportExcelDataAllText(DateTime fromD, DateTime toD)
+        {
+            List<SheObservationTextInput> result = new List<SheObservationTextInput>();
+            List<SheObservationPersonReport> emplo = new List<SheObservationPersonReport>();
+            var r = (from emp in db.employees
+                     orderby emp.department
+                     select new SheObservationPersonReport
+                     {
+                         id_employee = emp.id,
+                         alpha_name = emp.alpha_name,
+                         department = emp.department
+                     }).ToList();
+            emplo = r;
+            toD = toD.AddDays(1);
+            List<she_observation> listObs = db.she_observation.Where(p => p.date_time >= fromD && p.date_time <= toD).OrderBy(p => p.date_time).ToList();
+            foreach (she_observation obs in listObs)
+            {
+                SheObservationTextInput text = new SheObservationTextInput
+                {
+                    datetime = obs.date_time.Value.ToString("dd MMM yyyy hh:mm tt"),
+                    alpha_name = obs.observer,
+                    department = obs.department,
+                    location = obs.location,
+                    activity = obs.activity,
+                    safe_observed = obs.safe_observeds,
+                    action_taken = obs.action_encourage,
+                    unsafe_observed = obs.unsafe_observeds,
+                    immediate_action = obs.immediate_corrective_acts,
+                    action_prevent = obs.action_prevent
+                };
+
+                string[] emp = text.alpha_name.Split('#');
+                if (emp.Count() >= 1)
+                {
+                    text.alpha_name = emp[0];
+                }
+                result.Add(text);
+            }
+            toD = toD.AddDays(-1);
+            GridView gv = new GridView();
+            gv.Caption = "SHE Observation Report From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();
+            gv.DataSource = result;
+            if (result.Count == 0)
+            {
+                return new JavaScriptResult();
+            }
+            gv.DataBind();
+            gv.HeaderRow.Cells[0].Text = "Date/Time";
+            gv.HeaderRow.Cells[1].Text = "Name";
+            gv.HeaderRow.Cells[2].Text = "Department";
+            gv.HeaderRow.Cells[3].Text = "Location";
+            gv.HeaderRow.Cells[4].Text = "Activity";
+            gv.HeaderRow.Cells[5].Text = "Safe Act/Condition Observed";
+            gv.HeaderRow.Cells[6].Text = "Action taken to encourage continued SHE perfomances";
+            gv.HeaderRow.Cells[7].Text = "Unsafe Act/Conditions Observed";
+            gv.HeaderRow.Cells[8].Text = "Immediate corrective actions";
+            gv.HeaderRow.Cells[9].Text = "Action to prevent recurrences";
+            if (gv != null)
+            {
+                return new DownloadFileActionResult(gv, "SHE Observation Report Text Input (" + fromD.ToString("yyyyMMdd") + "-" + toD.ToString("yyyyMMdd") + ").xls");
+            }
+            else
+            {
+                return new JavaScriptResult();
+            }
+        }
         #endregion
     }
 }

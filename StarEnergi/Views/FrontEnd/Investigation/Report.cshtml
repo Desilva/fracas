@@ -16,6 +16,7 @@
 }
 <script type="text/javascript">
     var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR)';
+    var isViewOnly = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.IIRVIEW)';
     var isMasterAdmin = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)';
     function OnRowDataBoundEq(e) {
         var dataItem = e.dataItem;
@@ -26,8 +27,14 @@
         isCanEdit = isCanEdit || isMasterAdmin == 'True';
         console.log(dataItem.investigator.split(';'));
         var isApprove = dataItem.field_manager_approve != null && username == dataItem.lead_name;
-        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (dataItem.field_manager_approve == null ? '"Edit Incident Investigation Report"' : '"View Incident Report"') + ' >'
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (dataItem.field_manager_approve == null ? '"Edit Incident Investigation Report"' : '"View Incident Investigation Report"') + ' >'
                                 + '<span class="t-icon t-edit"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Investigation Report Log">'
+                                + '<span class="t-icon t-log"></span>'
+                                + '</a>';
+        var templateView = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="View(' + dataItem.id + ');" title="View Incident Investigation Report" >'
+                                + '<span class="t-icon t-view"></span>'
                                 + '</a>'
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Investigation Report Log">'
                                 + '<span class="t-icon t-log"></span>'
@@ -40,10 +47,15 @@
         }
 
         if (isCanEdit) row.cells[i].innerHTML = templateComplete;
+        else if (isViewOnly) row.cells[i].innerHTML = templateView;
         else row.cells[i].innerHTML = "";
     }
 
     function Edit(id) {
+        window.location = "/Investigation/addInvestigation/" + id;
+    }
+
+    function View(id) {
         window.location = "/Investigation/addInvestigation/" + id;
     }
 
@@ -62,6 +74,11 @@
     }
     .t-log {
         background-image:url("/Content/image/iconLog.jpg");
+        background-size: 16px;
+    }
+
+    .t-view {
+        background-image:url("/Content/image/view.png");
         background-size: 16px;
     }
 </style>

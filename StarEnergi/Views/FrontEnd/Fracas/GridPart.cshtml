@@ -18,18 +18,15 @@
                                //+ '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#">'
                                //+ '<span class="t-icon t-delete"></span>'
                                //+ '</a>'
-                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" onClick="CompleteP(' + dataItem.id + ');">'
-                                + '<span class="t-icon t-complete"></span>'
-                                + '</a>'
-                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" onClick="Complete(' + dataItem.id + ');">'
-                                + '<span class="t-icon t-create"></span>'
-                                + '</a>'
                                 + (dataItem.id_ir == null ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Incident Report" onClick="AddIRP(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-ir"></span>'
                                 + '</a>' : '')
                                 + (dataItem.id_tsr == 0 || dataItem.id_tsr == "null" ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Trouble Shooting Report" onClick="AddTSRP(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-tsr"></span>'
-                                + '</a>' : '');
+                                + '</a>' : '')
+                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" onClick="CompleteP(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-complete"></span>'
+                                + '</a>';
         var templateRepair = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="EditP(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-edit"></span>'
                                 + '</a>'

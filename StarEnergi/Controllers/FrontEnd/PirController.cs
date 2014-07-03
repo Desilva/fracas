@@ -275,7 +275,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else if (a == 1)
                 {
-                    model = db.pirs.Where(p => p.status == "VERIFIED" && p.date_rise.Value.Year == DateTime.Today.Year).OrderByDescending(p => p.id);
+                    model = db.pirs.Where(p => p.status == "VERIFIED").OrderByDescending(p => p.id);
                 }
                 else if (a == 2)
                 {
@@ -283,7 +283,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else if (a == 3)
                 {
-                    model = db.pirs.Where(p => p.initiator_verified_date == null && p.target_completion_init != null && DateTime.Today.CompareTo(p.target_completion_init.Value) <= 0).OrderByDescending(p => p.id);
+                    model = db.pirs.Where(p => p.status != "VERIFIED").OrderByDescending(p => p.id);
                 }
                 else if (a == 4)
                 {
@@ -1075,8 +1075,8 @@ namespace StarEnergi.Controllers.FrontEnd
             gv.HeaderRow.Cells[18].Text = "Verified Description";
             gv.HeaderRow.Cells[19].Text = "Actual Completion Date";
             gv.HeaderRow.Cells[20].Text = "Status";
-            gv.HeaderRow.Cells[21].Text = "Source";
-            gv.HeaderRow.Cells[22].Text = "Process Owner";
+            gv.HeaderRow.Cells[21].Text = "Process Owner";
+            gv.HeaderRow.Cells[22].Text = "Source";
             gv.HeaderRow.Cells[23].Text = "PIR Status";
             if (gv != null)
             {

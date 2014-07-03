@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Net.Mail;
 using System.Configuration;
 using System.Diagnostics;
+using StarEnergi.Models;
 
 namespace StarEnergi.Controllers.Utilities
 {
@@ -13,11 +14,30 @@ namespace StarEnergi.Controllers.Utilities
     {
         //
         // GET: /SendEmail/
-
+        private relmon_star_energiEntities db = new relmon_star_energiEntities();
+        
         public ActionResult Index()
         {
             return Content("Index");
 
+        }
+
+        private string EmailsToString(List<string> email)
+        {
+            string result = "";
+            for (int i = 0; i < email.Count(); i++)
+            {
+                if (i != email.Count() - 1)
+                {
+                    result += email[i] + ";";
+                }
+                else
+                {
+                    result += email[i];
+                }
+
+            }
+            return result;
         }
 
         public ActionResult Send(List<String> to, string message, string subject) {
@@ -46,7 +66,14 @@ namespace StarEnergi.Controllers.Utilities
                 }
                 catch (SmtpException e)
                 {
-                    
+                    //save email to database and send the others
+                    email_error te = new email_error();
+                    te.emails = EmailsToString(to);
+                    te.content = message;
+                    te.subject = subject;
+                    te.exception = e.Message + "#" + e.StackTrace;
+                    db.email_error.Add(te);
+                    db.SaveChanges();
                 }
                 finally
                 {

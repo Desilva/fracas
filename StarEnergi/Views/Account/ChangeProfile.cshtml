@@ -28,6 +28,7 @@
             "signature": $('#signature').val(),
             "employee_dept": $('#employee_dept').val(),
             "department": $('#department').val(),
+            "approval_level": $('#approval_level').val(),
         }
 
         $.post('@Url.Content("~/Account/Edit")', values, function (data) {
@@ -65,6 +66,7 @@
 
         @Html.HiddenFor(model => model.id)
         @Html.HiddenFor(model => model.employee_no)
+        @Html.HiddenFor(model => model.approval_level)
 
         <div class="editor-label">Password</div>
 		<div class="editor-field"><input id="password" type="password" name="password" value="" /></div>

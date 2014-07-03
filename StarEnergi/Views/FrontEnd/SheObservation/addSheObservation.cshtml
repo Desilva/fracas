@@ -560,6 +560,7 @@
                             .Name("date_time")
                             .HtmlAttributes(new { id = "datetime_wrapper", style = "margin-left:5px" })
                             .Value(isEdit ? dl.date_time : DateTime.Now)
+                            .Min(DateTime.Today.AddDays(-3))
                         )
 			        </td>
 		        </tr>

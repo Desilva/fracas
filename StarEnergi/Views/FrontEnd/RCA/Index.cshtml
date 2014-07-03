@@ -54,6 +54,10 @@
         cursor:auto;
     }
 
+    .button-delete {
+        background: url('/Content/image/del_analysis.png') no-repeat transparent !important;
+    }
+
     .button-report {
         background: url('/Content/image/button-view.png') no-repeat transparent !important;
     }
@@ -257,6 +261,11 @@
         } else {
             $('.button-to-iir').attr('disabled', 'disabled');
         }
+        if (pa == username) {
+            $('.button-delete').show();
+        } else {
+            $('.button-delete').hide();
+        }
 
         if (isPublish == "1" && isView == "1") {
             $('.button-copy').attr('disabled', 'disabled');
@@ -409,6 +418,34 @@
             window.location = "RCA/report/" + selectedId;
         }
     }
+
+    function deleteAnalysis() {
+        if (selectedId == 0) {
+            alert("You hasn't chosen any RCA.");
+        } else {
+            var r = confirm("Are you sure want to Remove the analysis method?\n This should be used only when want to change analysis method from 5 why's to tree or etc.");
+            if (r == true) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("RemoveAnalysis", "RCA")",
+                    traditional: true,
+                    data: { id: selectedId },
+                    success: function (data) {
+                        var $grid = $("#RCA").data("tGrid");
+                        $grid.rebind();
+                        selectedId = null;
+                        isTree = null;
+                        isPublish = null;
+                        pa = null;
+                        alert('Analysis method removed. You can choose new method for selected RCA.');
+                    }
+                });
+            }
+            else {
+                e.preventDefault();
+            }
+        }
+    }
 </script>
 <div id="contentEventLog">   
 <br/>
@@ -431,6 +468,8 @@
     <div class="strip"></div>
     <button type="button" class="button-report" onclick="reportRca()" title="Report"></button>
     <button type="button" class="button-print" onclick="exportRca()" title="Export Excel"></button>
+    
+    <button type="button" class="button-delete" onclick="deleteAnalysis()" title="Delete RCA Analysis" style="float: right !important;display: none"></button>
 </div>
 @(Html.Telerik().Grid<StarEnergi.Models.RCAEntityModel>(Model)
         .Name("RCA")

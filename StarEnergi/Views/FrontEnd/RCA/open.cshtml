@@ -115,7 +115,6 @@
             var id = vertex.id;
             var ee = edge != null ? edge.source.id : 0;
             attributes = value.attributes;
-            console.log(attributes);
             if (attributes.bobot.value == '1' && attributes.type.value != 'E') {
                 if (attributes.cause.value == '1') {
                     var li = '<li>' + attributes.deskripsi.value + '</li>';
@@ -134,7 +133,7 @@
         var node = enc.encode(model);
         var xml = mxUtils.getXml(node);
         var xmlString = encodeURIComponent(xml);
-        if (xmlString.indexOf('<mxGraphModel>') != 0) {
+        if (xmlString.indexOf('mxGraphModel') < 0) {
             xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
         }
         var url = '@Url.Action("save", "RCA")';
@@ -619,7 +618,7 @@
 			        var node = enc.encode(model);
 			        var xml = mxUtils.getXml(node);
 			        var xmlString = encodeURIComponent(xml);
-			        if (xmlString.indexOf('<mxGraphModel>') != 0) {
+			        if (xmlString.indexOf('mxGraphModel') < 0) {
 			            xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
 			        }
 			        var url = '@Url.Action("save", "RCA")';
@@ -719,7 +718,7 @@
                 var node = enc.encode(model);
                 var xml = mxUtils.getXml(node);
                 var xmlString = encodeURIComponent(xml);
-                if (xmlString.indexOf('<mxGraphModel>') != 0) {
+                if (xmlString.indexOf('mxGraphModel') < 0) {
                     xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
                 }
                 var url = '@Url.Action("save", "RCA")';
@@ -882,7 +881,6 @@
             var id = vertex.id;
             var ee = edge != null ? edge.source.id : 0;
             attributes = value.attributes;
-            console.log(attributes);
             var val = {
                 deskripsi : attributes.deskripsi.value,
                 type : attributes.type.value,
@@ -898,7 +896,6 @@
             treediagram : "Treediagram",
             result : array
         }
-        console.log(values);
         var str = JSON.stringify(values);
         //$.post('/Rca/copytoclipboard', { text : str },function(e) {
 
@@ -1072,7 +1069,6 @@
 	                var id = vertex.id;
 	                var ee = edge != null ? edge.source.id : 0;
 	                attributes = value.attributes;
-	                console.log(attributes);
 	                if (attributes.bobot.value == '1' && attributes.type.value != 'E') {
 	                    if (attributes.cause.value == '1') {
 	                        var li = '<li>' + attributes.deskripsi.value + '</li>';
@@ -1091,7 +1087,7 @@
 	            var node = enc.encode(model);
 	            var xml = mxUtils.getXml(node);
 	            var xmlString = encodeURIComponent(xml);
-	            if (xmlString.indexOf('<mxGraphModel>') != 0) {
+	            if (xmlString.indexOf('mxGraphModel') < 0) {
 	                xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
 	            }
 	            var url = '@Url.Action("save", "RCA")';
@@ -1146,7 +1142,6 @@
     createProperties = function (graph, cell) {
         var model = graph.getModel();
         var value = model.getValue(cell);
-
         if (mxUtils.isNode(value)) {
             // Creates a form for the user object inside
             // the cell
@@ -2247,7 +2242,6 @@
         if (xml.indexOf('<output>') != 0) {
             xml = '<output>' + xml + '</output>';
         }
-        console.log(root);
         // Compression is currently not used in this example
         // Requires base64.js and redeflate.js
         // xml = encodeURIComponent(Base64.encode(RawDeflate.deflate(xml), true));

@@ -740,8 +740,12 @@
                 }
                 else
                 {
-                    <input type="text" id="investigator" name="investigator" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@has.Find(p => p.id == Int32.Parse(iir.investigator)).alpha_name" style="width:100px"/>
-                    <img id="img_approve_investigator" width="50" height="50" @(iir.investigator_approve == null ? "style=display:none;" : "style=display:block;")  src="@iir.investigator_approve"/>
+                    <div class="investigators">
+                        <div class="inves1">
+                            <input type="text" id="investigator" name="investigator" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@has.Find(p => p.id == Int32.Parse(iir.investigator.Split(';').First())).alpha_name" style="width:100px"/>
+                            <img id="img_approve_investigator" width="50" height="50" @(iir.investigator_approve == null ? "style=display:none;" : "style=display:block;")  src="@iir.investigator_approve"/>
+                        </div>
+                    </div>
                 }
             </td>
             <td style="width:16.67%" class="right" rowspan="2">

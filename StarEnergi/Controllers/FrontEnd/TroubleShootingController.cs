@@ -278,6 +278,9 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
             int id = troubleShooting.id;
 
+            //send email
+            SendEmailToAll(troubleShooting);
+
             if (troubleShooting.id_ir != null)
             {
                 //incident_report ir = db.incident_report.Find(troubleShooting.id_ir);
@@ -532,6 +535,5 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult ViewTroubleshooting(int id) {
             return PartialView(db.trouble_shooting.Find(id));
         }
-
     }
 }

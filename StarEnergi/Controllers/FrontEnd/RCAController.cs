@@ -1717,6 +1717,37 @@ namespace StarEnergi.Controllers.FrontEnd
                             else
                             {
                                 rca.rca_code = RCASessionRepository.OneView(p => p.id == rca.id).rca_code;
+                                if (rca.rca_code == null || rca.rca_code == "")
+                                {
+                                    RCAEntityModel rcass = RCASessionRepository.AllView().OrderBy(p => p.rca_code).LastOrDefault();
+                                    if (rcass != null)
+                                    {
+                                        if (rcass.rca_code != null && rcass.rca_code.Length == 21)
+                                        {
+                                            int prev_code = Int32.Parse(rcass.rca_code.Substring(17));
+                                            int prev_year = Int32.Parse(rcass.rca_code.Substring(12, 4));
+                                            prev_code++;
+                                            DateTime now = DateTime.Now;
+                                            if (prev_year != now.Year)
+                                            {
+                                                prev_code = 1;
+                                            }
+                                            rca.rca_code = "W-O-EAI-RCA-" + now.Year + "-" + prev_code.ToString().PadLeft(4, '0');
+                                        }
+                                        else
+                                        {
+                                            int prev_code = 1;
+                                            DateTime now = DateTime.Now;
+                                            rca.rca_code = "W-O-EAI-RCA-" + now.Year + "-" + prev_code.ToString().PadLeft(4, '0');
+                                        }
+                                    }
+                                    else
+                                    {
+                                        int prev_code = 1;
+                                        DateTime now = DateTime.Now;
+                                        rca.rca_code = "W-O-EAI-RCA-" + now.Year + "-" + prev_code.ToString().PadLeft(4, '0');
+                                    }
+                                }
                             }
                             RCASessionRepository.UpdateRCA7(rca);
                             rca o_rca = RCASessionRepository.db.rcas.Find(rca.id);
@@ -2201,6 +2232,21 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             RCAEntityModel rcas = RCASessionRepository.OneView(p => p.id == id);
             RCASessionRepository.UpdatePublish(rcas);
+
+            if (HttpContext.Session["username"].ToString() == null)
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
+
+            return View(new GridModel(RCASessionRepository.AllView().Reverse()));
+        }
+
+        //
+        // GET: /RCA/RemoveAnalysis/5
+        //
+        [GridAction]
+        public ActionResult RemoveAnalysis(int id)
+        {
+            RCAEntityModel rcas = RCASessionRepository.OneView(p => p.id == id);
+            RCASessionRepository.RemoveAnalysis(rcas);
 
             if (HttpContext.Session["username"].ToString() == null)
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
@@ -3426,6 +3472,20 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 target.is_tree = analysis.is_tree;
                 rca.is_tree = analysis.is_tree;
+                db.SaveChanges();
+            }
+        }
+
+        public static void RemoveAnalysis(RCAEntityModel analysis)
+        {
+            RCAEntityModel target = OneView(p => p.id == analysis.id);
+            rca rca = OneDb(p => p.id == analysis.id);
+            if (target != null)
+            {
+                target.is_tree = null;
+                target.analysis_file = null;
+                rca.is_tree = null;
+                rca.analysis_file = null;
                 db.SaveChanges();
             }
         }

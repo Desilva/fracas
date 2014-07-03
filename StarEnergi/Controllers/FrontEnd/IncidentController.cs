@@ -129,7 +129,9 @@ namespace StarEnergi.Controllers.FrontEnd
             else
             {
                 int cur_user_id = Int32.Parse(HttpContext.Session["id"].ToString());
-                int? cur_dept_id = db.employees.Find(cur_user_id).dept_id;
+                employee curUser = db.employees.Find(cur_user_id);
+                int? cur_dept_id = curUser.dept_id;
+                int? cur_user_del = curUser.employee_delegate;
                 employee cur_user_boss = db.employees.Find(cur_user_id).employee2;
                 int? superintendent_id = null;
                 int? superintendent_id_del = null;
@@ -211,6 +213,11 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                     
                     cur_user_boss = cur_user_boss.employee2;
+                }
+                if (supervisor_id == null)
+                {
+                    supervisor_id = cur_user_id;
+                    supervisor_id_del = cur_user_del;
                 }
                 if (superintendent_id == null) 
                 { 

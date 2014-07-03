@@ -27,6 +27,10 @@
             && (user_id != ir.she_superintendent || ir.she_superintendent_approve != null) && (user_id != ir.field_manager || ir.field_manager_approve != null) && user_id != ir.lead_name && (user_id != ir.superintendent_delegate || ir.superintendent_approve != null) && (user_id != ir.she_superintendent_delegate || ir.she_superintendent_approve != null) &&
              (user_id != ir.supervisor_delegate || ir.supervisor_approve != null) && (user_id != ir.loss_control_delegate || ir.loss_control_approve != null) && (user_id != ir.field_manager_delegate || ir.field_manager_approve != null));
 
+        if (user_id == ir.lead_name) {
+            isView = true;    
+        }
+        
         if ((user_id == ir.field_manager || user_id == ir.field_manager_delegate) && ir.field_manager_approve == null)
         {
             if (ir.she_superintendent_approve == null)
@@ -383,7 +387,7 @@
                         @{bool supervisor_isDelegate = false; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (isEdit && user.id == Int32.Parse(ir.supervisor_delegate == null ? "0" : ir.supervisor_delegate))
+                            if (isEdit && user.id == Int32.Parse(ir.supervisor_delegate == null ? "0" : ir.supervisor_delegate) && has.Find(p => p.username == username).id != Int32.Parse(ir.ack_supervisor == null ? "0" : ir.ack_supervisor))
                             {
                                 supervisor_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
@@ -418,7 +422,7 @@
                             else if (user.id == supervisor_id_del)
                             {
                                 supervisor_isDelegate = true;
-                                <option value="@user.id" selected>@user.alpha_name</option>
+                                <option value="@user.id">@user.alpha_name</option>
                             }
                         }
                     </select>
@@ -523,13 +527,13 @@
                 }
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR) && !isView)
                 {
-                    
+                    bool isSelected = false;
                     <select id="sup_name" name="sup_name" @((li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINSHEOBSERVATION) && !isView) && (ir != null ? ir.superintendent_approve == null : true) ? "" : "disabled") onchange="selectSup()">
                         <option value="" selected disabled>Choose One</option>
                         @{bool sup_isDelegate = false; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (isEdit && user.id == Int32.Parse(ir.superintendent_delegate == null ? "0" : ir.superintendent_delegate))
+                            if (isEdit && user.id == Int32.Parse(ir.superintendent_delegate == null ? "0" : ir.superintendent_delegate) && has.Find(p => p.username == username).id != Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent))
                             {
                                 sup_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
@@ -555,16 +559,18 @@
                             }
                             else if (isEdit && user.id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_delegate == null || (ir.superintendent_approve == null ? false : ir.superintendent_approve.Substring(0, 1) != "d")))
                             {
+                                isSelected = true;
                                     <option value="@user.id" selected>@user.alpha_name</option>
                             }
                             else if (isEdit && user.id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) && (ir.superintendent_approve == null ? true : ir.superintendent_approve.Substring(0, 1) == "a"))
                             {
+                                isSelected = true;
                                     <option value="@user.id" selected>@user.alpha_name</option>
                             }
                             else if (isEdit && user.id == superintendent_id_del)
                             {
                                 sup_isDelegate = true;
-                                <option value="@user.id" selected>@user.alpha_name</option>
+                                <option value="@user.id">@user.alpha_name</option>
                             }
                         }
                     </select>
