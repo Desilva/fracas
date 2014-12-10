@@ -1,3 +1,16 @@
+@font-face {
+    font-family: 'PT Sans';
+    src: url(fonts/PT_Sans-Web-Regular.ttf) format('truetype');
+    src: url(fonts/PT_Sans-Web-Regular.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'PT Sans';
+    src: url(fonts/PT_Sans-Web-Bold.ttf) format('truetype');
+    src: url(fonts/PT_Sans-Web-Bold.woff) format('woff');
+    font-weight: bold;
+}
+
 /*----------------------------------------------------------
 The base color for this template is #5c87b2. If you'd like
 to use a different color start by replacing all instances of

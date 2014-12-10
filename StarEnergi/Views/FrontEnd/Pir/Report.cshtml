@@ -54,6 +54,10 @@
     {
         @Html.Partial("PirReportSummary");
     }
+    else if (ViewBag.is_page == 5)
+    {
+        @Html.Partial("PIRTrend");
+    }
 @*	<h2>
 		Monthly Report PITS
 	</h2>

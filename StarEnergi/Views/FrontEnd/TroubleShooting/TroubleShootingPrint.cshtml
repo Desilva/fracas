@@ -239,7 +239,7 @@
                         </tr>
                         <tr border="0" style="font-size:8px;">
                             <td>
-                                <img width="50" height="50" @(Model.inspector_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.inspector_signature != null ? Server.MapPath("~/"+Model.inspector_signature) : Server.MapPath("~/Content/image/blank.png"))"/>
+                                <img width="50" height="50" @(Model.inspector_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.inspector_signature != null ? Server.MapPath("~/"+Model.inspector_signature.Substring(1)) : Server.MapPath("~/Content/image/blank.png"))"/>
                             </td>
                         </tr>
                     </table>
@@ -253,7 +253,7 @@
                         </tr>
                         <tr border="0" style="font-size:8px;">
                             <td>
-                                <img width="50" height="50" @(Model.supervisor_approval_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.supervisor_approval_signature != null ? Server.MapPath("~/"+Model.supervisor_approval_signature) : Server.MapPath("~/Content/image/blank.png"))"/>
+                                <img width="50" height="50" @(Model.supervisor_approval_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.supervisor_approval_signature != null ? Server.MapPath("~/"+Model.supervisor_approval_signature.Substring(1)) : Server.MapPath("~/Content/image/blank.png"))"/>
                             </td>
                         </tr>
                     </table>
@@ -267,7 +267,7 @@
                         </tr>
                         <tr border="0" style="font-size:8px;">
                             <td>
-                                <img width="50" height="50" @(Model.superintendent_approval_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.superintendent_approval_signature != null ? Server.MapPath("~/"+Model.superintendent_approval_signature) : Server.MapPath("~/Content/image/blank.png"))"/>
+                                <img width="50" height="50" @(Model.superintendent_approval_signature != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.superintendent_approval_signature != null ? Server.MapPath("~/"+Model.superintendent_approval_signature.Substring(1)) : Server.MapPath("~/Content/image/blank.png"))"/>
                             </td>
                         </tr>
                     </table>

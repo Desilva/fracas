@@ -2504,9 +2504,10 @@ namespace StarEnergi.Controllers.FrontEnd
             xml = HttpUtility.UrlDecode(xml);
             string width = w;
             string height = h;
-            xml = xml.Replace(HttpUtility.HtmlEncode("<p style=\"margin:0px;width:115px\">&nbsp;</p><h4 style=\"margin:0px;color:#1d258f;text-align:center;\">"), "\n    ");
+            xml = xml.Replace(HttpUtility.HtmlEncode("<p style=\"margin:0px;width:115px\">&nbsp;</p><h4 style=\"margin:0;margin-right:12px;color:#1d258f;text-align:center\">"), "\n    ");
+            xml = xml.Replace(HttpUtility.HtmlEncode("<br />"), "\n    ");
             xml = xml.Replace(HttpUtility.HtmlEncode("&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">"), "\n");
-            xml = xml.Replace(HttpUtility.HtmlEncode("</p><p style=\"text-align:right;margin:0px;color:black;\">"), "                                  ");
+            xml = xml.Replace(HttpUtility.HtmlEncode("</p><p style=\"text-align:right;float:right;margin-top:0;color:black;margin-right:12px\">"), "                            ");
             xml = xml.Replace(HttpUtility.HtmlEncode("</p>"), "");
             if (xml != null && width != null && height != null && bg != null
                     && filename != null && format != null)

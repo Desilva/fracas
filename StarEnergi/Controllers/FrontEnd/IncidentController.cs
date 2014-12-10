@@ -475,6 +475,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             incidentReport.reference_number = ir_ref;
+            string sign = db.employees.Find(Int32.Parse(incidentReport.prepared_by)).signature;
+            incidentReport.requestor_approve = "a" + sign;
             db.incident_report.Add(incidentReport);
             db.SaveChanges();
 
@@ -1158,6 +1160,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 superintendent_approve = ir.superintendent_approve,
                 field_manager_approve = ir.field_manager_approve,
                 she_superintendent_approve = ir.she_superintendent_approve,
+                supervisor_approve = ir.supervisor_approve,
+                requestor_approve = ir.requestor_approve
             };
 
             if (ir.prepared_by != null)

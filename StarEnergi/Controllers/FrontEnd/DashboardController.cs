@@ -51,7 +51,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 winner.winners = g;
             }
             ViewBag.winner = winner;
-            return View("Dashboard");
+            return View("DashboardNew");
         }
 
         #region speedometer

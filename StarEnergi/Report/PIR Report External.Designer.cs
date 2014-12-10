@@ -259,8 +259,6 @@ namespace StarEnergi.Reporting
             // 
             this.DataTable1.ConnectionString = "starenergygeo";
             this.DataTable1.Name = "DataReport";
-            this.DataTable1.Parameters.AddRange(new Telerik.Reporting.SqlDataSourceParameter[] {
-            new Telerik.Reporting.SqlDataSourceParameter("@YEAR", System.Data.DbType.String, "=Parameters.Year.Value")});
             this.DataTable1.SelectCommand = resources.GetString("DataTable1.SelectCommand");
             // 
             // textBox6

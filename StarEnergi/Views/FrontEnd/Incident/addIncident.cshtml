@@ -362,11 +362,13 @@
                             }
                         }
                     </select>
+                    <img id="img_approve_requestor" width="50" height="50" @(ir != null && ir.requestor_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir == null || ir.requestor_approve == null ? "" : ir.requestor_approve.Substring(1))"/>
                 }
                 else
                 {
                     <input type="hidden" name="ack" id="prepared" value="@ir.prepared_by"/>
                     <input type="text" name="ack" id="prepared_name" value="@(string.IsNullOrWhiteSpace(ir.prepared_by) ? "" : (isEdit ? has.Find(p => p.id == Int32.Parse(ir.prepared_by)).alpha_name : ""))" disabled/>
+                    <img id="img_approve_requestor" width="50" height="50" @(ir != null &&ir.requestor_approve == null ? "style=display:none;" : "style=display:block;")  src="@(ir == null || ir.requestor_approve == null ? "" : ir.requestor_approve.Substring(1))"/>
                 }
             </td>
             <td>
@@ -960,7 +962,7 @@
 </div>    
 <br/>
 </div>
-@(Html.Telerik().Window()
+@*@(Html.Telerik().Window()
     .Name("RejectComment")
     .Visible(false)
     .Title("Reject")
@@ -978,7 +980,7 @@
 	            </p>
 	         </div>
         </text>)
-)
+)*@
 <script type="text/javascript">
     var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR)';
     var isEdit = '@isEdit';

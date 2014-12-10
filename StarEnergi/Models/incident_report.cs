@@ -57,6 +57,7 @@ namespace StarEnergi.Models
         public Nullable<byte> kontraktor_seg { get; set; }
         public Nullable<int> id_tsr { get; set; }
         public Nullable<int> id_fracas { get; set; }
+        public string requestor_approve { get; set; }
 
         public string prepared_by_name { get; set; }
         public string fracas_number { get; set; }

@@ -14,6 +14,8 @@ using System.Diagnostics;
 using System.Web.UI;
 using StarEnergi.Controllers.Utilities;
 using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -97,11 +99,11 @@ namespace StarEnergi.Controllers.FrontEnd
             var processUserList = new List<employee>();
             var query = (from a in db.employees
                          orderby a.alpha_name
-                         select new {a.id, a.alpha_name, a.position }).ToList();
+                         select new {a.id, a.alpha_name, a.position, a.kbp_code }).ToList();
             foreach (var a in query)
             {
                 //if (a.position.ToLower().Contains("superintendent"))
-                    processUserList.Add(new employee { alpha_name = a.alpha_name, id = a.id });
+                processUserList.Add(new employee { alpha_name = a.alpha_name + (a.kbp_code != null ? (" - " + a.kbp_code) : ""), id = a.id });
             }
 
             ViewBag.idRca = idRca;
@@ -118,7 +120,7 @@ namespace StarEnergi.Controllers.FrontEnd
                            select new EmployeeEntity
                            {
                                id = employees.id,
-                               alpha_name = employees.alpha_name,
+                               alpha_name = employees.alpha_name + (employees.kbp_code != null ? (" - " + employees.kbp_code) : ""),
                                employee_no = employees.employee_no,
                                position = employees.position,
                                work_location = employees.work_location,
@@ -126,7 +128,8 @@ namespace StarEnergi.Controllers.FrontEnd
                                dept_name = dept.dept_name,
                                username = ue.username,
                                employee = employees.employee2,
-                               approval_level = employees.approval_level
+                               approval_level = employees.approval_level,
+                               kbp_code = employees.kbp_code
                            }).ToList();
                 ViewBag.requester = requester != null ? has.Where(p => p.id == Int32.Parse(requester)).ToList().FirstOrDefault().username : null;
 
@@ -287,7 +290,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else if (a == 4)
                 {
-                    model = db.pirs.Where(p => p.initiator_verified_date == null && p.target_completion_init != null && DateTime.Today.CompareTo(p.target_completion_init.Value) > 0).OrderByDescending(p => p.id);
+                    model = db.pirs.Where(p => p.status != "VERIFIED" && p.target_completion_init != null && DateTime.Today.CompareTo(p.target_completion_init.Value) > 0).OrderByDescending(p => p.id);
                 }
             }
             var has = (from employees in db.employees
@@ -436,6 +439,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 pir.description = nvc["description"].ToString();
                 pir.pir_category = nvc["pir_category"].ToString();
                 pir.process_user = int.Parse(nvc["process_user"].ToString());
+
+                employee e = db.employees.Find(int.Parse(nvc["process_user"].ToString()));
+                pir.process_owner = e.kbp_code;
                 pir.from = (byte)identity;
                 db.pirs.Add(pir);
                 db.SaveChanges();
@@ -1088,8 +1094,93 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
+        
+
+        public JsonResult showTrending(int from, int to) {
+            SqlConnection sqlConnection1 = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+
+            cmd.CommandText = @"with proc_owner_list(ownlist) as
+                (
+                select 'BPL'
+                union all
+                select 'GEL'
+                union all
+                select 'GDI'
+                union all
+                select 'POP'
+                union all
+                select 'MTW'
+                union all
+                select 'SPE'
+                union all
+                select 'OHE'
+                union all
+                select 'EPE'
+                union all
+                select 'EAI'
+                union all
+                select 'OSU'
+                union all
+                select 'LCO'
+                union all
+                select 'SSU'
+                union all
+                select 'MER'
+                union all
+                select 'SEC'
+                union all
+                select 'SCM'
+                union all
+                select 'MIS'
+                union all
+                select 'FPR'
+                union all
+                select 'PAC'
+                union all
+                select 'FHR'
+                ),
+                mnth(mnuum) as
+                (
+                select 2012
+                union all
+                select mnuum+1 from mnth where mnuum<year(getDate())
+                )
+                select a.mnuum as year, proc_owner_list.ownlist as process_owner, COUNT(CASE WHEN isnull(p.target_completion_init,'') <> '' AND (((year(GETDATE()) = a.mnuum) AND DateDiff(day,GETDATE(),p.target_completion_init) < 0 AND (p.status <> 'VERIFIED' OR (p.status = 'VERIFIED' AND DateDiff(day,GETDATE(),p.initiator_verified_date) > 0))) OR ((year(GETDATE()) <> a.mnuum) AND DateDiff(day,convert(datetime, ('12-31-' + Convert(varchar, a.mnuum))),p.target_completion_init) < 0 AND (p.status <> 'VERIFIED' OR (p.status = 'VERIFIED' AND DateDiff(day,convert(datetime, ('12-31-' + Convert(varchar, a.mnuum))),p.initiator_verified_date) > 0)))) THEN 1 END) as jumlah
+                from proc_owner_list cross join (select mnth.mnuum from mnth) a
+                left join (Select * from pir where DATEDIFF(day,GETDATE(),date_rise) <= 0) as p on p.process_owner = proc_owner_list.ownlist
+                group by ownlist, a.mnuum";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = sqlConnection1;
+
+            sqlConnection1.Open();
+            List<TrendData> listTrendData = new List<TrendData>();
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                TrendData td = new TrendData
+                {
+                    year = reader["year"].ToString(),
+                    kbp = reader["process_owner"].ToString(),
+                    count = (int)reader["jumlah"],
+                };
+                listTrendData.Add(td);
+            }
+            reader.Close();
+
+            return Json(listTrendData, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 
+    public class TrendData
+    {
+        public string year { get; set; }
+        public string kbp { get; set; }
+        public int count { get; set; }
+    }
 
 
     public class Report
