@@ -1,4 +1,5 @@
-﻿@{
+﻿<link href="@Url.Content("~/Content/Site-new.css")" rel="stylesheet" type="text/css" />
+@{
     var htmlAttributes = new { style = "float: left;width: 180px;position: absolute; margin-left: 10px;" };
     List<StarEnergi.Models.user_per_role> li = null;
     if (HttpContext.Current.Session["roles"] != null)
@@ -35,7 +36,7 @@
     <script src="/Scripts/application.js"></script>	
 
 <body>
-<div class="notification-area">
+@*<div class="notification-area">
     <div class="notification-header">
         <h2>Notification Center</h2>
     </div>
@@ -74,7 +75,7 @@
             <div class="kpi-result">12</div>
         </div>
     </div>
-</div>
+</div>*@
 @if (undian != null) {
     <div class="lucky-winner">
         <div class="lucky-winner-title-area">

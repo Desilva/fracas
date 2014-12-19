@@ -28,7 +28,7 @@ to use a different color start by replacing all instances of
 	padding: 0;
 	color: #696969;
 	font: normal 10pt Arial,Helvetica,sans-serif;
-	background: #efefef url(image/new/bg-1.png) no-repeat;
+	background: #efefef url(image/new/bg-2.JPG) no-repeat;
     background-size: 100% auto;
 	overflow-y: scroll;
 }
@@ -343,6 +343,15 @@ footer, #footer
 
 #menu .t-group .t-item {
     border-width: 1px 1px;
+    background: #fff;
+}
+
+#menu .t-group .t-item > a {
+    color:black;
+}
+
+#menu .t-group .t-item > .t-link {
+    color:black;
 }
 
 #dash .t-item
@@ -1594,7 +1603,7 @@ table .vertical {
     padding-top: 20px;
 }
 
-.menu-area .menu:hover a {
+.menu-area .menu:hover>a {
     font-weight:bold;
     text-decoration:none;
     color:#fff;

@@ -77,7 +77,7 @@
 			        <div class="logo">
                         <a href="@Url.Action("Index","Dashboard")">
                             <div id="title">
-				                <h1>@Config.Title<span class="sub">@Config.Area</span></h1>
+				                <h1>@*@Config.Title*@WW-IIS<span class="sub">@*@Config.Area*@Wayang Windu Integrated Information System</span></h1>
                             </div>
 			            </a>
 			        </div>
@@ -212,7 +212,7 @@
 			    @RenderBody()
             </div>
 		</section>
-        @RenderSection("menuDashboard")
+        @RenderSection("menuDashboard", false)
 	</div>
 
     @{
@@ -229,6 +229,11 @@
                 
     }
     @(Html.Telerik().ScriptRegistrar().DefaultGroup(group => group.Combined(true).Compress(true)).Globalization(true))
-    @RenderSection("scripts")
+    @RenderSection("scripts", false)
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#dashboard').css('background', '#efefef url(image/new/bg-1.png) no-repeat');
+        });
+    </script>
    </body>
 </html>
