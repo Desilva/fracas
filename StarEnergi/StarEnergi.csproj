@@ -60,24 +60,47 @@
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Web.WebPages">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Helpers">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.3.0.50813.1\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.1.0.20105.408\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -88,9 +111,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Telerik.Reporting, Version=6.0.12.215, Culture=neutral, PublicKeyToken=a9d7983dfcc261be">
       <Private>True</Private>
     </Reference>
@@ -718,9 +738,6 @@
     <Compile Include="Models\trouble_shooting.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\trouble_shooting_log.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\unit.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -955,6 +972,11 @@
     </Compile>
     <Compile Include="Scripts\Filemanager\connectors\mvc\FilemanagerAreaRegistration.cs" />
     <Compile Include="Scripts\Filemanager\connectors\mvc\FilemanagerController.cs" />
+    <Compile Include="Service References\WWService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\AuthorizeUserAttribute.cs" />
     <Compile Include="Utilities\BinaryContentResult.cs" />
     <Compile Include="Utilities\CustomBindingExtensions.cs" />
@@ -1878,6 +1900,16 @@
     <Content Include="Scripts\wcw\skins\moono\images\close.png" />
     <Content Include="Scripts\wcw\skins\moono\images\mini.png" />
     <Content Include="Scripts\wcw\styles.js" />
+    <Content Include="Service References\WWService\StarEnergi.WWService.ResponseModel.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\WWService\UserService.disco" />
+    <Content Include="Service References\WWService\configuration91.svcinfo" />
+    <Content Include="Service References\WWService\configuration.svcinfo" />
+    <Content Include="Service References\WWService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <Content Include="Views\Admin\Reporting\AvailibilityReport.aspx" />
     <Content Include="Views\Admin\Reporting\EquipmentReport.aspx" />
     <Content Include="Views\Admin\Reporting\PartReport.aspx" />
@@ -1930,6 +1962,16 @@
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Service References\WWService\UserService.wsdl" />
+    <None Include="Service References\WWService\UserService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WWService\UserService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WWService\UserService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />
@@ -2574,6 +2616,7 @@
     <Content Include="Views\Admin\BuildOfMaterial\RenderUpdate.cshtml" />
     <Content Include="Views\Admin\SubClass\Index.cshtml" />
     <Content Include="Views\FrontEnd\Undian\Certificate.cshtml" />
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\FRACAS IIS.pubxml" />
     <None Include="Properties\PublishProfiles\FRACAS SE WW.pubxml" />
     <None Include="Resources\Kelson Sans Regular BG.otf" />
@@ -2598,6 +2641,12 @@
     <Content Include="Views\FrontEnd\Fracas\ViewEventP.cshtml" />
     <Content Include="Views\Shared\_LayoutNew.cshtml" />
     <Content Include="Views\FrontEnd\Dashboard\DashboardNew.cshtml" />
+    <None Include="Service References\WWService\UserService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WWService\UserService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -2709,6 +2758,12 @@
     <EmbeddedResource Include="Report\TeamMember.resx">
       <DependentUpon>TeamMember.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\WWService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

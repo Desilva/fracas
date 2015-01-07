@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="UserService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:12943/UserService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:12943/UserService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:12943/UserService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" />
+      <xsd:import schemaLocation="http://localhost:12943/UserService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/StarEnergyService" />
+      <xsd:import schemaLocation="http://localhost:12943/UserService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IUserService_listUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:listUser" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_listUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:listUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUser" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getSubordinat_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubordinat" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getSubordinat_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubordinatResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_sendEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:sendEmail" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_sendEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:sendEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_resendEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:resendEmail" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_resendEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:resendEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getSuperintendent_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSuperintendent" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getSuperintendent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSuperintendentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getListAdminSHE_InputMessage">
+    <wsdl:part name="parameters" element="tns:getListAdminSHE" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getListAdminSHE_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getListAdminSHEResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_login_InputMessage">
+    <wsdl:part name="parameters" element="tns:login" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:loginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getSuperintendentByDepartment_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSuperintendentByDepartment" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getSuperintendentByDepartment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSuperintendentByDepartmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getSupervisor_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSupervisor" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getSupervisor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSupervisorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getAllDepartments_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAllDepartments" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_getAllDepartments_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAllDepartmentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_CreateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUser" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_CreateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_RemoveUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUser" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_RemoveUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_SetScheduleTraining_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetScheduleTraining" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_SetScheduleTraining_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetScheduleTrainingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_CreateNotification_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateNotification" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_CreateNotification_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_NotifactionIsSeen_InputMessage">
+    <wsdl:part name="parameters" element="tns:NotifactionIsSeen" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_NotifactionIsSeen_OutputMessage">
+    <wsdl:part name="parameters" element="tns:NotifactionIsSeenResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IUserService">
+    <wsdl:operation name="listUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/listUser" message="tns:IUserService_listUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/listUserResponse" message="tns:IUserService_listUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/getUser" message="tns:IUserService_getUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/getUserResponse" message="tns:IUserService_getUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubordinat">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/getSubordinat" message="tns:IUserService_getSubordinat_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/getSubordinatResponse" message="tns:IUserService_getSubordinat_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="sendEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/sendEmail" message="tns:IUserService_sendEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/sendEmailResponse" message="tns:IUserService_sendEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="resendEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/resendEmail" message="tns:IUserService_resendEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/resendEmailResponse" message="tns:IUserService_resendEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSuperintendent">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/getSuperintendent" message="tns:IUserService_getSuperintendent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/getSuperintendentResponse" message="tns:IUserService_getSuperintendent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getListAdminSHE">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/getListAdminSHE" message="tns:IUserService_getListAdminSHE_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/getListAdminSHEResponse" message="tns:IUserService_getListAdminSHE_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="login">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/login" message="tns:IUserService_login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/loginResponse" message="tns:IUserService_login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSuperintendentByDepartment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/getSuperintendentByDepartment" message="tns:IUserService_getSuperintendentByDepartment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/getSuperintendentByDepartmentResponse" message="tns:IUserService_getSuperintendentByDepartment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSupervisor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/getSupervisor" message="tns:IUserService_getSupervisor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/getSupervisorResponse" message="tns:IUserService_getSupervisor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAllDepartments">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/getAllDepartments" message="tns:IUserService_getAllDepartments_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/getAllDepartmentsResponse" message="tns:IUserService_getAllDepartments_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/CreateUser" message="tns:IUserService_CreateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/CreateUserResponse" message="tns:IUserService_CreateUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/RemoveUser" message="tns:IUserService_RemoveUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/RemoveUserResponse" message="tns:IUserService_RemoveUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetScheduleTraining">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/SetScheduleTraining" message="tns:IUserService_SetScheduleTraining_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/SetScheduleTrainingResponse" message="tns:IUserService_SetScheduleTraining_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateNotification">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/CreateNotification" message="tns:IUserService_CreateNotification_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/CreateNotificationResponse" message="tns:IUserService_CreateNotification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NotifactionIsSeen">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/NotifactionIsSeen" message="tns:IUserService_NotifactionIsSeen_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/NotifactionIsSeenResponse" message="tns:IUserService_NotifactionIsSeen_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IUserService" type="tns:IUserService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="listUser">
+      <soap:operation soapAction="http://tempuri.org/IUserService/listUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUser">
+      <soap:operation soapAction="http://tempuri.org/IUserService/getUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubordinat">
+      <soap:operation soapAction="http://tempuri.org/IUserService/getSubordinat" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendEmail">
+      <soap:operation soapAction="http://tempuri.org/IUserService/sendEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="resendEmail">
+      <soap:operation soapAction="http://tempuri.org/IUserService/resendEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSuperintendent">
+      <soap:operation soapAction="http://tempuri.org/IUserService/getSuperintendent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getListAdminSHE">
+      <soap:operation soapAction="http://tempuri.org/IUserService/getListAdminSHE" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="login">
+      <soap:operation soapAction="http://tempuri.org/IUserService/login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSuperintendentByDepartment">
+      <soap:operation soapAction="http://tempuri.org/IUserService/getSuperintendentByDepartment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSupervisor">
+      <soap:operation soapAction="http://tempuri.org/IUserService/getSupervisor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllDepartments">
+      <soap:operation soapAction="http://tempuri.org/IUserService/getAllDepartments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <soap:operation soapAction="http://tempuri.org/IUserService/CreateUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUser">
+      <soap:operation soapAction="http://tempuri.org/IUserService/RemoveUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetScheduleTraining">
+      <soap:operation soapAction="http://tempuri.org/IUserService/SetScheduleTraining" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateNotification">
+      <soap:operation soapAction="http://tempuri.org/IUserService/CreateNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NotifactionIsSeen">
+      <soap:operation soapAction="http://tempuri.org/IUserService/NotifactionIsSeen" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UserService">
+    <wsdl:port name="BasicHttpBinding_IUserService" binding="tns:BasicHttpBinding_IUserService">
+      <soap:address location="http://localhost:12943/UserService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
