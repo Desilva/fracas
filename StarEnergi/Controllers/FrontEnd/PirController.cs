@@ -16,6 +16,8 @@ using StarEnergi.Controllers.Utilities;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -664,6 +666,11 @@ namespace StarEnergi.Controllers.FrontEnd
             //insert data to log
             insertLog(pir);
 
+            if (pir.process_user != null)
+            {
+                this.SendUserNotification(pir, pir.process_user.Value, "Please Process "+pir.no);
+            }
+
             return Json(true,JsonRequestBehavior.AllowGet);
         }
 
@@ -697,6 +704,18 @@ namespace StarEnergi.Controllers.FrontEnd
 
             //insert data to log
             insertLog(pir);
+
+            if (pir.initiate_by != null && pir.initiate_by != "")
+            {
+                var user = (from a in db.users
+                              where a.username == pir.initiate_by
+                              select a).FirstOrDefault();
+                if (user != null)
+                {
+                    this.SendUserNotification(pir, user.employee_id.Value, "Please Verify "+pir.no);
+                }
+            }
+
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -1170,6 +1189,35 @@ namespace StarEnergi.Controllers.FrontEnd
             reader.Close();
 
             return Json(listTrendData, JsonRequestBehavior.AllowGet);
+        }
+
+        private void SendUserNotification(pir data, int sendUserId, string message)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+            WWService.ResponseModel response = client.CreateNotification(
+            EncodeMd5("starenergyww"),
+            sendUserId,
+            System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
+            "PIR",
+            message,
+            "#");
+
+        }
+
+        private string EncodeMd5(string originalText)
+        {
+            //Declarations
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
+            md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalText);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            //Convert encoded bytes back to a 'readable' string
+            return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
         }
 
 

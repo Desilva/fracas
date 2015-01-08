@@ -469,6 +469,9 @@ namespace StarEnergi.WWService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/CreateNotification", ReplyAction="http://tempuri.org/IUserService/CreateNotificationResponse")]
         StarEnergi.WWService.ResponseModel CreateNotification(string passKey, int idLogin, string applicationName, string reportName, string remarks, string url);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/CreateNotificationList", ReplyAction="http://tempuri.org/IUserService/CreateNotificationListResponse")]
+        StarEnergi.WWService.ResponseModel CreateNotificationList(string passKey, int[] listIdLogin, string applicationName, string reportName, string remarks, string url);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/NotifactionIsSeen", ReplyAction="http://tempuri.org/IUserService/NotifactionIsSeenResponse")]
         StarEnergi.WWService.ResponseModel NotifactionIsSeen(string passKey, int id, int idLogin);
     }
@@ -558,6 +561,10 @@ namespace StarEnergi.WWService {
         
         public StarEnergi.WWService.ResponseModel CreateNotification(string passKey, int idLogin, string applicationName, string reportName, string remarks, string url) {
             return base.Channel.CreateNotification(passKey, idLogin, applicationName, reportName, remarks, url);
+        }
+        
+        public StarEnergi.WWService.ResponseModel CreateNotificationList(string passKey, int[] listIdLogin, string applicationName, string reportName, string remarks, string url) {
+            return base.Channel.CreateNotificationList(passKey, listIdLogin, applicationName, reportName, remarks, url);
         }
         
         public StarEnergi.WWService.ResponseModel NotifactionIsSeen(string passKey, int id, int idLogin) {

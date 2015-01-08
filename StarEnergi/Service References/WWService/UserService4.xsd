@@ -250,6 +250,25 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="CreateNotificationList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="passKey" nillable="true" type="xs:string" />
+        <xs:element xmlns:q17="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="listIdLogin" nillable="true" type="q17:ArrayOfint" />
+        <xs:element minOccurs="0" name="applicationName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="reportName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="remarks" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="url" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateNotificationListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="CreateNotificationListResult" nillable="true" type="q18:ResponseModel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="NotifactionIsSeen">
     <xs:complexType>
       <xs:sequence>
@@ -262,7 +281,7 @@
   <xs:element name="NotifactionIsSeenResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="NotifactionIsSeenResult" nillable="true" type="q17:ResponseModel" />
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="NotifactionIsSeenResult" nillable="true" type="q19:ResponseModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

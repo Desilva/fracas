@@ -99,6 +99,12 @@
   <wsdl:message name="IUserService_CreateNotification_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateNotificationResponse" />
   </wsdl:message>
+  <wsdl:message name="IUserService_CreateNotificationList_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateNotificationList" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_CreateNotificationList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateNotificationListResponse" />
+  </wsdl:message>
   <wsdl:message name="IUserService_NotifactionIsSeen_InputMessage">
     <wsdl:part name="parameters" element="tns:NotifactionIsSeen" />
   </wsdl:message>
@@ -165,6 +171,10 @@
     <wsdl:operation name="CreateNotification">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/CreateNotification" message="tns:IUserService_CreateNotification_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/CreateNotificationResponse" message="tns:IUserService_CreateNotification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateNotificationList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/CreateNotificationList" message="tns:IUserService_CreateNotificationList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/CreateNotificationListResponse" message="tns:IUserService_CreateNotificationList_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="NotifactionIsSeen">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/NotifactionIsSeen" message="tns:IUserService_NotifactionIsSeen_InputMessage" />
@@ -301,6 +311,15 @@
     </wsdl:operation>
     <wsdl:operation name="CreateNotification">
       <soap:operation soapAction="http://tempuri.org/IUserService/CreateNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateNotificationList">
+      <soap:operation soapAction="http://tempuri.org/IUserService/CreateNotificationList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -10,6 +10,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Telerik.Web.Mvc;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -281,6 +283,16 @@ namespace StarEnergi.Controllers.FrontEnd
             //send email
             SendEmailToAll(troubleShooting);
 
+            //SEND TO NEXT LEVEL
+            if (troubleShooting.supervisor_approval_name != null && troubleShooting.supervisor_approval_name != "")
+            {
+                this.SendUserNotification(troubleShooting, Int32.Parse(troubleShooting.supervisor_approval_name), "Please Approve "+troubleShooting.no);
+            }
+            if (troubleShooting.supervisor_delegate != null && troubleShooting.supervisor_delegate != "")
+            {
+                this.SendUserNotification(troubleShooting, Int32.Parse(troubleShooting.supervisor_delegate), "Please Approve " + troubleShooting.no);
+            }
+
             if (troubleShooting.id_ir != null)
             {
                 //incident_report ir = db.incident_report.Find(troubleShooting.id_ir);
@@ -406,6 +418,18 @@ namespace StarEnergi.Controllers.FrontEnd
                 else if (ts.superintendent_delegate != null)
                     SendEmailApprove(ts, Int32.Parse(ts.superintendent_delegate));
 
+
+                //SEND TO NEXT LEVEL
+                if (ts.superintendent_approval_name != null && ts.superintendent_approval_name != "")
+                {
+                    this.SendUserNotification(ts, Int32.Parse(ts.superintendent_approval_name), "Please Approve " + ts.no);
+                }
+                if (ts.superintendent_delegate != null && ts.superintendent_delegate != "")
+                {
+                    this.SendUserNotification(ts, Int32.Parse(ts.superintendent_delegate), "Please Approve " + ts.no);
+                }
+
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -422,6 +446,17 @@ namespace StarEnergi.Controllers.FrontEnd
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
             SendEmailToAll(ts, 2, comment);
+
+            if (ts.supervisor_approval_name != null && ts.supervisor_approval_name != "")
+            {
+                this.SendUserNotification(ts, Int32.Parse(ts.supervisor_approval_name), ts.no + " is rejected with comment: " + comment);
+            }
+            if (ts.supervisor_delegate != null && ts.supervisor_delegate != "")
+            {
+                this.SendUserNotification(ts, Int32.Parse(ts.supervisor_delegate), ts.no + " is rejected with comment: " + comment);
+            }
+
+
             return Json(new { success = true });
 
         }
@@ -433,6 +468,12 @@ namespace StarEnergi.Controllers.FrontEnd
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
             SendEmailToAll(ts, 2, comment);
+
+            if (ts.inspector_name != null && ts.inspector_name != "")
+            {
+                this.SendUserNotification(ts, Int32.Parse(ts.inspector_name), ts.no + " is rejected with comment: " + comment);
+            }
+
             return Json(new { success = true });
         }
 
@@ -535,5 +576,40 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult ViewTroubleshooting(int id) {
             return PartialView(db.trouble_shooting.Find(id));
         }
+
+
+
+
+
+        private void SendUserNotification(trouble_shooting data, int sendUserId, string message)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+            WWService.ResponseModel response = client.CreateNotification(
+            EncodeMd5("starenergyww"),
+            sendUserId,
+            System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
+            "FRACAS Troubleshooting Report",
+            message,
+            "#");
+
+        }
+
+        private string EncodeMd5(string originalText)
+        {
+            //Declarations
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
+            md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalText);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            //Convert encoded bytes back to a 'readable' string
+            return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
+        }
+
+
     }
 }

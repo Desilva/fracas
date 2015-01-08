@@ -453,21 +453,7 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
-        private string EncodeMd5(string originalText)
-        {
-            //Declarations
-            Byte[] originalBytes;
-            Byte[] encodedBytes;
-            MD5 md5;
 
-            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
-            md5 = new MD5CryptoServiceProvider();
-            originalBytes = ASCIIEncoding.Default.GetBytes(originalText);
-            encodedBytes = md5.ComputeHash(originalBytes);
-
-            //Convert encoded bytes back to a 'readable' string
-            return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
-        }
 
         [HttpPost]
         public JsonResult Add(incident_report incidentReport, int? id_fracas, int? id_injury, int? id_fracas_part)
@@ -505,10 +491,13 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
 
             //SEND TO NEXT LEVEL
-            this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.ack_supervisor),"Please Approve");
+            if (incidentReport.ack_supervisor != null && incidentReport.ack_supervisor != "")
+            {
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.ack_supervisor), "Please Approve " + incidentReport.reference_number);
+            }
             if (incidentReport.supervisor_delegate != null && incidentReport.supervisor_delegate != "")
             {
-                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.supervisor_delegate), "Please Approve");
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.supervisor_delegate), "Please Approve "+ incidentReport.reference_number);
             }
 
             // add link to fracas
@@ -701,10 +690,13 @@ namespace StarEnergi.Controllers.FrontEnd
                     SendEmailApprove(ir, Int32.Parse(ir.she_superintendent_delegate));
 
                 //SEND TO NEXT LEVEL
-                this.SendUserNotification(ir, Int32.Parse(ir.she_superintendent), "Please Approve");
+                if (ir.she_superintendent != null && ir.she_superintendent != "")
+                {
+                    this.SendUserNotification(ir, Int32.Parse(ir.she_superintendent), "Please Approve "+ ir.reference_number);
+                }
                 if (ir.she_superintendent_delegate != null && ir.she_superintendent_delegate != "")
                 {
-                    this.SendUserNotification(ir, Int32.Parse(ir.she_superintendent_delegate), "Please Approve");
+                    this.SendUserNotification(ir, Int32.Parse(ir.she_superintendent_delegate), "Please Approve " + ir.reference_number);
                 }
 
 
@@ -750,10 +742,13 @@ namespace StarEnergi.Controllers.FrontEnd
                     SendEmailApprove(ir, Int32.Parse(ir.loss_control_delegate));
 
                 //SEND TO NEXT LEVEL
-                this.SendUserNotification(ir, Int32.Parse(ir.loss_control), "Please Approve");
+                if (ir.loss_control != null && ir.loss_control != "")
+                {
+                    this.SendUserNotification(ir, Int32.Parse(ir.loss_control), "Please Approve " + ir.reference_number);
+                }
                 if (ir.loss_control_delegate != null && ir.loss_control_delegate !="")
                 {
-                    this.SendUserNotification(ir, Int32.Parse(ir.loss_control_delegate), "Please Approve");
+                    this.SendUserNotification(ir, Int32.Parse(ir.loss_control_delegate), "Please Approve " + ir.reference_number);
                 }
               
                 return Json(new { success = true, path = sign });
@@ -799,10 +794,13 @@ namespace StarEnergi.Controllers.FrontEnd
                     SendEmailApprove(ir, Int32.Parse(ir.superintendent_delegate));
 
                 //SEND TO NEXT LEVEL
-                this.SendUserNotification(ir, Int32.Parse(ir.superintendent),"Please Approve");
+                if (ir.superintendent != null && ir.superintendent != "")
+                {
+                    this.SendUserNotification(ir, Int32.Parse(ir.superintendent), "Please Approve " + ir.reference_number);
+                }
                 if (ir.superintendent_delegate != null && ir.superintendent_delegate != "")
                 {
-                    this.SendUserNotification(ir, Int32.Parse(ir.superintendent_delegate), "Please Approve");
+                    this.SendUserNotification(ir, Int32.Parse(ir.superintendent_delegate), "Please Approve " + ir.reference_number);
                 }
 
                 return Json(new { success = true, path = sign });
@@ -847,7 +845,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 //SEND TO INVESTIGATION LEAD
                 if (ir.lead_name != null && ir.lead_name != "")
                 {
-                    this.SendUserNotification(ir, Int32.Parse(ir.lead_name), "Please Make Investigation Report",true);
+                    this.SendUserNotification(ir, Int32.Parse(ir.lead_name), "Please Make RCA",true);
                 }
 
                 return Json(new { success = true, path = sign });
@@ -892,10 +890,13 @@ namespace StarEnergi.Controllers.FrontEnd
                     SendEmailApprove(ir, Int32.Parse(ir.field_manager_delegate));
                 
                 //SEND TO NEXT LEVEL
-                this.SendUserNotification(ir, Int32.Parse(ir.field_manager), "Please Approve");
+                if (ir.field_manager != null && ir.field_manager != "")
+                {
+                    this.SendUserNotification(ir, Int32.Parse(ir.field_manager), "Please Approve " + ir.reference_number);
+                }
                 if (ir.field_manager_delegate != null && ir.field_manager_delegate != "")
                 {
-                    this.SendUserNotification(ir, Int32.Parse(ir.field_manager_delegate), "Please Approve");
+                    this.SendUserNotification(ir, Int32.Parse(ir.field_manager_delegate), "Please Approve " + ir.reference_number);
                 }
 
                 return Json(new { success = true, path = sign });
@@ -929,10 +930,13 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
             SendEmailToAll(incidentReport, 2, comment, 2);
 
-            this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.ack_supervisor), "Please Make A Revision");
+            if (incidentReport.ack_supervisor != null && incidentReport.ack_supervisor != "")
+            {
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.ack_supervisor), incidentReport.reference_number + " is rejected with comment: " + comment);
+            }
             if (incidentReport.supervisor_delegate != null && incidentReport.supervisor_delegate != "")
             {
-                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.supervisor_delegate), "Please Make A Revision");
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.supervisor_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
             return Json(new { success = true });
 
@@ -958,7 +962,10 @@ namespace StarEnergi.Controllers.FrontEnd
 
             SendEmailToAll(incidentReport, 2, comment, 1);
 
-            this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.prepared_by), "Please Make A Revision");
+            if (incidentReport.prepared_by != null && incidentReport.prepared_by != "")
+            {
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.prepared_by), incidentReport.reference_number + " is rejected with comment: " + comment);
+            }
 
             return Json(new { success = true });
         }
@@ -986,10 +993,13 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
             SendEmailToAll(incidentReport, 2, comment, 3);
 
-            this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.superintendent), "Please Make A Revision");
+            if (incidentReport.superintendent != null && incidentReport.superintendent != "")
+            {
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.superintendent), incidentReport.reference_number + " is rejected with comment: " + comment);
+            }
             if (incidentReport.superintendent_delegate != null && incidentReport.superintendent_delegate != "")
             {
-                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.superintendent_delegate), "Please Make A Revision");
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.superintendent_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
 
             return Json(new { success = true });
@@ -1019,10 +1029,13 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
             SendEmailToAll(incidentReport, 2, comment, 4);
 
-            this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.loss_control), "Please Make A Revision");
+            if (incidentReport.loss_control != null && incidentReport.loss_control != "")
+            {
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.loss_control), incidentReport.reference_number + " is rejected with comment: " + comment);
+            }
             if (incidentReport.loss_control_delegate != null && incidentReport.loss_control_delegate != "")
             {
-                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.loss_control_delegate), "Please Make A Revision");
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.loss_control_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
 
             return Json(new { success = true });
@@ -1052,10 +1065,13 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
             SendEmailToAll(incidentReport, 2, comment, 5);
 
-            this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.she_superintendent), "Please Make A Revision");
+            if (incidentReport.she_superintendent != null && incidentReport.she_superintendent != "")
+            {
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.she_superintendent), incidentReport.reference_number + " is rejected with comment: " + comment);
+            }
             if (incidentReport.she_superintendent_delegate != null && incidentReport.she_superintendent_delegate != "")
             {
-                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.she_superintendent_delegate), "Please Make A Revision");
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.she_superintendent_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
 
             return Json(new { success = true });
@@ -1703,6 +1719,22 @@ namespace StarEnergi.Controllers.FrontEnd
                 "/NotificationUrlResolver?app_name=FRACAS&name=SHE_INCIDENT_REPORT&id=" + data.id);
             }
             
+        }
+
+        private string EncodeMd5(string originalText)
+        {
+            //Declarations
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
+            md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalText);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            //Convert encoded bytes back to a 'readable' string
+            return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
         }
     } 
 }
