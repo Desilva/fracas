@@ -766,11 +766,11 @@
                         @{bool loss_control_delegate = false; string loss_control_delegate_name = ""; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (!isEdit && user.position.ToLower() == "safety supervisor" && user.delagate != 1)
+                            if (!isEdit && user.position != null && user.position.ToLower() == "safety supervisor" && user.delagate != 1)
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (!isEdit && user.position.ToLower() == "safety supervisor" && user.delagate == 1)
+                            else if (!isEdit && user.position != null && user.position.ToLower() == "safety supervisor" && user.delagate == 1)
                             {
                                 loss_control_delegate = true;
                                 loss_control_delegate_name = user.employee_delegate.ToString();
@@ -847,11 +847,11 @@
                         @{bool safety_officer_delegate = false; string safety_officer_delegate_name = ""; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (!isEdit && user.position.ToLower() == "she superintendent" && user.delagate != 1)
+                            if (!isEdit && user.position != null && user.position.ToLower() == "she superintendent" && user.delagate != 1)
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (!isEdit && user.position.ToLower() == "she superintendent" && user.delagate == 1)
+                            else if (!isEdit && user.position != null && user.position.ToLower() == "she superintendent" && user.delagate == 1)
                             {
                                 safety_officer_delegate = true;
                                 safety_officer_delegate_name = user.employee_delegate.ToString();
@@ -912,11 +912,11 @@
                         @{bool field_manager_delegate = false; string field_manager_delegate_name = ""; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (!isEdit && user.position.ToLower().Contains("operation manager") && user.delagate != 1)
+                            if (!isEdit && user.position != null && user.position.ToLower().Contains("operation manager") && user.delagate != 1)
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (!isEdit && user.position.ToLower().Contains("operation manager") && user.delagate == 1)
+                            else if (!isEdit && user.position != null && user.position.ToLower().Contains("operation manager") && user.delagate == 1)
                             {
                                 field_manager_delegate = true;
                                 field_manager_delegate_name = user.employee_delegate.ToString();
