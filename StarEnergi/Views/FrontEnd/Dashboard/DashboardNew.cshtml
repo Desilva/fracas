@@ -34,49 +34,60 @@
     <link href="/Content/Dashboard.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
     <script src="/Scripts/application.js"></script>	
-
+       
 <body>
-<div class="notification-area">
+    @{
+        if (HttpContext.Current.Session["username"] != null) {
+            
+            <div class="notification-area">
     <div class="notification-header">
         <h2>Notification Center</h2>
     </div>
-    <div class="notification-body"></div>
-</div>
-<div class="kpi-area">
-    <div class="kpi-div">
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
+        <div class="notification-body">
+            <link href="@Url.Content("~/Content/kendo/kendo.common-bootstrap.min.css")" rel="stylesheet" type="text/css" />
+            <link href="@Url.Content("~/Content/kendo/kendo.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+            <div id="grid"></div>
         </div>
     </div>
-    <div class="kpi-div">
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
+    <div class="kpi-area">
+        <div class="kpi-div">
+            <div class="kpi-row">
+                <div class="kpi-criteria">SHE Observation</div>
+                <div class="kpi-result">12</div>
+            </div>
+            <div class="kpi-row">
+                <div class="kpi-criteria">SHE Observation</div>
+                <div class="kpi-result">12</div>
+            </div>
+            <div class="kpi-row">
+                <div class="kpi-criteria">SHE Observation</div>
+                <div class="kpi-result">12</div>
+            </div>
+            <div class="kpi-row">
+                <div class="kpi-criteria">SHE Observation</div>
+                <div class="kpi-result">12</div>
+            </div>
         </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
+        <div class="kpi-div">
+            <div class="kpi-row">
+                <div class="kpi-criteria">SHE Observation</div>
+                <div class="kpi-result">12</div>
+            </div>
+            <div class="kpi-row">
+                <div class="kpi-criteria">SHE Observation</div>
+                <div class="kpi-result">12</div>
+            </div>
+            <div class="kpi-row">
+                <div class="kpi-criteria">SHE Observation</div>
+                <div class="kpi-result">12</div>
+            </div>
         </div>
     </div>
-</div>
-@if (undian != null) {
+        }
+    }
+
+@if (undian != null)
+{
     <div class="lucky-winner">
         <div class="lucky-winner-title-area">
             <h3 class="lucky-winner-title">SHE Observation Lucky Draw Winner</h3>
@@ -88,16 +99,16 @@
             {
             <ul>
                 @{undian = ViewBag.winner as StarEnergi.Models.WinnerReport;
-                s = "";
-                foreach (StarEnergi.Models.WinnerEntity win in undian.winners)
-                {
-                    List<string> name = win.winner.Split(' ').ToList();
-                    if (name.Count > 2)
-                    {
-                        name.RemoveRange(2, name.Count - 2);
-                    }
-                    <li><span class="icon-thumbs-up icon-white"></span> @string.Join(" ",name)</li>
-                }
+                  s = "";
+                  foreach (StarEnergi.Models.WinnerEntity win in undian.winners)
+                  {
+                      List<string> name = win.winner.Split(' ').ToList();
+                      if (name.Count > 2)
+                      {
+                          name.RemoveRange(2, name.Count - 2);
+                      }
+                    <li><span class="icon-thumbs-up icon-white"></span> @string.Join(" ", name)</li>
+                  }
                 }
             </ul>
             }
@@ -123,7 +134,7 @@
             <a data-toggle="popover" data-placement="top" data-content="<a href=@Url.Action("Index", "Incident")>SHE Incident Report</a>@if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                                                                                                                                         { <text><br/><a href=@Url.Action("Index", "Investigation")>SHE Incident Investigation Report</a></text>}@if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.AUDITOR))
                                                                                                                                                                                                                                                 { <text><br/><a href=@Url.Action("Index", "HseAuditor")>SHE Audit</a></text> }@if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.MEDIC))
-                                                                                                                                                                                                                                                                                                                                                                                                            { <text><br/><a href=@Url.Action("Index", "HseInjuryReport")>SHE Injury Report</a></text>}<br/><a href=@Url.Action("Index", "SheObservation")>SHE Observation Form</a>" title="SHE" data-original-title="Popover on top" data-html="true">
+                                                                                                                                                                                                                                                                                                                              { <text><br/><a href=@Url.Action("Index", "HseInjuryReport")>SHE Injury Report</a></text>}<br/><a href=@Url.Action("Index", "SheObservation")>SHE Observation Form</a>" title="SHE" data-original-title="Popover on top" data-html="true">
                 <img src="@Url.Content("~/Content/image/new/she-link.png")" />
                 <span class="menu-text">SHE</span>
             </a>
@@ -175,6 +186,7 @@
 }
 @section scripts {
     <script type="text/javascript" src="@Url.Content("~/Scripts/jQueryRotateCompressed.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/kendo.web.min.js")" type="text/javascript" ></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#toggle-collapse').click(function () {
@@ -197,6 +209,137 @@
                     $(this).data('toggle', '0');
                 }
             });
+            $("#grid").kendoGrid({
+                 dataSource: {
+                     transport: {
+                         read: {
+                            url: "@Url.Action("Binding")",
+                            dataType: "json",
+                            type: "POST",
+                        },
+                        parameterMap: function (options, operation) {
+                            if (operation !== "read" && options.models) {
+
+                            } else {
+
+                                if (options.filter) {
+                                    filter = options.filter.filters;
+                                    for (var i in filter) {
+                                        //if (filter[i].field == "CreateDate") {
+                                        //    var date = filter[i].value;
+                                        //    //date = date.split(' ');
+                                        //    //date = date[2] + " " + date[1] + " " + date[3];
+                                        //    //console.log(typeof(kendo.parseDate(date,"d MMM yyyy")));
+                                        //    filter[i].value = kendo.toString(date, "G");
+                                        //    console.log(filter[i].value);
+                                        //} else if (filter[i].field == "Status") {
+                                        //    filter[i].value = filter[i].value == true ? 1 : 0;
+                                        //} else if (filter[i].field == "Name") {
+                                        //    filter[i].field = "contractor.first_name";
+                                        //    var sor = { field: "contractor.last_name", operator: 'contains', value: filter[i].value };
+                                        //    filter.push(sor);
+                                        //    options.filter.logic = "or";
+                                        //} else if (filter[i].field == "Position") {
+                                        //    filter[i].field = "docPosition.position";
+                                        //} else if (filter[i].field == "Company") {
+                                        //    filter[i].field = "contractor.company.name";
+                                        //} else if (filter[i].field == "DurationContract") {
+                                        //    filter[i].field = "start_date";
+                                        //    filter[i].value = kendo.toString(date, "G");
+                                        //}
+                                        if (filter[i].field == "ContractDuration") {
+                                            var date = new Date(filter[i].value);
+                                            filter[i].field = "start_date";
+                                            filter[i].operator = "lte";
+                                            filter[i].value = kendo.toString(date, "MM/dd/yyyy");
+                                            var fil = { field: "end_date", operator: "gte", value: filter[i].value };
+                                            filter.push(fil);
+                                        }
+                                    }
+                                }
+
+                                if (options.sort) {
+                                    sort = options.sort;
+                                    for (var i in sort) {
+                                        //if (sort[i].field == "ContractSpv") {
+                                        //    sort[i].field = "contract_supervisor";
+                                        //} else if (sort[i].field == "Name") {
+                                        //    sort[i].field = "contractor.first_name";
+                                        //    var sor = { field: "contractor.last_name", dir: sort[i].dir };
+                                        //    sort.push(sor);
+                                        //} else if (sort[i].field == "Position") {
+                                        //    sort[i].field = "docPosition.position";
+                                        //} else if (sort[i].field == "Company") {
+                                        //    sort[i].field = "contractor.company.name";
+                                        //} else if (sort[i].field == "DurationContract") {
+                                        //    sort[i].field = "start_date";
+                                        //    var sor = { field: "end_date", dir: sort[i].dir };
+                                        //    sort.push(sor);
+                                        //}
+                                        if (sort[i].field == "ContractDuration") {
+                                            sort[i].field = "start_date";
+                                            var sor = { field: "end_date", dir: sort[i].dir };
+                                            sort.push(sor);
+                                        }
+                                    }
+                                }
+                                return options;
+                            }
+                        }
+                     },
+                     //filter: { field: "IdLogin", operator: "eq", value: " },
+                    schema: {
+                        data: "data",
+                        total: "total",
+                        model: {
+                            id: "Id",
+                            fields: {
+                                IdLogin: { type: "number" },
+                                ApplicationName: { type: "string" },
+                                ReportName: { type: "string" },
+                                Remarks: { type: "string" },
+                            }
+                        }
+                    },
+                    pageSize: 10,
+                    serverPaging: true,
+                    serverFiltering: true,
+                    serverSorting: true,
+                    //filter: { field: "Status", operator: "contains", value: "RETRIEVED" }
+                    //sort: { field: "order_num", dir: "desc" },
+                },
+                 pageable: true,
+                 sortable: true,
+                 scrollable: true,
+                 filterable: true,
+                 columns: [
+                     {
+                         field: "ApplicationName",
+                         title: "Application Name",
+                         filterable: {
+                             extra: false,
+                         },
+                     },
+                     {
+                         field: "ReportName",
+                         title: "Report",
+                         filterable: {
+                             extra: false,
+                         },
+                     },
+                     {
+                         field: "Remarks",
+                         title: "Remarks",
+                         filterable: {
+                             extra: false,
+                         },
+                     },
+                     //{
+                     //    template: kendo.template($('#command-template').html()),
+                     //    width: 75
+                     //}
+                 ],
+             });
+
         });
     </script>
-}
