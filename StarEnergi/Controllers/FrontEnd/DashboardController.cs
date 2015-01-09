@@ -551,6 +551,25 @@ namespace StarEnergi.Controllers.FrontEnd
             
         }
 
+        public JsonResult NotificationIsSeen(int id)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+
+
+            int userId;
+            if (HttpContext.Session["id"] != null)
+            {
+                userId = Int32.Parse(HttpContext.Session["id"].ToString());
+            }
+            else
+            {
+                userId = 0;
+            }
+            client.NotifactionIsSeen(EncodeMd5("starenergyww"), id, userId);
+
+            return Json(true);
+        }
+
         private string EncodeMd5(string originalText)
         {
             //Declarations

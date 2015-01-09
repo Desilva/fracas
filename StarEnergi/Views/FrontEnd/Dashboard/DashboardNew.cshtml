@@ -334,12 +334,35 @@
                              extra: false,
                          },
                      },
-                     //{
-                     //    template: kendo.template($('#command-template').html()),
-                     //    width: 75
-                     //}
+                     {
+                         template: kendo.template($('#command-template').html()),
+                         width: 75
+                     }
                  ],
              });
 
         });
+
+        function MarkAsSeen(id) {
+            $.ajax({
+                url: '@Url.Action("NotificationIsSeen")',
+                async: false,
+                type: "POST",
+                data: {id:id},
+                success: function (data) {
+                    if(data == true)
+                    {
+                        $('#grid').data('kendoGrid').dataSource.read();
+                    }
+                    
+                }
+            });
+        }
+
     </script>
+<script id="command-template" type="text/x-kendo-template">
+            <a class="k-button-icon" title="Go to report" onclick="event.preventDefault();" href=""><span><img style="max-height:10px" src="/Content/glyphicon/glyphicons-145-folder-open.png" /></span></a>
+     # if (IsSeen == false){ #
+            <a class="k-button-icon" title="Mark as seen" onclick="event.preventDefault(); MarkAsSeen(#=Id #)" href=""><span><img style="max-height:10px" src="/Content/glyphicon/glyphicons-207-ok-2.png" /></span></a>
+     # } #
+</script>
