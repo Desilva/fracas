@@ -29,10 +29,9 @@
     
 @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.webblue.css").Combined(true).Compress(true)))
 <script type="text/javascript">
-    function CheckForLoadEvent()
-    {
-      if(window.main != null)
-      window.main();
+    function CheckForLoadEvent() {
+        if (window.main != null)
+            window.main();
     }
 
     jQuery(document).ready(function () {

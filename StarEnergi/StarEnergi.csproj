@@ -346,6 +346,7 @@
     <Compile Include="Controllers\Admin\SubComponentController.cs" />
     <Compile Include="Controllers\Admin\SubEquipmentController.cs" />
     <Compile Include="Controllers\FrontEnd\AssetRegisterController.cs" />
+    <Compile Include="Controllers\FrontEnd\KpiController.cs" />
     <Compile Include="Controllers\FrontEnd\FieldManagerSummaryController.cs" />
     <Compile Include="Controllers\FrontEnd\HseInjuryReportController.cs" />
     <Compile Include="Controllers\FrontEnd\HseObservationSeverityController.cs" />
@@ -982,8 +983,11 @@
     <Compile Include="Utilities\CustomBindingExtensions.cs" />
     <Compile Include="Utilities\CustomBindingIncidentExtensions.cs" />
     <Compile Include="Utilities\DownloadFileActionResult.cs" />
+    <Compile Include="Utilities\EnumHelper.cs" />
+    <Compile Include="Utilities\EnumMaster.cs" />
     <Compile Include="Utilities\ErrorHandling.cs" />
     <Compile Include="Utilities\ExcelReader.cs" />
+    <Compile Include="Utilities\KpiDashboard.cs" />
     <Compile Include="Utilities\mxGraph\canvas\mxBasicCanvas.cs" />
     <Compile Include="Utilities\mxGraph\canvas\mxGdiCanvas.cs" />
     <Compile Include="Utilities\mxGraph\canvas\mxGdiCanvas2D.cs" />
@@ -1972,6 +1976,7 @@
     <None Include="Service References\WWService\UserService4.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Views\FrontEnd\Dashboard\kpi.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

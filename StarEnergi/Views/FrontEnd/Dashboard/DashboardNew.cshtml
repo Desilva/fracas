@@ -1,17 +1,21 @@
-﻿<link href="@Url.Content("~/Content/Site-new.css")" rel="stylesheet" type="text/css" />
-@{
+﻿@using StarEnergi.Utilities;
+<link href="@Url.Content("~/Content/Site-new.css")" rel="stylesheet" type="text/css" />
+@{    
     var htmlAttributes = new { style = "float: left;width: 180px;position: absolute; margin-left: 10px;" };
     List<StarEnergi.Models.user_per_role> li = null;
     if (HttpContext.Current.Session["roles"] != null)
     {
         li = HttpContext.Current.Session["roles"] as List<StarEnergi.Models.user_per_role>;
-        
-    } else {
+
+    }
+    else
+    {
         var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
         var baseurl = urlHelper.Content("~");
         var returnUrl = HttpContext.Current.Request.RawUrl.Replace(baseurl, "");
         System.Diagnostics.Debug.WriteLine("returnUrl = " + returnUrl);
-        if ((returnUrl.Contains("rca") || returnUrl.Contains("pir") || returnUrl.Contains("Hse") || returnUrl.Contains("admin")) && !returnUrl.Contains("LogOn")) {
+        if ((returnUrl.Contains("rca") || returnUrl.Contains("pir") || returnUrl.Contains("Hse") || returnUrl.Contains("admin")) && !returnUrl.Contains("LogOn"))
+        {
             HttpContext.Current.Response.Redirect(@Url.Action("LogOn", "Account", new { returnUrl = returnUrl }));
         }
     }
@@ -42,41 +46,28 @@
     </div>
     <div class="notification-body"></div>
 </div>
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        if (Session["id"] != null)
+        {
+            string userId = Session["id"].ToString();
+            StarEnergi.Utilities.KpiDashboard dashboard = new KpiDashboard();
 <div class="kpi-area">
-    <div class="kpi-div">
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-    </div>
-    <div class="kpi-div">
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-criteria">SHE Observation</div>
-            <div class="kpi-result">12</div>
-        </div>
-    </div>
+    @{ if (dashboard.Allow(userId, KPIType.SHE_OBSERVATION)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.SHE_OBSERVATION } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.IR_APPROVED)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IR_APPROVED } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.IR_OUTSTANDING_APPROVAL)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IR_OUTSTANDING_APPROVAL } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.RCA)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.RCA } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.IIR_APPROVED)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IIR_APPROVED } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.IIR_OUTSTANDING_APPROVED)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IIR_OUTSTANDING_APPROVED } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.PIR)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.PIR } }); } }
 </div>
-@if (undian != null) {
+        }
+    }
+}
+
+@if (undian != null)
+{
     <div class="lucky-winner">
         <div class="lucky-winner-title-area">
             <h3 class="lucky-winner-title">SHE Observation Lucky Draw Winner</h3>
@@ -88,16 +79,16 @@
             {
             <ul>
                 @{undian = ViewBag.winner as StarEnergi.Models.WinnerReport;
-                s = "";
-                foreach (StarEnergi.Models.WinnerEntity win in undian.winners)
-                {
-                    List<string> name = win.winner.Split(' ').ToList();
-                    if (name.Count > 2)
-                    {
-                        name.RemoveRange(2, name.Count - 2);
-                    }
-                    <li><span class="icon-thumbs-up icon-white"></span> @string.Join(" ",name)</li>
-                }
+                  s = "";
+                  foreach (StarEnergi.Models.WinnerEntity win in undian.winners)
+                  {
+                      List<string> name = win.winner.Split(' ').ToList();
+                      if (name.Count > 2)
+                      {
+                          name.RemoveRange(2, name.Count - 2);
+                      }
+                    <li><span class="icon-thumbs-up icon-white"></span> @string.Join(" ", name)</li>
+                  }
                 }
             </ul>
             }
@@ -123,7 +114,7 @@
             <a data-toggle="popover" data-placement="top" data-content="<a href=@Url.Action("Index", "Incident")>SHE Incident Report</a>@if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                                                                                                                                         { <text><br/><a href=@Url.Action("Index", "Investigation")>SHE Incident Investigation Report</a></text>}@if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.AUDITOR))
                                                                                                                                                                                                                                                 { <text><br/><a href=@Url.Action("Index", "HseAuditor")>SHE Audit</a></text> }@if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.MEDIC))
-                                                                                                                                                                                                                                                                                                                                                                                                            { <text><br/><a href=@Url.Action("Index", "HseInjuryReport")>SHE Injury Report</a></text>}<br/><a href=@Url.Action("Index", "SheObservation")>SHE Observation Form</a>" title="SHE" data-original-title="Popover on top" data-html="true">
+                                                                                                                                                                                                                                                                                                                              { <text><br/><a href=@Url.Action("Index", "HseInjuryReport")>SHE Injury Report</a></text>}<br/><a href=@Url.Action("Index", "SheObservation")>SHE Observation Form</a>" title="SHE" data-original-title="Popover on top" data-html="true">
                 <img src="@Url.Content("~/Content/image/new/she-link.png")" />
                 <span class="menu-text">SHE</span>
             </a>
@@ -173,6 +164,7 @@
     </div>
 </div>
 }
+
 @section scripts {
     <script type="text/javascript" src="@Url.Content("~/Scripts/jQueryRotateCompressed.js")"></script>
     <script type="text/javascript">
