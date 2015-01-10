@@ -474,6 +474,9 @@ namespace StarEnergi.WWService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/NotifactionIsSeen", ReplyAction="http://tempuri.org/IUserService/NotifactionIsSeenResponse")]
         StarEnergi.WWService.ResponseModel NotifactionIsSeen(string passKey, int id, int idLogin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserNotification", ReplyAction="http://tempuri.org/IUserService/GetUserNotificationResponse")]
+        string GetUserNotification(string request, int userId, string passKey);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -569,6 +572,10 @@ namespace StarEnergi.WWService {
         
         public StarEnergi.WWService.ResponseModel NotifactionIsSeen(string passKey, int id, int idLogin) {
             return base.Channel.NotifactionIsSeen(passKey, id, idLogin);
+        }
+        
+        public string GetUserNotification(string request, int userId, string passKey) {
+            return base.Channel.GetUserNotification(request, userId, passKey);
         }
     }
 }
