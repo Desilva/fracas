@@ -1706,7 +1706,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
                 "SHE Incident Report",
                 message,
-                "#");
+                "/NotificationUrlResolver/FRACAS?name=SHE_INCIDENT_REPORT_NEW_INVESTIGATION&id=0");
             }
             else
             {
@@ -1716,7 +1716,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
                 "SHE Incident Report",
                 message,
-                "/NotificationUrlResolver?app_name=FRACAS&name=SHE_INCIDENT_REPORT&id=" + data.id);
+                "/NotificationUrlResolver/FRACAS?name=SHE_INCIDENT_REPORT&id=" + data.id);
             }
             
         }

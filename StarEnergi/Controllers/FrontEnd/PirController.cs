@@ -1200,7 +1200,7 @@ namespace StarEnergi.Controllers.FrontEnd
             System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
             "PIR",
             message,
-            "#");
+            "/NotificationUrlResolver/FRACAS?name=FRACAS_PIR&id="+data.id);
 
         }
 

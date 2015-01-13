@@ -1110,7 +1110,7 @@ namespace StarEnergi.Controllers.FrontEnd
             System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
             "Incident Investigation Report",
             message,
-            "#");
+            "/NotificationUrlResolver/FRACAS?name=INCIDENT_INVESTIGATION_REPORT&id="+ data.id);
 
         }
 
@@ -1123,7 +1123,7 @@ namespace StarEnergi.Controllers.FrontEnd
             System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
             "Incident Investigation Report",
             message,
-            "#");
+            "/NotificationUrlResolver/FRACAS?name=INCIDENT_INVESTIGATION_REPORT&id=" + data.id);
 
         }
 

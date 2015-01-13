@@ -385,6 +385,7 @@
     <Compile Include="Controllers\FrontEnd\HelpController.cs" />
     <Compile Include="Controllers\FrontEnd\HseEventLogController.cs" />
     <Compile Include="Controllers\FrontEnd\HseIllnessReportController.cs" />
+    <Compile Include="Controllers\FrontEnd\NotificationUrlResolverController.cs" />
     <Compile Include="Controllers\FrontEnd\SheObservationController.cs" />
     <Compile Include="Controllers\FrontEnd\HseObservationYearController.cs" />
     <Compile Include="Controllers\FrontEnd\IncidentController.cs" />
@@ -3468,6 +3469,11 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\FrontEnd\Dashboard\kpi.cshtml" />
+    <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASSHEIncidentReport.cshtml" />
+    <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASTroubleshootingReport.cshtml" />
+    <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASPIRProcess.cshtml" />
+    <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASPIRInitiator.cshtml" />
+    <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASIncidentInvestigationReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

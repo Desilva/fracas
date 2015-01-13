@@ -588,9 +588,9 @@ namespace StarEnergi.Controllers.FrontEnd
             EncodeMd5("starenergyww"),
             sendUserId,
             System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
-            "FRACAS Troubleshooting Report",
+            "Troubleshooting Report",
             message,
-            "#");
+            "/NotificationURLResolver/FRACAS?name=FRACAS_TROUBLESHOOTING_REPORT&id="+data.id);
 
         }
 

@@ -1013,7 +1013,7 @@
                 $('#reject_ir').css("display", "none");
                 alert("Comment sent!");
                 $("#RejectComment").data("tWindow").close();
-                $('#contentEventLog').load('Incident/addIncident/@id');
+                $('#contentEventLog').load('/Incident/addIncident/@id');
             }
         });
     }
@@ -1022,7 +1022,7 @@
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
             var date = $('#date_sup').val();
-            $.post("Incident/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/Incident/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_superintendent').parent().hide();
@@ -1046,7 +1046,7 @@
         if (r == true) {
             
             var date = $('#date_ack').val();
-            $.post("Incident/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/Incident/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_supervisor').parent().hide();
@@ -1069,7 +1069,7 @@
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
             var date = $('#date_field_man').val();
-            $.post("Incident/approveFieldManager", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/Incident/approveFieldManager", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_field_manager').parent().hide();
@@ -1092,7 +1092,7 @@
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
             var date = $('#date_she_sup').val();
-            $.post("Incident/approveSheSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/Incident/approveSheSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_she_superintendent').parent().hide();
@@ -1115,7 +1115,7 @@
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
             var date = $('#date_loss_control').val();
-            $.post("Incident/approveLossControl", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/Incident/approveLossControl", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_loss_control').parent().hide();
@@ -1136,7 +1136,7 @@
 
     function selectSup() {
         var sup_id = $('#sup_name').val();
-        $.post("Incident/selectSup", { id: '@id', employee_id: sup_id }, function (data) {
+        $.post("/Incident/selectSup", { id: '@id', employee_id: sup_id }, function (data) {
             if (data.success) {
                 $('#sup_delegate').val(data.delegates);
                 $('#sup_delegate_name').val(data.delegate_name);
@@ -1148,7 +1148,7 @@
 
     function selectSupervisor() {
         var sup_id = $('#ack').val();
-        $.post("Incident/selectSupervisor", { id: '@id', employee_id: sup_id }, function (data) {
+        $.post("/Incident/selectSupervisor", { id: '@id', employee_id: sup_id }, function (data) {
             if (data.success) {
                 $('#supervisor_delegate').val(data.delegates);
                 $('#supervisor_delegate_name').val(data.delegate_name);
@@ -1178,7 +1178,7 @@
     });
 
     function bindatch() {
-        $.post("Incident/Atch", { id: '@id' }, function (data) {
+        $.post("/Incident/Atch", { id: '@id' }, function (data) {
             var has = data.files.split(";;");
             $('#atch').empty();
             for (var f in has) {
@@ -1347,7 +1347,7 @@
                     values.id_fracas = '@(id_fracas != null ? id_fracas.ToString() : "")';
                     values.id_injury = '@(ViewBag.id_injury != null ? (ViewBag.id_injury as int?).ToString() : "")';
                     values.id_fracas_part = '@(ViewBag.id_fracas_part != null ? (ViewBag.id_fracas_part as int?).ToString() : "")';
-                    $.post("Incident/Add", values, function (data) {
+                    $.post("/Incident/Add", values, function (data) {
                         if (data != undefined) {
                             isSave = true;
                             $('#realmod_save').css("display", "none");
@@ -1361,7 +1361,7 @@
                 } else if (isEdit == 'True') {
                     var ids = '@id';
                     values.id = ids;
-                    $.post("Incident/Edit", values, function (data) {
+                    $.post("/Incident/Edit", values, function (data) {
                         if (data != undefined) {
                             $('#realmod_save').css("display", "none");
                             alert('Incident report changed');
@@ -1378,7 +1378,7 @@
 
     function back() {
         if (!isSave) {
-            $.post("Incident/DeleteAtch?id=@id", function (data) {});
+            $.post("/Incident/DeleteAtch?id=@id", function (data) {});
         }
         window.location = "/Incident";
         //$('#content').load('Incident/Index');
