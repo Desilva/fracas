@@ -28,8 +28,7 @@ to use a different color start by replacing all instances of
 	padding: 0;
 	color: #696969;
 	font: normal 10pt Arial,Helvetica,sans-serif;
-	background: #efefef url(image/new/bg-1.png) no-repeat;
-    background-size: 100% auto;
+	background: #efefef;
 	overflow-y: scroll;
 }
 
@@ -278,12 +277,12 @@ footer, #footer
     width: 100%;
     border-bottom: 1px #fff solid;
    /*background:  url('2012.1.214/Office2007/sprite.png') repeat-x 0 -850px;*/
-    /*background: #91B0FF;*/
+    background: #91B0FF;
 }
 
  #mainmenu .t-header
 {
-    background-color: transparent;
+    background-color: #06C;
     color: #000;
 }
 
@@ -309,7 +308,7 @@ footer, #footer
     border-color: #fff;
     margin-right: -0.1em;
     margin-right: -0.15em \9;
-    background-color: transparent;
+    background-color: #06C;
 }
 
 #menu .t-link, #dash .t-link
@@ -1672,7 +1671,6 @@ table .vertical {
     -webkit-column-gap: 20px;
     column-count: 3;
     column-gap: 20px;
-    list-style:circle;
     margin:0;
 }
 
@@ -1687,8 +1685,8 @@ table .vertical {
     font-family: 'PT Sans';
 }
 
-.kpi-area .kpi-div { float: left; width: 48%; margin-right: 4%; }
-.kpi-area .kpi-div:nth-last-child(2n) { margin-right: 0; }
+.kpi-area .kpi-div { float: left; width: 48%; }
+.kpi-div:nth-child(4n+3) { margin-left: 4%; }
 
 /*
 .kpi-div:first-child {

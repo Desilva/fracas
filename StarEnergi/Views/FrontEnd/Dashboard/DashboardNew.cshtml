@@ -39,7 +39,7 @@
     <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
     <script src="/Scripts/application.js"></script>	
        
-<body>
+<div>
     @{
         if (HttpContext.Current.Session["username"] != null) {
             
@@ -53,6 +53,8 @@
             <div id="grid"></div>
         </div>
     </div>
+    }
+    }
 @{
     if (User.Identity.IsAuthenticated)
     {
@@ -62,12 +64,12 @@
             StarEnergi.Utilities.KpiDashboard dashboard = new KpiDashboard();
     <div class="kpi-area">
     @{ if (dashboard.Allow(userId, KPIType.SHE_OBSERVATION)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.SHE_OBSERVATION } }); } }
-    @{ if (dashboard.Allow(userId, KPIType.IR_APPROVED)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IR_APPROVED } }); } }
-    @{ if (dashboard.Allow(userId, KPIType.IR_OUTSTANDING_APPROVAL)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IR_OUTSTANDING_APPROVAL } }); } }
-    @{ if (dashboard.Allow(userId, KPIType.RCA)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.RCA } }); } }
     @{ if (dashboard.Allow(userId, KPIType.IIR_APPROVED)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IIR_APPROVED } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.IR_APPROVED)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IR_APPROVED } }); } }
     @{ if (dashboard.Allow(userId, KPIType.IIR_OUTSTANDING_APPROVED)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IIR_OUTSTANDING_APPROVED } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.IR_OUTSTANDING_APPROVAL)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.IR_OUTSTANDING_APPROVAL } }); } }
     @{ if (dashboard.Allow(userId, KPIType.PIR)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.PIR } }); } }
+    @{ if (dashboard.Allow(userId, KPIType.RCA)) { Html.RenderPartial("kpi", new ViewDataDictionary { { "KPIType", KPIType.RCA } }); } }
     </div>
         }
     }
@@ -102,7 +104,7 @@
         </div>
     </div>
 }
-</body>
+</div>
 @section menuDashboard {
 <div class="menu-area">
     <div class="wrap">
@@ -197,6 +199,11 @@
                     $(this).data('toggle', '0');
                 }
             });
+
+            $('#page').css('background', '#efefef url(content/image/new/bg-1.png) no-repeat').css('background-size', '100% 100%');
+            $('#mainmenu').css('background', 'transparent');
+            $('#mainmenu .t-header').css('background', 'transparent');
+            $('#menu .t-item').css('background', 'transparent');
             $("#grid").kendoGrid({
                  dataSource: {
                      transport: {
@@ -300,6 +307,7 @@
                  sortable: true,
                  scrollable: true,
                  filterable: true,
+                 height: 300,
                  columns: [
                      {
                          field: "ApplicationName",

@@ -56,7 +56,7 @@ namespace StarEnergi.Utilities
                 //supervisor
                 else if (employee.approval_level == null ? false : employee.approval_level == 1)
                 {
-                    result = db.incident_report.Where(m => m.ack_supervisor == userIdStr && m.supervisor_approve != null && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => ((m.ack_supervisor == userIdStr && m.supervisor_approve != null) || (m.loss_control == userIdStr && m.loss_control_approve != null)) && m.reference_number.Contains(comparation)).Count();
                 }
                 //superintendent & she superintendent
                 else if (employee.approval_level == null ? false : employee.approval_level == 2)
@@ -92,7 +92,7 @@ namespace StarEnergi.Utilities
                 //supervisor
                 if (employee.approval_level == null ? false : employee.approval_level == 1)
                 {
-                    result = db.incident_report.Where(m => m.ack_supervisor == userIdStr && m.supervisor_approve == null && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => ((m.ack_supervisor == userIdStr && m.supervisor_approve == null) || (m.loss_control == userIdStr && m.loss_control_approve == null)) && m.reference_number.Contains(comparation)).Count();
                 }
                 //superintendent & she superintendent
                 else if (employee.approval_level == null ? false : employee.approval_level == 2)

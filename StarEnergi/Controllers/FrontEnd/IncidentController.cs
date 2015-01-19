@@ -1392,7 +1392,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult ExportExcelTotal(DateTime from, DateTime to)
         {
             List<incident_report_r> result = new List<incident_report_r>();
-            List<incident_report> list_ir = db.incident_report.Where(p => p.incident_type == "Injury / Illness").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+            List<incident_report> list_ir = db.incident_report.Where(p => p.incident_type == "Injury / Illness").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             double total_cost = 0;
             double cost_kon = 0;
             double cost_seg = 0;
@@ -1411,7 +1411,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             result.Add(new incident_report_r { type = "Injury / Illness", cases = list_ir.Count, total_cost = total_cost , cost_kon = cost_kon, cost_seg = cost_seg});
-            list_ir = db.incident_report.Where(p => p.incident_type == "Environmental Loss").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+            list_ir = db.incident_report.Where(p => p.incident_type == "Environmental Loss").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
             cost_seg = 0;
@@ -1431,7 +1431,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             result.Add(new incident_report_r { type = "Environmental Loss", cases = list_ir.Count, total_cost = total_cost, cost_kon = cost_kon, cost_seg = cost_seg });
-            list_ir = db.incident_report.Where(p => p.incident_type == "Properti Damage").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+            list_ir = db.incident_report.Where(p => p.incident_type == "Properti Damage").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
             cost_seg = 0;
@@ -1451,7 +1451,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             result.Add(new incident_report_r { type = "Properti Damage", cases = list_ir.Count, total_cost = total_cost, cost_kon = cost_kon, cost_seg = cost_seg });
-            list_ir = db.incident_report.Where(p => p.incident_type == "Process Loss / Disturb").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+            list_ir = db.incident_report.Where(p => p.incident_type == "Process Loss / Disturb").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
             cost_seg = 0;
@@ -1471,7 +1471,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             result.Add(new incident_report_r { type = "Process Loss / Disturb", cases = list_ir.Count, total_cost = total_cost, cost_kon = cost_kon, cost_seg = cost_seg });
-            list_ir = db.incident_report.Where(p => p.incident_type == "External Relation").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+            list_ir = db.incident_report.Where(p => p.incident_type == "External Relation").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
             cost_seg = 0;
@@ -1491,7 +1491,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             result.Add(new incident_report_r { type = "External Relation", cases = list_ir.Count, total_cost = total_cost, cost_kon = cost_kon, cost_seg = cost_seg });
-            list_ir = db.incident_report.Where(p => p.incident_type == "Theft / Crimes").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+            list_ir = db.incident_report.Where(p => p.incident_type == "Theft / Crimes").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
             cost_seg = 0;
@@ -1511,7 +1511,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             result.Add(new incident_report_r { type = "Theft / Crimes", cases = list_ir.Count, total_cost = total_cost, cost_kon = cost_kon, cost_seg = cost_seg });
-            list_ir = db.incident_report.Where(p => p.incident_type == "Vehicular").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+            list_ir = db.incident_report.Where(p => p.incident_type == "Vehicular").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
             cost_seg = 0;
@@ -1531,7 +1531,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
             result.Add(new incident_report_r { type = "Vehicular", cases = list_ir.Count, total_cost = total_cost, cost_kon = cost_kon, cost_seg = cost_seg });
-            list_ir = db.incident_report.Where(p => p.incident_type == "Near Miss").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+            list_ir = db.incident_report.Where(p => p.incident_type == "Near Miss").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
             cost_seg = 0;
@@ -1552,7 +1552,7 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             result.Add(new incident_report_r { type = "Near Miss", cases = list_ir.Count, total_cost = total_cost, cost_kon = cost_kon, cost_seg = cost_seg });
             list_ir = db.incident_report.Where(p => p.incident_type != "Injury / Illness" && p.incident_type != "Environmental Loss" && p.incident_type != "Properti Damage"
-                && p.incident_type != "Process Loss / Disturb" && p.incident_type != "External Relation" && p.incident_type != "Theft / Crimes" && p.incident_type != "Vehicular" && p.incident_type != "Near Miss").Where(p => p.date_incident >= from && p.date_incident <= to).ToList();
+                && p.incident_type != "Process Loss / Disturb" && p.incident_type != "External Relation" && p.incident_type != "Theft / Crimes" && p.incident_type != "Vehicular" && p.incident_type != "Near Miss").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
             cost_seg = 0;

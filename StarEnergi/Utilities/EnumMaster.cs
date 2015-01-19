@@ -17,7 +17,7 @@ namespace StarEnergi.Utilities
         IR_OUTSTANDING_APPROVAL,
         [Description("RCA")]
         RCA,
-        [Description("Incident Investigation Report Outstanding Approved")]
+        [Description("Incident Investigation Report Outstanding Approval")]
         IIR_OUTSTANDING_APPROVED,
         [Description("Incident Investigation Report Approved")]
         IIR_APPROVED,

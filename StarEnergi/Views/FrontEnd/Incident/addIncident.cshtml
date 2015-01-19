@@ -962,7 +962,7 @@
 </div>    
 <br/>
 </div>
-@*@(Html.Telerik().Window()
+@(Html.Telerik().Window()
     .Name("RejectComment")
     .Visible(false)
     .Title("Reject")
@@ -980,7 +980,7 @@
 	            </p>
 	         </div>
         </text>)
-)*@
+)
 <script type="text/javascript">
     var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR)';
     var isEdit = '@isEdit';

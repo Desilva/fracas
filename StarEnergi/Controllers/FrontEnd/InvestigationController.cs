@@ -819,7 +819,6 @@ namespace StarEnergi.Controllers.FrontEnd
                 inves_approve = inves_approve.Substring(0, inves_approve.Length - 1);
                 iir.investigator_approve = inves_approve;
                 db.Entry(iir).State = EntityState.Modified;
-                db.SaveChanges();
                 investigation_report_log ir_log = new investigation_report_log
                 {
                     id_iir = id,
@@ -828,6 +827,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     date = DateTime.Now
                 };
                 db.investigation_report_log.Add(ir_log);
+                db.SaveChanges();
 
                 bool sendToLossControl = true;
                 string[] temp = iir.investigator_approve.Split(';');
@@ -849,7 +849,16 @@ namespace StarEnergi.Controllers.FrontEnd
                     {
                         this.SendUserNotification(iir, Int32.Parse(iir.loss_control_delegate), "Please Approve " + iir.reference_number);
                     }
-                    
+
+                    ir_log = new investigation_report_log
+                    {
+                        id_iir = id,
+                        username = HttpContext.Session["username"].ToString(),
+                        status = "Approved by all Investigator",
+                        date = DateTime.Now
+                    };
+                    db.investigation_report_log.Add(ir_log);
+                    db.SaveChanges();
                 }
 
                 return Json(new { success = true, path = sign });
