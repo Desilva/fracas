@@ -36,9 +36,9 @@
                 "process_user":$('#process_user').val(),
             }
 
-            $.post("Pir/verified", values, function (data) {
+            $.post("/Pir/verified", values, function (data) {
                 alert('Data berhasil di verified');
-                window.location.href = "pir";
+                window.location.href = "/pir";
                 //$('.loadSubmit').css("display", "none");
             });
         }
@@ -80,9 +80,9 @@
                 "process_user":$('#process_user').val(),
             }
 
-            $.post("Pir/sendToProcess", values, function (data) {
+            $.post("/Pir/sendToProcess", values, function (data) {
                 alert('Data terkirim');
-                window.location.href = "pir";
+                window.location.href = "/pir";
                 //$('.loadSubmit').css("display", "none");
             });
         }
@@ -119,13 +119,13 @@
         }
 
         $('.loadSubmit').css("display", "block");
-        $.post("Pir/UpdateInitiator", values, function (data) {
+        $.post("/Pir/UpdateInitiator", values, function (data) {
             $('.loadSubmit').css("display", "none");
             alert('Data tersimpan');
             if (identity > 1) {
-                $('#contentEventLog').load('pir/pageInitiator/' + data);
+                $('#contentEventLog').load('/pir/pageInitiator/' + data);
             }
-            $('#contentPirInitiatorList').load('pir/pageInitiator/' + data);
+            $('#contentPirInitiatorList').load('/pir/pageInitiator/' + data);
         });
     }
 
@@ -698,7 +698,7 @@
     });
 
     function bindatch() {
-        $.post("pir/Atch", { id: '@Model.id' }, function (data) {
+        $.post("/pir/Atch", { id: '@Model.id' }, function (data) {
             var has = data.files.split(";;");
             $('#atch').empty();
             for (var f in has) {

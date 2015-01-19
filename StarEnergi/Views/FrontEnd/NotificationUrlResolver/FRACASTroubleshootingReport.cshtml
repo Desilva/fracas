@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Troubleshooting Report";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+<div id="contentEventLog">
+   
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#contentEventLog').load('/TroubleShooting/addTroubleShooting', { 'id': @ViewBag.Id });
+    });
+</script>

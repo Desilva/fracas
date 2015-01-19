@@ -83,7 +83,7 @@
 
             $('#realmod_save').css("display", "block");
             if (isEdit == 'False') {
-                $.post("TroubleShooting/Add", values, function (data) {
+                $.post("/TroubleShooting/Add", values, function (data) {
                     if (data != undefined) {
                         isSave = true;
                         $('#realmod_save').css("display", "none");
@@ -98,7 +98,7 @@
                 isSave = true;
                 var ids = '@id';
                 values.id = ids;
-                $.post("TroubleShooting/Edit", values, function (data) {
+                $.post("/TroubleShooting/Edit", values, function (data) {
                     if (data != undefined) {
                         $('#realmod_save').css("display", "none");
                         alert('Troubleshooting successfully updated');
@@ -531,7 +531,7 @@ function validate() {
         var r = confirm("Are you sure want to Approve this trouble shooting report?");
         if (r == true) {
             var date = $('#superintendent_approval_date').val();
-            $.post("TroubleShooting/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/TroubleShooting/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_superintendent').parent().hide();
@@ -552,7 +552,7 @@ function validate() {
         var r = confirm("Are you sure want to Approve this trouble shooting report?");
         if (r == true) {
             var date = $('#supervisor_approval_date').val();
-            $.post("TroubleShooting/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/TroubleShooting/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_supervisor').parent().hide();

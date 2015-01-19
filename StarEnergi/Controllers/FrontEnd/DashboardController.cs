@@ -544,11 +544,11 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 userId = 0;
             }
-            
-            string serviceResponse = client.GetUserNotification(serviceRequestData, userId,EncodeMd5("starenergyww"));
+
+            string serviceResponse = client.GetUserNotification(serviceRequestData, userId, EncodeMd5("starenergyww"));
 
             return serviceResponse;
-            
+
         }
 
         public JsonResult NotificationIsSeen(int id)
@@ -565,6 +565,8 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 userId = 0;
             }
+
+            //TO-DO: RESPONSE MODEL HANDLE ERROR DARI SERVER
             client.NotifactionIsSeen(EncodeMd5("starenergyww"), id, userId);
 
             return Json(true);

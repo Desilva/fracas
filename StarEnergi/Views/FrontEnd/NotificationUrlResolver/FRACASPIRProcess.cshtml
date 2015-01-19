@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "PIR";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+<div id="contentPirInitiatorList">
+   
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#contentPirInitiatorList').load('/pir/pageProcess/@ViewBag.Id');
+    });
+</script>

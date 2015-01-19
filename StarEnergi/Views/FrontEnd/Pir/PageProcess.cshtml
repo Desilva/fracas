@@ -26,9 +26,9 @@
                 "description": $('#description').val()
             }
 
-            $.post("Pir/sendToInitiator", values, function (data) {
+            $.post("/Pir/sendToInitiator", values, function (data) {
                 alert('Data terkirim');
-                window.location.href = "pir";
+                window.location.href = "/pir";
                 //$('.loadSubmit').css("display", "none");
             });
         }
@@ -63,10 +63,10 @@
         }
 
         //$('.loadSubmit').css("display", "block");
-        $.post("Pir/UpdateProcess", values, function (data) {
+        $.post("/Pir/UpdateProcess", values, function (data) {
             //$('.loadSubmit').css("display", "none");
             alert('Data tersimpan');
-            $('#contentPirInitiatorList').load('pir/pageProcess/' + data);
+            $('#contentPirInitiatorList').load('/pir/pageProcess/' + data);
         });
     }
 </script>
@@ -493,7 +493,7 @@
     });
 
     function bindatch() {
-        $.post("pir/Atch", { id: '@Model.id' }, function (data) {
+        $.post("/pir/Atch", { id: '@Model.id' }, function (data) {
             var has = data.files.split(";;");
             $('#atch').empty();
             for (var f in has) {

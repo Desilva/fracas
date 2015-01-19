@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "SHE Incident Investigation Report";
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (ViewData["user_role"] != null)
+    {
+        li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    }
+}
+<div id="contentInvestigation">
+   
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#contentInvestigation').load('/Investigation/addInvestigation/@ViewBag.Id');
+    });
+</script>

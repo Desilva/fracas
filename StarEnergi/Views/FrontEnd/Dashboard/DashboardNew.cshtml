@@ -40,26 +40,28 @@
     <script src="/Scripts/application.js"></script>	
        
 <div>
-    @{
-        if (HttpContext.Current.Session["username"] != null) {
+   
             
-            <div class="notification-area">
-    <div class="notification-header">
-        <h2>Notification Center</h2>
-    </div>
-        <div class="notification-body">
-            <link href="@Url.Content("~/Content/kendo/kendo.common.min.css")" rel="stylesheet" type="text/css" />
-            <link href="@Url.Content("~/Content/kendo/kendo.material.min.css")" rel="stylesheet" type="text/css" />
-            <div id="grid"></div>
-        </div>
-    </div>
-    }
-    }
+ 
+
 @{
     if (User.Identity.IsAuthenticated)
     {
         if (Session["id"] != null)
         {
+            
+          <div class="notification-area">
+                <div class="notification-header">
+                    <h2>Notification Center</h2>
+                </div>
+                    <div class="notification-body">
+                        <link href="@Url.Content("~/Content/kendo/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+                        <link href="@Url.Content("~/Content/kendo/kendo.material.min.css")" rel="stylesheet" type="text/css" />
+                        <div id="grid"></div>
+                    </div>
+       </div>
+            
+    }
             string userId = Session["id"].ToString();
             StarEnergi.Utilities.KpiDashboard dashboard = new KpiDashboard();
     <div class="kpi-area">
@@ -204,8 +206,26 @@
             $('#mainmenu').css('background', 'transparent');
             $('#mainmenu .t-header').css('background', 'transparent');
             $('#menu .t-item').css('background', 'transparent');
+            var kendoFilter = {
+                filterable: {
+                    operators: {
+                        //filter menu for "string" type columns
+                        string: {
+                            eq: "Is equal to",
+                            neq: "Is not equal to",
+                            startswith: "Starts with",
+                            contains: "Contains",
+                            endswith: "Ends with"
+                        },
+                    }
+                }
+            }
+
             $("#grid").kendoGrid({
-                 dataSource: {
+                dataSource: {
+                    error: function (e) {
+                        window.location = "@Url.Action("LogOn", "Account")";
+                    },
                      transport: {
                          read: {
                             url: "@Url.Action("Binding")",
@@ -312,23 +332,55 @@
                      {
                          field: "ApplicationName",
                          title: "Application Name",
+                         width: 160,
                          filterable: {
-                             extra: false,
-                         },
+                             operators: {
+                                 //filter menu for "string" type columns
+                                 string: {
+                                     eq: "Is equal to",
+                                     neq: "Is not equal to",
+                                     startswith: "Starts with",
+                                     contains: "Contains",
+                                     endswith: "Ends with"
+                                 },
+                             },
+                             extra: false
+                         }
                      },
                      {
                          field: "ReportName",
                          title: "Report",
                          filterable: {
-                             extra: false,
-                         },
+                             operators: {
+                                 //filter menu for "string" type columns
+                                 string: {
+                                     eq: "Is equal to",
+                                     neq: "Is not equal to",
+                                     startswith: "Starts with",
+                                     contains: "Contains",
+                                     endswith: "Ends with"
+                                 },
+                             },
+                             extra:false
+                         }
                      },
                      {
                          field: "Remarks",
                          title: "Remarks",
                          filterable: {
-                             extra: false,
-                         },
+                             operators: {
+                                 //filter menu for "string" type columns
+                                 string: {
+                                     eq: "Is equal to",
+                                     neq: "Is not equal to",
+                                     startswith: "Starts with",
+                                     contains: "Contains",
+                                     endswith: "Ends with"
+                                 },
+                             },
+                             extra:false
+                         }
+
                      },
                      {
                          template: kendo.template($('#command-template').html()),
@@ -346,18 +398,22 @@
                 type: "POST",
                 data: {id:id},
                 success: function (data) {
-                    if(data == true)
-                    {
+                    if (data == true) {
                         $('#grid').data('kendoGrid').dataSource.read();
                     }
-                    
+                    else {
+                        window.location = "@Url.Action("LogOn", "Account")";
+                    }
+                },
+                error: function (data) {
+                    window.location="@Url.Action("LogOn", "Account")";
                 }
             });
         }
 
     </script>
 <script id="command-template" type="text/x-kendo-template">
-            <a class="k-button-icon" title="Go to report" onclick="event.preventDefault();" href=""><span><img style="max-height:10px" src="/Content/glyphicon/glyphicons-145-folder-open.png" /></span></a>
+            <a class="k-button-icon" title="Go to report" onclick="MarkAsSeen(#=Id #)" href="#= Url #" target="_blank"><span><img style="max-height:10px" src="/Content/glyphicon/glyphicons-145-folder-open.png" /></span></a>
      # if (IsSeen == false){ #
             <a class="k-button-icon" title="Mark as seen" onclick="event.preventDefault(); MarkAsSeen(#=Id #)" href=""><span><img style="max-height:10px" src="/Content/glyphicon/glyphicons-207-ok-2.png" /></span></a>
      # } #
