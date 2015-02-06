@@ -48,6 +48,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public ActionResult addIncident(int? id, int? id_fracas, int? id_injury, int?id_fracas_part)
         {
+            
             string username = (String)Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
             if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))

@@ -25,6 +25,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -118,10 +119,13 @@
     <Reference Include="Telerik.Reporting, Version=6.0.12.215, Culture=neutral, PublicKeyToken=a9d7983dfcc261be">
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.Reporting.Design, Version=6.0.12.215, Culture=neutral, PublicKeyToken=a9d7983dfcc261be" />
+    <Reference Include="Telerik.Reporting.Design, Version=6.0.12.215, Culture=neutral, PublicKeyToken=a9d7983dfcc261be">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Telerik.ReportViewer.WebForms, Version=7.0.13.220, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Telerik\Reporting Q1 2012\Bin\Telerik.ReportViewer.WebForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Web.Mvc">
       <HintPath>C:\Program Files (x86)\Telerik\Extensions for ASP.NET MVC Q1 2012\Binaries\Mvc3\Telerik.Web.Mvc.dll</HintPath>
@@ -349,6 +353,7 @@
     <Compile Include="Controllers\Admin\SubClassController.cs" />
     <Compile Include="Controllers\Admin\SubComponentController.cs" />
     <Compile Include="Controllers\Admin\SubEquipmentController.cs" />
+    <Compile Include="Controllers\Admin\WellsController.cs" />
     <Compile Include="Controllers\FrontEnd\AssetRegisterController.cs" />
     <Compile Include="Controllers\FrontEnd\KpiController.cs" />
     <Compile Include="Controllers\FrontEnd\FieldManagerSummaryController.cs" />
@@ -449,6 +454,9 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\daily_log_weekly_target.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\daily_log_wells.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\daily_log_wpnb.cs">
@@ -742,6 +750,9 @@
     <Compile Include="Models\TargetPafEntity.cs" />
     <Compile Include="Models\TinyEquipmentEntity.cs" />
     <Compile Include="Models\trouble_shooting.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\trouble_shooting_log.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\unit.cs">
@@ -3474,6 +3485,7 @@
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASPIRProcess.cshtml" />
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASPIRInitiator.cshtml" />
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASIncidentInvestigationReport.cshtml" />
+    <Content Include="Views\Admin\Wells\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

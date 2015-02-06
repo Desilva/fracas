@@ -9,17 +9,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
-    public partial class trouble_shooting_log
+    public partial class daily_log_wells
     {
         public int id { get; set; }
-        public string comment { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
-        public Nullable<int> id_tsr { get; set; }
-        public string status { get; set; }
-        public string username { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        public string name { get; set; }
+        public Nullable<bool> is_delete { get; set; }
     }
     
 }

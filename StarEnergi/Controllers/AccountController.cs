@@ -43,7 +43,21 @@ namespace StarEnergi.Controllers
                     {
                         user a = db.users.Find(model.UserName);
                         employee e = db.employees.Find(a.employee_id);
-                        FormsAuthentication.SetAuthCookie(e.alpha_name, model.RememberMe);
+                        FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                        1,
+                        e.alpha_name,  //user id
+                        DateTime.Now,
+                        DateTime.Now.AddMinutes(240),  // expiry
+                        false,  //do not remember
+                        "{Id:'" + e.id + "',PassKey:'" + EncodePassword(a.username + a.password) +  "'}");
+
+                        HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName,
+                                                       FormsAuthentication.Encrypt(authTicket))
+                        {
+                            HttpOnly = true,
+                            Expires = authTicket.Expiration,
+                        };
+                        Response.Cookies.Add(cookie);
                         List<user_per_role> li = db.user_per_role.Where(p => p.username == model.UserName).ToList();
                         HttpContext.Session.Add("roles", li);
                         if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")

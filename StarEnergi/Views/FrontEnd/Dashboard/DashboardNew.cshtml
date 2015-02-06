@@ -60,8 +60,6 @@
                         <div id="grid"></div>
                     </div>
        </div>
-            
-    }
             string userId = Session["id"].ToString();
             StarEnergi.Utilities.KpiDashboard dashboard = new KpiDashboard();
     <div class="kpi-area">
@@ -172,6 +170,13 @@
                 <span class="menu-text">PTW</span>
             </a>
         </div>
+        
+        <div class="menu">
+            <a href="@System.Configuration.ConfigurationManager.AppSettings["access"]" title="Access Control">
+                <img src="@Url.Content("~/Content/image/new/access-link.png")" />
+                @*<span class="menu-text">PTW</span>*@
+            </a>
+        </div>
     </div>
 </div>
 }
@@ -184,7 +189,7 @@
             $('#toggle-collapse').click(function () {
                 var toggleStatus = $(this).data('toggle');
                 if (toggleStatus == '0') {
-                    $('.menu-area').animate({ "bottom": "-110px" }, "slow");
+                    $('.menu-area').animate({ "bottom": "-210px" }, "slow");
                     $('.menu-area .toggle-button img').rotate({
                         duration: 1000,
                         angle: 0,
@@ -206,6 +211,7 @@
             $('#mainmenu').css('background', 'transparent');
             $('#mainmenu .t-header').css('background', 'transparent');
             $('#menu .t-item').css('background', 'transparent');
+            $('#menu .t-item .t-item').css('background', '#fff');
             var kendoFilter = {
                 filterable: {
                     operators: {
