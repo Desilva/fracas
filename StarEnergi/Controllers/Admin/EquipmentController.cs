@@ -148,6 +148,7 @@ namespace StarEnergi.Controllers.Admin
             edited.id_tag_type = equipment.id_tag_type;
             edited.data_sheet_path = equipment.data_sheet_path;
             edited.id_equipment_group = equipment.id_equipment_group;
+            edited.pnid_tag_num = equipment.pnid_tag_num;
 
             if (ModelState.IsValid)
             {

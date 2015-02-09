@@ -12,7 +12,8 @@
     function save() {
         var values =
         {
-            "Tag_num"           : $('#tag_num').val(),
+            "Tag_num": $('#tag_num').val(),
+            "Pnid_tag_num": $('#pnid_tag_num').val(),
             "Nama"              : $('#nama').val(),
             "Econ"              : $('#econ').val(),
             "Ram_crit"          : $('#ram_crit').val(),
@@ -77,6 +78,13 @@
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.tag_num)
+        <div class="errorM"></div>
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.pnid_tag_num)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.pnid_tag_num)
         <div class="errorM"></div>
     </div>
     <div class="editor-label">

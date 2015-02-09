@@ -65,19 +65,23 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.mod = id;
                 equipment_daily_report es = db.equipment_daily_report.Find(id);
 
-                var equip = ((from e in db.equipment_daily_report_table
-                         select new EquipmentTableReportEntity
-                         {
-                             tag_number = e.tag_id,
-                             description = e.description
-                         }).Distinct()
+                var equip = ((from e in db.equipments
+                              where e.pnid_tag_num != null && e.pnid_tag_num != ""
+                              select new EquipmentTableReportEntity
+                              {
+                                  tag_number = e.pnid_tag_num,
+                                  id_equipment = e.id,
+                                  description = e.nama
+                              }).Distinct()
                     );
 
                 var x = (from e in db.equipment_daily_report_table
                          where e.id_equipment_daily_report == id
                          select new EquipmentTableReportEntity
                          {
-                             tag_number = e.tag_id
+                             tag_number = e.tag_id,
+                             id_equipment = e.id_equipment,
+                             description = e.description
                          }
                     );
                 List<EquipmentTableReportEntity> etre = equip.ToList();
@@ -92,7 +96,8 @@ namespace StarEnergi.Controllers.FrontEnd
                             {
                                 tag_id = e.tag_number,
                                 description = e.description,
-                                id_equipment_daily_report = id
+                                id_equipment_daily_report = id,
+                                id_equipment = e.id_equipment
                             };
 
                             db.equipment_daily_report_table.Add(edrt);
@@ -118,7 +123,8 @@ namespace StarEnergi.Controllers.FrontEnd
                              date = e.date,
                              time = e.time,
                              name_operator = e.name_operator,
-                             keterangan = e.keterangan
+                             keterangan = e.keterangan,
+                             id_equipment = e.id_equipment
                          }
                     );
                 EquipmentReportEntity eq = new EquipmentReportEntity
@@ -133,11 +139,13 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             else
             {
-                var r = ((from e in db.equipment_daily_report_table
+                var r = ((from e in db.equipments
+                          where e.pnid_tag_num != null && e.pnid_tag_num != ""
                           select new EquipmentTableReportEntity
                           {
-                              tag_number = e.tag_id,
-                              description = e.description
+                              tag_number = e.pnid_tag_num,
+                              id_equipment = e.id,
+                              description = e.nama
                           }).Distinct()
                     );
 
@@ -145,7 +153,9 @@ namespace StarEnergi.Controllers.FrontEnd
                          where e.id_equipment_daily_report == null
                          select new EquipmentTableReportEntity
                          {
-                             tag_number = e.tag_id
+                             tag_number = e.tag_id,
+                             id_equipment = e.id_equipment,
+                             description = e.description
                          }
                     );
                 List<EquipmentTableReportEntity> etre = r.ToList();
@@ -159,7 +169,8 @@ namespace StarEnergi.Controllers.FrontEnd
                             equipment_daily_report_table es = new equipment_daily_report_table
                             {
                                 tag_id = e.tag_number,
-                                description = e.description
+                                description = e.description,
+                                id_equipment = e.id_equipment
                             };
 
                             db.equipment_daily_report_table.Add(es);
@@ -179,11 +190,13 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.mod = id;
             equipment_daily_report es = db.equipment_daily_report.Find(id);
 
-            var equip = ((from e in db.equipment_daily_report_table
+            var equip = ((from e in db.equipments
+                          where e.pnid_tag_num != null && e.pnid_tag_num != ""
                           select new EquipmentTableReportEntity
                           {
-                              tag_number = e.tag_id,
-                              description = e.description
+                              tag_number = e.pnid_tag_num,
+                              description = e.nama,
+                              id_equipment = e.id
                           }).Distinct()
                     );
 
@@ -191,7 +204,9 @@ namespace StarEnergi.Controllers.FrontEnd
                         where e.id_equipment_daily_report == id
                         select new EquipmentTableReportEntity
                         {
-                            tag_number = e.tag_id
+                            tag_number = e.tag_id,
+                            description = e.description,
+                            id_equipment = e.id_equipment
                         }
                 );
             List<EquipmentTableReportEntity> etre = equip.ToList();
@@ -206,7 +221,8 @@ namespace StarEnergi.Controllers.FrontEnd
                         {
                             tag_id = e.tag_number,
                             description = e.description,
-                            id_equipment_daily_report = id
+                            id_equipment_daily_report = id,
+                            id_equipment = e.id_equipment
                         };
 
                         db.equipment_daily_report_table.Add(edrt);
@@ -232,7 +248,8 @@ namespace StarEnergi.Controllers.FrontEnd
                             date = e.date,
                             time = e.time,
                             name_operator = e.name_operator,
-                            keterangan = e.keterangan
+                            keterangan = e.keterangan,
+                            id_equipment = e.id_equipment
                         }
                 );
             EquipmentReportEntity eq = new EquipmentReportEntity
@@ -339,21 +356,25 @@ namespace StarEnergi.Controllers.FrontEnd
 
             int id = edr.id;
 
-            List<equipment_daily_report_table> li = db.equipment_daily_report_table.Where(p => p.id_equipment_daily_report == null).ToList();
+            List<equipment_daily_report_table> li = db.equipment_daily_report_table.Where(p => p.id_equipment_daily_report == null).OrderBy(p => p.id_equipment).ToList();
             foreach (equipment_daily_report_table l in li)
             {
                 EquipmentTableReportEntity etre = ere.table.Find(p => p.tag_number == l.tag_id);
-                l.id_equipment_daily_report = id;
-                l.barcode = etre.barcode;
-                l.min_limit = etre.min_limit;
-                l.max_limit = etre.max_limit;
-                l.tag_value = etre.tag_value;
-                l.unit = etre.unit;
-                l.time = etre.time;
-                l.name_operator = ere.operator_name;
-                l.keterangan = etre.keterangan;
-                db.Entry(l).State = EntityState.Modified;
-                db.SaveChanges();
+                if (etre != null)
+                {
+                    l.id_equipment_daily_report = id;
+                    l.barcode = etre.barcode;
+                    l.min_limit = etre.min_limit;
+                    l.max_limit = etre.max_limit;
+                    l.tag_value = etre.tag_value;
+                    l.unit = etre.unit;
+                    l.time = etre.time;
+                    l.date = etre.date;
+                    l.name_operator = ere.operator_name;
+                    l.keterangan = etre.keterangan;
+                    db.Entry(l).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
 
             return Json(true);
@@ -382,6 +403,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     etre.tag_value = l.tag_value;
                     etre.unit = l.unit;
                     etre.time = l.time;
+                    etre.date = l.date;
                     etre.name_operator = ere.operator_name;
                     etre.keterangan = l.keterangan;
                     db.Entry(etre).State = EntityState.Modified;

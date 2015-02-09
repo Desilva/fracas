@@ -35,7 +35,7 @@ namespace StarEnergi.Controllers.Admin
         {
             // extract only the fielname
             var fileName = Path.GetFileName(userfile.FileName);
-            string err = "";
+            string err = "<script type='text/javascript'>document.onload = function(e) { alert 'a'; };</script>";
             // store the file inside ~/App_Data/uploads folder
             var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);           
             userfile.SaveAs(path);
@@ -53,8 +53,10 @@ namespace StarEnergi.Controllers.Admin
                 err = SaveFracas(path);
             else if (fileName == Config.fileIR)
                 err = SaveIR(path);
-            else if (fileName.Contains("Daily"))
+            else if (fileName.Contains("Daily")) {
                 err = SaveEquipmentDailyReport(path);
+                err += "<script src='" + Url.Content("~/Scripts/2012.1.214/jquery-1.7.1.min.js") + "' type='text/javascript'></script><script type='text/javascript'>window.parent.$('#equipmentDailyReport').data('tGrid').rebind();</script>";
+            }
             else if (fileName == Config.filePIR)
                 err = SavePIR(path);
             else if (fileName == Config.fileExcelBOM)

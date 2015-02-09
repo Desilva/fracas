@@ -101,6 +101,10 @@ namespace StarEnergi.Models
         [Display(Name = "Sertifikasi")]
         public Nullable<System.DateTime> sertifikasi { get; set; }
 
+        [Display(Name = "P&ID Tag Num")]
+        [StringLength(255,ErrorMessage="P&ID Tag Number cannot more than 255 characters.")]
+        public string pnid_tag_num { get; set; }
+
         public virtual discipline discipline { get; set; }
         public virtual ICollection<equipment_event> equipment_event { get; set; }
         public virtual equipment_groups equipment_groups { get; set; }

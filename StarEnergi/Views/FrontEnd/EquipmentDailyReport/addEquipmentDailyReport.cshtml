@@ -68,7 +68,7 @@
                 i++;
             <tr>
 				<td class="number" style="width:50px">@i</td>
-                <td style="width:100px">@e.tag_number</td>
+                <td style="width:100px">@e.tag_number<input type="hidden" id="tag_number_@(e.id_equipment)" name="tag_number_@(e.id_equipment)" value="@e.tag_number" style="width:50px" /></td>
                 <td style="width:50px"><input type="text" id="barcode_@(e.id_equipment)" name="barcode_@(e.id_equipment)" value="@e.barcode" style="width:50px"/></td>
                 <td style="width:150px">@e.description</td>
                 <td class="number" style="width:50px"><input type="text" id="min_@(e.id_equipment)" name="min_@(e.id_equipment)" value="@e.min_limit" style="width:50px"/></td>
@@ -76,7 +76,7 @@
                 <td class="number" style="width:50px"><input type="text" id="tag_@(e.id_equipment)" name="tag_@(e.id_equipment)" value="@e.tag_value" style="width:50px"/></td>
                 <td class="number" style="width:50px"><input type="text" id="unit_@(e.id_equipment)" name="unit_@(e.id_equipment)" value="@e.unit" style="width:50px"/></td>
                 <td style="width:50px">@(Html.Telerik().DatePicker()
-                    .Name("date_"+e.id_equipment)
+                    .Name("date_" + e.id_equipment)
                     .HtmlAttributes(new { id = "date_wrapper", style = "width:50px" })
                     .Value(isEdit ? e.date : DateTime.Today))</td> 
                 <td style="width:50px"><input type="text" id="time_@(e.id_equipment)" name="time_@(e.id_equipment)" value="@e.time" style="width:50px"/></td>
@@ -106,7 +106,7 @@
     var listEq = new Array();
     @foreach (StarEnergi.Models.EquipmentTableReportEntity eq in etre)
     {
-        <text>listEq.push('@eq.tag_number');</text>   
+        <text>listEq.push('@eq.id_equipment');</text>   
     }
 
     function save() {
@@ -117,20 +117,21 @@
         if (validate()) {
             for (var s in listEq) {
                 list.push({
-                        tag_number: listEq[s],
-                        barcode: $('#barcode_' + listEq[s]).val(),
-                        min_limit: $('#min_' + listEq[s]).val(),
-                        max_limit: $('#max_' + listEq[s]).val(),
-                        tag_value: $('#tag_' + listEq[s]).val(),
-                        unit: $('#unit_' + listEq[s]).val(),
-                        date: $('#date_' + listEq[s]).val(),
-                        time: $('#time_' + listEq[s]).val(),
-                        keterangan: $('#ket_' + listEq[s]).val()
+                    tag_number: $('#tag_number_' + listEq[s]).val(),
+                    barcode: $('#barcode_' + listEq[s]).val(),
+                    min_limit: $('#min_' + listEq[s]).val(),
+                    max_limit: $('#max_' + listEq[s]).val(),
+                    tag_value: $('#tag_' + listEq[s]).val(),
+                    unit: $('#unit_' + listEq[s]).val(),
+                    date: $('#date_' + listEq[s]).val(),
+                    time: $('#time_' + listEq[s]).val(),
+                    keterangan: $('#ket_' + listEq[s]).val()
                 });
             }
             var values = {
                 operator_name: $('#operator_name').val(),
-                table: list
+                table: list,
+                date: $('#date_' + listEq[0]).val(),
             }
             console.log(values);
             $('#realmod_save').css("display", "block");
