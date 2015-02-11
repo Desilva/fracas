@@ -34,7 +34,6 @@ namespace StarEnergi.Models
         public DbSet<bom> boms { get; set; }
         public DbSet<comms_rbi> comms_rbi { get; set; }
         public DbSet<component> components { get; set; }
-        public DbSet<daily_log> daily_log { get; set; }
         public DbSet<daily_log_last_plant_status> daily_log_last_plant_status { get; set; }
         public DbSet<daily_log_maintainence> daily_log_maintainence { get; set; }
         public DbSet<daily_log_operation_warning> daily_log_operation_warning { get; set; }
@@ -43,7 +42,6 @@ namespace StarEnergi.Models
         public DbSet<daily_log_sags> daily_log_sags { get; set; }
         public DbSet<daily_log_sap> daily_log_sap { get; set; }
         public DbSet<daily_log_weekly_target> daily_log_weekly_target { get; set; }
-        public DbSet<daily_log_wells> daily_log_wells { get; set; }
         public DbSet<daily_log_wpnb> daily_log_wpnb { get; set; }
         public DbSet<discipline> disciplines { get; set; }
         public DbSet<email_error> email_error { get; set; }
@@ -127,6 +125,8 @@ namespace StarEnergi.Models
         public DbSet<user_per_role> user_per_role { get; set; }
         public DbSet<user_role> user_role { get; set; }
         public DbSet<user> users { get; set; }
+        public DbSet<daily_log> daily_log { get; set; }
+        public DbSet<daily_log_wells> daily_log_wells { get; set; }
     
         public virtual int insertUser(string username, Nullable<int> idEmployee)
         {

@@ -314,9 +314,14 @@ namespace StarEnergi.Controllers.FrontEnd
             return PartialView();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">id == null: create, else edit</param>
+        /// <returns></returns>
         public ActionResult addDailyLog(int? id)
         {
-            if (id != null)
+            if (id != null) //edit
             {
                 ViewBag.mod = id;
                 daily_log shift1 = db.daily_log.Find(id);
@@ -341,7 +346,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
 
             }
-            else
+            else //create
             {
                 id = db.daily_log.Max(p => p.id);
                 id++;
@@ -366,8 +371,15 @@ namespace StarEnergi.Controllers.FrontEnd
                            dept_name = dept.dept_name,
                            username = (ue.username == null ? String.Empty : ue.username)
                        }).ToList();
+
+            //wells data
+            List<daily_log_wells> wells = db.daily_log_wells.Where(m => (m.is_delete == null ? true : (m.is_delete.Value == true ? false : true))).OrderBy(m => m.name).ToList();
+
+            //viewdata
             ViewData["users"] = has;
             ViewData["user_role"] = li;
+            ViewData["wells"] = wells;
+
             return PartialView();
         }
 

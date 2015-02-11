@@ -1,10 +1,12 @@
-﻿@{
+﻿@using StarEnergi.Models;
+
+@{    
     int? id1 = null;
     int? id2 = null;
     bool isEdit = false;
     bool isEdit2 = false;
-    StarEnergi.Models.daily_log dl = new StarEnergi.Models.daily_log();
-    StarEnergi.Models.daily_log dl2 = new StarEnergi.Models.daily_log();
+    daily_log dl = new daily_log();
+    daily_log dl2 = new daily_log();
     if (ViewBag.mod != null)
     {
         id1 = ViewBag.mod as Nullable<Int32>;
@@ -22,11 +24,17 @@
     int userShift = 0;
 
     double a;
+    
+    //dynamic wells
+    List<daily_log_wells> wells = (List<daily_log_wells>) ViewData["wells"];
+    //int halfCount = wells.Count / 2;
+    
 }
 
 <link rel="stylesheet" type="text/css" href="../../../Content/screen.css" media="screen, projection" />
 <link rel="stylesheet" type="text/css" href="../../../Content/style.css" media="screen, projection" />
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.uploadify.min.js")"></script>
+
 <script>
     var isEdit = '@isEdit';
     var isSave = false;
@@ -603,6 +611,7 @@
         return retVal;
     }
 </script>
+
 <div class="container">
 	<header>
 		<div class="page-title" style="width:980px">
@@ -679,6 +688,24 @@
 			    <td class="blue-bg center" style="width:50px">T/G Unit 2</td>
 			    <td class="blue-bg center">&nbsp;</td>
 		    </tr>
+		    <tr>
+                <td colspan="14">
+                    <table>
+            @{ foreach(daily_log_wells well in wells){
+                        <tr>
+			                <td>@well.name</td>
+                            <td>
+                                <input type="radio" id="" name="a" value="1" onchange="changeInput(this,1)"/>text
+                                <input type="radio" id="" name="a" value="0" checked="checked" onchange="changeInput(this,1)" />input
+                            </td>
+			                <td class="gray-bg center number" id=""><input type="text" id="" name="" style="width:50px" /></td>
+			                <td class="gray-bg center number"><input type="text" id="" name="" style="width:50px" /></td>
+			                <td class="gray-bg center number"><input type="text" id="" name="" style="width:50px" /></td>
+                        </tr>
+            } }
+            
+                </td>
+            </tr>
 		    <tr>
 			    <td>WWA-2</td>
                 <td>

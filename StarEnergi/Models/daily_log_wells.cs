@@ -9,18 +9,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
     public partial class daily_log_wells
     {
+        public daily_log_wells()
+        {
+            this.daily_log = new HashSet<daily_log>();
+        }
+    
         public int id { get; set; }
-
-        [Required]
-        [MaxLength(255)]
         public string name { get; set; }
         public Nullable<bool> is_delete { get; set; }
+    
+        public virtual ICollection<daily_log> daily_log { get; set; }
     }
     
 }
