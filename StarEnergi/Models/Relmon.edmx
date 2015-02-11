@@ -718,6 +718,10 @@
           </Key>
           <Property Name="daily_log_id" Type="int" Nullable="false" />
           <Property Name="daily_log_wells_id" Type="int" Nullable="false" />
+          <Property Name="fcv" Type="varchar" MaxLength="255" />
+          <Property Name="flow" Type="varchar" MaxLength="255" />
+          <Property Name="whp" Type="varchar" MaxLength="255" />
+          <Property Name="is_text" Type="tinyint" />
         </EntityType>
         <EntityType Name="daily_log_weekly_target">
           <Key>
@@ -3245,6 +3249,7 @@
             <End Role="user_per_role" EntitySet="user_per_role" />
           </AssociationSet>
           <EntitySet Name="daily_log" EntityType="relmon_star_energiModel.daily_log" />
+          <EntitySet Name="daily_log_to_wells" EntityType="relmon_star_energiModel.daily_log_to_wells" />
           <EntitySet Name="daily_log_wells" EntityType="relmon_star_energiModel.daily_log_wells" />
           <AssociationSet Name="FK_daily_log_last_plant_status_daily_log" Association="relmon_star_energiModel.FK_daily_log_last_plant_status_daily_log">
             <End Role="daily_log" EntitySet="daily_log" />
@@ -3270,11 +3275,15 @@
             <End Role="daily_log" EntitySet="daily_log" />
             <End Role="daily_log_sap" EntitySet="daily_log_sap" />
           </AssociationSet>
-          <AssociationSet Name="daily_log_to_wells" Association="relmon_star_energiModel.daily_log_to_wells">
+          <AssociationSet Name="FK_daily_log_to_wells_daily_log" Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log">
             <End Role="daily_log" EntitySet="daily_log" />
-            <End Role="daily_log_wells" EntitySet="daily_log_wells" />
+            <End Role="daily_log_to_wells" EntitySet="daily_log_to_wells" />
           </AssociationSet>
-        </EntityContainer>
+          <AssociationSet Name="FK_daily_log_to_wells_daily_log_wells" Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells">
+            <End Role="daily_log_wells" EntitySet="daily_log_wells" />
+            <End Role="daily_log_to_wells" EntitySet="daily_log_to_wells" />
+          </AssociationSet>
+          </EntityContainer>
         <ComplexType Name="observationByDate_Result">
           <Property Type="Int32" Name="year" Nullable="true" />
           <Property Type="Int32" Name="month" Nullable="true" />
@@ -6414,7 +6423,21 @@
           <NavigationProperty Name="daily_log_pro" Relationship="relmon_star_energiModel.FK_daily_log_pro_daily_log" FromRole="daily_log" ToRole="daily_log_pro" />
           <NavigationProperty Name="daily_log_sags" Relationship="relmon_star_energiModel.FK_daily_log_sags_daily_log" FromRole="daily_log" ToRole="daily_log_sags" />
           <NavigationProperty Name="daily_log_sap" Relationship="relmon_star_energiModel.FK_daily_log_sap_daily_log" FromRole="daily_log" ToRole="daily_log_sap" />
-          <NavigationProperty Name="daily_log_wells" Relationship="relmon_star_energiModel.daily_log_to_wells" FromRole="daily_log" ToRole="daily_log_wells" />
+          <NavigationProperty Name="daily_log_to_wells" Relationship="relmon_star_energiModel.FK_daily_log_to_wells_daily_log" FromRole="daily_log" ToRole="daily_log_to_wells" />
+        </EntityType>
+        <EntityType Name="daily_log_to_wells">
+          <Key>
+            <PropertyRef Name="daily_log_id" />
+            <PropertyRef Name="daily_log_wells_id" />
+          </Key>
+          <Property Type="Int32" Name="daily_log_id" Nullable="false" />
+          <Property Type="Int32" Name="daily_log_wells_id" Nullable="false" />
+          <Property Type="String" Name="fcv" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="flow" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="whp" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Byte" Name="is_text" />
+          <NavigationProperty Name="daily_log" Relationship="relmon_star_energiModel.FK_daily_log_to_wells_daily_log" FromRole="daily_log_to_wells" ToRole="daily_log" />
+          <NavigationProperty Name="daily_log_wells" Relationship="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells" FromRole="daily_log_to_wells" ToRole="daily_log_wells" />
         </EntityType>
         <EntityType Name="daily_log_wells">
           <Key>
@@ -6423,7 +6446,7 @@
           <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="name" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Boolean" Name="is_delete" />
-          <NavigationProperty Name="daily_log" Relationship="relmon_star_energiModel.daily_log_to_wells" FromRole="daily_log_wells" ToRole="daily_log" />
+          <NavigationProperty Name="daily_log_to_wells" Relationship="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells" FromRole="daily_log_wells" ToRole="daily_log_to_wells" />
         </EntityType>
         <Association Name="FK_daily_log_last_plant_status_daily_log">
           <End Type="relmon_star_energiModel.daily_log" Role="daily_log" Multiplicity="0..1">
@@ -6509,9 +6532,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="daily_log_to_wells">
-          <End Type="relmon_star_energiModel.daily_log" Role="daily_log" Multiplicity="*" />
-          <End Type="relmon_star_energiModel.daily_log_wells" Role="daily_log_wells" Multiplicity="*" />
+        <Association Name="FK_daily_log_to_wells_daily_log">
+          <End Type="relmon_star_energiModel.daily_log" Role="daily_log" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.daily_log_to_wells" Role="daily_log_to_wells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="daily_log">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="daily_log_to_wells">
+              <PropertyRef Name="daily_log_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_daily_log_to_wells_daily_log_wells">
+          <End Type="relmon_star_energiModel.daily_log_wells" Role="daily_log_wells" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.daily_log_to_wells" Role="daily_log_to_wells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="daily_log_wells">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="daily_log_to_wells">
+              <PropertyRef Name="daily_log_wells_id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -9030,6 +9073,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="daily_log_to_wells">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_to_wells">
+              <MappingFragment StoreEntitySet="daily_log_to_wells">
+                <ScalarProperty Name="is_text" ColumnName="is_text" />
+                <ScalarProperty Name="whp" ColumnName="whp" />
+                <ScalarProperty Name="flow" ColumnName="flow" />
+                <ScalarProperty Name="fcv" ColumnName="fcv" />
+                <ScalarProperty Name="daily_log_wells_id" ColumnName="daily_log_wells_id" />
+                <ScalarProperty Name="daily_log_id" ColumnName="daily_log_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="daily_log_wells">
             <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_wells">
               <MappingFragment StoreEntitySet="daily_log_wells">
@@ -9039,14 +9094,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="daily_log_to_wells" TypeName="relmon_star_energiModel.daily_log_to_wells" StoreEntitySet="daily_log_to_wells">
-            <EndProperty Name="daily_log_wells">
-              <ScalarProperty Name="id" ColumnName="daily_log_wells_id" />
-            </EndProperty>
-            <EndProperty Name="daily_log">
-              <ScalarProperty Name="id" ColumnName="daily_log_id" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -9074,37 +9121,37 @@
         <EntityTypeShape EntityType="relmon_star_energiModel.audit_log_clause" Width="1.5" PointX="5.25" PointY="8.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.bom" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.comms_rbi" Width="1.5" PointX="7.75" PointY="3.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.component" Width="1.5" PointX="33.5" PointY="37.625" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_last_plant_status" Width="1.5" PointX="15" PointY="14.5" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_maintainence" Width="1.5" PointX="15" PointY="16.875" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.component" Width="1.5" PointX="36.5" PointY="37.625" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_last_plant_status" Width="1.5" PointX="15" PointY="15.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_maintainence" Width="1.5" PointX="15" PointY="18" />
         <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_operation_warning" Width="1.5" PointX="9.75" PointY="0.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_power_stations" Width="1.5" PointX="15" PointY="19.875" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_pro" Width="1.5" PointX="15" PointY="28.25" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_sags" Width="1.5" PointX="15" PointY="25.5" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_sap" Width="1.5" PointX="15" PointY="22.5" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_power_stations" Width="1.5" PointX="15" PointY="21" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_pro" Width="1.5" PointX="15" PointY="29.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_sags" Width="1.5" PointX="15" PointY="26.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_sap" Width="1.5" PointX="15" PointY="23.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_weekly_target" Width="1.5" PointX="9.75" PointY="3.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_wpnb" Width="1.5" PointX="14.75" PointY="0.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.discipline" Width="1.5" PointX="29" PointY="46.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.discipline" Width="1.5" PointX="32" PointY="46.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.email_error" Width="1.5" PointX="14.75" PointY="3.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.employee" Width="1.5" PointX="22.25" PointY="14.5" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.employee_dept" Width="1.5" PointX="20" PointY="15.875" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.employee" Width="1.5" PointX="25.25" PointY="14.5" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.employee_dept" Width="1.5" PointX="23" PointY="15.875" />
         <EntityTypeShape EntityType="relmon_star_energiModel.equipment_daily_report" Width="1.5" PointX="0.75" PointY="2" />
         <EntityTypeShape EntityType="relmon_star_energiModel.equipment_daily_report_table" Width="1.5" PointX="3" PointY="1" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_event" Width="1.5" PointX="31.25" PointY="49.25" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_groups" Width="1.5" PointX="26.75" PointY="41.25" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_paf" Width="1.5" PointX="31.25" PointY="54.625" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_part" Width="1.5" PointX="31.25" PointY="39.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_event" Width="1.5" PointX="34.25" PointY="49.25" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_groups" Width="1.5" PointX="29.75" PointY="41.25" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_paf" Width="1.5" PointX="34.25" PointY="54.625" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_part" Width="1.5" PointX="34.25" PointY="39.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.equipment_read_nav_note" Width="1.5" PointX="14.75" PointY="6.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_readiness_nav" Width="1.5" PointX="31.25" PointY="44" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment" Width="1.5" PointX="29" PointY="39" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_readiness_nav" Width="1.5" PointX="34.25" PointY="44" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment" Width="1.5" PointX="32" PointY="39" />
         <EntityTypeShape EntityType="relmon_star_energiModel.event_descriptions" Width="1.5" PointX="14.75" PointY="9.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.failure_causes" Width="1.5" PointX="16.75" PointY="0.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.failure_effects" Width="1.5" PointX="16.75" PointY="3.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.failure_modes" Width="1.5" PointX="29" PointY="32.25" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.foc_op_avail" Width="1.5" PointX="22.25" PointY="27" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.foc_paf" Width="1.5" PointX="22.25" PointY="35.625" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.foc_target_paf" Width="1.5" PointX="22.25" PointY="24.375" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.foc" Width="1.5" PointX="20" PointY="34.125" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.failure_modes" Width="1.5" PointX="32" PointY="32.25" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.foc_op_avail" Width="1.5" PointX="25.25" PointY="27" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.foc_paf" Width="1.5" PointX="25.25" PointY="35.625" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.foc_target_paf" Width="1.5" PointX="25.25" PointY="24.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.foc" Width="1.5" PointX="23" PointY="34.125" />
         <EntityTypeShape EntityType="relmon_star_energiModel.iir_recommendations" Width="1.5" PointX="3" PointY="12.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.immediate_actions" Width="1.5" PointX="16.75" PointY="6.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.incident_report" Width="1.5" PointX="7.75" PointY="16.75" />
@@ -9112,60 +9159,60 @@
         <EntityTypeShape EntityType="relmon_star_energiModel.investigation_report" Width="1.5" PointX="0.75" PointY="16" />
         <EntityTypeShape EntityType="relmon_star_energiModel.investigation_report_log" Width="1.5" PointX="9.75" PointY="16.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.ir_KPI_log" Width="1.5" PointX="17.75" PointY="12.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.long_term_actions" Width="1.5" PointX="18.75" PointY="0.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.ma" Width="1.5" PointX="22.25" PointY="31" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_activity" Width="1.5" PointX="2.75" PointY="18.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_outstanding_activity" Width="1.5" PointX="18.75" PointY="3.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.long_term_actions" Width="1.5" PointX="17.75" PointY="15.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.ma" Width="1.5" PointX="25.25" PointY="31" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_activity" Width="1.5" PointX="18.75" PointY="0.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_outstanding_activity" Width="1.5" PointX="2.75" PointY="18.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_she_report" Width="1.5" PointX="9.75" PointY="19.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.monthly_she_contractor" Width="1.5" PointX="11.75" PointY="0.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.part_unit_event" Width="1.5" PointX="33.5" PointY="40.375" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.part" Width="1.5" PointX="29" PointY="35.125" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.part_unit_event" Width="1.5" PointX="36.5" PointY="40.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.part" Width="1.5" PointX="32" PointY="35.125" />
         <EntityTypeShape EntityType="relmon_star_energiModel.pir" Width="1.5" PointX="0.75" PointY="7.25" />
         <EntityTypeShape EntityType="relmon_star_energiModel.pir_clause" Width="1.5" PointX="3" PointY="5.875" />
         <EntityTypeShape EntityType="relmon_star_energiModel.pir_log" Width="1.5" PointX="3" PointY="24.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.plant" Width="1.5" PointX="17.75" PointY="27.25" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.process_owner" Width="1.5" PointX="18.75" PointY="6.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.plant" Width="1.5" PointX="20.75" PointY="27.25" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.process_owner" Width="1.5" PointX="18.75" PointY="3.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca" Width="1.5" PointX="8" PointY="6.625" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_analisys_type" Width="1.5" PointX="5.75" PointY="5.625" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_building" Width="1.5" PointX="5.75" PointY="18.625" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_csf" Width="1.5" PointX="18.75" PointY="9.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_csf" Width="1.5" PointX="18.75" PointY="6.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_csf_conector" Width="1.5" PointX="10.25" PointY="11.5" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_department" Width="1.5" PointX="3.5" PointY="16.125" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_desc" Width="1.5" PointX="17.75" PointY="18.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_desc" Width="1.5" PointX="18.75" PointY="9.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_facility" Width="1.5" PointX="5.75" PointY="21" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_fishbone_master" Width="1.5" PointX="20.75" PointY="0.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_fishbone_master" Width="1.5" PointX="17.75" PointY="18.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_floor" Width="1.5" PointX="5.75" PointY="11.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_graph_metric" Width="1.5" PointX="20.75" PointY="3.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_implementation" Width="1.5" PointX="24.5" PointY="13.875" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_pre_task" Width="1.5" PointX="27.5" PointY="15.5" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_preserve_category" Width="1.5" PointX="25.25" PointY="18" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_graph_metric" Width="1.5" PointX="19.75" PointY="12.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_implementation" Width="1.5" PointX="27.5" PointY="13.875" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_pre_task" Width="1.5" PointX="30.5" PointY="15.5" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_preserve_category" Width="1.5" PointX="28.25" PointY="18" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_section" Width="1.5" PointX="5.75" PointY="16.125" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca_team_connector" Width="1.5" PointX="10.25" PointY="9" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_template" Width="1.5" PointX="20.75" PointY="6.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.safe_man_hours" Width="1.5" PointX="22.75" PointY="0.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.safe_man_hours_incident" Width="1.5" PointX="20.75" PointY="9.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.secondary_effects" Width="1.5" PointX="19.75" PointY="20.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_illness_report" Width="1.5" PointX="24.75" PointY="0.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_injury_report" Width="1.5" PointX="24.75" PointY="23.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_template" Width="1.5" PointX="19.75" PointY="15.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.safe_man_hours" Width="1.5" PointX="20.75" PointY="0.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.safe_man_hours_incident" Width="1.5" PointX="19.75" PointY="18.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.secondary_effects" Width="1.5" PointX="20.75" PointY="8.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_illness_report" Width="1.5" PointX="22.75" PointY="0.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_injury_report" Width="1.5" PointX="24.75" PointY="0.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.she_KPI_target" Width="1.5" PointX="2.75" PointY="21.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_category" Width="1.5" PointX="21.75" PointY="20.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_KPI_log" Width="1.5" PointX="17.75" PointY="23.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_sub_category" Width="1.5" PointX="5.75" PointY="25.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation" Width="1.5" PointX="0.75" PointY="27.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian" Width="1.5" PointX="26.75" PointY="0.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_exception" Width="1.5" PointX="26.75" PointY="3.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_reward" Width="1.5" PointX="26.75" PointY="6.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_winner" Width="1.5" PointX="26.75" PointY="9.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.sub_component" Width="1.5" PointX="35.75" PointY="37.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.system_paf" Width="1.5" PointX="26.75" PointY="44" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.system" Width="1.5" PointX="24.5" PointY="41" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.tag_types" Width="1.5" PointX="26.75" PointY="38.375" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.trouble_shooting" Width="1.5" PointX="26.75" PointY="23.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.unit_paf" Width="1.5" PointX="24.5" PointY="38.375" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.unit" Width="1.5" PointX="22.25" PointY="41.125" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.user_per_role" Width="1.5" PointX="26.75" PointY="20.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.user_role" Width="1.5" PointX="26.75" PointY="12.75" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.user" Width="1.5" PointX="24.5" PointY="20.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_category" Width="1.5" PointX="21.75" PointY="12.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_KPI_log" Width="1.5" PointX="21.75" PointY="18.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_sub_category" Width="1.5" PointX="20.75" PointY="21.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation" Width="1.5" PointX="5.75" PointY="25.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian" Width="1.5" PointX="23.75" PointY="20.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_exception" Width="1.5" PointX="20.75" PointY="24.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_reward" Width="1.5" PointX="17.75" PointY="25.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_winner" Width="1.5" PointX="26.75" PointY="0.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.sub_component" Width="1.5" PointX="38.75" PointY="37.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.system_paf" Width="1.5" PointX="29.75" PointY="44" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.system" Width="1.5" PointX="27.5" PointY="41" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.tag_types" Width="1.5" PointX="29.75" PointY="38.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.trouble_shooting" Width="1.5" PointX="26.75" PointY="3.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.unit_paf" Width="1.5" PointX="27.5" PointY="38.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.unit" Width="1.5" PointX="25.25" PointY="41.125" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.user_per_role" Width="1.5" PointX="29.75" PointY="20.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.user_role" Width="1.5" PointX="26.75" PointY="10.75" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.user" Width="1.5" PointX="27.5" PointY="20.375" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_clause_audit_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_pir" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_clause_pir_clause" />
@@ -9214,14 +9261,16 @@
         <AssociationConnector Association="relmon_star_energiModel.FK_unit_paf_units" />
         <AssociationConnector Association="relmon_star_energiModel.FK_user_per_role_users" />
         <EntityTypeShape EntityType="relmon_star_energiModel.daily_log" Width="1.5" PointX="12.75" PointY="2.875" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_wells" Width="1.5" PointX="15" PointY="31" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_to_wells" Width="1.5" PointX="18" PointY="22.5" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_wells" Width="1.5" PointX="15.75" PointY="12.75" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_last_plant_status_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_maintainence_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_power_stations_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_pro_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_sags_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_sap_daily_log" />
-        <AssociationConnector Association="relmon_star_energiModel.daily_log_to_wells" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells" />
       </Diagram>
     </Diagrams>
   </Designer>
