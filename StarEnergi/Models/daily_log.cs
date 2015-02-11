@@ -22,7 +22,7 @@ namespace StarEnergi.Models
             this.daily_log_pro = new HashSet<daily_log_pro>();
             this.daily_log_sags = new HashSet<daily_log_sags>();
             this.daily_log_sap = new HashSet<daily_log_sap>();
-            this.daily_log_wells = new HashSet<daily_log_wells>();
+            this.daily_log_to_wells = new HashSet<daily_log_to_wells>();
         }
     
         public int id { get; set; }
@@ -271,7 +271,7 @@ namespace StarEnergi.Models
         public virtual ICollection<daily_log_pro> daily_log_pro { get; set; }
         public virtual ICollection<daily_log_sags> daily_log_sags { get; set; }
         public virtual ICollection<daily_log_sap> daily_log_sap { get; set; }
-        public virtual ICollection<daily_log_wells> daily_log_wells { get; set; }
+        public virtual ICollection<daily_log_to_wells> daily_log_to_wells { get; set; }
 
         public virtual List<daily_log_last_plant_status> list_daily_log_last_plant_status { get; set; }
         public virtual List<daily_log_maintainence> list_daily_log_maintainence { get; set; }

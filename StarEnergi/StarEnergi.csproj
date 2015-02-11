@@ -469,6 +469,9 @@
     <Compile Include="Models\daily_log_sap.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\daily_log_to_wells.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\daily_log_weekly_target.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>

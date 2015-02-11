@@ -16,14 +16,14 @@ namespace StarEnergi.Models
     {
         public daily_log_wells()
         {
-            this.daily_log = new HashSet<daily_log>();
+            this.daily_log_to_wells = new HashSet<daily_log_to_wells>();
         }
     
         public int id { get; set; }
         public string name { get; set; }
         public Nullable<bool> is_delete { get; set; }
-    
-        public virtual ICollection<daily_log> daily_log { get; set; }
+
+        public virtual ICollection<daily_log_to_wells> daily_log_to_wells { get; set; }
     }
     
 }
