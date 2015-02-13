@@ -52,3 +52,14 @@ td.first-col { border-left: solid 1px #000; border-right: solid 1px #000; }
 header {}
 header .logo { float: left; }
 header .page-title { float: left; margin-top:30px; }
+
+/* daily log table */
+.daily-log-table td.power-station { padding: 0; vertical-align: top; }
+    .daily-log-table td.power-station tr:first-child td { border-top: none; }
+    .daily-log-table td.power-station tr td:first-child { border-left: none; }
+    .daily-log-table td.power-station tr td:last-child { border-right: none; }
+
+.daily-log-table td.input-wells { padding: 0; vertical-align: top; }
+    .daily-log-table td.input-wells tr:first-child td { border-top: none; }
+    .daily-log-table td.input-wells tr td:first-child { border-left: none; }
+    .daily-log-table td.input-wells tr td:last-child { border-right: none; }

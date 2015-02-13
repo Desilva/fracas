@@ -394,17 +394,17 @@ namespace StarEnergi.Controllers.FrontEnd
         //select data incident report
         private ViewResult bindingDailyLog()
         {
-            List<daily_log> f = new List<daily_log>();
-            f = db.daily_log.Where(p => p.shift == 1).ToList();
+            List<daily_log> f = db.daily_log.Where(p => p.shift == 1).OrderByDescending(p => p.date).ToList();
+            List<DailyLogPresentationStub> list = new DailyLogPresentationStub().MapList(f);
 
-            return View(new GridModel<daily_log>
+            return View(new GridModel<DailyLogPresentationStub>
             {
-                Data = f.OrderByDescending(p => p.date)
+                Data = list
             });
         }
 
         [HttpPost]
-        public JsonResult Add(daily_log dailyLog)
+        public JsonResult Add(daily_log dailyLog, List<daily_log_to_wells> arrWell)
         {
             DateTime dt = dailyLog.date.Value.AddDays(-1);
             daily_log dl = db.daily_log.Where(p => p.date == dt && p.shift == 2).ToList().FirstOrDefault();
@@ -493,11 +493,36 @@ namespace StarEnergi.Controllers.FrontEnd
                 db.SaveChanges();
             }
 
+            //insert daily_log_to_wells
+            daily_log_to_wells findWell;
+            foreach (daily_log_to_wells row in arrWell)
+            {
+                findWell = dailyLog.daily_log_to_wells.Where(m => m.daily_log_id == row.daily_log_id && m.daily_log_wells_id == row.daily_log_wells_id).FirstOrDefault();
+                if (findWell == null) //create daily log - well
+                {
+                    dailyLog.daily_log_to_wells.Add(row);
+                }
+                else //edit
+                {
+                    db.daily_log.Attach(dailyLog);
+
+                    //update data
+                    findWell.is_text = row.is_text;
+                    findWell.fcv = row.fcv;
+                    findWell.flow = row.flow;
+                    findWell.whp = row.whp;
+
+                    var entry = db.Entry(dailyLog);
+                    entry.State = EntityState.Modified;
+                }
+            }
+            db.SaveChanges();
+
             return Json(true);
         }
 
         [HttpPost]
-        public JsonResult Edit(daily_log dailyLog, string time_check)
+        public JsonResult Edit(daily_log dailyLog, string time_check, List<daily_log_to_wells> arrWell)
         {
             daily_log ir = db.daily_log.Find(dailyLog.id);
             DateTime dt = DateTime.Parse(time_check == "" ? "00:00:00" : time_check);
@@ -513,126 +538,6 @@ namespace StarEnergi.Controllers.FrontEnd
             ir.production_operator_7 = dailyLog.production_operator_7;
             ir.production_operator_8 = dailyLog.production_operator_8;
             ir.time_check = dt.TimeOfDay;
-            ir.wma_2_is_text = dailyLog.wma_2_is_text;
-            ir.wma_2_fcv = dailyLog.wma_2_fcv;
-            ir.wma_2_flow = dailyLog.wma_2_flow;
-            ir.wma_2_whp = dailyLog.wma_2_whp;
-            ir.wma_4_is_text = dailyLog.wma_4_is_text;
-            ir.wma_4_fcv = dailyLog.wma_4_fcv;
-            ir.wma_4_flow = dailyLog.wma_4_flow;
-            ir.wma_4_whp = dailyLog.wma_4_whp;
-            ir.wma_6_is_text = dailyLog.wma_6_is_text;
-            ir.wma_6_fcv = dailyLog.wma_6_fcv;
-            ir.wma_6_flow = dailyLog.wma_6_flow;
-            ir.wma_6_whp = dailyLog.wma_6_whp;
-            ir.mbd_1_is_text = dailyLog.mbd_1_is_text;
-            ir.mbd_1_fcv = dailyLog.mbd_1_fcv;
-            ir.mbd_1_flow = dailyLog.mbd_1_flow;
-            ir.mbd_1_whp = dailyLog.mbd_1_whp;
-            ir.mbd_2_is_text = dailyLog.mbd_2_is_text;
-            ir.mbd_2_fcv = dailyLog.mbd_2_fcv;
-            ir.mbd_2_flow = dailyLog.mbd_2_flow;
-            ir.mbd_2_whp = dailyLog.mbd_2_whp;
-            ir.mbd_3_is_text = dailyLog.mbd_3_is_text;
-            ir.mbd_3_fcv = dailyLog.mbd_3_fcv;
-            ir.mbd_3_flow = dailyLog.mbd_3_flow;
-            ir.mbd_3_whp = dailyLog.mbd_3_whp;
-            ir.mbd_4_is_text = dailyLog.mbd_4_is_text;
-            ir.mbd_4_fcv = dailyLog.mbd_4_fcv;
-            ir.mbd_4_flow = dailyLog.mbd_4_flow;
-            ir.mbd_4_whp = dailyLog.mbd_4_whp;
-            ir.mbd_5_is_text = dailyLog.mbd_5_is_text;
-            ir.mbd_5_fcv = dailyLog.mbd_5_fcv;
-            ir.mbd_5_flow = dailyLog.mbd_5_flow;
-            ir.mbd_5_whp = dailyLog.mbd_5_whp;
-            ir.wwq_1_is_text = dailyLog.wwq_1_is_text;
-            ir.wwq_1_fcv = dailyLog.wwq_1_fcv;
-            ir.wwq_1_flow = dailyLog.wwq_1_flow;
-            ir.wwq_1_whp = dailyLog.wwq_1_whp;
-            ir.wwq_2_is_text = dailyLog.wwq_2_is_text;
-            ir.wwq_2_fcv = dailyLog.wwq_2_fcv;
-            ir.wwq_2_flow = dailyLog.wwq_2_flow;
-            ir.wwq_2_whp = dailyLog.wwq_2_whp;
-            ir.wwq_3_is_text = dailyLog.wwq_3_is_text;
-            ir.wwq_3_fcv = dailyLog.wwq_3_fcv;
-            ir.wwq_3_flow = dailyLog.wwq_3_flow;
-            ir.wwq_3_whp = dailyLog.wwq_3_whp;
-            ir.wwq_4_is_text = dailyLog.wwq_4_is_text;
-            ir.wwq_4_fcv = dailyLog.wwq_4_fcv;
-            ir.wwq_4_flow = dailyLog.wwq_4_flow;
-            ir.wwq_4_whp = dailyLog.wwq_4_whp;
-            ir.wwq_5_is_text = dailyLog.wwq_5_is_text;
-            ir.wwq_5_fcv = dailyLog.wwq_5_fcv;
-            ir.wwq_5_flow = dailyLog.wwq_5_flow;
-            ir.wwq_5_whp = dailyLog.wwq_5_whp;
-            ir.mbe_3_is_text = dailyLog.mbe_3_is_text;
-            ir.mbe_3_fcv = dailyLog.mbe_3_fcv;
-            ir.mbe_3_flow = dailyLog.mbe_3_flow;
-            ir.mbe_3_whp = dailyLog.mbe_3_whp;
-            ir.mbe_4_is_text = dailyLog.mbe_4_is_text;
-            ir.mbe_4_fcv = dailyLog.mbe_4_fcv;
-            ir.mbe_4_flow = dailyLog.mbe_4_flow;
-            ir.mbe_4_whp = dailyLog.mbe_4_whp;
-            ir.mba_1_is_text = dailyLog.mba_1_is_text;
-            ir.mba_1_fcv = dailyLog.mba_1_fcv;
-            ir.mba_1_flow = dailyLog.mba_1_flow;
-            ir.mba_1_whp = dailyLog.mba_1_whp;
-            ir.mba_2_is_text = dailyLog.mba_2_is_text;
-            ir.mba_2_fcv = dailyLog.mba_2_fcv;
-            ir.mba_2_flow = dailyLog.mba_2_flow;
-            ir.mba_2_whp = dailyLog.mba_2_whp;
-            ir.mba_3_is_text = dailyLog.mba_3_is_text;
-            ir.mba_3_fcv = dailyLog.mba_3_fcv;
-            ir.mba_3_flow = dailyLog.mba_3_flow;
-            ir.mba_3_whp = dailyLog.mba_3_whp;
-            ir.mba_4_is_text = dailyLog.mba_4_is_text;
-            ir.mba_4_fcv = dailyLog.mba_4_fcv;
-            ir.mba_4_flow = dailyLog.mba_4_flow;
-            ir.mba_4_whp = dailyLog.mba_4_whp;
-            ir.mba_5_is_text = dailyLog.mba_5_is_text;
-            ir.mba_5_fcv = dailyLog.mba_5_fcv;
-            ir.mba_5_flow = dailyLog.mba_5_flow;
-            ir.mba_5_whp = dailyLog.mba_5_whp;
-            ir.mbb_1_is_text = dailyLog.mbb_1_is_text;
-            ir.mbb_1_fcv = dailyLog.mbb_1_fcv;
-            ir.mbb_1_flow = dailyLog.mbb_1_flow;
-            ir.mbb_1_whp = dailyLog.mbb_1_whp;
-            ir.mbb_2_is_text = dailyLog.mbb_2_is_text;
-            ir.mbb_2_fcv = dailyLog.mbb_2_fcv;
-            ir.mbb_2_flow = dailyLog.mbb_2_flow;
-            ir.mbb_2_whp = dailyLog.mbb_2_whp;
-            ir.mbb_3_is_text = dailyLog.mbb_3_is_text;
-            ir.mbb_3_fcv = dailyLog.mbb_3_fcv;
-            ir.mbb_3_flow = dailyLog.mbb_3_flow;
-            ir.mbb_3_whp = dailyLog.mbb_3_whp;
-            ir.mbb_4_is_text = dailyLog.mbb_4_is_text;
-            ir.mbb_4_fcv = dailyLog.mbb_4_fcv;
-            ir.mbb_4_flow = dailyLog.mbb_4_flow;
-            ir.mbb_4_whp = dailyLog.mbb_4_whp;
-            ir.mbb_5_is_text = dailyLog.mbb_5_is_text;
-            ir.mbb_5_fcv = dailyLog.mbb_5_fcv;
-            ir.mbb_5_flow = dailyLog.mbb_5_flow;
-            ir.mbb_5_whp = dailyLog.mbb_5_whp;
-            ir.mbb_6_is_text = dailyLog.mbb_6_is_text;
-            ir.mbb_6_fcv = dailyLog.mbb_6_fcv;
-            ir.mbb_6_flow = dailyLog.mbb_6_flow;
-            ir.mbb_6_whp = dailyLog.mbb_6_whp;
-            ir.wwf_1_is_text = dailyLog.wwf_1_is_text;
-            ir.wwf_1_fcv = dailyLog.wwf_1_fcv;
-            ir.wwf_1_flow = dailyLog.wwf_1_flow;
-            ir.wwf_1_whp = dailyLog.wwf_1_whp;
-            ir.wwf_3_is_text = dailyLog.wwf_3_is_text;
-            ir.wwf_3_fcv = dailyLog.wwf_3_fcv;
-            ir.wwf_3_flow = dailyLog.wwf_3_flow;
-            ir.wwf_3_whp = dailyLog.wwf_3_whp;
-            ir.www_1_is_text = dailyLog.www_1_is_text;
-            ir.www_1_fcv = dailyLog.www_1_fcv;
-            ir.www_1_flow = dailyLog.www_1_flow;
-            ir.www_1_whp = dailyLog.www_1_whp;
-            ir.wwp_1_is_text = dailyLog.wwp_1_is_text;
-            ir.wwp_1_fcv = dailyLog.wwp_1_fcv;
-            ir.wwp_1_flow = dailyLog.wwp_1_flow;
-            ir.wwp_1_whp = dailyLog.wwp_1_whp;
             ir.generator_output_1 = dailyLog.generator_output_1;
             ir.gross_1 = dailyLog.gross_1;
             ir.generator_output_counter_1 = dailyLog.generator_output_counter_1;
@@ -737,9 +642,34 @@ namespace StarEnergi.Controllers.FrontEnd
             ir.achievement_2 = dailyLog.achievement_2;
             ir.remark_1 = dailyLog.remark_1;
             ir.remark_2 = dailyLog.remark_2;
+            
+            //insert daily_log_to_wells
+            daily_log_to_wells findWell;
+            foreach (daily_log_to_wells row in arrWell)
+            {
+                findWell = ir.daily_log_to_wells.Where(m => m.daily_log_wells_id == row.daily_log_wells_id).FirstOrDefault();
+                if (findWell == null) //create daily log - well
+                {
+                    ir.daily_log_to_wells.Add(row);
+                }
+                else //edit
+                {
+                    db.daily_log.Attach(ir);
+
+                    //update data
+                    findWell.is_text = row.is_text;
+                    findWell.fcv = row.fcv;
+                    findWell.flow = row.flow;
+                    findWell.whp = row.whp;
+
+                    var entry = db.Entry(ir);
+                    entry.State = EntityState.Modified;
+                }
+            }
 
             db.Entry(ir).State = EntityState.Modified;
             db.SaveChanges();
+
             return Json(true);
         }
 
