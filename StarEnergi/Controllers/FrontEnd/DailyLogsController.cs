@@ -644,26 +644,29 @@ namespace StarEnergi.Controllers.FrontEnd
             ir.remark_2 = dailyLog.remark_2;
             
             //insert daily_log_to_wells
-            daily_log_to_wells findWell;
-            foreach (daily_log_to_wells row in arrWell)
+            if (arrWell != null)
             {
-                findWell = ir.daily_log_to_wells.Where(m => m.daily_log_wells_id == row.daily_log_wells_id).FirstOrDefault();
-                if (findWell == null) //create daily log - well
+                daily_log_to_wells findWell;
+                foreach (daily_log_to_wells row in arrWell)
                 {
-                    ir.daily_log_to_wells.Add(row);
-                }
-                else //edit
-                {
-                    db.daily_log.Attach(ir);
+                    findWell = ir.daily_log_to_wells.Where(m => m.daily_log_wells_id == row.daily_log_wells_id).FirstOrDefault();
+                    if (findWell == null) //create daily log - well
+                    {
+                        ir.daily_log_to_wells.Add(row);
+                    }
+                    else //edit
+                    {
+                        db.daily_log.Attach(ir);
 
-                    //update data
-                    findWell.is_text = row.is_text;
-                    findWell.fcv = row.fcv;
-                    findWell.flow = row.flow;
-                    findWell.whp = row.whp;
+                        //update data
+                        findWell.is_text = row.is_text;
+                        findWell.fcv = row.fcv;
+                        findWell.flow = row.flow;
+                        findWell.whp = row.whp;
 
-                    var entry = db.Entry(ir);
-                    entry.State = EntityState.Modified;
+                        var entry = db.Entry(ir);
+                        entry.State = EntityState.Modified;
+                    }
                 }
             }
 
