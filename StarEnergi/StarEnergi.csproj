@@ -3519,6 +3519,7 @@
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASPIRInitiator.cshtml" />
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASIncidentInvestigationReport.cshtml" />
     <Content Include="Views\Admin\Wells\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\daily_log_to_wells.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

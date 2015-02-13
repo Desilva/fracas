@@ -72,7 +72,7 @@
                 production_operator_6: $("#sh"+shift+"_production_operator_6").val(),
                 production_operator_7: $("#sh"+shift+"_production_operator_7").val(),
                 production_operator_8: $("#sh"+shift+"_production_operator_8").val(),
-                time_check: $("#sh"+shift+"_time_check").val(),
+                time_check: ConvertTimeformat($("#sh"+shift+"_time_check").val()),
                 generator_output_1:$("#sh"+shift+"_generator_output_1").val(),
                 gross_1: $("#sh"+shift+"_gross_1").val(),
                 generator_output_counter_1: $("#sh"+shift+"_generator_output_counter_1").val(),
@@ -221,9 +221,8 @@
 
             //post to ajax
             //var param = $('form#sh1').serializeArray();
-            //console.log(param);
-            //console.log(values);
-            //console.log(arrWell);
+            console.log(param);
+            console.log(values);
 
             if (isEdit == 'False') {
                 $.post("DailyLogs/Add", param, function (data) {

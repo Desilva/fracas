@@ -1,0 +1,21 @@
+﻿@model StarEnergi.Models.daily_log_to_wells
+
+@{
+string wellName = Model.daily_log_wells.name;
+string fcv = Model.fcv;
+string flow = Model.flow;
+string whp = Model.whp;
+byte isText = (Model.is_text == null ? (byte)0 : Model.is_text.Value);
+double a;
+}
+
+<td>@wellName</td>
+@{
+    if(isText == 0){
+<td class="gray-bg numbers">@(Double.TryParse(fcv, out a) ? a.ToString("f2") : fcv)</td>
+<td class="gray-bg numbers">@(Double.TryParse(flow, out a) ? a.ToString("f2") : flow)</td>
+<td class="gray-bg numbers">@(Double.TryParse(whp, out a) ? a.ToString("f2") : whp)</td>
+    }else{
+<td class="yellow-bg center" colspan="3">@(Double.TryParse(fcv, out a) ? a.ToString("f2") : fcv)</td>
+    }
+}
