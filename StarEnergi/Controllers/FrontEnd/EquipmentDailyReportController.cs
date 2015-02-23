@@ -347,72 +347,88 @@ namespace StarEnergi.Controllers.FrontEnd
         [HttpPost]
         public JsonResult Add(EquipmentReportEntity ere)
         {
-            equipment_daily_report edr = new equipment_daily_report()
+            if (ModelState.IsValid)
             {
-                date = ere.date
-            };
-            db.equipment_daily_report.Add(edr);
-            db.SaveChanges();
-
-            int id = edr.id;
-
-            List<equipment_daily_report_table> li = db.equipment_daily_report_table.Where(p => p.id_equipment_daily_report == null).OrderBy(p => p.id_equipment).ToList();
-            foreach (equipment_daily_report_table l in li)
-            {
-                EquipmentTableReportEntity etre = ere.table.Find(p => p.tag_number == l.tag_id);
-                if (etre != null)
+                equipment_daily_report edr = new equipment_daily_report()
                 {
-                    l.id_equipment_daily_report = id;
-                    l.barcode = etre.barcode;
-                    l.min_limit = etre.min_limit;
-                    l.max_limit = etre.max_limit;
-                    l.tag_value = etre.tag_value;
-                    l.unit = etre.unit;
-                    l.time = etre.time;
-                    l.date = etre.date;
-                    l.name_operator = ere.operator_name;
-                    l.keterangan = etre.keterangan;
-                    db.Entry(l).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-            }
+                    date = ere.date
+                };
+                db.equipment_daily_report.Add(edr);
+                db.SaveChanges();
 
-            return Json(true);
+                int id = edr.id;
+
+                List<equipment_daily_report_table> li = db.equipment_daily_report_table.Where(p => p.id_equipment_daily_report == null).OrderBy(p => p.id_equipment).ToList();
+                foreach (equipment_daily_report_table l in li)
+                {
+                    EquipmentTableReportEntity etre = ere.table.Find(p => p.tag_number == l.tag_id);
+                    if (etre != null)
+                    {
+                        l.id_equipment_daily_report = id;
+                        l.barcode = etre.barcode;
+                        l.min_limit = etre.min_limit;
+                        l.max_limit = etre.max_limit;
+                        l.tag_value = etre.tag_value;
+                        l.unit = etre.unit;
+                        l.time = etre.time;
+                        l.date = etre.date;
+                        l.name_operator = ere.operator_name;
+                        l.keterangan = etre.keterangan;
+                        db.Entry(l).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
+                return Json(true);
+            }
+            else
+            {
+                Response.StatusCode = 500;
+                return Json("Some data must be more than allowed size. Please check again the data.");
+            }
         }
 
         [HttpPost]
         public JsonResult Edit(EquipmentReportEntity ere)
         {
-            int id = ere.id;
-
-            equipment_daily_report ed = db.equipment_daily_report.Find(id);
-            ed.date = ere.date;
-            db.Entry(ed).State = EntityState.Modified;
-            db.SaveChanges();
-
-            List<equipment_daily_report_table> li = db.equipment_daily_report_table.Where(p => p.id_equipment_daily_report == id).ToList();
-            foreach (EquipmentTableReportEntity l in ere.table)
+            if (ModelState.IsValid)
             {
+                int id = ere.id;
 
-                equipment_daily_report_table etre = li.Find(p => p.tag_id == l.tag_number);
-                if (etre != null)
+                equipment_daily_report ed = db.equipment_daily_report.Find(id);
+                ed.date = ere.date;
+                db.Entry(ed).State = EntityState.Modified;
+                db.SaveChanges();
+
+                List<equipment_daily_report_table> li = db.equipment_daily_report_table.Where(p => p.id_equipment_daily_report == id).ToList();
+                foreach (EquipmentTableReportEntity l in ere.table)
                 {
-                    etre.barcode = l.barcode;
-                    etre.min_limit = l.min_limit;
-                    etre.max_limit = l.max_limit;
-                    etre.tag_value = l.tag_value;
-                    etre.unit = l.unit;
-                    etre.time = l.time;
-                    etre.date = l.date;
-                    etre.name_operator = ere.operator_name;
-                    etre.keterangan = l.keterangan;
-                    db.Entry(etre).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-                
-            }
 
-            return Json(true);
+                    equipment_daily_report_table etre = li.Find(p => p.tag_id == l.tag_number);
+                    if (etre != null)
+                    {
+                        etre.barcode = l.barcode;
+                        etre.min_limit = l.min_limit;
+                        etre.max_limit = l.max_limit;
+                        etre.tag_value = l.tag_value;
+                        etre.unit = l.unit;
+                        etre.time = l.time;
+                        etre.date = l.date;
+                        etre.name_operator = ere.operator_name;
+                        etre.keterangan = l.keterangan;
+                        db.Entry(etre).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                }
+
+                return Json(true);
+            }
+            else
+            {
+                Response.StatusCode = 500;
+                return Json("Some data must be more than allowed size. Please check again the data.");
+            }
         }
 
         public ActionResult printEDR(int id)
