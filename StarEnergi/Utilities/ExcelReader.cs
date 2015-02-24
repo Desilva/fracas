@@ -197,7 +197,7 @@ namespace StarEnergi.Utilities
                     equipment_groups equipment_group = new equipment_groups();
                     equipment_group.id_system = system.id;
                     equipment_group.nama = data[1].ToString();
-                    equipment_group.description = data[2].ToString() == "" ? data[1].ToString() : data[2].ToString();
+                    equipment_group.description = (data.Count < 3 || data[2].ToString() == "") ? data[1].ToString() : data[2].ToString();
                     db.equipment_groups.Add(equipment_group);
                     db.SaveChanges();
                 }

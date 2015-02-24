@@ -444,6 +444,7 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ComponentEntity.cs" />
+    <Compile Include="Models\DailyLogPresentationStub.cs" />
     <Compile Include="Models\DailyLogReportEntity.cs" />
     <Compile Include="Models\daily_log.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
@@ -3044,6 +3045,7 @@
     <Content Include="Scripts\kendo\messages\kendo.messages.zh-CN.min.js" />
     <Content Include="Scripts\kendo\messages\kendo.messages.zh-HK.min.js" />
     <Content Include="Scripts\kendo\messages\kendo.messages.zh-TW.min.js" />
+    <Content Include="Scripts\lib\daily-log.js" />
     <Content Include="Scripts\md5.js" />
     <Content Include="Scripts\mxClient.js" />
     <Content Include="Scripts\relmon.js" />
@@ -3517,6 +3519,7 @@
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASPIRInitiator.cshtml" />
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASIncidentInvestigationReport.cshtml" />
     <Content Include="Views\Admin\Wells\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\daily_log_to_wells.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />
