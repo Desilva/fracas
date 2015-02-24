@@ -230,7 +230,8 @@
             $("#grid").kendoGrid({
                 dataSource: {
                     error: function (e) {
-                        window.location = "@Url.Action("LogOn", "Account")";
+                        alert("Unable to load notification. Please wait until the page is fully loaded or try to logout then login again, if the issue persist please contact administrator.");
+                        //window.location = "@Url.Action("LogOn", "Account")";
                     },
                      transport: {
                          read: {
