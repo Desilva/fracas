@@ -37,7 +37,7 @@ namespace StarEnergi.Controllers.Admin
             var fileName = Path.GetFileName(userfile.FileName);
             var ext = Path.GetExtension(userfile.FileName);
             string err = "";
-            if (ext != "xls")
+            if (ext != ".xls")
             {
                 err = "The file format must be xls.";
             } else {
