@@ -35,75 +35,94 @@ namespace StarEnergi.Utilities
             book = app.Workbooks.Open(Filename: filename);
 
             err = new List<string>();
-            foreach(Excel.Worksheet sheet in book.Sheets){
-                ShtRange = sheet.UsedRange;
-                string a = sheet.Name;
-                for (i = 2; i <= ShtRange.Rows.Count; i++)
+            try
+            {
+                foreach (Excel.Worksheet sheet in book.Sheets)
                 {
-                    temp = new List<object>();
-                    for (j = 1; j <= ShtRange.Columns.Count; j++)
+                    ShtRange = sheet.UsedRange;
+                    string a = sheet.Name;
+                    for (i = 2; i <= ShtRange.Rows.Count; i++)
                     {
-                        if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
-                            temp.Add("");
-                        else
-                            temp.Add((ShtRange.Cells[i, j] as Excel.Range).Value2.ToString());
-                    }
+                        temp = new List<object>();
+                        for (j = 1; j <= ShtRange.Columns.Count; j++)
+                        {
+                            if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
+                                temp.Add("");
+                            else
+                                temp.Add((ShtRange.Cells[i, j] as Excel.Range).Value2.ToString());
+                        }
 
-                    string errTemp;
-                    if(k == 0){ //insert unit
-                        errTemp = saveUnit(temp);
-                        if (errTemp != "") {
-                            err.Add(errTemp);   
-                        };
-                    }else if(k == 1){//insert system
-                        errTemp = saveSystem(temp);
-                        if (errTemp != "")
+                        string errTemp;
+                        if (k == 0)
+                        { //insert unit
+                            errTemp = saveUnit(temp);
+                            if (errTemp != "")
+                            {
+                                err.Add(errTemp);
+                            };
+                        }
+                        else if (k == 1)
+                        {//insert system
+                            errTemp = saveSystem(temp);
+                            if (errTemp != "")
+                            {
+                                err.Add(errTemp);
+                            };
+                        }
+                        else if (k == 2)
+                        {//insert equipment group
+                            errTemp = saveEquipmentGroup(temp);
+                            if (errTemp != "")
+                            {
+                                err.Add(errTemp);
+                            };
+                        }
+                        else if (k == 3)
+                        {//insert equipment
+                            errTemp = saveEquipment(temp);
+                            if (errTemp != "")
+                            {
+                                err.Add(errTemp);
+                            };
+                        }
+                        else if (k == 4)
+                        {//insert part
+                            errTemp = savePart(temp);
+                            if (errTemp != "")
+                            {
+                                err.Add(errTemp);
+                            };
+                        }
+                        else if (k == 5)//insert component
                         {
-                            err.Add(errTemp);
-                        };
+                            errTemp = saveComponent(temp);
+                            if (errTemp != "")
+                            {
+                                err.Add(errTemp);
+                            };
+                        }
+                        else if (k == 6)//insert subcomponent
+                        {
+                            errTemp = saveSubComponent(temp);
+                            if (errTemp != "")
+                            {
+                                err.Add(errTemp);
+                            };
+                        }
+
                     }
-                    else if (k == 2){//insert equipment group
-                        errTemp = saveEquipmentGroup(temp);
-                        if (errTemp != "")
-                        {
-                            err.Add(errTemp);
-                        };
-                    }else if(k == 3){//insert equipment
-                        errTemp = saveEquipment(temp);
-                        if (errTemp != "")
-                        {
-                            err.Add(errTemp);
-                        };
-                    }
-                    else if (k == 4){//insert part
-                        errTemp = savePart(temp);
-                        if (errTemp != "")
-                        {
-                            err.Add(errTemp);
-                        };
-                    }
-                    else if (k == 5)//insert component
-                    {
-                        errTemp = saveComponent(temp);
-                        if (errTemp != "")
-                        {
-                            err.Add(errTemp);
-                        };
-                    }
-                    else if (k == 6)//insert subcomponent
-                    {
-                        errTemp = saveSubComponent(temp);
-                        if (errTemp != "")
-                        {
-                            err.Add(errTemp);
-                        };
-                    }
-                
+                    k++;
                 }
-                k++;
-            }  
-            book.Close(true, Missing.Value, Missing.Value);
-            app.Quit();
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                book.Close(true, Missing.Value, Missing.Value);
+                app.Quit();
+            }
 
             return err;
         }
@@ -219,162 +238,170 @@ namespace StarEnergi.Utilities
             string err = "";
             string temp = data[1].ToString();
             List<equipment> exist = db.equipments.Where(x => x.tag_num == temp).ToList();
-            if (exist.Count == 0)
+            try
             {
-                temp = data[0].ToString();
-                equipment_groups equipment_group = db.equipment_groups.Where(x => x.nama == temp).SingleOrDefault();
-                if (equipment_group != null)
+                if (exist.Count == 0)
                 {
-
-                    //check discipline and tag_type
-                    temp = data[8].ToString(); //tag_types
-                    tag_types t = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
-
-                    temp = data[9].ToString(); //discipline
-                    discipline d = db.disciplines.Where(x => x.title == temp).SingleOrDefault();
-
-                    if (t == null)
+                    temp = data[0].ToString();
+                    equipment_groups equipment_group = db.equipment_groups.Where(x => x.nama == temp).SingleOrDefault();
+                    if (equipment_group != null)
                     {
-                        t = new tag_types();
-                        t.title = data[8].ToString();
-                        db.tag_types.Add(t);
+
+                        //check discipline and tag_type
+                        temp = data[8].ToString(); //tag_types
+                        tag_types t = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
+
+                        temp = data[9].ToString(); //discipline
+                        discipline d = db.disciplines.Where(x => x.title == temp).SingleOrDefault();
+
+                        if (t == null)
+                        {
+                            t = new tag_types();
+                            t.title = data[8].ToString();
+                            db.tag_types.Add(t);
+                        }
+
+                        if (d == null)
+                        {
+                            d = new discipline();
+                            d.title = data[9].ToString();
+                            d.id_tag_type = t.id;
+                            db.disciplines.Add(d);
+                        }
+
+                        db.SaveChanges();
+                        float result = 0;
+                        DateTime resDate = DateTime.Now;
+                        //equipment
+                        equipment equipment = new equipment();
+                        equipment.id_equipment_group = equipment_group.id;
+                        equipment.tag_num = data[1].ToString();
+                        equipment.nama = data[2].ToString();
+                        equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
+                        equipment.installed_date = data[4].ToString() == "" || !(DateTime.TryParse(data[4].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[4].ToString());
+                        equipment.vendor = data[5].ToString();
+                        equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
+                        equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
+                        equipment.ram_crit = data[7].ToString();
+                        equipment.sertifikasi = data[10].ToString() == "" || !(DateTime.TryParse(data[10].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[10].ToString());
+                        equipment.pnid_tag_num = data[11].ToString();
+                        equipment.id_discipline = d.id;
+                        equipment.id_tag_type = t.id;
+                        equipment.status_read_nav = 0;
+                        db.equipments.Add(equipment);
+                        db.SaveChanges();
+
+                        //insert equipment detail
+                        equipment_readiness_nav eqReadNav = new equipment_readiness_nav()
+                        {
+                            id_equipment = equipment.id
+                        };
+                        equipment_paf eqPaf = new equipment_paf()
+                        {
+                            id_equipment = equipment.id
+                        };
+                        equipment_event eqEvent = new equipment_event()
+                        {
+                            id_equipment = equipment.id,
+                            datetime_ops = equipment.installed_date.Value
+                        };
+
+                        db.equipment_readiness_nav.Add(eqReadNav);
+                        db.equipment_paf.Add(eqPaf);
+                        db.equipment_event.Add(eqEvent);
+
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        err = "Equipment Group " + data[0] + " tidak terdaftar di dalam database";
                     }
 
-                    if (d == null)
-                    {
-                        d = new discipline();
-                        d.title = data[9].ToString();
-                        d.id_tag_type = t.id;
-                        db.disciplines.Add(d);
-                    }
-                    
-                    db.SaveChanges();
-                    float result = 0;
-                    DateTime resDate = DateTime.Now;
-                    //equipment
-                    equipment equipment = new equipment();
-                    equipment.id_equipment_group = equipment_group.id;
-                    equipment.tag_num = data[1].ToString();
-                    equipment.nama = data[2].ToString();
-                    equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
-                    equipment.installed_date = data[4].ToString() == "" || !(DateTime.TryParse(data[4].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[4].ToString());        
-                    equipment.vendor = data[5].ToString();
-                    equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
-                    equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
-                    equipment.ram_crit = data[7].ToString();
-                    equipment.sertifikasi = data[10].ToString() == "" || !(DateTime.TryParse(data[10].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[10].ToString());
-                    equipment.pnid_tag_num = data[11].ToString();
-                    equipment.id_discipline = d.id;
-                    equipment.id_tag_type = t.id;
-                    equipment.status_read_nav = 0;
-                    db.equipments.Add(equipment);
-                    db.SaveChanges();
-
-                    //insert equipment detail
-                    equipment_readiness_nav eqReadNav = new equipment_readiness_nav()
-                    {
-                        id_equipment = equipment.id
-                    };
-                    equipment_paf eqPaf = new equipment_paf()
-                    {
-                        id_equipment = equipment.id
-                    };
-                    equipment_event eqEvent = new equipment_event()
-                    {
-                        id_equipment = equipment.id,
-                        datetime_ops = equipment.installed_date.Value
-                    };
-
-                    db.equipment_readiness_nav.Add(eqReadNav);
-                    db.equipment_paf.Add(eqPaf);
-                    db.equipment_event.Add(eqEvent);
-
-                    db.SaveChanges();
                 }
                 else
                 {
-                    err = "Equipment Group " + data[0] + " tidak terdaftar di dalam database";
-                }
+                    temp = data[0].ToString();
+                    equipment_groups equipment_group = db.equipment_groups.Where(x => x.nama == temp).SingleOrDefault();
+                    if (equipment_group != null)
+                    {
 
+                        //check discipline and tag_type
+                        temp = data[8].ToString(); //tag_types
+                        tag_types t = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
+
+                        temp = data[9].ToString(); //discipline
+                        discipline d = db.disciplines.Where(x => x.title == temp).SingleOrDefault();
+
+                        if (t == null)
+                        {
+                            t = new tag_types();
+                            t.title = data[8].ToString();
+                            db.tag_types.Add(t);
+                        }
+
+                        if (d == null)
+                        {
+                            d = new discipline();
+                            d.title = data[9].ToString();
+                            d.id_tag_type = t.id;
+                            db.disciplines.Add(d);
+                        }
+
+                        db.SaveChanges();
+                        float result = 0;
+                        DateTime resDate = DateTime.Now;
+                        //equipment
+                        equipment equipment = exist.FirstOrDefault();
+                        equipment.id_equipment_group = equipment_group.id;
+                        equipment.tag_num = data[1].ToString();
+                        equipment.nama = data[2].ToString();
+                        equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
+                        equipment.installed_date = data[4].ToString() == "" || !(DateTime.TryParse(data[4].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[4].ToString());
+                        equipment.vendor = data[5].ToString();
+                        equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
+                        equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
+                        equipment.ram_crit = data[7].ToString();
+                        equipment.sertifikasi = data[10].ToString() == "" || !(DateTime.TryParse(data[10].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[10].ToString());
+                        equipment.pnid_tag_num = data[11].ToString();
+                        equipment.id_discipline = d.id;
+                        equipment.id_tag_type = t.id;
+                        equipment.status_read_nav = 0;
+                        db.Entry(equipment).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        //insert equipment detail
+                        equipment_readiness_nav eqReadNav = new equipment_readiness_nav()
+                        {
+                            id_equipment = equipment.id
+                        };
+                        equipment_paf eqPaf = new equipment_paf()
+                        {
+                            id_equipment = equipment.id
+                        };
+                        equipment_event eqEvent = new equipment_event()
+                        {
+                            id_equipment = equipment.id,
+                            datetime_ops = equipment.installed_date.Value
+                        };
+
+                        db.equipment_readiness_nav.Add(eqReadNav);
+                        db.equipment_paf.Add(eqPaf);
+                        db.equipment_event.Add(eqEvent);
+
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        err = "Equipment Group " + data[0] + " tidak terdaftar di dalam database";
+                    }
+                    err = "Equipment " + data[1] + " sudah terdapat di dalam database";
+                }
             }
-            else
+            catch (Exception e)
             {
-                temp = data[0].ToString();
-                equipment_groups equipment_group = db.equipment_groups.Where(x => x.nama == temp).SingleOrDefault();
-                if (equipment_group != null)
-                {
-
-                    //check discipline and tag_type
-                    temp = data[8].ToString(); //tag_types
-                    tag_types t = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
-
-                    temp = data[9].ToString(); //discipline
-                    discipline d = db.disciplines.Where(x => x.title == temp).SingleOrDefault();
-
-                    if (t == null)
-                    {
-                        t = new tag_types();
-                        t.title = data[8].ToString();
-                        db.tag_types.Add(t);
-                    }
-
-                    if (d == null)
-                    {
-                        d = new discipline();
-                        d.title = data[9].ToString();
-                        d.id_tag_type = t.id;
-                        db.disciplines.Add(d);
-                    }
-
-                    db.SaveChanges();
-                    float result = 0;
-                    DateTime resDate = DateTime.Now;
-                    //equipment
-                    equipment equipment = exist.FirstOrDefault();
-                    equipment.id_equipment_group = equipment_group.id;
-                    equipment.tag_num = data[1].ToString();
-                    equipment.nama = data[2].ToString();
-                    equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
-                    equipment.installed_date = data[4].ToString() == "" || !(DateTime.TryParse(data[4].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[4].ToString());
-                    equipment.vendor = data[5].ToString();
-                    equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
-                    equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
-                    equipment.ram_crit = data[7].ToString();
-                    equipment.sertifikasi = data[10].ToString() == "" || !(DateTime.TryParse(data[10].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[10].ToString());
-                    equipment.pnid_tag_num = data[11].ToString();
-                    equipment.id_discipline = d.id;
-                    equipment.id_tag_type = t.id;
-                    equipment.status_read_nav = 0;
-                    db.Entry(equipment).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                    //insert equipment detail
-                    equipment_readiness_nav eqReadNav = new equipment_readiness_nav()
-                    {
-                        id_equipment = equipment.id
-                    };
-                    equipment_paf eqPaf = new equipment_paf()
-                    {
-                        id_equipment = equipment.id
-                    };
-                    equipment_event eqEvent = new equipment_event()
-                    {
-                        id_equipment = equipment.id,
-                        datetime_ops = equipment.installed_date.Value
-                    };
-
-                    db.equipment_readiness_nav.Add(eqReadNav);
-                    db.equipment_paf.Add(eqPaf);
-                    db.equipment_event.Add(eqEvent);
-
-                    db.SaveChanges();
-                }
-                else
-                {
-                    err = "Equipment Group " + data[0] + " tidak terdaftar di dalam database";
-                }
-                err = "Equipment " + data[1] + " sudah terdapat di dalam database";
+                err = "Equipment " + data[1] + " has some data that is larger than allowed size. Please check the data again.";
             }
+            
             return err;
         }
 
@@ -1356,14 +1383,22 @@ namespace StarEnergi.Utilities
                     add = true;
                 }
             }
+            try
+            {
+                equipment_daily_report edr = db.equipment_daily_report.Find(id_report);
+                edr.date = date;
+                db.Entry(edr).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
 
-            equipment_daily_report edr = db.equipment_daily_report.Find(id_report);
-            edr.date = date;
-            db.Entry(edr).State = EntityState.Modified;
-            db.SaveChanges();
-
-            book.Close(true, Missing.Value, Missing.Value);
-            app.Quit();
+            }
+            finally
+            {
+                book.Close(true, Missing.Value, Missing.Value);
+                app.Quit();
+            }
 
             return err;
         }
@@ -1371,7 +1406,7 @@ namespace StarEnergi.Utilities
         private string saveEquipmentTableReport(int id_report, List<object> data, DateTime date, ref DateTime dateOut)
         {
             string err = "";
-            if (data[1] != null)
+            if (data[1] != null && data[1] != "")
             {
                 equipment_daily_report_table eq = new equipment_daily_report_table()
                 {
@@ -1390,33 +1425,40 @@ namespace StarEnergi.Utilities
                 };
 
                 var eqId = db.equipments.Where(p => p.pnid_tag_num == eq.tag_id).FirstOrDefault();
-                if (eqId != null)
+                try
                 {
-                    eq.id_equipment = eqId.id;
-
-                    if (eq.date > date)
+                    if (eqId != null)
                     {
-                        dateOut = eq.date.Value;
+                        eq.id_equipment = eqId.id;
+
+                        if (eq.date > date)
+                        {
+                            dateOut = eq.date.Value;
+                        }
+                        else
+                        {
+                            dateOut = date;
+                        }
+
+                        db.equipment_daily_report_table.Add(eq);
+                        db.SaveChanges();
                     }
                     else
                     {
-                        dateOut = date;
+                        if (eq.date > date)
+                        {
+                            dateOut = eq.date.Value;
+                        }
+                        else
+                        {
+                            dateOut = date;
+                        }
+                        err = "Equipment with tag number " + eq.tag_id + " is not found in the database.";
                     }
-
-                    db.equipment_daily_report_table.Add(eq);
-                    db.SaveChanges();
                 }
-                else
+                catch (Exception e)
                 {
-                    if (eq.date > date)
-                    {
-                        dateOut = eq.date.Value;
-                    }
-                    else
-                    {
-                        dateOut = date;
-                    }
-                    err = "Equipment with tag number " + eq.tag_id + " is not found in the database.";
+                    err = "Equipment with tag number " + eq.tag_id + " has some data that is larger than allowed size. Please check the data again.";
                 }
             }
 
