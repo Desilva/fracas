@@ -384,7 +384,7 @@ namespace StarEnergi.Controllers.FrontEnd
             else
             {
                 Response.StatusCode = 500;
-                return Json("Some data must be more than allowed size. Please check again the data.");
+                return Json("Some data are larger than the allowed length. Please check the data again. Please check again the data.");
             }
         }
 
@@ -427,7 +427,7 @@ namespace StarEnergi.Controllers.FrontEnd
             else
             {
                 Response.StatusCode = 500;
-                return Json("Some data must be more than allowed size. Please check again the data.");
+                return Json("Some data are larger than the allowed length. Please check the data again.");
             }
         }
 
