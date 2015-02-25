@@ -9,6 +9,11 @@ using StarEnergi.Models;
 using StarEnergi.Utilities.Statistical_Engine;
 using System.Diagnostics;
 using System.Globalization;
+using NPOI.XSSF.UserModel;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.SS.Util;
+using System.IO;
 
 namespace StarEnergi.Utilities
 {
@@ -192,7 +197,7 @@ namespace StarEnergi.Utilities
                     equipment_groups equipment_group = new equipment_groups();
                     equipment_group.id_system = system.id;
                     equipment_group.nama = data[1].ToString();
-                    equipment_group.description = data[2].ToString() == "" ? data[1].ToString() : data[2].ToString();
+                    equipment_group.description = (data.Count < 3 || data[2].ToString() == "") ? data[1].ToString() : data[2].ToString();
                     db.equipment_groups.Add(equipment_group);
                     db.SaveChanges();
                 }
@@ -244,16 +249,16 @@ namespace StarEnergi.Utilities
                     }
                     
                     db.SaveChanges();
-
+                    float result = 0;
                     //equipment
                     equipment equipment = new equipment();
                     equipment.id_equipment_group = equipment_group.id;
                     equipment.tag_num = data[1].ToString();
                     equipment.nama = data[2].ToString();
-                    equipment.econ = (int)(data[3].ToString() == "" ? 0 : float.Parse(data[3].ToString()));
+                    equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
                     equipment.installed_date = data[4].ToString() == "" ? DateTime.Now : DateTime.Parse(data[4].ToString());        
                     equipment.vendor = data[5].ToString();
-                    equipment.warranty = data[6].ToString() == "" ? 0 : int.Parse(data[6].ToString());
+                    equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
                     equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
                     equipment.ram_crit = data[7].ToString();
                     equipment.sertifikasi = data[10].ToString() == "" ? DateTime.Now : DateTime.Parse(data[10].ToString());
@@ -321,16 +326,16 @@ namespace StarEnergi.Utilities
                     }
 
                     db.SaveChanges();
-
+                    float result = 0;
                     //equipment
                     equipment equipment = exist.FirstOrDefault();
                     equipment.id_equipment_group = equipment_group.id;
                     equipment.tag_num = data[1].ToString();
                     equipment.nama = data[2].ToString();
-                    equipment.econ = (int)(data[3].ToString() == "" ? 0 : float.Parse(data[3].ToString()));
+                    equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
                     equipment.installed_date = data[4].ToString() == "" ? DateTime.Now : DateTime.Parse(data[4].ToString());
                     equipment.vendor = data[5].ToString();
-                    equipment.warranty = data[6].ToString() == "" ? 0 : int.Parse(data[6].ToString());
+                    equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
                     equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
                     equipment.ram_crit = data[7].ToString();
                     equipment.sertifikasi = data[10].ToString() == "" ? DateTime.Now : DateTime.Parse(data[10].ToString());
@@ -1341,7 +1346,7 @@ namespace StarEnergi.Utilities
                         isFirst = false;
                     }
                     
-                    if (add) errTemp = saveEquipmentTableReport(id_report,temp, date, out date);
+                    if (add) errTemp = saveEquipmentTableReport(id_report,temp, date, ref date);
                     if (errTemp != "")
                     {
                         err.Add(errTemp);
@@ -1361,53 +1366,56 @@ namespace StarEnergi.Utilities
             return err;
         }
 
-        private string saveEquipmentTableReport(int id_report, List<object> data, DateTime date, out DateTime dateOut)
+        private string saveEquipmentTableReport(int id_report, List<object> data, DateTime date, ref DateTime dateOut)
         {
             string err = "";
-            equipment_daily_report_table eq = new equipment_daily_report_table()
+            if (data[1] != null)
             {
-                id_equipment_daily_report = id_report,
-                tag_id = data[1].ToString(),
-                description = data[3].ToString(),
-                barcode = data[2].ToString().PadLeft(8, '0'),
-                min_limit = data[4].ToString(),
-                max_limit = data[5].ToString(),
-                tag_value = data[6].ToString(),
-                unit = data[7].ToString(),
-                date = data[8].ToString().Remove(0,1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().Remove(0,1)),
-                time = data[9].ToString().Remove(0,1),
-                name_operator = data[12].ToString(),
-                keterangan = data[13].ToString()
-            };
-
-            var eqId = db.equipments.Where(p => p.pnid_tag_num == eq.tag_id).FirstOrDefault();
-            if (eqId != null)
-            {
-                eq.id_equipment = eqId.id;
-
-                if (eq.date > date)
+                equipment_daily_report_table eq = new equipment_daily_report_table()
                 {
-                    dateOut = eq.date.Value;
+                    id_equipment_daily_report = id_report,
+                    tag_id = data[1].ToString(),
+                    description = data[3].ToString(),
+                    barcode = data[2].ToString().PadLeft(8, '0'),
+                    min_limit = data[4].ToString(),
+                    max_limit = data[5].ToString(),
+                    tag_value = data[6].ToString(),
+                    unit = data[7].ToString(),
+                    date = data[8].ToString() == "" ? null : (data[8].ToString().Remove(0, 1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().Remove(0, 1))),
+                    time = data[9].ToString() == "" ? "" : data[9].ToString().Remove(0, 1),
+                    name_operator = data[12].ToString(),
+                    keterangan = data[13].ToString()
+                };
+
+                var eqId = db.equipments.Where(p => p.pnid_tag_num == eq.tag_id).FirstOrDefault();
+                if (eqId != null)
+                {
+                    eq.id_equipment = eqId.id;
+
+                    if (eq.date > date)
+                    {
+                        dateOut = eq.date.Value;
+                    }
+                    else
+                    {
+                        dateOut = date;
+                    }
+
+                    db.equipment_daily_report_table.Add(eq);
+                    db.SaveChanges();
                 }
                 else
                 {
-                    dateOut = date;
+                    if (eq.date > date)
+                    {
+                        dateOut = eq.date.Value;
+                    }
+                    else
+                    {
+                        dateOut = date;
+                    }
+                    err = "Equipment with tag number " + eq.tag_id + " is not found in the database.";
                 }
-
-                db.equipment_daily_report_table.Add(eq);
-                db.SaveChanges();
-            }
-            else
-            {
-                if (eq.date > date)
-                {
-                    dateOut = eq.date.Value;
-                }
-                else
-                {
-                    dateOut = date;
-                }
-                err = "Equipment with tag number " + eq.tag_id + " is not found in the database.";
             }
 
             return err;
@@ -1430,6 +1438,345 @@ namespace StarEnergi.Utilities
         #endregion
 
         #region Daily Log
+
+        public List<string> LoadDailyLogNew(string path, bool isDay=true)
+        {
+                List<string> err = new List<string>();
+                XSSFSheet sheet; int colCount; int rowCount; int startRow = 8 - 1; int colNum; int id;
+                List<string> messageList = new List<string>();
+                string currentFilePathInServer = path;
+                XSSFWorkbook book;
+
+                daily_log dailyLogData = new daily_log();
+                List<daily_log_to_wells> dailyLogWellData = new List<daily_log_to_wells>();
+                
+                try
+                {
+                    using (FileStream file = new FileStream(currentFilePathInServer, FileMode.Open, FileAccess.Read))
+                    {
+                        book = new XSSFWorkbook(file);
+                    }
+
+                    sheet = (XSSFSheet)book.GetSheet("FormFracas");
+                    //rowCount = sheet.LastRowNum;
+                    rowCount = 15;
+                    
+                    id = 0;
+                    bool allowSave = true;
+                    bool test;
+
+                    for (int row = startRow; row <= rowCount; row++)
+                    {
+                        colNum = 0;
+                        var dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                        if (row <= startRow + 1)
+                        {
+                            #region header
+
+                            if (row == startRow)
+                            {
+                                //Date
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        DateTime dailyLogDate;
+
+                                        double tglOA;
+
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out tglOA);
+                                        if (test == false)
+                                        {
+                                            err.Add("Date is invalid");
+                                            allowSave = false;
+                                        }
+                                        else
+                                        {
+                                            test = DateTime.TryParse(DateTime.FromOADate(tglOA).ToString(), out dailyLogDate);
+                                            dailyLogData.date = dailyLogDate;
+                                        }
+
+                                    }
+                                }
+
+                                //Group
+                                colNum += 3;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 50)
+                                    {
+                                        err.Add("Group is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.grup = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+
+                                //Production Foreman
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Foreman is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_foreman = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+
+                                //Production Operator 1
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Operator 1 is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_operator_1 = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+
+                                //Production Operator 3
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Operator 3 is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_operator_3 = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+
+                                //Production Operator 5
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Operator 5 is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_operator_5 = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+
+                                //Production Operator 7
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Operator 7 is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_operator_7 = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+                            }
+                            else if (row == startRow + 1)
+                            {
+                                colNum = 5;
+                                //Production Operator 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Operator 2 is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_operator_2 = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+
+                                //Production Operator 4
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Operator 4 is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_operator_4 = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+
+                                //Production Operator 6
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Operator 6 is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_operator_6 = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+
+                                //Production Operator 8
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val.Length > 255)
+                                    {
+                                        err.Add("Production Operator 8 is invalid");
+                                        allowSave = false;
+                                    }
+                                    else
+                                    {
+                                        dailyLogData.production_operator_8 = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                err.Add("Data header is empty or not complete");
+                            }
+
+                            #endregion
+                        }
+                        else
+                        {
+                            #region contents
+                            
+                            var wellList = (from a in db.daily_log_wells
+                                            select a).ToList().AsQueryable();
+
+
+
+                            if (row >= 14 - 1)
+                            {
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+
+                                    if (val != null && val != "")
+                                    {
+                                        var checkWell = (from a in wellList
+                                                         where a.name == val
+                                                         select a.id).FirstOrDefault();
+                                        if (checkWell != null)
+                                        {
+                                            if (val.Length > 255)
+                                            {
+                                                err.Add("Group is invalid");
+                                                allowSave = false;
+                                            }
+                                            else
+                                            {
+                                                dailyLogData.grup = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Well name row {0} column {1} cannot be empty", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        allowSave = false;
+                                        err.Add(String.Format("Well name row {0} column {1} cannot be empty",row +1, CellReference.ConvertNumToColString(colNum)));
+                                    }
+      
+                                }
+
+                            }
+                            #endregion
+                        }
+                    }
+                    if (allowSave == true)
+                    {
+                        db.daily_log.Add(dailyLogData);
+                        db.SaveChanges();
+                        err.Add("File has been uploaded successfully");
+                    }
+                    else
+                    {
+                        err.Add("File upload failed. Please make revision and reupload the file");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    err.Add("Internal server error. Please contact administrator.");
+                }
+
+                
+
+                return err;
+
+        }
+
 
         public List<string> LoadDailyLog(string filename)
         {
