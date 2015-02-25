@@ -1383,7 +1383,7 @@ namespace StarEnergi.Utilities
                     max_limit = data[5].ToString(),
                     tag_value = data[6].ToString(),
                     unit = data[7].ToString(),
-                    date = data[8].ToString() == "" ? null : (data[8].ToString().Remove(0, 1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().Remove(0, 1))),
+                    date = data[8].ToString() == "" ? null : (data[8].ToString().Remove(0, 1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().ElementAt(0) == '\'' ? data[8].ToString().Remove(0,1)  : data[8].ToString())),
                     time = data[9].ToString() == "" ? "" : data[9].ToString().Remove(0, 1),
                     name_operator = data[12].ToString(),
                     keterangan = data[13].ToString()
