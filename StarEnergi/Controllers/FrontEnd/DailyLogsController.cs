@@ -323,10 +323,13 @@ namespace StarEnergi.Controllers.FrontEnd
         /// <returns></returns>
         public ActionResult addDailyLog(int? id)
         {
+            daily_log shift1 = null; bool isCreate = true;
+
             if (id != null) //edit
             {
+                isCreate = false;
                 ViewBag.mod = id;
-                daily_log shift1 = db.daily_log.Find(id);
+                shift1 = db.daily_log.Find(id);
                 ViewBag.datas = shift1;
                 daily_log_weekly_target wt = db.daily_log_weekly_target.Where(p => p.date == shift1.date && p.shift == shift1.shift).ToList().FirstOrDefault();
                 if (wt != null)
@@ -375,7 +378,11 @@ namespace StarEnergi.Controllers.FrontEnd
                        }).ToList();
 
             //wells data
-            List<daily_log_wells> wells = db.daily_log_wells.Where(m => (m.is_delete == null ? true : (m.is_delete.Value == true ? false : true))).OrderBy(m => m.name).ToList();
+            List<daily_log_wells> wells = null;
+            if (isCreate) //create
+                wells = db.daily_log_wells.Where(m => (m.is_delete == null ? true : (m.is_delete.Value == true ? false : true))).OrderBy(m => m.name).ToList();
+            else //edit
+                wells = shift1.daily_log_to_wells.Select(m => m.daily_log_wells).OrderBy(m => m.name).ToList().ToList();
 
             //viewdata
             ViewData["users"] = has;
@@ -2104,7 +2111,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
                 var dataWell = (from a in db.daily_log_wells
                                 where a.is_delete != true
-                                select a).ToList();
+                                select a).OrderBy(x => x.name).ToList();
                 int startRowIndex = 13;
                 int colIndexLeft = 1;
                 int colIndexRight = 5;
@@ -2479,396 +2486,396 @@ namespace StarEnergi.Controllers.FrontEnd
             return excel;
         }
 
-        private byte[] ProcessExcel3(string filename)
-        {
-            byte[] excel = null;
-            HSSFSheet sheet;
-            HSSFCellStyle style;
-            HSSFRow row;
-            HSSFCell cell;
-            HSSFFont font;
+        //private byte[] ProcessExcel3(string filename)
+        //{
+        //    byte[] excel = null;
+        //    HSSFSheet sheet;
+        //    HSSFCellStyle style;
+        //    HSSFRow row;
+        //    HSSFCell cell;
+        //    HSSFFont font;
 
-            string currentFilePathInServer = Server.MapPath("~/App_Data/daily_log/" + filename);
+        //    string currentFilePathInServer = Server.MapPath("~/App_Data/daily_log/" + filename);
 
-            XSSFWorkbook book;
-            try
-            {
-
-
-                using (FileStream file = new FileStream(currentFilePathInServer, FileMode.Open, FileAccess.Read))
-                {
-                    book = new XSSFWorkbook(file);
-                }
-
-                sheet = (HSSFSheet)book.GetSheet("FormFracas");
-                //sheet.ProtectSheet("starenergy");
-
-                var dataWell = (from a in db.daily_log_wells
-                                where a.is_delete != true
-                                select a).ToList();
-                int startRowIndex = 13;
-                int colIndexLeft = 1;
-                int colIndexRight = 5;
-                int maxWellCount = 30;
-                int halfMaxWellCount = maxWellCount / 2;
-
-                if (dataWell != null)
-                {
-                    //SET DATE
-                    XSSFCell cellDate = (XSSFCell)sheet.GetRow(7).GetCell(0);
-                    cellDate.SetCellValue(DateTime.Now);
-
-                    if (dataWell.Count <= halfMaxWellCount)
-                    {
-                        int incrementIndex = 0;
-                        foreach (daily_log_wells well in dataWell)
-                        {
-                            cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
-                            cell.SetCellValue(well.name);
+        //    XSSFWorkbook book;
+        //    try
+        //    {
 
 
-                            ////UNLOCK FCV
-                            //style = (HSSFCellStyle)book.CreateCellStyle();
-                            //style.IsLocked = false;
-                            //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 1);
-                            //cell.CellStyle = style;
+        //        using (FileStream file = new FileStream(currentFilePathInServer, FileMode.Open, FileAccess.Read))
+        //        {
+        //            book = new XSSFWorkbook(file);
+        //        }
 
-                            ////UNLOCK Flow
-                            //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 2);
-                            //cell.CellStyle = style;
+        //        sheet = (HSSFSheet)book.GetSheet("FormFracas");
+        //        //sheet.ProtectSheet("starenergy");
 
-                            ////UNLOCK WHP
-                            //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 3);
-                            //cell.CellStyle = style;
+        //        var dataWell = (from a in db.daily_log_wells
+        //                        where a.is_delete != true
+        //                        select a).ToList();
+        //        int startRowIndex = 13;
+        //        int colIndexLeft = 1;
+        //        int colIndexRight = 5;
+        //        int maxWellCount = 30;
+        //        int halfMaxWellCount = maxWellCount / 2;
 
-                            incrementIndex++;
-                        }
-                        //this.FillPowerStation(ref sheet);
-                    }
-                    else if (dataWell.Count > halfMaxWellCount && dataWell.Count <= maxWellCount)
-                    {
-                        int incrementIndex = 0;
-                        bool isOnLeft = true;
-                        foreach (daily_log_wells well in dataWell)
-                        {
-                            if (isOnLeft)
-                            {
-                                cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
-                                cell.SetCellValue(well.name);
-                                incrementIndex++;
+        //        if (dataWell != null)
+        //        {
+        //            //SET DATE
+        //            XSSFCell cellDate = (XSSFCell)sheet.GetRow(7).GetCell(0);
+        //            cellDate.SetCellValue(DateTime.Now);
 
-                                ////UNLOCK FCV
-                                //style = (XSSFCellStyle)book.CreateCellStyle();
-                                //style.IsLocked = false;
-                                //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 1);
-                                //cell.CellStyle = style;
-
-                                ////UNLOCK Flow
-                                //style = (XSSFCellStyle)book.CreateCellStyle();
-                                //style.IsLocked = false;
-                                //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 2);
-                                //cell.CellStyle = style;
-
-                                ////UNLOCK WHP
-                                //style = (XSSFCellStyle)book.CreateCellStyle();
-                                //style.IsLocked = false;
-                                //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 3);
-                                //cell.CellStyle = style;
-
-                                if (incrementIndex == halfMaxWellCount)
-                                {
-                                    isOnLeft = false;
-                                    incrementIndex = 0;
-                                }
-                            }
-                            else
-                            {
-                                cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight);
-                                cell.SetCellValue(well.name);
-
-                                ////UNLOCK FCV
-                                //style = (XSSFCellStyle)book.CreateCellStyle();
-                                //style.IsLocked = false;
-                                //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 1);
-                                //cell.CellStyle = style;
-
-                                ////UNLOCK Flow
-                                //style = (XSSFCellStyle)book.CreateCellStyle();
-                                //style.IsLocked = false;
-                                //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 2);
-                                //cell.CellStyle = style;
-
-                                ////UNLOCK WHP
-                                //style = (XSSFCellStyle)book.CreateCellStyle();
-                                //style.IsLocked = false;
-                                //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 3);
-                                //cell.CellStyle = style;
-
-                                incrementIndex++;
-                            }
-
-                        }
-                        //this.FillPowerStation(ref sheet);
-                    }
-                    else
-                    {
-                        int remainder = dataWell.Count - maxWellCount;
-                        int rowsNeedToBeCreated;
-                        int lastWellRowIndex = 28;
-                        if (remainder % 2 == 1)
-                        {
-                            rowsNeedToBeCreated = (remainder / 2) + 1;
-                        }
-                        else
-                        {
-                            rowsNeedToBeCreated = remainder / 2;
-                        }
+        //            if (dataWell.Count <= halfMaxWellCount)
+        //            {
+        //                int incrementIndex = 0;
+        //                foreach (daily_log_wells well in dataWell)
+        //                {
+        //                    cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
+        //                    cell.SetCellValue(well.name);
 
 
-                        //Index,Total Rows,Total to Insert 
-                        sheet.ShiftRows(lastWellRowIndex, sheet.LastRowNum, rowsNeedToBeCreated);
+        //                    ////UNLOCK FCV
+        //                    //style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    //style.IsLocked = false;
+        //                    //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 1);
+        //                    //cell.CellStyle = style;
 
-                        for (int i = 0; i < rowsNeedToBeCreated; i++)
-                        {
-                            //TIME
-                            row = (HSSFRow)sheet.CreateRow((short)28 + i);
-                            cell = (HSSFCell)row.CreateCell(0);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Thick;
-                            style.BorderTop = BorderStyle.Thick;
-                            cell.CellStyle = style;
+        //                    ////UNLOCK Flow
+        //                    //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 2);
+        //                    //cell.CellStyle = style;
 
-                            //WELLS
-                            cell = (HSSFCell)row.CreateCell(1);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                    ////UNLOCK WHP
+        //                    //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 3);
+        //                    //cell.CellStyle = style;
 
-                            //FCV
-                            cell = (HSSFCell)row.CreateCell(2);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-                            style.FillPattern = FillPattern.SolidForeground;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                    incrementIndex++;
+        //                }
+        //                //this.FillPowerStation(ref sheet);
+        //            }
+        //            else if (dataWell.Count > halfMaxWellCount && dataWell.Count <= maxWellCount)
+        //            {
+        //                int incrementIndex = 0;
+        //                bool isOnLeft = true;
+        //                foreach (daily_log_wells well in dataWell)
+        //                {
+        //                    if (isOnLeft)
+        //                    {
+        //                        cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
+        //                        cell.SetCellValue(well.name);
+        //                        incrementIndex++;
 
-                            //FLOW
-                            cell = (HSSFCell)row.CreateCell(3);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-                            style.FillPattern = FillPattern.SolidForeground;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                        ////UNLOCK FCV
+        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
+        //                        //style.IsLocked = false;
+        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 1);
+        //                        //cell.CellStyle = style;
 
-                            //WHP
-                            cell = (HSSFCell)row.CreateCell(4);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-                            style.FillPattern = FillPattern.SolidForeground;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                        ////UNLOCK Flow
+        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
+        //                        //style.IsLocked = false;
+        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 2);
+        //                        //cell.CellStyle = style;
 
-                            //WELLS 2nd
-                            cell = (HSSFCell)row.CreateCell(5);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                        ////UNLOCK WHP
+        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
+        //                        //style.IsLocked = false;
+        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 3);
+        //                        //cell.CellStyle = style;
 
-                            //FCV 2nd
-                            cell = (HSSFCell)row.CreateCell(6);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-                            style.FillPattern = FillPattern.SolidForeground;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                        if (incrementIndex == halfMaxWellCount)
+        //                        {
+        //                            isOnLeft = false;
+        //                            incrementIndex = 0;
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight);
+        //                        cell.SetCellValue(well.name);
 
-                            //FLOW 2nd
-                            cell = (HSSFCell)row.CreateCell(7);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-                            style.FillPattern = FillPattern.SolidForeground;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                        ////UNLOCK FCV
+        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
+        //                        //style.IsLocked = false;
+        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 1);
+        //                        //cell.CellStyle = style;
 
-                            //WHP 2nd
-                            cell = (HSSFCell)row.CreateCell(8);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Double;
-                            style.BorderBottom = BorderStyle.Hair;
-                            //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-                            style.FillPattern = FillPattern.SolidForeground;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                        ////UNLOCK Flow
+        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
+        //                        //style.IsLocked = false;
+        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 2);
+        //                        //cell.CellStyle = style;
+
+        //                        ////UNLOCK WHP
+        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
+        //                        //style.IsLocked = false;
+        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 3);
+        //                        //cell.CellStyle = style;
+
+        //                        incrementIndex++;
+        //                    }
+
+        //                }
+        //                //this.FillPowerStation(ref sheet);
+        //            }
+        //            else
+        //            {
+        //                int remainder = dataWell.Count - maxWellCount;
+        //                int rowsNeedToBeCreated;
+        //                int lastWellRowIndex = 28;
+        //                if (remainder % 2 == 1)
+        //                {
+        //                    rowsNeedToBeCreated = (remainder / 2) + 1;
+        //                }
+        //                else
+        //                {
+        //                    rowsNeedToBeCreated = remainder / 2;
+        //                }
 
 
-                            //Power Station Name?
-                            cell = (HSSFCell)row.CreateCell(9);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
-                            cell = (HSSFCell)row.CreateCell(10);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            cell.CellStyle = style;
-                            sheet.AddMergedRegion(new CellRangeAddress(
-                                    28 + i, //first row (0-based)
-                                    28 + i, //last row  (0-based)
-                                    9, //first column (0-based)
-                                    10  //last column  (0-based)
-                            ));
+        //                //Index,Total Rows,Total to Insert 
+        //                sheet.ShiftRows(lastWellRowIndex, sheet.LastRowNum, rowsNeedToBeCreated);
 
-                            //TG UNIT 1
-                            cell = (HSSFCell)row.CreateCell(11);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-                            style.FillPattern = FillPattern.SolidForeground;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                for (int i = 0; i < rowsNeedToBeCreated; i++)
+        //                {
+        //                    //TIME
+        //                    row = (HSSFRow)sheet.CreateRow((short)28 + i);
+        //                    cell = (HSSFCell)row.CreateCell(0);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Thick;
+        //                    style.BorderTop = BorderStyle.Thick;
+        //                    cell.CellStyle = style;
 
-                            //TG UNIT 2
-                            cell = (HSSFCell)row.CreateCell(12);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thin;
-                            style.BorderBottom = BorderStyle.Hair;
-                            //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-                            style.FillPattern = FillPattern.SolidForeground;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
+        //                    //WELLS
+        //                    cell = (HSSFCell)row.CreateCell(1);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
 
-                            //Powerstation Measurement Unit?
-                            cell = (HSSFCell)row.CreateCell(13);
-                            style = (HSSFCellStyle)book.CreateCellStyle();
-                            style.BorderLeft = BorderStyle.Thin;
-                            style.BorderTop = BorderStyle.Hair;
-                            style.BorderRight = BorderStyle.Thick;
-                            style.BorderBottom = BorderStyle.Hair;
-                            font = (HSSFFont)book.CreateFont();
-                            font.FontName = "Arial";
-                            font.FontHeight = 8;
-                            style.SetFont(font);
-                            cell.CellStyle = style;
-                        }
+        //                    //FCV
+        //                    cell = (HSSFCell)row.CreateCell(2);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+        //                    style.FillPattern = FillPattern.SolidForeground;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
 
-                        int incrementIndex = 0;
-                        bool isOnLeft = true;
-                        foreach (daily_log_wells well in dataWell)
-                        {
-                            if (isOnLeft)
-                            {
-                                cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
-                                cell.SetCellValue(well.name);
-                                incrementIndex++;
-                                if (incrementIndex == (halfMaxWellCount + rowsNeedToBeCreated))
-                                {
-                                    isOnLeft = false;
-                                    incrementIndex = 0;
-                                }
-                            }
-                            else
-                            {
-                                cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight);
-                                cell.SetCellValue(well.name);
-                                incrementIndex++;
-                            }
+        //                    //FLOW
+        //                    cell = (HSSFCell)row.CreateCell(3);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+        //                    style.FillPattern = FillPattern.SolidForeground;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
 
-                        }
-                        //this.FillPowerStation(ref sheet);
-                        //sheet.AddMergedRegion(new CellRangeAddress(
-                        //            12, //first row (0-based)
-                        //            sheet.LastRowNum - 1, //last row  (0-based)
-                        //            0, //first column (0-based)
-                        //            0  //last column  (0-based)
-                        //));
-                    }
+        //                    //WHP
+        //                    cell = (HSSFCell)row.CreateCell(4);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+        //                    style.FillPattern = FillPattern.SolidForeground;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
+
+        //                    //WELLS 2nd
+        //                    cell = (HSSFCell)row.CreateCell(5);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
+
+        //                    //FCV 2nd
+        //                    cell = (HSSFCell)row.CreateCell(6);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+        //                    style.FillPattern = FillPattern.SolidForeground;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
+
+        //                    //FLOW 2nd
+        //                    cell = (HSSFCell)row.CreateCell(7);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+        //                    style.FillPattern = FillPattern.SolidForeground;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
+
+        //                    //WHP 2nd
+        //                    cell = (HSSFCell)row.CreateCell(8);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Double;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+        //                    style.FillPattern = FillPattern.SolidForeground;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
 
 
-                }
+        //                    //Power Station Name?
+        //                    cell = (HSSFCell)row.CreateCell(9);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
+        //                    cell = (HSSFCell)row.CreateCell(10);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    cell.CellStyle = style;
+        //                    sheet.AddMergedRegion(new CellRangeAddress(
+        //                            28 + i, //first row (0-based)
+        //                            28 + i, //last row  (0-based)
+        //                            9, //first column (0-based)
+        //                            10  //last column  (0-based)
+        //                    ));
+
+        //                    //TG UNIT 1
+        //                    cell = (HSSFCell)row.CreateCell(11);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+        //                    style.FillPattern = FillPattern.SolidForeground;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
+
+        //                    //TG UNIT 2
+        //                    cell = (HSSFCell)row.CreateCell(12);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thin;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+        //                    style.FillPattern = FillPattern.SolidForeground;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
+
+        //                    //Powerstation Measurement Unit?
+        //                    cell = (HSSFCell)row.CreateCell(13);
+        //                    style = (HSSFCellStyle)book.CreateCellStyle();
+        //                    style.BorderLeft = BorderStyle.Thin;
+        //                    style.BorderTop = BorderStyle.Hair;
+        //                    style.BorderRight = BorderStyle.Thick;
+        //                    style.BorderBottom = BorderStyle.Hair;
+        //                    font = (HSSFFont)book.CreateFont();
+        //                    font.FontName = "Arial";
+        //                    font.FontHeight = 8;
+        //                    style.SetFont(font);
+        //                    cell.CellStyle = style;
+        //                }
+
+        //                int incrementIndex = 0;
+        //                bool isOnLeft = true;
+        //                foreach (daily_log_wells well in dataWell)
+        //                {
+        //                    if (isOnLeft)
+        //                    {
+        //                        cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
+        //                        cell.SetCellValue(well.name);
+        //                        incrementIndex++;
+        //                        if (incrementIndex == (halfMaxWellCount + rowsNeedToBeCreated))
+        //                        {
+        //                            isOnLeft = false;
+        //                            incrementIndex = 0;
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight);
+        //                        cell.SetCellValue(well.name);
+        //                        incrementIndex++;
+        //                    }
+
+        //                }
+        //                //this.FillPowerStation(ref sheet);
+        //                //sheet.AddMergedRegion(new CellRangeAddress(
+        //                //            12, //first row (0-based)
+        //                //            sheet.LastRowNum - 1, //last row  (0-based)
+        //                //            0, //first column (0-based)
+        //                //            0  //last column  (0-based)
+        //                //));
+        //            }
+
+
+        //        }
 
 
 
-                MemoryStream ms = new MemoryStream();
-                book.Write(ms);
-                excel = ms.ToArray();
+        //        MemoryStream ms = new MemoryStream();
+        //        book.Write(ms);
+        //        excel = ms.ToArray();
 
-            }
-            catch (Exception e)
-            {
-                Response.Write("Internal Server Error. Please Contact Administrator <br/>");
-                Response.Write(e.ToString());
-                Response.End();
-            }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Response.Write("Internal Server Error. Please Contact Administrator <br/>");
+        //        Response.Write(e.ToString());
+        //        Response.End();
+        //    }
 
-            return excel;
-        }
+        //    return excel;
+        //}
 
         //private byte[] ProcessExcel(bool isDay)
         //{

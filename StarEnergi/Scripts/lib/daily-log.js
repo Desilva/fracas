@@ -81,6 +81,10 @@ function changeInput(radio,shift) {
 function validate(shift) {
     var retVal = true;
     retVal = $("#sh" + shift + "_date").val() == "" ? false : true;
+
+    if (retVal)
+        retVal = $("#sh" + shift + "_time_check").val() == "" ? false : true;
+
     return retVal;
 }
 
