@@ -3053,7 +3053,7 @@ namespace StarEnergi.Utilities
                                     }
                                     else
                                     {
-                                        dailyLogData.pln_meter_2 = String.Format("{0:0.00}", doubleValue);
+                                        dailyLogData.segwwl_export_2 = String.Format("{0:0.00}", doubleValue);
                                     }
 
                                 }
