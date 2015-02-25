@@ -250,18 +250,19 @@ namespace StarEnergi.Utilities
                     
                     db.SaveChanges();
                     float result = 0;
+                    DateTime resDate = DateTime.Now;
                     //equipment
                     equipment equipment = new equipment();
                     equipment.id_equipment_group = equipment_group.id;
                     equipment.tag_num = data[1].ToString();
                     equipment.nama = data[2].ToString();
                     equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
-                    equipment.installed_date = data[4].ToString() == "" ? DateTime.Now : DateTime.Parse(data[4].ToString());        
+                    equipment.installed_date = data[4].ToString() == "" || !(DateTime.TryParse(data[4].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[4].ToString());        
                     equipment.vendor = data[5].ToString();
                     equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
                     equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
                     equipment.ram_crit = data[7].ToString();
-                    equipment.sertifikasi = data[10].ToString() == "" ? DateTime.Now : DateTime.Parse(data[10].ToString());
+                    equipment.sertifikasi = data[10].ToString() == "" || !(DateTime.TryParse(data[10].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[10].ToString());
                     equipment.pnid_tag_num = data[11].ToString();
                     equipment.id_discipline = d.id;
                     equipment.id_tag_type = t.id;
@@ -327,18 +328,19 @@ namespace StarEnergi.Utilities
 
                     db.SaveChanges();
                     float result = 0;
+                    DateTime resDate = DateTime.Now;
                     //equipment
                     equipment equipment = exist.FirstOrDefault();
                     equipment.id_equipment_group = equipment_group.id;
                     equipment.tag_num = data[1].ToString();
                     equipment.nama = data[2].ToString();
                     equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
-                    equipment.installed_date = data[4].ToString() == "" ? DateTime.Now : DateTime.Parse(data[4].ToString());
+                    equipment.installed_date = data[4].ToString() == "" || !(DateTime.TryParse(data[4].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[4].ToString());
                     equipment.vendor = data[5].ToString();
                     equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
                     equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
                     equipment.ram_crit = data[7].ToString();
-                    equipment.sertifikasi = data[10].ToString() == "" ? DateTime.Now : DateTime.Parse(data[10].ToString());
+                    equipment.sertifikasi = data[10].ToString() == "" || !(DateTime.TryParse(data[10].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[10].ToString());
                     equipment.pnid_tag_num = data[11].ToString();
                     equipment.id_discipline = d.id;
                     equipment.id_tag_type = t.id;
