@@ -323,10 +323,13 @@ namespace StarEnergi.Controllers.FrontEnd
         /// <returns></returns>
         public ActionResult addDailyLog(int? id)
         {
+            daily_log shift1 = null; bool isCreate = true;
+
             if (id != null) //edit
             {
+                isCreate = false;
                 ViewBag.mod = id;
-                daily_log shift1 = db.daily_log.Find(id);
+                shift1 = db.daily_log.Find(id);
                 ViewBag.datas = shift1;
                 daily_log_weekly_target wt = db.daily_log_weekly_target.Where(p => p.date == shift1.date && p.shift == shift1.shift).ToList().FirstOrDefault();
                 if (wt != null)
@@ -375,7 +378,11 @@ namespace StarEnergi.Controllers.FrontEnd
                        }).ToList();
 
             //wells data
-            List<daily_log_wells> wells = db.daily_log_wells.Where(m => (m.is_delete == null ? true : (m.is_delete.Value == true ? false : true))).OrderBy(m => m.name).ToList();
+            List<daily_log_wells> wells = null;
+            if (isCreate) //create
+                wells = db.daily_log_wells.Where(m => (m.is_delete == null ? true : (m.is_delete.Value == true ? false : true))).OrderBy(m => m.name).ToList();
+            else //edit
+                wells = shift1.daily_log_to_wells.Select(m => m.daily_log_wells).OrderBy(m => m.name).ToList().ToList();
 
             //viewdata
             ViewData["users"] = has;
