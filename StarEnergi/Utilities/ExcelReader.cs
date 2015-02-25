@@ -249,16 +249,16 @@ namespace StarEnergi.Utilities
                     }
                     
                     db.SaveChanges();
-
+                    float result = 0;
                     //equipment
                     equipment equipment = new equipment();
                     equipment.id_equipment_group = equipment_group.id;
                     equipment.tag_num = data[1].ToString();
                     equipment.nama = data[2].ToString();
-                    equipment.econ = (int)(data[3].ToString() == "" ? 0 : float.Parse(data[3].ToString()));
+                    equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
                     equipment.installed_date = data[4].ToString() == "" ? DateTime.Now : DateTime.Parse(data[4].ToString());        
                     equipment.vendor = data[5].ToString();
-                    equipment.warranty = data[6].ToString() == "" ? 0 : int.Parse(data[6].ToString());
+                    equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
                     equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
                     equipment.ram_crit = data[7].ToString();
                     equipment.sertifikasi = data[10].ToString() == "" ? DateTime.Now : DateTime.Parse(data[10].ToString());
@@ -326,16 +326,16 @@ namespace StarEnergi.Utilities
                     }
 
                     db.SaveChanges();
-
+                    float result = 0;
                     //equipment
                     equipment equipment = exist.FirstOrDefault();
                     equipment.id_equipment_group = equipment_group.id;
                     equipment.tag_num = data[1].ToString();
                     equipment.nama = data[2].ToString();
-                    equipment.econ = (int)(data[3].ToString() == "" ? 0 : float.Parse(data[3].ToString()));
+                    equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
                     equipment.installed_date = data[4].ToString() == "" ? DateTime.Now : DateTime.Parse(data[4].ToString());
                     equipment.vendor = data[5].ToString();
-                    equipment.warranty = data[6].ToString() == "" ? 0 : int.Parse(data[6].ToString());
+                    equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
                     equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
                     equipment.ram_crit = data[7].ToString();
                     equipment.sertifikasi = data[10].ToString() == "" ? DateTime.Now : DateTime.Parse(data[10].ToString());
@@ -1346,7 +1346,7 @@ namespace StarEnergi.Utilities
                         isFirst = false;
                     }
                     
-                    if (add) errTemp = saveEquipmentTableReport(id_report,temp, date, out date);
+                    if (add) errTemp = saveEquipmentTableReport(id_report,temp, date, ref date);
                     if (errTemp != "")
                     {
                         err.Add(errTemp);
@@ -1366,53 +1366,56 @@ namespace StarEnergi.Utilities
             return err;
         }
 
-        private string saveEquipmentTableReport(int id_report, List<object> data, DateTime date, out DateTime dateOut)
+        private string saveEquipmentTableReport(int id_report, List<object> data, DateTime date, ref DateTime dateOut)
         {
             string err = "";
-            equipment_daily_report_table eq = new equipment_daily_report_table()
+            if (data[1] != null)
             {
-                id_equipment_daily_report = id_report,
-                tag_id = data[1].ToString(),
-                description = data[3].ToString(),
-                barcode = data[2].ToString().PadLeft(8, '0'),
-                min_limit = data[4].ToString(),
-                max_limit = data[5].ToString(),
-                tag_value = data[6].ToString(),
-                unit = data[7].ToString(),
-                date = data[8].ToString().Remove(0,1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().Remove(0,1)),
-                time = data[9].ToString().Remove(0,1),
-                name_operator = data[12].ToString(),
-                keterangan = data[13].ToString()
-            };
-
-            var eqId = db.equipments.Where(p => p.pnid_tag_num == eq.tag_id).FirstOrDefault();
-            if (eqId != null)
-            {
-                eq.id_equipment = eqId.id;
-
-                if (eq.date > date)
+                equipment_daily_report_table eq = new equipment_daily_report_table()
                 {
-                    dateOut = eq.date.Value;
+                    id_equipment_daily_report = id_report,
+                    tag_id = data[1].ToString(),
+                    description = data[3].ToString(),
+                    barcode = data[2].ToString().PadLeft(8, '0'),
+                    min_limit = data[4].ToString(),
+                    max_limit = data[5].ToString(),
+                    tag_value = data[6].ToString(),
+                    unit = data[7].ToString(),
+                    date = data[8].ToString() == "" ? null : (data[8].ToString().Remove(0, 1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().Remove(0, 1))),
+                    time = data[9].ToString() == "" ? "" : data[9].ToString().Remove(0, 1),
+                    name_operator = data[12].ToString(),
+                    keterangan = data[13].ToString()
+                };
+
+                var eqId = db.equipments.Where(p => p.pnid_tag_num == eq.tag_id).FirstOrDefault();
+                if (eqId != null)
+                {
+                    eq.id_equipment = eqId.id;
+
+                    if (eq.date > date)
+                    {
+                        dateOut = eq.date.Value;
+                    }
+                    else
+                    {
+                        dateOut = date;
+                    }
+
+                    db.equipment_daily_report_table.Add(eq);
+                    db.SaveChanges();
                 }
                 else
                 {
-                    dateOut = date;
+                    if (eq.date > date)
+                    {
+                        dateOut = eq.date.Value;
+                    }
+                    else
+                    {
+                        dateOut = date;
+                    }
+                    err = "Equipment with tag number " + eq.tag_id + " is not found in the database.";
                 }
-
-                db.equipment_daily_report_table.Add(eq);
-                db.SaveChanges();
-            }
-            else
-            {
-                if (eq.date > date)
-                {
-                    dateOut = eq.date.Value;
-                }
-                else
-                {
-                    dateOut = date;
-                }
-                err = "Equipment with tag number " + eq.tag_id + " is not found in the database.";
             }
 
             return err;
