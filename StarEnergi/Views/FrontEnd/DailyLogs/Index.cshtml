@@ -105,7 +105,7 @@ using (Html.BeginForm("LoadExcel", "DailyLogs", FormMethod.Post, new { enctype =
 			<input type="file" class="file_input_hidden" name="userfile" onchange="javascript: document.getElementById('fileName').value = this.value" />
 		 </div>
 		 <br />
-		 <input type="button" value="Upload" id="upload-daily-log" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; $('#upload-daily-log').attr('disabled','disabled'); submit();" />@*
+		 <input type="button" value="Upload" id="upload-daily-log" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; $('#upload-daily-log').attr('disabled','disabled'); submit(); $('#DailyLog').data('tGrid').ajaxRequest()" />@*
 		 <input type="button" value="Download template Day Shift" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.fileDailyLogDay    '" />
          <input type="button" value="Download template Night Shift" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.fileDailyLogNight    '" />*@
         <input type="button" value="Download template Day Shift" onclick="window.location = '@Url.Action("GenerateExcelDayShift","DailyLogs",null)'" />

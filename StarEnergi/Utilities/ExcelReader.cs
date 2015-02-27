@@ -1483,7 +1483,7 @@ namespace StarEnergi.Utilities
 
         #region Daily Log
 
-        public List<string> LoadDailyLogNew(string path, bool isDay = true)
+        public List<string> LoadDailyLogNew(string path)
         {
             List<string> err = new List<string>();
             XSSFSheet sheet; int colCount; int rowCount; int startRow = 8 - 1; int colNum; int id;
@@ -1496,7 +1496,7 @@ namespace StarEnergi.Utilities
             int wellStartRow = 13;
             int wellEndRow = 0; //WILL BE SET IN WELL FUNCTION
             int maxWellCountDefault = 30;
-
+            int timeCheckRow = 11;
 
             XSSFWorkbook book;
 
@@ -1520,6 +1520,7 @@ namespace StarEnergi.Utilities
 
                 for (int row = startRow; row <= rowCount; row++)
                 {
+                    var xxx = dailyLogData;
                     colNum = 0;
                     var dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
                     if (row >= headerStartRow && row <= headerEndRow)
@@ -1549,7 +1550,15 @@ namespace StarEnergi.Utilities
                                     else
                                     {
                                         test = DateTime.TryParse(DateTime.FromOADate(tglOA).ToString(), out dailyLogDate);
-                                        dailyLogData.date = dailyLogDate;
+                                        //var checkExistingRecord = (from a in db.daily_log
+                                        //                           where a.date == dailyLogDate.Date
+                                        //                           select a).FirstOrDefault();
+                                        //if (checkExistingRecord != null)
+                                        //{
+                                        //    dailyLogData = checkExistingRecord;
+                                        //}
+
+                                        dailyLogData.date = dailyLogDate.Date;
                                     }
 
                                 }
@@ -1760,27 +1769,49 @@ namespace StarEnergi.Utilities
                         #region contents
 
                         //Time 
-                        if (row == wellStartRow)
+                        if (row == timeCheckRow)
                         {
                             dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
                             if (dt != null)
                             {
                                 sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != "")
                                 {
-                                    TimeSpan timeValue = new TimeSpan();
-                                    test = TimeSpan.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out timeValue);
+                                    //double val = sheet.GetRow(row).GetCell(colNum).NumericCellValue;
+                                    //var val2 = DateTime.FromOADate(val);
+                                    //TimeSpan timeValue = new TimeSpan();
+                                    //test = TimeSpan.TryParse(val2.ToString(), out timeValue);
+                                    //if (test == false)
+                                    //{
+                                    //    allowSave = false;
+                                    //    err.Add(String.Format("Time is invalid"));
+                                    //}
+                                    //else
+                                    //{
+                                    //    dailyLogData.time_check = timeValue;
+                                    //}
+
+                                    DateTime timeVal;
+
+                                    double tglOA;
+
+                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out tglOA);
                                     if (test == false)
                                     {
+                                        err.Add("Time is invalid");
                                         allowSave = false;
-                                        messageList.Add(String.Format("Time is invalid"));
                                     }
                                     else
                                     {
-                                        dailyLogData.time_check = timeValue;
+                                        test = DateTime.TryParse(DateTime.FromOADate(tglOA).ToString(), out timeVal);
+                                        dailyLogData.time_check = timeVal.TimeOfDay;
                                     }
 
                                 }
+
+
+                              
+                                
                             }
                         }
 
@@ -1801,14 +1832,15 @@ namespace StarEnergi.Utilities
                             }
                             else if (wellList.Count < maxWellCountDefault)
                             {
-                                if (wellList.Count % 2 == 1)
-                                {
-                                    wellEndRow = wellStartRow + (wellList.Count / 2) + 1;
-                                }
-                                else
-                                {
-                                    wellEndRow = wellStartRow + (wellList.Count / 2);
-                                }
+                                //if (wellList.Count % 2 == 1)
+                                //{
+                                //    wellEndRow = wellStartRow + (wellList.Count / 2) + 1;
+                                //}
+                                //else
+                                //{
+                                //    wellEndRow = wellStartRow + (wellList.Count / 2);
+                                //}
+                                wellEndRow = wellStartRow + (maxWellCountDefault / 2);
                             }
                             else
                             {
@@ -1857,6 +1889,8 @@ namespace StarEnergi.Utilities
                                         else
                                         {
                                             processWellData1 = true;
+                                             
+
                                             dataWell1.daily_log_wells_id = checkWell.id;
                                         }
                                     }
@@ -1912,7 +1946,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("Flow row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("Flow row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -1935,7 +1969,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("WHP row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("WHP row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -1979,6 +2013,18 @@ namespace StarEnergi.Utilities
                                         else
                                         {
                                             processWellData2 = true;
+                                            if (dailyLogData.id != null)
+                                            {
+                                                var checkPreviousRecord = (from a in db.daily_log_to_wells
+                                                                           where a.daily_log_id == dailyLogData.id
+                                                                           && a.daily_log_wells_id == checkWell.id
+                                                                           select a).FirstOrDefault();
+                                                if (checkPreviousRecord != null)
+                                                {
+                                                    dataWell2 = checkPreviousRecord;
+                                                }
+                                            }
+
                                             dataWell2.daily_log_wells_id = checkWell.id;
                                         }
                                     }
@@ -2034,7 +2080,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("Flow row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("Flow row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2057,7 +2103,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("WHP row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("WHP row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2089,23 +2135,19 @@ namespace StarEnergi.Utilities
                             {
                                 sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
                                 string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
-
-                                if (val.Length > 255)
-                                {
-                                    allowSave = false;
-                                    err.Add(String.Format("Powerstation T/G Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                }
-                                else
+                                if (val != String.Empty)
                                 {
                                     double doubleValue = 0;
                                     test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("Powerstation T/G Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("Powerstation T/G Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
+                                        val = String.Format("{0:0.00}", doubleValue);
+
                                         switch (row)
                                         {
                                             case powerStationStartRow:
@@ -2177,9 +2219,11 @@ namespace StarEnergi.Utilities
                                                 break;
 
                                         }
-                                    }
 
+
+                                    }
                                 }
+                                    
 
                             }
 
@@ -2191,23 +2235,18 @@ namespace StarEnergi.Utilities
                             {
                                 sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
                                 string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
-
-                                if (val.Length > 255)
-                                {
-                                    allowSave = false;
-                                    err.Add(String.Format("Powerstation T/G Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                }
-                                else
+                                if (val != String.Empty)
                                 {
                                     double doubleValue = 0;
                                     test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("Powerstation T/G Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("Powerstation T/G Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
+                                        val = String.Format("{0:0.00}", doubleValue);
                                         switch (row)
                                         {
                                             case powerStationStartRow:
@@ -2277,7 +2316,6 @@ namespace StarEnergi.Utilities
                                                 allowSave = false;
                                                 err.Add(String.Format("Powerstation T/G Unit 2 row {0} column {1} is invalid. No powerstation is registered on database for this cell.", row + 1, CellReference.ConvertNumToColString(colNum)));
                                                 break;
-
                                         }
                                     }
                                 }
@@ -2305,7 +2343,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("U1 NCG row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("U1 NCG row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2328,7 +2366,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("U2 NCG row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("U2 NCG row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2351,7 +2389,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("U1 Turbine row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("U1 Turbine row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2375,7 +2413,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("U2 Turbine row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("U2 Turbine row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2398,7 +2436,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("U1 CT row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("U1 CT row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2421,7 +2459,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("U2 CT row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("U2 CT row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2444,7 +2482,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("T1 Exhaust row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("T1 Exhaust row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2467,7 +2505,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("T2 Exhaust row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("T2 Exhaust row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2499,7 +2537,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("Upper TP Level row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("Upper TP Level row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2522,7 +2560,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("Lower TP Level row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("Lower TP Level row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2545,7 +2583,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("MV-333 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("MV-333 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2569,7 +2607,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("MV-334 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("MV-334 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2592,7 +2630,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("Brine Level row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("Brine Level row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2615,7 +2653,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("Condensate Level row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("Condensate Level row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2639,7 +2677,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("NaOH 48% row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("NaOH 48% row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2662,7 +2700,7 @@ namespace StarEnergi.Utilities
                                     if (test == false)
                                     {
                                         allowSave = false;
-                                        messageList.Add(String.Format("WW Pond row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        err.Add(String.Format("WW Pond row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2675,442 +2713,945 @@ namespace StarEnergi.Utilities
 
                         #endregion
 
-                        #region MeteringDispatch
-                        int meteringStartRow = belowWell2EndRow + 3;
-                        int meteringEndRow = meteringStartRow + 11;
-                        colNum = 4;
-
-                        if (row == meteringStartRow)
+                        if (belowWell2EndRow != rowCount) // Day SHIFT
                         {
-                            //TRANSFORMER ACTIVE UNIT 1
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
+                            dailyLogData.shift = 1;
+
+                            #region MeteringDispatch
+                            int meteringStartRow = belowWell2EndRow + 3;
+                            int meteringEndRow = meteringStartRow + 11;
+                            colNum = 4;
+
+                            if (row == meteringStartRow)
                             {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                //TRANSFORMER ACTIVE UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
                                 {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
                                     {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Transformer Active Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.uti_active_1 = String.Format("{0:0.00}", doubleValue);
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Transformer Active Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.uti_active_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
                                     }
 
                                 }
 
-                            }
-
-                            //TRANSFORMER ACTIVE UNIT 2
-                            colNum += 2;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                //TRANSFORMER ACTIVE UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
                                 {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
                                     {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Transformer Active Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Transformer Active Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.uti_active_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
                                     }
-                                    else
+                                }
+
+                                //SEGWWL Availability Unit 1
+                                colNum += 5;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
                                     {
-                                        dailyLogData.uti_active_2 = String.Format("{0:0.00}", doubleValue);
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("SEGWWL Availability Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.segwwl_availability_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //SEGWWL Availability Unit 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("SEGWWL Availability Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.segwwl_availability_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 1)
+                            {
+                                //TRANSFORMER REACTIVE UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Transformer Reactive Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.uti_reactive_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
                                     }
 
                                 }
-                            }
 
-                            //SEGWWL Availability Unit 1
-                            colNum += 5;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                //TRANSFORMER REACTIVE UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
                                 {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
                                     {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("SEGWWL Availability Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Transformer Reactive Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.uti_reactive_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
                                     }
-                                    else
+                                }
+
+
+                                //PLN Dispatch Unit 1
+                                colNum += 5;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
                                     {
-                                        dailyLogData.segwwl_availability_1 = String.Format("{0:0.00}", doubleValue);
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("PLN Dispatch Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.pln_dispatch_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //PLN Dispatch Unit 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("PLN Dispatch Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.pln_dispatch_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 2)
+                            {
+                                //STEAM CONSUMPTION MAIN UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Steam Consumption Main Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.sc_main_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
                                     }
 
                                 }
-                            }
 
-                            //SEGWWL Availability Unit 2
-                            colNum++;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                //Steam Consumption MAIN UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
                                 {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
                                     {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("SEGWWL Availability Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Steam Consumption Main Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.sc_main_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
                                     }
-                                    else
+                                }
+
+
+                                //PLN Meter Unit 1
+                                colNum += 5;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
                                     {
-                                        dailyLogData.segwwl_availability_2 = String.Format("{0:0.00}", doubleValue);
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("PLN Meter Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.pln_meter_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //PLN Meter Unit 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("PLN Meter Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.pln_meter_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 3)
+                            {
+                                //STEAM CONSUMPTION AUX UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Steam Consumption Auxiliary Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.sc_auxiliary_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
                                     }
 
                                 }
+
+                                //Steam Consumption AUX UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Steam Consumption Auxiliary Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.sc_auxiliary_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+
+                                //SEGWWL Export Unit 1
+                                colNum += 5;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("SEGWWL Export Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.segwwl_export_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //SEGWWL Export Unit 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("SEGWWL Export Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.segwwl_export_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
                             }
+                            else if (row == meteringStartRow + 4)
+                            {
+                                //Actual Export UNIT 1
+                                colNum = 11;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Actual Export Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.actual_export_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+
+                                }
+
+                                //Actual Export AUX UNIT 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Actual Export Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.actual_export_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 5)
+                            {
+                                //GENERATOR EXPORT ACTIVE UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Generator Export Active Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.ge_active_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //GENERATOR EXPORT ACTIVE UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Generator Export Active Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.ge_active_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+
+                                //Production Excess Unit 1
+                                colNum += 5;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Production Excess Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.production_excess_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //Production Excess Unit 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Production Excess Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.production_excess_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 6)
+                            {
+                                //GENERATOR EXPORT REACTIVE UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Generator Export Reactive Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.ge_reactive_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //GENERATOR EXPORT REACTIVE UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Generator Export Reactive Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.ge_reactive_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                            }
+                            else if (row == meteringStartRow + 7)
+                            {
+                                //Metering At 10 SEGWWL UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Metering At 10 SEGWWL Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.metering_segwwl_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //Metering At 10 SEGWWL UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Metering At 10 SEGWWL Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.metering_segwwl_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+
+                                //RPF Unit 1
+                                colNum += 5;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("RPF Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.rpf_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //RPF Unit 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("RPD Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.rpf_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 8)
+                            {
+                                //Metering At 10 PLN UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Metering At 10 PLN Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.metering_pln_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //Metering At 10 PLN UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Metering At 10 SEGWWL Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.metering_pln_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+
+                                //PGF Unit 1
+                                colNum += 5;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("PGF Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.pgf_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //PGF Unit 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("PGF Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.pgf_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 9)
+                            {
+                                //Condensate P/S UNIT 1
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Condensate P/S Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.condensate_ps_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //Condensate P/S UNIT 2
+                                colNum += 2;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Condensate P/S Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.condensate_ps_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+
+                                //PLN Unit 1
+                                colNum += 5;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("PLN Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.pln_1 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                //PLN Unit 2
+                                colNum++;
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("PLN Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.pln_2 = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 10)
+                            {
+                                //Condensate TOTAL
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Condensate Total row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.condensate_total = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+                            }
+                            else if (row == meteringStartRow + 11)
+                            {
+                                //Brine TOTAL
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        double doubleValue = 0;
+                                        test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
+                                        if (test == false)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Brine Total row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.brine_total = String.Format("{0:0.00}", doubleValue);
+                                        }
+
+                                    }
+                                }
+
+                                colNum += 5;
+
+                                //Note
+                                dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
+                                if (dt != null)
+                                {
+                                    sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
+                                    if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
+                                    {
+                                        if (sheet.GetRow(row).GetCell(colNum).StringCellValue.Length > 255)
+                                        {
+                                            allowSave = false;
+                                            err.Add(String.Format("Note row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        }
+                                        else
+                                        {
+                                            dailyLogData.note = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                        }
+                                    }
+                                }
+                            }
+
+
+                            #endregion
+
                         }
-                        else if (row == meteringStartRow + 1)
+                        else
                         {
-                            //TRANSFORMER REACTIVE UNIT 1
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Transformer Reactive Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.uti_reactive_1 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-
-                            }
-
-                            //TRANSFORMER REACTIVE UNIT 2
-                            colNum += 2;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Transformer Reactive Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.uti_reactive_2 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-
-
-                            //PLN Dispatch Unit 1
-                            colNum += 5;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("PLN Dispatch Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.pln_dispatch_1 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-
-                            //PLN Dispatch Unit 2
-                            colNum++;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("PLN Dispatch Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.pln_dispatch_1 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
+                            dailyLogData.shift = 2;
                         }
-                        else if (row == meteringStartRow + 2)
-                        {
-                            //STEAM CONSUMPTION MAIN UNIT 1
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Steam Consumption Main Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.sc_main_1 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-
-                            }
-
-                            //Steam Consumption MAIN UNIT 2
-                            colNum += 2;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Steam Consumption Main Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.sc_main_2 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-
-
-                            //PLN Meter Unit 1
-                            colNum += 5;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("PLN Meter Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.pln_meter_1 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-
-                            //PLN Meter Unit 2
-                            colNum++;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("PLN Meter Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.pln_meter_2 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-                        }
-                        else if (row == meteringStartRow + 3)
-                        {
-                            //STEAM CONSUMPTION AUX UNIT 1
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Steam Consumption Auxiliary Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.sc_auxiliary_1 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-
-                            }
-
-                            //Steam Consumption AUX UNIT 2
-                            colNum += 2;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Steam Consumption Auxiliary Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.sc_auxiliary_2 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-
-
-                            //SEGWWL Export Unit 1
-                            colNum += 5;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("SEGWWL Export Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.segwwl_export_1 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-
-                            //SEGWWL Export Unit 2
-                            colNum++;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("SEGWWL Export Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.segwwl_export_2 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-                        }
-                        else if (row == meteringStartRow + 4)
-                        {
-                            //Actual Export UNIT 1
-                            colNum = 11;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Actual Export Unit 1 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.actual_export_1 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-
-                            }
-
-                            //Actual Export AUX UNIT 2
-                            colNum++;
-                            dt = (XSSFCell)sheet.GetRow(row).GetCell(colNum);
-                            if (dt != null)
-                            {
-                                sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
-                                if (sheet.GetRow(row).GetCell(colNum).StringCellValue != String.Empty)
-                                {
-                                    double doubleValue = 0;
-                                    test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
-                                    if (test == false)
-                                    {
-                                        allowSave = false;
-                                        messageList.Add(String.Format("Actual Export Unit 2 row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
-                                    }
-                                    else
-                                    {
-                                        dailyLogData.actual_export_2 = String.Format("{0:0.00}", doubleValue);
-                                    }
-
-                                }
-                            }
-                        }
-
-
-                        #endregion
 
                         #endregion
 
@@ -3118,15 +3659,473 @@ namespace StarEnergi.Utilities
                 }
                 if (allowSave == true)
                 {
-                    db.daily_log.Add(dailyLogData);
-                    db.SaveChanges();
-                    foreach (daily_log_to_wells x in dailyLogWellData)
+                    if (dailyLogData.shift == 1)//Day SHIFT
                     {
-                        x.daily_log_id = dailyLogData.id;
-                        db.daily_log_to_wells.Add(x);
+                        var checkExistingRecord = (from a in db.daily_log
+                                                   where a.date == dailyLogData.date
+                                                   select a).FirstOrDefault();
+                        if (checkExistingRecord != null)
+                        {
+                            checkExistingRecord.grup = dailyLogData.grup;
+                            checkExistingRecord.production_foreman = dailyLogData.production_foreman;
+                            checkExistingRecord.production_operator_1 = dailyLogData.production_operator_1;
+                            checkExistingRecord.production_operator_2 = dailyLogData.production_operator_2;
+                            checkExistingRecord.production_operator_3 = dailyLogData.production_operator_3;
+                            checkExistingRecord.production_operator_4 = dailyLogData.production_operator_4;
+                            checkExistingRecord.production_operator_5 = dailyLogData.production_operator_5;
+                            checkExistingRecord.production_operator_6 = dailyLogData.production_operator_6;
+                            checkExistingRecord.production_operator_7 = dailyLogData.production_operator_7;
+                            checkExistingRecord.production_operator_8 = dailyLogData.production_operator_8;
+                            checkExistingRecord.time_check = dailyLogData.time_check;
+
+                            checkExistingRecord.generator_output_1 = dailyLogData.generator_output_1;
+                            checkExistingRecord.gross_1 = dailyLogData.gross_1;
+                            checkExistingRecord.generator_output_counter_1 = dailyLogData.generator_output_counter_1;
+                            checkExistingRecord.power_factor_1 = dailyLogData.power_factor_1;
+                            checkExistingRecord.tap_charger_1 = dailyLogData.tap_charger_1;
+                            checkExistingRecord.pln_grid_voltage_1 = dailyLogData.pln_grid_voltage_1;
+                            checkExistingRecord.valve_limiter_1 = dailyLogData.valve_limiter_1;
+                            checkExistingRecord.governor_output_1 = dailyLogData.governor_output_1;
+                            checkExistingRecord.wcp_counter_1 = dailyLogData.wcp_counter_1;
+                            checkExistingRecord.condenser_pressure_1 = dailyLogData.condenser_pressure_1;
+                            checkExistingRecord.main_cw_flow_1 = dailyLogData.main_cw_flow_1;
+                            checkExistingRecord.ppc_g_co_1 = dailyLogData.ppc_g_co_1;
+                            checkExistingRecord.interface_pressure_1 = dailyLogData.interface_pressure_1;
+                            checkExistingRecord.vent_bias_1 = dailyLogData.vent_bias_1;
+                            checkExistingRecord.main_cw_pressure_1 = dailyLogData.main_cw_pressure_1;
+                            checkExistingRecord.ct_basin_ph_1 = dailyLogData.ct_basin_ph_1;
+                            checkExistingRecord.condenser_cw_inlet_a_1 = dailyLogData.condenser_cw_inlet_a_1;
+                            checkExistingRecord.condenser_cw_inlet_b_1 = dailyLogData.condenser_cw_inlet_b_1;
+                            checkExistingRecord.gen_trans_winding_temp_1 = dailyLogData.gen_trans_winding_temp_1;
+                            checkExistingRecord.unit_trans_winding_temp_1 = dailyLogData.unit_trans_winding_temp_1;
+                            checkExistingRecord.wheel_case_pressure_1 = dailyLogData.wheel_case_pressure_1;
+
+                            checkExistingRecord.generator_output_2 = dailyLogData.generator_output_2;
+                            checkExistingRecord.gross_2 = dailyLogData.gross_2;
+                            checkExistingRecord.generator_output_counter_2 = dailyLogData.generator_output_counter_2;
+                            checkExistingRecord.power_factor_2 = dailyLogData.power_factor_2;
+                            checkExistingRecord.tap_charger_2 = dailyLogData.tap_charger_2;
+                            checkExistingRecord.pln_grid_voltage_2 = dailyLogData.pln_grid_voltage_2;
+                            checkExistingRecord.valve_limiter_2 = dailyLogData.valve_limiter_2;
+                            checkExistingRecord.governor_output_2 = dailyLogData.governor_output_2;
+                            checkExistingRecord.wcp_counter_2 = dailyLogData.wcp_counter_2;
+                            checkExistingRecord.condenser_pressure_2 = dailyLogData.condenser_pressure_2;
+                            checkExistingRecord.main_cw_flow_2 = dailyLogData.main_cw_flow_2;
+                            checkExistingRecord.ppc_g_co_2 = dailyLogData.ppc_g_co_2;
+                            checkExistingRecord.interface_pressure_2 = dailyLogData.interface_pressure_2;
+                            checkExistingRecord.vent_bias_2 = dailyLogData.vent_bias_2;
+                            checkExistingRecord.main_cw_pressure_2 = dailyLogData.main_cw_pressure_2;
+                            checkExistingRecord.ct_basin_ph_2 = dailyLogData.ct_basin_ph_2;
+                            checkExistingRecord.condenser_cw_inlet_a_2 = dailyLogData.condenser_cw_inlet_a_2;
+                            checkExistingRecord.condenser_cw_inlet_b_2 = dailyLogData.condenser_cw_inlet_b_2;
+                            checkExistingRecord.gen_trans_winding_temp_2 = dailyLogData.gen_trans_winding_temp_2;
+                            checkExistingRecord.unit_trans_winding_temp_2 = dailyLogData.unit_trans_winding_temp_2;
+                            checkExistingRecord.wheel_case_pressure_2 = dailyLogData.wheel_case_pressure_2;
+
+                            checkExistingRecord.ncg_1 = dailyLogData.ncg_1;
+                            checkExistingRecord.ncg_2 = dailyLogData.ncg_2;
+                            checkExistingRecord.turbine_1 = dailyLogData.turbine_1;
+                            checkExistingRecord.turbine_2 = dailyLogData.turbine_2;
+                            checkExistingRecord.ct_temp_1 = dailyLogData.ct_temp_1;
+                            checkExistingRecord.ct_temp_2 = dailyLogData.ct_temp_2;
+                            checkExistingRecord.exhaust_1 = dailyLogData.exhaust_1;
+                            checkExistingRecord.exhaust_2 = dailyLogData.exhaust_2;
+                            checkExistingRecord.upper_tp_level = dailyLogData.upper_tp_level;
+                            checkExistingRecord.lower_tp_level = dailyLogData.lower_tp_level;
+                            checkExistingRecord.mv_333 = dailyLogData.mv_333;
+                            checkExistingRecord.mv_334 = dailyLogData.mv_334;
+                            checkExistingRecord.brine_level = dailyLogData.brine_level;
+                            checkExistingRecord.condensate_level = dailyLogData.condensate_level;
+                            checkExistingRecord.naoh_level = dailyLogData.naoh_level;
+                            checkExistingRecord.wwd_pond_level = dailyLogData.wwd_pond_level;
+
+                            checkExistingRecord.uti_active_1 = dailyLogData.uti_active_1;
+                            checkExistingRecord.uti_reactive_1 = dailyLogData.uti_reactive_1;
+                            checkExistingRecord.sc_main_1 = dailyLogData.sc_main_1;
+                            checkExistingRecord.sc_auxiliary_1 = dailyLogData.sc_auxiliary_1;
+                            checkExistingRecord.ge_active_1 = dailyLogData.ge_active_1;
+                            checkExistingRecord.ge_reactive_1 = dailyLogData.ge_reactive_1;
+                            checkExistingRecord.metering_segwwl_1 = dailyLogData.metering_segwwl_1;
+                            checkExistingRecord.metering_pln_1 = dailyLogData.metering_pln_1;
+                            checkExistingRecord.condensate_ps_1 = dailyLogData.condensate_ps_1;
+                            checkExistingRecord.segwwl_availability_1 = dailyLogData.segwwl_availability_1;
+                            checkExistingRecord.pln_dispatch_1 = dailyLogData.pln_dispatch_1;
+                            checkExistingRecord.pln_meter_1 = dailyLogData.pln_meter_1;
+                            checkExistingRecord.segwwl_export_1 = dailyLogData.segwwl_export_1;
+                            checkExistingRecord.actual_export_1 = dailyLogData.actual_export_1;
+                            checkExistingRecord.production_excess_1 = dailyLogData.production_excess_1;
+                            checkExistingRecord.rpf_1 = dailyLogData.rpf_1;
+                            checkExistingRecord.pgf_1 = dailyLogData.pgf_1;
+                            checkExistingRecord.pln_1 = dailyLogData.pln_1;
+
+                            checkExistingRecord.uti_active_2 = dailyLogData.uti_active_2;
+                            checkExistingRecord.uti_reactive_2 = dailyLogData.uti_reactive_2;
+                            checkExistingRecord.sc_main_2 = dailyLogData.sc_main_2;
+                            checkExistingRecord.sc_auxiliary_2 = dailyLogData.sc_auxiliary_2;
+                            checkExistingRecord.ge_active_2 = dailyLogData.ge_active_2;
+                            checkExistingRecord.ge_reactive_2 = dailyLogData.ge_reactive_2;
+                            checkExistingRecord.metering_segwwl_2 = dailyLogData.metering_segwwl_2;
+                            checkExistingRecord.metering_pln_2 = dailyLogData.metering_pln_2;
+                            checkExistingRecord.condensate_ps_2 = dailyLogData.condensate_ps_2;
+                            checkExistingRecord.segwwl_availability_2 = dailyLogData.segwwl_availability_2;
+                            checkExistingRecord.pln_dispatch_2 = dailyLogData.pln_dispatch_2;
+                            checkExistingRecord.pln_meter_2 = dailyLogData.pln_meter_2;
+                            checkExistingRecord.segwwl_export_2 = dailyLogData.segwwl_export_2;
+                            checkExistingRecord.actual_export_2 = dailyLogData.actual_export_2;
+                            checkExistingRecord.production_excess_2 = dailyLogData.production_excess_2;
+                            checkExistingRecord.rpf_2 = dailyLogData.rpf_2;
+                            checkExistingRecord.pgf_2 = dailyLogData.pgf_2;
+                            checkExistingRecord.pln_2 = dailyLogData.pln_2;
+
+                            checkExistingRecord.condensate_total = dailyLogData.condensate_total;
+                            checkExistingRecord.brine_total = dailyLogData.brine_total;
+                            checkExistingRecord.note = dailyLogData.note;
+
+
+
+                            dailyLogData = checkExistingRecord;
+                        }
+
+                       
+
+                        if (dailyLogData.id == 0)
+                        {
+                            db.daily_log.Add(dailyLogData);
+                            db.SaveChanges();
+                            foreach (daily_log_to_wells x in dailyLogWellData)
+                            {
+                                x.daily_log_id = dailyLogData.id;
+                                db.daily_log_to_wells.Add(x);
+                            }
+                            db.SaveChanges();
+                            err.Add("File has been uploaded successfully");
+                        }
+                        else
+                        {
+                            if (dailyLogData.is_approve == 1)
+                            {
+                                err.Add("The uploaded file data already exist on database and APPROVED. Changes are not allowed. Please upload another file or make revision to the date.");
+                            }
+                            else
+                            {
+                                db.daily_log.Attach(dailyLogData);
+
+                                var entry = db.Entry(dailyLogData);
+                                entry.State = EntityState.Modified;
+                                db.SaveChanges();
+
+                                //var checkPreviousRecord = (from a in db.daily_log_to_wells
+                                //                           where a.daily_log_id == dailyLogData.id
+                                //                           && a.daily_log_wells_id == checkWell.id
+                                //                           select a).FirstOrDefault();
+                                //if (checkPreviousRecord != null)
+                                //{
+                                //    dataWell1 = checkPreviousRecord;
+                                //}
+
+                                var wellPreviousList = (from a in db.daily_log_to_wells
+                                                        where a.daily_log_id == dailyLogData.id
+                                                        select a).ToList();
+
+
+
+                                foreach (daily_log_to_wells x in dailyLogWellData)
+                                {
+                                    daily_log_to_wells data = wellPreviousList.Find(z => z.daily_log_wells_id == x.daily_log_wells_id);
+                                    data.fcv = x.fcv;
+                                    data.flow = x.flow;
+                                    data.is_text = x.is_text;
+                                    data.whp = x.whp;
+                                    
+                                    db.daily_log_to_wells.Attach(data);
+
+                                    var entry2 = db.Entry(data);
+                                    entry2.State = EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+
+                                err.Add("The uploaded file data already exist on database. Data will be updated from the uploaded file");
+                                err.Add("File has been uploaded successfully");
+                            }
+
+                        }
                     }
-                    db.SaveChanges();
-                    err.Add("File has been uploaded successfully");
+                    else //Night shift
+                    {
+                        bool dayRecordExist = true;
+
+                        var checkDayRecord = (from a in db.daily_log
+                                              where a.shift == 1 && a.date == dailyLogData.date
+                                              select a).FirstOrDefault();
+                        if (checkDayRecord == null)
+                        {
+                            dayRecordExist = false;
+                        }
+
+                        
+
+                        if (dayRecordExist == false)
+                        {
+                            err.Add("Missing day shift data. Please upload day shift data first.");
+                        }
+                        else
+                        {
+                            var wellShiftDayList = (from a in db.daily_log_to_wells
+                                                    where a.daily_log_id == checkDayRecord.id
+                                                    select a).ToList();
+                            if (wellShiftDayList.Count != dailyLogWellData.Count)
+                            {
+                                err.Add("The number of wells for night shift didn't match the number of wells in day shift. Please check data and upload again");
+                            }
+                            else
+                            {
+                                var checkExistingRecord = (from a in db.daily_log
+                                                           where a.shift == 2 && a.date == dailyLogData.date
+                                                           select a).FirstOrDefault();
+                                if (checkExistingRecord != null)
+                                {
+                                    checkExistingRecord.grup = dailyLogData.grup;
+                                    checkExistingRecord.production_foreman = dailyLogData.production_foreman;
+                                    checkExistingRecord.production_operator_1 = dailyLogData.production_operator_1;
+                                    checkExistingRecord.production_operator_2 = dailyLogData.production_operator_2;
+                                    checkExistingRecord.production_operator_3 = dailyLogData.production_operator_3;
+                                    checkExistingRecord.production_operator_4 = dailyLogData.production_operator_4;
+                                    checkExistingRecord.production_operator_5 = dailyLogData.production_operator_5;
+                                    checkExistingRecord.production_operator_6 = dailyLogData.production_operator_6;
+                                    checkExistingRecord.production_operator_7 = dailyLogData.production_operator_7;
+                                    checkExistingRecord.production_operator_8 = dailyLogData.production_operator_8;
+                                    checkExistingRecord.time_check = dailyLogData.time_check;
+
+                                    checkExistingRecord.generator_output_1 = dailyLogData.generator_output_1;
+                                    checkExistingRecord.gross_1 = dailyLogData.gross_1;
+                                    checkExistingRecord.generator_output_counter_1 = dailyLogData.generator_output_counter_1;
+                                    checkExistingRecord.power_factor_1 = dailyLogData.power_factor_1;
+                                    checkExistingRecord.tap_charger_1 = dailyLogData.tap_charger_1;
+                                    checkExistingRecord.pln_grid_voltage_1 = dailyLogData.pln_grid_voltage_1;
+                                    checkExistingRecord.valve_limiter_1 = dailyLogData.valve_limiter_1;
+                                    checkExistingRecord.governor_output_1 = dailyLogData.governor_output_1;
+                                    checkExistingRecord.wcp_counter_1 = dailyLogData.wcp_counter_1;
+                                    checkExistingRecord.condenser_pressure_1 = dailyLogData.condenser_pressure_1;
+                                    checkExistingRecord.main_cw_flow_1 = dailyLogData.main_cw_flow_1;
+                                    checkExistingRecord.ppc_g_co_1 = dailyLogData.ppc_g_co_1;
+                                    checkExistingRecord.interface_pressure_1 = dailyLogData.interface_pressure_1;
+                                    checkExistingRecord.vent_bias_1 = dailyLogData.vent_bias_1;
+                                    checkExistingRecord.main_cw_pressure_1 = dailyLogData.main_cw_pressure_1;
+                                    checkExistingRecord.ct_basin_ph_1 = dailyLogData.ct_basin_ph_1;
+                                    checkExistingRecord.condenser_cw_inlet_a_1 = dailyLogData.condenser_cw_inlet_a_1;
+                                    checkExistingRecord.condenser_cw_inlet_b_1 = dailyLogData.condenser_cw_inlet_b_1;
+                                    checkExistingRecord.gen_trans_winding_temp_1 = dailyLogData.gen_trans_winding_temp_1;
+                                    checkExistingRecord.unit_trans_winding_temp_1 = dailyLogData.unit_trans_winding_temp_1;
+                                    checkExistingRecord.wheel_case_pressure_1 = dailyLogData.wheel_case_pressure_1;
+
+                                    checkExistingRecord.generator_output_2 = dailyLogData.generator_output_2;
+                                    checkExistingRecord.gross_2 = dailyLogData.gross_2;
+                                    checkExistingRecord.generator_output_counter_2 = dailyLogData.generator_output_counter_2;
+                                    checkExistingRecord.power_factor_2 = dailyLogData.power_factor_2;
+                                    checkExistingRecord.tap_charger_2 = dailyLogData.tap_charger_2;
+                                    checkExistingRecord.pln_grid_voltage_2 = dailyLogData.pln_grid_voltage_2;
+                                    checkExistingRecord.valve_limiter_2 = dailyLogData.valve_limiter_2;
+                                    checkExistingRecord.governor_output_2 = dailyLogData.governor_output_2;
+                                    checkExistingRecord.wcp_counter_2 = dailyLogData.wcp_counter_2;
+                                    checkExistingRecord.condenser_pressure_2 = dailyLogData.condenser_pressure_2;
+                                    checkExistingRecord.main_cw_flow_2 = dailyLogData.main_cw_flow_2;
+                                    checkExistingRecord.ppc_g_co_2 = dailyLogData.ppc_g_co_2;
+                                    checkExistingRecord.interface_pressure_2 = dailyLogData.interface_pressure_2;
+                                    checkExistingRecord.vent_bias_2 = dailyLogData.vent_bias_2;
+                                    checkExistingRecord.main_cw_pressure_2 = dailyLogData.main_cw_pressure_2;
+                                    checkExistingRecord.ct_basin_ph_2 = dailyLogData.ct_basin_ph_2;
+                                    checkExistingRecord.condenser_cw_inlet_a_2 = dailyLogData.condenser_cw_inlet_a_2;
+                                    checkExistingRecord.condenser_cw_inlet_b_2 = dailyLogData.condenser_cw_inlet_b_2;
+                                    checkExistingRecord.gen_trans_winding_temp_2 = dailyLogData.gen_trans_winding_temp_2;
+                                    checkExistingRecord.unit_trans_winding_temp_2 = dailyLogData.unit_trans_winding_temp_2;
+                                    checkExistingRecord.wheel_case_pressure_2 = dailyLogData.wheel_case_pressure_2;
+
+                                    checkExistingRecord.ncg_1 = dailyLogData.ncg_1;
+                                    checkExistingRecord.ncg_2 = dailyLogData.ncg_2;
+                                    checkExistingRecord.turbine_1 = dailyLogData.turbine_1;
+                                    checkExistingRecord.turbine_2 = dailyLogData.turbine_2;
+                                    checkExistingRecord.ct_temp_1 = dailyLogData.ct_temp_1;
+                                    checkExistingRecord.ct_temp_2 = dailyLogData.ct_temp_2;
+                                    checkExistingRecord.exhaust_1 = dailyLogData.exhaust_1;
+                                    checkExistingRecord.exhaust_2 = dailyLogData.exhaust_2;
+                                    checkExistingRecord.upper_tp_level = dailyLogData.upper_tp_level;
+                                    checkExistingRecord.lower_tp_level = dailyLogData.lower_tp_level;
+                                    checkExistingRecord.mv_333 = dailyLogData.mv_333;
+                                    checkExistingRecord.mv_334 = dailyLogData.mv_334;
+                                    checkExistingRecord.brine_level = dailyLogData.brine_level;
+                                    checkExistingRecord.condensate_level = dailyLogData.condensate_level;
+                                    checkExistingRecord.naoh_level = dailyLogData.naoh_level;
+                                    checkExistingRecord.wwd_pond_level = dailyLogData.wwd_pond_level;
+
+                                    dailyLogData = checkExistingRecord;
+
+                                    if (checkExistingRecord.is_approve == 1)
+                                    {
+                                        err.Add("The uploaded file data already exist on database and APPROVED. Changes are not allowed. Please upload another file or make revision to the date.");
+                                    }
+                                    else if (checkDayRecord.is_approve != 1)
+                                    {
+                                        err.Add("Day shift data has not been approved. Please approve or wait for approval before uploading the file again.");
+                                    }
+                                    else
+                                    {
+                                        db.daily_log.Attach(dailyLogData);
+                                        var entry = db.Entry(dailyLogData);
+                                        entry.State = EntityState.Modified;
+                                        db.SaveChanges();
+
+                                        //checkDayRecord.id_shift2 = dailyLogData.id;
+                                        //db.daily_log.Attach(checkDayRecord);
+                                        //var entry2 = db.Entry(checkDayRecord);
+                                        //entry2.State = EntityState.Modified;
+                                        //db.SaveChanges();
+
+                                        var wellPreviousList = (from a in db.daily_log_to_wells
+                                                                where a.daily_log_id == dailyLogData.id
+                                                                select a).ToList();
+                                        if (wellPreviousList.Count == 0)
+                                        {
+                                            foreach (daily_log_to_wells x in dailyLogWellData)
+                                            {
+                                                x.daily_log_id = dailyLogData.id;
+                                                db.daily_log_to_wells.Add(x);
+                                                db.SaveChanges();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            foreach (daily_log_to_wells x in dailyLogWellData)
+                                            {
+                                                daily_log_to_wells data = wellPreviousList.Find(z => z.daily_log_wells_id == x.daily_log_wells_id);
+                                                data.fcv = x.fcv;
+                                                data.flow = x.flow;
+                                                data.is_text = x.is_text;
+                                                data.whp = x.whp;
+
+                                                db.daily_log_to_wells.Attach(data);
+
+                                                var entry3 = db.Entry(data);
+                                                entry3.State = EntityState.Modified;
+                                                db.SaveChanges();
+                                            }
+
+                                            err.Add("The uploaded file data already exist on database. Data will be updated from the uploaded file");
+                                        }
+
+                                        err.Add("File has been uploaded successfully");
+                                    }
+                                }
+                                else //CreateNew
+                                {
+                                    daily_log dailyLogDataNight = new daily_log()
+                                    {
+                                        date = dailyLogData.date,
+                                        grup = dailyLogData.grup,
+                                        production_foreman = dailyLogData.production_foreman,
+                                        production_operator_1 = dailyLogData.production_operator_1,
+                                        production_operator_2 = dailyLogData.production_operator_2,
+                                        production_operator_3 = dailyLogData.production_operator_3,
+                                        production_operator_4 = dailyLogData.production_operator_4,
+                                        production_operator_5 = dailyLogData.production_operator_5,
+                                        production_operator_6 = dailyLogData.production_operator_6,
+                                        production_operator_7 = dailyLogData.production_operator_7,
+                                        production_operator_8 = dailyLogData.production_operator_8,
+                                        time_check = dailyLogData.time_check,
+
+                                        generator_output_1 = dailyLogData.generator_output_1,
+                                        gross_1 = dailyLogData.gross_1,
+                                        generator_output_counter_1 = dailyLogData.generator_output_counter_1,
+                                        power_factor_1 = dailyLogData.power_factor_1,
+                                        tap_charger_1 = dailyLogData.tap_charger_1,
+                                        pln_grid_voltage_1 = dailyLogData.pln_grid_voltage_1,
+                                        valve_limiter_1 = dailyLogData.valve_limiter_1,
+                                        governor_output_1 = dailyLogData.governor_output_1,
+                                        wcp_counter_1 = dailyLogData.wcp_counter_1,
+                                        condenser_pressure_1 = dailyLogData.condenser_pressure_1,
+                                        main_cw_flow_1 = dailyLogData.main_cw_flow_1,
+                                        ppc_g_co_1 = dailyLogData.ppc_g_co_1,
+                                        interface_pressure_1 = dailyLogData.interface_pressure_1,
+                                        vent_bias_1 = dailyLogData.vent_bias_1,
+                                        main_cw_pressure_1 = dailyLogData.main_cw_pressure_1,
+                                        ct_basin_ph_1 = dailyLogData.ct_basin_ph_1,
+                                        condenser_cw_inlet_a_1 = dailyLogData.condenser_cw_inlet_a_1,
+                                        condenser_cw_inlet_b_1 = dailyLogData.condenser_cw_inlet_b_1,
+                                        gen_trans_winding_temp_1 = dailyLogData.gen_trans_winding_temp_1,
+                                        unit_trans_winding_temp_1 = dailyLogData.unit_trans_winding_temp_1,
+                                        wheel_case_pressure_1 = dailyLogData.wheel_case_pressure_1,
+
+                                        generator_output_2 = dailyLogData.generator_output_2,
+                                        gross_2 = dailyLogData.gross_2,
+                                        generator_output_counter_2 = dailyLogData.generator_output_counter_2,
+                                        power_factor_2 = dailyLogData.power_factor_2,
+                                        tap_charger_2 = dailyLogData.tap_charger_2,
+                                        pln_grid_voltage_2 = dailyLogData.pln_grid_voltage_2,
+                                        valve_limiter_2 = dailyLogData.valve_limiter_2,
+                                        governor_output_2 = dailyLogData.governor_output_2,
+                                        wcp_counter_2 = dailyLogData.wcp_counter_2,
+                                        condenser_pressure_2 = dailyLogData.condenser_pressure_2,
+                                        main_cw_flow_2 = dailyLogData.main_cw_flow_2,
+                                        ppc_g_co_2 = dailyLogData.ppc_g_co_2,
+                                        interface_pressure_2 = dailyLogData.interface_pressure_2,
+                                        vent_bias_2 = dailyLogData.vent_bias_2,
+                                        main_cw_pressure_2 = dailyLogData.main_cw_pressure_2,
+                                        ct_basin_ph_2 = dailyLogData.ct_basin_ph_2,
+                                        condenser_cw_inlet_a_2 = dailyLogData.condenser_cw_inlet_a_2,
+                                        condenser_cw_inlet_b_2 = dailyLogData.condenser_cw_inlet_b_2,
+                                        gen_trans_winding_temp_2 = dailyLogData.gen_trans_winding_temp_2,
+                                        unit_trans_winding_temp_2 = dailyLogData.unit_trans_winding_temp_2,
+                                        wheel_case_pressure_2 = dailyLogData.wheel_case_pressure_2,
+
+                                        ncg_1 = dailyLogData.ncg_1,
+                                        ncg_2 = dailyLogData.ncg_2,
+                                        turbine_1 = dailyLogData.turbine_1,
+                                        turbine_2 = dailyLogData.turbine_2,
+                                        ct_temp_1 = dailyLogData.ct_temp_1,
+                                        ct_temp_2 = dailyLogData.ct_temp_2,
+                                        exhaust_1 = dailyLogData.exhaust_1,
+                                        exhaust_2 = dailyLogData.exhaust_2,
+                                        upper_tp_level = dailyLogData.upper_tp_level,
+                                        lower_tp_level = dailyLogData.lower_tp_level,
+                                        mv_333 = dailyLogData.mv_333,
+                                        mv_334 = dailyLogData.mv_334,
+                                        brine_level = dailyLogData.brine_level,
+                                        condensate_level = dailyLogData.condensate_level,
+                                        naoh_level = dailyLogData.naoh_level,
+                                        wwd_pond_level = dailyLogData.wwd_pond_level
+
+                                    };
+
+                                    if (checkDayRecord.is_approve == 1)
+                                    {
+                                        db.daily_log.Add(dailyLogDataNight);
+                                        db.SaveChanges();
+
+                                        checkDayRecord.id_shift2 = dailyLogDataNight.id;
+                                        db.daily_log.Attach(checkDayRecord);
+                                        var entry = db.Entry(checkDayRecord);
+                                        entry.State = EntityState.Modified;
+                                        db.SaveChanges();
+
+                                        foreach (daily_log_to_wells x in dailyLogWellData)
+                                        {
+                                            x.daily_log_id = dailyLogDataNight.id;
+                                            db.daily_log_to_wells.Add(x);
+                                        }
+                                        db.SaveChanges();
+                                        err.Add("File has been uploaded successfully");
+                                    }
+                                    else
+                                    {
+                                        err.Add("Day shift data has not been approved. Please approve or wait for approval before uploading the file again.");
+                                    }
+
+                                }
+                            }
+
+                            
+                        }
+                    }
+                    
                 }
                 else
                 {
@@ -3135,7 +4134,8 @@ namespace StarEnergi.Utilities
             }
             catch (Exception ex)
             {
-                err.Add("Internal server error. Please contact administrator.");
+                err.Add("Internal server error. Please make sure that the uploaded file is in .xlsx format. If the issue persist please contact administrator.");
+                //err.Add(ex.ToString());
             }
 
 

@@ -2107,7 +2107,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
 
                 sheet = (XSSFSheet)book.GetSheet("FormFracas");
-                //sheet.ProtectSheet("starenergy");
+                
 
                 var dataWell = (from a in db.daily_log_wells
                                 where a.is_delete != true
@@ -2124,6 +2124,11 @@ namespace StarEnergi.Controllers.FrontEnd
                     //SET DATE
                     XSSFCell cellDate = (XSSFCell)sheet.GetRow(7).GetCell(0);
                     cellDate.SetCellValue(DateTime.Now);
+
+                    //style = (XSSFCellStyle)book.CreateCellStyle();
+                    //style.IsLocked = false;
+                    //cell = (XSSFCell)sheet.GetRow(5).GetCell(0);
+                    //cell.CellStyle = style;
 
                     if (dataWell.Count <= halfMaxWellCount)
                     {
@@ -2468,7 +2473,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
 
                 }
-
+                //sheet.ProtectSheet("starenergy");
                 
 
                 MemoryStream ms = new MemoryStream();
