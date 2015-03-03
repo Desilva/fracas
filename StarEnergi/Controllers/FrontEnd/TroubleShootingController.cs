@@ -116,9 +116,44 @@ namespace StarEnergi.Controllers.FrontEnd
             if (id != null)
             {
                 ViewBag.mod = id;
-                ViewBag.datas = db.trouble_shooting.Find(id);
-                ViewBag.superintendent_del = string.IsNullOrWhiteSpace(ts.superintendent_approval_signature) == null ? (string.IsNullOrWhiteSpace(ts.superintendent_approval_name) ? null : db.employees.Find(Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name)).employee_delegate) : null;
-                ViewBag.supervisor_del = string.IsNullOrWhiteSpace(ts.supervisor_approval_signature) == null ? (string.IsNullOrWhiteSpace(ts.supervisor_approval_name) ? null : db.employees.Find(Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name)).employee_delegate) : null;
+                trouble_shooting troubleShootingReport = db.trouble_shooting.Find(id);
+                ViewBag.datas = troubleShootingReport;
+                ViewBag.superintendent_del = string.IsNullOrWhiteSpace(ts.superintendent_approval_signature) == false ? (string.IsNullOrWhiteSpace(ts.superintendent_approval_name) ? null : db.employees.Find(Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name)).employee_delegate) : null;
+                ViewBag.supervisor_del = string.IsNullOrWhiteSpace(ts.supervisor_approval_signature) == false ? (string.IsNullOrWhiteSpace(ts.supervisor_approval_name) ? null : db.employees.Find(Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name)).employee_delegate) : null;
+
+                bool isCanEdit = false;
+                string employeeId = Session["id"].ToString();
+                employee employeeDelegation = new employee();
+                if (employeeId == troubleShootingReport.inspector_name && troubleShootingReport.inspector_signature == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == troubleShootingReport.supervisor_approval_name && troubleShootingReport.supervisor_approval_signature == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == troubleShootingReport.superintendent_approval_name && troubleShootingReport.superintendent_approval_signature == null && troubleShootingReport.supervisor_approval_signature != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (isCanEdit == false)
+                {
+                    employeeDelegation = db.employees.Find(Int32.Parse(troubleShootingReport.supervisor_approval_name));
+                    if (employeeId == employeeDelegation.employee_delegate.ToString() && troubleShootingReport.supervisor_approval_signature == null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(troubleShootingReport.superintendent_approval_name))).employee_delegate.ToString() && troubleShootingReport.superintendent_approval_signature == null && troubleShootingReport.supervisor_approval_signature != null)
+                    {
+                        isCanEdit = true;
+                    }
+                }
+
+                ViewBag.isCanEdit = isCanEdit;
             }
             else
             {
@@ -215,6 +250,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.supervisor_id = supervisor_id;
                 ViewBag.superintendent_id_del = superintendent_id_del;
                 ViewBag.supervisor_id_del = supervisor_id_del;
+                ViewBag.isCanEdit = true;
                 int last_id = db.trouble_shooting.ToList().Count == 0 ? 0 : db.trouble_shooting.Max(p => p.id);
                 last_id++;
                 string subPath = "~/Attachment/trouble_shooting/" + last_id + "/signatures"; // your code goes here

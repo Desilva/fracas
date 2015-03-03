@@ -1,23 +1,65 @@
-﻿@model StarEnergi.Models.employee
+﻿@model StarEnergi.Models.employee_delegations
 
 @{
     ViewBag.Title = "Delegate";
 }
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<br/><br/><br/>
+    <fieldset>
+        <legend>Delegate</legend>
+
+        <input type="hidden" id="id" value="@Model.id" />
+        @Html.HiddenFor(model => model.id_employee)
+
+        <div class="editor-label">
+            @Html.Label("Delegate")
+        </div>
+        <div class="editor-field">
+            <input type="checkbox" id="is_active" name="is_active" value="1" @(Model.is_active == true ? "checked" : "") />
+        </div>
+        <div class="editor-label">
+            @Html.Label("Delegate Name")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("delegate_name")
+            <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.Label("Delegation Period")
+        </div>
+        <div class="editor-field">
+            @(Html.Telerik().DatePickerFor(model => model.date_start)
+              .Value(Model.date_start == null ? DateTime.Today : Model.date_start)
+            )
+            <div style="padding:5px 10px 0;display:inline-block;text-transform:lowercase">s/d</div>
+            @(Html.Telerik().DatePickerFor(model => model.date_end)
+                              .Value(Model.date_end == null ? DateTime.Today : Model.date_end)
+            )
+            <div class="errorM" style="width:250px"></div>
+        </div>
+        <p>
+            <input type="submit" value="Save" onclick="save()"/>
+
+        </p>
+    </fieldset>
+@section scripts {
 <script type="text/javascript">
     function save() {
         var values =
         {
             "Id": $('#id').val(),
-            "delagate": $('#delegate').is(':checked') == true ? 1 : 0,
-            "employee_delegate": $('#delegate').is(':checked') == true ? $('#delegate_name').val() : ""
+            "id_employee": $('#id_employee').val(),
+            "is_active": $('#is_active').is(':checked'),
+            "id_delegate": $('#is_active').is(':checked') == true ? $('#delegate_name').val() : "",
+            "date_start": $('#date_start').val(),
+            "date_end": $('#date_end').val(),
         }
 
         $.post('@Url.Content("~/Account/Delegate")', values, function (data) {
             if (data != undefined) {
                 if (data["status"] == 0) {
-                    if (values.delagate == 1)
+                    if (values.is_active == true)
                         alert('You have delegated your approval');
                     else
                         alert('You have removed your delegation');
@@ -26,7 +68,8 @@
                     $.each(data, function (index, value) {
                         if (index != "status") {
                             //error render
-                            $('#' + index).next('div').html(value);
+                            console.log($('#' + index).parents('.editor-field'));
+                            $('#' + index).parents('.editor-field').find('.errorM').html(value);
                         }
                     });
                 }
@@ -41,26 +84,39 @@
         $(":checkbox").change(function () {
             if ($(this).is(':checked')) {
                 $('#delegate_name').removeAttr('disabled');
+                $('#date_start').data("tDatePicker").enable();
+                $('#date_end').data("tDatePicker").enable();
             } else {
                 $('#delegate_name').val('');
                 $('#delegate_name').attr('disabled', 'disabled');
+                $('#date_start').data("tDatePicker").disable();
+                $('#date_end').data("tDatePicker").disable();
             }
         });
 
         if ($(":checkbox").is(':checked')) {
             $('#delegate_name').removeAttr('disabled');
+            $('#date_start').data("tDatePicker").enable();
+            $('#date_end').data("tDatePicker").enable();
         } else {
             $('#delegate_name').val('');
             $('#delegate_name').attr('disabled', 'disabled');
+            console.log($('#date_start'));
+            $('#date_start').data("tDatePicker").disable();
+            $('#date_end').data("tDatePicker").disable();
         }
     });
 
     function click() {
         if ($('#delegate').is(':checked')) {
             $('#delegate_name').removeAttr('disabled');
+            $('#date_start').data("tDatePicker").enable();
+            $('#date_end').data("tDatePicker").enable();
         } else {
             $('#delegate_name').val('');
             $('#delegate_name').attr('disabled', 'disabled');
+            $('#date_start').data("tDatePicker").disable();
+            $('#date_end').data("tDatePicker").disable();
 
         }
     };
@@ -72,27 +128,4 @@
         });
     }
 </script>
-<br/><br/><br/>
-    <fieldset>
-        <legend>Delegate</legend>
-
-        @Html.HiddenFor(model => model.id)
-
-        <div class="editor-label">
-            @Html.Label("Delegate")
-        </div>
-        <div class="editor-field">
-            <input type="checkbox" id="delegate" name="delegate" value="1" @(Model.delagate == 1 ? "checked" : "") />
-        </div>
-        <div class="editor-label">
-            @Html.Label("Delegate Name")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("delegate_name")
-            <div class="errorM"></div>
-        </div>
-        <p>
-            <input type="submit" value="Save" onclick="save()"/>
-
-        </p>
-    </fieldset>
+}

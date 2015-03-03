@@ -177,6 +177,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     ViewBag.ir_ref = "W-O-SPE-IIR-" + year + "-" + refs.ToString().PadLeft(4, '0');
                 }
             }
+            ViewBag.isCanEdit = true;
             if (id_rca != null)
             {
                 //List<string> r = db.rca_implementation.Where(p => p.id_rca == id_rca).Select(p => p.next_action).ToList();
@@ -211,10 +212,56 @@ namespace StarEnergi.Controllers.FrontEnd
 
                 ViewBag.immediate_cause = rca.immediate_cause;
                 ViewBag.basic_cause = rca.basic_cause;
+                ViewBag.isCanEdit = true;
             } else if (id != null)
             {
                 ViewBag.mod = id;
-                ViewBag.datas = db.investigation_report.Find(id);
+                investigation_report incidentInvestigationReport = db.investigation_report.Find(id);
+                ViewBag.datas = incidentInvestigationReport;
+
+                bool isCanEdit = false;
+                string employeeId = Session["id"].ToString();
+                employee employeeDelegation = new employee();
+                if (employeeId == incidentInvestigationReport.investigator.Split(';').First() && incidentInvestigationReport.investigator_approve.Split(';').First() == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.safety_officer && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.field_manager && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (isCanEdit == false)
+                {
+                    employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.loss_control));
+                    if (employeeId == employeeDelegation.employee_delegate.ToString() && incidentInvestigationReport.loss_control_approve == null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.safety_officer))).employee_delegate.ToString() && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.field_manager))).employee_delegate.ToString() && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+                }
+
+                ViewBag.isCanEdit = isCanEdit;
             }
             return View();
         }
@@ -445,16 +492,16 @@ namespace StarEnergi.Controllers.FrontEnd
             iir.basic_causes = investigationReport.basic_causes;
             iir.additional_observation = investigationReport.additional_observation;
             iir.investigator = investigator;
-            iir.investigator_date = investigationReport.investigator_date;
+            //iir.investigator_date = investigationReport.investigator_date;
             iir.loss_control = investigationReport.loss_control;
-            iir.loss_control_date = investigationReport.loss_control_date;
+            //iir.loss_control_date = investigationReport.loss_control_date;
             iir.field_manager = investigationReport.field_manager;
-            iir.field_manager_date = investigationReport.field_manager_date;
-            iir.loss_control_delegate = investigationReport.loss_control_delegate;
-            iir.field_manager_delegate = investigationReport.field_manager_delegate;
+           // iir.field_manager_date = investigationReport.field_manager_date;
+            //iir.loss_control_delegate = investigationReport.loss_control_delegate;
+            //iir.field_manager_delegate = investigationReport.field_manager_delegate;
             iir.safety_officer = investigationReport.safety_officer;
-            iir.safety_officer_date = investigationReport.safety_officer_date;
-            iir.safety_officer_delegate = investigationReport.safety_officer_delegate;
+            //iir.safety_officer_date = investigationReport.safety_officer_date;
+            //iir.safety_officer_delegate = investigationReport.safety_officer_delegate;
 
             db.Entry(iir).State = EntityState.Modified;
             db.SaveChanges();
@@ -708,8 +755,10 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else
                 {
+                    iir.loss_control_delegate = employee_id.ToString();
                     iir.loss_control_approve = "d" + sign;
                 }
+                iir.loss_control_date = DateTime.Now;
                 db.Entry(iir).State = EntityState.Modified;
                 db.SaveChanges();
                 investigation_report_log ir_log = new investigation_report_log
@@ -752,8 +801,10 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else
                 {
+                    iir.safety_officer_delegate = employee_id.ToString();
                     iir.safety_officer_approve = "d" + sign;
                 }
+                iir.safety_officer_date = DateTime.Now;
                 db.Entry(iir).State = EntityState.Modified;
                 db.SaveChanges();
                 investigation_report_log ir_log = new investigation_report_log
@@ -883,8 +934,10 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else
                 {
+                    iir.field_manager_delegate = employee_id.ToString();
                     iir.field_manager_approve = "d" + sign;
                 }
+                iir.field_manager_date = DateTime.Now;
                 db.Entry(iir).State = EntityState.Modified;
                 db.SaveChanges();
                 investigation_report_log ir_log = new investigation_report_log
@@ -974,6 +1027,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     s.Add(e.email);
             }
 
+            investigationReport.loss_control_delegate = null;
             investigationReport.loss_control_approve = null;
             db.Entry(investigationReport).State = EntityState.Modified;
             db.SaveChanges();
@@ -1019,6 +1073,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     s.Add(e.email);
             }
 
+            investigationReport.safety_officer_delegate = null;
             investigationReport.safety_officer_approve = null;
             db.Entry(investigationReport).State = EntityState.Modified;
             db.SaveChanges();
