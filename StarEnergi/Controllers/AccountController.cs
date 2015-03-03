@@ -272,57 +272,65 @@ namespace StarEnergi.Controllers
             employee employee = db.employees.Find(delegation.id_employee);
             prevDelegate = employee.employee_delegate.ToString();
 
-            if (delegation.date_end.Value.CompareTo(delegation.date_start.Value) >= 0)
+            if (delegation.date_start != null && delegation.date_end != null)
             {
-                if (delegation.id == 0)
+                if (delegation.date_end.Value.CompareTo(delegation.date_start.Value) >= 0)
                 {
-                    db.employee_delegations.Add(delegation);
-                }
-                else
-                {
-                    employee_delegations delegationDb = db.employee_delegations.Find(delegation.id);
-                    if (delegation.is_active == true)
+                    if (delegation.id == 0)
                     {
-                        delegationDb.id_delegate = delegation.id_delegate;
+                        db.employee_delegations.Add(delegation);
                     }
-                    delegationDb.date_start = delegation.date_start;
-                    delegationDb.date_end = delegation.date_end;
-                    delegationDb.is_active = delegation.is_active;
-                    db.Entry(delegationDb).State = EntityState.Modified;
-                }
+                    else
+                    {
+                        employee_delegations delegationDb = db.employee_delegations.Find(delegation.id);
+                        if (delegation.is_active == true)
+                        {
+                            delegationDb.id_delegate = delegation.id_delegate;
+                        }
+                        delegationDb.date_start = delegation.date_start;
+                        delegationDb.date_end = delegation.date_end;
+                        delegationDb.is_active = delegation.is_active;
+                        db.Entry(delegationDb).State = EntityState.Modified;
+                    }
 
-                if (delegation.is_active == true && DateTime.Today.CompareTo(delegation.date_start) >= 0)
-                {
-                    employee.delagate = 1;
-                    employee.employee_delegate = delegation.id_delegate;
-                    db.Entry(employee).State = EntityState.Modified;
-                }
-                else if (delegation.is_active == false)
-                {
-                    employee.delagate = 0;
-                    employee.employee_delegate = null;
-                    db.Entry(employee).State = EntityState.Modified;
-                }
+                    if (delegation.is_active == true && DateTime.Today.CompareTo(delegation.date_start) >= 0)
+                    {
+                        employee.delagate = 1;
+                        employee.employee_delegate = delegation.id_delegate;
+                        db.Entry(employee).State = EntityState.Modified;
+                    }
+                    else if (delegation.is_active == false)
+                    {
+                        employee.delagate = 0;
+                        employee.employee_delegate = null;
+                        db.Entry(employee).State = EntityState.Modified;
+                    }
 
-                IEnumerable<DbEntityValidationResult> error = db.GetValidationErrors();
-                if (error.Count() == 0)
-                {
-                    db.SaveChanges();
+                    IEnumerable<DbEntityValidationResult> error = db.GetValidationErrors();
+                    if (error.Count() == 0)
+                    {
+                        db.SaveChanges();
 
-                    // update delegation to each form in WW-IIS
-                    UpdateDelegationWWIIS(employee, delegation.is_active.Value, prevDelegate);
+                        // update delegation to each form in WW-IIS
+                        UpdateDelegationWWIIS(employee, delegation.is_active.Value, prevDelegate);
 
-                    return Json(e.Succes("Success"));
+                        return Json(e.Succes("Success"));
+                    }
+                    else
+                    {
+                        //return Json(error.First().ValidationErrors.ToArray());
+                        return Json(e.Fail(error));
+                    }
                 }
                 else
                 {
-                    //return Json(error.First().ValidationErrors.ToArray());
-                    return Json(e.Fail(error));
+                    ModelState.AddModelError("date_start", "Date end can not before date start.");
+                    return Json(e.Fail(ModelState));
                 }
             }
             else
             {
-                ModelState.AddModelError("date_start", "Date end can not before date start.");
+                ModelState.AddModelError("date_start", "Delegation Period cannot be empty.");
                 return Json(e.Fail(ModelState));
             }
         }
