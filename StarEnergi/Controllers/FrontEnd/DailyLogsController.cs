@@ -2085,7 +2085,2978 @@ namespace StarEnergi.Controllers.FrontEnd
             //return File(excel, "application/octet-stream", "DailyLogNightShift_" + DateTime.Now.ToString("ddMMyyyy"));
         }
 
-        private byte[] ProcessExcel(string filename)
+        private byte[] ProcessExcel(string filename, bool isDay=true)
+        {
+            //culture
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); //supaya file tidak corrupt
+            int parseRecordNumber = 1000;
+            int startRowIndex = 4;
+
+            XSSFCellStyle styleCurrency;
+            XSSFCellStyle styleDate;
+            XSSFCellStyle styleNumeric;
+
+            //kamus
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet; XSSFRow row; XSSFCell cell;
+
+            XSSFCellStyle style; XSSFFont font;
+            XSSFCellStyle style2;
+            XSSFCellStyle style3;
+
+            CellRangeAddressList addressList; XSSFDataValidationHelper dvHelper; XSSFDataValidationConstraint dvConstraint; XSSFDataValidation validation;
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Data");
+            int col = 0;
+            int rowNumber = 0;
+
+            #region Title
+            //PICTURE
+                FileStream picFile = new FileStream(Server.MapPath("~/Content/image/excel-logo.jpg"), FileMode.Open, FileAccess.Read);
+                var memoryStream = new MemoryStream();
+                picFile.CopyTo(memoryStream);
+                byte[] picBytes = memoryStream.ToArray();
+                int pictureIdx = workbook.AddPicture(picBytes, PictureType.JPEG);
+                picFile.Close();
+                memoryStream.Close();
+
+                XSSFCreationHelper helper = (XSSFCreationHelper)workbook.GetCreationHelper();
+
+                // Create the drawing patriarch.  This is the top level container for all shapes. 
+                XSSFDrawing drawing = (XSSFDrawing)sheet.CreateDrawingPatriarch();
+
+                //add a picture shape
+                XSSFClientAnchor anchor = (XSSFClientAnchor)helper.CreateClientAnchor();
+                //set top-left corner of the picture,
+                //subsequent call of Picture#resize() will operate relative to it
+                anchor.Col1 = 0;
+                anchor.Row1 = 0;
+
+                XSSFPicture pict = (XSSFPicture)drawing.CreatePicture(anchor, pictureIdx);
+
+                //auto-size picture relative to its top-left corner
+                pict.Resize();
+
+                //TITLE
+                rowNumber++;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+                dvHelper = new XSSFDataValidationHelper(sheet);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                cell = (XSSFCell)row.CreateCell(2);
+                cell.SetCellValue("STAR ENERGY GEOTHERMAL (WAYANG WINDU) LTD.");
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 16;
+                font.FontName = "Times New Roman";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                font.IsItalic = true;
+                style.SetFont(font);
+                cell.CellStyle = style;
+                cell.CellStyle.IsLocked = true;
+                sheet.AddMergedRegion(new CellRangeAddress(
+                                        rowNumber, //first row (0-based)
+                                        rowNumber, //last row  (0-based)
+                                        2, //first column (0-based)
+                                        13  //last column  (0-based)
+                                ));
+
+                //SubTitle
+                rowNumber += 3;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+                dvHelper = new XSSFDataValidationHelper(sheet);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue("Wayang Windu Geothermal Power Plant");
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 10;
+                font.FontName = "Times New Roman";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                cell.CellStyle = style;
+                cell.CellStyle.IsLocked = true;
+
+                //SubTitle 2
+                rowNumber++;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+                dvHelper = new XSSFDataValidationHelper(sheet);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue("Control Room Log Book");
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 9;
+                font.FontName = "Times New Roman";
+                //font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                cell.CellStyle = style;
+                cell.CellStyle.IsLocked = true;
+            #endregion
+
+            #region Header1
+                //STYLING
+                rowNumber++;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.FillForegroundColor = (short)IndexedColors.Yellow.Index;
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                for (int i = 0; i < 14; i++)
+                {
+                    cell = (XSSFCell)row.CreateCell(i);
+                    cell.CellStyle = style;
+                    cell.CellStyle.IsLocked = true;
+                }
+
+                //DATE
+                cell = (XSSFCell)row.GetCell(0);
+                cell.SetCellValue("Date");
+                sheet.AddMergedRegion(new CellRangeAddress(
+                                        rowNumber, //first row (0-based)
+                                        rowNumber, //last row  (0-based)
+                                        0, //first column (0-based)
+                                        2  //last column  (0-based)
+                                ));
+
+                //GROUP
+                cell = (XSSFCell)row.GetCell(3);
+                cell.SetCellValue("Group");
+                cell.CellStyle.BorderLeft = BorderStyle.Thin;
+
+                //PRODUCTION FOREMAN
+                cell = (XSSFCell)row.GetCell(4);
+                cell.SetCellValue("Production Foreman");
+                cell.CellStyle.BorderLeft = BorderStyle.Thin;
+                sheet.AddMergedRegion(new CellRangeAddress(
+                                        rowNumber, //first row (0-based)
+                                        rowNumber, //last row  (0-based)
+                                        4, //first column (0-based)
+                                        5  //last column  (0-based)
+                                ));
+
+                //PRODUCTION OPERATORS
+                cell = (XSSFCell)row.GetCell(6);
+                cell.SetCellValue("Production Operators");
+                cell.CellStyle.BorderLeft = BorderStyle.Thin;
+                sheet.AddMergedRegion(new CellRangeAddress(
+                                        rowNumber, //first row (0-based)
+                                        rowNumber, //last row  (0-based)
+                                        6, //first column (0-based)
+                                        13  //last column  (0-based)
+                                ));
+            #endregion
+
+            #region Header1Contents
+
+            //STYLING
+            rowNumber++;
+            row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+            rowNumber++;
+            row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            //font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Medium;
+            style.IsLocked = false;
+            for (int i = 0; i < 14; i++)
+            {
+                for (int j = 1; j >= 0; j--)
+                {
+                    row = (XSSFRow)sheet.GetRow(rowNumber - j);
+                    cell = (XSSFCell)row.CreateCell(i);
+                    cell.CellStyle = style;
+                    cell.CellStyle.IsLocked = false;
+                }
+                
+            }
+
+            col = 0;
+
+            //DATE CONTENTS
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               0, //first column (0-based)
+               2  //last column  (0-based)
+            ));
+            row = (XSSFRow)sheet.GetRow((short)rowNumber-1);
+            cell = (XSSFCell)row.GetCell(col);
+            cell.SetCellValue(DateTime.Now.Date);
+            cell.CellStyle = style;
+            cell.CellStyle.DataFormat = workbook.CreateDataFormat().GetFormat("MMMM d, yyyy");
+
+            //GROUP CONTENTS
+            col += 3;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               3, //first column (0-based)
+               3  //last column  (0-based)
+            ));
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Center;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Medium;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Medium;
+            style2.IsLocked = false;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.GetCell(col);
+            cell.CellStyle = style2;
+            cell.CellStyle.SetFont(font);
+            cell.CellStyle.DataFormat = workbook.CreateDataFormat().GetFormat("MMMM d, yyyy");
+
+            //PRODUCTION FOREMAN CONTENTS
+            col ++;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               4, //first column (0-based)
+               5  //last column  (0-based)
+            ));
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.GetCell(col);
+            cell.CellStyle = style;
+
+
+            //OPERATOR 1 CONTENT
+            col+=2;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber -1);
+            cell = (XSSFCell)row.GetCell(col);
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Left;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Medium;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Thin;
+            style2.IsLocked = false;
+            cell.CellStyle = style2;
+            cell = (XSSFCell)row.GetCell(col+1);
+            cell.CellStyle = style2;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber - 1, //last row  (0-based)
+               col, //first column (0-based)
+               col+1  //last column  (0-based)
+            ));
+
+            //OPERATOR 2 CONTENT
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.GetCell(col);
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Left;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Thin;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Medium;
+            style2.IsLocked = false;
+            cell.CellStyle = style2;
+            cell = (XSSFCell)row.GetCell(col + 1);
+            cell.CellStyle = style2;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col + 1  //last column  (0-based)
+            ));
+
+            //OPERATOR 3 CONTENT
+            col +=2;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.GetCell(col);
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Left;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Medium;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Thin;
+            style2.IsLocked = false;
+            cell.CellStyle = style2;
+            cell = (XSSFCell)row.GetCell(col + 1);
+            cell.CellStyle = style2;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber - 1, //last row  (0-based)
+               col, //first column (0-based)
+               col + 1  //last column  (0-based)
+            ));
+
+            //OPERATOR 4 CONTENT
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.GetCell(col);
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Left;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Thin;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Medium;
+            style2.IsLocked = false;
+            cell.CellStyle = style2;
+            cell = (XSSFCell)row.GetCell(col + 1);
+            cell.CellStyle = style2;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col + 1  //last column  (0-based)
+            ));
+
+            //OPERATOR 5 CONTENT
+            col+=2;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.GetCell(col);
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Left;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Medium;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Thin;
+            style2.IsLocked = false;
+            cell.CellStyle = style2;
+            cell = (XSSFCell)row.GetCell(col + 1);
+            cell.CellStyle = style2;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber - 1, //last row  (0-based)
+               col, //first column (0-based)
+               col + 1  //last column  (0-based)
+            ));
+
+            //OPERATOR 6 CONTENT
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.GetCell(col);
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Left;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Thin;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Medium;
+            style2.IsLocked = false;
+            cell.CellStyle = style2;
+            cell = (XSSFCell)row.GetCell(col + 1);
+            cell.CellStyle = style2;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col + 1  //last column  (0-based)
+            ));
+
+            //OPERATOR 7 CONTENT
+            col+=2;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.GetCell(col);
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Left;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Medium;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Thin;
+            style2.IsLocked = false;
+            cell.CellStyle = style2;
+            cell = (XSSFCell)row.GetCell(col + 1);
+            cell.CellStyle = style2;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber - 1, //last row  (0-based)
+               col, //first column (0-based)
+               col + 1  //last column  (0-based)
+            ));
+
+            //OPERATOR 8 CONTENT
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.GetCell(col);
+            style2 = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style2.SetFont(font);
+            style2.Alignment = HorizontalAlignment.Left;
+            style2.VerticalAlignment = VerticalAlignment.Center;
+            style2.BorderTop = BorderStyle.Thin;
+            style2.BorderLeft = BorderStyle.Thin;
+            style2.BorderRight = BorderStyle.Thin;
+            style2.BorderBottom = BorderStyle.Medium;
+            style2.IsLocked = false;
+            cell.CellStyle = style2;
+            cell = (XSSFCell)row.GetCell(col + 1);
+            cell.CellStyle = style2;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col + 1  //last column  (0-based)
+            ));
+
+            #endregion
+
+            #region Header2
+
+            //PRELIMINARY
+            rowNumber++;
+            row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+            rowNumber++;
+            row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+
+            //TIME
+            col = 0;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundColor = (short)IndexedColors.Yellow.Index;
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Medium;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("TIME");
+            cell.CellStyle = style;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.CellStyle = style;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col  //last column  (0-based)
+            ));
+
+            //DESCRIPTION
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundColor = (short)IndexedColors.Yellow.Index;
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Thin;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("DESCRIPTION");
+            cell.CellStyle = style;
+            for (int i = col+1; i <= 13; i++)
+            {
+                cell = (XSSFCell)row.CreateCell(i);
+                cell.CellStyle = style;
+            }
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber -1, //first row (0-based)
+               rowNumber -1, //last row  (0-based)
+               col, //first column (0-based)
+               col+ 12  //last column  (0-based)
+            ));
+
+            //PRODUCTION AND INJECTION WELLS
+            col = 1;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundColor = (short)IndexedColors.Yellow.Index;
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Thin;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Medium;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("PRODUCTION AND INJECTION WELLS");
+            cell.CellStyle = style;
+            for (int i = col + 1; i <= 8; i++)
+            {
+                cell = (XSSFCell)row.CreateCell(i);
+                cell.CellStyle = style;
+            }
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col + 7  //last column  (0-based)
+            ));
+
+            //POWER STATION
+            col = 9;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundColor = (short)IndexedColors.Yellow.Index;
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Thin;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Medium;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("POWER STATION");
+            cell.CellStyle = style;
+            for (int i = col + 1; i <= 13; i++)
+            {
+                cell = (XSSFCell)row.CreateCell(i);
+                cell.CellStyle = style;
+            }
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col + 4  //last column  (0-based)
+            ));
+            #endregion
+
+            #region Row-13-14
+            //PRELIMINARY
+            rowNumber++;
+            row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+            rowNumber++;
+            row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+
+            //TIME
+            col = 0;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            //style.FillForegroundColor = (short)IndexedColors.Yellow.Index;
+            //style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            if (isDay == true)
+            {
+                cell.SetCellValue(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 7, 0, 0));
+            }
+            else
+            {
+                cell.SetCellValue(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 19, 0, 0));
+            }
+            cell.CellStyle = style;
+            cell.CellStyle.DataFormat = workbook.CreateDataFormat().GetFormat("h:mm");
+
+
+            //Wells 1
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255,0,255,255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("Wells");
+            cell.CellStyle = style;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.CellStyle = style;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col  //last column  (0-based)
+            ));
+
+
+            //FCV 1
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("FCV");
+            cell.CellStyle = style;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.None;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("%");
+            cell.CellStyle = style;
+
+            //Flow 1
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("Flow");
+            cell.CellStyle = style;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.None;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("(kg/s)");
+            cell.CellStyle = style;
+
+            //WHP 1
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("WHP");
+            cell.CellStyle = style;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.None;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("(Bar)");
+            cell.CellStyle = style;
+
+            //Wells 2
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("Wells");
+            cell.CellStyle = style;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.CellStyle = style;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col  //last column  (0-based)
+            ));
+
+            //FCV 2
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("FCV");
+            cell.CellStyle = style;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.None;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("%");
+            cell.CellStyle = style;
+
+            //Flow 2
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("Flow");
+            cell.CellStyle = style;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.None;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("(kg/s)");
+            cell.CellStyle = style;
+
+            //WHP 2
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Double;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("WHP");
+            cell.CellStyle = style;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.None;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Double;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("(Bar)");
+            cell.CellStyle = style;
+
+
+            //POWER STATION NAME
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Double;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.CellStyle = style;
+            cell = (XSSFCell)row.CreateCell(col + 1);
+            cell.CellStyle = style;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.CellStyle = style;
+            cell = (XSSFCell)row.CreateCell(col + 1);
+            cell.CellStyle = style;
+           
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col +1  //last column  (0-based)
+            ));
+
+            //TG UNIT 1
+            col+=2;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("T/G");
+            cell.CellStyle = style;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.None;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("Unit-1");
+            cell.CellStyle = style;
+
+            //TG UNIT 2
+            col ++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.None;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("T/G");
+            cell.CellStyle = style;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.None;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.SetCellValue("Unit-2");
+            cell.CellStyle = style;
+
+            //POWERSTATION MEASUREMENTS
+            col++;
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            font.FontHeight = 8;
+            font.FontName = "Arial";
+            font.Boldweight = (short)FontBoldWeight.Bold;
+            //font.Underline = FontUnderlineType.Single;
+            style.SetFont(font);
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+            style.FillPattern = FillPattern.SolidForeground;
+            style.BorderTop = BorderStyle.Medium;
+            style.BorderLeft = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderBottom = BorderStyle.Double;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.CellStyle = style;
+            row = (XSSFRow)sheet.GetRow((short)rowNumber);
+            cell = (XSSFCell)row.CreateCell(col);
+            cell.CellStyle = style;
+            sheet.AddMergedRegion(new CellRangeAddress(
+               rowNumber - 1, //first row (0-based)
+               rowNumber, //last row  (0-based)
+               col, //first column (0-based)
+               col  //last column  (0-based)
+            ));
+
+            #endregion
+
+            #region Well and Powerstation
+            var dataWell = (from a in db.daily_log_wells
+                            where a.is_delete != true
+                            select a).OrderBy(x => x.name).ToList();
+            startRowIndex = 13;
+            int colIndexLeft = 1;
+            int colIndexRight = 5;
+            int maxWellCount = 30;
+            int halfMaxWellCount = maxWellCount / 2;
+
+
+            if (dataWell != null)
+            {
+                //sheet.ProtectSheet("starenergy");
+                //style = (XSSFCellStyle)workbook.CreateCellStyle();
+                //style.IsLocked = false;
+                //cell = (XSSFCell)sheet.GetRow(5).GetCell(0);
+                //cell.CellStyle = style;
+                var numericFormat = workbook.CreateDataFormat().GetFormat("#.00#"); 
+
+                if (dataWell.Count <= halfMaxWellCount)
+                {
+                    int incrementIndex = 0;
+                    for(incrementIndex=0; incrementIndex < halfMaxWellCount; incrementIndex++)
+                    {
+
+                        //TIME
+                        row = (XSSFRow)sheet.CreateRow(startRowIndex + incrementIndex);
+                        cell = (XSSFCell)row.CreateCell(0);
+                        //style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        //style.BorderLeft = BorderStyle.Thin;
+                        //style.BorderBottom = BorderStyle.Thick;
+                        //style.BorderTop = BorderStyle.Thick;
+                        //cell.CellStyle = style;
+
+                        //WELLS
+                        cell = (XSSFCell)row.CreateCell(1);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        cell.CellStyle = style;
+
+                        //FCV
+                        cell = (XSSFCell)row.CreateCell(2);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //FLOW
+                        cell = (XSSFCell)row.CreateCell(3);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //WHP
+                        cell = (XSSFCell)row.CreateCell(4);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //WELLS 2nd
+                        cell = (XSSFCell)row.CreateCell(5);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        cell.CellStyle = style;
+
+                        //FCV 2nd
+                        cell = (XSSFCell)row.CreateCell(6);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //FLOW 2nd
+                        cell = (XSSFCell)row.CreateCell(7);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //WHP 2nd
+                        cell = (XSSFCell)row.CreateCell(8);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Double;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+
+                        //Power Station Name?
+                        cell = (XSSFCell)row.CreateCell(9);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFont(font);
+                        cell.CellStyle = style;
+                        cell = (XSSFCell)row.CreateCell(10);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        cell.CellStyle = style;
+                        sheet.AddMergedRegion(new CellRangeAddress(
+                                startRowIndex + incrementIndex, //first row (0-based)
+                                startRowIndex + incrementIndex, //last row  (0-based)
+                                9, //first column (0-based)
+                                10  //last column  (0-based)
+                        ));
+
+                        //TG UNIT 1
+                        cell = (XSSFCell)row.CreateCell(11);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //TG UNIT 2
+                        cell = (XSSFCell)row.CreateCell(12);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //Powerstation Measurement Unit?
+                        cell = (XSSFCell)row.CreateCell(13);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        cell.CellStyle = style;
+
+                        if (incrementIndex+1 <= dataWell.Count)
+                        {
+                            cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
+                            daily_log_wells data = dataWell.ElementAt(incrementIndex);
+                            cell.SetCellValue(data.name);
+                        }
+                        
+
+                    }
+                    //this.FillPowerStation(ref sheet);
+                }
+                else if (dataWell.Count > halfMaxWellCount && dataWell.Count <= maxWellCount)
+                {
+                    int incrementIndex = 0;
+                    bool isOnLeft = true;
+                    foreach (daily_log_wells well in dataWell)
+                    {
+                        if (isOnLeft)
+                        {
+                            //TIME
+                            row = (XSSFRow)sheet.CreateRow(startRowIndex + incrementIndex);
+                            cell = (XSSFCell)row.CreateCell(0);
+                            //style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            //style.BorderLeft = BorderStyle.Thin;
+                            //style.BorderBottom = BorderStyle.Thick;
+                            //style.BorderTop = BorderStyle.Thick;
+                            //cell.CellStyle = style;
+
+                            //WELLS
+                            cell = (XSSFCell)row.CreateCell(1);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            cell.CellStyle = style;
+
+                            //FCV
+                            cell = (XSSFCell)row.CreateCell(2);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                            style.FillPattern = FillPattern.SolidForeground;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            style.IsLocked = false;
+                            cell.CellStyle = style;
+
+                            //FLOW
+                            cell = (XSSFCell)row.CreateCell(3);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                            style.FillPattern = FillPattern.SolidForeground;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            style.IsLocked = false;
+                            cell.CellStyle = style;
+
+                            //WHP
+                            cell = (XSSFCell)row.CreateCell(4);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                            style.FillPattern = FillPattern.SolidForeground;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            style.IsLocked = false;
+                            cell.CellStyle = style;
+
+                            //WELLS 2nd
+                            cell = (XSSFCell)row.CreateCell(5);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            cell.CellStyle = style;
+
+                            //FCV 2nd
+                            cell = (XSSFCell)row.CreateCell(6);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                            style.FillPattern = FillPattern.SolidForeground;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            style.IsLocked = false;
+                            cell.CellStyle = style;
+
+                            //FLOW 2nd
+                            cell = (XSSFCell)row.CreateCell(7);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                            style.FillPattern = FillPattern.SolidForeground;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            style.IsLocked = false;
+                            cell.CellStyle = style;
+
+                            //WHP 2nd
+                            cell = (XSSFCell)row.CreateCell(8);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Double;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                            style.FillPattern = FillPattern.SolidForeground;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            style.IsLocked = false;
+                            cell.CellStyle = style;
+
+
+                            //Power Station Name?
+                            cell = (XSSFCell)row.CreateCell(9);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFont(font);
+                            cell.CellStyle = style;
+                            cell = (XSSFCell)row.CreateCell(10);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            cell.CellStyle = style;
+                            sheet.AddMergedRegion(new CellRangeAddress(
+                                    startRowIndex + incrementIndex, //first row (0-based)
+                                    startRowIndex + incrementIndex, //last row  (0-based)
+                                    9, //first column (0-based)
+                                    10  //last column  (0-based)
+                            ));
+
+                            //TG UNIT 1
+                            cell = (XSSFCell)row.CreateCell(11);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                            style.FillPattern = FillPattern.SolidForeground;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            style.IsLocked = false;
+                            cell.CellStyle = style;
+
+                            //TG UNIT 2
+                            cell = (XSSFCell)row.CreateCell(12);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                            style.FillPattern = FillPattern.SolidForeground;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            style.IsLocked = false;
+                            cell.CellStyle = style;
+
+                            //Powerstation Measurement Unit?
+                            cell = (XSSFCell)row.CreateCell(13);
+                            style = (XSSFCellStyle)workbook.CreateCellStyle();
+                            style.BorderLeft = BorderStyle.Thin;
+                            style.BorderTop = BorderStyle.Hair;
+                            style.BorderRight = BorderStyle.Thin;
+                            style.BorderBottom = BorderStyle.Hair;
+                            font = (XSSFFont)workbook.CreateFont();
+                            font.FontName = "Arial";
+                            font.FontHeight = 8;
+                            style.SetFont(font);
+                            style.DataFormat = numericFormat;
+                            cell.CellStyle = style;
+
+                            cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
+                            cell.SetCellValue(well.name);
+                            incrementIndex++;
+
+                            if (incrementIndex == halfMaxWellCount)
+                            {
+                                isOnLeft = false;
+                                incrementIndex = 0;
+                            }
+                        }
+                        else
+                        {
+                            cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight);
+                            cell.SetCellValue(well.name);
+
+                            incrementIndex++;
+                        }
+
+                    }
+                    //this.FillPowerStation(ref sheet);
+                }
+                else
+                {
+                    int remainder = dataWell.Count - maxWellCount;
+                    int rowsNeedToBeCreated;
+                    int lastWellRowIndex = 28;
+                    if (remainder % 2 == 1)
+                    {
+                        rowsNeedToBeCreated = (remainder / 2) + 1;
+                    }
+                    else
+                    {
+                        rowsNeedToBeCreated = remainder / 2;
+                    }
+
+
+                    for (int i = 0; i < halfMaxWellCount+rowsNeedToBeCreated; i++)
+                    {
+                        //TIME
+                        row = (XSSFRow)sheet.CreateRow(startRowIndex + i);
+                        cell = (XSSFCell)row.CreateCell(0);
+                        //style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        //style.BorderLeft = BorderStyle.Thin;
+                        //style.BorderBottom = BorderStyle.Thick;
+                        //style.BorderTop = BorderStyle.Thick;
+                        //cell.CellStyle = style;
+
+                        //WELLS
+                        cell = (XSSFCell)row.CreateCell(1);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        cell.CellStyle = style;
+
+                        //FCV
+                        cell = (XSSFCell)row.CreateCell(2);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //FLOW
+                        cell = (XSSFCell)row.CreateCell(3);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //WHP
+                        cell = (XSSFCell)row.CreateCell(4);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //WELLS 2nd
+                        cell = (XSSFCell)row.CreateCell(5);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        cell.CellStyle = style;
+
+                        //FCV 2nd
+                        cell = (XSSFCell)row.CreateCell(6);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //FLOW 2nd
+                        cell = (XSSFCell)row.CreateCell(7);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //WHP 2nd
+                        cell = (XSSFCell)row.CreateCell(8);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Double;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+
+                        //Power Station Name?
+                        cell = (XSSFCell)row.CreateCell(9);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFont(font);
+                        cell.CellStyle = style;
+                        cell = (XSSFCell)row.CreateCell(10);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderBottom = BorderStyle.Hair;
+                        cell.CellStyle = style;
+                        sheet.AddMergedRegion(new CellRangeAddress(
+                                startRowIndex + i, //first row (0-based)
+                                startRowIndex + i, //last row  (0-based)
+                                9, //first column (0-based)
+                                10  //last column  (0-based)
+                        ));
+
+                        //TG UNIT 1
+                        cell = (XSSFCell)row.CreateCell(11);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //TG UNIT 2
+                        cell = (XSSFCell)row.CreateCell(12);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                        style.FillPattern = FillPattern.SolidForeground;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        style.IsLocked = false;
+                        cell.CellStyle = style;
+
+                        //Powerstation Measurement Unit?
+                        cell = (XSSFCell)row.CreateCell(13);
+                        style = (XSSFCellStyle)workbook.CreateCellStyle();
+                        style.BorderLeft = BorderStyle.Thin;
+                        style.BorderTop = BorderStyle.Hair;
+                        style.BorderRight = BorderStyle.Thin;
+                        style.BorderBottom = BorderStyle.Hair;
+                        font = (XSSFFont)workbook.CreateFont();
+                        font.FontName = "Arial";
+                        font.FontHeight = 8;
+                        style.SetFont(font);
+                        style.DataFormat = numericFormat;
+                        cell.CellStyle = style;
+                    }
+
+                    int incrementIndex = 0;
+                    bool isOnLeft = true;
+                    foreach (daily_log_wells well in dataWell)
+                    {
+                        if (isOnLeft)
+                        {
+                            cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
+                            cell.SetCellValue(well.name);
+                            incrementIndex++;
+                            if (incrementIndex == (halfMaxWellCount + rowsNeedToBeCreated))
+                            {
+                                isOnLeft = false;
+                                incrementIndex = 0;
+                            }
+                        }
+                        else
+                        {
+                            cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight);
+                            cell.SetCellValue(well.name);
+                            incrementIndex++;
+                        }
+
+                    }
+                    //this.FillPowerStation(ref sheet);
+                }
+
+                //BELOW WELL
+                rowNumber = sheet.LastRowNum;
+
+                rowNumber++;
+                int belowWellStartRow = rowNumber;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+                rowNumber++;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+
+                //TIME
+                col = 0;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                //style.FillForegroundColor = (short)IndexedColors.Yellow.Index;
+                //style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                //if (isDay == true)
+                //{
+                //    cell.SetCellValue(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 7, 0, 0));
+                //}
+                //else
+                //{
+                //    cell.SetCellValue(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 19, 0, 0));
+                //}
+                //cell.CellStyle = style;
+                //cell.CellStyle.DataFormat = workbook.CreateDataFormat().GetFormat("h:mm");
+
+
+                //U1 NCG
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("U1 NCG");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Flow(kg/s)");
+                cell.CellStyle = style;
+
+
+                //U2 NCG
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("U2 NCG");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Flow(kg/s)");
+                cell.CellStyle = style;
+
+                //U1 Turbine
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("U1 Turbine");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Exp.(mm)");
+                cell.CellStyle = style;
+
+                //U2 Turbine
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("U2 Turbine");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Exp.(mm)");
+                cell.CellStyle = style;
+
+                //U1 CT
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("U1 CT");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Temp.(°C)");
+                cell.CellStyle = style;
+
+                //U2 CT
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("U2 CT");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Temp.(°C)");
+                cell.CellStyle = style;
+
+                //T1 Exhaust
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("T1 Exhaust");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Temp.(°C)");
+                cell.CellStyle = style;
+
+                //T2 Exhaust
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Double;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("T2 Exhaust");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Double;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Temp.(°C)");
+                cell.CellStyle = style;
+
+               
+                //Content Placeholder 1
+                rowNumber++;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+
+                //0
+                cell = (XSSFCell)row.CreateCell(0);
+                //style = (XSSFCellStyle)workbook.CreateCellStyle();
+                //style.BorderLeft = BorderStyle.Thin;
+                //style.BorderBottom = BorderStyle.Thick;
+                //style.BorderTop = BorderStyle.Thick;
+                //cell.CellStyle = style;
+
+                //1
+                cell = (XSSFCell)row.CreateCell(1);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //2
+                cell = (XSSFCell)row.CreateCell(2);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //3
+                cell = (XSSFCell)row.CreateCell(3);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //4
+                cell = (XSSFCell)row.CreateCell(4);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //5
+                cell = (XSSFCell)row.CreateCell(5);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //6
+                cell = (XSSFCell)row.CreateCell(6);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //7
+                cell = (XSSFCell)row.CreateCell(7);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //8
+                cell = (XSSFCell)row.CreateCell(8);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Double;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                rowNumber++;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+                rowNumber++;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+
+                //TIME
+                col = 0;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                //style.FillForegroundColor = (short)IndexedColors.Yellow.Index;
+                //style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                //if (isDay == true)
+                //{
+                //    cell.SetCellValue(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 7, 0, 0));
+                //}
+                //else
+                //{
+                //    cell.SetCellValue(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 19, 0, 0));
+                //}
+                //cell.CellStyle = style;
+                //cell.CellStyle.DataFormat = workbook.CreateDataFormat().GetFormat("h:mm");
+
+
+                //Upper TP
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Upper TP");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Level(m)");
+                cell.CellStyle = style;
+
+
+                //Lower TP
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Lower TP");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Level(m)");
+                cell.CellStyle = style;
+
+                //MV-333
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("MV-333");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Position(%)");
+                cell.CellStyle = style;
+
+                //MV-334
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("MV-334");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Position(%)");
+                cell.CellStyle = style;
+
+                //Brine Level
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Brine Level");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("(mm)");
+                cell.CellStyle = style;
+
+                //Condensate
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Condensate");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Level(mm)");
+                cell.CellStyle = style;
+
+                //NaOH 48%
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("NaOH 48%");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Level(mm)");
+                cell.CellStyle = style;
+
+                //WWD Pond
+                col++;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.Medium;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Double;
+                style.BorderBottom = BorderStyle.None;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber - 1);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("WWD Pond");
+                cell.CellStyle = style;
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontHeight = 8;
+                font.FontName = "Arial";
+                font.Boldweight = (short)FontBoldWeight.Bold;
+                //font.Underline = FontUnderlineType.Single;
+                style.SetFont(font);
+                style.Alignment = HorizontalAlignment.Center;
+                style.VerticalAlignment = VerticalAlignment.Center;
+                style.FillForegroundXSSFColor = new XSSFColor(System.Drawing.Color.FromArgb(255, 0, 255, 255));
+                style.FillPattern = FillPattern.SolidForeground;
+                style.BorderTop = BorderStyle.None;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Double;
+                style.BorderBottom = BorderStyle.Double;
+                row = (XSSFRow)sheet.GetRow((short)rowNumber);
+                cell = (XSSFCell)row.CreateCell(col);
+                cell.SetCellValue("Level(m)");
+                cell.CellStyle = style;
+
+
+                //Content Placeholder 2
+                rowNumber++;
+                row = (XSSFRow)sheet.CreateRow((short)rowNumber);
+
+                //0
+                cell = (XSSFCell)row.CreateCell(0);
+                //style = (XSSFCellStyle)workbook.CreateCellStyle();
+                //style.BorderLeft = BorderStyle.Thin;
+                //style.BorderBottom = BorderStyle.Thick;
+                //style.BorderTop = BorderStyle.Thick;
+                //cell.CellStyle = style;
+
+                //1
+                cell = (XSSFCell)row.CreateCell(1);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //2
+                cell = (XSSFCell)row.CreateCell(2);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //3
+                cell = (XSSFCell)row.CreateCell(3);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //4
+                cell = (XSSFCell)row.CreateCell(4);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //5
+                cell = (XSSFCell)row.CreateCell(5);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //6
+                cell = (XSSFCell)row.CreateCell(6);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //7
+                cell = (XSSFCell)row.CreateCell(7);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                //8
+                cell = (XSSFCell)row.CreateCell(8);
+                style = (XSSFCellStyle)workbook.CreateCellStyle();
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Double;
+                style.BorderRight = BorderStyle.Double;
+                style.BorderBottom = BorderStyle.Thin;
+                style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                style.FillPattern = FillPattern.SolidForeground;
+                font = (XSSFFont)workbook.CreateFont();
+                font.FontName = "Arial";
+                font.FontHeight = 8;
+                style.SetFont(font);
+                style.DataFormat = numericFormat;
+                style.IsLocked = false;
+                cell.CellStyle = style;
+
+                for (int i = belowWellStartRow; i <= rowNumber; i++)
+                {
+                    row = (XSSFRow)sheet.GetRow((short)i);
+                    //Power Station Name?
+                    cell = (XSSFCell)row.CreateCell(9);
+                    style = (XSSFCellStyle)workbook.CreateCellStyle();
+                    font = (XSSFFont)workbook.CreateFont();
+                    font.FontName = "Arial";
+                    font.FontHeight = 8;
+                    style.BorderBottom = BorderStyle.Hair;
+                    style.SetFont(font);
+                    cell.CellStyle = style;
+                    cell = (XSSFCell)row.CreateCell(10);
+                    style = (XSSFCellStyle)workbook.CreateCellStyle();
+                    style.BorderBottom = BorderStyle.Hair;
+                    cell.CellStyle = style;
+                    sheet.AddMergedRegion(new CellRangeAddress(
+                            i, //first row (0-based)
+                            i, //last row  (0-based)
+                            9, //first column (0-based)
+                            10  //last column  (0-based)
+                    ));
+
+                    //TG UNIT 1
+                    cell = (XSSFCell)row.CreateCell(11);
+                    style = (XSSFCellStyle)workbook.CreateCellStyle();
+                    style.BorderLeft = BorderStyle.Thin;
+                    style.BorderTop = BorderStyle.Hair;
+                    style.BorderRight = BorderStyle.Thin;
+                    style.BorderBottom = BorderStyle.Hair;
+                    style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                    style.FillPattern = FillPattern.SolidForeground;
+                    font = (XSSFFont)workbook.CreateFont();
+                    font.FontName = "Arial";
+                    font.FontHeight = 8;
+                    style.SetFont(font);
+                    style.DataFormat = numericFormat;
+                    style.IsLocked = false;
+                    cell.CellStyle = style;
+
+                    //TG UNIT 2
+                    cell = (XSSFCell)row.CreateCell(12);
+                    style = (XSSFCellStyle)workbook.CreateCellStyle();
+                    style.BorderLeft = BorderStyle.Thin;
+                    style.BorderTop = BorderStyle.Hair;
+                    style.BorderRight = BorderStyle.Thin;
+                    style.BorderBottom = BorderStyle.Hair;
+                    style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
+                    style.FillPattern = FillPattern.SolidForeground;
+                    font = (XSSFFont)workbook.CreateFont();
+                    font.FontName = "Arial";
+                    font.FontHeight = 8;
+                    style.SetFont(font);
+                    style.DataFormat = numericFormat;
+                    style.IsLocked = false;
+                    cell.CellStyle = style;
+
+                    //Powerstation Measurement Unit?
+                    cell = (XSSFCell)row.CreateCell(13);
+                    style = (XSSFCellStyle)workbook.CreateCellStyle();
+                    style.BorderLeft = BorderStyle.Thin;
+                    style.BorderTop = BorderStyle.Hair;
+                    style.BorderRight = BorderStyle.Thin;
+                    style.BorderBottom = BorderStyle.Hair;
+                    font = (XSSFFont)workbook.CreateFont();
+                    font.FontName = "Arial";
+                    font.FontHeight = 8;
+                    style.SetFont(font);
+                    style.DataFormat = numericFormat;
+                    cell.CellStyle = style;
+                }
+
+                this.FillPowerStation(ref sheet);
+
+            }
+
+
+            #endregion
+
+            if (isDay == true)
+            {
+
+            }
+            else
+            {
+
+            }
+            //sheet.ProtectSheet("starenergy");
+            //write to byte[]
+            MemoryStream ms = new MemoryStream();
+            workbook.Write(ms);
+
+            return ms.ToArray();
+        }
+
+        private byte[] ProcessExcelOLD(string filename)
         {
             byte[] excel = null;
             XSSFSheet sheet;
@@ -2121,10 +5092,12 @@ namespace StarEnergi.Controllers.FrontEnd
 
                 if (dataWell != null)
                 {
+                    
                     //SET DATE
                     XSSFCell cellDate = (XSSFCell)sheet.GetRow(7).GetCell(0);
                     cellDate.SetCellValue(DateTime.Now);
 
+                    //sheet.ProtectSheet("starenergy");
                     //style = (XSSFCellStyle)book.CreateCellStyle();
                     //style.IsLocked = false;
                     //cell = (XSSFCell)sheet.GetRow(5).GetCell(0);
@@ -2473,7 +5446,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
 
                 }
-                //sheet.ProtectSheet("starenergy");
+
                 
 
                 MemoryStream ms = new MemoryStream();
@@ -2491,509 +5464,6 @@ namespace StarEnergi.Controllers.FrontEnd
             return excel;
         }
 
-        //private byte[] ProcessExcel3(string filename)
-        //{
-        //    byte[] excel = null;
-        //    HSSFSheet sheet;
-        //    HSSFCellStyle style;
-        //    HSSFRow row;
-        //    HSSFCell cell;
-        //    HSSFFont font;
-
-        //    string currentFilePathInServer = Server.MapPath("~/App_Data/daily_log/" + filename);
-
-        //    XSSFWorkbook book;
-        //    try
-        //    {
-
-
-        //        using (FileStream file = new FileStream(currentFilePathInServer, FileMode.Open, FileAccess.Read))
-        //        {
-        //            book = new XSSFWorkbook(file);
-        //        }
-
-        //        sheet = (HSSFSheet)book.GetSheet("FormFracas");
-        //        //sheet.ProtectSheet("starenergy");
-
-        //        var dataWell = (from a in db.daily_log_wells
-        //                        where a.is_delete != true
-        //                        select a).ToList();
-        //        int startRowIndex = 13;
-        //        int colIndexLeft = 1;
-        //        int colIndexRight = 5;
-        //        int maxWellCount = 30;
-        //        int halfMaxWellCount = maxWellCount / 2;
-
-        //        if (dataWell != null)
-        //        {
-        //            //SET DATE
-        //            XSSFCell cellDate = (XSSFCell)sheet.GetRow(7).GetCell(0);
-        //            cellDate.SetCellValue(DateTime.Now);
-
-        //            if (dataWell.Count <= halfMaxWellCount)
-        //            {
-        //                int incrementIndex = 0;
-        //                foreach (daily_log_wells well in dataWell)
-        //                {
-        //                    cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
-        //                    cell.SetCellValue(well.name);
-
-
-        //                    ////UNLOCK FCV
-        //                    //style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    //style.IsLocked = false;
-        //                    //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 1);
-        //                    //cell.CellStyle = style;
-
-        //                    ////UNLOCK Flow
-        //                    //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 2);
-        //                    //cell.CellStyle = style;
-
-        //                    ////UNLOCK WHP
-        //                    //cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 3);
-        //                    //cell.CellStyle = style;
-
-        //                    incrementIndex++;
-        //                }
-        //                //this.FillPowerStation(ref sheet);
-        //            }
-        //            else if (dataWell.Count > halfMaxWellCount && dataWell.Count <= maxWellCount)
-        //            {
-        //                int incrementIndex = 0;
-        //                bool isOnLeft = true;
-        //                foreach (daily_log_wells well in dataWell)
-        //                {
-        //                    if (isOnLeft)
-        //                    {
-        //                        cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
-        //                        cell.SetCellValue(well.name);
-        //                        incrementIndex++;
-
-        //                        ////UNLOCK FCV
-        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
-        //                        //style.IsLocked = false;
-        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 1);
-        //                        //cell.CellStyle = style;
-
-        //                        ////UNLOCK Flow
-        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
-        //                        //style.IsLocked = false;
-        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 2);
-        //                        //cell.CellStyle = style;
-
-        //                        ////UNLOCK WHP
-        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
-        //                        //style.IsLocked = false;
-        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft + 3);
-        //                        //cell.CellStyle = style;
-
-        //                        if (incrementIndex == halfMaxWellCount)
-        //                        {
-        //                            isOnLeft = false;
-        //                            incrementIndex = 0;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight);
-        //                        cell.SetCellValue(well.name);
-
-        //                        ////UNLOCK FCV
-        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
-        //                        //style.IsLocked = false;
-        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 1);
-        //                        //cell.CellStyle = style;
-
-        //                        ////UNLOCK Flow
-        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
-        //                        //style.IsLocked = false;
-        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 2);
-        //                        //cell.CellStyle = style;
-
-        //                        ////UNLOCK WHP
-        //                        //style = (XSSFCellStyle)book.CreateCellStyle();
-        //                        //style.IsLocked = false;
-        //                        //cell = (XSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight + 3);
-        //                        //cell.CellStyle = style;
-
-        //                        incrementIndex++;
-        //                    }
-
-        //                }
-        //                //this.FillPowerStation(ref sheet);
-        //            }
-        //            else
-        //            {
-        //                int remainder = dataWell.Count - maxWellCount;
-        //                int rowsNeedToBeCreated;
-        //                int lastWellRowIndex = 28;
-        //                if (remainder % 2 == 1)
-        //                {
-        //                    rowsNeedToBeCreated = (remainder / 2) + 1;
-        //                }
-        //                else
-        //                {
-        //                    rowsNeedToBeCreated = remainder / 2;
-        //                }
-
-
-        //                //Index,Total Rows,Total to Insert 
-        //                sheet.ShiftRows(lastWellRowIndex, sheet.LastRowNum, rowsNeedToBeCreated);
-
-        //                for (int i = 0; i < rowsNeedToBeCreated; i++)
-        //                {
-        //                    //TIME
-        //                    row = (HSSFRow)sheet.CreateRow((short)28 + i);
-        //                    cell = (HSSFCell)row.CreateCell(0);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Thick;
-        //                    style.BorderTop = BorderStyle.Thick;
-        //                    cell.CellStyle = style;
-
-        //                    //WELLS
-        //                    cell = (HSSFCell)row.CreateCell(1);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //FCV
-        //                    cell = (HSSFCell)row.CreateCell(2);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-        //                    style.FillPattern = FillPattern.SolidForeground;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //FLOW
-        //                    cell = (HSSFCell)row.CreateCell(3);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-        //                    style.FillPattern = FillPattern.SolidForeground;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //WHP
-        //                    cell = (HSSFCell)row.CreateCell(4);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-        //                    style.FillPattern = FillPattern.SolidForeground;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //WELLS 2nd
-        //                    cell = (HSSFCell)row.CreateCell(5);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //FCV 2nd
-        //                    cell = (HSSFCell)row.CreateCell(6);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-        //                    style.FillPattern = FillPattern.SolidForeground;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //FLOW 2nd
-        //                    cell = (HSSFCell)row.CreateCell(7);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-        //                    style.FillPattern = FillPattern.SolidForeground;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //WHP 2nd
-        //                    cell = (HSSFCell)row.CreateCell(8);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Double;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-        //                    style.FillPattern = FillPattern.SolidForeground;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-
-        //                    //Power Station Name?
-        //                    cell = (HSSFCell)row.CreateCell(9);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-        //                    cell = (HSSFCell)row.CreateCell(10);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    cell.CellStyle = style;
-        //                    sheet.AddMergedRegion(new CellRangeAddress(
-        //                            28 + i, //first row (0-based)
-        //                            28 + i, //last row  (0-based)
-        //                            9, //first column (0-based)
-        //                            10  //last column  (0-based)
-        //                    ));
-
-        //                    //TG UNIT 1
-        //                    cell = (HSSFCell)row.CreateCell(11);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-        //                    style.FillPattern = FillPattern.SolidForeground;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //TG UNIT 2
-        //                    cell = (HSSFCell)row.CreateCell(12);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thin;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    //style.SetFillForegroundColor(new XSSFColor(System.Drawing.Color.FromArgb(255, 192, 192, 192)));
-        //                    style.FillPattern = FillPattern.SolidForeground;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-
-        //                    //Powerstation Measurement Unit?
-        //                    cell = (HSSFCell)row.CreateCell(13);
-        //                    style = (HSSFCellStyle)book.CreateCellStyle();
-        //                    style.BorderLeft = BorderStyle.Thin;
-        //                    style.BorderTop = BorderStyle.Hair;
-        //                    style.BorderRight = BorderStyle.Thick;
-        //                    style.BorderBottom = BorderStyle.Hair;
-        //                    font = (HSSFFont)book.CreateFont();
-        //                    font.FontName = "Arial";
-        //                    font.FontHeight = 8;
-        //                    style.SetFont(font);
-        //                    cell.CellStyle = style;
-        //                }
-
-        //                int incrementIndex = 0;
-        //                bool isOnLeft = true;
-        //                foreach (daily_log_wells well in dataWell)
-        //                {
-        //                    if (isOnLeft)
-        //                    {
-        //                        cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexLeft);
-        //                        cell.SetCellValue(well.name);
-        //                        incrementIndex++;
-        //                        if (incrementIndex == (halfMaxWellCount + rowsNeedToBeCreated))
-        //                        {
-        //                            isOnLeft = false;
-        //                            incrementIndex = 0;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        cell = (HSSFCell)sheet.GetRow(startRowIndex + incrementIndex).GetCell(colIndexRight);
-        //                        cell.SetCellValue(well.name);
-        //                        incrementIndex++;
-        //                    }
-
-        //                }
-        //                //this.FillPowerStation(ref sheet);
-        //                //sheet.AddMergedRegion(new CellRangeAddress(
-        //                //            12, //first row (0-based)
-        //                //            sheet.LastRowNum - 1, //last row  (0-based)
-        //                //            0, //first column (0-based)
-        //                //            0  //last column  (0-based)
-        //                //));
-        //            }
-
-
-        //        }
-
-
-
-        //        MemoryStream ms = new MemoryStream();
-        //        book.Write(ms);
-        //        excel = ms.ToArray();
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Response.Write("Internal Server Error. Please Contact Administrator <br/>");
-        //        Response.Write(e.ToString());
-        //        Response.End();
-        //    }
-
-        //    return excel;
-        //}
-
-        //private byte[] ProcessExcel(bool isDay)
-        //{
-        //            //culture
-        //    Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); //supaya file tidak corrupt
-        //    //Thread.CurrentThread.CurrentCulture = CultureInfo.InstalledUICulture;
- 
-        //    //kamus
-        //    XSSFWorkbook workbook = new XSSFWorkbook();
-        //    XSSFSheet sheet; XSSFRow row; XSSFCell cell;
-        //    XSSFCellStyle style; XSSFFont font;
-        //    CellRangeAddressList addressList; XSSFDataValidationHelper dvHelper; XSSFDataValidationConstraint constraint; XSSFDataValidation validation;
-        //    XSSFRow row2; XSSFCell cell2; //untuk di header
- 
-        //    int col = 0; List<OperationImportAccountModel> accounts; int childColIndex;
- 
-        //    //algoritma
-        //    sheet = (XSSFSheet)workbook.CreateSheet(companyName);
- 
-        //    if (companyAccounts.Count() > 0)
-        //    {
-        //        //create row (header)
-        //        row = (XSSFRow)sheet.CreateRow((short)0);
-        //        row2 = (XSSFRow)sheet.CreateRow((short)1);
- 
-        //        //header style
-        //        style = (XSSFCellStyle)workbook.CreateCellStyle();
-        //        font = (XSSFFont)workbook.CreateFont();
-        //        font.Boldweight = (short)FontBoldWeight.Bold; ;
-        //        style.SetFont(font);
- 
-        //        //header data
-        //        accounts = new OperationImportAccountModel().MapList(companyAccounts);
-        //        foreach (OperationImportAccountModel account in accounts)
-        //        {
-        //            cell = (XSSFCell)row.CreateCell(col);
-        //            cell.SetCellValue(account.Name);
-        //            cell.CellStyle = style;
- 
-        //            //merge cells + set col width
-        //            if (account.Children.Count() == 0) //account ga ada child
-        //            {
-        //                cell2 = (XSSFCell)row2.CreateCell(col);
-        //                sheet.AddMergedRegion(new CellRangeAddress(0, 1, col, col));
- 
-        //                sheet.SetColumnWidth(col, (30 * 256));
-        //                ++col;
-        //            }
-        //            else //account ada children
-        //            {
-        //                for (int childIndex = 0; childIndex < account.Children.Count(); childIndex++)
-        //                {
-        //                    childColIndex = col + childIndex;
- 
-        //                    cell2 = (XSSFCell)row2.CreateCell(childColIndex);
-        //                    cell2.SetCellValue(account.Children[childIndex].Name);
-        //                    cell2.CellStyle = style;
- 
-        //                    sheet.SetColumnWidth(childColIndex, (30 * 256));
- 
-        //                    if (childIndex > 0)
-        //                        cell2 = (XSSFCell)row.CreateCell(childColIndex);
-        //                }
- 
-        //                sheet.AddMergedRegion(new CellRangeAddress(0, 0, col, (col + account.Children.Count() - 1)));
-        //                col += account.Children.Count();
-        //            }
-        //        }
- 
-        //        //create row (isian user)
-        //        row = (XSSFRow)sheet.CreateRow((short)2);
- 
-        //        //currency
-        //        style = (XSSFCellStyle)workbook.CreateCellStyle();
-        //        style.DataFormat = workbook.CreateDataFormat().GetFormat("#,##0.00_);(#,##0.00)");
-        //        style.IsLocked = false;
-        //        for (int colIndex = 0; colIndex < col; ++colIndex)
-        //        {
-        //            cell = (XSSFCell)row.CreateCell(colIndex);
-        //            cell.CellStyle = style;
-        //        }
- 
-        //        //create row (footer)
-        //        row = (XSSFRow)sheet.CreateRow((short)3);
- 
-        //        //background
-        //        style = (XSSFCellStyle)workbook.CreateCellStyle();
-        //        //style.SetFillBackgroundColor(IndexedColors.Grey80Percent);
-        //        style.FillForegroundColor = (short)IndexedColors.Grey50Percent.Index;
-        //        style.FillPattern = FillPattern.ThinForwardDiagonals;
-        //        for (int colIndex = 0; colIndex < col; ++colIndex)
-        //        {
-        //            cell = (XSSFCell)row.CreateCell(colIndex);
-        //            cell.CellStyle = style;
-        //        }
- 
-        //        //data validation
-        //        addressList = new CellRangeAddressList(2, 2, 0, (col - 1));
-        //        dvHelper = new XSSFDataValidationHelper(sheet);
-        //        constraint = (XSSFDataValidationConstraint)dvHelper.CreateNumericConstraint(ValidationType.INTEGER, OperatorType.BETWEEN, "0", "1000000000000000000");
-        //        validation = (XSSFDataValidation)dvHelper.CreateValidation(constraint, addressList);
-        //        validation.ShowErrorBox = true;
-        //        validation.CreateErrorBox("Kesalahan Pengisian Data", "Nilai harus berupa angka, maksimal 1.000.000.000.000.000.000");
-        //        sheet.AddValidationData(validation);
- 
-        //        sheet.ProtectSheet("mobidig");
-        //    }
- 
-        //    //write to byte[]
-        //    MemoryStream ms = new MemoryStream();
-        //    workbook.Write(ms);
-
-        //    return ms.ToArray();
-        //}
+       
     }
 }
