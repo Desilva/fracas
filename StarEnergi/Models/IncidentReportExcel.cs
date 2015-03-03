@@ -83,5 +83,7 @@ namespace StarEnergi.Models
         public string potential_loss { get; set; }
         public string probability_str { get; set; }
         public string inves { get; set; }
+
+        public bool isCanEdit { get; set; }
     }
 }

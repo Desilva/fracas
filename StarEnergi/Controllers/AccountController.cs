@@ -47,7 +47,7 @@ namespace StarEnergi.Controllers
                         1,
                         e.alpha_name,  //user id
                         DateTime.Now,
-                        DateTime.Now.AddMinutes(240),  // expiry
+                        DateTime.Now.AddDays(1),  // expiry
                         false,  //do not remember
                         "{Id:'" + e.id + "',PassKey:'" + EncodePassword(a.username + a.password) +  "'}");
 
@@ -193,8 +193,10 @@ namespace StarEnergi.Controllers
 
         public ActionResult Delegate(int id)
         {
-
+            List<employee_delegations> delegations = db.employee_delegations.Where(p => p.id_employee == id).ToList();
             employee employee = db.employees.Find(id);
+            employee_delegations delegation = new employee_delegations();
+            delegation.id = 0;
 
             Dictionary<int, string> delegate_name = new Dictionary<int, string>();
             if (employee.employee2 != null)
@@ -206,12 +208,20 @@ namespace StarEnergi.Controllers
                         delegate_name.Add(e.id, e.alpha_name);
                 }
             }
+
             foreach (employee e in employee.employee1)
             {
                 delegate_name.Add(e.id, e.alpha_name);
             }
-            ViewBag.delegate_name = new SelectList(delegate_name, "Key", "Value",employee.employee_delegate);
-            return View(employee);
+
+            if (delegations.Count(p => p.is_active == true) > 0)
+            {
+                delegation = delegations.Where(p => p.is_active == true).FirstOrDefault();
+            }
+
+            ViewBag.delegate_name = new SelectList(delegate_name, "Key", "Value",delegation.id_delegate);
+            delegation.id_employee = id;
+            return View(delegation);
         }
 
         //
@@ -255,234 +265,339 @@ namespace StarEnergi.Controllers
         // POST: /EmployeeDept/Edit/5
 
         [HttpPost]
-        public ActionResult Delegate(employee employee)
+        public ActionResult Delegate(employee_delegations delegation)
         {
             NameValueCollection nvc = Request.Form;
             string prevDelegate = "";
-            employee es = db.employees.Find(employee.id);
-            prevDelegate = es.employee_delegate.ToString();
-            es.delagate = employee.delagate;
-            es.employee_delegate = employee.employee_delegate;
-            db.Entry(es).State = EntityState.Modified;
-            IEnumerable<DbEntityValidationResult> error = db.GetValidationErrors();
-            if (error.Count() == 0)
+            employee employee = db.employees.Find(delegation.id_employee);
+            prevDelegate = employee.employee_delegate.ToString();
+
+            if (delegation.date_end.Value.CompareTo(delegation.date_start.Value) >= 0)
             {
-                db.SaveChanges();
-
-                // IR Delegate
-                // get all data from IR where Field Manager isn't approved yet, 
-                // then check whether this employee is supervisor, superintendent, safety supervisor, she superintendent, or field manager in each report
-                List<incident_report> listIr = db.incident_report.Where(p => p.field_manager_approve == null).ToList();
-
-                if (employee.delagate == 1)
+                if (delegation.id == 0)
                 {
-                    foreach (incident_report Ir in listIr)
-                    {
-                        // as initiator - to be confirmed because delegation hasn't been made yet
-
-                        // as supervisor
-                        if (Ir.ack_supervisor == es.id.ToString() && (Ir.supervisor_approve == null || Ir.supervisor_approve.Substring(0,1) == "a"))
-                        {
-                            Ir.supervisor_delegate = es.employee_delegate.ToString();
-                        }
-
-                        // as superintendent
-                        if (Ir.superintendent == es.id.ToString() && (Ir.superintendent_approve == null || Ir.superintendent_approve.Substring(0, 1) == "a"))
-                        {
-                            Ir.superintendent_delegate = es.employee_delegate.ToString();
-                        }
-
-                        // as safety supervisor
-                        if (Ir.loss_control == es.id.ToString() && (Ir.loss_control_approve == null || Ir.loss_control_approve.Substring(0, 1) == "a"))
-                        {
-                            Ir.loss_control_delegate = es.employee_delegate.ToString();
-                        }
-
-                        // as SHE superintendent
-                        if (Ir.she_superintendent == es.id.ToString() && (Ir.she_superintendent_approve == null || Ir.she_superintendent_approve.Substring(0, 1) == "a"))
-                        {
-                            Ir.she_superintendent_delegate = es.employee_delegate.ToString();
-                        }
-
-                        // as Field Manager
-                        if (Ir.field_manager == es.id.ToString() && (Ir.field_manager_approve == null || Ir.field_manager_approve.Substring(0, 1) == "a"))
-                        {
-                            Ir.field_manager_delegate = es.employee_delegate.ToString();
-                        }
-                        db.Entry(Ir).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                    db.employee_delegations.Add(delegation);
                 }
-                else if (employee.delagate == 0)
+                else
                 {
-                    foreach (incident_report Ir in listIr)
+                    employee_delegations delegationDb = db.employee_delegations.Find(delegation.id);
+                    if (delegation.is_active == true)
                     {
-                        // as initiator - to be confirmed because delegation hasn't been made yet
-
-                        // as supervisor
-                        if (Ir.ack_supervisor == es.id.ToString() && Ir.supervisor_delegate == prevDelegate && (Ir.supervisor_approve == null || Ir.supervisor_approve.Substring(0,1) == "a"))
-                        {
-                            Ir.supervisor_delegate = null;
-                        }
-
-                        // as superintendent
-                        if (Ir.superintendent == es.id.ToString() && Ir.superintendent_delegate == prevDelegate && (Ir.superintendent_approve == null || Ir.superintendent_approve.Substring(0, 1) == "a"))
-                        {
-                            Ir.superintendent_delegate = null;
-                        }
-
-                        // as safety supervisor
-                        if (Ir.loss_control == es.id.ToString() && Ir.loss_control_delegate == prevDelegate && (Ir.loss_control_approve == null || Ir.loss_control_approve.Substring(0, 1) == "a"))
-                        {
-                            Ir.loss_control_delegate = null;
-                        }
-
-                        // as SHE superintendent
-                        if (Ir.she_superintendent == es.id.ToString() && Ir.she_superintendent_delegate == prevDelegate && (Ir.she_superintendent_approve == null || Ir.she_superintendent_approve.Substring(0, 1) == "a"))
-                        {
-                            Ir.she_superintendent_delegate = null;
-                        }
-
-                        // as Field Manager
-                        if (Ir.field_manager == es.id.ToString() && Ir.field_manager_delegate == prevDelegate && (Ir.field_manager_approve == null || Ir.field_manager_approve.Substring(0, 1) == "a"))
-                        {
-                            Ir.field_manager_delegate = null;
-                        }
-                        db.Entry(Ir).State = EntityState.Modified;
-                        db.SaveChanges();
+                        delegationDb.id_delegate = delegation.id_delegate;
                     }
-                }
-                
-
-                // IIR Delegate
-                // get all data from IIR where Field Manager isn't approved yet, 
-                // then check whether this employee is investigator(s), safety supervisor, she superintendent, or field manager in each report
-                List<investigation_report> listIir = db.investigation_report.Where(p => p.field_manager_approve == null).ToList();
-
-                if (employee.delagate == 1)
-                {
-                    foreach (investigation_report Iir in listIir)
-                    {
-                        // as Investigator - to be continued because delegation hasn't been made yet
-
-                        // as Safety Supervisor
-                        if (Iir.loss_control == es.id.ToString() && (Iir.loss_control_approve == null || Iir.loss_control_approve.Substring(0, 1) == "a"))
-                        {
-                            Iir.loss_control_delegate = es.employee_delegate.ToString();
-                        }
-
-                        // as SHE Superintendent
-                        if (Iir.safety_officer == es.id.ToString() && (Iir.safety_officer_approve == null || Iir.safety_officer_approve.Substring(0, 1) == "a"))
-                        {
-                            Iir.safety_officer_delegate = es.employee_delegate.ToString();
-                        }
-
-                        // as Field Manager
-                        if (Iir.field_manager == es.id.ToString() && (Iir.field_manager_approve == null || Iir.field_manager_approve.Substring(0, 1) == "a"))
-                        {
-                            Iir.field_manager_delegate = es.employee_delegate.ToString();
-                        }
-                        db.Entry(Iir).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                }
-                else if (employee.delagate == 0)
-                {
-                    foreach (investigation_report Iir in listIir)
-                    {
-                        // as Investigator - to be continued because delegation hasn't been made yet
-
-                        // as Safety Supervisor
-                        if (Iir.loss_control == es.id.ToString() && Iir.loss_control_delegate == prevDelegate && (Iir.loss_control_approve == null || Iir.loss_control_approve.Substring(0, 1) == "a"))
-                        {
-                            Iir.loss_control_delegate = null;
-                        }
-
-                        // as SHE Superintendent
-                        if (Iir.safety_officer == es.id.ToString() && Iir.safety_officer_delegate == prevDelegate && (Iir.safety_officer_approve == null || Iir.safety_officer_approve.Substring(0, 1) == "a"))
-                        {
-                            Iir.safety_officer_delegate = null;
-                        }
-
-                        // as Field Manager
-                        if (Iir.field_manager == es.id.ToString() && Iir.field_manager_delegate == prevDelegate && (Iir.field_manager_approve == null || Iir.field_manager_approve.Substring(0, 1) == "a"))
-                        {
-                            Iir.field_manager_delegate = null;
-                        }
-                        db.Entry(Iir).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                }
-                
-
-                // TSR Delegate
-                // get all data from IIR where Initiator Superintendent isn't approved yet, 
-                // then check whether this employee is initiator, initiator supervisor, or initiator superintendent in each report
-                List<trouble_shooting> listTsr = db.trouble_shooting.Where(p => p.superintendent_approval_signature == null).ToList();
-                if (employee.delagate == 1)
-                {
-                    foreach (trouble_shooting Tsr in listTsr)
-                    {
-                        // as Initiator - to be confirmed
-
-                        // as Initiator Supervisor
-                        if (Tsr.supervisor_approval_name == es.id.ToString() && (Tsr.supervisor_approval_signature == null || Tsr.supervisor_approval_signature.Substring(0, 1) == "a"))
-                        {
-                            Tsr.supervisor_delegate = es.employee_delegate.ToString();
-                        }
-
-                        // as Initiator Superintendent
-                        if (Tsr.superintendent_approval_name == es.id.ToString() && (Tsr.superintendent_approval_signature == null || Tsr.superintendent_approval_signature.Substring(0, 1) == "a"))
-                        {
-                            Tsr.superintendent_delegate = es.employee_delegate.ToString();
-                        }
-
-                        db.Entry(Tsr).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                }
-                else if (employee.delagate == 0)
-                {
-                    foreach (trouble_shooting Tsr in listTsr)
-                    {
-                        // as Initiator - to be confirmed
-
-                        // as Initiator Supervisor
-                        if (Tsr.supervisor_approval_name == es.id.ToString() && Tsr.supervisor_delegate == prevDelegate && (Tsr.supervisor_approval_signature == null || Tsr.supervisor_approval_signature.Substring(0, 1) == "a"))
-                        {
-                            Tsr.supervisor_delegate = null;
-                        }
-
-                        // as Initiator Superintendent
-                        if (Tsr.superintendent_approval_name == es.id.ToString() && Tsr.superintendent_delegate == prevDelegate && (Tsr.superintendent_approval_signature == null || Tsr.superintendent_approval_signature.Substring(0, 1) == "a"))
-                        {
-                            Tsr.superintendent_delegate = null;
-                        }
-
-                        db.Entry(Tsr).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                    delegationDb.date_start = delegation.date_start;
+                    delegationDb.date_end = delegation.date_end;
+                    delegationDb.is_active = delegation.is_active;
+                    db.Entry(delegationDb).State = EntityState.Modified;
                 }
 
-                // RCA Delegate
-                // get all data from RCA where Field Manager isn't approved yet,
-                // then check whether this employee is Principle Analyst, PA Superintendent, or Field Manager in each report
-                // to be continued - online approval system hasn't been made
+                if (delegation.is_active == true && DateTime.Today.CompareTo(delegation.date_start) >= 0)
+                {
+                    employee.delagate = 1;
+                    employee.employee_delegate = delegation.id_delegate;
+                    db.Entry(employee).State = EntityState.Modified;
+                }
+                else if (delegation.is_active == false)
+                {
+                    employee.delagate = 0;
+                    employee.employee_delegate = null;
+                    db.Entry(employee).State = EntityState.Modified;
+                }
 
-                // PIR Delegate
-                // get all data from PIR where PIR isn't verified yet,
-                // to be continued - must be checked first with current system
+                IEnumerable<DbEntityValidationResult> error = db.GetValidationErrors();
+                if (error.Count() == 0)
+                {
+                    db.SaveChanges();
 
-                
+                    // update delegation to each form in WW-IIS
+                    UpdateDelegationWWIIS(employee, delegation.is_active.Value, prevDelegate);
 
-                return Json(e.Succes("Success"));
+                    return Json(e.Succes("Success"));
+                }
+                else
+                {
+                    //return Json(error.First().ValidationErrors.ToArray());
+                    return Json(e.Fail(error));
+                }
             }
             else
             {
-                //return Json(error.First().ValidationErrors.ToArray());
-                return Json(e.Fail(error));
+                ModelState.AddModelError("date_start", "Date end can not before date start.");
+                return Json(e.Fail(ModelState));
             }
         }
 
+
+        private void UpdateDelegationWWIIS(employee employee, bool isDelegate, string prevDelegate)
+        {
+            // IR Delegate
+            // get all data from IR where Field Manager isn't approved yet, 
+            // then check whether this employee is supervisor, superintendent, safety supervisor, she superintendent, or field manager in each report
+            List<incident_report> listIr = db.incident_report.Where(p => p.field_manager_approve == null && p.reference_number.StartsWith("W")).ToList();
+
+            if (isDelegate && employee.delagate == 1)
+            {
+                //foreach (incident_report Ir in listIr)
+                //{
+                //    // as initiator - to be confirmed because delegation hasn't been made yet
+                //    if (Ir.field_manager_approve == null) {
+                //        // as supervisor
+                //        if (Ir.ack_supervisor == employee.id.ToString() && (Ir.supervisor_approve == null || Ir.supervisor_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.supervisor_delegate = employee.employee_delegate.ToString();
+                //        }
+
+                //        // as superintendent
+                //        if (Ir.superintendent == employee.id.ToString() && (Ir.superintendent_approve == null || Ir.superintendent_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.superintendent_delegate = employee.employee_delegate.ToString();
+                //        }
+
+                //        // as safety supervisor
+                //        if (Ir.loss_control == employee.id.ToString() && (Ir.loss_control_approve == null || Ir.loss_control_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.loss_control_delegate = employee.employee_delegate.ToString();
+                //        }
+
+                //        // as SHE superintendent
+                //        if (Ir.she_superintendent == employee.id.ToString() && (Ir.she_superintendent_approve == null || Ir.she_superintendent_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.she_superintendent_delegate = employee.employee_delegate.ToString();
+                //        }
+
+                //        // as Field Manager
+                //        if (Ir.field_manager == employee.id.ToString() && (Ir.field_manager_approve == null || Ir.field_manager_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.field_manager_delegate = employee.employee_delegate.ToString();
+                //        }
+                //        db.Entry(Ir).State = EntityState.Modified;
+                //        db.SaveChanges();
+                //    }
+                //}
+            }
+            else if (!isDelegate && employee.delagate == 0)
+            {
+                //foreach (incident_report Ir in listIr)
+                //{
+                //    if (Ir.field_manager_approve == null) {
+                //        // as initiator - to be confirmed because delegation hasn't been made yet
+
+                //        // as supervisor
+                //        if (Ir.ack_supervisor == employee.id.ToString() && Ir.supervisor_delegate == prevDelegate && (Ir.supervisor_approve == null || Ir.supervisor_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.supervisor_delegate = null;
+                //        }
+
+                //        // as superintendent
+                //        if (Ir.superintendent == employee.id.ToString() && Ir.superintendent_delegate == prevDelegate && (Ir.superintendent_approve == null || Ir.superintendent_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.superintendent_delegate = null;
+                //        }
+
+                //        // as safety supervisor
+                //        if (Ir.loss_control == employee.id.ToString() && Ir.loss_control_delegate == prevDelegate && (Ir.loss_control_approve == null || Ir.loss_control_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.loss_control_delegate = null;
+                //        }
+
+                //        // as SHE superintendent
+                //        if (Ir.she_superintendent == employee.id.ToString() && Ir.she_superintendent_delegate == prevDelegate && (Ir.she_superintendent_approve == null || Ir.she_superintendent_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.she_superintendent_delegate = null;
+                //        }
+
+                //        // as Field Manager
+                //        if (Ir.field_manager == employee.id.ToString() && Ir.field_manager_delegate == prevDelegate && (Ir.field_manager_approve == null || Ir.field_manager_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Ir.field_manager_delegate = null;
+                //        }
+                //        db.Entry(Ir).State = EntityState.Modified;
+                //        db.SaveChanges();
+                //    }
+                //}
+            }
+
+
+            // IIR Delegate
+            // get all data from IIR where Field Manager isn't approved yet, 
+            // then check whether this employee is investigator(s), safety supervisor, she superintendent, or field manager in each report
+            List<investigation_report> listIir = db.investigation_report.Where(p => p.field_manager_approve == null).ToList();
+
+            if (isDelegate && employee.delagate == 1)
+            {
+                //foreach (investigation_report Iir in listIir)
+                //{
+                //    if (Iir.field_manager_approve == null) {
+                //        // as Investigator - to be continued because delegation hasn't been made yet
+
+                //        // as Safety Supervisor
+                //        if (Iir.loss_control == employee.id.ToString() && (Iir.loss_control_approve == null || Iir.loss_control_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Iir.loss_control_delegate = employee.employee_delegate.ToString();
+                //        }
+
+                //        // as SHE Superintendent
+                //        if (Iir.safety_officer == employee.id.ToString() && (Iir.safety_officer_approve == null || Iir.safety_officer_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Iir.safety_officer_delegate = employee.employee_delegate.ToString();
+                //        }
+
+                //        // as Field Manager
+                //        if (Iir.field_manager == employee.id.ToString() && (Iir.field_manager_approve == null || Iir.field_manager_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Iir.field_manager_delegate = employee.employee_delegate.ToString();
+                //        }
+                //        db.Entry(Iir).State = EntityState.Modified;
+                //        db.SaveChanges();
+                //    }
+                //}
+            }
+            else if (!isDelegate && employee.delagate == 0)
+            {
+                //foreach (investigation_report Iir in listIir)
+                //{
+                //    if (Iir.field_manager_approve == null) {
+                //        // as Investigator - to be continued because delegation hasn't been made yet
+
+                //        // as Safety Supervisor
+                //        if (Iir.loss_control == employee.id.ToString() && Iir.loss_control_delegate == prevDelegate && (Iir.loss_control_approve == null || Iir.loss_control_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Iir.loss_control_delegate = null;
+                //        }
+
+                //        // as SHE Superintendent
+                //        if (Iir.safety_officer == employee.id.ToString() && Iir.safety_officer_delegate == prevDelegate && (Iir.safety_officer_approve == null || Iir.safety_officer_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Iir.safety_officer_delegate = null;
+                //        }
+
+                //        // as Field Manager
+                //        if (Iir.field_manager == employee.id.ToString() && Iir.field_manager_delegate == prevDelegate && (Iir.field_manager_approve == null || Iir.field_manager_approve.Substring(0, 1) == "a"))
+                //        {
+                //            Iir.field_manager_delegate = null;
+                //        }
+                //        db.Entry(Iir).State = EntityState.Modified;
+                //        db.SaveChanges();
+                //    }
+                //}
+            }
+
+
+            // TSR Delegate
+            // get all data from IIR where Initiator Superintendent isn't approved yet, 
+            // then check whether this employee is initiator, initiator supervisor, or initiator superintendent in each report
+            List<trouble_shooting> listTsr = db.trouble_shooting.Where(p => p.superintendent_approval_signature == null).ToList();
+            if (isDelegate && employee.delagate == 1)
+            {
+                //foreach (trouble_shooting Tsr in listTsr)
+                //{
+                //    if (Tsr.superintendent_approval_signature == null) {
+                //        // as Initiator - to be confirmed
+
+                //        // as Initiator Supervisor
+                //        if (Tsr.supervisor_approval_name == employee.id.ToString() && (Tsr.supervisor_approval_signature == null || Tsr.supervisor_approval_signature.Substring(0, 1) == "a"))
+                //        {
+                //            Tsr.supervisor_delegate = employee.employee_delegate.ToString();
+                //        }
+
+                //        // as Initiator Superintendent
+                //        if (Tsr.superintendent_approval_name == employee.id.ToString() && (Tsr.superintendent_approval_signature == null || Tsr.superintendent_approval_signature.Substring(0, 1) == "a"))
+                //        {
+                //            Tsr.superintendent_delegate = employee.employee_delegate.ToString();
+                //        }
+
+                //        db.Entry(Tsr).State = EntityState.Modified;
+                //        db.SaveChanges();
+                //    }
+                //}
+            }
+            else if (!isDelegate && employee.delagate == 0)
+            {
+                //foreach (trouble_shooting Tsr in listTsr)
+                //{
+                //    if (Tsr.superintendent_approval_signature == null) {
+                //        // as Initiator - to be confirmed
+
+                //        // as Initiator Supervisor
+                //        if (Tsr.supervisor_approval_name == employee.id.ToString() && Tsr.supervisor_delegate == prevDelegate && (Tsr.supervisor_approval_signature == null || Tsr.supervisor_approval_signature.Substring(0, 1) == "a"))
+                //        {
+                //            Tsr.supervisor_delegate = null;
+                //        }
+
+                //        // as Initiator Superintendent
+                //        if (Tsr.superintendent_approval_name == employee.id.ToString() && Tsr.superintendent_delegate == prevDelegate && (Tsr.superintendent_approval_signature == null || Tsr.superintendent_approval_signature.Substring(0, 1) == "a"))
+                //        {
+                //            Tsr.superintendent_delegate = null;
+                //        }
+
+                //        db.Entry(Tsr).State = EntityState.Modified;
+                //        db.SaveChanges();
+                //    }
+                //}
+            }
+
+            // RCA Delegate
+            // get all data from RCA where Field Manager isn't approved yet,
+            // then check whether this employee is Principle Analyst, PA Superintendent, or Field Manager in each report
+            // to be continued - online approval system hasn't been made
+
+            // PIR Delegate
+            // get all data from PIR where PIR isn't verified yet,
+            // to be continued - must be checked first with current system
+        }
+
+        public string GiveDelegation()
+        {
+            List<employee_delegations> delegations = db.employee_delegations.Where(p => p.is_active == true).ToList();
+            delegations = delegations.Where(p => p.date_start <= DateTime.Today).ToList();
+            string message = "";
+
+            foreach (employee_delegations delegation in delegations)
+            {
+                employee employee = db.employees.Find(delegation.id_employee);
+                if (employee.delagate != 1)
+                {
+                    employee.delagate = 1;
+                    employee.employee_delegate = delegation.id_delegate;
+                    db.Entry(employee).State = EntityState.Modified;
+                    int result = db.SaveChanges();
+                    if (result > 0)
+                    {
+                        message += employee.alpha_name + " has given delegation to " + delegation.id_delegate + "<br />";
+                    }
+                }
+            }
+
+            return message;
+        }
+
+        public string RemoveDelegation()
+        {
+            List<employee_delegations> delegations = db.employee_delegations.Where(p => p.is_active == true).ToList();
+            delegations = delegations.Where(p => p.date_end < DateTime.Today).ToList();
+            string message = "";
+
+            foreach (employee_delegations delegation in delegations)
+            {
+                employee employee = db.employees.Find(delegation.id_employee);
+                if (employee.delagate == 1)
+                {
+                    employee.delagate = 0;
+                    employee.employee_delegate = null;
+                    db.Entry(employee).State = EntityState.Modified;
+                    int result = db.SaveChanges();
+                    if (result > 0)
+                    {
+                        message += employee.alpha_name + " delegation has been removed.<br />";
+                    }
+                }
+
+                delegation.is_active = false;
+                db.Entry(employee).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return message;
+        }
     }
 }
