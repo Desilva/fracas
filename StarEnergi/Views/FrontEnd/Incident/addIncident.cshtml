@@ -621,7 +621,7 @@
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (user.id.ToString() == ir.she_superintendent) {
+                            else if (isEdit && user.id.ToString() == ir.she_superintendent) {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
                             else
@@ -713,8 +713,8 @@
                             if (!isEdit && user.position != null && user.position.ToLower() == "safety supervisor")
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
-                            } 
-                            else if (user.id.ToString() == ir.loss_control)
+                            }
+                            else if (isEdit && user.id.ToString() == ir.loss_control)
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
