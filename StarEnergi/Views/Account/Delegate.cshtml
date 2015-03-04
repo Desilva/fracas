@@ -55,7 +55,7 @@
             "date_start": $('#date_start').val(),
             "date_end": $('#date_end').val(),
         }
-
+        $('.errorM').html('');
         $.post('@Url.Content("~/Account/Delegate")', values, function (data) {
             if (data != undefined) {
                 if (data["status"] == 0) {

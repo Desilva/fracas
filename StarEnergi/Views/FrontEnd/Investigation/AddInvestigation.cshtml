@@ -687,7 +687,7 @@
                 {
                     <div class="investigators">
                         <div class="inves1">
-                            <select id="investigator1" name="investigator1" @(isEdit && iir.investigator_approve.Split(';').First() != null ? "disabled" : "")>
+                            <select id="investigator1" name="investigator1" @(isEdit && iir.investigator_approve != null && iir.investigator_approve.Split(';').First() != null ? "disabled" : "")>
                                 <option value="" selected disabled>Choose One</option>
                                 @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                                 {
