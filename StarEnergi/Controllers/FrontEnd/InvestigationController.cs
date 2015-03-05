@@ -107,6 +107,52 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             List<investigation_report> f = new List<investigation_report>();
             f = db.investigation_report.ToList();
+            string employeeId = Session["id"].ToString();
+
+            foreach (investigation_report incidentInvestigationReport in f)
+            {
+                bool isCanEdit = false;
+                employee employeeDelegation = new employee();
+                if (employeeId == incidentInvestigationReport.investigator.Split(';').First() && incidentInvestigationReport.investigator_approve.Split(';').First() == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.safety_officer && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.field_manager && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (isCanEdit == false)
+                {
+                    employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.loss_control));
+                    if (employeeId == employeeDelegation.employee_delegate.ToString() && incidentInvestigationReport.loss_control_approve == null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.safety_officer))).employee_delegate.ToString() && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.field_manager))).employee_delegate.ToString() && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+                }
+                incidentInvestigationReport.isCanEdit = isCanEdit;
+            }
 
             return View(new GridModel<investigation_report>
             {

@@ -22,10 +22,8 @@
         var dataItem = e.dataItem;
         var row = e.row;
         var username = '@HttpContext.Current.Session["id"].ToString()';
-        var isCanEdit = (username == dataItem.loss_control || username == dataItem.safety_officer || username == dataItem.field_manager) ? true : false;
-        isCanEdit = isCanEdit || (dataItem.investigator != null && dataItem.investigator.split(';').indexOf(username) >= 0);
+        var isCanEdit = dataItem.isCanEdit;
         isCanEdit = isCanEdit || isMasterAdmin == 'True';
-        console.log(dataItem.investigator.split(';'));
         var isApprove = dataItem.field_manager_approve != null && username == dataItem.lead_name;
         var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (dataItem.field_manager_approve == null ? '"Edit Incident Investigation Report"' : '"View Incident Investigation Report"') + ' >'
                                 + '<span class="t-icon t-edit"></span>'

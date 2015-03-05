@@ -583,6 +583,7 @@
     <Compile Include="Models\incident_report_log.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\InvestigationReportModel.cs" />
     <Compile Include="Models\investigation_report.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
