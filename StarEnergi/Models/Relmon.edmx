@@ -27,6 +27,7 @@
           <EntitySet Name="disciplines" EntityType="relmon_star_energiModel.Store.disciplines" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="email_error" EntityType="relmon_star_energiModel.Store.email_error" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="employee" EntityType="relmon_star_energiModel.Store.employee" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="employee_delegations" EntityType="relmon_star_energiModel.Store.employee_delegations" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="employee_dept" EntityType="relmon_star_energiModel.Store.employee_dept" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="equipment_daily_report" EntityType="relmon_star_energiModel.Store.equipment_daily_report" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="equipment_daily_report_table" EntityType="relmon_star_energiModel.Store.equipment_daily_report_table" store:Type="Tables" Schema="dbo" />
@@ -789,6 +790,17 @@
           <Property Name="department" Type="varchar" MaxLength="255" />
           <Property Name="approval_level" Type="tinyint" />
           <Property Name="kbp_code" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="employee_delegations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_employee" Type="int" />
+          <Property Name="date_start" Type="date" />
+          <Property Name="date_end" Type="date" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="id_delegate" Type="int" />
         </EntityType>
         <EntityType Name="employee_dept">
           <Key>
@@ -3283,6 +3295,7 @@
             <End Role="daily_log_wells" EntitySet="daily_log_wells" />
             <End Role="daily_log_to_wells" EntitySet="daily_log_to_wells" />
           </AssociationSet>
+          <EntitySet Name="employee_delegations" EntityType="relmon_star_energiModel.employee_delegations" />
           </EntityContainer>
         <ComplexType Name="observationByDate_Result">
           <Property Type="Int32" Name="year" Nullable="true" />
@@ -6556,6 +6569,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="employee_delegations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="id_employee" />
+          <Property Type="DateTime" Name="date_start" Precision="0" />
+          <Property Type="DateTime" Name="date_end" Precision="0" />
+          <Property Type="Boolean" Name="is_active" />
+          <Property Type="Int32" Name="id_delegate" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9094,6 +9118,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="employee_delegations">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.employee_delegations">
+              <MappingFragment StoreEntitySet="employee_delegations">
+                <ScalarProperty Name="id_delegate" ColumnName="id_delegate" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="id_employee" ColumnName="id_employee" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -9271,6 +9307,7 @@
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_sap_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.employee_delegations" Width="1.5" PointX="11.698995619872116" PointY="14.820788628803934" />
       </Diagram>
     </Diagrams>
   </Designer>

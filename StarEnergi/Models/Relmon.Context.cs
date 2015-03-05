@@ -128,6 +128,7 @@ namespace StarEnergi.Models
         public DbSet<daily_log> daily_log { get; set; }
         public DbSet<daily_log_to_wells> daily_log_to_wells { get; set; }
         public DbSet<daily_log_wells> daily_log_wells { get; set; }
+        public DbSet<employee_delegations> employee_delegations { get; set; }
     
         public virtual int insertUser(string username, Nullable<int> idEmployee)
         {
