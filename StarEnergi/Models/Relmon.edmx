@@ -3296,7 +3296,6 @@
             <End Role="user" EntitySet="users" />
             <End Role="user_per_role" EntitySet="user_per_role" />
           </AssociationSet>
-          <EntitySet Name="employee_delegations" EntityType="relmon_star_energiModel.employee_delegations" />
           </EntityContainer>
         <ComplexType Name="observationByDate_Result">
           <Property Type="Int32" Name="year" Nullable="true" />
@@ -4381,17 +4380,6 @@
           <NavigationProperty Name="rca_implementation" Relationship="relmon_star_energiModel.FK_rca_implementation_employee" FromRole="employee" ToRole="rca_implementation" />
           <NavigationProperty Name="rca_pre_task" Relationship="relmon_star_energiModel.FK_rca_pre_task_employee" FromRole="employee" ToRole="rca_pre_task" />
           <NavigationProperty Name="users" Relationship="relmon_star_energiModel.FK_users_employee" FromRole="employee" ToRole="user" />
-        </EntityType>
-        <EntityType Name="employee_delegations">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="id_employee" />
-          <Property Type="DateTime" Name="date_start" Precision="0" />
-          <Property Type="DateTime" Name="date_end" Precision="0" />
-          <Property Type="Boolean" Name="is_active" />
-          <Property Type="Int32" Name="id_delegate" />
         </EntityType>
         <EntityType Name="employee_dept">
           <Key>

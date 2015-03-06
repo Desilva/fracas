@@ -129,8 +129,6 @@ namespace StarEnergi.Models
         public DbSet<user_per_role> user_per_role { get; set; }
         public DbSet<user_role> user_role { get; set; }
         public DbSet<user> users { get; set; }
-        public DbSet<employee_delegations> employee_delegations { get; set; }
-    
         public virtual int insertUser(string username, Nullable<int> idEmployee)
         {
             var usernameParameter = username != null ?
