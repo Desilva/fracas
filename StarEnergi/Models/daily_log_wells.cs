@@ -23,7 +23,7 @@ namespace StarEnergi.Models
         public string name { get; set; }
         public Nullable<bool> is_delete { get; set; }
 
-        public virtual ICollection<daily_log_to_wells> daily_log_to_wells { get; set; }
+        public virtual ICollection<daily_log_to_wells> daily_log_to_wells { internal get; set; }
     }
     
 }
