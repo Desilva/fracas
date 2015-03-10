@@ -1373,6 +1373,14 @@
                                                                                                                                                                                                                                                                                                    {<text>disabled</text>}/></td>
 			                <td>C</td>
 		                </tr>
+                        <tr>
+                            <td>Wheel Case Pressure</td>
+			                <td class="gray-bg center number"><input type='text' id="sh2_wheel_case_pressure_1" name='wheel_case_pressure_1' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.wheel_case_pressure_1,out a) ? a.ToString("f2") : dl2.wheel_case_pressure_1) : "")" @if (isEdit2 && dl2.is_approve == 1)
+                                                                                                                                                                                                           {<text>disabled</text>}/></td>
+			                <td class="gray-bg center number"><input type='text' id="sh2_wheel_case_pressure_2" name='wheel_case_pressure_2' style='width:50px' value="@(isEdit2 ? (Double.TryParse(dl2.wheel_case_pressure_2,out a) ? a.ToString("f2") : dl2.wheel_case_pressure_2) : "")" @if (isEdit2 && dl2.is_approve == 1)
+                                                                                                                                                                                                           {<text>disabled</text>}/></td>
+			                <td>Bar</td>
+                        </tr>
                     </table>
                 </td>
 		    </tr>
