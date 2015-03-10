@@ -2071,7 +2071,7 @@ namespace StarEnergi.Controllers.FrontEnd
             var excel = this.ProcessExcel(filename);
             //var excel = this.ProcessExcel3(filename);
 
-            return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DailyLogDayShift_" + DateTime.Now.ToString("ddMMyyyy"));
+            return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", String.Format("DailyLogDayShift_{0}.xlsx", DateTime.Now.ToString("ddMMyyyy")));
             //return File(excel, "application/octet-stream", "DailyLogDayShift_" + DateTime.Now.ToString("ddMMyyyy"));
         }
 
@@ -2081,7 +2081,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
             var excel = this.ProcessExcel(filename,false);
 
-            return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DailyLogNightShift_" + DateTime.Now.ToString("ddMMyyyy"));
+            return File(excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", String.Format("DailyLogNightShift_{0}.xlsx", DateTime.Now.ToString("ddMMyyyy")));
             //return File(excel, "application/octet-stream", "DailyLogNightShift_" + DateTime.Now.ToString("ddMMyyyy"));
         }
 

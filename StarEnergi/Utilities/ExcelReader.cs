@@ -1510,7 +1510,7 @@ namespace StarEnergi.Utilities
                     book = new XSSFWorkbook(file);
                 }
 
-                sheet = (XSSFSheet)book.GetSheet("FormFracas");
+                sheet = (XSSFSheet)book.GetSheetAt(0);
                 rowCount = sheet.LastRowNum;
                 //rowCount = 28;
 
@@ -4134,7 +4134,7 @@ namespace StarEnergi.Utilities
             }
             catch (Exception ex)
             {
-                err.Add("Internal server error. Please make sure that the uploaded file is in .xlsx format. If the issue persist please contact administrator.");
+                err.Add("Internal server error. Please make sure that the uploaded file is a valid excel .xlsx format. If the issue persist please contact administrator.");
                 //err.Add(ex.ToString());
             }
 
