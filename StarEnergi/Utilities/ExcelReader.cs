@@ -2068,8 +2068,8 @@ namespace StarEnergi.Utilities
                                 }
                                 else
                                 {
-                                    allowSave = false;
-                                    err.Add(String.Format("Well name row {0} column {1} cannot be empty", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                    //allowSave = false;
+                                    //err.Add(String.Format("Well name row {0} column {1} cannot be empty", row + 1, CellReference.ConvertNumToColString(colNum)));
                                 }
 
                             }
