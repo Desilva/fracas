@@ -10,6 +10,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Telerik.Web.Mvc;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -114,9 +116,44 @@ namespace StarEnergi.Controllers.FrontEnd
             if (id != null)
             {
                 ViewBag.mod = id;
-                ViewBag.datas = db.trouble_shooting.Find(id);
-                ViewBag.superintendent_del = string.IsNullOrWhiteSpace(ts.superintendent_approval_signature) == null ? (string.IsNullOrWhiteSpace(ts.superintendent_approval_name) ? null : db.employees.Find(Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name)).employee_delegate) : null;
-                ViewBag.supervisor_del = string.IsNullOrWhiteSpace(ts.supervisor_approval_signature) == null ? (string.IsNullOrWhiteSpace(ts.supervisor_approval_name) ? null : db.employees.Find(Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name)).employee_delegate) : null;
+                trouble_shooting troubleShootingReport = db.trouble_shooting.Find(id);
+                ViewBag.datas = troubleShootingReport;
+                ViewBag.superintendent_del = string.IsNullOrWhiteSpace(ts.superintendent_approval_signature) == false ? (string.IsNullOrWhiteSpace(ts.superintendent_approval_name) ? null : db.employees.Find(Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name)).employee_delegate) : null;
+                ViewBag.supervisor_del = string.IsNullOrWhiteSpace(ts.supervisor_approval_signature) == false ? (string.IsNullOrWhiteSpace(ts.supervisor_approval_name) ? null : db.employees.Find(Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name)).employee_delegate) : null;
+
+                bool isCanEdit = false;
+                string employeeId = Session["id"].ToString();
+                employee employeeDelegation = new employee();
+                if (employeeId == troubleShootingReport.inspector_name && troubleShootingReport.inspector_signature == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == troubleShootingReport.supervisor_approval_name && troubleShootingReport.supervisor_approval_signature == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == troubleShootingReport.superintendent_approval_name && troubleShootingReport.superintendent_approval_signature == null && troubleShootingReport.supervisor_approval_signature != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (isCanEdit == false)
+                {
+                    employeeDelegation = db.employees.Find(Int32.Parse(troubleShootingReport.supervisor_approval_name));
+                    if (employeeId == employeeDelegation.employee_delegate.ToString() && troubleShootingReport.supervisor_approval_signature == null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(troubleShootingReport.superintendent_approval_name))).employee_delegate.ToString() && troubleShootingReport.superintendent_approval_signature == null && troubleShootingReport.supervisor_approval_signature != null)
+                    {
+                        isCanEdit = true;
+                    }
+                }
+
+                ViewBag.isCanEdit = isCanEdit;
             }
             else
             {
@@ -213,6 +250,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.supervisor_id = supervisor_id;
                 ViewBag.superintendent_id_del = superintendent_id_del;
                 ViewBag.supervisor_id_del = supervisor_id_del;
+                ViewBag.isCanEdit = true;
                 int last_id = db.trouble_shooting.ToList().Count == 0 ? 0 : db.trouble_shooting.Max(p => p.id);
                 last_id++;
                 string subPath = "~/Attachment/trouble_shooting/" + last_id + "/signatures"; // your code goes here
@@ -277,6 +315,19 @@ namespace StarEnergi.Controllers.FrontEnd
             db.trouble_shooting.Add(troubleShooting);
             db.SaveChanges();
             int id = troubleShooting.id;
+
+            //send email
+            SendEmailToAll(troubleShooting);
+
+            //SEND TO NEXT LEVEL
+            if (troubleShooting.supervisor_approval_name != null && troubleShooting.supervisor_approval_name != "")
+            {
+                this.SendUserNotification(troubleShooting, Int32.Parse(troubleShooting.supervisor_approval_name), "Please Approve "+troubleShooting.no);
+            }
+            if (troubleShooting.supervisor_delegate != null && troubleShooting.supervisor_delegate != "")
+            {
+                this.SendUserNotification(troubleShooting, Int32.Parse(troubleShooting.supervisor_delegate), "Please Approve " + troubleShooting.no);
+            }
 
             if (troubleShooting.id_ir != null)
             {
@@ -403,6 +454,18 @@ namespace StarEnergi.Controllers.FrontEnd
                 else if (ts.superintendent_delegate != null)
                     SendEmailApprove(ts, Int32.Parse(ts.superintendent_delegate));
 
+
+                //SEND TO NEXT LEVEL
+                if (ts.superintendent_approval_name != null && ts.superintendent_approval_name != "")
+                {
+                    this.SendUserNotification(ts, Int32.Parse(ts.superintendent_approval_name), "Please Approve " + ts.no);
+                }
+                if (ts.superintendent_delegate != null && ts.superintendent_delegate != "")
+                {
+                    this.SendUserNotification(ts, Int32.Parse(ts.superintendent_delegate), "Please Approve " + ts.no);
+                }
+
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -419,6 +482,17 @@ namespace StarEnergi.Controllers.FrontEnd
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
             SendEmailToAll(ts, 2, comment);
+
+            if (ts.supervisor_approval_name != null && ts.supervisor_approval_name != "")
+            {
+                this.SendUserNotification(ts, Int32.Parse(ts.supervisor_approval_name), ts.no + " is rejected with comment: " + comment);
+            }
+            if (ts.supervisor_delegate != null && ts.supervisor_delegate != "")
+            {
+                this.SendUserNotification(ts, Int32.Parse(ts.supervisor_delegate), ts.no + " is rejected with comment: " + comment);
+            }
+
+
             return Json(new { success = true });
 
         }
@@ -430,6 +504,12 @@ namespace StarEnergi.Controllers.FrontEnd
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
             SendEmailToAll(ts, 2, comment);
+
+            if (ts.inspector_name != null && ts.inspector_name != "")
+            {
+                this.SendUserNotification(ts, Int32.Parse(ts.inspector_name), ts.no + " is rejected with comment: " + comment);
+            }
+
             return Json(new { success = true });
         }
 
@@ -532,6 +612,40 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult ViewTroubleshooting(int id) {
             return PartialView(db.trouble_shooting.Find(id));
         }
+
+
+
+
+
+        private void SendUserNotification(trouble_shooting data, int sendUserId, string message)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+            WWService.ResponseModel response = client.CreateNotification(
+            EncodeMd5("starenergyww"),
+            sendUserId,
+            System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
+            "Troubleshooting Report",
+            message,
+            "/NotificationURLResolver/FRACAS?name=FRACAS_TROUBLESHOOTING_REPORT&id="+data.id);
+
+        }
+
+        private string EncodeMd5(string originalText)
+        {
+            //Declarations
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
+            md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalText);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            //Convert encoded bytes back to a 'readable' string
+            return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
+        }
+
 
     }
 }

@@ -12,8 +12,9 @@
         <input type="button" id="addSheObservation" value="Add SHE Observation" onclick="addSheObservation()"/>
         @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE))
         {
-        <input type="button" id="exportExcel" value="Export Report by Person" onclick="showDateChooser()"/>
+        <input type="button" id="exportExcel" value="Export Report by Person" onclick="showDateChooser('0')"/>
             <input type="button" id="exportExcelContractor" value="Export Report by Person Contractor" onclick="showChooser()"/>
+            <input type="button" id="exportExcelText" value="Export Report All Text" onclick="showDateChooser('1')"/>
         }
     </div>
 <br/>
@@ -97,16 +98,16 @@
     }
 
     function showSheObservation() {
-        $('#sheObservation').load('SheObservation/Report');
+        $('#sheObservation').load('SheObservation/Report?pg=' + '@ViewBag.page');
     }
 
     $(document).ready(function () {
         showSheObservation();
     });
 
-    function showDateChooser() {
+    function showDateChooser(type) {
         var detailWindow = $("#ExportReport").data("tWindow");
-        $('#type').val('0');
+        $('#type').val(type);
         detailWindow.center().open();
     }
 
@@ -117,6 +118,8 @@
         var to = $('#date_to').val();
         if ($('#type').val() == 0) {
             window.location = '/SheObservation/ExportExcelData?fromD=' + from + '&toD=' + to;
+        } else if ($('#type').val() == 1) {
+            window.location = '/SheObservation/ExportExcelDataAllText?fromD=' + from + '&toD=' + to;
         }
     }
 

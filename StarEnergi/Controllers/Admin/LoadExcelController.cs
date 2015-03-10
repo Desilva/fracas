@@ -35,32 +35,53 @@ namespace StarEnergi.Controllers.Admin
         {
             // extract only the fielname
             var fileName = Path.GetFileName(userfile.FileName);
+            var ext = Path.GetExtension(userfile.FileName);
+            string err = "";
+            if (ext != ".xls")
+            {
+                err = "The file format must be xls.";
+            } else {
+                // store the file inside ~/App_Data/uploads folder
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);           
+                userfile.SaveAs(path);
+                if (fileName == Config.fileExcelSBSTemplate)
+                    err = SaveExcel(path);
+                else if (fileName == Config.fileExcelDataMaster)
+                    err = SaveExcelDataMaster(path);
+                else if (fileName == Config.fileExcelReadNav)
+                    err = SaveExcelReadNav(path);
+                else if (fileName == Config.fileMA)
+                    err = SaveMA(path);
+                else if (fileName == Config.filePAF)
+                    err = SavePAF(path);
+                else if (fileName == Config.fileFracas)
+                    err = SaveFracas(path);
+                else if (fileName == Config.fileIR)
+                    err = SaveIR(path);
+                else if (fileName.Contains("Daily")) {
+                    err = SaveEquipmentDailyReport(path);
+                    err += "<script src='" + Url.Content("~/Scripts/2012.1.214/jquery-1.7.1.min.js") + "' type='text/javascript'></script><script type='text/javascript'>window.parent.$('#equipmentDailyReport').data('tGrid').rebind();</script>";
+                }
+                else if (fileName == Config.filePIR)
+                    err = SavePIR(path);
+                else if (fileName == Config.fileExcelBOM)
+                    err = SaveBOM(path);
+                else if (fileName == Config.fileExcelSafeManHours)
+                    err = SaveSafeMan(path);
+            }
+            return err;
+        }
+
+        [HttpPost]
+        public string SafeManHours(HttpPostedFileBase userfile)
+        {
+            // extract only the fielname
+            var fileName = Path.GetFileName(userfile.FileName);
             string err = "";
             // store the file inside ~/App_Data/uploads folder
-            var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);           
+            var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
             userfile.SaveAs(path);
-            if (fileName == Config.fileExcelSBSTemplate)
-                err = SaveExcel(path);
-            else if (fileName == Config.fileExcelDataMaster)
-                err = SaveExcelDataMaster(path);
-            else if (fileName == Config.fileExcelReadNav)
-                err = SaveExcelReadNav(path);
-            else if (fileName == Config.fileMA)
-                err = SaveMA(path);
-            else if (fileName == Config.filePAF)
-                err = SavePAF(path);
-            else if (fileName == Config.fileFracas)
-                err = SaveFracas(path);
-            else if (fileName == Config.fileIR)
-                err = SaveIR(path);
-            else if (fileName.Contains("Daily"))
-                err = SaveEquipmentDailyReport(path);
-            else if (fileName == Config.filePIR)
-                err = SavePIR(path);
-            else if (fileName == Config.fileExcelBOM)
-                err = SaveBOM(path);
-            else if (fileName == Config.fileExcelSafeManHours)
-                err = SaveSafeMan(path);
+            err = SaveSafeMan(path);
             return err;
         }
 

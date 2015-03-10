@@ -1,0 +1,23 @@
+﻿@using StarEnergi.Utilities;
+@{
+    EnumHelper eh = new EnumHelper();
+    KPIType type = (KPIType)ViewData["KPIType"];
+    string description = eh.GetEnumDescription(type);
+    string divId = "kpi-div-" + (int)type;
+}
+
+<div class="kpi-div" id="@divId">
+    <div class="kpi-row">
+        <div class="kpi-criteria">@description</div>
+        <div class="kpi-result"><img src="@Url.Content("~/Content/image/loading.gif")" alt="loading" /></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var kpiDiv = $('#@divId');
+        $.post('@Url.Action("CalculateKpi", "Kpi")', { type : '@type' }, function (data) {
+            kpiDiv.find('.kpi-result').html(data);
+        });
+    });
+</script>

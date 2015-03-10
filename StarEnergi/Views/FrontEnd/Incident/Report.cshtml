@@ -22,62 +22,63 @@
         var row = e.row;
         var username = '@username';
         var alpha_name = '@alpha_name';
-        var isCanEdit = alpha_name == dataItem.prepared_by ||
-            (username == dataItem.ack_supervisor && dataItem.supervisor_approve == null) ||
-            (username == dataItem.superintendent && dataItem.superintendent_approve == null) ||
-            (username == dataItem.field_manager && dataItem.field_manager_approve == null) ||
-            (username == dataItem.loss_control && dataItem.loss_control_approve == null) ||
-            (username == dataItem.she_superintendent && dataItem.she_superintendent_approve == null) ||
-            (username == dataItem.superintendent_delegate && dataItem.superintendent_approve == null) ||
-            (username == dataItem.field_manager_delegate && dataItem.field_manager_approve == null) ||
-            (username == dataItem.loss_control_delegate && dataItem.loss_control_approve == null) ||
-            (username == dataItem.she_superintendent_delegate && dataItem.she_superintendent_approve == null) ||
-            (username == dataItem.supervisor_delegate && dataItem.supervisor_approve == null) ? true : false;
-        isCanEdit = (isCanEdit || username == dataItem.lead_name) && dataItem.field_manager_approve == null;
+        //var isCanEdit = alpha_name == dataItem.prepared_by ||
+        //    (username == dataItem.ack_supervisor && dataItem.supervisor_approve == null) ||
+        //    (username == dataItem.superintendent && dataItem.superintendent_approve == null) ||
+        //    (username == dataItem.field_manager && dataItem.field_manager_approve == null) ||
+        //    (username == dataItem.loss_control && dataItem.loss_control_approve == null) ||
+        //    (username == dataItem.she_superintendent && dataItem.she_superintendent_approve == null) ||
+        //    (username == dataItem.superintendent_delegate && dataItem.superintendent_approve == null) ||
+        //    (username == dataItem.field_manager_delegate && dataItem.field_manager_approve == null) ||
+        //    (username == dataItem.loss_control_delegate && dataItem.loss_control_approve == null) ||
+        //    (username == dataItem.she_superintendent_delegate && dataItem.she_superintendent_approve == null) ||
+        //    (username == dataItem.supervisor_delegate && dataItem.supervisor_approve == null) ? true : false;
+        //isCanEdit = (isCanEdit || username == dataItem.lead_name) && dataItem.field_manager_approve == null;
 
-        if ((username == dataItem.field_manager || username == dataItem.field_manager_delegate) && dataItem.field_manager_approve == null) {
-            if (dataItem.she_superintendent_approve == null) {
-                isCanEdit = false;
-            } else {
-                isCanEdit = true;
-            }
-        }
+        //if ((username == dataItem.field_manager || username == dataItem.field_manager_delegate) && dataItem.field_manager_approve == null) {
+        //    if (dataItem.she_superintendent_approve == null) {
+        //        isCanEdit = false;
+        //    } else {
+        //        isCanEdit = true;
+        //    }
+        //}
 
-        if ((username == dataItem.she_superintendent || username == dataItem.she_superintendent_delegate) && dataItem.she_superintendent_approve == null) {
-            if (dataItem.loss_control_approve == null) {
-                isCanEdit = false;
-            }
-            else {
-                isCanEdit = true;
-            }
-        }
+        //if ((username == dataItem.she_superintendent || username == dataItem.she_superintendent_delegate) && dataItem.she_superintendent_approve == null) {
+        //    if (dataItem.loss_control_approve == null) {
+        //        isCanEdit = false;
+        //    }
+        //    else {
+        //        isCanEdit = true;
+        //    }
+        //}
 
-        if ((username == dataItem.loss_control || username == dataItem.loss_control_delegate) && dataItem.loss_control_approve == null) {
-            if (dataItem.superintendent_approve == null) {
-                isCanEdit = false;
-            }
-            else {
-                isCanEdit = true;
-            }
-        }
+        //if ((username == dataItem.loss_control || username == dataItem.loss_control_delegate) && dataItem.loss_control_approve == null) {
+        //    if (dataItem.superintendent_approve == null) {
+        //        isCanEdit = false;
+        //    }
+        //    else {
+        //        isCanEdit = true;
+        //    }
+        //}
 
-        if ((username == dataItem.superintendent || username == dataItem.superintendent_delegate) && dataItem.superintendent_approve == null) {
-            if (dataItem.supervisor_approve == null) {
-                isCanEdit = false;
-            }
-            else {
-                isCanEdit = true;
-            }
-        }
+        //if ((username == dataItem.superintendent || username == dataItem.superintendent_delegate) && dataItem.superintendent_approve == null) {
+        //    if (dataItem.supervisor_approve == null) {
+        //        isCanEdit = false;
+        //    }
+        //    else {
+        //        isCanEdit = true;
+        //    }
+        //}
 
 
-        if ((username == dataItem.ack_supervisor || username == dataItem.supervisor_approve) && dataItem.supervisor_approve == null) {
-            isCanEdit = true;
-        }
+        //if ((username == dataItem.ack_supervisor || username == dataItem.supervisor_approve) && dataItem.supervisor_approve == null) {
+        //    isCanEdit = true;
+        //}
 
-        if (username == dataItem.prepared_by && dataItem.supervisor_approve == null) {
-            isCanEdit = true;
-        }
+        //if (username == dataItem.prepared_by && dataItem.supervisor_approve == null) {
+        //    isCanEdit = true;
+        //}
+        var isCanEdit = dataItem.isCanEdit;
 
         var isApprove = dataItem.field_manager_approve != null && username == dataItem.lead_name;
         var isNeedRCA = dataItem.investigation == 1;
@@ -106,34 +107,45 @@
                                 + '</a>';
 
         var i = 0;
+        var defaultBackgroundColor = row.style.background;
+
+        if (username == dataItem.ack_supervisor || username == dataItem.supervisor_delegate) {
+            if (dataItem.supervisor_approve != null) {
+                row.style.background = 'orange';
+            } else {
+                row.style.background = defaultBackgroundColor;
+            }
+        }
 
         if (username == dataItem.superintendent || username == dataItem.superintendent_delegate) {
             if (dataItem.superintendent_approve != null) {
                 row.style.background = 'orange';
+            } else {
+                row.style.background = defaultBackgroundColor;
             }
         }
 
         if (username == dataItem.loss_control || username == dataItem.loss_control_delegate) {
             if (dataItem.loss_control_approve != null) {
                 row.style.background = 'orange';
+            } else {
+                row.style.background = defaultBackgroundColor;
             }
         }
 
         if (username == dataItem.she_superintendent || username == dataItem.she_superintendent_delegate) {
             if (dataItem.she_superintendent_approve != null) {
                 row.style.background = 'orange';
+            } else {
+                row.style.background = defaultBackgroundColor;
             }
         }
 
         if (username == dataItem.field_manager || username == dataItem.field_manager_delegate) {
             if (dataItem.field_manager_approve != null) {
                 row.style.background = 'orange';
-            }
-        }
-
-        if (username == dataItem.ack_supervisor || username == dataItem.supervisor_delegate) {
-            if (dataItem.supervisor_approve != null) {
-                row.style.background = 'orange';
+            } else {
+                row.style.background = defaultBackgroundColor;
             }
         }
 
@@ -284,7 +296,7 @@
         .Groupable()
 )
 
-@{  Html.Telerik().Window()
+@*@{  Html.Telerik().Window()
         .Name("Window")
         .Title("Choose Analysis Type")
         .Content(@<text>
@@ -302,4 +314,4 @@
         .Modal(true)
         .Visible(false)
         .Render();
-}
+}*@

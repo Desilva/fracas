@@ -21,6 +21,7 @@
 <html>
 <head>
 	<title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site-new.css")" rel="stylesheet" type="text/css" />
 	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/speedo.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Report.css")" rel="stylesheet" type="text/css" />
@@ -164,14 +165,14 @@
                                                 });
                                                item.Add().Text("SHE Observation Lucky Draw").Action("Index", "Undian");
                                            }
-                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)) {
-                                               item.Add().Text("SHE Safe Man Hours").Items(item2 =>
-                                                {
-                                                    item2.Add().Text("Monthly Project SHE Report").Action("Index", "SheProject");
+                                            item.Add().Text("SHE Safe Man Hours").Items(item2 =>
+                                            {
+                                                item2.Add().Text("Monthly Project SHE Report").Action("Index", "SheProject");
+                                                if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)) {
                                                     item2.Add().Text("Monthly Project SHE Recap").Action("ProjectReport", "SheProject");
                                                     item2.Add().Text("Safe Man Hours").Action("Index", "SheSafeManHours");
-                                                });
-                                           }
+                                                }
+                                            });
                                        });
                                }
                                menu.Add().Text("Daily Log").Action("Index", "DailyLogs");
@@ -210,6 +211,7 @@
 			    @RenderBody()
             </div>
 		</section>
+        @RenderSection("menuDashboard", false)
 		<footer>
 		</footer>
 	</div>
@@ -228,5 +230,6 @@
                 
     }
     @(Html.Telerik().ScriptRegistrar().DefaultGroup(group => group.Combined(true).Compress(true)).Globalization(true))
+    @RenderSection("scripts", false)
    </body>
 </html>

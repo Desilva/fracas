@@ -59,7 +59,6 @@ namespace StarEnergi.Models
         [Display(Name = "Lamda")]
         public Nullable<double> lamda { get; set; }
 
-        [Required]
         [Display(Name = "Sub Class")]
         public Nullable<int> id_discipline { get; set; }
 
@@ -92,7 +91,6 @@ namespace StarEnergi.Models
         [Display(Name = "Manufacture")]
         public string vendor { get; set; }
 
-        [Required]
         [Display(Name = "Equipment Class")]
         public Nullable<int> id_tag_type { get; set; }
         public Nullable<byte> status_read_nav { get; set; }
@@ -102,6 +100,10 @@ namespace StarEnergi.Models
 
         [Display(Name = "Sertifikasi")]
         public Nullable<System.DateTime> sertifikasi { get; set; }
+
+        [Display(Name = "P&ID Tag Num")]
+        [StringLength(255,ErrorMessage="P&ID Tag Number cannot more than 255 characters.")]
+        public string pnid_tag_num { get; set; }
 
         public virtual discipline discipline { get; set; }
         public virtual ICollection<equipment_event> equipment_event { get; set; }

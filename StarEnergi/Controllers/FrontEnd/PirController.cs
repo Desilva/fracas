@@ -13,6 +13,11 @@ using System.IO;
 using System.Diagnostics;
 using System.Web.UI;
 using StarEnergi.Controllers.Utilities;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -44,13 +49,15 @@ namespace StarEnergi.Controllers.FrontEnd
 
                 if (li.Exists(p => p.role == (int)Config.role.PIRINITIATOR || p.role == (int)Config.role.FULLPIR || p.role == (int)Config.role.AUDITOR))
                 {
-                    List<pir> list_pir = db.pirs.Where(p => p.date_rise.Value.Year == DateTime.Today.Year).ToList();
-                    int totalPir = list_pir.Count;
-                    int totalOverdue = list_pir.Where(a => a.target_completion_init < DateTime.Today).ToList().Count;
+                    List<pir> list_pir = db.pirs.ToList();
+                    int totalPir = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year).ToList().Count;
+                    int totalOverdue = list_pir.Where(a => a.target_completion_init != null && a.target_completion_init.Value.CompareTo(DateTime.Today) < 0).ToList().Count;
+                    int totalCompleteOnTime = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status == "VERIFIED" && a.sign_date_verified.Value.CompareTo(a.target_completion_init.Value) <= 0).ToList().Count;
                     double pir_target = db.she_KPI_target.Find(2).target != null ? db.she_KPI_target.Find(2).target.Value : 0;
-
-                    Debug.WriteLine(((double)totalOverdue / (double)totalPir) * (double)100);
-                    if (((double)totalOverdue / (double)totalPir) * (double)100 <= pir_target)
+                    int totalClose = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status == "VERIFIED").ToList().Count;
+                    int totalOpen = list_pir.Where(a => a.target_completion_init != null && a.target_completion_init.Value.CompareTo(DateTime.Today) >= 0).ToList().Count;
+                    int totalRaised = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status != "VERIFIED").ToList().Count;
+                    if (((double)totalCompleteOnTime / (double)totalPir) * (double)100 > pir_target || totalPir == 0)
                     {
                         ViewBag.success = true;
                     }
@@ -62,7 +69,10 @@ namespace StarEnergi.Controllers.FrontEnd
                     ViewBag.totalPir = totalPir;
                     ViewBag.totalOverdue = totalOverdue;
                     ViewBag.pir_target = pir_target;
-
+                    ViewBag.totalCompleteOnTime = totalCompleteOnTime;
+                    ViewBag.totalClose = totalClose;
+                    ViewBag.totalOpen = totalOpen;
+                    ViewBag.totalRaised = totalRaised;
                     ViewBag.user_role = li;
                     
                     ViewBag.nama = "Performance Improvement Request Inititator";
@@ -91,11 +101,11 @@ namespace StarEnergi.Controllers.FrontEnd
             var processUserList = new List<employee>();
             var query = (from a in db.employees
                          orderby a.alpha_name
-                         select new {a.id, a.alpha_name, a.position }).ToList();
+                         select new {a.id, a.alpha_name, a.position, a.kbp_code }).ToList();
             foreach (var a in query)
             {
                 //if (a.position.ToLower().Contains("superintendent"))
-                    processUserList.Add(new employee { alpha_name = a.alpha_name, id = a.id });
+                processUserList.Add(new employee { alpha_name = a.alpha_name + (a.kbp_code != null ? (" - " + a.kbp_code) : ""), id = a.id });
             }
 
             ViewBag.idRca = idRca;
@@ -112,7 +122,7 @@ namespace StarEnergi.Controllers.FrontEnd
                            select new EmployeeEntity
                            {
                                id = employees.id,
-                               alpha_name = employees.alpha_name,
+                               alpha_name = employees.alpha_name + (employees.kbp_code != null ? (" - " + employees.kbp_code) : ""),
                                employee_no = employees.employee_no,
                                position = employees.position,
                                work_location = employees.work_location,
@@ -120,7 +130,8 @@ namespace StarEnergi.Controllers.FrontEnd
                                dept_name = dept.dept_name,
                                username = ue.username,
                                employee = employees.employee2,
-                               approval_level = employees.approval_level
+                               approval_level = employees.approval_level,
+                               kbp_code = employees.kbp_code
                            }).ToList();
                 ViewBag.requester = requester != null ? has.Where(p => p.id == Int32.Parse(requester)).ToList().FirstOrDefault().username : null;
 
@@ -269,7 +280,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else if (a == 1)
                 {
-                    model = db.pirs.Where(p => p.status == "VERIFIED" && p.date_rise.Value.Year == DateTime.Today.Year).OrderByDescending(p => p.id);
+                    model = db.pirs.Where(p => p.status == "VERIFIED").OrderByDescending(p => p.id);
                 }
                 else if (a == 2)
                 {
@@ -277,16 +288,34 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else if (a == 3)
                 {
-                    model = db.pirs.Where(p => p.initiator_verified_date == null || p.date_rise != null || p.initiator_verified_date.Value <= p.date_rise.Value).OrderByDescending(p => p.id);
+                    model = db.pirs.Where(p => p.status != "VERIFIED").OrderByDescending(p => p.id);
                 }
                 else if (a == 4)
                 {
-                    model = db.pirs.Where(p => p.initiator_verified_date != null && p.date_rise != null && p.initiator_verified_date.Value > p.date_rise.Value).OrderByDescending(p => p.id);
+                    model = db.pirs.Where(p => p.status != "VERIFIED" && p.target_completion_init != null && DateTime.Today.CompareTo(p.target_completion_init.Value) > 0).OrderByDescending(p => p.id);
                 }
             }
-
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.dept_id
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = ue.username,
+                           employee = employees.employee2,
+                           approval_level = employees.approval_level
+                       }).ToList();
             List<PIREntity> ret = new List<PIREntity>();
             foreach (pir x in model.ToList()) {
+                EmployeeEntity e = has.Find(p => p.id == x.process_user);
                 ret.Add(new PIREntity { 
                     id = x.id,
                     no = x.no,
@@ -294,7 +323,9 @@ namespace StarEnergi.Controllers.FrontEnd
                     date_rise = x.date_rise,
                     target_completion_init = x.target_completion_init,
                     status = x.status,
-                    reference = x.reference
+                    reference = x.reference,
+                    source = x.from == 1 ? "IIR" : x.from == 2 ? "Internal Audit" : x.from == 3 ? "External Audit" : "",
+                    kbpo = e != null ? e.alpha_name : "",
                 });
             }
 
@@ -410,6 +441,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 pir.description = nvc["description"].ToString();
                 pir.pir_category = nvc["pir_category"].ToString();
                 pir.process_user = int.Parse(nvc["process_user"].ToString());
+
+                employee e = db.employees.Find(int.Parse(nvc["process_user"].ToString()));
+                pir.process_owner = e.kbp_code;
                 pir.from = (byte)identity;
                 db.pirs.Add(pir);
                 db.SaveChanges();
@@ -632,6 +666,11 @@ namespace StarEnergi.Controllers.FrontEnd
             //insert data to log
             insertLog(pir);
 
+            if (pir.process_user != null)
+            {
+                this.SendUserNotification(pir, pir.process_user.Value, "Please Process "+pir.no);
+            }
+
             return Json(true,JsonRequestBehavior.AllowGet);
         }
 
@@ -665,6 +704,18 @@ namespace StarEnergi.Controllers.FrontEnd
 
             //insert data to log
             insertLog(pir);
+
+            if (pir.initiate_by != null && pir.initiate_by != "")
+            {
+                var user = (from a in db.users
+                              where a.username == pir.initiate_by
+                              select a).FirstOrDefault();
+                if (user != null)
+                {
+                    this.SendUserNotification(pir, user.employee_id.Value, "Please Verify "+pir.no);
+                }
+            }
+
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -948,17 +999,236 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
 
             List<pir> list_pir = db.pirs.ToList();
-            int totalPir = list_pir.Count;
-            int totalOverdue = list_pir.Where(a => a.target_completion_init < DateTime.Today).ToList().Count;
-            bool success = ((double)totalOverdue / (double)totalPir) * (double)100 <= target;
+            int totalPir = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year).ToList().Count;
+            int totalOverdue = list_pir.Where(a => a.target_completion_init != null && a.target_completion_init.Value.CompareTo(DateTime.Today) < 0).ToList().Count;
+            int totalCompleteOnTime = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status == "VERIFIED" && a.sign_date_verified.Value.CompareTo(a.target_completion_init.Value) <= 0).ToList().Count;
+            double pir_target = db.she_KPI_target.Find(2).target != null ? db.she_KPI_target.Find(2).target.Value : 0;
+            int totalClose = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status == "VERIFIED").ToList().Count;
+            int totalOpen = list_pir.Where(a => a.target_completion_init != null && a.target_completion_init.Value.CompareTo(DateTime.Today) >= 0).ToList().Count;
+            int totalRaised = list_pir.Where(a => a.date_rise.Value.Year == DateTime.Today.Year && a.status != "VERIFIED").ToList().Count;
+            bool success = false;
+            if (((double)totalCompleteOnTime / (double)totalPir) * (double)100 > pir_target || totalPir == 0)
+            {
+                success = true;
+            }
+            else
+            {
+                success = false;
+
+            }
             return Json(new { success = true, totalPir = totalPir, totalOverdue = totalOverdue, successFail = success });
 
         }
 
         #endregion
 
+        public ActionResult ExportExcelData()
+        {
+            var model = db.pirs.OrderByDescending(p => p.id);
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       orderby employees.dept_id
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           username = ue.username,
+                           employee = employees.employee2,
+                           approval_level = employees.approval_level
+                       }).ToList();
+            List<PIREntityExport> ret = new List<PIREntityExport>();
+            foreach (pir x in model.ToList())
+            {
+                EmployeeEntity e = has.Find(p => p.id == x.process_user);
+                ret.Add(new PIREntityExport
+                {
+                    no = x.no,
+                    title = x.title,
+                    improvement_request = x.improvement_request,
+                    date_rise = x.date_rise,
+                    initiate_by = x.initiate_by,
+                    reference = x.reference,
+                    procedure_reference = x.procedure_reference,
+                    target_completion_init = x.target_completion_init,
+                    desc_prob = x.desc_prob,
+                    investigator = x.investigator,
+                    improvement_plant = x.improvement_plant,
+                    start_implement_date = x.start_implement_date,
+                    process_owner = x.process_owner,
+                    target_completion_process = x.target_completion_process,
+                    action_by = x.action_by,
+                    require_dokument = x.require_dokument,
+                    hira_require = x.hira_require,
+                    result_of_action = x.result_of_action,
+                    sign_date_verified = x.sign_date_verified,
+                    verified_desc = x.verified_desc,
+                    status = x.status,
+                    source = x.from == 1 ? "IIR" : x.from == 2 ? "Internal Audit" : x.from == 3 ? "External Audit" : "",
+                    kbpo = e != null ? e.alpha_name : "",
+                    PIRStatus = x.status == "VERIFIED" ? "Closed" : (x.target_completion_init != null && DateTime.Today.CompareTo(x.target_completion_init.Value) > 0 ? "Overdue" : (x.target_completion_init != null && DateTime.Today.CompareTo(x.target_completion_init.Value) <= 0 ? "Open" : "")),
+                });
+            }
+            GridView gv = new GridView();
+            gv.Caption = "Performance Improvement Request Data";
+            gv.DataSource = ret;
+            gv.DataBind();
+            gv.HeaderRow.Cells[0].Text = "PIR No.";
+            gv.HeaderRow.Cells[1].Text = "Title";
+            gv.HeaderRow.Cells[2].Text = "Improvement Request";
+            gv.HeaderRow.Cells[3].Text = "Date Raised";
+            gv.HeaderRow.Cells[4].Text = "Initiated By";
+            gv.HeaderRow.Cells[5].Text = "Reference";
+            gv.HeaderRow.Cells[6].Text = "Procedure Reference";
+            gv.HeaderRow.Cells[7].Text = "Proposed Completion Date";
+            gv.HeaderRow.Cells[8].Text = "Problem Description";
+            gv.HeaderRow.Cells[9].Text = "Investigator";
+            gv.HeaderRow.Cells[10].Text = "Improvement Plan";
+            gv.HeaderRow.Cells[11].Text = "Start Implementation Date";
+            gv.HeaderRow.Cells[12].Text = "Process Owner Code";
+            gv.HeaderRow.Cells[13].Text = "Target Completion Date";
+            gv.HeaderRow.Cells[14].Text = "Action By";
+            gv.HeaderRow.Cells[15].Text = "Required Document?";
+            gv.HeaderRow.Cells[16].Text = "Hira Required?";
+            gv.HeaderRow.Cells[17].Text = "Result of Action";
+            gv.HeaderRow.Cells[18].Text = "Verified Description";
+            gv.HeaderRow.Cells[19].Text = "Actual Completion Date";
+            gv.HeaderRow.Cells[20].Text = "Status";
+            gv.HeaderRow.Cells[21].Text = "Process Owner";
+            gv.HeaderRow.Cells[22].Text = "Source";
+            gv.HeaderRow.Cells[23].Text = "PIR Status";
+            if (gv != null)
+            {
+                return new DownloadFileActionResult(gv, "PIR Data (From WW-FRACAS) " + DateTime.Today.ToString("ddmmyyyy") + ".xls");
+            }
+            else
+            {
+                return new JavaScriptResult();
+            }
+        }
+
+        
+
+        public JsonResult showTrending(int from, int to) {
+            SqlConnection sqlConnection1 = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+
+            cmd.CommandText = @"with proc_owner_list(ownlist) as
+                (
+                select 'BPL'
+                union all
+                select 'GEL'
+                union all
+                select 'GDI'
+                union all
+                select 'POP'
+                union all
+                select 'MTW'
+                union all
+                select 'SPE'
+                union all
+                select 'OHE'
+                union all
+                select 'EPE'
+                union all
+                select 'EAI'
+                union all
+                select 'OSU'
+                union all
+                select 'LCO'
+                union all
+                select 'SSU'
+                union all
+                select 'MER'
+                union all
+                select 'SEC'
+                union all
+                select 'SCM'
+                union all
+                select 'MIS'
+                union all
+                select 'FPR'
+                union all
+                select 'PAC'
+                union all
+                select 'FHR'
+                ),
+                mnth(mnuum) as
+                (
+                select 2012
+                union all
+                select mnuum+1 from mnth where mnuum<year(getDate())
+                )
+                select a.mnuum as year, proc_owner_list.ownlist as process_owner, COUNT(CASE WHEN isnull(p.target_completion_init,'') <> '' AND (((year(GETDATE()) = a.mnuum) AND DateDiff(day,GETDATE(),p.target_completion_init) < 0 AND (p.status <> 'VERIFIED' OR (p.status = 'VERIFIED' AND DateDiff(day,GETDATE(),p.initiator_verified_date) > 0))) OR ((year(GETDATE()) <> a.mnuum) AND DateDiff(day,convert(datetime, ('12-31-' + Convert(varchar, a.mnuum))),p.target_completion_init) < 0 AND (p.status <> 'VERIFIED' OR (p.status = 'VERIFIED' AND DateDiff(day,convert(datetime, ('12-31-' + Convert(varchar, a.mnuum))),p.initiator_verified_date) > 0)))) THEN 1 END) as jumlah
+                from proc_owner_list cross join (select mnth.mnuum from mnth) a
+                left join (Select * from pir where DATEDIFF(day,GETDATE(),date_rise) <= 0) as p on p.process_owner = proc_owner_list.ownlist
+                group by ownlist, a.mnuum";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = sqlConnection1;
+
+            sqlConnection1.Open();
+            List<TrendData> listTrendData = new List<TrendData>();
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                TrendData td = new TrendData
+                {
+                    year = reader["year"].ToString(),
+                    kbp = reader["process_owner"].ToString(),
+                    count = (int)reader["jumlah"],
+                };
+                listTrendData.Add(td);
+            }
+            reader.Close();
+
+            return Json(listTrendData, JsonRequestBehavior.AllowGet);
+        }
+
+        private void SendUserNotification(pir data, int sendUserId, string message)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+            WWService.ResponseModel response = client.CreateNotification(
+            EncodeMd5("starenergyww"),
+            sendUserId,
+            System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
+            "PIR",
+            message,
+            "/NotificationUrlResolver/FRACAS?name=FRACAS_PIR&id="+data.id);
+
+        }
+
+        private string EncodeMd5(string originalText)
+        {
+            //Declarations
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
+            md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalText);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            //Convert encoded bytes back to a 'readable' string
+            return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
+        }
+
+
     }
 
+    public class TrendData
+    {
+        public string year { get; set; }
+        public string kbp { get; set; }
+        public int count { get; set; }
+    }
 
 
     public class Report
@@ -996,4 +1266,6 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
     }
+
+
 }

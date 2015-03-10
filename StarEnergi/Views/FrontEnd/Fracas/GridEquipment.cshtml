@@ -10,7 +10,7 @@
         var dataItem = e.dataItem;
         var row = e.row;
         var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="View" onClick="View(' + dataItem.id + ');">'
-                                + '<span class="t-icon t-edit"></span>'
+                                + '<span class="t-icon t-view-2"></span>'
                                 + '</a>';
         var templateUnComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="Edit" onClick="Edit(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-edit"></span>'
@@ -18,15 +18,15 @@
                                 //+ '<a class="t-button t-grid-delete t-button-icon t-button-icon" title="Delete" href="#">'
                                 //+ '<span class="t-icon t-delete"></span>'
                                 //+ '</a>'
-                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Complete" onClick="Complete(' + dataItem.id + ');">'
-                                + '<span class="t-icon t-complete"></span>'
-                                + '</a>'
                                 + (dataItem.id_ir == null ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Incident Report" onClick="AddIR(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-ir"></span>'
                                 + '</a>' : '')
                                 + (dataItem.id_tsr == 0 ? '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Add Trouble Shooting Report" onClick="AddTSR(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-tsr"></span>'
-                                + '</a>' : '');
+                                + '</a>' : '')
+                                + '<a class="t-button t-grid-selesai t-button-icon t-button-icon" title="Complete" onClick="Complete(' + dataItem.id + ');">'
+                                + '<span class="t-icon t-complete"></span>'
+                                + '</a>';
         var templateRepair = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" title="Edit" onClick="Edit(' + dataItem.id + ');">'
                                 + '<span class="t-icon t-edit"></span>'
                                 + '</a>'
@@ -130,6 +130,10 @@
 
     .t-ir {
         background-image:url("/Content/image/add_ir.png");
+    }
+
+    .t-view-2 {
+        background-image:url("/Content/image/view-2.png");
     }
 </style>
 @( 

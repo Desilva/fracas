@@ -58,6 +58,8 @@ namespace StarEnergi.Models
         public Nullable<byte> is_sign { get; set; }
         public Nullable<System.DateTime> sign_date { get; set; }
         public string pa_sign { get; set; }
+        public string immediate_cause { get; set; }
+        public string basic_cause { get; set; }
     
         public virtual pir pir { get; set; }
         public virtual ICollection<rca_csf_conector> rca_csf_conector { get; set; }

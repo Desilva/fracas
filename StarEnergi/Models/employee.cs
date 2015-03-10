@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
@@ -23,47 +22,22 @@ namespace StarEnergi.Models
             this.users = new HashSet<user>();
         }
     
-        [Key]
         public int id { get; set; }
-
-        [Required]
-        [Display(Name = "Employee No.")]
         public string employee_no { get; set; }
-
-        [Required]
-        [Display(Name = "Alpha Name")]
         public string alpha_name { get; set; }
-
-        [Required]
-        [Display(Name = "Position")]
         public string position { get; set; }
-
-        [Required]
-        [Display(Name = "Work Location")]
         public string work_location { get; set; }
-
         public Nullable<int> employee_dept { get; set; }
-
-        [Required]
-        [Display(Name = "DOH")]
-        [DataType(DataType.Date)]
         public Nullable<System.DateTime> dob { get; set; }
         public Nullable<int> employee_boss { get; set; }
         public Nullable<int> dept_id { get; set; }
-
-        [Required]
-        [Display(Name = "Email")]
         public string email { get; set; }
         public string signature { get; set; }
-
         public Nullable<byte> delagate { get; set; }
         public Nullable<int> employee_delegate { get; set; }
-
-        [Display(Name = "Department")]
         public string department { get; set; }
-
-        [Display(Name = "Approval Level")]
         public Nullable<byte> approval_level { get; set; }
+        public string kbp_code { get; set; }
     
         public virtual ICollection<employee> employee1 { get; set; }
         public virtual employee employee2 { get; set; }

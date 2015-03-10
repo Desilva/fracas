@@ -23,7 +23,7 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         // GET: /HseObservationForm/
 
-        public ActionResult Index()
+        public ActionResult Index(int? pg)
         {
             if (Session["username"] == null)
             {
@@ -47,19 +47,21 @@ namespace StarEnergi.Controllers.FrontEnd
                 //if (a.position.ToLower().Contains("superintendent"))
                 processUserList.Add(new employee { alpha_name = a.alpha_name, id = a.id });
             }
+            ViewBag.page = pg;
             ViewData["total"] = GetCount();
             ViewBag.emp_id = new SelectList(processUserList, "id", "alpha_name");
             return View();
         }
 
-        public ActionResult report()
+        public ActionResult report(int? pg)
         {
             ViewData["user_role"] = li;
             ViewData["total"] = GetCount();
+            ViewBag.page = pg;
             return PartialView();
         }
 
-        public ActionResult addSheObservation(int? id)
+        public ActionResult addSheObservation(int? id, int? page)
         {
             string username = Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
@@ -95,7 +97,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else
                 {
-                    return DetailSheObservation(id.Value);
+                    return DetailSheObservation(id.Value,page.Value);
                 }
             }
             else
@@ -502,7 +504,7 @@ namespace StarEnergi.Controllers.FrontEnd
             db.SaveChanges();
         }
 
-        public ActionResult DetailSheObservation(int id)
+        public ActionResult DetailSheObservation(int id, int page)
         {
             she_observation details = new she_observation();
             details = db.she_observation.Find(id);
@@ -528,7 +530,7 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.user = has;
             string username = Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
-
+            ViewBag.page = page;
             ViewBag.list_equipment = db.equipments.ToList();
             ViewBag.nama = "Detail She Observation";
             return PartialView(details);
@@ -749,6 +751,73 @@ namespace StarEnergi.Controllers.FrontEnd
             if (gv != null)
             {
                 return new DownloadFileActionResult(gv, "SHE Observation Person Report for " + department + ".xls");
+            }
+            else
+            {
+                return new JavaScriptResult();
+            }
+        }
+
+        public ActionResult ExportExcelDataAllText(DateTime fromD, DateTime toD)
+        {
+            List<SheObservationTextInput> result = new List<SheObservationTextInput>();
+            List<SheObservationPersonReport> emplo = new List<SheObservationPersonReport>();
+            var r = (from emp in db.employees
+                     orderby emp.department
+                     select new SheObservationPersonReport
+                     {
+                         id_employee = emp.id,
+                         alpha_name = emp.alpha_name,
+                         department = emp.department
+                     }).ToList();
+            emplo = r;
+            toD = toD.AddDays(1);
+            List<she_observation> listObs = db.she_observation.Where(p => p.date_time >= fromD && p.date_time <= toD).OrderBy(p => p.date_time).ToList();
+            foreach (she_observation obs in listObs)
+            {
+                SheObservationTextInput text = new SheObservationTextInput
+                {
+                    datetime = obs.date_time.Value.ToString("dd MMM yyyy hh:mm tt"),
+                    alpha_name = obs.observer,
+                    department = obs.department,
+                    location = obs.location,
+                    activity = obs.activity,
+                    safe_observed = obs.safe_observeds,
+                    action_taken = obs.action_encourage,
+                    unsafe_observed = obs.unsafe_observeds,
+                    immediate_action = obs.immediate_corrective_acts,
+                    action_prevent = obs.action_prevent
+                };
+
+                string[] emp = text.alpha_name.Split('#');
+                if (emp.Count() >= 1)
+                {
+                    text.alpha_name = emp[0];
+                }
+                result.Add(text);
+            }
+            toD = toD.AddDays(-1);
+            GridView gv = new GridView();
+            gv.Caption = "SHE Observation Report From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();
+            gv.DataSource = result;
+            if (result.Count == 0)
+            {
+                return new JavaScriptResult();
+            }
+            gv.DataBind();
+            gv.HeaderRow.Cells[0].Text = "Date/Time";
+            gv.HeaderRow.Cells[1].Text = "Name";
+            gv.HeaderRow.Cells[2].Text = "Department";
+            gv.HeaderRow.Cells[3].Text = "Location";
+            gv.HeaderRow.Cells[4].Text = "Activity";
+            gv.HeaderRow.Cells[5].Text = "Safe Act/Condition Observed";
+            gv.HeaderRow.Cells[6].Text = "Action taken to encourage continued SHE perfomances";
+            gv.HeaderRow.Cells[7].Text = "Unsafe Act/Conditions Observed";
+            gv.HeaderRow.Cells[8].Text = "Immediate corrective actions";
+            gv.HeaderRow.Cells[9].Text = "Action to prevent recurrences";
+            if (gv != null)
+            {
+                return new DownloadFileActionResult(gv, "SHE Observation Report Text Input (" + fromD.ToString("yyyyMMdd") + "-" + toD.ToString("yyyyMMdd") + ").xls");
             }
             else
             {

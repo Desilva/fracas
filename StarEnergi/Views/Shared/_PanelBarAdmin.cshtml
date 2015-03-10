@@ -65,6 +65,8 @@
             $('#content').load('PermitFO');
         } else if (item.find('> .t-link').text() == "PTW Assessor") {
             $('#content').load('PermitAssessor');
+        } else if (item.find('> .t-link').text() == "Daily Log Wells") {
+            $('#content').load('Wells');
         }
     }
 </script>
@@ -102,17 +104,18 @@
                     item.Add().Text("PIR Clause");
                     item.Add().Text("User Management");
                     item.Add().Text("Contractors");
+                    item.Add().Text("Daily Log Wells");
                 })
                 .Expanded(true);
-            panelBarItem.Add().Text("PTW Master Data")
-                .Items(item =>
-                {
-                    item.Add().Text("PTW Department");
-                    item.Add().Text("PTW Section");
-                    item.Add().Text("PTW Holder No");
-                    item.Add().Text("PTW Facility Owner");
-                    item.Add().Text("PTW Assessor");
-                });
+            //panelBarItem.Add().Text("PTW Master Data")
+            //    .Items(item =>
+            //    {
+            //        item.Add().Text("PTW Department");
+            //        item.Add().Text("PTW Section");
+            //        item.Add().Text("PTW Holder No");
+            //        item.Add().Text("PTW Facility Owner");
+            //        item.Add().Text("PTW Assessor");
+            //    });
             panelBarItem.Add().Text("Load Data From Excel")
                 .Items(item =>
                 {

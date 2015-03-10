@@ -1,0 +1,238 @@
+﻿@{
+    var htmlAttributes = new { style = "float: left;width: 180px;position: absolute; margin-left: 10px;" };
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (HttpContext.Current.Session["roles"] != null)
+    {
+        li = HttpContext.Current.Session["roles"] as List<StarEnergi.Models.user_per_role>;
+        
+    } else {
+        var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+        var baseurl = urlHelper.Content("~");
+        var returnUrl = HttpContext.Current.Request.RawUrl.Replace(baseurl, "");
+        System.Diagnostics.Debug.WriteLine("returnUrl = " + returnUrl);
+        if ((returnUrl.Contains("rca") || returnUrl.Contains("pir") || returnUrl.Contains("Hse") || returnUrl.Contains("admin")) && !returnUrl.Contains("LogOn")) {
+            HttpContext.Current.Response.Redirect(@Url.Action("LogOn", "Account", new { returnUrl = returnUrl }));
+        }
+    }
+    //HttpContext.Current.Response.Redirect(@Url.Action("LogOn","Account",new {returnUrl = returnUrl}));
+}
+@using StarEnergi
+<!DOCTYPE html>
+<html>
+<head>
+	<title>@ViewBag.Title</title>
+	<link href="@Url.Content("~/Content/Site-new.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/speedo.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Report.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/2012.1.214/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/wcw/ckeditor.js")" type="text/javascript" ></script>
+    
+@(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.webblue.css").Combined(true).Compress(true)))
+<script type="text/javascript">
+    function CheckForLoadEvent() {
+        if (window.main != null)
+            window.main();
+    }
+
+    jQuery(document).ready(function () {
+        var accum_width = 0;
+        $('#menu').find('.t-item').each(function () {
+            if ($(this).attr('id') == "dash") { } else {
+                accum_width += $(this).width() + 1;
+            }
+        });
+        var ld = 850 - jQuery("#logindisplay").width() - accum_width;
+
+        jQuery("#dash").css('margin-left', ld);
+        jQuery("#dash").css('border-left', 'none');
+        jQuery("#dash").css('border-right', '1px solid #fff');
+    });
+</script>
+</head>
+
+<body id="body" onload="CheckForLoadEvent();">
+	   <div id="page">
+	        <div id="header">
+		        <div class="wrap clearfix">
+                   @if (HttpContext.Current.Session["username"] == null) {
+                        <div id="adminLogin">
+							@Html.ActionLink("Login", "../Account/LogOn", new {returnUrl = ""})
+                        </div>
+                    }else{                     
+							if (li != null && li.Exists(p => p.role == (int)Config.role.ADMIN))
+							{
+								<div id="adminHasLogin">
+									@Html.ActionLink("Delegate", "../Account/Delegate/"+Session["id"], new { returnUrl = "" })<text> | </text>
+                                    @Html.ActionLink("Admin Page", "../Admin")<text> | </text>
+									@Html.ActionLink("Change Profil", "../Account/changeProfile/"+Session["id"], new { returnUrl = "" })
+								</div>
+							}else{
+								<div id="adminHasLogin2">
+                                    @Html.ActionLink("Delegate", "../Account/Delegate/"+Session["id"], new { returnUrl = "" })<text> | </text>
+									@Html.ActionLink("Change Profil", "../Account/changeProfile/"+Session["id"], new { returnUrl = "" })
+								</div>
+							}							                           
+                    }
+			        <div class="logo">
+                        <a href="@Url.Action("Index","Dashboard")">
+                            <div id="title">
+				                <h1>@*@Config.Title*@WW-IIS<span class="sub">@*@Config.Area*@Wayang Windu Integrated Information System</span></h1>
+                            </div>
+			            </a>
+			        </div>
+			        <!--<div id="title">
+				        <div class="sub">FRACAS</div><br/>
+                        <div class="sub">SHE</div><br/>
+                        <div class="sub">RCA</div><br/>
+                        <div class="sub">PIR</div><br/>
+                        <div class="sub">ASSET REGISTER</div>
+                    </div>-->
+			        <div class="additional"><img src="@Url.Content("~/Content/image/new/header.png")" alt="" /></div>
+		        </div>
+	        </div>
+    
+            <div id="mainmenu">
+                <div class="wrap">	
+                @{
+                    if (ViewBag.stat == "admin")
+                    {
+                        if (li.Exists(p => p.role == (int)Config.role.ADMIN))
+                        {
+                            Html.Telerik().Menu()
+                            .Name("dash")
+                            .Items(menu =>
+                            {
+                                menu.Add().Text("Back to Dashboard").Action("Index", "Dashboard");
+                            }).Render();
+                        }
+                        Html.RenderPartial("_LogOnPartial");
+                    }
+                    else
+                    {
+                        Html.Telerik().Menu()
+                           .Name("menu")
+                           .Items(menu =>
+                           {
+                               menu.Add().Text("Dashboard").Action("Index", "Dashboard");
+                               if (li != null && Session["id"].ToString() == "231") {
+                                    menu.Add().Text("Field Manager Summary").Action("Index", "FieldManagerSummary");
+                               }
+                               menu.Add().Text("FRACAS").Items(item =>
+                               {
+                                   item.Add().Text("FRACAS Event Log").Action("Index", "FracasEventLog");
+                                   item.Add().Text("Historical Data").Action("Index", "FracasHistory");
+                                   if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.FRACAS))
+                                   {
+                                       item.Add().Text("FRACAS Input").Action("Index", "Fracas");
+                                       item.Add().Text("Trouble Shooting").Action("Index", "TroubleShooting");
+                                   }
+                               });
+                               
+                               //menu.Add().Text("Historical Data").Action("Index", "FracasHistory");
+                               if (li != null && (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) || li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)StarEnergi.Config.role.AUDITOR || p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE || p.role == (int)StarEnergi.Config.role.MEDIC)))
+                               {
+                                   menu.Add().Text("SHE").Action("Index", "HseKPI")
+                                       .Items(item =>
+                                       {
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR || p.role == (int)Config.role.IIR || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           {
+                                                item.Add().Text("SHE Incident Report").Action("Index", "Incident");
+                                           }
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           {
+                                               item.Add().Text("SHE Incident Investigation Report").Action("Index", "Investigation");
+                                           }
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.MEDIC || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           {
+                                               item.Add().Text("Injury Report").Action("Index", "HseInjuryReport");
+                                           }
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.AUDITOR || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           {
+                                               item.Add().Text("SHE Audit").Action("Index", "HseAuditor");   
+                                           }
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.SHEOBSERVATION || p.role == (int)Config.role.ADMINSHEOBSERVATION || p.role == (int)Config.role.ADMINMASTERSHE))
+                                           {
+                                               item.Add().Text("SHE Observation Form").Action("Index", "SheObservation");
+                                           }
+                                           if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)) {    
+                                               item.Add().Text("SHE Observation Report by").Items(item2 =>
+                                                {
+                                                    item2.Add().Text("Year").Action("Index", "HseObservationYear");
+                                                    item2.Add().Text("Month").Action("Index", "HseObservationMonth");
+                                                    item2.Add().Text("Date").Action("Index", "HseObservationDate");
+                                                    item2.Add().Text("Other").Action("Index", "HseObservationOther");
+                                                    item2.Add().Text("Severity").Action("Index", "HseObservationSeverity");
+                                                });
+                                               item.Add().Text("SHE Observation Lucky Draw").Action("Index", "Undian");
+                                           }
+                                            item.Add().Text("SHE Safe Man Hours").Items(item2 =>
+                                            {
+                                                item2.Add().Text("Monthly Project SHE Report").Action("Index", "SheProject");
+                                                if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)) {
+                                                    item2.Add().Text("Monthly Project SHE Recap").Action("ProjectReport", "SheProject");
+                                                    item2.Add().Text("Safe Man Hours").Action("Index", "SheSafeManHours");
+                                                }
+                                            });
+                                       });
+                               }
+                               menu.Add().Text("Daily Log").Action("Index", "DailyLogs");
+                               if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.DAILYLOG)) {
+                                    menu.Add().Text("Equipment Daily Report").Action("Index", "EquipmentDailyReport");
+                               }
+                               menu.Add().Text("Asset Register").Action("Index", "AssetRegister");
+                               if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA || p.role == (int)StarEnergi.Config.role.RCAVIEW))
+                               {
+                                   menu.Add().Text("RCA").Action("Index", "rca");
+                               }
+                               if (li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.PIRINITIATOR || p.role == (int)StarEnergi.Config.role.PIRPROCESS || p.role == (int)StarEnergi.Config.role.FULLPIR || p.role == (int)StarEnergi.Config.role.AUDITOR))
+                               {
+                                   menu.Add().Text("PIR").Action("Index", "pir")
+                                       .Items(item =>
+                                       {
+                                           item.Add().Text("Report by").Items(item2 =>
+                                           {
+                                               item2.Add().Text("IIR").Action("Report", "pir", new { id_page = 1 });
+                                               item2.Add().Text("Internal Audit").Action("Report", "pir", new { id_page = 2 });
+                                               item2.Add().Text("External Audit").Action("Report", "pir", new { id_page = 3 });
+                                               item2.Add().Text("Summary").Action("Report", "pir", new { id_page = 4 });
+                                           });
+                                       });
+                               }
+                               menu.Add().Text("Help").Action("Index", "Help").ImageUrl(Url.Content("~/Content/image/icon/book-small.png"));
+                               
+                           }).Render();
+                        Html.RenderPartial("_LogOnPartial");
+                    }
+                }			
+                </div>
+            </div>
+		<section id="main">
+            <div class="wrap clearfix">
+			    @RenderBody()
+            </div>
+		</section>
+        @RenderSection("menuDashboard", false)
+	</div>
+
+    @{
+        Html.Telerik().ScriptRegistrar()
+            .Scripts(scripts =>
+                scripts.AddGroup("LayoutGroup", group =>
+                    group.Add("~/Scripts/relmon.js")
+                         .Add("~/Scripts/telerik.extensions.js")
+                         .Add("~/Scripts/jquery.speedo.js")
+                         .Add("~/Scripts/jquery.jqplot.min.js")
+                         .Add("~/Scripts/jqplot.bubbleRenderer.min.js")
+                )
+            );
+                
+    }
+    @(Html.Telerik().ScriptRegistrar().DefaultGroup(group => group.Combined(true).Compress(true)).Globalization(true))
+    @RenderSection("scripts", false)
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#dashboard').css('background', '#efefef url(image/new/bg-1.png) no-repeat');
+        });
+    </script>
+   </body>
+</html>

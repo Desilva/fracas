@@ -6,6 +6,10 @@ using System.Web.Mvc;
 using StarEnergi.Models;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using StarEnergyServiceGridHelper;
+using System.Web.Script.Serialization;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -51,7 +55,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 winner.winners = g;
             }
             ViewBag.winner = winner;
-            return View("Dashboard");
+            return View("DashboardNew");
         }
 
         #region speedometer
@@ -519,6 +523,69 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 return Json(false);
             }
+        }
+
+        #endregion
+
+
+        #region notificationGrid
+        public string Binding()
+        {
+            GridRequestParameters param = GridRequestParameters.Current;
+
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+            string serviceRequestData = new JavaScriptSerializer().Serialize(param);
+            int userId;
+            if (HttpContext.Session["id"] != null)
+            {
+                userId = Int32.Parse(HttpContext.Session["id"].ToString());
+            }
+            else
+            {
+                userId = 0;
+            }
+
+            string serviceResponse = client.GetUserNotification(serviceRequestData, userId, EncodeMd5("starenergyww"));
+
+            return serviceResponse;
+
+        }
+
+        public JsonResult NotificationIsSeen(int id)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+
+
+            int userId;
+            if (HttpContext.Session["id"] != null)
+            {
+                userId = Int32.Parse(HttpContext.Session["id"].ToString());
+            }
+            else
+            {
+                userId = 0;
+            }
+
+            //TO-DO: RESPONSE MODEL HANDLE ERROR DARI SERVER
+            client.NotifactionIsSeen(EncodeMd5("starenergyww"), id, userId);
+
+            return Json(true);
+        }
+
+        private string EncodeMd5(string originalText)
+        {
+            //Declarations
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
+            md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalText);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            //Convert encoded bytes back to a 'readable' string
+            return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
         }
 
         #endregion

@@ -32,9 +32,9 @@
     <br />
     <br />
     <hr />
-    @using (Html.BeginForm("Index", "LoadExcel", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
+    @using (Html.BeginForm("SafeManHours", "LoadExcel", FormMethod.Post, new { enctype = "multipart/form-data", name = "formUpload", target = "upload_target" }))
     {
-    	     <p class="title">Import Incident Report Data From Excel</p>
+    	     <p class="title">Import Monthly Project SHE Report Data From Excel</p>
 		 	 
 		     <div class="info_inside_left">Excel File (.xls) :</div> 
 		     <input type="text" id="fileName" class="file_input_textbox" readonly="readonly" />

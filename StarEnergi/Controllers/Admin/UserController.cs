@@ -30,6 +30,7 @@ namespace StarEnergi.Controllers.Admin
                        join users in db.users on employees.id equals users.employee_id into user_employee
                        from ue in user_employee.DefaultIfEmpty()
                        orderby employees.dept_id
+                       where employees.employee_dept != null && employees.employee_boss != null
                        select new EmployeeEntity
                        {
                            id = employees.id,

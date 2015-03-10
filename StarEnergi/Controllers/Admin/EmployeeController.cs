@@ -166,6 +166,7 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Delete(int id)
         {
             employee employee = db.employees.Find(id);
+
             return PartialView(employee);
         }
 
@@ -178,7 +179,9 @@ namespace StarEnergi.Controllers.Admin
             List<employee> le = getAllDeletedData(id);
             foreach (employee e in le)
             {
-                db.employees.Remove(e);
+                e.employee_boss = null;
+                e.employee_dept = null;
+                db.Entry(e).State = EntityState.Modified;
                 db.SaveChanges();
             }
             return Json(true);
@@ -193,14 +196,24 @@ namespace StarEnergi.Controllers.Admin
 
             list_e.Add(e);
 
-            for (int i = 0; i < list_e.Count; i++)
-            {
-                List<employee> le = list_e[i].employee1.ToList();
-                foreach (employee eee in le)
-                {
-                    list_e.Add(eee);
-                }
+            List<employee> le = e.employee1.ToList();
+
+            foreach (employee ee in le) {
+                ee.employee_boss = e.employee_boss;
+                ee.employee_dept = e.employee_dept;
+
+                db.Entry(ee).State = EntityState.Modified;
+                db.SaveChanges();
             }
+
+            //for (int i = 0; i < list_e.Count; i++)
+            //{
+            //    List<employee> le = list_e[i].employee1.ToList();
+            //    foreach (employee eee in le)
+            //    {
+            //        list_e.Add(eee);
+            //    }
+            //}
 
             list_e.Reverse();
 
@@ -236,11 +249,21 @@ namespace StarEnergi.Controllers.Admin
         {
             employee e = null;
             employee dest = null;
+            List<employee> emp = null;
             switch (type)
             {
                 case 1:
                     e = db.employees.Find(value_id);
                     dest = db.employees.Find(dest_id);
+
+                    emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+
+                    foreach (employee em in emp)
+                    {
+                        em.employee_boss = e.employee_boss;
+                        db.Entry(em).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
 
                     e.employee_dept = dest.employee_dept;
                     e.employee_boss = null;
@@ -253,6 +276,19 @@ namespace StarEnergi.Controllers.Admin
                     e = db.employees.Find(value_id);
                     dest = db.employees.Find(dest_id);
 
+                    if (e.employee_boss != dest.employee_boss)
+                    {
+
+                        emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+
+                        foreach (employee em in emp)
+                        {
+                            em.employee_boss = e.employee_boss;
+                            db.Entry(em).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
+
                     e.employee_dept = dest.employee_dept;
                     e.employee_boss = dest.employee_boss;
                     e.dept_id = dest.dept_id;
@@ -263,6 +299,19 @@ namespace StarEnergi.Controllers.Admin
                 case 3:
                     e = db.employees.Find(value_id);
                     dest = db.employees.Find(dest_id);
+
+                    if (e.dept_id != dest.dept_id)
+                    {
+
+                        emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+
+                        foreach (employee em in emp)
+                        {
+                            em.employee_boss = e.employee_boss;
+                            db.Entry(em).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
 
                     e.employee_dept = dest.employee_dept;
                     e.employee_boss = null;
@@ -275,6 +324,18 @@ namespace StarEnergi.Controllers.Admin
                     e = db.employees.Find(value_id);
                     dest = db.employees.Find(dest_id);
 
+                    if (e.dept_id != dest.dept_id)
+                    {
+                        emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+                        foreach (employee em in emp)
+                        {
+                            em.employee_boss = null;
+                            em.employee_dept = e.dept_id;
+                            db.Entry(em).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
+
                     e.employee_dept = dest.employee_dept;
                     e.employee_boss = dest.employee_boss;
                     e.dept_id = dest.dept_id;
@@ -285,6 +346,17 @@ namespace StarEnergi.Controllers.Admin
                 case 5:
                     e = db.employees.Find(value_id);
                     dest = db.employees.Find(dest_id);
+
+                    if (e.employee_boss != dest.id)
+                    {
+                        emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+                        foreach (employee em in emp)
+                        {
+                            em.employee_boss = e.employee_boss;
+                            db.Entry(em).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
 
                     e.employee_dept = null;
                     e.employee_boss = dest.id;
@@ -297,6 +369,14 @@ namespace StarEnergi.Controllers.Admin
                     e = db.employees.Find(value_id);
                     employee_dept dept = db.employee_dept.Find(dest_id);
 
+                    emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+                    foreach (employee em in emp)
+                    {
+                        em.employee_boss = e.employee_boss;
+                        db.Entry(em).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
                     e.employee_dept = dept.id;
                     e.employee_boss = null;
                     e.dept_id = dept.id;
@@ -307,6 +387,20 @@ namespace StarEnergi.Controllers.Admin
                 case 7:
                     e = db.employees.Find(value_id);
                     dest = db.employees.Find(dest_id);
+
+                    if (e.employee_boss != dest.id)
+                    {
+                        if (e.dept_id != dest.dept_id)
+                        {
+                            emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+                            foreach (employee em in emp)
+                            {
+                                em.employee_boss = e.employee_boss;
+                                db.Entry(em).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                        }
+                    }
 
                     e.employee_dept = null;
                     e.employee_boss = dest.id;
@@ -319,6 +413,18 @@ namespace StarEnergi.Controllers.Admin
                     e = db.employees.Find(value_id);
                     employee_dept dept2 = db.employee_dept.Find(dest_id);
 
+                    if (e.dept_id != dept2.id)
+                    {
+                        emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+                        foreach (employee em in emp)
+                        {
+                            em.employee_boss = null;
+                            em.employee_dept = e.dept_id;
+                            db.Entry(em).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
+
                     e.employee_dept = dept2.id;
                     e.employee_boss = null;
                     e.dept_id = dept2.id;
@@ -330,6 +436,18 @@ namespace StarEnergi.Controllers.Admin
                     e = db.employees.Find(value_id);
                     dest = db.employees.Find(dest_id);
 
+                    if (e.dept_id != dest.dept_id)
+                    {
+                        emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+                        foreach (employee em in emp)
+                        {
+                            em.employee_boss = null;
+                            em.employee_dept = e.dept_id;
+                            db.Entry(em).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
+
                     e.employee_dept = null;
                     e.employee_boss = dest.id;
                     e.dept_id = dest.dept_id;
@@ -340,6 +458,18 @@ namespace StarEnergi.Controllers.Admin
                 case 10:
                     e = db.employees.Find(value_id);
                     dest = db.employees.Find(dest_id);
+
+                    if (e.dept_id != dest.dept_id)
+                    {
+                        emp = db.employees.Where(p => p.employee_boss == value_id).ToList();
+                        foreach (employee em in emp)
+                        {
+                            em.employee_boss = null;
+                            em.employee_dept = e.dept_id;
+                            db.Entry(em).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
 
                     e.employee_dept = null;
                     e.employee_boss = dest.id;

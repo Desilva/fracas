@@ -10,6 +10,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Telerik.Web.Mvc;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace StarEnergi.Controllers.FrontEnd
 {
@@ -105,6 +107,52 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             List<investigation_report> f = new List<investigation_report>();
             f = db.investigation_report.ToList();
+            string employeeId = Session["id"].ToString();
+
+            foreach (investigation_report incidentInvestigationReport in f)
+            {
+                bool isCanEdit = false;
+                employee employeeDelegation = new employee();
+                if (employeeId == incidentInvestigationReport.investigator.Split(';').First() && incidentInvestigationReport.investigator_approve.Split(';').First() == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.safety_officer && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.field_manager && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (isCanEdit == false)
+                {
+                    employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.loss_control));
+                    if (employeeId == employeeDelegation.employee_delegate.ToString() && incidentInvestigationReport.loss_control_approve == null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.safety_officer))).employee_delegate.ToString() && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.field_manager))).employee_delegate.ToString() && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+                }
+                incidentInvestigationReport.isCanEdit = isCanEdit;
+            }
 
             return View(new GridModel<investigation_report>
             {
@@ -175,16 +223,18 @@ namespace StarEnergi.Controllers.FrontEnd
                     ViewBag.ir_ref = "W-O-SPE-IIR-" + year + "-" + refs.ToString().PadLeft(4, '0');
                 }
             }
+            ViewBag.isCanEdit = true;
             if (id_rca != null)
             {
-                List<string> r = db.rca_implementation.Where(p => p.id_rca == id_rca).Select(p => p.next_action).ToList();
+                //List<string> r = db.rca_implementation.Where(p => p.id_rca == id_rca).Select(p => p.next_action).ToList();
                 incident_report ir = db.incident_report.Where(p => p.id_rca == id_rca).ToList().FirstOrDefault();
+                rca rca = db.rcas.Find(id_rca);
                 ViewBag.ir = ir;
                 string dat = "";
-                foreach (string s in r)
-                {
-                    //dat += s + "\r";
-                }
+                //foreach (string s in r)
+                //{
+                //    //dat += s + "\r";
+                //}
                 ViewBag.datas = dat;
                 ViewBag.id_ir = id_rca;
                 string id_user = Session["username"].ToString();
@@ -199,15 +249,65 @@ namespace StarEnergi.Controllers.FrontEnd
                         id_iir = null,
                         PIC = imp.pic.ToString(),
                         description = imp.next_action,
-                        completion_date = imp.due_date
+                        completion_date = imp.due_date,
+                        id_rca = id_rca
                     };
                     db.iir_recommendations.Add(rec);
                     db.SaveChanges();
                 }
+
+                ViewBag.immediate_cause = rca.immediate_cause;
+                ViewBag.basic_cause = rca.basic_cause;
+                ViewBag.isCanEdit = true;
             } else if (id != null)
             {
                 ViewBag.mod = id;
-                ViewBag.datas = db.investigation_report.Find(id);
+                investigation_report incidentInvestigationReport = db.investigation_report.Find(id);
+                ViewBag.datas = incidentInvestigationReport;
+
+                bool isCanEdit = false;
+                string employeeId = Session["id"].ToString();
+                employee employeeDelegation = new employee();
+                if (employeeId == incidentInvestigationReport.investigator.Split(';').First() && incidentInvestigationReport.investigator_approve.Split(';').First() == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.safety_officer && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == incidentInvestigationReport.field_manager && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (isCanEdit == false)
+                {
+                    employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.loss_control));
+                    if (employeeId == employeeDelegation.employee_delegate.ToString() && incidentInvestigationReport.loss_control_approve == null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.safety_officer))).employee_delegate.ToString() && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.field_manager))).employee_delegate.ToString() && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+                }
+
+                ViewBag.isCanEdit = isCanEdit;
             }
             return View();
         }
@@ -215,6 +315,7 @@ namespace StarEnergi.Controllers.FrontEnd
         [HttpPost]
         public JsonResult Add(investigation_report investigationReport, int? id_rca, IList<string> investigators)
         {
+            
             employee e;
             //e = db.employees.Find(Int32.Parse(investigationReport.investigator));
 
@@ -279,7 +380,30 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.investigation_report_log.Add(ir_log);
             db.SaveChanges();
-            
+
+
+            //SEND TO NEXT LEVEL (TEAM)
+            List<int> sendInvestigatorDataTemp = new List<int>();
+            bool isFirstRecord = true;
+            foreach (string investigatorData in investigators)
+            {
+                if(isFirstRecord == true)
+                {
+                    isFirstRecord = false;
+                }
+                else if (investigatorData != null && investigatorData != "")
+                {
+                    sendInvestigatorDataTemp.Add(Int32.Parse(investigatorData));
+                    
+                }
+            }
+            if (sendInvestigatorDataTemp.Count > 0)
+            {
+                this.SendUserNotification(investigationReport, sendInvestigatorDataTemp.ToArray(), "Please Approve "+investigationReport.reference_number);
+            }
+
+
+
             
             var sendEmail = new SendEmailController();
             if (investigationReport.field_manager != null && investigationReport.field_manager_delegate == null)
@@ -330,7 +454,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 db.SaveChanges();
             }
 
-            List<iir_recommendations> li = db.iir_recommendations.Where(p => p.id_iir == null).ToList();
+            List<iir_recommendations> li = db.iir_recommendations.Where(p => p.id_rca == id_rca ).ToList();
             string recommendation = "";
             int i = 1;
             foreach (iir_recommendations l in li)
@@ -361,6 +485,20 @@ namespace StarEnergi.Controllers.FrontEnd
                                     investigationReport.reference_number + @".Below listed recommendations that need to be created PIR:
                                     <br /><br />" + recommendation + @"<br />Thank you.</i><br /><br />
                                     Salam,<br /><i>Regards,</i><br />" + db.employees.Find(Int32.Parse(HttpContext.Session["id"].ToString())).alpha_name, "Creating PIR");
+
+
+
+            ////SEND TO NEXT LEVEL (TEAM)
+            //if (ts.supervisor_approval_name != null && ts.supervisor_approval_name != "")
+            //{
+            //    this.SendUserNotification(ts, Int32.Parse(ts.supervisor_approval_name), comment);
+            //}
+            //if (ts.supervisor_delegate != null && ts.supervisor_delegate != "")
+            //{
+            //    this.SendUserNotification(ts, Int32.Parse(ts.supervisor_delegate), comment);
+            //}
+
+
 
 
             return Json(new { ref_num = ir_ref });
@@ -400,16 +538,16 @@ namespace StarEnergi.Controllers.FrontEnd
             iir.basic_causes = investigationReport.basic_causes;
             iir.additional_observation = investigationReport.additional_observation;
             iir.investigator = investigator;
-            iir.investigator_date = investigationReport.investigator_date;
+            //iir.investigator_date = investigationReport.investigator_date;
             iir.loss_control = investigationReport.loss_control;
-            iir.loss_control_date = investigationReport.loss_control_date;
+            //iir.loss_control_date = investigationReport.loss_control_date;
             iir.field_manager = investigationReport.field_manager;
-            iir.field_manager_date = investigationReport.field_manager_date;
-            iir.loss_control_delegate = investigationReport.loss_control_delegate;
-            iir.field_manager_delegate = investigationReport.field_manager_delegate;
+           // iir.field_manager_date = investigationReport.field_manager_date;
+            //iir.loss_control_delegate = investigationReport.loss_control_delegate;
+            //iir.field_manager_delegate = investigationReport.field_manager_delegate;
             iir.safety_officer = investigationReport.safety_officer;
-            iir.safety_officer_date = investigationReport.safety_officer_date;
-            iir.safety_officer_delegate = investigationReport.safety_officer_delegate;
+            //iir.safety_officer_date = investigationReport.safety_officer_date;
+            //iir.safety_officer_delegate = investigationReport.safety_officer_delegate;
 
             db.Entry(iir).State = EntityState.Modified;
             db.SaveChanges();
@@ -433,22 +571,26 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         // Ajax select binding recommendation
         [GridAction]
-        public ActionResult _SelectAjaxRecommendation(int? id)
+        public ActionResult _SelectAjaxRecommendation(int? id,int? id_rca)
         {
-            return bindingRecommendation(id);
+            return bindingRecommendation(id,id_rca);
         }
 
         //select data incident report
-        private ViewResult bindingRecommendation(int? id)
+        private ViewResult bindingRecommendation(int? id, int? id_rca)
         {
             List<iir_recommendations> f = new List<iir_recommendations>();
             Debug.WriteLine(id == null);
             if (id == null)
             {
-                f = db.iir_recommendations.Where(p => p.id_iir == null).ToList();
-                foreach (iir_recommendations iir in f)
+                if (id_rca != null)
                 {
-                    iir.PIC = db.employees.Find(Int32.Parse(iir.PIC)).alpha_name;
+                    f = db.iir_recommendations.Where(p => p.id_rca == id_rca).ToList();
+                    foreach (iir_recommendations iir in f)
+                    {
+                        employee e = db.employees.Find(Int32.Parse(iir.PIC != null && iir.PIC != "" ? iir.PIC : "0"));
+                        iir.PIC = e != null ? e.alpha_name : "";
+                    }
                 }
             }
             else
@@ -456,7 +598,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 f = db.iir_recommendations.Where(p => p.id_iir == id).ToList();
                 foreach (iir_recommendations iir in f)
                 {
-                    iir.PIC = db.employees.Find(Int32.Parse(iir.PIC)).alpha_name;
+                    employee e = db.employees.Find(Int32.Parse(iir.PIC != null && iir.PIC != "" ? iir.PIC : "0"));
+                    iir.PIC = e != null ? e.alpha_name : "";
                 }
             }
 
@@ -473,7 +616,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult _DeleteAjaxRecommendation(int id, int? id_iir)
         {
             deleteRecommendation(id);
-            return bindingRecommendation(id_iir);
+            return bindingRecommendation(id_iir,null);
         }
 
         //delete data fracas equipment
@@ -658,8 +801,10 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else
                 {
+                    iir.loss_control_delegate = employee_id.ToString();
                     iir.loss_control_approve = "d" + sign;
                 }
+                iir.loss_control_date = DateTime.Now;
                 db.Entry(iir).State = EntityState.Modified;
                 db.SaveChanges();
                 investigation_report_log ir_log = new investigation_report_log
@@ -671,6 +816,16 @@ namespace StarEnergi.Controllers.FrontEnd
                 };
                 db.investigation_report_log.Add(ir_log);
                 db.SaveChanges();
+
+                if (iir.safety_officer != null && iir.safety_officer != "")
+                {
+                    this.SendUserNotification(iir, Int32.Parse(iir.safety_officer), "Please Approve " + iir.reference_number);
+                }
+                if (iir.safety_officer_delegate != null && iir.safety_officer_delegate != "")
+                {
+                    this.SendUserNotification(iir, Int32.Parse(iir.safety_officer_delegate), "Please Approve " + iir.reference_number);
+                }
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -692,8 +847,10 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else
                 {
+                    iir.safety_officer_delegate = employee_id.ToString();
                     iir.safety_officer_approve = "d" + sign;
                 }
+                iir.safety_officer_date = DateTime.Now;
                 db.Entry(iir).State = EntityState.Modified;
                 db.SaveChanges();
                 investigation_report_log ir_log = new investigation_report_log
@@ -705,6 +862,16 @@ namespace StarEnergi.Controllers.FrontEnd
                 };
                 db.investigation_report_log.Add(ir_log);
                 db.SaveChanges();
+
+                if (iir.field_manager != null && iir.field_manager != "")
+                {
+                    this.SendUserNotification(iir, Int32.Parse(iir.field_manager), "Please Approve " + iir.reference_number);
+                }
+                if (iir.field_manager_delegate != null && iir.field_manager_delegate != "")
+                {
+                    this.SendUserNotification(iir, Int32.Parse(iir.field_manager_delegate), "Please Approve " + iir.reference_number);
+                }
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -749,7 +916,6 @@ namespace StarEnergi.Controllers.FrontEnd
                 inves_approve = inves_approve.Substring(0, inves_approve.Length - 1);
                 iir.investigator_approve = inves_approve;
                 db.Entry(iir).State = EntityState.Modified;
-                db.SaveChanges();
                 investigation_report_log ir_log = new investigation_report_log
                 {
                     id_iir = id,
@@ -758,6 +924,40 @@ namespace StarEnergi.Controllers.FrontEnd
                     date = DateTime.Now
                 };
                 db.investigation_report_log.Add(ir_log);
+                db.SaveChanges();
+
+                bool sendToLossControl = true;
+                string[] temp = iir.investigator_approve.Split(';');
+                foreach (string x in temp)
+                {
+                    if (x == "" || x == null)
+                    {
+                        sendToLossControl = false;
+                    }
+                }
+
+                if (sendToLossControl == true)
+                {
+                    if (iir.loss_control != null && iir.loss_control != "")
+                    {
+                        this.SendUserNotification(iir, Int32.Parse(iir.loss_control), "Please Approve " + iir.reference_number);
+                    }
+                    if (iir.loss_control_delegate != null && iir.loss_control_delegate != "")
+                    {
+                        this.SendUserNotification(iir, Int32.Parse(iir.loss_control_delegate), "Please Approve " + iir.reference_number);
+                    }
+
+                    ir_log = new investigation_report_log
+                    {
+                        id_iir = id,
+                        username = HttpContext.Session["username"].ToString(),
+                        status = "Approved by all Investigator",
+                        date = DateTime.Now
+                    };
+                    db.investigation_report_log.Add(ir_log);
+                    db.SaveChanges();
+                }
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -780,8 +980,10 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
                 else
                 {
+                    iir.field_manager_delegate = employee_id.ToString();
                     iir.field_manager_approve = "d" + sign;
                 }
+                iir.field_manager_date = DateTime.Now;
                 db.Entry(iir).State = EntityState.Modified;
                 db.SaveChanges();
                 investigation_report_log ir_log = new investigation_report_log
@@ -846,7 +1048,14 @@ namespace StarEnergi.Controllers.FrontEnd
 
             if (s.Count > 0)
                 sendEmail.Send(s, "Salam,\n\nIncident Investigation Report dengan Reference Number " + investigationReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh Safety Supervisor.\n\nTerima Kasih.", "Rejected Incident Investigation Report " + investigationReport.reference_number);
-            
+
+            string[] inves = investigationReport.investigator.Split(';');
+            if (inves[0] != null || inves[0] != "")
+            {
+                this.SendUserNotification(investigationReport, Int32.Parse(inves[0]), investigationReport.reference_number + " is rejected with comment: " + comment);
+            }
+
+
             return Json(new { success = true });
         }
 
@@ -864,6 +1073,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     s.Add(e.email);
             }
 
+            investigationReport.loss_control_delegate = null;
             investigationReport.loss_control_approve = null;
             db.Entry(investigationReport).State = EntityState.Modified;
             db.SaveChanges();
@@ -882,6 +1092,16 @@ namespace StarEnergi.Controllers.FrontEnd
             if (s.Count > 0)
                 sendEmail.Send(s, "Salam,\n\nIncident Investigation Report dengan Reference Number " + investigationReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh SHE Superintendent.\n\nTerima Kasih.", "Rejected Incident Investigation Report " + investigationReport.reference_number);
 
+            if (investigationReport.loss_control != null && investigationReport.loss_control != "")
+            {
+                this.SendUserNotification(investigationReport, Int32.Parse(investigationReport.loss_control), investigationReport.reference_number + " is rejected with comment: " + comment);
+            }
+            if (investigationReport.loss_control_delegate != null && investigationReport.loss_control_delegate != "")
+            {
+                this.SendUserNotification(investigationReport, Int32.Parse(investigationReport.loss_control_delegate), investigationReport.reference_number + " is rejected with comment: " + comment);
+            }
+
+
             return Json(new { success = true });
         }
 
@@ -899,6 +1119,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     s.Add(e.email);
             }
 
+            investigationReport.safety_officer_delegate = null;
             investigationReport.safety_officer_approve = null;
             db.Entry(investigationReport).State = EntityState.Modified;
             db.SaveChanges();
@@ -916,7 +1137,17 @@ namespace StarEnergi.Controllers.FrontEnd
 
             if (s.Count > 0)
                 sendEmail.Send(s, "Salam,\n\nIncident Investigation Report dengan Reference Number " + investigationReport.reference_number + " perlu diperbaiki dengan komentar\n\"" + comment + "\" oleh Field Manager.\n\nTerima Kasih.", "Rejected Incident Investigation Report " + investigationReport.reference_number);
-            
+
+            if (investigationReport.safety_officer != null && investigationReport.safety_officer != "")
+            {
+                this.SendUserNotification(investigationReport, Int32.Parse(investigationReport.safety_officer),investigationReport.reference_number + " is rejected with comment: " + comment);
+            }
+            if (investigationReport.safety_officer_delegate != null && investigationReport.safety_officer_delegate != "")
+            {
+                this.SendUserNotification(investigationReport, Int32.Parse(investigationReport.safety_officer_delegate), investigationReport.reference_number + " is rejected with comment: " + comment);
+            }
+
+
             return Json(new { success = true });
 
         }
@@ -978,6 +1209,48 @@ namespace StarEnergi.Controllers.FrontEnd
             if (s.Count > 0)
                 sendEmail.Send(s, "Bapak/Ibu,<br />Mohon review dan approval untuk Incident Investigation Report dengan nomor referensi " + investigationReport.reference_number + ".Terima Kasih.<br /><br /><i>Dear Sir/Madam,<br />Please review and approval for Incident Investigation Report with reference number " + investigationReport.reference_number + ".Thank you.</i><br /><br />Salam,<br /><i>Regards,</i><br />" + db.employees.Find(Int32.Parse(HttpContext.Session["id"].ToString())).alpha_name, "Approving Incident Investigation Report " + investigationReport.reference_number);
             return Json(true);
+        }
+
+        private void SendUserNotification(investigation_report data, int sendUserId, string message)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+            WWService.ResponseModel response = client.CreateNotification(
+            EncodeMd5("starenergyww"),
+            sendUserId,
+            System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
+            "Incident Investigation Report",
+            message,
+            "/NotificationUrlResolver/FRACAS?name=INCIDENT_INVESTIGATION_REPORT&id="+ data.id);
+
+        }
+
+        private void SendUserNotification(investigation_report data, int[] sendUserId, string message)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+            WWService.ResponseModel response = client.CreateNotificationList(
+            EncodeMd5("starenergyww"),
+            sendUserId,
+            System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
+            "Incident Investigation Report",
+            message,
+            "/NotificationUrlResolver/FRACAS?name=INCIDENT_INVESTIGATION_REPORT&id=" + data.id);
+
+        }
+
+        private string EncodeMd5(string originalText)
+        {
+            //Declarations
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
+            md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalText);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            //Convert encoded bytes back to a 'readable' string
+            return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
         }
     }
 }

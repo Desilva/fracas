@@ -381,7 +381,11 @@ function ReturnLinkEmployee(value, action) {
 //REMOVE NODE FROM TREE
 function RemoveItemEmployee(e) {
     var treeView = $("#TreeSBSEmployee").data("tTreeView");
+    var parent_item = $(e.node).parent().closest(".t-item");
+    console.log(parent_item);
     treeView.remove(e.node);
+    treeView.ajaxRequest(parent_item);
+    treeView.expand(parent_item);
 }
 
 //ADD NEW NODE TO TREE

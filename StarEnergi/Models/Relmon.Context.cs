@@ -7,12 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-
 namespace StarEnergi.Models
 {
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
+    
     public partial class relmon_star_energiEntities : DbContext
     {
         public relmon_star_energiEntities()
@@ -39,10 +42,14 @@ namespace StarEnergi.Models
         public DbSet<daily_log_pro> daily_log_pro { get; set; }
         public DbSet<daily_log_sags> daily_log_sags { get; set; }
         public DbSet<daily_log_sap> daily_log_sap { get; set; }
+        public DbSet<daily_log_to_wells> daily_log_to_wells { get; set; }
         public DbSet<daily_log_weekly_target> daily_log_weekly_target { get; set; }
+        public DbSet<daily_log_wells> daily_log_wells { get; set; }
         public DbSet<daily_log_wpnb> daily_log_wpnb { get; set; }
         public DbSet<discipline> disciplines { get; set; }
+        public DbSet<email_error> email_error { get; set; }
         public DbSet<employee> employees { get; set; }
+        public DbSet<employee_delegations> employee_delegations { get; set; }
         public DbSet<employee_dept> employee_dept { get; set; }
         public DbSet<equipment_daily_report> equipment_daily_report { get; set; }
         public DbSet<equipment_daily_report_table> equipment_daily_report_table { get; set; }
@@ -117,11 +124,101 @@ namespace StarEnergi.Models
         public DbSet<system> systems { get; set; }
         public DbSet<tag_types> tag_types { get; set; }
         public DbSet<trouble_shooting> trouble_shooting { get; set; }
-        public DbSet<trouble_shooting_log> trouble_shooting_log { get; set; }
         public DbSet<unit_paf> unit_paf { get; set; }
         public DbSet<unit> units { get; set; }
         public DbSet<user_per_role> user_per_role { get; set; }
         public DbSet<user_role> user_role { get; set; }
         public DbSet<user> users { get; set; }
+        public virtual int insertUser(string username, Nullable<int> idEmployee)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var idEmployeeParameter = idEmployee.HasValue ?
+                new ObjectParameter("idEmployee", idEmployee) :
+                new ObjectParameter("idEmployee", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("insertUser", usernameParameter, idEmployeeParameter);
+        }
+    
+        public virtual ObjectResult<observationByDate_Result> observationByDate(string year, string month, string day)
+        {
+            var yearParameter = year != null ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(string));
+    
+            var monthParameter = month != null ?
+                new ObjectParameter("month", month) :
+                new ObjectParameter("month", typeof(string));
+    
+            var dayParameter = day != null ?
+                new ObjectParameter("day", day) :
+                new ObjectParameter("day", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<observationByDate_Result>("observationByDate", yearParameter, monthParameter, dayParameter);
+        }
+    
+        public virtual ObjectResult<observationByDepartment_Result> observationByDepartment(string department)
+        {
+            var departmentParameter = department != null ?
+                new ObjectParameter("department", department) :
+                new ObjectParameter("department", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<observationByDepartment_Result>("observationByDepartment", departmentParameter);
+        }
+    
+        public virtual ObjectResult<observationByDepartmentObserver2_Result> observationByDepartmentObserver2(string department, string observer)
+        {
+            var departmentParameter = department != null ?
+                new ObjectParameter("department", department) :
+                new ObjectParameter("department", typeof(string));
+    
+            var observerParameter = observer != null ?
+                new ObjectParameter("observer", observer) :
+                new ObjectParameter("observer", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<observationByDepartmentObserver2_Result>("observationByDepartmentObserver2", departmentParameter, observerParameter);
+        }
+    
+        public virtual ObjectResult<observationByMonth_Result> observationByMonth(string year, string month)
+        {
+            var yearParameter = year != null ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(string));
+    
+            var monthParameter = month != null ?
+                new ObjectParameter("month", month) :
+                new ObjectParameter("month", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<observationByMonth_Result>("observationByMonth", yearParameter, monthParameter);
+        }
+    
+        public virtual ObjectResult<observationByObserver_Result> observationByObserver(string observer)
+        {
+            var observerParameter = observer != null ?
+                new ObjectParameter("observer", observer) :
+                new ObjectParameter("observer", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<observationByObserver_Result>("observationByObserver", observerParameter);
+        }
+    
+        public virtual int observationSummary(string year)
+        {
+            var yearParameter = year != null ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("observationSummary", yearParameter);
+        }
+    
+        public virtual int observationSummary3(string year)
+        {
+            var yearParameter = year != null ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("observationSummary3", yearParameter);
+        }
     }
 }

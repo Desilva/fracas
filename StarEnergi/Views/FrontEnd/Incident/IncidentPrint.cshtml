@@ -366,10 +366,16 @@
                     <td style="text-align:left;font-size:9px"><b>Prepared by:</b></td>
                     <td colspan="2" style="text-align:left;font-size:9px">
                         @Model.prepared_by
+                        @if (Model.requestor_approve != null) {
+                            <img width="50" height="50" @(Model.requestor_approve != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.requestor_approve != null ? Server.MapPath("~/"+Model.requestor_approve.Substring(1)) : Server.MapPath("~/Content/image/blank.png"))"/>
+                        }
                     </td>
                     <td style="text-align:left;font-size:9px"><b>Ack by supervisor</b></td>
                     <td colspan="2" style="text-align:left;font-size:9px">
                         @Model.ack_supervisor
+                        @if (Model.supervisor_approve != null) {
+                            <img width="50" height="50" @(Model.supervisor_approve != null ? "style='display:none;'" : "style='display:block;'")  src="@(Model.supervisor_approve != null ? Server.MapPath("~/"+Model.supervisor_approve.Substring(1)) : Server.MapPath("~/Content/image/blank.png"))"/>
+                        }
                     </td>
                 </tr>
                 <tr class="borderless">

@@ -72,9 +72,9 @@
 		
         <div class="info_inside_left">Repair Duration</div>
         <div class="infoFieldinput">
-            @(Html.Telerik().IntegerTextBox()
+            @(Html.Telerik().NumericTextBox()
                 .Name("durasi")
-                .Value((int?)@Model.durasi)
+                .Value((double?)@Model.durasi)
                 .InputHtmlAttributes(new { id = "durasi" })
             )&nbsp;Hours
         </div>

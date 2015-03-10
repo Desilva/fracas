@@ -16,6 +16,10 @@
         showEquipmentDailyReport();
     });
 
+    $('#upload_target').ready(function () {
+        //alert('b');
+    });
+
 </script>
 <div id = "contentEventLog">
 <h2 class="adminH2">Equipment Daily Report</h2>
@@ -44,5 +48,6 @@
 		 <input type="button" value="Upload" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; submit();" />
 }
 <br/>
-<iframe id="upload_target" name="upload_target" src="" width="980" height="350" style="border:0px solid #fff;"></iframe>
+<iframe id="upload_target" name="upload_target" src="" width="980" height="350" style="border:0px solid #fff;">
+</iframe>
 </div>

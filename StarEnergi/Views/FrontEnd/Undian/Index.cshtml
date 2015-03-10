@@ -135,11 +135,19 @@
     });
 
     function startDraw() {
-        $('#realmod_save').css("display", "block");
-        $('#startDraw').attr('disabled','disabled');
         var employee_id = [];
         var from = $('#date_from').val();
         var to = $('#date_to').val();
+
+        var fromDate = convertStringToDate(from);
+        var toDate = convertStringToDate(to);
+        
+        if (toDate.getMonth() - fromDate.getMonth() != 2) {
+            alert('The period must be three months in difference.');
+            return;
+        }
+        $('#realmod_save').css("display", "block");
+        $('#startDraw').attr('disabled','disabled');
         var checkBoxes = $("input[name='employee']");
         $.each(checkBoxes, function () {
             if ($(this).attr('checked')) {
@@ -168,6 +176,12 @@
                 }
             }
         });
+    }
+
+    function convertStringToDate(string) {
+        var parts =string.split('/');
+        var mydate = new Date(parts[2],parts[0]-1,parts[1]);
+        return mydate;
     }
 
     function viewWinner() {

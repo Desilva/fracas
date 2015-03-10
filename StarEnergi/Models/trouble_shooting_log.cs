@@ -15,11 +15,11 @@ namespace StarEnergi.Models
     public partial class trouble_shooting_log
     {
         public int id { get; set; }
-        public Nullable<int> id_tsr { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
-        public string username { get; set; }
-        public string status { get; set; }
         public string comment { get; set; }
+        public Nullable<System.DateTime> date { get; set; }
+        public Nullable<int> id_tsr { get; set; }
+        public string status { get; set; }
+        public string username { get; set; }
     }
     
 }

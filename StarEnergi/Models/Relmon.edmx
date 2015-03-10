@@ -20,10 +20,14 @@
           <EntitySet Name="daily_log_pro" EntityType="relmon_star_energiModel.Store.daily_log_pro" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="daily_log_sags" EntityType="relmon_star_energiModel.Store.daily_log_sags" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="daily_log_sap" EntityType="relmon_star_energiModel.Store.daily_log_sap" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="daily_log_to_wells" EntityType="relmon_star_energiModel.Store.daily_log_to_wells" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="daily_log_weekly_target" EntityType="relmon_star_energiModel.Store.daily_log_weekly_target" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="daily_log_wells" EntityType="relmon_star_energiModel.Store.daily_log_wells" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="daily_log_wpnb" EntityType="relmon_star_energiModel.Store.daily_log_wpnb" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="disciplines" EntityType="relmon_star_energiModel.Store.disciplines" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="email_error" EntityType="relmon_star_energiModel.Store.email_error" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="employee" EntityType="relmon_star_energiModel.Store.employee" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="employee_delegations" EntityType="relmon_star_energiModel.Store.employee_delegations" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="employee_dept" EntityType="relmon_star_energiModel.Store.employee_dept" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="equipment_daily_report" EntityType="relmon_star_energiModel.Store.equipment_daily_report" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="equipment_daily_report_table" EntityType="relmon_star_energiModel.Store.equipment_daily_report_table" store:Type="Tables" Schema="dbo" />
@@ -98,7 +102,6 @@
           <EntitySet Name="systems" EntityType="relmon_star_energiModel.Store.systems" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="tag_types" EntityType="relmon_star_energiModel.Store.tag_types" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="trouble_shooting" EntityType="relmon_star_energiModel.Store.trouble_shooting" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="trouble_shooting_log" EntityType="relmon_star_energiModel.Store.trouble_shooting_log" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="unit_paf" EntityType="relmon_star_energiModel.Store.unit_paf" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="units" EntityType="relmon_star_energiModel.Store.units" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="user_per_role" EntityType="relmon_star_energiModel.Store.user_per_role" store:Type="Tables" Schema="dbo" />
@@ -148,6 +151,14 @@
           <AssociationSet Name="FK_daily_log_sap_daily_log" Association="relmon_star_energiModel.Store.FK_daily_log_sap_daily_log">
             <End Role="daily_log" EntitySet="daily_log" />
             <End Role="daily_log_sap" EntitySet="daily_log_sap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_daily_log_to_wells_daily_log" Association="relmon_star_energiModel.Store.FK_daily_log_to_wells_daily_log">
+            <End Role="daily_log" EntitySet="daily_log" />
+            <End Role="daily_log_to_wells" EntitySet="daily_log_to_wells" />
+          </AssociationSet>
+          <AssociationSet Name="FK_daily_log_to_wells_daily_log_wells" Association="relmon_star_energiModel.Store.FK_daily_log_to_wells_daily_log_wells">
+            <End Role="daily_log_wells" EntitySet="daily_log_wells" />
+            <End Role="daily_log_to_wells" EntitySet="daily_log_to_wells" />
           </AssociationSet>
           <AssociationSet Name="FK_disciplines_tag_types" Association="relmon_star_energiModel.Store.FK_disciplines_tag_types">
             <End Role="tag_types" EntitySet="tag_types" />
@@ -701,6 +712,18 @@
           <Property Name="notif_by" Type="varchar" MaxLength="255" />
           <Property Name="sap_time" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="daily_log_to_wells">
+          <Key>
+            <PropertyRef Name="daily_log_id" />
+            <PropertyRef Name="daily_log_wells_id" />
+          </Key>
+          <Property Name="daily_log_id" Type="int" Nullable="false" />
+          <Property Name="daily_log_wells_id" Type="int" Nullable="false" />
+          <Property Name="fcv" Type="varchar" MaxLength="255" />
+          <Property Name="flow" Type="varchar" MaxLength="255" />
+          <Property Name="whp" Type="varchar" MaxLength="255" />
+          <Property Name="is_text" Type="tinyint" />
+        </EntityType>
         <EntityType Name="daily_log_weekly_target">
           <Key>
             <PropertyRef Name="id" />
@@ -710,6 +733,14 @@
           <Property Name="shift" Type="tinyint" />
           <Property Name="target_unit_1" Type="varchar" MaxLength="50" />
           <Property Name="target_unit_2" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="daily_log_wells">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" MaxLength="255" />
+          <Property Name="is_delete" Type="bit" />
         </EntityType>
         <EntityType Name="daily_log_wpnb">
           <Key>
@@ -728,6 +759,16 @@
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="title" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="id_tag_type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="email_error">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="emails" Type="text" />
+          <Property Name="content" Type="text" />
+          <Property Name="subject" Type="varchar(max)" />
+          <Property Name="exception" Type="text" />
         </EntityType>
         <EntityType Name="employee">
           <Key>
@@ -748,6 +789,18 @@
           <Property Name="employee_delegate" Type="int" />
           <Property Name="department" Type="varchar" MaxLength="255" />
           <Property Name="approval_level" Type="tinyint" />
+          <Property Name="kbp_code" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="employee_delegations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_employee" Type="int" />
+          <Property Name="date_start" Type="date" />
+          <Property Name="date_end" Type="date" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="id_delegate" Type="int" />
         </EntityType>
         <EntityType Name="employee_dept">
           <Key>
@@ -781,6 +834,7 @@
           <Property Name="time" Type="varchar" MaxLength="10" />
           <Property Name="name_operator" Type="varchar" MaxLength="255" />
           <Property Name="keterangan" Type="varchar" MaxLength="255" />
+          <Property Name="id_equipment" Type="int" />
         </EntityType>
         <EntityType Name="equipment_event">
           <Key>
@@ -879,7 +933,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="id_equipment_group" Type="int" Nullable="false" />
           <Property Name="tag_num" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="nama" Type="varchar" Nullable="false" MaxLength="100" />
@@ -906,6 +960,7 @@
           <Property Name="status_read_nav" Type="tinyint" />
           <Property Name="data_sheet_path" Type="varchar" MaxLength="50" />
           <Property Name="sertifikasi" Type="datetime" />
+          <Property Name="pnid_tag_num" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="event_descriptions">
           <Key>
@@ -997,6 +1052,7 @@
           <Property Name="pir_number" Type="int" />
           <Property Name="completion_date" Type="date" />
           <Property Name="has_pir" Type="tinyint" />
+          <Property Name="id_rca" Type="int" />
         </EntityType>
         <EntityType Name="immediate_actions">
           <Key>
@@ -1053,6 +1109,7 @@
           <Property Name="kontraktor_seg" Type="tinyint" />
           <Property Name="id_tsr" Type="int" />
           <Property Name="id_fracas" Type="int" />
+          <Property Name="requestor_approve" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="incident_report_log">
           <Key>
@@ -1335,6 +1392,7 @@
           <Property Name="event_description" Type="varchar(max)" />
           <Property Name="type" Type="varchar" MaxLength="50" />
           <Property Name="status" Type="tinyint" />
+          <Property Name="id_ir" Type="int" />
         </EntityType>
         <EntityType Name="parts">
           <Key>
@@ -1465,6 +1523,8 @@
           <Property Name="is_sign" Type="tinyint" />
           <Property Name="sign_date" Type="date" />
           <Property Name="pa_sign" Type="varchar" MaxLength="255" />
+          <Property Name="immediate_cause" Type="text" />
+          <Property Name="basic_cause" Type="text" />
         </EntityType>
         <EntityType Name="rca_analisys_type">
           <Key>
@@ -2050,17 +2110,6 @@
           <Property Name="superintendent_delegate" Type="varchar" MaxLength="255" />
           <Property Name="supervisor_delegate" Type="varchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="trouble_shooting_log">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="id_tsr" Type="int" />
-          <Property Name="date" Type="datetime" />
-          <Property Name="username" Type="varchar" MaxLength="255" />
-          <Property Name="status" Type="varchar" MaxLength="255" />
-          <Property Name="comment" Type="varchar" MaxLength="255" />
-        </EntityType>
         <EntityType Name="unit_paf">
           <Key>
             <PropertyRef Name="id" />
@@ -2090,7 +2139,7 @@
           <Property Name="role" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'star_energy_geo.dbo.user_role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="user_role">
           <Key>
@@ -2246,6 +2295,30 @@
             </Principal>
             <Dependent Role="daily_log_sap">
               <PropertyRef Name="id_daily_log" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_daily_log_to_wells_daily_log">
+          <End Role="daily_log" Type="relmon_star_energiModel.Store.daily_log" Multiplicity="1" />
+          <End Role="daily_log_to_wells" Type="relmon_star_energiModel.Store.daily_log_to_wells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="daily_log">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="daily_log_to_wells">
+              <PropertyRef Name="daily_log_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_daily_log_to_wells_daily_log_wells">
+          <End Role="daily_log_wells" Type="relmon_star_energiModel.Store.daily_log_wells" Multiplicity="1" />
+          <End Role="daily_log_to_wells" Type="relmon_star_energiModel.Store.daily_log_to_wells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="daily_log_wells">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="daily_log_to_wells">
+              <PropertyRef Name="daily_log_wells_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2839,11 +2912,69 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="insertUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="idEmployee" Type="int" Mode="In" />
+        </Function>
+        <Function Name="observationByDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="varchar" Mode="In" />
+          <Parameter Name="month" Type="varchar" Mode="In" />
+          <Parameter Name="day" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="observationByDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="department" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="observationByDepartmentObserver2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="department" Type="varchar" Mode="In" />
+          <Parameter Name="observer" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="observationByMonth" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="varchar" Mode="In" />
+          <Parameter Name="month" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="observationByObserver" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="observer" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="observationSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="observationSummary3" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="varchar" Mode="In" />
+        </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="relmon_star_energiModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="relmon_star_energiEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="insertUser">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="idEmployee" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="observationByDate" ReturnType="Collection(relmon_star_energiModel.observationByDate_Result)">
+            <Parameter Name="year" Mode="In" Type="String" />
+            <Parameter Name="month" Mode="In" Type="String" />
+            <Parameter Name="day" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="observationByDepartment" ReturnType="Collection(relmon_star_energiModel.observationByDepartment_Result)">
+          <Parameter Name="department" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="observationByDepartmentObserver2" ReturnType="Collection(relmon_star_energiModel.observationByDepartmentObserver2_Result)">
+            <Parameter Name="department" Mode="In" Type="String" />
+            <Parameter Name="observer" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="observationByMonth" ReturnType="Collection(relmon_star_energiModel.observationByMonth_Result)">
+            <Parameter Name="year" Mode="In" Type="String" />
+            <Parameter Name="month" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="observationByObserver" ReturnType="Collection(relmon_star_energiModel.observationByObserver_Result)">
+          <Parameter Name="observer" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="observationSummary">
+          <Parameter Name="year" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="observationSummary3">
+          <Parameter Name="year" Mode="In" Type="String" />
+          </FunctionImport>
           <EntitySet Name="audits" EntityType="relmon_star_energiModel.audit" />
           <EntitySet Name="audit_log" EntityType="relmon_star_energiModel.audit_log" />
           <EntitySet Name="audit_log_clause" EntityType="relmon_star_energiModel.audit_log_clause" />
@@ -2858,10 +2989,14 @@
           <EntitySet Name="daily_log_pro" EntityType="relmon_star_energiModel.daily_log_pro" />
           <EntitySet Name="daily_log_sags" EntityType="relmon_star_energiModel.daily_log_sags" />
           <EntitySet Name="daily_log_sap" EntityType="relmon_star_energiModel.daily_log_sap" />
+          <EntitySet Name="daily_log_to_wells" EntityType="relmon_star_energiModel.daily_log_to_wells" />
           <EntitySet Name="daily_log_weekly_target" EntityType="relmon_star_energiModel.daily_log_weekly_target" />
+          <EntitySet Name="daily_log_wells" EntityType="relmon_star_energiModel.daily_log_wells" />
           <EntitySet Name="daily_log_wpnb" EntityType="relmon_star_energiModel.daily_log_wpnb" />
           <EntitySet Name="disciplines" EntityType="relmon_star_energiModel.discipline" />
+          <EntitySet Name="email_error" EntityType="relmon_star_energiModel.email_error" />
           <EntitySet Name="employees" EntityType="relmon_star_energiModel.employee" />
+          <EntitySet Name="employee_delegations" EntityType="relmon_star_energiModel.employee_delegations" />
           <EntitySet Name="employee_dept" EntityType="relmon_star_energiModel.employee_dept" />
           <EntitySet Name="equipment_daily_report" EntityType="relmon_star_energiModel.equipment_daily_report" />
           <EntitySet Name="equipment_daily_report_table" EntityType="relmon_star_energiModel.equipment_daily_report_table" />
@@ -2936,7 +3071,6 @@
           <EntitySet Name="systems" EntityType="relmon_star_energiModel.system" />
           <EntitySet Name="tag_types" EntityType="relmon_star_energiModel.tag_types" />
           <EntitySet Name="trouble_shooting" EntityType="relmon_star_energiModel.trouble_shooting" />
-          <EntitySet Name="trouble_shooting_log" EntityType="relmon_star_energiModel.trouble_shooting_log" />
           <EntitySet Name="unit_paf" EntityType="relmon_star_energiModel.unit_paf" />
           <EntitySet Name="units" EntityType="relmon_star_energiModel.unit" />
           <EntitySet Name="user_per_role" EntityType="relmon_star_energiModel.user_per_role" />
@@ -2985,6 +3119,14 @@
           <AssociationSet Name="FK_daily_log_sap_daily_log" Association="relmon_star_energiModel.FK_daily_log_sap_daily_log">
             <End Role="daily_log" EntitySet="daily_log" />
             <End Role="daily_log_sap" EntitySet="daily_log_sap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_daily_log_to_wells_daily_log" Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log">
+            <End Role="daily_log" EntitySet="daily_log" />
+            <End Role="daily_log_to_wells" EntitySet="daily_log_to_wells" />
+          </AssociationSet>
+          <AssociationSet Name="FK_daily_log_to_wells_daily_log_wells" Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells">
+            <End Role="daily_log_wells" EntitySet="daily_log_wells" />
+            <End Role="daily_log_to_wells" EntitySet="daily_log_to_wells" />
           </AssociationSet>
           <AssociationSet Name="FK_disciplines_tag_types" Association="relmon_star_energiModel.FK_disciplines_tag_types">
             <End Role="tag_types" EntitySet="tag_types" />
@@ -3154,7 +3296,604 @@
             <End Role="user" EntitySet="users" />
             <End Role="user_per_role" EntitySet="user_per_role" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
+        <ComplexType Name="observationByDate_Result">
+          <Property Type="Int32" Name="year" Nullable="true" />
+          <Property Type="Int32" Name="month" Nullable="true" />
+          <Property Type="Int32" Name="day" Nullable="true" />
+          <Property Type="Int32" Name="count_accident_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_house_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_house_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_house_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_house_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_uc" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="observationByDepartment_Result">
+          <Property Type="String" Name="department" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="count_accident_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_house_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_house_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_house_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_house_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_uc" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="observationByDepartmentObserver2_Result">
+          <Property Type="Int32" Name="count_accident_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_accident_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_accident_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_accident_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_fire_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_fire_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_fire_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_fire_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_prevention_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_prevention_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_prevention_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_prevention_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_supervisor_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_supervisor_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_supervisor_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_supervisor_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_fit_work_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_fit_work_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_fit_work_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_fit_work_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_psychological_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_psychological_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_psychological_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_psychological_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_posture_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_posture_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_posture_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_posture_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_substance_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_substance_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_substance_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_substance_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_hygiene_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_hygiene_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_hygiene_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_hygiene_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_house_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_house_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_house_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_house_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_standard_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_standard_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_standard_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_standard_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_spill_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_spill_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_spill_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_spill_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_waste_energy_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_waste_energy_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_waste_energy_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_waste_energy_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_containment_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_containment_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_containment_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_containment_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_absorbent_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_absorbent_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_absorbent_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_absorbent_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_hira_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_hira_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_hira_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_hira_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_ptw_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_ptw_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_ptw_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_ptw_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_sop_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_sop_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_sop_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_sop_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_msds_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_msds_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_msds_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_msds_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_emergency_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_emergency_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_emergency_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_emergency_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_certificates_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_certificates_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_certificates_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_certificates_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_ppe_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_ppe_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_ppe_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_ppe_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_hand_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_hand_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_hand_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_hand_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_mechanical_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_mechanical_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_mechanical_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_mechanical_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_electrical_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_electrical_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_electrical_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_electrical_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_vehicular_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_vehicular_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_vehicular_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_vehicular_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_substandard_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_substandard_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_substandard_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_substandard_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_h2s_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_h2s_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_h2s_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_h2s_uc" Nullable="true" />
+          <Property Type="Int32" Name="count_workplace_health_sa" Nullable="true" />
+          <Property Type="Int32" Name="count_workplace_health_sc" Nullable="true" />
+          <Property Type="Int32" Name="count_workplace_health_ua" Nullable="true" />
+          <Property Type="Int32" Name="count_workplace_health_uc" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="observationByMonth_Result">
+          <Property Type="Int32" Name="year" Nullable="true" />
+          <Property Type="Int32" Name="month" Nullable="true" />
+          <Property Type="Int32" Name="count_accident_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_house_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_house_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_house_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_house_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_uc" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="observationByObserver_Result">
+          <Property Type="String" Name="observer" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="count_accident_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_accident_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_fire_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_prevention_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_supervisor_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_fit_work_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_psychological_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_posture_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_substance_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hygiene_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_house_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_house_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_house_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_house_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_standard_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_spill_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_waste_energy_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_containment_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_absorbent_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hira_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_ptw_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_sop_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_msds_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_emergency_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_certificates_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_ppe_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_hand_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_mechanical_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_electrical_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_vehicular_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_substandard_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_h2s_uc" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_sa" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_sc" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_ua" Nullable="false" />
+          <Property Type="Int32" Name="count_workplace_health_uc" Nullable="false" />
+        </ComplexType>
         <EntityType Name="audit">
           <Key>
             <PropertyRef Name="id" />
@@ -3470,6 +4209,7 @@
           <NavigationProperty Name="daily_log_pro" Relationship="relmon_star_energiModel.FK_daily_log_pro_daily_log" FromRole="daily_log" ToRole="daily_log_pro" />
           <NavigationProperty Name="daily_log_sags" Relationship="relmon_star_energiModel.FK_daily_log_sags_daily_log" FromRole="daily_log" ToRole="daily_log_sags" />
           <NavigationProperty Name="daily_log_sap" Relationship="relmon_star_energiModel.FK_daily_log_sap_daily_log" FromRole="daily_log" ToRole="daily_log_sap" />
+          <NavigationProperty Name="daily_log_to_wells" Relationship="relmon_star_energiModel.FK_daily_log_to_wells_daily_log" FromRole="daily_log" ToRole="daily_log_to_wells" />
         </EntityType>
         <EntityType Name="daily_log_last_plant_status">
           <Key>
@@ -3552,6 +4292,20 @@
           <Property Type="String" Name="sap_time" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="daily_log" Relationship="relmon_star_energiModel.FK_daily_log_sap_daily_log" FromRole="daily_log_sap" ToRole="daily_log" />
         </EntityType>
+        <EntityType Name="daily_log_to_wells">
+          <Key>
+            <PropertyRef Name="daily_log_id" />
+            <PropertyRef Name="daily_log_wells_id" />
+          </Key>
+          <Property Type="Int32" Name="daily_log_id" Nullable="false" />
+          <Property Type="Int32" Name="daily_log_wells_id" Nullable="false" />
+          <Property Type="String" Name="fcv" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="flow" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="whp" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Byte" Name="is_text" />
+          <NavigationProperty Name="daily_log" Relationship="relmon_star_energiModel.FK_daily_log_to_wells_daily_log" FromRole="daily_log_to_wells" ToRole="daily_log" />
+          <NavigationProperty Name="daily_log_wells" Relationship="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells" FromRole="daily_log_to_wells" ToRole="daily_log_wells" />
+        </EntityType>
         <EntityType Name="daily_log_weekly_target">
           <Key>
             <PropertyRef Name="id" />
@@ -3561,6 +4315,15 @@
           <Property Type="Byte" Name="shift" />
           <Property Type="String" Name="target_unit_1" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="target_unit_2" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="daily_log_wells">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="name" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="is_delete" />
+          <NavigationProperty Name="daily_log_to_wells" Relationship="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells" FromRole="daily_log_wells" ToRole="daily_log_to_wells" />
         </EntityType>
         <EntityType Name="daily_log_wpnb">
           <Key>
@@ -3581,6 +4344,16 @@
           <Property Type="Int32" Name="id_tag_type" Nullable="false" />
           <NavigationProperty Name="tag_types" Relationship="relmon_star_energiModel.FK_disciplines_tag_types" FromRole="discipline" ToRole="tag_types" />
         </EntityType>
+        <EntityType Name="email_error">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="emails" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="content" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="subject" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="exception" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="employee">
           <Key>
             <PropertyRef Name="id" />
@@ -3600,6 +4373,7 @@
           <Property Type="Int32" Name="employee_delegate" />
           <Property Type="String" Name="department" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Byte" Name="approval_level" />
+          <Property Type="String" Name="kbp_code" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="employee1" Relationship="relmon_star_energiModel.FK_employee_employee" FromRole="employee" ToRole="employee1" />
           <NavigationProperty Name="employee2" Relationship="relmon_star_energiModel.FK_employee_employee" FromRole="employee1" ToRole="employee" />
           <NavigationProperty Name="employee_dept1" Relationship="relmon_star_energiModel.FK_employee_employee_dept" FromRole="employee" ToRole="employee_dept" />
@@ -3642,6 +4416,7 @@
           <Property Type="String" Name="time" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="name_operator" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="keterangan" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="id_equipment" />
           <NavigationProperty Name="equipment_daily_report" Relationship="relmon_star_energiModel.FK_equipment_daily_report_table_equipment_daily_report" FromRole="equipment_daily_report_table" ToRole="equipment_daily_report" />
         </EntityType>
         <EntityType Name="equipment_event">
@@ -3750,7 +4525,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="id_equipment_group" Nullable="false" />
           <Property Type="String" Name="tag_num" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="nama" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -3777,6 +4552,7 @@
           <Property Type="Byte" Name="status_read_nav" />
           <Property Type="String" Name="data_sheet_path" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="sertifikasi" Precision="3" />
+          <Property Type="String" Name="pnid_tag_num" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="equipment_event" Relationship="relmon_star_energiModel.FK_equipment_event_equipments" FromRole="equipment" ToRole="equipment_event" />
           <NavigationProperty Name="equipment_groups" Relationship="relmon_star_energiModel.FK_equipments_equipment_groups" FromRole="equipment" ToRole="equipment_groups" />
           <NavigationProperty Name="equipment_paf" Relationship="relmon_star_energiModel.FK_equipment_paf_equipments" FromRole="equipment" ToRole="equipment_paf" />
@@ -3884,6 +4660,7 @@
           <Property Type="Int32" Name="pir_number" />
           <Property Type="DateTime" Name="completion_date" Precision="0" />
           <Property Type="Byte" Name="has_pir" />
+          <Property Type="Int32" Name="id_rca" />
           <NavigationProperty Name="investigation_report" Relationship="relmon_star_energiModel.FK_iir_recommendations_investigation_report" FromRole="iir_recommendations" ToRole="investigation_report" />
           <NavigationProperty Name="pir" Relationship="relmon_star_energiModel.FK_iir_recommendations_pir" FromRole="iir_recommendations" ToRole="pir" />
         </EntityType>
@@ -3942,6 +4719,7 @@
           <Property Type="Byte" Name="kontraktor_seg" />
           <Property Type="Int32" Name="id_tsr" />
           <Property Type="Int32" Name="id_fracas" />
+          <Property Type="String" Name="requestor_approve" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="incident_report_log">
           <Key>
@@ -4226,6 +5004,7 @@
           <Property Type="String" Name="event_description" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="type" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Byte" Name="status" />
+          <Property Type="Int32" Name="id_ir" />
           <NavigationProperty Name="equipment_part" Relationship="relmon_star_energiModel.FK_part_unit_event_equipment_part" FromRole="part_unit_event" ToRole="equipment_part" />
         </EntityType>
         <EntityType Name="part">
@@ -4366,6 +5145,8 @@
           <Property Type="Byte" Name="is_sign" />
           <Property Type="DateTime" Name="sign_date" Precision="0" />
           <Property Type="String" Name="pa_sign" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="immediate_cause" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="basic_cause" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="pir" Relationship="relmon_star_energiModel.FK_rca_pir" FromRole="rca" ToRole="pir" />
           <NavigationProperty Name="rca_csf_conector" Relationship="relmon_star_energiModel.FK_rca_csf_conector_rca" FromRole="rca" ToRole="rca_csf_conector" />
           <NavigationProperty Name="rca_analisys_type" Relationship="relmon_star_energiModel.FK_rca_rca_analisys_type" FromRole="rca" ToRole="rca_analisys_type" />
@@ -4982,17 +5763,6 @@
           <Property Type="String" Name="superintendent_delegate" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="supervisor_delegate" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="trouble_shooting_log">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="id_tsr" />
-          <Property Type="DateTime" Name="date" Precision="3" />
-          <Property Type="String" Name="username" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="status" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="comment" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="unit_paf">
           <Key>
             <PropertyRef Name="id" />
@@ -5196,6 +5966,30 @@
             </Principal>
             <Dependent Role="daily_log_sap">
               <PropertyRef Name="id_daily_log" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_daily_log_to_wells_daily_log">
+          <End Type="relmon_star_energiModel.daily_log" Role="daily_log" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.daily_log_to_wells" Role="daily_log_to_wells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="daily_log">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="daily_log_to_wells">
+              <PropertyRef Name="daily_log_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_daily_log_to_wells_daily_log_wells">
+          <End Type="relmon_star_energiModel.daily_log_wells" Role="daily_log_wells" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.daily_log_to_wells" Role="daily_log_to_wells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="daily_log_wells">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="daily_log_to_wells">
+              <PropertyRef Name="daily_log_wells_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5775,12 +6569,643 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="employee_delegations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="id_employee" />
+          <Property Type="DateTime" Name="date_start" Precision="0" />
+          <Property Type="DateTime" Name="date_end" Precision="0" />
+          <Property Type="Boolean" Name="is_active" />
+          <Property Type="Int32" Name="id_delegate" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="relmon_star_energiModelStoreContainer" CdmEntityContainer="relmon_star_energiEntities">
+          <FunctionImportMapping FunctionImportName="insertUser" FunctionName="relmon_star_energiModel.Store.insertUser" />
+          <FunctionImportMapping FunctionImportName="observationByDate" FunctionName="relmon_star_energiModel.Store.observationByDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="relmon_star_energiModel.observationByDate_Result">
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="count_accident_sa" ColumnName="count_accident_sa" />
+                <ScalarProperty Name="count_accident_sc" ColumnName="count_accident_sc" />
+                <ScalarProperty Name="count_accident_ua" ColumnName="count_accident_ua" />
+                <ScalarProperty Name="count_accident_uc" ColumnName="count_accident_uc" />
+                <ScalarProperty Name="count_fire_sa" ColumnName="count_fire_sa" />
+                <ScalarProperty Name="count_fire_sc" ColumnName="count_fire_sc" />
+                <ScalarProperty Name="count_fire_ua" ColumnName="count_fire_ua" />
+                <ScalarProperty Name="count_fire_uc" ColumnName="count_fire_uc" />
+                <ScalarProperty Name="count_prevention_sa" ColumnName="count_prevention_sa" />
+                <ScalarProperty Name="count_prevention_sc" ColumnName="count_prevention_sc" />
+                <ScalarProperty Name="count_prevention_ua" ColumnName="count_prevention_ua" />
+                <ScalarProperty Name="count_prevention_uc" ColumnName="count_prevention_uc" />
+                <ScalarProperty Name="count_supervisor_sa" ColumnName="count_supervisor_sa" />
+                <ScalarProperty Name="count_supervisor_sc" ColumnName="count_supervisor_sc" />
+                <ScalarProperty Name="count_supervisor_ua" ColumnName="count_supervisor_ua" />
+                <ScalarProperty Name="count_supervisor_uc" ColumnName="count_supervisor_uc" />
+                <ScalarProperty Name="count_fit_work_sa" ColumnName="count_fit_work_sa" />
+                <ScalarProperty Name="count_fit_work_sc" ColumnName="count_fit_work_sc" />
+                <ScalarProperty Name="count_fit_work_ua" ColumnName="count_fit_work_ua" />
+                <ScalarProperty Name="count_fit_work_uc" ColumnName="count_fit_work_uc" />
+                <ScalarProperty Name="count_psychological_sa" ColumnName="count_psychological_sa" />
+                <ScalarProperty Name="count_psychological_sc" ColumnName="count_psychological_sc" />
+                <ScalarProperty Name="count_psychological_ua" ColumnName="count_psychological_ua" />
+                <ScalarProperty Name="count_psychological_uc" ColumnName="count_psychological_uc" />
+                <ScalarProperty Name="count_posture_sa" ColumnName="count_posture_sa" />
+                <ScalarProperty Name="count_posture_sc" ColumnName="count_posture_sc" />
+                <ScalarProperty Name="count_posture_ua" ColumnName="count_posture_ua" />
+                <ScalarProperty Name="count_posture_uc" ColumnName="count_posture_uc" />
+                <ScalarProperty Name="count_substance_sa" ColumnName="count_substance_sa" />
+                <ScalarProperty Name="count_substance_sc" ColumnName="count_substance_sc" />
+                <ScalarProperty Name="count_substance_ua" ColumnName="count_substance_ua" />
+                <ScalarProperty Name="count_substance_uc" ColumnName="count_substance_uc" />
+                <ScalarProperty Name="count_hygiene_sa" ColumnName="count_hygiene_sa" />
+                <ScalarProperty Name="count_hygiene_sc" ColumnName="count_hygiene_sc" />
+                <ScalarProperty Name="count_hygiene_ua" ColumnName="count_hygiene_ua" />
+                <ScalarProperty Name="count_hygiene_uc" ColumnName="count_hygiene_uc" />
+                <ScalarProperty Name="count_house_sa" ColumnName="count_house_sa" />
+                <ScalarProperty Name="count_house_sc" ColumnName="count_house_sc" />
+                <ScalarProperty Name="count_house_ua" ColumnName="count_house_ua" />
+                <ScalarProperty Name="count_house_uc" ColumnName="count_house_uc" />
+                <ScalarProperty Name="count_standard_sa" ColumnName="count_standard_sa" />
+                <ScalarProperty Name="count_standard_sc" ColumnName="count_standard_sc" />
+                <ScalarProperty Name="count_standard_ua" ColumnName="count_standard_ua" />
+                <ScalarProperty Name="count_standard_uc" ColumnName="count_standard_uc" />
+                <ScalarProperty Name="count_spill_sa" ColumnName="count_spill_sa" />
+                <ScalarProperty Name="count_spill_sc" ColumnName="count_spill_sc" />
+                <ScalarProperty Name="count_spill_ua" ColumnName="count_spill_ua" />
+                <ScalarProperty Name="count_spill_uc" ColumnName="count_spill_uc" />
+                <ScalarProperty Name="count_waste_energy_sa" ColumnName="count_waste_energy_sa" />
+                <ScalarProperty Name="count_waste_energy_sc" ColumnName="count_waste_energy_sc" />
+                <ScalarProperty Name="count_waste_energy_ua" ColumnName="count_waste_energy_ua" />
+                <ScalarProperty Name="count_waste_energy_uc" ColumnName="count_waste_energy_uc" />
+                <ScalarProperty Name="count_containment_sa" ColumnName="count_containment_sa" />
+                <ScalarProperty Name="count_containment_sc" ColumnName="count_containment_sc" />
+                <ScalarProperty Name="count_containment_ua" ColumnName="count_containment_ua" />
+                <ScalarProperty Name="count_containment_uc" ColumnName="count_containment_uc" />
+                <ScalarProperty Name="count_absorbent_sa" ColumnName="count_absorbent_sa" />
+                <ScalarProperty Name="count_absorbent_sc" ColumnName="count_absorbent_sc" />
+                <ScalarProperty Name="count_absorbent_ua" ColumnName="count_absorbent_ua" />
+                <ScalarProperty Name="count_absorbent_uc" ColumnName="count_absorbent_uc" />
+                <ScalarProperty Name="count_hira_sa" ColumnName="count_hira_sa" />
+                <ScalarProperty Name="count_hira_sc" ColumnName="count_hira_sc" />
+                <ScalarProperty Name="count_hira_ua" ColumnName="count_hira_ua" />
+                <ScalarProperty Name="count_hira_uc" ColumnName="count_hira_uc" />
+                <ScalarProperty Name="count_ptw_sa" ColumnName="count_ptw_sa" />
+                <ScalarProperty Name="count_ptw_sc" ColumnName="count_ptw_sc" />
+                <ScalarProperty Name="count_ptw_ua" ColumnName="count_ptw_ua" />
+                <ScalarProperty Name="count_ptw_uc" ColumnName="count_ptw_uc" />
+                <ScalarProperty Name="count_sop_sa" ColumnName="count_sop_sa" />
+                <ScalarProperty Name="count_sop_sc" ColumnName="count_sop_sc" />
+                <ScalarProperty Name="count_sop_ua" ColumnName="count_sop_ua" />
+                <ScalarProperty Name="count_sop_uc" ColumnName="count_sop_uc" />
+                <ScalarProperty Name="count_msds_sa" ColumnName="count_msds_sa" />
+                <ScalarProperty Name="count_msds_sc" ColumnName="count_msds_sc" />
+                <ScalarProperty Name="count_msds_ua" ColumnName="count_msds_ua" />
+                <ScalarProperty Name="count_msds_uc" ColumnName="count_msds_uc" />
+                <ScalarProperty Name="count_emergency_sa" ColumnName="count_emergency_sa" />
+                <ScalarProperty Name="count_emergency_sc" ColumnName="count_emergency_sc" />
+                <ScalarProperty Name="count_emergency_ua" ColumnName="count_emergency_ua" />
+                <ScalarProperty Name="count_emergency_uc" ColumnName="count_emergency_uc" />
+                <ScalarProperty Name="count_certificates_sa" ColumnName="count_certificates_sa" />
+                <ScalarProperty Name="count_certificates_sc" ColumnName="count_certificates_sc" />
+                <ScalarProperty Name="count_certificates_ua" ColumnName="count_certificates_ua" />
+                <ScalarProperty Name="count_certificates_uc" ColumnName="count_certificates_uc" />
+                <ScalarProperty Name="count_ppe_sa" ColumnName="count_ppe_sa" />
+                <ScalarProperty Name="count_ppe_sc" ColumnName="count_ppe_sc" />
+                <ScalarProperty Name="count_ppe_ua" ColumnName="count_ppe_ua" />
+                <ScalarProperty Name="count_ppe_uc" ColumnName="count_ppe_uc" />
+                <ScalarProperty Name="count_hand_sa" ColumnName="count_hand_sa" />
+                <ScalarProperty Name="count_hand_sc" ColumnName="count_hand_sc" />
+                <ScalarProperty Name="count_hand_ua" ColumnName="count_hand_ua" />
+                <ScalarProperty Name="count_hand_uc" ColumnName="count_hand_uc" />
+                <ScalarProperty Name="count_mechanical_sa" ColumnName="count_mechanical_sa" />
+                <ScalarProperty Name="count_mechanical_sc" ColumnName="count_mechanical_sc" />
+                <ScalarProperty Name="count_mechanical_ua" ColumnName="count_mechanical_ua" />
+                <ScalarProperty Name="count_mechanical_uc" ColumnName="count_mechanical_uc" />
+                <ScalarProperty Name="count_electrical_sa" ColumnName="count_electrical_sa" />
+                <ScalarProperty Name="count_electrical_sc" ColumnName="count_electrical_sc" />
+                <ScalarProperty Name="count_electrical_ua" ColumnName="count_electrical_ua" />
+                <ScalarProperty Name="count_electrical_uc" ColumnName="count_electrical_uc" />
+                <ScalarProperty Name="count_vehicular_sa" ColumnName="count_vehicular_sa" />
+                <ScalarProperty Name="count_vehicular_sc" ColumnName="count_vehicular_sc" />
+                <ScalarProperty Name="count_vehicular_ua" ColumnName="count_vehicular_ua" />
+                <ScalarProperty Name="count_vehicular_uc" ColumnName="count_vehicular_uc" />
+                <ScalarProperty Name="count_substandard_sa" ColumnName="count_substandard_sa" />
+                <ScalarProperty Name="count_substandard_sc" ColumnName="count_substandard_sc" />
+                <ScalarProperty Name="count_substandard_ua" ColumnName="count_substandard_ua" />
+                <ScalarProperty Name="count_substandard_uc" ColumnName="count_substandard_uc" />
+                <ScalarProperty Name="count_h2s_sa" ColumnName="count_h2s_sa" />
+                <ScalarProperty Name="count_h2s_sc" ColumnName="count_h2s_sc" />
+                <ScalarProperty Name="count_h2s_ua" ColumnName="count_h2s_ua" />
+                <ScalarProperty Name="count_h2s_uc" ColumnName="count_h2s_uc" />
+                <ScalarProperty Name="count_workplace_health_sa" ColumnName="count_workplace_health_sa" />
+                <ScalarProperty Name="count_workplace_health_sc" ColumnName="count_workplace_health_sc" />
+                <ScalarProperty Name="count_workplace_health_ua" ColumnName="count_workplace_health_ua" />
+                <ScalarProperty Name="count_workplace_health_uc" ColumnName="count_workplace_health_uc" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="observationByDepartment" FunctionName="relmon_star_energiModel.Store.observationByDepartment">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="relmon_star_energiModel.observationByDepartment_Result">
+                <ScalarProperty Name="department" ColumnName="department" />
+                <ScalarProperty Name="count_accident_sa" ColumnName="count_accident_sa" />
+                <ScalarProperty Name="count_accident_sc" ColumnName="count_accident_sc" />
+                <ScalarProperty Name="count_accident_ua" ColumnName="count_accident_ua" />
+                <ScalarProperty Name="count_accident_uc" ColumnName="count_accident_uc" />
+                <ScalarProperty Name="count_fire_sa" ColumnName="count_fire_sa" />
+                <ScalarProperty Name="count_fire_sc" ColumnName="count_fire_sc" />
+                <ScalarProperty Name="count_fire_ua" ColumnName="count_fire_ua" />
+                <ScalarProperty Name="count_fire_uc" ColumnName="count_fire_uc" />
+                <ScalarProperty Name="count_prevention_sa" ColumnName="count_prevention_sa" />
+                <ScalarProperty Name="count_prevention_sc" ColumnName="count_prevention_sc" />
+                <ScalarProperty Name="count_prevention_ua" ColumnName="count_prevention_ua" />
+                <ScalarProperty Name="count_prevention_uc" ColumnName="count_prevention_uc" />
+                <ScalarProperty Name="count_supervisor_sa" ColumnName="count_supervisor_sa" />
+                <ScalarProperty Name="count_supervisor_sc" ColumnName="count_supervisor_sc" />
+                <ScalarProperty Name="count_supervisor_ua" ColumnName="count_supervisor_ua" />
+                <ScalarProperty Name="count_supervisor_uc" ColumnName="count_supervisor_uc" />
+                <ScalarProperty Name="count_fit_work_sa" ColumnName="count_fit_work_sa" />
+                <ScalarProperty Name="count_fit_work_sc" ColumnName="count_fit_work_sc" />
+                <ScalarProperty Name="count_fit_work_ua" ColumnName="count_fit_work_ua" />
+                <ScalarProperty Name="count_fit_work_uc" ColumnName="count_fit_work_uc" />
+                <ScalarProperty Name="count_psychological_sa" ColumnName="count_psychological_sa" />
+                <ScalarProperty Name="count_psychological_sc" ColumnName="count_psychological_sc" />
+                <ScalarProperty Name="count_psychological_ua" ColumnName="count_psychological_ua" />
+                <ScalarProperty Name="count_psychological_uc" ColumnName="count_psychological_uc" />
+                <ScalarProperty Name="count_posture_sa" ColumnName="count_posture_sa" />
+                <ScalarProperty Name="count_posture_sc" ColumnName="count_posture_sc" />
+                <ScalarProperty Name="count_posture_ua" ColumnName="count_posture_ua" />
+                <ScalarProperty Name="count_posture_uc" ColumnName="count_posture_uc" />
+                <ScalarProperty Name="count_substance_sa" ColumnName="count_substance_sa" />
+                <ScalarProperty Name="count_substance_sc" ColumnName="count_substance_sc" />
+                <ScalarProperty Name="count_substance_ua" ColumnName="count_substance_ua" />
+                <ScalarProperty Name="count_substance_uc" ColumnName="count_substance_uc" />
+                <ScalarProperty Name="count_hygiene_sa" ColumnName="count_hygiene_sa" />
+                <ScalarProperty Name="count_hygiene_sc" ColumnName="count_hygiene_sc" />
+                <ScalarProperty Name="count_hygiene_ua" ColumnName="count_hygiene_ua" />
+                <ScalarProperty Name="count_hygiene_uc" ColumnName="count_hygiene_uc" />
+                <ScalarProperty Name="count_house_sa" ColumnName="count_house_sa" />
+                <ScalarProperty Name="count_house_sc" ColumnName="count_house_sc" />
+                <ScalarProperty Name="count_house_ua" ColumnName="count_house_ua" />
+                <ScalarProperty Name="count_house_uc" ColumnName="count_house_uc" />
+                <ScalarProperty Name="count_standard_sa" ColumnName="count_standard_sa" />
+                <ScalarProperty Name="count_standard_sc" ColumnName="count_standard_sc" />
+                <ScalarProperty Name="count_standard_ua" ColumnName="count_standard_ua" />
+                <ScalarProperty Name="count_standard_uc" ColumnName="count_standard_uc" />
+                <ScalarProperty Name="count_spill_sa" ColumnName="count_spill_sa" />
+                <ScalarProperty Name="count_spill_sc" ColumnName="count_spill_sc" />
+                <ScalarProperty Name="count_spill_ua" ColumnName="count_spill_ua" />
+                <ScalarProperty Name="count_spill_uc" ColumnName="count_spill_uc" />
+                <ScalarProperty Name="count_waste_energy_sa" ColumnName="count_waste_energy_sa" />
+                <ScalarProperty Name="count_waste_energy_sc" ColumnName="count_waste_energy_sc" />
+                <ScalarProperty Name="count_waste_energy_ua" ColumnName="count_waste_energy_ua" />
+                <ScalarProperty Name="count_waste_energy_uc" ColumnName="count_waste_energy_uc" />
+                <ScalarProperty Name="count_containment_sa" ColumnName="count_containment_sa" />
+                <ScalarProperty Name="count_containment_sc" ColumnName="count_containment_sc" />
+                <ScalarProperty Name="count_containment_ua" ColumnName="count_containment_ua" />
+                <ScalarProperty Name="count_containment_uc" ColumnName="count_containment_uc" />
+                <ScalarProperty Name="count_absorbent_sa" ColumnName="count_absorbent_sa" />
+                <ScalarProperty Name="count_absorbent_sc" ColumnName="count_absorbent_sc" />
+                <ScalarProperty Name="count_absorbent_ua" ColumnName="count_absorbent_ua" />
+                <ScalarProperty Name="count_absorbent_uc" ColumnName="count_absorbent_uc" />
+                <ScalarProperty Name="count_hira_sa" ColumnName="count_hira_sa" />
+                <ScalarProperty Name="count_hira_sc" ColumnName="count_hira_sc" />
+                <ScalarProperty Name="count_hira_ua" ColumnName="count_hira_ua" />
+                <ScalarProperty Name="count_hira_uc" ColumnName="count_hira_uc" />
+                <ScalarProperty Name="count_ptw_sa" ColumnName="count_ptw_sa" />
+                <ScalarProperty Name="count_ptw_sc" ColumnName="count_ptw_sc" />
+                <ScalarProperty Name="count_ptw_ua" ColumnName="count_ptw_ua" />
+                <ScalarProperty Name="count_ptw_uc" ColumnName="count_ptw_uc" />
+                <ScalarProperty Name="count_sop_sa" ColumnName="count_sop_sa" />
+                <ScalarProperty Name="count_sop_sc" ColumnName="count_sop_sc" />
+                <ScalarProperty Name="count_sop_ua" ColumnName="count_sop_ua" />
+                <ScalarProperty Name="count_sop_uc" ColumnName="count_sop_uc" />
+                <ScalarProperty Name="count_msds_sa" ColumnName="count_msds_sa" />
+                <ScalarProperty Name="count_msds_sc" ColumnName="count_msds_sc" />
+                <ScalarProperty Name="count_msds_ua" ColumnName="count_msds_ua" />
+                <ScalarProperty Name="count_msds_uc" ColumnName="count_msds_uc" />
+                <ScalarProperty Name="count_emergency_sa" ColumnName="count_emergency_sa" />
+                <ScalarProperty Name="count_emergency_sc" ColumnName="count_emergency_sc" />
+                <ScalarProperty Name="count_emergency_ua" ColumnName="count_emergency_ua" />
+                <ScalarProperty Name="count_emergency_uc" ColumnName="count_emergency_uc" />
+                <ScalarProperty Name="count_certificates_sa" ColumnName="count_certificates_sa" />
+                <ScalarProperty Name="count_certificates_sc" ColumnName="count_certificates_sc" />
+                <ScalarProperty Name="count_certificates_ua" ColumnName="count_certificates_ua" />
+                <ScalarProperty Name="count_certificates_uc" ColumnName="count_certificates_uc" />
+                <ScalarProperty Name="count_ppe_sa" ColumnName="count_ppe_sa" />
+                <ScalarProperty Name="count_ppe_sc" ColumnName="count_ppe_sc" />
+                <ScalarProperty Name="count_ppe_ua" ColumnName="count_ppe_ua" />
+                <ScalarProperty Name="count_ppe_uc" ColumnName="count_ppe_uc" />
+                <ScalarProperty Name="count_hand_sa" ColumnName="count_hand_sa" />
+                <ScalarProperty Name="count_hand_sc" ColumnName="count_hand_sc" />
+                <ScalarProperty Name="count_hand_ua" ColumnName="count_hand_ua" />
+                <ScalarProperty Name="count_hand_uc" ColumnName="count_hand_uc" />
+                <ScalarProperty Name="count_mechanical_sa" ColumnName="count_mechanical_sa" />
+                <ScalarProperty Name="count_mechanical_sc" ColumnName="count_mechanical_sc" />
+                <ScalarProperty Name="count_mechanical_ua" ColumnName="count_mechanical_ua" />
+                <ScalarProperty Name="count_mechanical_uc" ColumnName="count_mechanical_uc" />
+                <ScalarProperty Name="count_electrical_sa" ColumnName="count_electrical_sa" />
+                <ScalarProperty Name="count_electrical_sc" ColumnName="count_electrical_sc" />
+                <ScalarProperty Name="count_electrical_ua" ColumnName="count_electrical_ua" />
+                <ScalarProperty Name="count_electrical_uc" ColumnName="count_electrical_uc" />
+                <ScalarProperty Name="count_vehicular_sa" ColumnName="count_vehicular_sa" />
+                <ScalarProperty Name="count_vehicular_sc" ColumnName="count_vehicular_sc" />
+                <ScalarProperty Name="count_vehicular_ua" ColumnName="count_vehicular_ua" />
+                <ScalarProperty Name="count_vehicular_uc" ColumnName="count_vehicular_uc" />
+                <ScalarProperty Name="count_substandard_sa" ColumnName="count_substandard_sa" />
+                <ScalarProperty Name="count_substandard_sc" ColumnName="count_substandard_sc" />
+                <ScalarProperty Name="count_substandard_ua" ColumnName="count_substandard_ua" />
+                <ScalarProperty Name="count_substandard_uc" ColumnName="count_substandard_uc" />
+                <ScalarProperty Name="count_h2s_sa" ColumnName="count_h2s_sa" />
+                <ScalarProperty Name="count_h2s_sc" ColumnName="count_h2s_sc" />
+                <ScalarProperty Name="count_h2s_ua" ColumnName="count_h2s_ua" />
+                <ScalarProperty Name="count_h2s_uc" ColumnName="count_h2s_uc" />
+                <ScalarProperty Name="count_workplace_health_sa" ColumnName="count_workplace_health_sa" />
+                <ScalarProperty Name="count_workplace_health_sc" ColumnName="count_workplace_health_sc" />
+                <ScalarProperty Name="count_workplace_health_ua" ColumnName="count_workplace_health_ua" />
+                <ScalarProperty Name="count_workplace_health_uc" ColumnName="count_workplace_health_uc" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="observationByDepartmentObserver2" FunctionName="relmon_star_energiModel.Store.observationByDepartmentObserver2">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="relmon_star_energiModel.observationByDepartmentObserver2_Result">
+                <ScalarProperty Name="count_accident_sa" ColumnName="count_accident_sa" />
+                <ScalarProperty Name="count_accident_sc" ColumnName="count_accident_sc" />
+                <ScalarProperty Name="count_accident_ua" ColumnName="count_accident_ua" />
+                <ScalarProperty Name="count_accident_uc" ColumnName="count_accident_uc" />
+                <ScalarProperty Name="count_fire_sa" ColumnName="count_fire_sa" />
+                <ScalarProperty Name="count_fire_sc" ColumnName="count_fire_sc" />
+                <ScalarProperty Name="count_fire_ua" ColumnName="count_fire_ua" />
+                <ScalarProperty Name="count_fire_uc" ColumnName="count_fire_uc" />
+                <ScalarProperty Name="count_prevention_sa" ColumnName="count_prevention_sa" />
+                <ScalarProperty Name="count_prevention_sc" ColumnName="count_prevention_sc" />
+                <ScalarProperty Name="count_prevention_ua" ColumnName="count_prevention_ua" />
+                <ScalarProperty Name="count_prevention_uc" ColumnName="count_prevention_uc" />
+                <ScalarProperty Name="count_supervisor_sa" ColumnName="count_supervisor_sa" />
+                <ScalarProperty Name="count_supervisor_sc" ColumnName="count_supervisor_sc" />
+                <ScalarProperty Name="count_supervisor_ua" ColumnName="count_supervisor_ua" />
+                <ScalarProperty Name="count_supervisor_uc" ColumnName="count_supervisor_uc" />
+                <ScalarProperty Name="count_fit_work_sa" ColumnName="count_fit_work_sa" />
+                <ScalarProperty Name="count_fit_work_sc" ColumnName="count_fit_work_sc" />
+                <ScalarProperty Name="count_fit_work_ua" ColumnName="count_fit_work_ua" />
+                <ScalarProperty Name="count_fit_work_uc" ColumnName="count_fit_work_uc" />
+                <ScalarProperty Name="count_psychological_sa" ColumnName="count_psychological_sa" />
+                <ScalarProperty Name="count_psychological_sc" ColumnName="count_psychological_sc" />
+                <ScalarProperty Name="count_psychological_ua" ColumnName="count_psychological_ua" />
+                <ScalarProperty Name="count_psychological_uc" ColumnName="count_psychological_uc" />
+                <ScalarProperty Name="count_posture_sa" ColumnName="count_posture_sa" />
+                <ScalarProperty Name="count_posture_sc" ColumnName="count_posture_sc" />
+                <ScalarProperty Name="count_posture_ua" ColumnName="count_posture_ua" />
+                <ScalarProperty Name="count_posture_uc" ColumnName="count_posture_uc" />
+                <ScalarProperty Name="count_substance_sa" ColumnName="count_substance_sa" />
+                <ScalarProperty Name="count_substance_sc" ColumnName="count_substance_sc" />
+                <ScalarProperty Name="count_substance_ua" ColumnName="count_substance_ua" />
+                <ScalarProperty Name="count_substance_uc" ColumnName="count_substance_uc" />
+                <ScalarProperty Name="count_hygiene_sa" ColumnName="count_hygiene_sa" />
+                <ScalarProperty Name="count_hygiene_sc" ColumnName="count_hygiene_sc" />
+                <ScalarProperty Name="count_hygiene_ua" ColumnName="count_hygiene_ua" />
+                <ScalarProperty Name="count_hygiene_uc" ColumnName="count_hygiene_uc" />
+                <ScalarProperty Name="count_house_sa" ColumnName="count_house_sa" />
+                <ScalarProperty Name="count_house_sc" ColumnName="count_house_sc" />
+                <ScalarProperty Name="count_house_ua" ColumnName="count_house_ua" />
+                <ScalarProperty Name="count_house_uc" ColumnName="count_house_uc" />
+                <ScalarProperty Name="count_standard_sa" ColumnName="count_standard_sa" />
+                <ScalarProperty Name="count_standard_sc" ColumnName="count_standard_sc" />
+                <ScalarProperty Name="count_standard_ua" ColumnName="count_standard_ua" />
+                <ScalarProperty Name="count_standard_uc" ColumnName="count_standard_uc" />
+                <ScalarProperty Name="count_spill_sa" ColumnName="count_spill_sa" />
+                <ScalarProperty Name="count_spill_sc" ColumnName="count_spill_sc" />
+                <ScalarProperty Name="count_spill_ua" ColumnName="count_spill_ua" />
+                <ScalarProperty Name="count_spill_uc" ColumnName="count_spill_uc" />
+                <ScalarProperty Name="count_waste_energy_sa" ColumnName="count_waste_energy_sa" />
+                <ScalarProperty Name="count_waste_energy_sc" ColumnName="count_waste_energy_sc" />
+                <ScalarProperty Name="count_waste_energy_ua" ColumnName="count_waste_energy_ua" />
+                <ScalarProperty Name="count_waste_energy_uc" ColumnName="count_waste_energy_uc" />
+                <ScalarProperty Name="count_containment_sa" ColumnName="count_containment_sa" />
+                <ScalarProperty Name="count_containment_sc" ColumnName="count_containment_sc" />
+                <ScalarProperty Name="count_containment_ua" ColumnName="count_containment_ua" />
+                <ScalarProperty Name="count_containment_uc" ColumnName="count_containment_uc" />
+                <ScalarProperty Name="count_absorbent_sa" ColumnName="count_absorbent_sa" />
+                <ScalarProperty Name="count_absorbent_sc" ColumnName="count_absorbent_sc" />
+                <ScalarProperty Name="count_absorbent_ua" ColumnName="count_absorbent_ua" />
+                <ScalarProperty Name="count_absorbent_uc" ColumnName="count_absorbent_uc" />
+                <ScalarProperty Name="count_hira_sa" ColumnName="count_hira_sa" />
+                <ScalarProperty Name="count_hira_sc" ColumnName="count_hira_sc" />
+                <ScalarProperty Name="count_hira_ua" ColumnName="count_hira_ua" />
+                <ScalarProperty Name="count_hira_uc" ColumnName="count_hira_uc" />
+                <ScalarProperty Name="count_ptw_sa" ColumnName="count_ptw_sa" />
+                <ScalarProperty Name="count_ptw_sc" ColumnName="count_ptw_sc" />
+                <ScalarProperty Name="count_ptw_ua" ColumnName="count_ptw_ua" />
+                <ScalarProperty Name="count_ptw_uc" ColumnName="count_ptw_uc" />
+                <ScalarProperty Name="count_sop_sa" ColumnName="count_sop_sa" />
+                <ScalarProperty Name="count_sop_sc" ColumnName="count_sop_sc" />
+                <ScalarProperty Name="count_sop_ua" ColumnName="count_sop_ua" />
+                <ScalarProperty Name="count_sop_uc" ColumnName="count_sop_uc" />
+                <ScalarProperty Name="count_msds_sa" ColumnName="count_msds_sa" />
+                <ScalarProperty Name="count_msds_sc" ColumnName="count_msds_sc" />
+                <ScalarProperty Name="count_msds_ua" ColumnName="count_msds_ua" />
+                <ScalarProperty Name="count_msds_uc" ColumnName="count_msds_uc" />
+                <ScalarProperty Name="count_emergency_sa" ColumnName="count_emergency_sa" />
+                <ScalarProperty Name="count_emergency_sc" ColumnName="count_emergency_sc" />
+                <ScalarProperty Name="count_emergency_ua" ColumnName="count_emergency_ua" />
+                <ScalarProperty Name="count_emergency_uc" ColumnName="count_emergency_uc" />
+                <ScalarProperty Name="count_certificates_sa" ColumnName="count_certificates_sa" />
+                <ScalarProperty Name="count_certificates_sc" ColumnName="count_certificates_sc" />
+                <ScalarProperty Name="count_certificates_ua" ColumnName="count_certificates_ua" />
+                <ScalarProperty Name="count_certificates_uc" ColumnName="count_certificates_uc" />
+                <ScalarProperty Name="count_ppe_sa" ColumnName="count_ppe_sa" />
+                <ScalarProperty Name="count_ppe_sc" ColumnName="count_ppe_sc" />
+                <ScalarProperty Name="count_ppe_ua" ColumnName="count_ppe_ua" />
+                <ScalarProperty Name="count_ppe_uc" ColumnName="count_ppe_uc" />
+                <ScalarProperty Name="count_hand_sa" ColumnName="count_hand_sa" />
+                <ScalarProperty Name="count_hand_sc" ColumnName="count_hand_sc" />
+                <ScalarProperty Name="count_hand_ua" ColumnName="count_hand_ua" />
+                <ScalarProperty Name="count_hand_uc" ColumnName="count_hand_uc" />
+                <ScalarProperty Name="count_mechanical_sa" ColumnName="count_mechanical_sa" />
+                <ScalarProperty Name="count_mechanical_sc" ColumnName="count_mechanical_sc" />
+                <ScalarProperty Name="count_mechanical_ua" ColumnName="count_mechanical_ua" />
+                <ScalarProperty Name="count_mechanical_uc" ColumnName="count_mechanical_uc" />
+                <ScalarProperty Name="count_electrical_sa" ColumnName="count_electrical_sa" />
+                <ScalarProperty Name="count_electrical_sc" ColumnName="count_electrical_sc" />
+                <ScalarProperty Name="count_electrical_ua" ColumnName="count_electrical_ua" />
+                <ScalarProperty Name="count_electrical_uc" ColumnName="count_electrical_uc" />
+                <ScalarProperty Name="count_vehicular_sa" ColumnName="count_vehicular_sa" />
+                <ScalarProperty Name="count_vehicular_sc" ColumnName="count_vehicular_sc" />
+                <ScalarProperty Name="count_vehicular_ua" ColumnName="count_vehicular_ua" />
+                <ScalarProperty Name="count_vehicular_uc" ColumnName="count_vehicular_uc" />
+                <ScalarProperty Name="count_substandard_sa" ColumnName="count_substandard_sa" />
+                <ScalarProperty Name="count_substandard_sc" ColumnName="count_substandard_sc" />
+                <ScalarProperty Name="count_substandard_ua" ColumnName="count_substandard_ua" />
+                <ScalarProperty Name="count_substandard_uc" ColumnName="count_substandard_uc" />
+                <ScalarProperty Name="count_h2s_sa" ColumnName="count_h2s_sa" />
+                <ScalarProperty Name="count_h2s_sc" ColumnName="count_h2s_sc" />
+                <ScalarProperty Name="count_h2s_ua" ColumnName="count_h2s_ua" />
+                <ScalarProperty Name="count_h2s_uc" ColumnName="count_h2s_uc" />
+                <ScalarProperty Name="count_workplace_health_sa" ColumnName="count_workplace_health_sa" />
+                <ScalarProperty Name="count_workplace_health_sc" ColumnName="count_workplace_health_sc" />
+                <ScalarProperty Name="count_workplace_health_ua" ColumnName="count_workplace_health_ua" />
+                <ScalarProperty Name="count_workplace_health_uc" ColumnName="count_workplace_health_uc" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="observationByMonth" FunctionName="relmon_star_energiModel.Store.observationByMonth">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="relmon_star_energiModel.observationByMonth_Result">
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="count_accident_sa" ColumnName="count_accident_sa" />
+                <ScalarProperty Name="count_accident_sc" ColumnName="count_accident_sc" />
+                <ScalarProperty Name="count_accident_ua" ColumnName="count_accident_ua" />
+                <ScalarProperty Name="count_accident_uc" ColumnName="count_accident_uc" />
+                <ScalarProperty Name="count_fire_sa" ColumnName="count_fire_sa" />
+                <ScalarProperty Name="count_fire_sc" ColumnName="count_fire_sc" />
+                <ScalarProperty Name="count_fire_ua" ColumnName="count_fire_ua" />
+                <ScalarProperty Name="count_fire_uc" ColumnName="count_fire_uc" />
+                <ScalarProperty Name="count_prevention_sa" ColumnName="count_prevention_sa" />
+                <ScalarProperty Name="count_prevention_sc" ColumnName="count_prevention_sc" />
+                <ScalarProperty Name="count_prevention_ua" ColumnName="count_prevention_ua" />
+                <ScalarProperty Name="count_prevention_uc" ColumnName="count_prevention_uc" />
+                <ScalarProperty Name="count_supervisor_sa" ColumnName="count_supervisor_sa" />
+                <ScalarProperty Name="count_supervisor_sc" ColumnName="count_supervisor_sc" />
+                <ScalarProperty Name="count_supervisor_ua" ColumnName="count_supervisor_ua" />
+                <ScalarProperty Name="count_supervisor_uc" ColumnName="count_supervisor_uc" />
+                <ScalarProperty Name="count_fit_work_sa" ColumnName="count_fit_work_sa" />
+                <ScalarProperty Name="count_fit_work_sc" ColumnName="count_fit_work_sc" />
+                <ScalarProperty Name="count_fit_work_ua" ColumnName="count_fit_work_ua" />
+                <ScalarProperty Name="count_fit_work_uc" ColumnName="count_fit_work_uc" />
+                <ScalarProperty Name="count_psychological_sa" ColumnName="count_psychological_sa" />
+                <ScalarProperty Name="count_psychological_sc" ColumnName="count_psychological_sc" />
+                <ScalarProperty Name="count_psychological_ua" ColumnName="count_psychological_ua" />
+                <ScalarProperty Name="count_psychological_uc" ColumnName="count_psychological_uc" />
+                <ScalarProperty Name="count_posture_sa" ColumnName="count_posture_sa" />
+                <ScalarProperty Name="count_posture_sc" ColumnName="count_posture_sc" />
+                <ScalarProperty Name="count_posture_ua" ColumnName="count_posture_ua" />
+                <ScalarProperty Name="count_posture_uc" ColumnName="count_posture_uc" />
+                <ScalarProperty Name="count_substance_sa" ColumnName="count_substance_sa" />
+                <ScalarProperty Name="count_substance_sc" ColumnName="count_substance_sc" />
+                <ScalarProperty Name="count_substance_ua" ColumnName="count_substance_ua" />
+                <ScalarProperty Name="count_substance_uc" ColumnName="count_substance_uc" />
+                <ScalarProperty Name="count_hygiene_sa" ColumnName="count_hygiene_sa" />
+                <ScalarProperty Name="count_hygiene_sc" ColumnName="count_hygiene_sc" />
+                <ScalarProperty Name="count_hygiene_ua" ColumnName="count_hygiene_ua" />
+                <ScalarProperty Name="count_hygiene_uc" ColumnName="count_hygiene_uc" />
+                <ScalarProperty Name="count_house_sa" ColumnName="count_house_sa" />
+                <ScalarProperty Name="count_house_sc" ColumnName="count_house_sc" />
+                <ScalarProperty Name="count_house_ua" ColumnName="count_house_ua" />
+                <ScalarProperty Name="count_house_uc" ColumnName="count_house_uc" />
+                <ScalarProperty Name="count_standard_sa" ColumnName="count_standard_sa" />
+                <ScalarProperty Name="count_standard_sc" ColumnName="count_standard_sc" />
+                <ScalarProperty Name="count_standard_ua" ColumnName="count_standard_ua" />
+                <ScalarProperty Name="count_standard_uc" ColumnName="count_standard_uc" />
+                <ScalarProperty Name="count_spill_sa" ColumnName="count_spill_sa" />
+                <ScalarProperty Name="count_spill_sc" ColumnName="count_spill_sc" />
+                <ScalarProperty Name="count_spill_ua" ColumnName="count_spill_ua" />
+                <ScalarProperty Name="count_spill_uc" ColumnName="count_spill_uc" />
+                <ScalarProperty Name="count_waste_energy_sa" ColumnName="count_waste_energy_sa" />
+                <ScalarProperty Name="count_waste_energy_sc" ColumnName="count_waste_energy_sc" />
+                <ScalarProperty Name="count_waste_energy_ua" ColumnName="count_waste_energy_ua" />
+                <ScalarProperty Name="count_waste_energy_uc" ColumnName="count_waste_energy_uc" />
+                <ScalarProperty Name="count_containment_sa" ColumnName="count_containment_sa" />
+                <ScalarProperty Name="count_containment_sc" ColumnName="count_containment_sc" />
+                <ScalarProperty Name="count_containment_ua" ColumnName="count_containment_ua" />
+                <ScalarProperty Name="count_containment_uc" ColumnName="count_containment_uc" />
+                <ScalarProperty Name="count_absorbent_sa" ColumnName="count_absorbent_sa" />
+                <ScalarProperty Name="count_absorbent_sc" ColumnName="count_absorbent_sc" />
+                <ScalarProperty Name="count_absorbent_ua" ColumnName="count_absorbent_ua" />
+                <ScalarProperty Name="count_absorbent_uc" ColumnName="count_absorbent_uc" />
+                <ScalarProperty Name="count_hira_sa" ColumnName="count_hira_sa" />
+                <ScalarProperty Name="count_hira_sc" ColumnName="count_hira_sc" />
+                <ScalarProperty Name="count_hira_ua" ColumnName="count_hira_ua" />
+                <ScalarProperty Name="count_hira_uc" ColumnName="count_hira_uc" />
+                <ScalarProperty Name="count_ptw_sa" ColumnName="count_ptw_sa" />
+                <ScalarProperty Name="count_ptw_sc" ColumnName="count_ptw_sc" />
+                <ScalarProperty Name="count_ptw_ua" ColumnName="count_ptw_ua" />
+                <ScalarProperty Name="count_ptw_uc" ColumnName="count_ptw_uc" />
+                <ScalarProperty Name="count_sop_sa" ColumnName="count_sop_sa" />
+                <ScalarProperty Name="count_sop_sc" ColumnName="count_sop_sc" />
+                <ScalarProperty Name="count_sop_ua" ColumnName="count_sop_ua" />
+                <ScalarProperty Name="count_sop_uc" ColumnName="count_sop_uc" />
+                <ScalarProperty Name="count_msds_sa" ColumnName="count_msds_sa" />
+                <ScalarProperty Name="count_msds_sc" ColumnName="count_msds_sc" />
+                <ScalarProperty Name="count_msds_ua" ColumnName="count_msds_ua" />
+                <ScalarProperty Name="count_msds_uc" ColumnName="count_msds_uc" />
+                <ScalarProperty Name="count_emergency_sa" ColumnName="count_emergency_sa" />
+                <ScalarProperty Name="count_emergency_sc" ColumnName="count_emergency_sc" />
+                <ScalarProperty Name="count_emergency_ua" ColumnName="count_emergency_ua" />
+                <ScalarProperty Name="count_emergency_uc" ColumnName="count_emergency_uc" />
+                <ScalarProperty Name="count_certificates_sa" ColumnName="count_certificates_sa" />
+                <ScalarProperty Name="count_certificates_sc" ColumnName="count_certificates_sc" />
+                <ScalarProperty Name="count_certificates_ua" ColumnName="count_certificates_ua" />
+                <ScalarProperty Name="count_certificates_uc" ColumnName="count_certificates_uc" />
+                <ScalarProperty Name="count_ppe_sa" ColumnName="count_ppe_sa" />
+                <ScalarProperty Name="count_ppe_sc" ColumnName="count_ppe_sc" />
+                <ScalarProperty Name="count_ppe_ua" ColumnName="count_ppe_ua" />
+                <ScalarProperty Name="count_ppe_uc" ColumnName="count_ppe_uc" />
+                <ScalarProperty Name="count_hand_sa" ColumnName="count_hand_sa" />
+                <ScalarProperty Name="count_hand_sc" ColumnName="count_hand_sc" />
+                <ScalarProperty Name="count_hand_ua" ColumnName="count_hand_ua" />
+                <ScalarProperty Name="count_hand_uc" ColumnName="count_hand_uc" />
+                <ScalarProperty Name="count_mechanical_sa" ColumnName="count_mechanical_sa" />
+                <ScalarProperty Name="count_mechanical_sc" ColumnName="count_mechanical_sc" />
+                <ScalarProperty Name="count_mechanical_ua" ColumnName="count_mechanical_ua" />
+                <ScalarProperty Name="count_mechanical_uc" ColumnName="count_mechanical_uc" />
+                <ScalarProperty Name="count_electrical_sa" ColumnName="count_electrical_sa" />
+                <ScalarProperty Name="count_electrical_sc" ColumnName="count_electrical_sc" />
+                <ScalarProperty Name="count_electrical_ua" ColumnName="count_electrical_ua" />
+                <ScalarProperty Name="count_electrical_uc" ColumnName="count_electrical_uc" />
+                <ScalarProperty Name="count_vehicular_sa" ColumnName="count_vehicular_sa" />
+                <ScalarProperty Name="count_vehicular_sc" ColumnName="count_vehicular_sc" />
+                <ScalarProperty Name="count_vehicular_ua" ColumnName="count_vehicular_ua" />
+                <ScalarProperty Name="count_vehicular_uc" ColumnName="count_vehicular_uc" />
+                <ScalarProperty Name="count_substandard_sa" ColumnName="count_substandard_sa" />
+                <ScalarProperty Name="count_substandard_sc" ColumnName="count_substandard_sc" />
+                <ScalarProperty Name="count_substandard_ua" ColumnName="count_substandard_ua" />
+                <ScalarProperty Name="count_substandard_uc" ColumnName="count_substandard_uc" />
+                <ScalarProperty Name="count_h2s_sa" ColumnName="count_h2s_sa" />
+                <ScalarProperty Name="count_h2s_sc" ColumnName="count_h2s_sc" />
+                <ScalarProperty Name="count_h2s_ua" ColumnName="count_h2s_ua" />
+                <ScalarProperty Name="count_h2s_uc" ColumnName="count_h2s_uc" />
+                <ScalarProperty Name="count_workplace_health_sa" ColumnName="count_workplace_health_sa" />
+                <ScalarProperty Name="count_workplace_health_sc" ColumnName="count_workplace_health_sc" />
+                <ScalarProperty Name="count_workplace_health_ua" ColumnName="count_workplace_health_ua" />
+                <ScalarProperty Name="count_workplace_health_uc" ColumnName="count_workplace_health_uc" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="observationByObserver" FunctionName="relmon_star_energiModel.Store.observationByObserver">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="relmon_star_energiModel.observationByObserver_Result">
+                <ScalarProperty Name="observer" ColumnName="observer" />
+                <ScalarProperty Name="count_accident_sa" ColumnName="count_accident_sa" />
+                <ScalarProperty Name="count_accident_sc" ColumnName="count_accident_sc" />
+                <ScalarProperty Name="count_accident_ua" ColumnName="count_accident_ua" />
+                <ScalarProperty Name="count_accident_uc" ColumnName="count_accident_uc" />
+                <ScalarProperty Name="count_fire_sa" ColumnName="count_fire_sa" />
+                <ScalarProperty Name="count_fire_sc" ColumnName="count_fire_sc" />
+                <ScalarProperty Name="count_fire_ua" ColumnName="count_fire_ua" />
+                <ScalarProperty Name="count_fire_uc" ColumnName="count_fire_uc" />
+                <ScalarProperty Name="count_prevention_sa" ColumnName="count_prevention_sa" />
+                <ScalarProperty Name="count_prevention_sc" ColumnName="count_prevention_sc" />
+                <ScalarProperty Name="count_prevention_ua" ColumnName="count_prevention_ua" />
+                <ScalarProperty Name="count_prevention_uc" ColumnName="count_prevention_uc" />
+                <ScalarProperty Name="count_supervisor_sa" ColumnName="count_supervisor_sa" />
+                <ScalarProperty Name="count_supervisor_sc" ColumnName="count_supervisor_sc" />
+                <ScalarProperty Name="count_supervisor_ua" ColumnName="count_supervisor_ua" />
+                <ScalarProperty Name="count_supervisor_uc" ColumnName="count_supervisor_uc" />
+                <ScalarProperty Name="count_fit_work_sa" ColumnName="count_fit_work_sa" />
+                <ScalarProperty Name="count_fit_work_sc" ColumnName="count_fit_work_sc" />
+                <ScalarProperty Name="count_fit_work_ua" ColumnName="count_fit_work_ua" />
+                <ScalarProperty Name="count_fit_work_uc" ColumnName="count_fit_work_uc" />
+                <ScalarProperty Name="count_psychological_sa" ColumnName="count_psychological_sa" />
+                <ScalarProperty Name="count_psychological_sc" ColumnName="count_psychological_sc" />
+                <ScalarProperty Name="count_psychological_ua" ColumnName="count_psychological_ua" />
+                <ScalarProperty Name="count_psychological_uc" ColumnName="count_psychological_uc" />
+                <ScalarProperty Name="count_posture_sa" ColumnName="count_posture_sa" />
+                <ScalarProperty Name="count_posture_sc" ColumnName="count_posture_sc" />
+                <ScalarProperty Name="count_posture_ua" ColumnName="count_posture_ua" />
+                <ScalarProperty Name="count_posture_uc" ColumnName="count_posture_uc" />
+                <ScalarProperty Name="count_substance_sa" ColumnName="count_substance_sa" />
+                <ScalarProperty Name="count_substance_sc" ColumnName="count_substance_sc" />
+                <ScalarProperty Name="count_substance_ua" ColumnName="count_substance_ua" />
+                <ScalarProperty Name="count_substance_uc" ColumnName="count_substance_uc" />
+                <ScalarProperty Name="count_hygiene_sa" ColumnName="count_hygiene_sa" />
+                <ScalarProperty Name="count_hygiene_sc" ColumnName="count_hygiene_sc" />
+                <ScalarProperty Name="count_hygiene_ua" ColumnName="count_hygiene_ua" />
+                <ScalarProperty Name="count_hygiene_uc" ColumnName="count_hygiene_uc" />
+                <ScalarProperty Name="count_house_sa" ColumnName="count_house_sa" />
+                <ScalarProperty Name="count_house_sc" ColumnName="count_house_sc" />
+                <ScalarProperty Name="count_house_ua" ColumnName="count_house_ua" />
+                <ScalarProperty Name="count_house_uc" ColumnName="count_house_uc" />
+                <ScalarProperty Name="count_standard_sa" ColumnName="count_standard_sa" />
+                <ScalarProperty Name="count_standard_sc" ColumnName="count_standard_sc" />
+                <ScalarProperty Name="count_standard_ua" ColumnName="count_standard_ua" />
+                <ScalarProperty Name="count_standard_uc" ColumnName="count_standard_uc" />
+                <ScalarProperty Name="count_spill_sa" ColumnName="count_spill_sa" />
+                <ScalarProperty Name="count_spill_sc" ColumnName="count_spill_sc" />
+                <ScalarProperty Name="count_spill_ua" ColumnName="count_spill_ua" />
+                <ScalarProperty Name="count_spill_uc" ColumnName="count_spill_uc" />
+                <ScalarProperty Name="count_waste_energy_sa" ColumnName="count_waste_energy_sa" />
+                <ScalarProperty Name="count_waste_energy_sc" ColumnName="count_waste_energy_sc" />
+                <ScalarProperty Name="count_waste_energy_ua" ColumnName="count_waste_energy_ua" />
+                <ScalarProperty Name="count_waste_energy_uc" ColumnName="count_waste_energy_uc" />
+                <ScalarProperty Name="count_containment_sa" ColumnName="count_containment_sa" />
+                <ScalarProperty Name="count_containment_sc" ColumnName="count_containment_sc" />
+                <ScalarProperty Name="count_containment_ua" ColumnName="count_containment_ua" />
+                <ScalarProperty Name="count_containment_uc" ColumnName="count_containment_uc" />
+                <ScalarProperty Name="count_absorbent_sa" ColumnName="count_absorbent_sa" />
+                <ScalarProperty Name="count_absorbent_sc" ColumnName="count_absorbent_sc" />
+                <ScalarProperty Name="count_absorbent_ua" ColumnName="count_absorbent_ua" />
+                <ScalarProperty Name="count_absorbent_uc" ColumnName="count_absorbent_uc" />
+                <ScalarProperty Name="count_hira_sa" ColumnName="count_hira_sa" />
+                <ScalarProperty Name="count_hira_sc" ColumnName="count_hira_sc" />
+                <ScalarProperty Name="count_hira_ua" ColumnName="count_hira_ua" />
+                <ScalarProperty Name="count_hira_uc" ColumnName="count_hira_uc" />
+                <ScalarProperty Name="count_ptw_sa" ColumnName="count_ptw_sa" />
+                <ScalarProperty Name="count_ptw_sc" ColumnName="count_ptw_sc" />
+                <ScalarProperty Name="count_ptw_ua" ColumnName="count_ptw_ua" />
+                <ScalarProperty Name="count_ptw_uc" ColumnName="count_ptw_uc" />
+                <ScalarProperty Name="count_sop_sa" ColumnName="count_sop_sa" />
+                <ScalarProperty Name="count_sop_sc" ColumnName="count_sop_sc" />
+                <ScalarProperty Name="count_sop_ua" ColumnName="count_sop_ua" />
+                <ScalarProperty Name="count_sop_uc" ColumnName="count_sop_uc" />
+                <ScalarProperty Name="count_msds_sa" ColumnName="count_msds_sa" />
+                <ScalarProperty Name="count_msds_sc" ColumnName="count_msds_sc" />
+                <ScalarProperty Name="count_msds_ua" ColumnName="count_msds_ua" />
+                <ScalarProperty Name="count_msds_uc" ColumnName="count_msds_uc" />
+                <ScalarProperty Name="count_emergency_sa" ColumnName="count_emergency_sa" />
+                <ScalarProperty Name="count_emergency_sc" ColumnName="count_emergency_sc" />
+                <ScalarProperty Name="count_emergency_ua" ColumnName="count_emergency_ua" />
+                <ScalarProperty Name="count_emergency_uc" ColumnName="count_emergency_uc" />
+                <ScalarProperty Name="count_certificates_sa" ColumnName="count_certificates_sa" />
+                <ScalarProperty Name="count_certificates_sc" ColumnName="count_certificates_sc" />
+                <ScalarProperty Name="count_certificates_ua" ColumnName="count_certificates_ua" />
+                <ScalarProperty Name="count_certificates_uc" ColumnName="count_certificates_uc" />
+                <ScalarProperty Name="count_ppe_sa" ColumnName="count_ppe_sa" />
+                <ScalarProperty Name="count_ppe_sc" ColumnName="count_ppe_sc" />
+                <ScalarProperty Name="count_ppe_ua" ColumnName="count_ppe_ua" />
+                <ScalarProperty Name="count_ppe_uc" ColumnName="count_ppe_uc" />
+                <ScalarProperty Name="count_hand_sa" ColumnName="count_hand_sa" />
+                <ScalarProperty Name="count_hand_sc" ColumnName="count_hand_sc" />
+                <ScalarProperty Name="count_hand_ua" ColumnName="count_hand_ua" />
+                <ScalarProperty Name="count_hand_uc" ColumnName="count_hand_uc" />
+                <ScalarProperty Name="count_mechanical_sa" ColumnName="count_mechanical_sa" />
+                <ScalarProperty Name="count_mechanical_sc" ColumnName="count_mechanical_sc" />
+                <ScalarProperty Name="count_mechanical_ua" ColumnName="count_mechanical_ua" />
+                <ScalarProperty Name="count_mechanical_uc" ColumnName="count_mechanical_uc" />
+                <ScalarProperty Name="count_electrical_sa" ColumnName="count_electrical_sa" />
+                <ScalarProperty Name="count_electrical_sc" ColumnName="count_electrical_sc" />
+                <ScalarProperty Name="count_electrical_ua" ColumnName="count_electrical_ua" />
+                <ScalarProperty Name="count_electrical_uc" ColumnName="count_electrical_uc" />
+                <ScalarProperty Name="count_vehicular_sa" ColumnName="count_vehicular_sa" />
+                <ScalarProperty Name="count_vehicular_sc" ColumnName="count_vehicular_sc" />
+                <ScalarProperty Name="count_vehicular_ua" ColumnName="count_vehicular_ua" />
+                <ScalarProperty Name="count_vehicular_uc" ColumnName="count_vehicular_uc" />
+                <ScalarProperty Name="count_substandard_sa" ColumnName="count_substandard_sa" />
+                <ScalarProperty Name="count_substandard_sc" ColumnName="count_substandard_sc" />
+                <ScalarProperty Name="count_substandard_ua" ColumnName="count_substandard_ua" />
+                <ScalarProperty Name="count_substandard_uc" ColumnName="count_substandard_uc" />
+                <ScalarProperty Name="count_h2s_sa" ColumnName="count_h2s_sa" />
+                <ScalarProperty Name="count_h2s_sc" ColumnName="count_h2s_sc" />
+                <ScalarProperty Name="count_h2s_ua" ColumnName="count_h2s_ua" />
+                <ScalarProperty Name="count_h2s_uc" ColumnName="count_h2s_uc" />
+                <ScalarProperty Name="count_workplace_health_sa" ColumnName="count_workplace_health_sa" />
+                <ScalarProperty Name="count_workplace_health_sc" ColumnName="count_workplace_health_sc" />
+                <ScalarProperty Name="count_workplace_health_ua" ColumnName="count_workplace_health_ua" />
+                <ScalarProperty Name="count_workplace_health_uc" ColumnName="count_workplace_health_uc" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="observationSummary" FunctionName="relmon_star_energiModel.Store.observationSummary" />
+          <FunctionImportMapping FunctionImportName="observationSummary3" FunctionName="relmon_star_energiModel.Store.observationSummary3" />
           <EntitySetMapping Name="audits">
             <EntityTypeMapping TypeName="relmon_star_energiModel.audit">
               <MappingFragment StoreEntitySet="audit">
@@ -6174,6 +7599,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="daily_log_to_wells">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_to_wells">
+              <MappingFragment StoreEntitySet="daily_log_to_wells">
+                <ScalarProperty Name="is_text" ColumnName="is_text" />
+                <ScalarProperty Name="whp" ColumnName="whp" />
+                <ScalarProperty Name="flow" ColumnName="flow" />
+                <ScalarProperty Name="fcv" ColumnName="fcv" />
+                <ScalarProperty Name="daily_log_wells_id" ColumnName="daily_log_wells_id" />
+                <ScalarProperty Name="daily_log_id" ColumnName="daily_log_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="daily_log_weekly_target">
             <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_weekly_target">
               <MappingFragment StoreEntitySet="daily_log_weekly_target">
@@ -6181,6 +7618,15 @@
                 <ScalarProperty Name="target_unit_1" ColumnName="target_unit_1" />
                 <ScalarProperty Name="shift" ColumnName="shift" />
                 <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="daily_log_wells">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.daily_log_wells">
+              <MappingFragment StoreEntitySet="daily_log_wells">
+                <ScalarProperty Name="is_delete" ColumnName="is_delete" />
+                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -6205,9 +7651,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="email_error">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.email_error">
+              <MappingFragment StoreEntitySet="email_error">
+                <ScalarProperty Name="exception" ColumnName="exception" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="emails" ColumnName="emails" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="employees">
             <EntityTypeMapping TypeName="relmon_star_energiModel.employee">
               <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="kbp_code" ColumnName="kbp_code" />
                 <ScalarProperty Name="approval_level" ColumnName="approval_level" />
                 <ScalarProperty Name="department" ColumnName="department" />
                 <ScalarProperty Name="employee_delegate" ColumnName="employee_delegate" />
@@ -6222,6 +7680,18 @@
                 <ScalarProperty Name="position" ColumnName="position" />
                 <ScalarProperty Name="alpha_name" ColumnName="alpha_name" />
                 <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employee_delegations">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.employee_delegations">
+              <MappingFragment StoreEntitySet="employee_delegations">
+                <ScalarProperty Name="id_delegate" ColumnName="id_delegate" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="id_employee" ColumnName="id_employee" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -6246,6 +7716,7 @@
           <EntitySetMapping Name="equipment_daily_report_table">
             <EntityTypeMapping TypeName="relmon_star_energiModel.equipment_daily_report_table">
               <MappingFragment StoreEntitySet="equipment_daily_report_table">
+                <ScalarProperty Name="id_equipment" ColumnName="id_equipment" />
                 <ScalarProperty Name="keterangan" ColumnName="keterangan" />
                 <ScalarProperty Name="name_operator" ColumnName="name_operator" />
                 <ScalarProperty Name="time" ColumnName="time" />
@@ -6364,6 +7835,7 @@
           <EntitySetMapping Name="equipments">
             <EntityTypeMapping TypeName="relmon_star_energiModel.equipment">
               <MappingFragment StoreEntitySet="equipments">
+                <ScalarProperty Name="pnid_tag_num" ColumnName="pnid_tag_num" />
                 <ScalarProperty Name="sertifikasi" ColumnName="sertifikasi" />
                 <ScalarProperty Name="data_sheet_path" ColumnName="data_sheet_path" />
                 <ScalarProperty Name="status_read_nav" ColumnName="status_read_nav" />
@@ -6484,6 +7956,7 @@
           <EntitySetMapping Name="iir_recommendations">
             <EntityTypeMapping TypeName="relmon_star_energiModel.iir_recommendations">
               <MappingFragment StoreEntitySet="iir_recommendations">
+                <ScalarProperty Name="id_rca" ColumnName="id_rca" />
                 <ScalarProperty Name="has_pir" ColumnName="has_pir" />
                 <ScalarProperty Name="completion_date" ColumnName="completion_date" />
                 <ScalarProperty Name="pir_number" ColumnName="pir_number" />
@@ -6506,6 +7979,7 @@
           <EntitySetMapping Name="incident_report">
             <EntityTypeMapping TypeName="relmon_star_energiModel.incident_report">
               <MappingFragment StoreEntitySet="incident_report">
+                <ScalarProperty Name="requestor_approve" ColumnName="requestor_approve" />
                 <ScalarProperty Name="id_fracas" ColumnName="id_fracas" />
                 <ScalarProperty Name="id_tsr" ColumnName="id_tsr" />
                 <ScalarProperty Name="kontraktor_seg" ColumnName="kontraktor_seg" />
@@ -6822,6 +8296,7 @@
           <EntitySetMapping Name="part_unit_event">
             <EntityTypeMapping TypeName="relmon_star_energiModel.part_unit_event">
               <MappingFragment StoreEntitySet="part_unit_event">
+                <ScalarProperty Name="id_ir" ColumnName="id_ir" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="event_description" ColumnName="event_description" />
@@ -6941,6 +8416,8 @@
           <EntitySetMapping Name="rcas">
             <EntityTypeMapping TypeName="relmon_star_energiModel.rca">
               <MappingFragment StoreEntitySet="rca">
+                <ScalarProperty Name="basic_cause" ColumnName="basic_cause" />
+                <ScalarProperty Name="immediate_cause" ColumnName="immediate_cause" />
                 <ScalarProperty Name="pa_sign" ColumnName="pa_sign" />
                 <ScalarProperty Name="sign_date" ColumnName="sign_date" />
                 <ScalarProperty Name="is_sign" ColumnName="is_sign" />
@@ -7601,18 +9078,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="trouble_shooting_log">
-            <EntityTypeMapping TypeName="relmon_star_energiModel.trouble_shooting_log">
-              <MappingFragment StoreEntitySet="trouble_shooting_log">
-                <ScalarProperty Name="comment" ColumnName="comment" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="id_tsr" ColumnName="id_tsr" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="unit_paf">
             <EntityTypeMapping TypeName="relmon_star_energiModel.unit_paf">
               <MappingFragment StoreEntitySet="unit_paf">
@@ -7665,7 +9130,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="employee_delegations">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.employee_delegations">
+              <MappingFragment StoreEntitySet="employee_delegations">
+                <ScalarProperty Name="id_delegate" ColumnName="id_delegate" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="id_employee" ColumnName="id_employee" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -7686,105 +9163,108 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Relmon" ZoomLevel="10">
-        <EntityTypeShape EntityType="relmon_star_energiModel.audit" Width="1.5" PointX="1.6021575134257589" PointY="5.7166497286952334" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.audit_log" Width="1.5" PointX="9.2114618593880255" PointY="9.0791278225738221" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.audit_log_clause" Width="1.5" PointX="11.812609769316673" PointY="7.0255271080068908" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.bom" Width="1.5" PointX="6.6509724886393968" PointY="17.208615772988935" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.comms_rbi" Width="1.5" PointX="3.0241870950088776" PointY="6.3684911012502807" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.component" Width="1.5" PointX="11.436221150418847" PointY="25.79800532469433" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log" Width="1.5" PointX="2.1650148621597394" PointY="12.520065879691423" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_last_plant_status" Width="1.5" PointX="6.0116395996937708" PointY="5.4023247535351313" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_maintainence" Width="1.5" PointX="1.2790801791842468" PointY="20.335122281841524" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_operation_warning" Width="1.5" PointX="0.2668202241262515" PointY="23.056344817884426" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_power_stations" Width="1.5" PointX="7.9043165929169934" PointY="6.5592963875081836" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_pro" Width="1.5" PointX="10.514479250886701" PointY="21.889755214513166" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_sags" Width="1.5" PointX="5.8550840662117505" PointY="3.2008870407943086" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_sap" Width="1.5" PointX="0.10314264339541208" PointY="12.643642550634054" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_weekly_target" Width="1.5" PointX="0.57764769744949773" PointY="3.6420119272740612" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_wpnb" Width="1.5" PointX="8.2589486410184527" PointY="3.0614412888239331" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.discipline" Width="1.5" PointX="10.120014096666134" PointY="16.2642513738313" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.employee" Width="1.5" PointX="2.0482841031850709" PointY="15.776226736500965" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.employee_dept" Width="1.5" PointX="9.82825762677391" PointY="12.839782854933191" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_daily_report" Width="1.5" PointX="7.47452999254434" PointY="19.229666733755575" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_daily_report_table" Width="1.5" PointX="10.521373919454112" PointY="15.34300667761965" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_event" Width="1.5" PointX="7.3030510224881819" PointY="26.847934496983854" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_groups" Width="1.5" PointX="10.660646929713266" PointY="22.711114119138156" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_paf" Width="1.5" PointX="10.890405825753886" PointY="16.953890435841814" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_part" Width="1.5" PointX="7.4615781919386137" PointY="25.827085894451983" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_read_nav_note" Width="1.5" PointX="7.3048394244652419" PointY="27.411142704734178" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_readiness_nav" Width="1.5" PointX="4.0636290088592233" PointY="5.932280349513646" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.equipment" Width="1.5" PointX="2.8744341800335951" PointY="29.713123648293841" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.event_descriptions" Width="1.5" PointX="3.629264397374012" PointY="2.674143077188238" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.failure_causes" Width="1.5" PointX="9.5495888672534317" PointY="28.29940567738349" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.failure_effects" Width="1.5" PointX="2.5314300221071719" PointY="5.0922840857376732" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.failure_modes" Width="1.5" PointX="5.8755832174213527" PointY="4.4224869927496124" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.foc_op_avail" Width="1.5" PointX="6.1292355219504024" PointY="27.435148445626325" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.foc_paf" Width="1.5" PointX="11.55423790009424" PointY="21.509121591928007" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.foc_target_paf" Width="1.5" PointX="2.646740601699213" PointY="0.25481219601575855" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.foc" Width="1.5" PointX="4.197614155801765" PointY="22.571097622891468" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.iir_recommendations" Width="1.5" PointX="0.15114086314623285" PointY="13.481853863914429" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.immediate_actions" Width="1.5" PointX="10.124755387252549" PointY="5.7351709034923326" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.incident_report" Width="1.5" PointX="7.1566851228273869" PointY="1.1906768387140132" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.incident_report_log" Width="1.5" PointX="9.54801127572917" PointY="24.902443390759846" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.investigation_report" Width="1.5" PointX="2.3099268145439806" PointY="15.321156613212617" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.investigation_report_log" Width="1.5" PointX="9.2797877645491571" PointY="7.7133079654133452" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.ir_KPI_log" Width="1.5" PointX="6.06091504826253" PointY="26.612720337981692" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.long_term_actions" Width="1.5" PointX="9.0844114744497517" PointY="21.054423908262709" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.ma" Width="1.5" PointX="3.2246600851531424" PointY="7.7489672935330161" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_activity" Width="1.5" PointX="2.28682062881385" PointY="23.534543927542188" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_outstanding_activity" Width="1.5" PointX="7.2653297033465147" PointY="23.632674302734749" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_she_report" Width="1.5" PointX="4.6796950030511688" PointY="22.964713032806625" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_she_contractor" Width="1.5" PointX="11.878044286686016" PointY="15.052315733885539" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.part_unit_event" Width="1.5" PointX="3.9387399144185427" PointY="0.99324336694238868" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.part" Width="1.5" PointX="8.9624298945825682" PointY="7.5319606100823551" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.pir" Width="1.5" PointX="3.7109683117414676" PointY="19.642729649153878" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.pir_clause" Width="1.5" PointX="5.4875430546177286" PointY="28.908474175682514" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.pir_log" Width="1.5" PointX="10.128037651129084" PointY="29.354490159710167" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.plant" Width="1.5" PointX="4.0998497438150689" PointY="1.9299869099305882" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.process_owner" Width="1.5" PointX="3.9857362452828031" PointY="8.4873615542833516" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca" Width="1.5" PointX="3.4547923782164194" PointY="0.563126921915974" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_analisys_type" Width="1.5" PointX="8.302350314474829" PointY="23.42932344573984" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_building" Width="1.5" PointX="4.6298187676024707" PointY="7.9549139477102617" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_csf" Width="1.5" PointX="7.5975175740185747" PointY="21.731907720552716" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_csf_conector" Width="1.5" PointX="1.20376919266012" PointY="9.7568771586552625" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_department" Width="1.5" PointX="4.8412605118198595" PointY="31.309007644331551" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_desc" Width="1.5" PointX="9.80873394469206" PointY="19.65909382126252" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_facility" Width="1.5" PointX="1.1988319052377865" PointY="8.7703679989885384" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_fishbone_master" Width="1.5" PointX="0.37600019591674222" PointY="4.0346346665335053" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_floor" Width="1.5" PointX="2.2726448021236085" PointY="4.032177926987492" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_graph_metric" Width="1.5" PointX="8.5077639000992118" PointY="24.468120035002062" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_implementation" Width="1.5" PointX="0.37598637695237358" PointY="30.627844228701594" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_pre_task" Width="1.5" PointX="2.034465418213264" PointY="5.1033710563105394" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_preserve_category" Width="1.5" PointX="9.4049474324122748" PointY="19.25396595301757" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_section" Width="1.5" PointX="11.851732475614051" PointY="26.870607105489171" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_team_connector" Width="1.5" PointX="3.7955592217834475" PointY="6.6691066504777909" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.rca_template" Width="1.5" PointX="10.920126489792079" PointY="29.610826789220248" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.safe_man_hours" Width="1.5" PointX="5.3706615946119012" PointY="18.811085620341398" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.safe_man_hours_incident" Width="1.5" PointX="0.559902549050703" PointY="21.049863229063277" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.secondary_effects" Width="1.5" PointX="3.9819486197000131" PointY="23.719870816785782" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_illness_report" Width="1.5" PointX="10.047100826188503" PointY="20.771398717896734" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_injury_report" Width="1.5" PointX="11.168697069943276" PointY="14.142935893564921" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_KPI_target" Width="1.5" PointX="9.983224716961022" PointY="10.586907853645695" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_category" Width="1.5" PointX="9.5572896737406445" PointY="26.974354324384759" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_KPI_log" Width="1.5" PointX="9.6418459106431555" PointY="18.237732404022353" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_sub_category" Width="1.5" PointX="10.631933613974571" PointY="6.8982979836400125" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation" Width="1.5" PointX="10.451100289100362" PointY="6.5964520604333154" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian" Width="1.5" PointX="6.6749966827570439" PointY="16.744659640241721" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_exception" Width="1.5" PointX="11.835186218766117" PointY="23.511756609897947" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_reward" Width="1.5" PointX="6.7515308739391759" PointY="7.2428123239627169" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_winner" Width="1.5" PointX="5.5781452979790718" PointY="1.006080911031962" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.sub_component" Width="1.5" PointX="8.2977329195932175" PointY="8.3394440749378145" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.system_paf" Width="1.5" PointX="11.863269712712276" PointY="6.2409213810418365" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.system" Width="1.5" PointX="0.82075137683225385" PointY="28.545797063291911" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.tag_types" Width="1.5" PointX="2.0014985883615442" PointY="16.385799460292702" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.trouble_shooting" Width="1.5" PointX="2.7289854505699989" PointY="11.952803960048037" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.trouble_shooting_log" Width="1.5" PointX="9.5310393802500517" PointY="14.340515322210507" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.unit_paf" Width="1.5" PointX="3.4649658964318064" PointY="1.9159716823678332" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.unit" Width="1.5" PointX="10.006847943182498" PointY="18.859694444974743" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.user_per_role" Width="1.5" PointX="1.5022168688020745" PointY="26.838333261589675" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.user_role" Width="1.5" PointX="4.3564744723758073" PointY="30.105505495381312" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.user" Width="1.5" PointX="9.5783913217384331" PointY="13.366887530948448" />
+      <Diagram Name="Relmon" ZoomLevel="63">
+        <EntityTypeShape EntityType="relmon_star_energiModel.audit" Width="1.5" PointX="7.9905252046838982" PointY="17.710105084679139" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.audit_log" Width="1.5" PointX="7.0229066009739913" PointY="3.6026280688134151" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.audit_log_clause" Width="1.5" PointX="4.6859769880240671" PointY="24.282782387120083" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.bom" Width="1.5" PointX="6.0841285670567906" PointY="7.6862158364086488" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.comms_rbi" Width="1.5" PointX="2.6625305538356914" PointY="21.888944948971712" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.component" Width="1.5" PointX="11.851251706411714" PointY="12.611213615448779" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log" Width="1.5" PointX="11.709743253751539" PointY="0.19453385481356356" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_last_plant_status" Width="1.5" PointX="9.8596695353554882" PointY="30.35218153817215" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_maintainence" Width="1.5" PointX="7.0225744987943095" PointY="3.7614801841608623" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_operation_warning" Width="1.5" PointX="0.46070428400333241" PointY="22.351694802917397" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_power_stations" Width="1.5" PointX="9.7983871613621663" PointY="24.63189422741155" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_pro" Width="1.5" PointX="10.742283565337901" PointY="25.615722399957349" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_sags" Width="1.5" PointX="10.765223297646838" PointY="19.077854835930214" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_sap" Width="1.5" PointX="1.7240262561123938" PointY="6.8535306485619074" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_to_wells" Width="1.5" PointX="11.736400281887688" PointY="26.299337160912966" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_weekly_target" Width="1.5" PointX="10.711519806977139" PointY="6.9910077932248855" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_wells" Width="1.5" PointX="3.8168176448982294" PointY="10.680258159842463" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.daily_log_wpnb" Width="1.5" PointX="1.2726173965598537" PointY="6.103824201088317" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.discipline" Width="1.5" PointX="11.002665811685223" PointY="5.71439090637229" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.email_error" Width="1.5" PointX="0.601164149400389" PointY="30.711339666839383" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.employee" Width="1.5" PointX="6.8219256451455532" PointY="10.325877134839947" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.employee_delegations" Width="1.5" PointX="10.156914497798734" PointY="0.95054395541108394" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.employee_dept" Width="1.5" PointX="6.9235156639122941" PointY="12.703308111384189" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_daily_report" Width="1.5" PointX="2.7553931114987438" PointY="30.382317914805522" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_daily_report_table" Width="1.5" PointX="1.6855352547418026" PointY="14.677475995699631" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_event" Width="1.5" PointX="7.4572335721260092" PointY="29.160803122986483" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_groups" Width="1.5" PointX="2.574978820316018" PointY="29.808599679641706" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_paf" Width="1.5" PointX="5.5870373740731907" PointY="28.676172985078846" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_part" Width="1.5" PointX="7.8990058414167752" PointY="25.112028535973295" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_read_nav_note" Width="1.5" PointX="2.5857622281581918" PointY="25.418083798800634" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment_readiness_nav" Width="1.5" PointX="7.3820171390576368" PointY="9.3708121969228664" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.equipment" Width="1.5" PointX="3.1459306567655556" PointY="12.800744315982211" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.event_descriptions" Width="1.5" PointX="9.4968345488872536" PointY="24.612330090539682" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.failure_causes" Width="1.5" PointX="0.91238746089506306" PointY="20.545723850161639" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.failure_effects" Width="1.5" PointX="10.800332798995232" PointY="20.188627893192987" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.failure_modes" Width="1.5" PointX="0.37940226512933251" PointY="13.012474423745868" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.foc_op_avail" Width="1.5" PointX="0.80939091965993448" PointY="2.5172050905028382" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.foc_paf" Width="1.5" PointX="1.5599599059484712" PointY="15.80315529545916" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.foc_target_paf" Width="1.5" PointX="11.080045837480597" PointY="27.695545552156656" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.foc" Width="1.5" PointX="2.6823802360717113" PointY="16.003954015674047" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.iir_recommendations" Width="1.5" PointX="4.3988024519750866" PointY="6.215085434827528" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.immediate_actions" Width="1.5" PointX="0.88453873846891284" PointY="16.619591422667536" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.incident_report" Width="1.5" PointX="2.4050178632163526" PointY="31.40324969561922" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.incident_report_log" Width="1.5" PointX="0.046649102143314247" PointY="12.369580706753572" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.investigation_report" Width="1.5" PointX="10.418059435867733" PointY="6.7174734057474295" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.investigation_report_log" Width="1.5" PointX="6.3899282339913439" PointY="4.2284136285206371" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.ir_KPI_log" Width="1.5" PointX="11.557134361731416" PointY="8.1850205996004028" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.long_term_actions" Width="1.5" PointX="4.1347352360071312" PointY="8.8209895234652738" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.ma" Width="1.5" PointX="0.72627326879942466" PointY="14.284361011481082" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_activity" Width="1.5" PointX="2.8596194343919024" PointY="25.850378346559769" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_outstanding_activity" Width="1.5" PointX="3.8513530808740075" PointY="18.801991113835012" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_project_she_report" Width="1.5" PointX="0.59303641905683857" PointY="16.306132786118486" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.monthly_she_contractor" Width="1.5" PointX="5.124651233258029" PointY="6.8734817685901568" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.part_unit_event" Width="1.5" PointX="10.125910251459995" PointY="4.3494050970065432" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.part" Width="1.5" PointX="9.6182649739171673" PointY="31.095611035402683" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.pir" Width="1.5" PointX="11.673519031923972" PointY="25.368470024954746" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.pir_clause" Width="1.5" PointX="6.7346304649182738" PointY="22.89141192608113" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.pir_log" Width="1.5" PointX="5.1329789725751516" PointY="13.470293602659504" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.plant" Width="1.5" PointX="2.6295158353771626" PointY="23.769556995373943" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.process_owner" Width="1.5" PointX="2.395261255276977" PointY="25.921642434746794" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca" Width="1.5" PointX="9.1829746818090676" PointY="22.063452522299929" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_analisys_type" Width="1.5" PointX="9.2865870079428827" PointY="22.083414058239857" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_building" Width="1.5" PointX="1.1808072259560261" PointY="28.783325745157583" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_csf" Width="1.5" PointX="5.322543547173284" PointY="25.973355186159424" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_csf_conector" Width="1.5" PointX="8.8092166729314325" PointY="27.338903559063983" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_department" Width="1.5" PointX="5.1999099669977609" PointY="15.262427888467176" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_desc" Width="1.5" PointX="7.526210147666843" PointY="13.302635616298129" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_facility" Width="1.5" PointX="2.15012967500376" PointY="24.928148758098551" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_fishbone_master" Width="1.5" PointX="1.7376206190034844" PointY="18.052637183131946" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_floor" Width="1.5" PointX="1.1076955502422972" PointY="31.539899199986785" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_graph_metric" Width="1.5" PointX="1.6503083843972106" PointY="27.774992508708962" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_implementation" Width="1.5" PointX="7.0203277911154212" PointY="28.685880793577937" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_pre_task" Width="1.5" PointX="2.8455334952313143" PointY="23.671338599022171" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_preserve_category" Width="1.5" PointX="6.851024645776965" PointY="7.9276130385359806" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_section" Width="1.5" PointX="9.936403752275" PointY="29.555667026692845" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_team_connector" Width="1.5" PointX="0.67835523592231572" PointY="10.167171721424522" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rca_template" Width="1.5" PointX="2.9613741240284286" PointY="13.704009390298282" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.safe_man_hours" Width="1.5" PointX="0.5109171981508458" PointY="20.20682236003076" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.safe_man_hours_incident" Width="1.5" PointX="9.7641596597452462" PointY="11.498016392578379" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.secondary_effects" Width="1.5" PointX="4.9339925688384065" PointY="16.882410876863826" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_illness_report" Width="1.5" PointX="9.2550121160480252" PointY="1.0290721510672347" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_injury_report" Width="1.5" PointX="4.8218102384460213" PointY="30.309803038048468" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_KPI_target" Width="1.5" PointX="6.4609441712782463" PointY="15.866956196663415" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_category" Width="1.5" PointX="1.9869661116911872" PointY="4.6563789568172673" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_KPI_log" Width="1.5" PointX="6.434149797276663" PointY="20.75979516876852" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_obs_sub_category" Width="1.5" PointX="3.3137394819938297" PointY="20.959405044540485" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation" Width="1.5" PointX="7.8058883230229323" PointY="6.8474641474184876" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian" Width="1.5" PointX="8.0703075286328367" PointY="28.712939976115216" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_exception" Width="1.5" PointX="1.2534669047470517" PointY="28.078351227603086" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_reward" Width="1.5" PointX="5.4357467766086316" PointY="11.4774806701939" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_winner" Width="1.5" PointX="3.9427225086571287" PointY="6.2658364205927759" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.sub_component" Width="1.5" PointX="11.803604442534784" PointY="25.935577434457642" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.system_paf" Width="1.5" PointX="9.5737335987266761" PointY="3.6992548572361725" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.system" Width="1.5" PointX="2.7620363341467624" PointY="6.3658843368132993" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.tag_types" Width="1.5" PointX="4.477571157960953" PointY="17.526856773312602" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.trouble_shooting" Width="1.5" PointX="11.583896124541711" PointY="25.135638591430912" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.unit_paf" Width="1.5" PointX="1.8357463748360732" PointY="18.071443923782297" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.unit" Width="1.5" PointX="2.572450083947019" PointY="3.3717502073253272" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.user_per_role" Width="1.5" PointX="5.5938119523198395" PointY="20.411071071592659" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.user_role" Width="1.5" PointX="4.29626112631348" PointY="23.721133123953422" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.user" Width="1.5" PointX="6.8897858629421265" PointY="13.613020098587974" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_clause_audit_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_pir" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_clause_pir_clause" />
@@ -7796,6 +9276,8 @@
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_pro_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_sags_daily_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_sap_daily_log" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_daily_log_to_wells_daily_log_wells" />
         <AssociationConnector Association="relmon_star_energiModel.FK_disciplines_tag_types" />
         <AssociationConnector Association="relmon_star_energiModel.FK_employee_employee" />
         <AssociationConnector Association="relmon_star_energiModel.FK_employee_employee_dept" />
@@ -7838,6 +9320,7 @@
         <AssociationConnector Association="relmon_star_energiModel.FK_rm_system_rm_unit" />
         <AssociationConnector Association="relmon_star_energiModel.FK_unit_paf_units" />
         <AssociationConnector Association="relmon_star_energiModel.FK_user_per_role_users" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.employee_delegations" Width="1.5" PointX="11.698995619872116" PointY="14.820788628803934" />
       </Diagram>
     </Diagrams>
   </Designer>

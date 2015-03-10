@@ -47,9 +47,6 @@
         </h5>
     </div>
 }
-    <script>
-        console.log(0,"abcd".slice(0,"abcd".indexOf("c")));
-    </script>
 	<div class="primary">
 			<h3 style="color:#24525f" align="center">DASHBOARD</h3>
 		<div class="MENU">
@@ -86,6 +83,24 @@
 					<img src="/Content/image/process.ico" width="64" height="64"/>
 					<br/>
 					<a id="PIR" href="#" class="btn" data-toggle="popover" data-placement="bottom" data-content="@(li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.PIRINITIATOR || p.role == (int)StarEnergi.Config.role.PIRPROCESS || p.role == (int)StarEnergi.Config.role.FULLPIR || p.role == (int)StarEnergi.Config.role.AUDITOR) ? "<a href=" + @Url.Action("Index", "PIR") + ">PIR</a><br/><a href=" + @Url.Action("Report", "PIR", new { id_page = 1}) + ">PIR Report</a>" : "")" title="PIR" data-original-title="Popover on top" data-html="true">PIR</a>
+				</div>
+			</div>
+
+            <div id="bottom-2">
+				<div class="menuImage">
+					<img src="/Content/image/enviro.jpg" width="64" height="64"/>
+					<br/>
+					<a href="@System.Configuration.ConfigurationManager.AppSettings["enviro"]" class="btn">Enviro</a>
+				</div>
+				<div class="menuImage">
+					<img src="/Content/image/ptw.png" width="64" height="64"/>
+					<br/>
+				<a href="@System.Configuration.ConfigurationManager.AppSettings["fsr"]" class="btn" title="Facilities Service Request">FSR</a>
+				</div>
+                <div class="menuImage">
+					<img src="/Content/image/permit.jpg" width="64" height="64"/>
+					<br/>
+				<a href="@System.Configuration.ConfigurationManager.AppSettings["ptw"]" class="btn" title="Permit to Work">PTW</a>
 				</div>
 			</div>
 			<div style="clear:both"></div>

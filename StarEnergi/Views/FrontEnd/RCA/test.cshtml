@@ -76,28 +76,54 @@
         if (!( String.fromCharCode(event.which).toLowerCase() == 's' && event.ctrlKey) && !(event.which == 19)) return true;
         findPath(graph);
         if (treeNode != null) {
-            if (treeNode.getAttribute('path','') != JSON.stringify(pathes)) {
+            if (treeNode.getAttribute('path', '') != JSON.stringify(pathes)) {
                 delDesc();
-                treeNode.setAttribute('path',JSON.stringify(pathes));
+                treeNode.setAttribute('path', JSON.stringify(pathes));
             }
         }
-			        
+        var dummytreeNode = treeNode;
+        var model = graph.getModel();
+        var immediate_cause = '';
+        var basic_cause = '';
+        graph.traverse(treeNode, true, function (vertex, edge) {
+            value = model.getValue(vertex);
+            var id = vertex.id;
+            var ee = edge != null ? edge.source.id : 0;
+            if (value != null) {
+                attributes = value.attributes;
+                console.log(attributes);
+                if (attributes.cause != null) {
+                    if (attributes.cause.value == '1') {
+                        var li = '<li>' + attributes.deskripsi.value + '</li>';
+                        immediate_cause += li;
+                    } else if (attributes.cause.value == '2') {
+                        var li = '<li>' + attributes.deskripsi.value + '</li>';
+                        basic_cause += li;
+                    }
+                }
+            }
+        });
+        if (immediate_cause != '') immediate_cause = '<ul>' + immediate_cause + '</ul>';
+        if (basic_cause != '') basic_cause = '<ul>' + basic_cause + '</ul>';
+        treeNode = dummytreeNode;
         var enc = new mxCodec(mxUtils.createXmlDocument());
-        var node = enc.encode(graph.getModel());
+        var node = enc.encode(model);
         var xml = mxUtils.getXml(node);
         var xmlString = encodeURIComponent(xml);
+        if (xmlString.indexOf('mxGraphModel') < 0) {
+            xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
+        }
         var url = '@Url.Action("save2", "RCA")';
-	    var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
-	    var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
-	    fileName = 'analysis' + id + '.xml';
-	    mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
-			if (req.getStatus() == "200") {
-			    mxUtils.alert('File save successful');
-			} else
-			    mxUtils.alert('Unable to save file');
-			// Process server response using req of type mxXmlRequest
-		});
-		exportImages(editor,graph,graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? false : true);
+		var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir', '0');
+		var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val', null);
+		mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + '@(Model.id)' + '&immediate_cause=' + immediate_cause + '&basic_cause=' + basic_cause, function (req) {
+	        if (req.getStatus() == "200")
+	            mxUtils.alert('File save successful');
+	        else
+	            mxUtils.alert('Unable to save file');
+	        // Process server response using req of type mxXmlRequest
+	    });
+	    exportImages(editor, graph, graph.getDefaultParent().getChildAt(0).getAttribute('analysis', '-1') == '0' ? false : true);
         event.preventDefault();
         return false;
     });
@@ -540,22 +566,49 @@
 			                treeNode.setAttribute('path',JSON.stringify(pathes));
 			            }
 			        }
-			        
+			        var dummytreeNode = treeNode;
+			        var model = graph.getModel();
+			        var immediate_cause = '';
+			        var basic_cause = '';
+			        graph.traverse(treeNode, true, function(vertex, edge)
+			        {
+			            value = model.getValue(vertex);
+			            var id = vertex.id;
+			            var ee = edge != null ? edge.source.id : 0;
+			            if (value != null) {
+			                attributes = value.attributes;
+			                console.log(attributes);
+			                if (attributes.cause != null) {
+			                    if (attributes.cause.value == '1') {
+			                        var li = '<li>' + attributes.deskripsi.value + '</li>';
+			                        immediate_cause += li;
+			                    } else if (attributes.cause.value == '2') {
+			                        var li = '<li>' + attributes.deskripsi.value + '</li>';
+			                        basic_cause += li;
+			                    }
+			                }
+			            }
+			        });
+			        if (immediate_cause != '') immediate_cause = '<ul>' + immediate_cause + '</ul>';
+			        if (basic_cause != '') basic_cause = '<ul>' + basic_cause + '</ul>';
+			        treeNode = dummytreeNode;
 			        var enc = new mxCodec(mxUtils.createXmlDocument());
-			        var node = enc.encode(graph.getModel());
+			        var node = enc.encode(model);
 			        var xml = mxUtils.getXml(node);
 			        var xmlString = encodeURIComponent(xml);
+			        if (xmlString.indexOf('mxGraphModel') < 0) {
+			            xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
+			        }
 			        var url = '@Url.Action("save2", "RCA")';
-			        var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
-			        var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
-			        fileName = 'analysis' + id + '.xml';
-			        mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
-			            if (req.getStatus() == "200") {
-			                mxUtils.alert('File save successful');
-			            } else
-			                mxUtils.alert('Unable to save file');
-			            // Process server response using req of type mxXmlRequest
-			        });
+	                var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
+	                var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
+	                mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + '@(Model.id)' + '&immediate_cause=' + immediate_cause + '&basic_cause=' + basic_cause , function (req) {
+	                    if (req.getStatus() == "200")
+	                        mxUtils.alert('File save successful');
+	                    else
+	                        mxUtils.alert('Unable to save file');
+	                    // Process server response using req of type mxXmlRequest
+	                });
 			        exportImages(editor,graph,graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? false : true);
 			    });
 
@@ -567,6 +620,9 @@
 			                var node = enc.encode(graph.getModel());
 			                var xml = mxUtils.getXml(node);
 			                var xmlString = encodeURIComponent(xml);
+			                if (xmlString.indexOf('mxGraphModel') < 0) {
+			                    xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
+			                }
 			                var url = '@Url.Action("saveAs", "RCA")';
 	                        mxUtils.post(url, 'filename=template_' + equipment_code + '.xml&xml=' + xmlString , function (req) {
 	                            if (req.getStatus() == "200")
@@ -645,23 +701,50 @@
                 treeNode.setAttribute('path',JSON.stringify(pathes));
             }
         }
-			        
+        var dummytreeNode = treeNode;
+        var model = graph.getModel();
+        var immediate_cause = '';
+        var basic_cause = '';
+        graph.traverse(treeNode, true, function(vertex, edge)
+        {
+            value = model.getValue(vertex);
+            var id = vertex.id;
+            var ee = edge != null ? edge.source.id : 0;
+            if (value != null) {
+                attributes = value.attributes;
+                console.log(attributes);
+                if (attributes.cause != null) {
+                    if (attributes.cause.value == '1') {
+                        var li = '<li>' + attributes.deskripsi.value + '</li>';
+                        immediate_cause += li;
+                    } else if (attributes.cause.value == '2') {
+                        var li = '<li>' + attributes.deskripsi.value + '</li>';
+                        basic_cause += li;
+                    }
+                }
+            }
+        });
+        if (immediate_cause != '') immediate_cause = '<ul>' + immediate_cause + '</ul>';
+        if (basic_cause != '') basic_cause = '<ul>' + basic_cause + '</ul>';
+        treeNode = dummytreeNode;
         var enc = new mxCodec(mxUtils.createXmlDocument());
-        var node = enc.encode(graph.getModel());
+        var node = enc.encode(model);
         var xml = mxUtils.getXml(node);
         var xmlString = encodeURIComponent(xml);
+        if (xmlString.indexOf('mxGraphModel') < 0) {
+            xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
+        }
         var url = '@Url.Action("save2", "RCA")';
 		var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
 		var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
-		fileName = 'analysis' + id + '.xml';
-		mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
-		    if (req.getStatus() == "200")
-		        var d=new Date();
-		        var t=d.toLocaleTimeString();
-		        $('div.lastSave').text('Last auto save at: ' + t);
-			// Process server response using req of type mxXmlRequest
-		});
-		exportImages(editor,graph,graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? false : true);
+		mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + '@(Model.id)' + '&immediate_cause=' + immediate_cause + '&basic_cause=' + basic_cause , function (req) {
+	        if (req.getStatus() == "200")
+	            var d = new Date();
+		    var t = d.toLocaleTimeString();
+		    $('div.lastSave').text('Last auto save at: ' + t);
+	        // Process server response using req of type mxXmlRequest
+	    });
+	    exportImages(editor,graph,graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? false : true);
     }
 
     function recurseMoveChild(cell,graph,model,vertex,prev) {
@@ -939,23 +1022,50 @@
 	                    treeNode.setAttribute('path',JSON.stringify(pathes));
 	                }
 	            }
-			        
+	            var dummytreeNode = treeNode;
+	            var model = graph.getModel();
+	            var immediate_cause = '';
+	            var basic_cause = '';
+	            graph.traverse(treeNode, true, function(vertex, edge)
+	            {
+	                value = model.getValue(vertex);
+	                var id = vertex.id;
+	                var ee = edge != null ? edge.source.id : 0;
+	                if (value != null) {
+	                    attributes = value.attributes;
+	                    console.log(attributes);
+	                    if (attributes.cause != null) {
+	                        if (attributes.cause.value == '1') {
+	                            var li = '<li>' + attributes.deskripsi.value + '</li>';
+	                            immediate_cause += li;
+	                        } else if (attributes.cause.value == '2') {
+	                            var li = '<li>' + attributes.deskripsi.value + '</li>';
+	                            basic_cause += li;
+	                        }
+	                    }
+	                }
+	            });
+	            if (immediate_cause != '') immediate_cause = '<ul>' + immediate_cause + '</ul>';
+	            if (basic_cause != '') basic_cause = '<ul>' + basic_cause + '</ul>';
+	            treeNode = dummytreeNode;
 	            var enc = new mxCodec(mxUtils.createXmlDocument());
-	            var node = enc.encode(graph.getModel());
+	            var node = enc.encode(model);
 	            var xml = mxUtils.getXml(node);
 	            var xmlString = encodeURIComponent(xml);
+	            if (xmlString.indexOf('mxGraphModel') < 0) {
+	                xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
+	            }
 	            var url = '@Url.Action("save2", "RCA")';
 			    var node3 = graph.getDefaultParent().getChildAt(0).getAttribute('fracasir','0');
 			    var sel_val = graph.getDefaultParent().getChildAt(0).getAttribute('sel_val',null);
-			    fileName = 'analysis' + id + '.xml';
-			    mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + @(Model.id) , function (req) {
-			        if (req.getStatus() == "200") {
-			            mxUtils.alert('File save successful');
-			        } else
-			            mxUtils.alert('Unable to save file');
-			        // Process server response using req of type mxXmlRequest
-			    });
-			    exportImages(editor,graph,graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? false : true);
+			    mxUtils.post(url, 'filename=analysis' + id + '.xml&xml=' + xmlString + '&fracasir=' + node3 + '&sel_val=' + sel_val + '&id=' + '@(Model.id)' + '&immediate_cause=' + immediate_cause + '&basic_cause=' + basic_cause , function (req) {
+	                if (req.getStatus() == "200")
+	                    mxUtils.alert('File save successful');
+	                else
+	                    mxUtils.alert('Unable to save file');
+	                // Process server response using req of type mxXmlRequest
+	            });
+	            exportImages(editor,graph,graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0' ? false : true);
 			});
 	        if (graph.getDefaultParent().getChildAt(0).getAttribute('analysis','-1') == '0') {
 	            menu.addItem('Save As Template', '/Content/image/3graph/images/save.gif', function () {
@@ -965,6 +1075,9 @@
 	                    var node = enc.encode(graph.getModel());
 	                    var xml = mxUtils.getXml(node);
 	                    var xmlString = encodeURIComponent(xml);
+	                    if (xmlString.indexOf('mxGraphModel') < 0) {
+	                        xmlString = '<mxGraphModel>' + xmlString + '</mxGraphModel>';
+	                    }
 	                    var url = '@Url.Action("saveAs", "RCA")';
 	                    mxUtils.post(url, 'filename=template_' + equipment_code + '.xml&xml=' + xmlString , function (req) {
 	                        if (req.getStatus() == "200")
@@ -1041,7 +1154,7 @@
                 if (attrs[i].nodeName == 'deskripsi') {
                     if (attrs[2].nodeValue == 'root') {
                         var div = document.createElement('div');
-                        fracas_rad = document.createElement('input');
+                        @*fracas_rad = document.createElement('input');
                         fracas_rad.type = 'radio';
                         fracas_rad.name = 'fracasir';
                         fracas_rad.value = '1';
@@ -1087,7 +1200,7 @@
                         };
                         div.appendChild(fracas_rad);
                         var p = document.createTextNode('from FRACAS');
-                        div.appendChild(p);
+                        div.appendChild(p);*@
                         ir_rad = document.createElement('input');
                         ir_rad.type = 'radio';
                         ir_rad.name = 'fracasir';
@@ -1207,6 +1320,12 @@
                     }
                 } else if (attrs[i].nodeName == 'sel_val') {
                     iss = val;
+                }  else if (attrs[i].nodeName == 'cause') {
+                    var com = form.addCombo('Cause', false, 1);
+                    form.addOption(com, '', '', (val === '') ? true : false);
+                    form.addOption(com, 'Immediate Cause', '1', (val === '1') ? true : false);
+                    form.addOption(com, 'Basic Cause', '2', (val === '2') ? true : false);
+                    texts[i] = com;
                 }
             }
 
@@ -1241,6 +1360,11 @@
                                 val);
                             model.execute(edit);
                         } else if (attrs[i].nodeName == 'deskripsi') {
+                            var edit = new mxCellAttributeChange(
+						        cell, attrs[i].nodeName,
+						        texts[i].value);
+                            model.execute(edit);
+                        } else if (attrs[i].nodeName == 'cause') {
                             var edit = new mxCellAttributeChange(
 						        cell, attrs[i].nodeName,
 						        texts[i].value);
@@ -1339,6 +1463,7 @@
 	    node.setAttribute('baris',cell.getAttribute('baris',0));
 	    node.setAttribute('eC',dfsCountEdge(cell));
 	    node.setAttribute('cancel','0');
+	    node.setAttribute('cause','');
 	    node.setAttribute('isDesc', isDesc || '0');
 	    var edit = new mxCellAttributeChange(cell, 'eC', dfsCountEdge(cell));
 	    model.beginUpdate();
@@ -2264,7 +2389,9 @@
         var w = Math.round((bounds.width + 4) * scale);
         var h = Math.round((bounds.height + 4) * scale);
         var xml = mxUtils.getXml(root);
-
+        if (xml.indexOf('<output>') != 0) {
+            xml = '<output>' + xml + '</output>';
+        }
         // Compression is currently not used in this example
         // Requires base64.js and redeflate.js
         // xml = encodeURIComponent(Base64.encode(RawDeflate.deflate(xml), true));

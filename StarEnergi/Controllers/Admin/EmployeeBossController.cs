@@ -172,7 +172,9 @@ namespace StarEnergi.Controllers.Admin
             List<employee> le = getAllDeletedData(id);
             foreach (employee e in le)
             {
-                db.employees.Remove(e);
+                e.employee_boss = null;
+                e.employee_dept = null;
+                db.Entry(e).State = EntityState.Modified;
                 db.SaveChanges();
             }
             return Json(true);
@@ -187,16 +189,16 @@ namespace StarEnergi.Controllers.Admin
 
             list_e.Add(e);
 
-            for (int i =0; i< list_e.Count; i++)
-            {
-                List<employee> le = list_e[i].employee1.ToList();
-                foreach (employee eee in le)
-                {
-                    list_e.Add(eee);
-                }
-            }
+            List<employee> le = e.employee1.ToList();
 
-            list_e.Reverse();
+            foreach (employee ee in le)
+            {
+                ee.employee_boss = e.employee_boss;
+                ee.employee_dept = e.employee_dept;
+
+                db.Entry(ee).State = EntityState.Modified;
+                db.SaveChanges();
+            }
 
             return list_e;
         }

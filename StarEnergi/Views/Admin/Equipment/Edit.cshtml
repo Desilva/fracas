@@ -21,6 +21,7 @@
         {
             "Id": $('#equipment_id').val(),
             "Tag_num": $('#equipment_tag_num').val(),
+            "pnid_tag_num": $('#equipment_pnid_tag_num').val(),
             "Nama": $('#equipment_nama').val(),
             "Econ": $('#equipment_econ').val(),
             "Ram_crit": $('#equipment_ram_crit').val(),
@@ -33,7 +34,7 @@
             "Data_sheet_path": $('.t-filename').attr("title"),
             "id_equipment_group": eval('@ViewBag.id_equipment_group')
         }
-
+        console.log(values);
         $.post("Equipment/Edit", values, function (data) {
             if (data != undefined) {
                 if (data["status"] == 0) {
@@ -61,7 +62,7 @@
     }
 
     function clearError() {
-        var field = ["tag_num", "nama", "econ", "ram_crit", "id_discipline", "installed_date", "sertifikasi", "warranty", "vendor", "id_tag_type", "data_sheet_path"];
+        var field = ["tag_num", "nama", "pnid_tag_num", "econ", "ram_crit", "id_discipline", "installed_date", "sertifikasi", "warranty", "vendor", "id_tag_type", "data_sheet_path"];
         $.each(field, function (index, value) {
             $('#' + value).next('div').html('');
         });
@@ -127,6 +128,14 @@
     </div>
 
     <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.pnid_tag_num)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.pnid_tag_num)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
         @Html.LabelFor(model => model.equipment.nama)<a class="bintang">*</a>
     </div>
     <div class="editor-field">
@@ -151,7 +160,7 @@
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.id_tag_type)<a class="bintang">*</a>
+        @Html.LabelFor(model => model.equipment.id_tag_type)
     </div>
     <div class="editor-field">
         @Html.DropDownList("id_tag_type", string.Empty)
@@ -160,7 +169,7 @@
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.id_discipline)<a class="bintang">*</a>
+        @Html.LabelFor(model => model.equipment.id_discipline)
     </div>
     <div class="editor-field">
         <select name="id_discipline" id="id_discipline">

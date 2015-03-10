@@ -27,6 +27,7 @@ namespace StarEnergi.Models
         public string time { get; set; }
         public string name_operator { get; set; }
         public string keterangan { get; set; }
+        public Nullable<int> id_equipment { get; set; }
     
         public virtual equipment_daily_report equipment_daily_report { get; set; }
     }

@@ -43,6 +43,8 @@ namespace StarEnergi.Models
         public string she_superintendent_approve { get; set; }
         public string lead_name { get; set; }
         public List<string> attach { get; set; }
+        public string supervisor_approve { get; set; }
+        public string requestor_approve { get; set; }
     }
 
     public class PrintIIRModel

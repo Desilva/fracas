@@ -408,7 +408,7 @@
                     id: value[1]
                 },
                 success: function (data) {
-                    $('#functional_location').val(data.tag_number);
+                    $('#functional_location').val(data.tag_number + ' - ' + data.nama);
                 }
             });
             var detailWindow = $("#BrowseEquipment").data("tWindow");

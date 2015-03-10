@@ -14,8 +14,7 @@
         id = ViewBag.mod as Nullable<Int32>;
         ts = ViewBag.datas as StarEnergi.Models.trouble_shooting;
         isEdit = true;
-        isView = ts.superintendent_approval_signature != null || (user_id != ts.inspector_name && (user_id != ts.supervisor_approval_name || ts.supervisor_approval_signature != null) && (user_id != ts.superintendent_approval_name || ts.superintendent_approval_signature != null) &&
-            (user_id != ts.superintendent_delegate || ts.superintendent_approval_signature != null) && (user_id != ts.supervisor_delegate || ts.supervisor_approval_signature != null));
+        isView = !(ViewBag.isCanEdit as bool?).Value;
     
     } else {
         supervisor_id = ViewBag.supervisor_id as Nullable<int>;
@@ -83,7 +82,7 @@
 
             $('#realmod_save').css("display", "block");
             if (isEdit == 'False') {
-                $.post("TroubleShooting/Add", values, function (data) {
+                $.post("/TroubleShooting/Add", values, function (data) {
                     if (data != undefined) {
                         isSave = true;
                         $('#realmod_save').css("display", "none");
@@ -98,7 +97,7 @@
                 isSave = true;
                 var ids = '@id';
                 values.id = ids;
-                $.post("TroubleShooting/Edit", values, function (data) {
+                $.post("/TroubleShooting/Edit", values, function (data) {
                     if (data != undefined) {
                         $('#realmod_save').css("display", "none");
                         alert('Troubleshooting successfully updated');
@@ -259,7 +258,7 @@ function validate() {
                     <br />
                     @if (isEdit)
                     {
-                        if (has.Find(p => p.username == username).id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) || has.Find(p => p.username == username).id == Int32.Parse(ts.supervisor_delegate == null ? "0" : ts.supervisor_delegate))
+                        if (has.Find(p => p.username == username).id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) || user_id == has.Find(p => p.id.ToString() == ts.supervisor_approval_name).employee_delegate.ToString())
                         {
                             if (ts.supervisor_approval_signature == null)
                             {
@@ -277,7 +276,7 @@ function validate() {
                     <br />
                     @if (isEdit && (ts.supervisor_approval_signature != null || ts.supervisor_approval_name == null))
                     {
-                        if (has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) || has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_delegate == null ? "0" : ts.superintendent_delegate))
+                        if (has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) || user_id == has.Find(p => p.id.ToString() == ts.superintendent_approval_name).employee_delegate.ToString())
                         {
                             if (ts.superintendent_approval_signature == null)
                             {
@@ -320,27 +319,36 @@ function validate() {
                     @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(string.IsNullOrWhiteSpace(ts.supervisor_approval_name) ? "0" : ts.supervisor_approval_name) && (string.IsNullOrWhiteSpace(ts.supervisor_approval_signature) ? true : ts.supervisor_approval_signature.Substring(0, 1) == "a"))
                     {
                     }
-                    else if (ts != null && ts.supervisor_delegate != null && (ts.supervisor_approval_signature == null ? true : ts.supervisor_approval_signature.Substring(0, 1) == "d"))
+                    else if (ts != null && ts.supervisor_delegate != null && (ts.supervisor_approval_signature != null && ts.supervisor_approval_signature.Substring(0, 1) == "d"))
                     {
-                        <text>a/n </text>
+                        <text>@has.Find(p => p.id.ToString() == ts.supervisor_delegate).alpha_name<br />a/n </text>
+                    }
+                    else if (ts != null && user_id == has.Find(p => p.id.ToString() == ts.supervisor_approval_name).employee_delegate.ToString() && (ts.supervisor_approval_signature == null))
+                    {
+                        var spv = has.Find(p => p.id.ToString() == ts.supervisor_approval_name);
+                        <text>@has.Find(p => p.id == spv.employee_delegate).alpha_name<br />a/n </text>
                     }
                     <select id="supervisor_approval_name" name="supervisor_approval_name"  disabled>
                         <option value="" selected disabled>Choose One</option>
                         @{bool supervisor_isDelegate = false; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (isEdit && user.id == Int32.Parse(ts.supervisor_delegate == null ? "0" : ts.supervisor_delegate))
+                            @*if (isEdit && user.id == Int32.Parse(ts.supervisor_delegate == null ? "0" : ts.supervisor_delegate))
                             {
                                 supervisor_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (user.id == supervisor_id)
+                            else*@ if (user.id == supervisor_id)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            } 
+                            else if (isEdit && user.id.ToString() == ts.supervisor_approval_name)
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
                             else if (user.approval_level == 1)
                             {
-                                if (isEdit && user.id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && (ts.supervisor_delegate == null || (ts.supervisor_approval_signature == null ? false : ts.supervisor_approval_signature.Substring(0, 1) != "d")))
+                                @*if (isEdit && user.id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && (ts.supervisor_delegate == null || (ts.supervisor_approval_signature == null ? false : ts.supervisor_approval_signature.Substring(0, 1) != "d")))
                                 {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                                 }
@@ -349,11 +357,11 @@ function validate() {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                                 }
                                 else
-                                {
+                                {*@
                                     <option value="@user.id">@user.alpha_name</option>
-                                }
+                                //}
                             }
-                            else if (isEdit && user.id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && (ts.supervisor_delegate == null || (ts.supervisor_approval_signature == null ? false : ts.supervisor_approval_signature.Substring(0, 1) != "d")))
+                            @*else if (isEdit && user.id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) && (ts.supervisor_delegate == null || (ts.supervisor_approval_signature == null ? false : ts.supervisor_approval_signature.Substring(0, 1) != "d")))
                             {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                             }
@@ -365,7 +373,7 @@ function validate() {
                             {
                                 supervisor_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
-                            }
+                            }*@
                         }
                     </select>
                     <input type="hidden" id="supervisor_delegate" value="@supervisor_isDelegate" />
@@ -377,27 +385,36 @@ function validate() {
                     @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ts.superintendent_approval_name == null || ts.superintendent_approval_name == "" ? "0" : ts.superintendent_approval_name) && (ts.superintendent_approval_signature == null ? true : ts.superintendent_approval_signature.Substring(0, 1) == "a"))
                     {
                     }
-                    else if (ts != null && ts.superintendent_delegate != null && (ts.superintendent_approval_signature == null ? true : ts.superintendent_approval_signature.Substring(0, 1) == "d"))
+                    else if (ts != null && ts.superintendent_delegate != null && (ts.superintendent_approval_signature != null && ts.superintendent_approval_signature.Substring(0, 1) == "d"))
                     {
-                        <text>a/n </text>
+                        <text>@has.Find(p => p.id.ToString() == ts.superintendent_delegate).alpha_name<br />a/n </text>
+                    }
+                    else if (ts != null && user_id == has.Find(p => p.id.ToString() == ts.superintendent_approval_name).employee_delegate.ToString() && (ts.superintendent_approval_signature == null))
+                    {
+                        var spv = has.Find(p => p.id.ToString() == ts.superintendent_approval_name);
+                        <text>@has.Find(p => p.id == spv.employee_delegate).alpha_name<br />a/n </text>
                     }
                     <select id="superintendent_approval_name" name="superintendent_approval_name" disabled>
                         <option value="" selected disabled>Choose One</option>
                         @{bool sup_isDelegate = false; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (isEdit && user.id == Int32.Parse(ts.superintendent_delegate == null ? "0" : ts.superintendent_delegate))
+                            @*if (isEdit && user.id == Int32.Parse(ts.superintendent_delegate == null ? "0" : ts.superintendent_delegate))
                             {
                                 sup_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (user.id == superintendent_id)
+                            else*@ if (user.id == superintendent_id)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            }
+                            else if (isEdit && user.id.ToString() == ts.superintendent_approval_name) 
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
                             else if (user.approval_level == 2)
                             {
-                                if (isEdit && user.id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && (ts.superintendent_delegate == null || (ts.superintendent_approval_signature == null ? false : ts.superintendent_approval_signature.Substring(0, 1) != "d")))
+                                @*if (isEdit && user.id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && (ts.superintendent_delegate == null || (ts.superintendent_approval_signature == null ? false : ts.superintendent_approval_signature.Substring(0, 1) != "d")))
                                 {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                                 }
@@ -406,11 +423,11 @@ function validate() {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                                 }
                                 else
-                                {
+                                {*@
                                     <option value="@user.id">@user.alpha_name</option>
-                                }
+                                //}
                             }
-                            else if (isEdit && user.id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && (ts.superintendent_delegate == null || (ts.superintendent_approval_signature == null ? false : ts.superintendent_approval_signature.Substring(0, 1) != "d")))
+                            @*else if (isEdit && user.id == Int32.Parse(ts.superintendent_approval_name == null ? "0" : ts.superintendent_approval_name) && (ts.superintendent_delegate == null || (ts.superintendent_approval_signature == null ? false : ts.superintendent_approval_signature.Substring(0, 1) != "d")))
                             {
                                     <option value="@user.id" selected>@user.alpha_name</option>
                             }
@@ -422,7 +439,7 @@ function validate() {
                             {
                                 sup_isDelegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
-                            }
+                            }*@
                         }
                     </select>
                     <input type="hidden" id="sup_delegate" value="@sup_isDelegate" />
@@ -531,7 +548,7 @@ function validate() {
         var r = confirm("Are you sure want to Approve this trouble shooting report?");
         if (r == true) {
             var date = $('#superintendent_approval_date').val();
-            $.post("TroubleShooting/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/TroubleShooting/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_superintendent').parent().hide();
@@ -552,7 +569,7 @@ function validate() {
         var r = confirm("Are you sure want to Approve this trouble shooting report?");
         if (r == true) {
             var date = $('#supervisor_approval_date').val();
-            $.post("TroubleShooting/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+            $.post("/TroubleShooting/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
                     $('#approve_supervisor').parent().hide();

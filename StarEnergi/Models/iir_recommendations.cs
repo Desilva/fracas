@@ -21,6 +21,7 @@ namespace StarEnergi.Models
         public Nullable<int> pir_number { get; set; }
         public Nullable<System.DateTime> completion_date { get; set; }
         public Nullable<byte> has_pir { get; set; }
+        public Nullable<int> id_rca { get; set; }
     
         public virtual investigation_report investigation_report { internal get; set; }
         public virtual pir pir {internal get; set; }

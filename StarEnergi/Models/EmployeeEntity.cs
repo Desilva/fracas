@@ -22,5 +22,6 @@ namespace StarEnergi.Models
         public byte? delagate { get; set; }
         public int? employee_delegate { get; set; }
         public byte? approval_level { get; set; }
+        public string kbp_code { get; set; }
     }
 }

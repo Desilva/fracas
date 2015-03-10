@@ -66,6 +66,9 @@ namespace StarEnergi.Models
         public Nullable<System.DateTime> sign_date { get; set; }
         public string pa_sign { get; set; }
 
+        public string immediate_cause { get; set; }
+        public string basic_cause { get; set; }
+
         public List<string> member_name { get; set; }
     }
 

@@ -373,8 +373,9 @@ namespace StarEnergi.Controllers.FrontEnd
         [HttpPost]
         public JsonResult getFuncLocation(int id)
         {
-            string tag_number = RCASessionRepository.db.equipments.Find(id).tag_num;
-            return Json(new { tag_number = tag_number });
+            equipment eq = RCASessionRepository.db.equipments.Find(id);
+            string tag_number = eq.tag_num;
+            return Json(new { tag_number = tag_number, nama = eq.nama });
         }
 
         //
@@ -1716,6 +1717,37 @@ namespace StarEnergi.Controllers.FrontEnd
                             else
                             {
                                 rca.rca_code = RCASessionRepository.OneView(p => p.id == rca.id).rca_code;
+                                if (rca.rca_code == null || rca.rca_code == "")
+                                {
+                                    RCAEntityModel rcass = RCASessionRepository.AllView().OrderBy(p => p.rca_code).LastOrDefault();
+                                    if (rcass != null)
+                                    {
+                                        if (rcass.rca_code != null && rcass.rca_code.Length == 21)
+                                        {
+                                            int prev_code = Int32.Parse(rcass.rca_code.Substring(17));
+                                            int prev_year = Int32.Parse(rcass.rca_code.Substring(12, 4));
+                                            prev_code++;
+                                            DateTime now = DateTime.Now;
+                                            if (prev_year != now.Year)
+                                            {
+                                                prev_code = 1;
+                                            }
+                                            rca.rca_code = "W-O-EAI-RCA-" + now.Year + "-" + prev_code.ToString().PadLeft(4, '0');
+                                        }
+                                        else
+                                        {
+                                            int prev_code = 1;
+                                            DateTime now = DateTime.Now;
+                                            rca.rca_code = "W-O-EAI-RCA-" + now.Year + "-" + prev_code.ToString().PadLeft(4, '0');
+                                        }
+                                    }
+                                    else
+                                    {
+                                        int prev_code = 1;
+                                        DateTime now = DateTime.Now;
+                                        rca.rca_code = "W-O-EAI-RCA-" + now.Year + "-" + prev_code.ToString().PadLeft(4, '0');
+                                    }
+                                }
                             }
                             RCASessionRepository.UpdateRCA7(rca);
                             rca o_rca = RCASessionRepository.db.rcas.Find(rca.id);
@@ -2208,6 +2240,21 @@ namespace StarEnergi.Controllers.FrontEnd
         }
 
         //
+        // GET: /RCA/RemoveAnalysis/5
+        //
+        [GridAction]
+        public ActionResult RemoveAnalysis(int id)
+        {
+            RCAEntityModel rcas = RCASessionRepository.OneView(p => p.id == id);
+            RCASessionRepository.RemoveAnalysis(rcas);
+
+            if (HttpContext.Session["username"].ToString() == null)
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/rca" });
+
+            return View(new GridModel(RCASessionRepository.AllView().Reverse()));
+        }
+
+        //
         // GET: /RCA/publish/5
         //
         [GridAction]
@@ -2254,7 +2301,7 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             return View(new GridModel<RCAEntityModel>
             {
-                Data = result
+                Data = result.OrderByDescending(p => p.rca_code).ToList()
             });
         }
 
@@ -2350,7 +2397,7 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         [HttpPost]
         [ValidateInput(false)]
-        public JsonResult save(string filename, string xml, string id, int fracasir, int? sel_val)
+        public JsonResult save(string filename, string xml, string id, int fracasir, int? sel_val, string immediate_cause, string basic_cause)
         {
             String filepath = Server.MapPath("~/Content/xml/" + filename);
             StreamWriter sw = new StreamWriter(filepath);
@@ -2361,6 +2408,8 @@ namespace StarEnergi.Controllers.FrontEnd
             rca.analysis_file = filename;
             rca.fracas_ir = (Byte)fracasir;
             rca.fracas_ir_id = sel_val;
+            rca.immediate_cause = immediate_cause;
+            rca.basic_cause = basic_cause;
             RCASessionRepository.UpdateRCATree(rca);
             return Json(true);
         }
@@ -2421,6 +2470,7 @@ namespace StarEnergi.Controllers.FrontEnd
             xml = xml.Replace(HttpUtility.HtmlEncode("&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">"), "\n");
             xml = xml.Replace(HttpUtility.HtmlEncode("</p><p style=\"text-align:right;float:right;margin-top:0;color:black;margin-right:12px\">"), "                            ");
             xml = xml.Replace(HttpUtility.HtmlEncode("</p>"), "");
+            Debug.WriteLine(xml);
             if (xml != null && width != null && height != null && bg != null
                     && filename != null && format != null)
             {
@@ -2454,9 +2504,10 @@ namespace StarEnergi.Controllers.FrontEnd
             xml = HttpUtility.UrlDecode(xml);
             string width = w;
             string height = h;
-            xml = xml.Replace(HttpUtility.HtmlEncode("<p style=\"margin:0px;width:115px\">&nbsp;</p><h4 style=\"margin:0px;color:#1d258f;text-align:center;\">"), "\n    ");
+            xml = xml.Replace(HttpUtility.HtmlEncode("<p style=\"margin:0px;width:115px\">&nbsp;</p><h4 style=\"margin:0;margin-right:12px;color:#1d258f;text-align:center\">"), "\n    ");
+            xml = xml.Replace(HttpUtility.HtmlEncode("<br />"), "\n    ");
             xml = xml.Replace(HttpUtility.HtmlEncode("&nbsp;&nbsp;&nbsp;&nbsp;</h4><p style=\"text-align:left;margin:0px;color:black;text-indent:1px;float:left;width:20px\">"), "\n");
-            xml = xml.Replace(HttpUtility.HtmlEncode("</p><p style=\"text-align:right;margin:0px;color:black;\">"), "                                  ");
+            xml = xml.Replace(HttpUtility.HtmlEncode("</p><p style=\"text-align:right;float:right;margin-top:0;color:black;margin-right:12px\">"), "                            ");
             xml = xml.Replace(HttpUtility.HtmlEncode("</p>"), "");
             if (xml != null && width != null && height != null && bg != null
                     && filename != null && format != null)
@@ -2526,7 +2577,7 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         [HttpPost]
         [ValidateInput(false)]
-        public JsonResult save2(string filename, string xml, string id, int fracasir, int? sel_val)
+        public JsonResult save2(string filename, string xml, string id, int fracasir, int? sel_val, string immediate_cause, string basic_cause)
         {
             String filepath = Server.MapPath("~/Content/xml/" + filename);
             StreamWriter sw = new StreamWriter(filepath);
@@ -2537,6 +2588,8 @@ namespace StarEnergi.Controllers.FrontEnd
             rca.analysis_file = filename;
             rca.fracas_ir = (Byte)fracasir;
             rca.fracas_ir_id = sel_val;
+            rca.immediate_cause = immediate_cause;
+            rca.basic_cause = basic_cause;
             RCASessionRepository.UpdateRCATree(rca);
             return Json(true);
         }
@@ -3424,6 +3477,20 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
+        public static void RemoveAnalysis(RCAEntityModel analysis)
+        {
+            RCAEntityModel target = OneView(p => p.id == analysis.id);
+            rca rca = OneDb(p => p.id == analysis.id);
+            if (target != null)
+            {
+                target.is_tree = null;
+                target.analysis_file = null;
+                rca.is_tree = null;
+                rca.analysis_file = null;
+                db.SaveChanges();
+            }
+        }
+
         public static void UpdateTeam(RCAEntityModel analysis)
         {
             RCAEntityModel target = OneView(p => p.id == analysis.id);
@@ -3446,9 +3513,14 @@ namespace StarEnergi.Controllers.FrontEnd
                 Debug.WriteLine(analysis.fracas_ir);
                 target.fracas_ir = analysis.fracas_ir;
                 target.fracas_ir_id = analysis.fracas_ir_id;
+                target.immediate_cause = analysis.immediate_cause;
+                target.basic_cause = analysis.basic_cause;
                 rca.analysis_file = analysis.analysis_file;
                 rca.fracas_ir = analysis.fracas_ir;
                 rca.fracas_ir_id = analysis.fracas_ir_id;
+                rca.immediate_cause = analysis.immediate_cause;
+                rca.basic_cause = analysis.basic_cause;
+                db.Entry(rca).State = EntityState.Modified;
                 db.SaveChanges();
             }
         }

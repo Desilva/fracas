@@ -1,0 +1,29 @@
+<div>
+	<table cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+		<caption>
+			Incident Report
+		</caption><tr>
+			<th scope="col">Type of Incident</th><th scope="col">No. of Cases</th><th scope="col">Gen. Loss (USD)</th>
+		</tr><tr>
+			<td>Injury / Illness</td><td>0</td><td>0</td>
+		</tr><tr>
+			<td>Environmental Loss</td><td>210</td><td>0</td>
+		</tr><tr>
+			<td>Properti Damage</td><td>2</td><td>140.5</td>
+		</tr><tr>
+			<td>Process Loss / Disturb</td><td>2</td><td>2443</td>
+		</tr><tr>
+			<td>External Relation</td><td>243</td><td>1230</td>
+		</tr><tr>
+			<td>Theft / Crimes</td><td>1548</td><td>0</td>
+		</tr><tr>
+			<td>Vehicular</td><td>574</td><td>369</td>
+		</tr><tr>
+			<td>Near Miss</td><td>226</td><td>13553</td>
+		</tr><tr>
+			<td>Other</td><td>2372</td><td>0</td>
+		</tr><tr>
+			<td>Total</td><td>5177</td><td>17735.5</td>
+		</tr>
+	</table>
+</div>

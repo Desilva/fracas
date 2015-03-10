@@ -5,6 +5,7 @@
     bool isView = true;
     int? id = null;
     int? id_rca = ViewBag.id_ir as Nullable<Int32>;
+    string user_id = Session["id"].ToString();
     StarEnergi.Models.incident_report ir = null;
     
     if (ViewBag.ir != null) {
@@ -17,20 +18,7 @@
         ViewBag.Title = "Edit Incident Investigation Report";
         iir = ViewBag.datas as StarEnergi.Models.investigation_report;
         isEdit = true;
-        string user_id = HttpContext.Current.Session["id"].ToString();
-        if (iir.investigator.Split(';').First() == user_id && iir.loss_control_approve == null) {
-            isView = false;
-        } else if ((iir.loss_control == user_id || iir.loss_control_delegate == user_id) && iir.safety_officer_approve == null && !iir.investigator_approve.Contains(";;") && iir.loss_control_approve == null) {
-            isView = false;
-        }
-        else if ((iir.safety_officer == user_id || iir.safety_officer_delegate == user_id) && iir.field_manager_approve == null && iir.loss_control_approve != null && iir.safety_officer_approve == null)
-        {
-            isView = false;
-        }
-        else if ((iir.field_manager == user_id || iir.field_manager_delegate == user_id) && iir.field_manager_approve == null && iir.safety_officer_approve != null)
-        {
-            isView = false;
-        }
+        isView = !(ViewBag.isCanEdit as bool?).Value;
     }
     else
     {
@@ -607,13 +595,13 @@
         <tr>
             <td>
                 <h5>Immediate Causes</h5><small>(These include <b>acts</b> [personal actions] and/or <b>conditions</b> [jobsite circumstances]. Attach additional pages if necessary)</small><br />
-                <textarea id="imme_causes" name="imme_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.immediate_causes)).ToHtmlString() : "")</textarea>
+                <textarea id="imme_causes" name="imme_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.immediate_causes)).ToHtmlString() : Html.Raw(System.Web.HttpUtility.HtmlDecode(ViewBag.immediate_cause as string)).ToHtmlString())</textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h5>Basic Causes</h5><small>(These include the <b>personal factors</b> and/or <b>job factors</b> which allow the immediate causes to occur. Attach additional pages if necessary)</small><br />
-               <textarea id="basic_causes" name="basic_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.basic_causes)).ToHtmlString() : "")</textarea>
+               <textarea id="basic_causes" name="basic_causes" rows="7" cols="119" style="resize:none" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView ? "" : "disabled")>@(isEdit ? Html.Raw(System.Web.HttpUtility.HtmlDecode(iir.basic_causes)).ToHtmlString() : Html.Raw(System.Web.HttpUtility.HtmlDecode(ViewBag.basic_cause as string)).ToHtmlString())</textarea>
             </td>
         </tr>
         <tr>
@@ -655,7 +643,7 @@
         {
             dataBinding.Ajax()
                 .Delete("_DeleteAjaxRecommendation", "Investigation", new { id_iir = id })
-                .Select("_SelectAjaxRecommendation", "Investigation", new { id = id });
+                .Select("_SelectAjaxRecommendation", "Investigation", new { id = id, id_rca = id_rca });
         })
         .Columns(columns =>
         {
@@ -699,7 +687,7 @@
                 {
                     <div class="investigators">
                         <div class="inves1">
-                            <select id="investigator1" name="investigator1" @(isEdit && iir.investigator_approve.Split(';').First() != null ? "disabled" : "")>
+                            <select id="investigator1" name="investigator1" @(isEdit && iir.investigator_approve != null && iir.investigator_approve.Split(';').First() != null ? "disabled" : "")>
                                 <option value="" selected disabled>Choose One</option>
                                 @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                                 {
@@ -740,8 +728,12 @@
                 }
                 else
                 {
-                    <input type="text" id="investigator" name="investigator" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@has.Find(p => p.id == Int32.Parse(iir.investigator)).alpha_name" style="width:100px"/>
-                    <img id="img_approve_investigator" width="50" height="50" @(iir.investigator_approve == null ? "style=display:none;" : "style=display:block;")  src="@iir.investigator_approve"/>
+                    <div class="investigators">
+                        <div class="inves1">
+                            <input type="text" id="investigator" name="investigator" @(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) ? "" : "disabled") value="@has.Find(p => p.id == Int32.Parse(iir.investigator.Split(';').First())).alpha_name" style="width:100px"/>
+                            <img id="img_approve_investigator" width="50" height="50" @(iir.investigator_approve == null ? "style=display:none;" : "style=display:block;")  src="@iir.investigator_approve"/>
+                        </div>
+                    </div>
                 }
             </td>
             <td style="width:16.67%" class="right" rowspan="2">
@@ -751,9 +743,14 @@
                 @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(iir.loss_control == null ? "0" : iir.loss_control) && (iir.loss_control_approve == null ? true : iir.loss_control_approve.Substring(0, 1) == "a"))
                 {
                 }
-                else if (iir != null && iir.loss_control_delegate != null && (iir.loss_control_approve == null ? true : iir.loss_control_approve.Substring(0, 1) == "d"))
+                else if (iir != null && iir.loss_control_delegate != null && (iir.loss_control_approve != null && iir.loss_control_approve.Substring(0, 1) == "d"))
                 {
-                    <text>a/n </text>
+                    <text>@has.Find(p => p.id.ToString() == iir.loss_control_delegate).alpha_name<br />a/n </text>
+                }
+                else if (iir != null && user_id == has.Find(p => p.id.ToString() == iir.loss_control).employee_delegate.ToString() && (iir.loss_control_approve == null))
+                {
+                    var spv = has.Find(p => p.id.ToString() == iir.loss_control);
+                    <text>@has.Find(p => p.id == spv.employee_delegate).alpha_name<br />a/n </text>
                 }
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                 {
@@ -762,11 +759,11 @@
                         @{bool loss_control_delegate = false; string loss_control_delegate_name = ""; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (!isEdit && user.position.ToLower() == "safety supervisor" && user.delagate != 1)
+                            if (!isEdit && user.position != null && user.position.ToLower() == "safety supervisor")
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (!isEdit && user.position.ToLower() == "safety supervisor" && user.delagate == 1)
+                            @*else if (!isEdit && user.position != null && user.position.ToLower() == "safety supervisor" && user.delagate == 1)
                             {
                                 loss_control_delegate = true;
                                 loss_control_delegate_name = user.employee_delegate.ToString();
@@ -784,7 +781,11 @@
                             {
                                 loss_control_delegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
-                            }
+                            }*@
+                            else if (isEdit && user.id.ToString() == iir.loss_control)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
+                            } 
                             else
                             {
                                 <option value="@user.id">@user.alpha_name</option>
@@ -811,7 +812,7 @@
                                     }
                                 }
                             }
-                            if (has.Find(p => p.username == username).id == Int32.Parse(iir.loss_control == null ? "0" : iir.loss_control) || has.Find(p => p.username == username).id == Int32.Parse(iir.loss_control_delegate == null ? "0" : iir.loss_control_delegate))
+                            if (has.Find(p => p.username == username).id == Int32.Parse(iir.loss_control == null ? "0" : iir.loss_control) || user_id == has.Find(p => p.id.ToString() == iir.loss_control).employee_delegate.ToString())
                             {
                                 if (iir.loss_control_approve == null && isInvestigatorApprove)
                                 {
@@ -832,9 +833,14 @@
                 @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(iir.safety_officer == null ? "0" : iir.safety_officer) && (iir.safety_officer_approve == null ? true : iir.safety_officer_approve.Substring(0, 1) == "a"))
                 {
                 }
-                else if (iir != null && iir.safety_officer_delegate != null && (iir.safety_officer_approve == null ? true : iir.safety_officer_approve.Substring(0, 1) == "d"))
+                else if (iir != null && iir.safety_officer_delegate != null && (iir.safety_officer_approve != null && iir.safety_officer_approve.Substring(0, 1) == "d"))
                 {
-                    <text>a/n </text>
+                    <text>@has.Find(p => p.id.ToString() == iir.safety_officer_delegate).alpha_name<br />a/n </text>
+                }
+                else if (iir != null && user_id == has.Find(p => p.id.ToString() == iir.safety_officer).employee_delegate.ToString() && (iir.safety_officer_approve == null))
+                {
+                    var spv = has.Find(p => p.id.ToString() == iir.safety_officer);
+                    <text>@has.Find(p => p.id == spv.employee_delegate).alpha_name<br />a/n </text>
                 }
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                 {
@@ -843,11 +849,11 @@
                         @{bool safety_officer_delegate = false; string safety_officer_delegate_name = ""; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (!isEdit && user.position.ToLower() == "she superintendent" && user.delagate != 1)
+                            if (!isEdit && user.position != null && user.position.ToLower() == "she superintendent")
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (!isEdit && user.position.ToLower() == "she superintendent" && user.delagate == 1)
+                            @*else if (!isEdit && user.position != null && user.position.ToLower() == "she superintendent" && user.delagate == 1)
                             {
                                 safety_officer_delegate = true;
                                 safety_officer_delegate_name = user.employee_delegate.ToString();
@@ -865,6 +871,10 @@
                             {
                                 safety_officer_delegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
+                            }*@
+                            else if (isEdit && user.id.ToString() == iir.safety_officer)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
                             }
                             else
                             {
@@ -876,7 +886,7 @@
                     <input type="hidden" id="safety_officer_delegate_name" value="@(iir != null ? safety_officer_delegate ? iir.loss_control : "" : safety_officer_delegate_name.ToString())" />
                         if (isEdit)
                         {
-                            if (has.Find(p => p.username == username).id == Int32.Parse(iir.safety_officer == null ? "0" : iir.safety_officer) || has.Find(p => p.username == username).id == Int32.Parse(iir.safety_officer_delegate == null ? "0" : iir.safety_officer_delegate))
+                            if (has.Find(p => p.username == username).id == Int32.Parse(iir.safety_officer == null ? "0" : iir.safety_officer) || user_id == has.Find(p => p.id.ToString() == iir.safety_officer).employee_delegate.ToString())
                             {
                                 if (iir.safety_officer_approve == null && iir.loss_control_approve != null)
                                 {
@@ -897,9 +907,14 @@
                 @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(iir.field_manager == null ? "0" : iir.field_manager) && (iir.field_manager_approve == null ? true : iir.field_manager_approve.Substring(0, 1) == "a"))
                 {
                 }
-                else if (iir != null && iir.field_manager_delegate != null && (iir.field_manager_approve == null ? true : iir.field_manager_approve.Substring(0, 1) == "d"))
+                else if (iir != null && iir.field_manager_delegate != null && (iir.field_manager_approve != null && iir.field_manager_approve.Substring(0, 1) == "d"))
                 {
-                    <text>a/n </text>
+                    <text>@has.Find(p => p.id.ToString() == iir.field_manager_delegate).alpha_name<br />a/n </text>
+                }
+                else if (iir != null && user_id == has.Find(p => p.id.ToString() == iir.field_manager).employee_delegate.ToString() && (iir.field_manager_approve == null))
+                {
+                    var spv = has.Find(p => p.id.ToString() == iir.field_manager);
+                    <text>@has.Find(p => p.id == spv.employee_delegate).alpha_name<br />a/n </text>
                 }
                 @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR))
                 {
@@ -908,11 +923,11 @@
                         @{bool field_manager_delegate = false; string field_manager_delegate_name = ""; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (!isEdit && user.position.ToLower().Contains("operation manager") && user.delagate != 1)
+                            if (!isEdit && user.position != null && user.position.ToLower().Contains("operation manager"))
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (!isEdit && user.position.ToLower().Contains("operation manager") && user.delagate == 1)
+                            @*else if (!isEdit && user.position != null && user.position.ToLower().Contains("operation manager") && user.delagate == 1)
                             {
                                 field_manager_delegate = true;
                                 field_manager_delegate_name = user.employee_delegate.ToString();
@@ -930,6 +945,10 @@
                             {
                                 field_manager_delegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
+                            }*@
+                            else if (isEdit && user.id.ToString() == iir.field_manager)
+                            {
+                                <option value="@user.id" selected>@user.alpha_name</option>
                             }
                             else
                             {
@@ -941,7 +960,7 @@
                         <input type="hidden" id="field_manager_delegate_name" value="@(iir != null ? field_manager_delegate ? iir.field_manager : "" : field_manager_delegate_name.ToString())" />
                         if (isEdit)
                         {
-                            if (has.Find(p => p.username == username).id == Int32.Parse(iir.field_manager == null ? "0" : iir.field_manager) || has.Find(p => p.username == username).id == Int32.Parse(iir.field_manager_delegate == null ? "0" : iir.field_manager_delegate))
+                            if (has.Find(p => p.username == username).id == Int32.Parse(iir.field_manager == null ? "0" : iir.field_manager) || user_id == has.Find(p => p.id.ToString() == iir.field_manager).employee_delegate.ToString())
                             {
                                 if (iir.field_manager_approve == null && iir.safety_officer_approve != null)
                                 {

@@ -48,7 +48,9 @@ namespace StarEnergi
             DAILYLOGLEADER,
             DAILYLOGSUPERVISOR,
             SHEOBSERVATION,
-            ENVIRONMENTAL
+            ENVIRONMENTAL,
+            FSR,
+            IIRVIEW
         };
 
         public enum MenuFrontEnd
