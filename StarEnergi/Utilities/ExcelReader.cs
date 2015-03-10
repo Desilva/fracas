@@ -1909,17 +1909,17 @@ namespace StarEnergi.Utilities
                                         {
                                             processWellData1 = true;
                                             ignoreWell = false;
-                                            if (dailyLogData.id != null)
-                                            {
-                                                var checkPreviousRecord = (from a in db.daily_log_to_wells
-                                                                           where a.daily_log_id == dailyLogData.id
-                                                                           && a.daily_log_wells_id == checkWell.id
-                                                                           select a).FirstOrDefault();
-                                                if (checkPreviousRecord != null)
-                                                {
-                                                    dataWell1 = checkPreviousRecord;
-                                                }
-                                            }
+                                            //if (dailyLogData.id != null)
+                                            //{
+                                            //    var checkPreviousRecord = (from a in db.daily_log_to_wells
+                                            //                               where a.daily_log_id == dailyLogData.id
+                                            //                               && a.daily_log_wells_id == checkWell.id
+                                            //                               select a).FirstOrDefault();
+                                            //    if (checkPreviousRecord != null)
+                                            //    {
+                                            //        dataWell1 = checkPreviousRecord;
+                                            //    }
+                                            //}
                                             dataWell1.daily_log_wells_id = checkWell.id;
                                         }
                                     }
@@ -2043,17 +2043,17 @@ namespace StarEnergi.Utilities
                                         else
                                         {
                                             processWellData2 = true;
-                                            if (dailyLogData.id != null)
-                                            {
-                                                var checkPreviousRecord = (from a in db.daily_log_to_wells
-                                                                           where a.daily_log_id == dailyLogData.id
-                                                                           && a.daily_log_wells_id == checkWell.id
-                                                                           select a).FirstOrDefault();
-                                                if (checkPreviousRecord != null)
-                                                {
-                                                    dataWell2 = checkPreviousRecord;
-                                                }
-                                            }
+                                            //if (dailyLogData.id != null)
+                                            //{
+                                            //    var checkPreviousRecord = (from a in db.daily_log_to_wells
+                                            //                               where a.daily_log_id == dailyLogData.id
+                                            //                               && a.daily_log_wells_id == checkWell.id
+                                            //                               select a).FirstOrDefault();
+                                            //    if (checkPreviousRecord != null)
+                                            //    {
+                                            //        dataWell2 = checkPreviousRecord;
+                                            //    }
+                                            //}
 
                                             dataWell2.daily_log_wells_id = checkWell.id;
 
