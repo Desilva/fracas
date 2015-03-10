@@ -1562,6 +1562,11 @@ namespace StarEnergi.Utilities
                                     }
 
                                 }
+                                else
+                                {
+                                    allowSave = false;
+                                    err.Add("Date cannot be empty");
+                                }
                             }
 
                             //Group
@@ -1817,8 +1822,9 @@ namespace StarEnergi.Utilities
 
                         #region Well
                         var wellList = (from a in db.daily_log_wells
+                                        where a.is_delete == false
                                         select a).ToList();
-
+                        bool ignoreWell = false;
                         if (wellList == null)
                         {
                             allowSave = false;
@@ -1859,6 +1865,19 @@ namespace StarEnergi.Utilities
                             wellEndRow -= 1;
 
                         }
+                        
+                        for (int i = 0; i < 100; i++)
+                        {
+                            string finalRow = sheet.GetRow(wellEndRow+1).GetCell(1).StringCellValue;
+                            if (finalRow == "U1 NCG")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                wellEndRow++;
+                            }
+                        }
 
                         if (row >= wellStartRow && row <= wellEndRow)
                         {
@@ -1889,15 +1908,26 @@ namespace StarEnergi.Utilities
                                         else
                                         {
                                             processWellData1 = true;
-                                             
-
+                                            ignoreWell = false;
+                                            //if (dailyLogData.id != null)
+                                            //{
+                                            //    var checkPreviousRecord = (from a in db.daily_log_to_wells
+                                            //                               where a.daily_log_id == dailyLogData.id
+                                            //                               && a.daily_log_wells_id == checkWell.id
+                                            //                               select a).FirstOrDefault();
+                                            //    if (checkPreviousRecord != null)
+                                            //    {
+                                            //        dataWell1 = checkPreviousRecord;
+                                            //    }
+                                            //}
                                             dataWell1.daily_log_wells_id = checkWell.id;
                                         }
                                     }
                                     else
                                     {
-                                        allowSave = false;
-                                        err.Add(String.Format("Well name row {0} column {1} not found in database", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        //allowSave = false;
+                                        ignoreWell = true;
+                                        err.Add(String.Format("Well name row {0} column {1} not found in database. Please make sure the uploaded excel is using the latest template.", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                 }
                                 else
@@ -1981,7 +2011,7 @@ namespace StarEnergi.Utilities
 
 
                             //SAVE WELL DATA 1
-                            if (processWellData1 == true)
+                            if (processWellData1 == true && ignoreWell == false)
                             {
                                 dailyLogWellData.Add(dataWell1);
                             }
@@ -2013,31 +2043,33 @@ namespace StarEnergi.Utilities
                                         else
                                         {
                                             processWellData2 = true;
-                                            if (dailyLogData.id != null)
-                                            {
-                                                var checkPreviousRecord = (from a in db.daily_log_to_wells
-                                                                           where a.daily_log_id == dailyLogData.id
-                                                                           && a.daily_log_wells_id == checkWell.id
-                                                                           select a).FirstOrDefault();
-                                                if (checkPreviousRecord != null)
-                                                {
-                                                    dataWell2 = checkPreviousRecord;
-                                                }
-                                            }
+                                            //if (dailyLogData.id != null)
+                                            //{
+                                            //    var checkPreviousRecord = (from a in db.daily_log_to_wells
+                                            //                               where a.daily_log_id == dailyLogData.id
+                                            //                               && a.daily_log_wells_id == checkWell.id
+                                            //                               select a).FirstOrDefault();
+                                            //    if (checkPreviousRecord != null)
+                                            //    {
+                                            //        dataWell2 = checkPreviousRecord;
+                                            //    }
+                                            //}
 
                                             dataWell2.daily_log_wells_id = checkWell.id;
+
+                                            ignoreWell = false;
                                         }
                                     }
                                     else
                                     {
-                                        allowSave = false;
-                                        err.Add(String.Format("Well name row {0} column {1} not found in database", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        ignoreWell = true;
+                                        err.Add(String.Format("Well name row {0} column {1} not found in database. Please make sure the uploaded excel is using the latest template.", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                 }
                                 else
                                 {
-                                    //allowSave = false;
-                                    //err.Add(String.Format("Well name row {0} column {1} cannot be empty", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                    allowSave = false;
+                                    err.Add(String.Format("Well name row {0} column {1} cannot be empty", row + 1, CellReference.ConvertNumToColString(colNum)));
                                 }
 
                             }
@@ -2115,7 +2147,7 @@ namespace StarEnergi.Utilities
 
 
                             //SAVE WELL DATA 2
-                            if (processWellData2 == true)
+                            if (processWellData2 == true && ignoreWell == false)
                             {
                                 dailyLogWellData.Add(dataWell2);
                             }
