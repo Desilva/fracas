@@ -1562,6 +1562,11 @@ namespace StarEnergi.Utilities
                                     }
 
                                 }
+                                else
+                                {
+                                    allowSave = false;
+                                    err.Add("Date cannot be empty");
+                                }
                             }
 
                             //Group
@@ -1817,6 +1822,7 @@ namespace StarEnergi.Utilities
 
                         #region Well
                         var wellList = (from a in db.daily_log_wells
+                                        where a.is_delete == false
                                         select a).ToList();
 
                         if (wellList == null)
@@ -1859,6 +1865,19 @@ namespace StarEnergi.Utilities
                             wellEndRow -= 1;
 
                         }
+                        
+                        for (int i = 0; i < 100; i++)
+                        {
+                            string finalRow = sheet.GetRow(wellEndRow+1).GetCell(1).StringCellValue;
+                            if (finalRow == "U1 NCG")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                wellEndRow++;
+                            }
+                        }
 
                         if (row >= wellStartRow && row <= wellEndRow)
                         {
@@ -1896,8 +1915,8 @@ namespace StarEnergi.Utilities
                                     }
                                     else
                                     {
-                                        allowSave = false;
-                                        err.Add(String.Format("Well name row {0} column {1} not found in database", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        //allowSave = false;
+                                        err.Add(String.Format("Well name row {0} column {1} not found in database. Please make sure the uploaded excel is using the latest template.", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                 }
                                 else
