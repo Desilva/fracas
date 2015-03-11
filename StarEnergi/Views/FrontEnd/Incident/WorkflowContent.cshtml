@@ -1,9 +1,19 @@
 ﻿
 <script>
     $(document).ready(function () {
-        var a = document.getElementById("boxInitiator").getElementsByTagName("svg");
-        a.fill = 'rgb(100,100,100)';
-        console.log(a);
+        //var a = document.getElementById("boxInitiator").getElementsByTagName("svg").item(0).getElementById("box");
+        //a.style.fill = "yellow";
+
+        var initiatorBox = document.getElementById("boxInitiator").getElementsByTagName("svg").item(0).getElementById("box");
+        var dataInitiator = @Html.Raw(ViewBag.Initiator.ToString());
+        if(dataInitiator == 1)
+        {
+            initiatorBox.style.fill = "cyan";
+        }
+        else if(dataInitiator == 2)
+        {
+            initiatorBox.style.fill = "lime";
+        }
     });
 
 </script>
@@ -55,7 +65,7 @@
             
             style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
             style2 = String.Format("top:{0}px; left:{1}px;", top +10, left + 150); // arrow right
-            stylelabel = String.Format("top:{0}px; left:{1}px;", top + 13, left + 30); // box
+            stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top + 13, left + 30); // box
             arrowRight = "right-arrow.svg";
             boxClass = "box.svg";
         }
