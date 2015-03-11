@@ -77,17 +77,17 @@ namespace StarEnergi.Controllers.Admin
                 employee employee = db.employees.Find(employeeId);
                 weekend_duty weekendDuty = new weekend_duty();
                 weekendDuty.employee_id = employee.id;
-                weekendDuty.department = employee.department.ToUpper();
+                weekendDuty.department = employee.department == null ? "" : employee.department.ToUpper();
 
 
                 List<employee> delegationTargets = db.employees.Where(p => p.employee_dept != null && p.employee_boss != null).OrderBy(p => p.alpha_name).ToList();
                 if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN)) {
-                    delegationTargets = db.employees.Where(p => p.department.ToUpper() == weekendDuty.department).ToList();
+                    delegationTargets = db.employees.Where(p => p.department != null && p.department.ToUpper() == weekendDuty.department).ToList();
                 }
                 ViewBag.delegate_id = new SelectList(delegationTargets, "id", "alpha_name", weekendDuty.delegate_id);
 
 
-                List<string> departments = db.employees.Select(p => p.department.ToUpper()).Distinct().ToList();
+                List<string> departments = db.employees.Where(p => p.department != null).Select(p => p.department.ToUpper()).Distinct().ToList();
                 ViewBag.department = new SelectList(departments, weekendDuty.department);
 
                 return View("Form", weekendDuty);
@@ -105,6 +105,7 @@ namespace StarEnergi.Controllers.Admin
         {
             NameValueCollection nvc = Request.Form;
             employee employee = db.employees.Find(weekendDuty.employee_id);
+            List<user_per_role> userRoles = Session["roles"] as List<user_per_role>;
 
             if (weekendDuty.start_date != null && weekendDuty.end_date != null)
             {
@@ -142,11 +143,15 @@ namespace StarEnergi.Controllers.Admin
                                 }
                             }
 
-                            List<employee> delegationTargets = db.employees.Where(p => p.department.ToUpper() == employee.department.ToUpper() && p.id != employee.id).ToList();
+                            List<employee> delegationTargets = db.employees.Where(p => p.employee_dept != null || p.employee_boss != null).OrderBy(p => p.alpha_name).ToList();
+                            if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN))
+                            {
+                                delegationTargets = db.employees.Where(p => p.department != null && p.department.ToUpper() == weekendDuty.department).ToList();
+                            }
                             ViewBag.delegate_id = new SelectList(delegationTargets, "id", "alpha_name", weekendDuty.delegate_id);
 
 
-                            List<string> departments = db.employees.Select(p => p.department.ToUpper()).Distinct().ToList();
+                            List<string> departments = db.employees.Where(p => p.department != null).Select(p => p.department.ToUpper()).Distinct().ToList();
                             ViewBag.department = new SelectList(departments, weekendDuty.department);
                             return View("Form", weekendDuty);
                         }
@@ -154,11 +159,15 @@ namespace StarEnergi.Controllers.Admin
                     else
                     {
                         ModelState.AddModelError("end_date", "Date end can not before date start.");
-                        List<employee> delegationTargets = db.employees.Where(p => p.department.ToUpper() == employee.department.ToUpper() && p.id != employee.id).ToList();
+                        List<employee> delegationTargets = db.employees.Where(p => p.employee_dept != null || p.employee_boss != null).OrderBy(p => p.alpha_name).ToList();
+                        if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN))
+                        {
+                            delegationTargets = db.employees.Where(p => p.department != null && p.department.ToUpper() == weekendDuty.department).ToList();
+                        }
                         ViewBag.delegate_id = new SelectList(delegationTargets, "id", "alpha_name", weekendDuty.delegate_id);
 
 
-                        List<string> departments = db.employees.Select(p => p.department.ToUpper()).Distinct().ToList();
+                        List<string> departments = db.employees.Where(p => p.department != null).Select(p => p.department.ToUpper()).Distinct().ToList();
                         ViewBag.department = new SelectList(departments, weekendDuty.department);
                         return View("Form", weekendDuty);
                     }
@@ -166,11 +175,15 @@ namespace StarEnergi.Controllers.Admin
                 else
                 {
                     ModelState.AddModelError("end_date", "Date end cannot before today.");
-                    List<employee> delegationTargets = db.employees.Where(p => p.department.ToUpper() == employee.department.ToUpper() && p.id != employee.id).ToList();
+                    List<employee> delegationTargets = db.employees.Where(p => p.employee_dept != null || p.employee_boss != null).OrderBy(p => p.alpha_name).ToList();
+                    if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN))
+                    {
+                        delegationTargets = db.employees.Where(p => p.department != null && p.department.ToUpper() == weekendDuty.department).ToList();
+                    }
                     ViewBag.delegate_id = new SelectList(delegationTargets, "id", "alpha_name", weekendDuty.delegate_id);
 
 
-                    List<string> departments = db.employees.Select(p => p.department.ToUpper()).Distinct().ToList();
+                    List<string> departments = db.employees.Where(p => p.department != null).Select(p => p.department.ToUpper()).Distinct().ToList();
                     ViewBag.department = new SelectList(departments, weekendDuty.department);
                     return View("Form", weekendDuty);
                 }
@@ -179,11 +192,15 @@ namespace StarEnergi.Controllers.Admin
             else
             {
                 ModelState.AddModelError("end_date", "Delegation Period cannot be empty.");
-                List<employee> delegationTargets = db.employees.Where(p => p.department.ToUpper() == employee.department.ToUpper() && p.id != employee.id).ToList();
+                List<employee> delegationTargets = db.employees.Where(p => p.employee_dept != null || p.employee_boss != null).OrderBy(p => p.alpha_name).ToList();
+                if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN))
+                {
+                    delegationTargets = db.employees.Where(p => p.department != null && p.department.ToUpper() == weekendDuty.department).ToList();
+                }
                 ViewBag.delegate_id = new SelectList(delegationTargets, "id", "alpha_name", weekendDuty.delegate_id);
 
 
-                List<string> departments = db.employees.Select(p => p.department.ToUpper()).Distinct().ToList();
+                List<string> departments = db.employees.Where(p => p.department != null).Select(p => p.department.ToUpper()).Distinct().ToList();
                 ViewBag.department = new SelectList(departments, weekendDuty.department);
                 return View("Form", weekendDuty);
             }
@@ -201,12 +218,12 @@ namespace StarEnergi.Controllers.Admin
                 List<employee> delegationTargets = db.employees.Where(p => p.employee_dept != null || p.employee_boss != null).OrderBy(p => p.alpha_name).ToList();
                 if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN))
                 {
-                    delegationTargets = db.employees.Where(p => p.department.ToUpper() == weekendDuty.department).ToList();
+                    delegationTargets = db.employees.Where(p => p.department != null && p.department.ToUpper() == weekendDuty.department).ToList();
                 }
                 ViewBag.delegate_id = new SelectList(delegationTargets, "id", "alpha_name", weekendDuty.delegate_id);
 
 
-                List<string> departments = db.employees.Select(p => p.department.ToUpper()).Distinct().ToList();
+                List<string> departments = db.employees.Where(p => p.department != null).Select(p => p.department.ToUpper()).Distinct().ToList();
                 ViewBag.department = new SelectList(departments, weekendDuty.department);
 
                 return View("Form", weekendDuty);

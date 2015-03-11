@@ -499,6 +499,7 @@
     <Compile Include="Models\employee.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeDelegationModel.cs" />
     <Compile Include="Models\EmployeeEntity.cs" />
     <Compile Include="Models\employee_delegations.cs">
       <DependentUpon>Relmon.tt</DependentUpon>

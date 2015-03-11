@@ -48,17 +48,21 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public ActionResult addIncident(int? id, int? id_fracas, int? id_injury, int?id_fracas_part)
         {
-            
+
             string username = (String)Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
             if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
             {
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
             }
+
+            string employeeId = Session["id"].ToString();
+            employee employee = db.employees.Find(int.Parse(employeeId));
             var has = (from employees in db.employees
                        join dept in db.employee_dept on employees.dept_id equals dept.id 
                        join users in db.users on employees.id equals users.employee_id into user_employee
                        from ue in user_employee.DefaultIfEmpty()
+                       where employees.dept_id != null || employees.employee_boss != null
                        orderby employees.dept_id
                        select new EmployeeEntity
                        {
@@ -69,6 +73,7 @@ namespace StarEnergi.Controllers.FrontEnd
                            work_location = employees.work_location,
                            dob = employees.dob,
                            dept_name = dept.dept_name,
+                           department = employees.department,
                            dept_id = employees.dept_id,
                            username = (ue.username == null ? String.Empty : ue.username),
                            employee = employees.employee2,
@@ -77,6 +82,7 @@ namespace StarEnergi.Controllers.FrontEnd
                            approval_level = employees.approval_level
                        }).ToList();
             List<EmployeeEntity> bind = has;
+            EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker();
             foreach (EmployeeEntity ee in bind)
             {
                 int level = 0;
@@ -93,6 +99,8 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                 }
                 ee.level = level;
+
+                employeeDelegationChecker.setDelegate(ee, employee);
             }
             ViewBag.facility = db.rca_facility.ToList();
 
@@ -131,7 +139,6 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.field_manager_del = String.IsNullOrWhiteSpace(ir.field_manager_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.field_manager) ? "0" : ir.field_manager)).employee_delegate : null;
 
                 bool isCanEdit = false;
-                string employeeId = Session["id"].ToString();
                 employee employeeDelegation = new employee();
                 if (employeeId == ir.prepared_by && ir.supervisor_approve == null)
                 {
@@ -166,27 +173,36 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (isCanEdit == false)
                 {
                     employeeDelegation = db.employees.Find(Int32.Parse(ir.ack_supervisor));
-                    if (employeeId == employeeDelegation.employee_delegate.ToString() && ir.supervisor_approve == null)
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (employeeDelegationChecker.isDelegateTo(employee) && ir.supervisor_approve == null)
                     {
                         isCanEdit = true;
                     }
-                    
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(ir.superintendent))).employee_delegate.ToString() && ir.superintendent_approve == null && ir.supervisor_approve != null)
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.superintendent_approve == null && ir.supervisor_approve != null)
                     {
                         isCanEdit = true;
                     }
-                    
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(ir.loss_control))).employee_delegate.ToString() && ir.loss_control_approve == null && ir.superintendent_approve != null)
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.loss_control));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.loss_control_approve == null && ir.superintendent_approve != null)
                     {
                         isCanEdit = true;
                     }
-                    
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(ir.she_superintendent))).employee_delegate.ToString() && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.she_superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
                     {
                         isCanEdit = true;
                     }
-                    
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(ir.field_manager))).employee_delegate.ToString() && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.field_manager));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
                     {
                         isCanEdit = true;
                     }
@@ -403,6 +419,7 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             var dataContext = new relmon_star_energiEntities();
             string idLogin = Session["id"].ToString();
+            employee employee = db.employees.Find(int.Parse(idLogin));
             IEnumerable data = GetData(command, idLogin);
             string employeeId = idLogin;
             foreach (IREntity ir in data)
@@ -442,27 +459,36 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (isCanEdit == false)
                 {
                     employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.ack_supervisor));
-                    if (employeeId == employeeDelegation.employee_delegate.ToString() && ir.supervisor_approve == null)
+                    EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker(employeeDelegation);
+                    if (employeeDelegationChecker.isDelegateTo(employee) && ir.supervisor_approve == null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.superintendent))).employee_delegate.ToString() && ir.superintendent_approve == null && ir.supervisor_approve != null)
+                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.superintendent_approve == null && ir.supervisor_approve != null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.loss_control))).employee_delegate.ToString() && ir.loss_control_approve == null && ir.superintendent_approve != null)
+                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.loss_control));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.loss_control_approve == null && ir.superintendent_approve != null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.she_superintendent))).employee_delegate.ToString() && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.she_superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.field_manager))).employee_delegate.ToString() && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.field_manager));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
                     {
                         isCanEdit = true;
                     }
