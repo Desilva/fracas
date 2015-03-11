@@ -63,10 +63,20 @@
 							{
 								<div id="adminHasLogin">
 									@Html.ActionLink("Delegate", "../Account/Delegate/"+Session["id"], new { returnUrl = "" })<text> | </text>
+                                    @Html.ActionLink("Weekend Duty", "../WeekendDuty")<text> | </text>
                                     @Html.ActionLink("Admin Page", "../Admin")<text> | </text>
 									@Html.ActionLink("Change Profil", "../Account/changeProfile/"+Session["id"], new { returnUrl = "" })
 								</div>
-							}else{
+                            } else if (li != null && li.Exists(p => p.role == (int)Config.role.WEEKENDDUTY))
+                            {
+                                <div id="adminHasLogin">
+                                    @Html.ActionLink("Delegate", "../Account/Delegate/" + Session["id"], new { returnUrl = "" })<text> | </text>
+                                    @Html.ActionLink("Weekend Duty", "../WeekendDuty")<text> | </text>
+                                    @Html.ActionLink("Change Profil", "../Account/changeProfile/" + Session["id"], new { returnUrl = "" })
+                                </div>
+                            }
+                            else
+                            {
 								<div id="adminHasLogin2">
                                     @Html.ActionLink("Delegate", "../Account/Delegate/"+Session["id"], new { returnUrl = "" })<text> | </text>
 									@Html.ActionLink("Change Profil", "../Account/changeProfile/"+Session["id"], new { returnUrl = "" })

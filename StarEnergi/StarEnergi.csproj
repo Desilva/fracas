@@ -374,6 +374,7 @@
     <Compile Include="Controllers\Admin\SubClassController.cs" />
     <Compile Include="Controllers\Admin\SubComponentController.cs" />
     <Compile Include="Controllers\Admin\SubEquipmentController.cs" />
+    <Compile Include="Controllers\Admin\WeekendDutyController.cs" />
     <Compile Include="Controllers\Admin\WellsController.cs" />
     <Compile Include="Controllers\FrontEnd\AssetRegisterController.cs" />
     <Compile Include="Controllers\FrontEnd\KpiController.cs" />
@@ -811,6 +812,10 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\user_role.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WeekendDutyModel.cs" />
+    <Compile Include="Models\weekend_duty.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WinnerEntity.cs" />
@@ -3529,6 +3534,8 @@
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASIncidentInvestigationReport.cshtml" />
     <Content Include="Views\Admin\Wells\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\daily_log_to_wells.cshtml" />
+    <Content Include="Views\Admin\WeekendDuty\Index.cshtml" />
+    <Content Include="Views\Admin\WeekendDuty\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />
