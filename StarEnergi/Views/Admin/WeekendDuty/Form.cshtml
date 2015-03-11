@@ -16,6 +16,17 @@
         <legend>Add Weekend Duty</legend>
         @Html.HiddenFor(model => model.id)
         @Html.HiddenFor(model => model.employee_id)
+
+        <div class="editor-label">
+            @Html.Label("Department")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("department")
+            <div class="error-message">
+                @Html.ValidationMessageFor(model => model.department)
+            </div>
+        </div>
+
         <div class="editor-label">
             @Html.Label("Duty Name")
         </div>
@@ -40,22 +51,12 @@
                 @Html.ValidationMessageFor(model => model.end_date)
             </div>
         </div>
-        <div class="editor-label">
-            @Html.Label("Department")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("department")
-            <div class="error-message">
-                @Html.ValidationMessageFor(model => model.department)
-            </div>
-        </div>
         <p>
             <input type="submit" value="Save" />
             <input type="button" value="Back" onclick="back()" />
         </p>
     </fieldset>
 </form>
-
 <script type="text/javascript">
     $(document).ready(function () {
         if ('@(li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMIN))' != 'True') {
@@ -64,6 +65,16 @@
 
         $('#form-weekend-duty').on('submit', function () {
             $('#department').attr('disabled', false);
+        });
+
+        $('#department').change(function () {
+            $.post('@Url.Action("ChangeDepartment")', {department : $(this).val() }, function(result) {
+                var optionData = '<option value="" disabled>Choose One</option>';
+                for (var i in result) {
+                    optionData += '<option value="' + result[i].id + '">' + result[i].alpha_name + '</option>';
+                } 
+                $('#delegate_id').html(optionData);
+            });
         });
     });
 

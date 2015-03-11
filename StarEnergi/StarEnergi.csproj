@@ -425,6 +425,7 @@
     <Compile Include="Controllers\Utilities\DownloadController.cs" />
     <Compile Include="Controllers\Utilities\SendEmailController.cs" />
     <Compile Include="Controllers\Utilities\UploadController.cs" />
+    <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -499,7 +500,7 @@
     <Compile Include="Models\employee.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmployeeDelegationModel.cs" />
+    <Compile Include="Models\EmployeeDelegationChecker.cs" />
     <Compile Include="Models\EmployeeEntity.cs" />
     <Compile Include="Models\employee_delegations.cs">
       <DependentUpon>Relmon.tt</DependentUpon>

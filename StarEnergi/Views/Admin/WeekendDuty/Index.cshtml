@@ -1,12 +1,22 @@
-﻿@{
+﻿@using StarEnergi.Extensions;
+@{
     ViewBag.Title = "Index";
+    var currentController = (StarEnergi.Controllers.Admin.WeekendDutyController)ViewContext.Controller;
 }
-
+<link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+<style scoped>
+    h2 {
+        font-size: 1.5em;
+        color: #000;
+    }
+</style>
 <h2>Weekend Duty</h2>
+@Html.Raw(currentController.GetMessage())
+<br />
 <div>
     <input type="button" id="addDuty" value="Add Weekend Duty" onclick="addDuty()" />
 </div>
-
+<br />
 @(Html.Telerik().Grid<StarEnergi.Models.weekend_duty>()
 .Name("WeekendDuty")
 .DataKeys(keys =>
@@ -41,7 +51,7 @@
 .Scrollable(c => c.Enabled(true))
 .Selectable()
 )
-
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script type="text/javascript">
     function OnRowDataBoundEq(e) {
         var dataItem = e.dataItem;

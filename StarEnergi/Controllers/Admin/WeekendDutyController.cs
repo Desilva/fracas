@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Telerik.Web.Mvc;
+using StarEnergi.Extensions;
 
 namespace StarEnergi.Controllers.Admin
 {
@@ -81,9 +82,9 @@ namespace StarEnergi.Controllers.Admin
 
 
                 List<employee> delegationTargets = db.employees.Where(p => p.employee_dept != null && p.employee_boss != null).OrderBy(p => p.alpha_name).ToList();
-                if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN)) {
+                //if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN)) {
                     delegationTargets = db.employees.Where(p => p.department != null && p.department.ToUpper() == weekendDuty.department).ToList();
-                }
+                //}
                 ViewBag.delegate_id = new SelectList(delegationTargets, "id", "alpha_name", weekendDuty.delegate_id);
 
 
@@ -130,7 +131,8 @@ namespace StarEnergi.Controllers.Admin
                         if (error.Count() == 0)
                         {
                             db.SaveChanges();
-
+                            employee employeeOnDuty = db.employees.Find(weekendDuty.delegate_id);
+                            this.SetMessage(employeeOnDuty.alpha_name, "{0} has been succesfully saved.");
                             return RedirectToAction("Index");
                         }
                         else
@@ -216,10 +218,10 @@ namespace StarEnergi.Controllers.Admin
                 weekend_duty weekendDuty = db.weekend_duty.Find(id);
 
                 List<employee> delegationTargets = db.employees.Where(p => p.employee_dept != null || p.employee_boss != null).OrderBy(p => p.alpha_name).ToList();
-                if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN))
-                {
+                //if (userRoles == null || !userRoles.Exists(p => p.role == (int)Config.role.ADMIN))
+                //{
                     delegationTargets = db.employees.Where(p => p.department != null && p.department.ToUpper() == weekendDuty.department).ToList();
-                }
+                //}
                 ViewBag.delegate_id = new SelectList(delegationTargets, "id", "alpha_name", weekendDuty.delegate_id);
 
 
@@ -254,6 +256,16 @@ namespace StarEnergi.Controllers.Admin
                 Response.StatusDescription = "Either you don't have the access to this module or you gave just logged out. Please try refreshing this page.";
                 return false;
             }
+        }
+
+        [HttpPost]
+        public JsonResult ChangeDepartment(string department)
+        {
+            List<EmployeeEntity> employeesByDepartment = db.employees.Where(p => p.department.ToUpper() == department).Select(p => new EmployeeEntity {
+                id = p.id,
+                alpha_name = p.alpha_name
+            }).ToList();
+            return Json(employeesByDepartment);
         }
     }
 }
