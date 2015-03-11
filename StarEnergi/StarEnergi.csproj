@@ -819,6 +819,9 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WinnerEntity.cs" />
+    <Compile Include="Models\workflow_node.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\YearFilterForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -3534,6 +3537,7 @@
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASIncidentInvestigationReport.cshtml" />
     <Content Include="Views\Admin\Wells\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\daily_log_to_wells.cshtml" />
+    <Content Include="Views\FrontEnd\Incident\WorkflowContent.cshtml" />
     <Content Include="Views\Admin\WeekendDuty\Index.cshtml" />
     <Content Include="Views\Admin\WeekendDuty\Form.cshtml" />
   </ItemGroup>

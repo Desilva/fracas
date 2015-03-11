@@ -93,6 +93,9 @@
                                 //+ '<span class="t-icon t-tsr"></span></a>' : '')
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Incident Report Log">'
                                 + '<span class="t-icon t-log"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Incident Report Log">'
+                                + '<span class="t-icon t-workflow"></span>'
                                 + '</a>';
         var templateUnComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (isCanEdit ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
                                 + '<span class="t-icon ' + (isCanEdit ? 't-edit' : 't-view') + '"></span>'
@@ -104,6 +107,9 @@
                                 //+ '<span class="t-icon t-tsr"></span></a>' : '')
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Incident Report Log">'
                                 + '<span class="t-icon t-log"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Incident Report Log">'
+                                + '<span class="t-icon t-workflow"></span>'
                                 + '</a>';
 
         var i = 0;
@@ -213,6 +219,15 @@
 
     }
 
+    function workflow(id)
+    {
+        var window = $('#Workflow').data('tWindow');
+        //window.content("IncidentReport/GetWorkflowContent/"+id);
+        window.ajaxRequest("Incident/GetWorkflowContent/" + id);
+        window.center();
+        window.open();
+    }
+
 </script>
 
 <style>
@@ -245,6 +260,11 @@
         background-image:url("/Content/image/view.png");
         background-size: 16px;
     }
+
+    .t-workflow {
+    background-image: url("/Content/glyphicon/glyphicons-427-git-merge.png");
+    background-size: 14px auto;
+}
 </style>
 
 @( 
@@ -263,8 +283,21 @@
         })
         .Columns(columns =>
         {
-            columns.Command(commands =>
+            columns.Command(commands =>   
             {
+                commands.Custom("workflow")
+                    // Specify that the action command will make ajax requests
+                        .Ajax(true)
+                    // Set the text which the command button will display
+                        .Text("Workflow")
+                    // Specify the action method which the command will invoke
+                        .Action("Incindent", "Workflow")
+                    // Specify which properties of the data item will be passed as action method arguments
+                        .DataRouteValues(route =>
+                        {
+                            // Send the OrderID property of the data item as "orderID" parameter
+                            route.Add(o => o.id).RouteKey("id");
+                        });
             }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
             columns.Bound(o => o.rca_number).Width(165).Title("RCA Number");
             columns.Bound(o => o.id).Hidden();
@@ -315,3 +348,15 @@
         .Visible(false)
         .Render();
 }*@
+
+@{  Html.Telerik().Window()
+        .Name("Workflow")
+        .Title("Workflow")
+        .Width(1400)
+        .Height(500)
+        .Resizable()
+        .Draggable(true)
+        .Modal(true)
+        .Visible(false)
+        .Render();
+}
