@@ -3540,6 +3540,8 @@
     <Content Include="Views\FrontEnd\Incident\WorkflowContent.cshtml" />
     <Content Include="Views\Admin\WeekendDuty\Index.cshtml" />
     <Content Include="Views\Admin\WeekendDuty\Form.cshtml" />
+    <Content Include="Views\FrontEnd\TroubleShooting\WorkflowContent.cshtml" />
+    <Content Include="Views\FrontEnd\Pir\WorkflowContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

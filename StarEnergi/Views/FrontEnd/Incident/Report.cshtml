@@ -94,7 +94,7 @@
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Incident Report Log">'
                                 + '<span class="t-icon t-log"></span>'
                                 + '</a>'
-                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Incident Report Log">'
+                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
                                 + '<span class="t-icon t-workflow"></span>'
                                 + '</a>';
         var templateUnComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (isCanEdit ? '"Edit Incident Report"' : '"View Incident Report"') + ' >'
@@ -108,7 +108,7 @@
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Incident Report Log">'
                                 + '<span class="t-icon t-log"></span>'
                                 + '</a>'
-                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Incident Report Log">'
+                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
                                 + '<span class="t-icon t-workflow"></span>'
                                 + '</a>';
 
@@ -223,6 +223,7 @@
     {
         var window = $('#Workflow').data('tWindow');
         //window.content("IncidentReport/GetWorkflowContent/"+id);
+        window.content("");
         window.ajaxRequest("Incident/GetWorkflowContent/" + id);
         window.center();
         window.open();
@@ -352,7 +353,7 @@
 @{  Html.Telerik().Window()
         .Name("Workflow")
         .Title("Workflow")
-        .Width(1400)
+        .Width(1500)
         .Height(500)
         .Resizable()
         .Draggable(true)

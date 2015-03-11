@@ -112,6 +112,7 @@
       FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="users" EntityType="relmon_star_energiModel.Store.users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="weekend_duty" EntityType="relmon_star_energiModel.Store.weekend_duty" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="workflow_node" EntityType="relmon_star_energiModel.Store.workflow_node" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_audit_log_clause_audit_log" Association="relmon_star_energiModel.Store.FK_audit_log_clause_audit_log">
             <End Role="audit_log" EntitySet="audit_log" />
@@ -2161,12 +2162,23 @@
           <Property Name="rm_role" Type="int" />
           <Property Name="employee_id" Type="int" />
         </EntityType>
+        <EntityType Name="weekend_duty">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="employee_id" Type="int" Nullable="false" />
+          <Property Name="delegate_id" Type="int" Nullable="false" />
+          <Property Name="start_date" Type="date" Nullable="false" />
+          <Property Name="end_date" Type="date" Nullable="false" />
+          <Property Name="department" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="workflow_node">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="id_report" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_report" Type="int" Nullable="false" />
           <Property Name="report_type" Type="varchar" Nullable="false" MaxLength="100" />
           <Property Name="node_name" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="status" Type="tinyint" Nullable="false" />
@@ -3087,6 +3099,7 @@
           <EntitySet Name="user_per_role" EntityType="relmon_star_energiModel.user_per_role" />
           <EntitySet Name="user_role" EntityType="relmon_star_energiModel.user_role" />
           <EntitySet Name="users" EntityType="relmon_star_energiModel.user" />
+          <EntitySet Name="weekend_duty" EntityType="relmon_star_energiModel.weekend_duty" />
           <EntitySet Name="workflow_node" EntityType="relmon_star_energiModel.workflow_node" />
           <AssociationSet Name="FK_audit_log_clause_audit_log" Association="relmon_star_energiModel.FK_audit_log_clause_audit_log">
             <End Role="audit_log" EntitySet="audit_log" />
@@ -5840,12 +5853,23 @@
           <NavigationProperty Name="employee" Relationship="relmon_star_energiModel.FK_users_employee" FromRole="user" ToRole="employee" />
           <NavigationProperty Name="user_per_role" Relationship="relmon_star_energiModel.FK_user_per_role_users" FromRole="user" ToRole="user_per_role" />
         </EntityType>
+        <EntityType Name="weekend_duty">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="employee_id" Nullable="false" />
+          <Property Type="Int32" Name="delegate_id" Nullable="false" />
+          <Property Type="DateTime" Name="start_date" Nullable="false" Precision="0" />
+          <Property Type="DateTime" Name="end_date" Nullable="false" Precision="0" />
+          <Property Type="String" Name="department" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="workflow_node">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Type="Int32" Name="id" Nullable="false" />
-          <Property Type="Int32" Name="id_report" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="id_report" Nullable="false" />
           <Property Type="String" Name="report_type" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="node_name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Byte" Name="status" Nullable="false" />
@@ -9152,6 +9176,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="weekend_duty">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.weekend_duty">
+              <MappingFragment StoreEntitySet="weekend_duty">
+                <ScalarProperty Name="department" ColumnName="department" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="delegate_id" ColumnName="delegate_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="workflow_node">
             <EntityTypeMapping TypeName="relmon_star_energiModel.workflow_node">
               <MappingFragment StoreEntitySet="workflow_node">
@@ -9286,7 +9322,8 @@
         <EntityTypeShape EntityType="relmon_star_energiModel.user_per_role" Width="1.5" PointX="30.75" PointY="25.875" />
         <EntityTypeShape EntityType="relmon_star_energiModel.user_role" Width="1.5" PointX="21.75" PointY="29.625" />
         <EntityTypeShape EntityType="relmon_star_energiModel.user" Width="1.5" PointX="28.5" PointY="25.375" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.workflow_node" Width="1.5" PointX="28.75" PointY="3.625" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.weekend_duty" Width="1.5" PointX="28.75" PointY="3.625" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.workflow_node" Width="1.5" PointX="28.75" PointY="6.625" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_clause_audit_log" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_pir" />
         <AssociationConnector Association="relmon_star_energiModel.FK_audit_log_clause_pir_clause" />

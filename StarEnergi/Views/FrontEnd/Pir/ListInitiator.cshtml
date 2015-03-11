@@ -1,7 +1,12 @@
 ﻿@{
     List<StarEnergi.Models.user_per_role> li = ViewBag.user_role as List<StarEnergi.Models.user_per_role>;
 }
+<style>
 
+    .t-workflow {
+    background-image: url("/Content/glyphicon/glyphicons-427-git-merge.png");
+    background-size: 14px auto;
+</style>
 <div id = "contentPirInitiatorList">
 <h2>@ViewBag.nama
     <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
@@ -20,7 +25,9 @@
     function OnRowDataBoundEq(e) {
         var dataItem = e.dataItem;
         var row = e.row;
-        var templateDefault = '<a href="/pir/Log/' + row.cells[0].innerHTML + '" class="t-button t-grid-Log" style="color: transparent;min-width: 2px;background: url(../../Content/image/iconLog.jpg) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;" title="Log" id="log">Log</a>'
+        var templateDefault = '<a href="/pir/Log/' + row.cells[0].innerHTML + '" class="t-button t-grid-Log" style="color: transparent;min-width: 2px;background: url(../../Content/image/iconLog.jpg) no-repeat;height: 20px;border: none;width: 20px;background-size: 80%;margin-right: 0px;" title="Log" id="log">Log</a>' + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
+                                + '<span class="t-icon t-workflow"></span>'
+                                + '</a>';
         var templateDel = '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#"><span class="t-icon t-delete"></span></a>';
         row.cells[1].title = dataItem.reference;
         if (dataItem.status == 'INITIATOR') { //complete
@@ -82,6 +89,15 @@
 
     function exportData() {
         window.location='@Url.Action("ExportExcelData","PIR")';
+    }
+
+    function workflow(id) {
+        var window = $('#Workflow').data('tWindow');
+        //window.content("IncidentReport/GetWorkflowContent/"+id);
+        window.content("");
+        window.ajaxRequest("Pir/GetWorkflowContent/" + id);
+        window.center();
+        window.open();
     }
 
     /*function OnRowDataBoundList(e) {
@@ -355,3 +371,15 @@
 <iframe id="upload_target" name="upload_target" src="" width="715" style="border:0px solid #fff;"></iframe>
 </div>
 </div>
+
+@{  Html.Telerik().Window()
+        .Name("Workflow")
+        .Title("Workflow")
+        .Width(1500)
+        .Height(500)
+        .Resizable()
+        .Draggable(true)
+        .Modal(true)
+        .Visible(false)
+        .Render();
+}
