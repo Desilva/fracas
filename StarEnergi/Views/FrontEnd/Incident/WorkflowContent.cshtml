@@ -1,0 +1,159 @@
+﻿
+<script>
+    $(document).ready(function () {
+        var a = document.getElementById("boxInitiator").getElementsByTagName("svg");
+        a.fill = 'rgb(100,100,100)';
+        console.log(a);
+    });
+
+</script>
+<style>
+    .positionAbsolute {
+        position:absolute;
+    }
+
+    .fontSize {
+        font-size:16px;
+        width:100px;
+        white-space:normal;
+    }
+</style>
+<div>
+    @{
+             string status = "";
+             string sClass = "";
+             string arrow = "";
+             string detail = "";
+             string line = "";
+             string boxClass = "";
+             string lineLeft = "";
+             string lineRight = "";
+             string lineUp = "";
+             string lineDown = "";
+             string arrowUp = "";
+             string arrowRight = "";
+             string arrowLeft = "";
+             string arrowDown = "";
+             int left = 40;
+             int top = 0;
+             string stylelabel = "";
+             string style = "";
+             string style1 = "";
+             string style2 = "";
+             string style3 = "";
+             string style4 = "";
+             string style5 = "";
+             string style6 = "";
+             string style7 = "";
+             string style8 = "";
+             string style9 = "";
+             string style10 = "";
+   }
+    @*Initiator*@
+        @{
+            top += 50;
+            
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top +10, left + 150); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px;", top + 13, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize"  style="@stylelabel">Initiator</div>
+		<div class="positionAbsolute"  style="@style1" id="boxInitiator">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))     
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*Supervisor*@
+        @{
+            left += 250;
+            
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top +10, left + 150); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px;", top + 13, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">Supervisor</div>
+		<div class="positionAbsolute"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*Superintendent*@
+        @{
+            left += 250;
+            
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top +10, left + 150); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px;", top + 13, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">Superintendent</div>
+		<div class="positionAbsolute"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*Safety Supervisor*@
+        @{
+            left += 250;
+            
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top +10, left + 150); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px;", top + 5, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">Safety Supervisor</div>
+		<div class="positionAbsolute"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        <div class="positionAbsolute"  style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*SHE Superintendent*@
+        @{
+            left += 250;
+            
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top +10, left + 150); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px;", top + 5, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">SHE Superintendent</div>
+		<div class="positionAbsolute"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*Field Manager*@
+        @{
+            left += 250;
+            
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top +10, left + 150); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px;", top + 5, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">Field Manager</div>
+		<div class="positionAbsolute"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        @*<div class="positionAbsolute" class="line-full" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>*@
+</div>
