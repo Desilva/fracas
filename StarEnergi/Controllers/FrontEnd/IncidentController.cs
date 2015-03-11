@@ -809,95 +809,108 @@ namespace StarEnergi.Controllers.FrontEnd
 
             var checkExisting = (from a in db.workflow_node
                                  where a.id_report == idReport
+                                 && a.report_type == "FR-IR"
                                  select a).FirstOrDefault();
 
             if (checkExisting == null)
             {
                 nodeInitiator = new workflow_node();
                 nodeInitiator.id_report = idReport;
+                nodeInitiator.report_type = "FR-IR";
                 nodeInitiator.node_name = "Initiator";
                 nodeSupervisor = new workflow_node();
                 nodeSupervisor.id_report = idReport;
+                nodeSupervisor.report_type = "FR-IR";
                 nodeSupervisor.node_name = "Supervisor";
                 nodeSuperintendent = new workflow_node();
                 nodeSuperintendent.id_report = idReport;
                 nodeSuperintendent.node_name = "Superintendent";
+                nodeSuperintendent.report_type = "FR-IR";
                 nodeSafetySupervisor = new workflow_node();
                 nodeSafetySupervisor.id_report = idReport;
                 nodeSafetySupervisor.node_name = "SafetySupervisor";
+                nodeSafetySupervisor.report_type = "FR-IR";
                 nodeSHESuperintendent = new workflow_node();
                 nodeSHESuperintendent.id_report = idReport;
                 nodeSHESuperintendent.node_name = "SHESuperintendent";
+                nodeSHESuperintendent.report_type = "FR-IR";
                 nodeFieldManager = new workflow_node();
                 nodeFieldManager.id_report = idReport;
                 nodeFieldManager.node_name = "FieldManager";
+                nodeFieldManager.report_type = "FR-IR";
             }
             else
             {
                 nodeInitiator = (from a in db.workflow_node
                                                                where a.id_report == idReport
-                                                               && a.node_name=="Initiator"
+                                                               && a.node_name=="Initiator"&& a.report_type =="FR-IR"
                                                                select a).FirstOrDefault();
                 if (nodeInitiator == null)
                 {
                     nodeInitiator = new workflow_node();
                     nodeInitiator.id_report = idReport;
                     nodeInitiator.node_name = "Initiator";
+                    nodeInitiator.report_type = "FR-IR";
                 }
 
                 nodeSupervisor = (from a in db.workflow_node
                                                                where a.id_report == idReport
-                                                               && a.node_name == "Supervisor"
+                                                               && a.node_name == "Supervisor" && a.report_type == "FR-IR"
                                                                select a).FirstOrDefault();
                 if (nodeSupervisor == null)
                 {
                     nodeSupervisor = new workflow_node();
                     nodeSupervisor.id_report = idReport;
                     nodeSupervisor.node_name = "Supervisor";
+                    nodeSupervisor.report_type = "FR-IR";
                 }
 
                 nodeSuperintendent = (from a in db.workflow_node
                                                                 where a.id_report == idReport
-                                                                && a.node_name == "Superintendent"
+                                                                && a.node_name == "Superintendent" && a.report_type == "FR-IR"
                                                                 select a).FirstOrDefault();
                 if (nodeSuperintendent == null)
                 {
                     nodeSuperintendent = new workflow_node();
                     nodeSuperintendent.id_report = idReport;
                     nodeSuperintendent.node_name = "Superintendent";
+                    nodeSuperintendent.report_type = "FR-IR";
                 }
 
                 nodeSafetySupervisor = (from a in db.workflow_node
                                                                     where a.id_report == idReport
-                                                                    && a.node_name == "SafetySupervisor"
+                                                                    && a.node_name == "SafetySupervisor" && a.report_type == "FR-IR"
                                                                     select a).FirstOrDefault();
                 if (nodeSafetySupervisor == null)
                 {
                     nodeSafetySupervisor = new workflow_node();
                     nodeSafetySupervisor.id_report = idReport;
                     nodeSafetySupervisor.node_name = "SafetySupervisor";
+                    nodeSafetySupervisor.report_type = "FR-IR";
                 }
 
                 nodeSHESuperintendent = (from a in db.workflow_node
                                                                       where a.id_report == idReport
-                                                                      && a.node_name == "SHESuperintendent"
+                                                                      && a.node_name == "SHESuperintendent" && a.report_type == "FR-IR"
                                                                       select a).FirstOrDefault();
                 if (nodeSHESuperintendent == null)
                 {
                     nodeSHESuperintendent = new workflow_node();
                     nodeSHESuperintendent.id_report = idReport;
                     nodeSHESuperintendent.node_name = "SHESuperintendent";
+                    nodeSHESuperintendent.report_type = "FR-IR";
                 }
 
                 nodeFieldManager = (from a in db.workflow_node
-                                                                       where a.id_report == idReport
-                                                                       && a.node_name == "FieldManager"
-                                                                       select a).FirstOrDefault();
+                                    where a.id_report == idReport
+                                    && a.node_name == "FieldManager" && a.report_type == "FR-IR"
+                                    select a).FirstOrDefault();
                 if (nodeFieldManager == null)
                 {
                     nodeFieldManager = new workflow_node();
                     nodeInitiator.id_report = idReport;
                     nodeFieldManager.node_name = "FieldManager";
+                    nodeFieldManager.report_type = "FR-IR";
                 }
             }
 
@@ -1005,6 +1018,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 db.workflow_node.Add(nodeSafetySupervisor);
                 db.workflow_node.Add(nodeSHESuperintendent);
                 db.workflow_node.Add(nodeFieldManager);
+                db.SaveChanges();
             }
             else
             {
@@ -2147,8 +2161,166 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public ActionResult GetWorkflowContent(int id)
         {
-            ViewBag.id = id;
+            var data = (from a in db.workflow_node
+                        where a.report_type == "FR-IR" && a.id_report == id
+                        select a).ToList();
+            int dataInitiator=0;
+            int dataSupervisor=0;
+            int dataSuperintendent=0;
+            int dataSafetySupervisor=0;
+            int dataSHESuperintendent=0;
+            int dataFieldManager=0;
+
+            if (data.Count>0)
+            {
+                foreach (workflow_node a in data)
+                {
+                    if (a.node_name == "Initiator")
+                    {
+                        dataInitiator = a.status;
+                    }
+                    else if (a.node_name == "Supervisor")
+                    {
+                        dataSupervisor = a.status;
+                    }
+                    else if (a.node_name == "Superintendent")
+                    {
+                        dataSuperintendent = a.status;
+                    }
+                    else if (a.node_name == "SafetySupervisor")
+                    {
+                        dataSafetySupervisor = a.status;
+                    }
+                    else if (a.node_name == "SHESuperintendent")
+                    {
+                        dataSHESuperintendent = a.status;
+                    }
+                    else if (a.node_name == "FieldManager")
+                    {
+                        dataFieldManager = a.status;
+                    }
+                }
+            }
+
+            ViewBag.Initiator = dataInitiator;
+            ViewBag.Supervisor = dataSupervisor;
+            ViewBag.Superintendent = dataSuperintendent;
+            ViewBag.SafetySupervisor = dataSafetySupervisor;
+            ViewBag.SHESuperintendent = dataSHESuperintendent;
+            ViewBag.FieldManager = dataFieldManager;
+
             return PartialView("WorkflowContent");
+        }
+
+        public string MigrateData()
+        {
+            string sql = "Delete from workflow_node where report_type='FR-IR'";
+            db.Database.ExecuteSqlCommand(sql);
+
+            List<incident_report> data = (from a in db.incident_report
+                        select a).ToList();
+
+            foreach (incident_report a in data)
+            {
+                bool flag = true;
+                if (a.supervisor_approve != "" && a.supervisor_approve != null)
+                {
+                    flag = false;
+                    workflow_node wn = new workflow_node();
+                    wn.report_type = "FR-IR";
+                    wn.node_name = "Supervisor";
+                    wn.id_report = a.id;
+                    wn.status = 2;
+                    db.workflow_node.Add(wn);
+                }
+                else
+                {
+                    workflow_node wn = new workflow_node();
+                    wn.report_type = "FR-IR";
+                    wn.node_name = "Supervisor";
+                    wn.id_report = a.id;
+                    wn.status = 1;
+                    db.workflow_node.Add(wn);
+                }
+                if (a.superintendent_approve != "" && a.superintendent_approve != null)
+                {
+                    flag = false;
+                    workflow_node wn = new workflow_node();
+                    wn.report_type = "FR-IR";
+                    wn.node_name = "Superintendent";
+                    wn.id_report = a.id;
+                    wn.status = 2;
+                    db.workflow_node.Add(wn);
+                }
+                else
+                {
+
+                }
+                if (a.loss_control_approve != "" && a.loss_control_approve != null)
+                {
+                    flag = false;
+                    workflow_node wn = new workflow_node();
+                    wn.report_type = "FR-IR";
+                    wn.node_name = "SafetySupervisor";
+                    wn.id_report = a.id;
+                    wn.status = 2;
+                    db.workflow_node.Add(wn);
+                }
+                else
+                {
+
+                }
+                if (a.she_superintendent_approve != "" && a.she_superintendent_approve != null)
+                {
+                    flag = false;
+                    workflow_node wn = new workflow_node();
+                    wn.report_type = "FR-IR";
+                    wn.node_name = "SHESuperintendent";
+                    wn.id_report = a.id;
+                    wn.status = 2;
+                    db.workflow_node.Add(wn);
+                }
+                else
+                {
+
+                }
+                if (a.field_manager_approve != "" && a.field_manager_approve != null)
+                {
+                    flag = false;
+                    workflow_node wn = new workflow_node();
+                    wn.report_type = "FR-IR";
+                    wn.node_name = "FieldManager";
+                    wn.id_report = a.id;
+                    wn.status = 2;
+                    db.workflow_node.Add(wn);
+                }
+                else
+                {
+
+                }
+               
+                if (flag == false)
+                {
+                    workflow_node wn = new workflow_node();
+                    wn.report_type = "FR-IR";
+                    wn.node_name = "Initiator";
+                    wn.id_report = a.id;
+                    wn.status = 2;
+                    db.workflow_node.Add(wn);
+                }
+                else
+                {
+                    workflow_node wn = new workflow_node();
+                    wn.report_type = "FR-IR";
+                    wn.node_name = "Initiator";
+                    wn.id_report = a.id;
+                    wn.status = 1;
+                    db.workflow_node.Add(wn);
+                }
+            }
+
+
+            return "success";
         }
     } 
 }
