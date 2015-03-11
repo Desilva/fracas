@@ -50,10 +50,13 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public ActionResult addTroubleShooting(int? id, int? id_ir)
         {
+            string employeeId = Session["id"].ToString();
+            employee employee = db.employees.Find(int.Parse(employeeId));
             var has = (from employees in db.employees
                        join dept in db.employee_dept on employees.dept_id equals dept.id
                        join users in db.users on employees.id equals users.employee_id into user_employee
                        from ue in user_employee.DefaultIfEmpty()
+                       where employees.dept_id != null || employees.employee_boss != null
                        orderby employees.dept_id
                        select new EmployeeEntity
                        {
@@ -64,6 +67,7 @@ namespace StarEnergi.Controllers.FrontEnd
                            work_location = employees.work_location,
                            dob = employees.dob,
                            dept_name = dept.dept_name,
+                           department = employees.department,
                            dept_id = employees.dept_id,
                            username = (ue.username == null ? String.Empty : ue.username),
                            employee = employees.employee2,
@@ -72,6 +76,7 @@ namespace StarEnergi.Controllers.FrontEnd
                            approval_level = employees.approval_level
                        }).ToList();
             List<EmployeeEntity> bind = has;
+            EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker();
             foreach (EmployeeEntity ee in bind)
             {
                 int level = 0;
@@ -88,6 +93,8 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                 }
                 ee.level = level;
+
+                employeeDelegationChecker.setDelegate(ee, employee);
             }
             trouble_shooting ts = db.trouble_shooting.OrderBy(p => p.no).ToList().LastOrDefault();
 
@@ -122,7 +129,6 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.supervisor_del = string.IsNullOrWhiteSpace(ts.supervisor_approval_signature) == false ? (string.IsNullOrWhiteSpace(ts.supervisor_approval_name) ? null : db.employees.Find(Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name)).employee_delegate) : null;
 
                 bool isCanEdit = false;
-                string employeeId = Session["id"].ToString();
                 employee employeeDelegation = new employee();
                 if (employeeId == troubleShootingReport.inspector_name && troubleShootingReport.inspector_signature == null)
                 {
@@ -142,12 +148,15 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (isCanEdit == false)
                 {
                     employeeDelegation = db.employees.Find(Int32.Parse(troubleShootingReport.supervisor_approval_name));
-                    if (employeeId == employeeDelegation.employee_delegate.ToString() && troubleShootingReport.supervisor_approval_signature == null)
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (employeeDelegationChecker.isDelegateTo(employee) && troubleShootingReport.supervisor_approval_signature == null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(troubleShootingReport.superintendent_approval_name))).employee_delegate.ToString() && troubleShootingReport.superintendent_approval_signature == null && troubleShootingReport.supervisor_approval_signature != null)
+                    employeeDelegation = db.employees.Find(Int32.Parse(troubleShootingReport.superintendent_approval_name));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && troubleShootingReport.superintendent_approval_signature == null && troubleShootingReport.supervisor_approval_signature != null)
                     {
                         isCanEdit = true;
                     }

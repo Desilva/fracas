@@ -116,7 +116,7 @@ page width. Or, you can specify an exact pixel width. */
 
 #adminHasLogin
 {
-    margin-left: 785px;
+    width:100%;
     position: absolute;
     margin-top: 6px; 
     font-size: 12px;
@@ -127,7 +127,7 @@ page width. Or, you can specify an exact pixel width. */
 
 #adminHasLogin2
 {
-    margin-left: 860px;
+    width:100%;
     position: absolute;
     margin-top: 6px; 
     font-size: 12px;

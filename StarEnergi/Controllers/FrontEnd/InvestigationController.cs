@@ -108,6 +108,7 @@ namespace StarEnergi.Controllers.FrontEnd
             List<investigation_report> f = new List<investigation_report>();
             f = db.investigation_report.ToList();
             string employeeId = Session["id"].ToString();
+            employee employee = db.employees.Find(int.Parse(employeeId));
 
             foreach (investigation_report incidentInvestigationReport in f)
             {
@@ -136,17 +137,22 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (isCanEdit == false)
                 {
                     employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.loss_control));
-                    if (employeeId == employeeDelegation.employee_delegate.ToString() && incidentInvestigationReport.loss_control_approve == null)
+                    EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker(employeeDelegation);
+                    if (employeeDelegationChecker.isDelegateTo(employee) && incidentInvestigationReport.loss_control_approve == null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.safety_officer))).employee_delegate.ToString() && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                    employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.safety_officer));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.field_manager))).employee_delegate.ToString() && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                    employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.field_manager));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
                     {
                         isCanEdit = true;
                     }
@@ -162,10 +168,13 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public ActionResult AddInvestigation(int? id_rca, int? id)
         {
+            string employeeId = Session["id"].ToString();
+            employee employee = db.employees.Find(int.Parse(employeeId));
             var has = (from employees in db.employees
                        join dept in db.employee_dept on employees.dept_id equals dept.id
                        join users in db.users on employees.id equals users.employee_id into user_employee
                        from ue in user_employee.DefaultIfEmpty()
+                       where employees.dept_id != null || employees.employee_boss != null
                        orderby employees.alpha_name
                        select new EmployeeEntity
                        {
@@ -176,11 +185,18 @@ namespace StarEnergi.Controllers.FrontEnd
                            work_location = employees.work_location,
                            dob = employees.dob,
                            dept_name = dept.dept_name,
+                           department = employees.department,
                            username = (ue.username == null ? String.Empty : ue.username),
                            delagate = employees.delagate,
                            employee_delegate = employees.employee_delegate,
                            approval_level = employees.approval_level
                        }).ToList();
+            EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker();
+            foreach (EmployeeEntity employeeEntity in has)
+            {
+                employeeDelegationChecker.setDelegate(employeeEntity, employee);
+            }
+
             ViewData["users"] = has;
             var pic = (from user_per_roles in db.user_per_role
                        join users in db.users on user_per_roles.username equals users.username
@@ -266,7 +282,6 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.datas = incidentInvestigationReport;
 
                 bool isCanEdit = false;
-                string employeeId = Session["id"].ToString();
                 employee employeeDelegation = new employee();
                 if (employeeId == incidentInvestigationReport.investigator.Split(';').First() && incidentInvestigationReport.investigator_approve.Split(';').First() == null)
                 {
@@ -291,17 +306,22 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (isCanEdit == false)
                 {
                     employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.loss_control));
-                    if (employeeId == employeeDelegation.employee_delegate.ToString() && incidentInvestigationReport.loss_control_approve == null)
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (employeeDelegationChecker.isDelegateTo(employee) && incidentInvestigationReport.loss_control_approve == null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.safety_officer))).employee_delegate.ToString() && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
+                    employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.safety_officer));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.field_manager))).employee_delegate.ToString() && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                    employeeDelegation = db.employees.Find(Int32.Parse(incidentInvestigationReport.field_manager));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
                     {
                         isCanEdit = true;
                     }
@@ -994,6 +1014,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     date = DateTime.Now
                 };
                 db.investigation_report_log.Add(ir_log);
+                db.SaveChanges();
                 return Json(new { success = true, path = sign });
             }
             else
