@@ -1,0 +1,73 @@
+﻿@model StarEnergi.Models.weekend_duty
+
+@{
+    string url = "";
+    url = Url.Action("Save", "WeekendDuty");
+    List<StarEnergi.Models.user_per_role> li = null;
+    if (HttpContext.Current.Session["roles"] != null)
+    {
+        li = HttpContext.Current.Session["roles"] as List<StarEnergi.Models.user_per_role>;
+        
+    }
+}
+<br/><br/>
+<form class="form" action="@url" method="post" id="form-weekend-duty">
+    <fieldset>
+        <legend>Add Weekend Duty</legend>
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.employee_id)
+        <div class="editor-label">
+            @Html.Label("Duty Name")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("delegate_id")
+            <div class="error-message">
+                @Html.ValidationMessageFor(model => model.delegate_id)
+            </div>
+        </div>
+        <div class="editor-label">
+            @Html.Label("Duty Period")
+        </div>
+        <div class="editor-field">
+            @(Html.Telerik().DatePickerFor(model => model.start_date)
+            .Value(Model.start_date == null ? DateTime.Today : Model.start_date)
+            )
+            <div style="padding:5px 10px 0;display:inline-block;text-transform:lowercase">s/d</div>
+            @(Html.Telerik().DatePickerFor(model => model.end_date)
+            .Value(Model.end_date == null ? DateTime.Today : Model.end_date)
+            )
+            <div class="error-message">
+                @Html.ValidationMessageFor(model => model.end_date)
+            </div>
+        </div>
+        <div class="editor-label">
+            @Html.Label("Department")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("department")
+            <div class="error-message">
+                @Html.ValidationMessageFor(model => model.department)
+            </div>
+        </div>
+        <p>
+            <input type="submit" value="Save" />
+            <input type="button" value="Back" onclick="back()" />
+        </p>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@(li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMIN))' != 'True') {
+            $('#department').attr('disabled', 'disabled');
+        }
+
+        $('#form-weekend-duty').on('submit', function () {
+            $('#department').attr('disabled', false);
+        });
+    });
+
+    function back() {
+        window.location = '@Url.Action("Index")';
+    }
+</script>
