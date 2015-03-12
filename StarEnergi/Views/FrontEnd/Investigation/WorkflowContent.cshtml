@@ -1,0 +1,285 @@
+﻿
+<script>
+    $(document).ready(function () {
+        //var a = document.getElementById("boxInitiator").getElementsByTagName("svg").item(0).getElementById("box");
+        //a.style.fill = "yellow";
+
+        var principalAnalystBox = document.getElementById("boxPrincipalAnalyst").getElementsByTagName("svg").item(0).getElementById("box");
+        var dataPrincipalAnalyst = @Html.Raw(ViewBag.PrincipalAnalyst.ToString());
+        if(dataPrincipalAnalyst == 1)
+        {
+            principalAnalystBox.style.fill = "cyan";
+        }
+        else if(dataPrincipalAnalyst == 2)
+        {
+            principalAnalystBox.style.fill = "lime";
+        }
+
+
+
+        var investigatorBox=""; 
+        var dataInvestigator="";
+        var check;
+        @{
+        List<string> investigatorList = (List<string>)ViewBag.investigatorList;
+        List<string> investigatorApproveList = (List<string>)ViewBag.investigatorApproveList;
+        int i = 0;
+        foreach(string x in investigatorList)
+        {
+            i++;
+            @Html.Raw(String.Format(@"
+                investigatorBox = document.getElementById('boxInvestigator{0}').getElementsByTagName('svg').item(0).getElementById('box');
+                dataInvestigator = {1};
+                check='{2}';
+                if(check != '')
+                {{
+                    dataInvestigator = 2;
+                }}
+                if(dataInvestigator == 1)
+                {{
+                    investigatorBox.style.fill = 'cyan';
+                }}
+                else if(dataInvestigator == 2)
+                {{
+                    investigatorBox.style.fill = 'lime';
+                }}",i,Html.Raw(ViewBag.Investigator.ToString()),investigatorApproveList.ElementAt(i-1)))
+             
+        }
+        }
+
+
+
+        var safetySupervisorBox = document.getElementById("boxSafetySupervisor").getElementsByTagName("svg").item(0).getElementById("box");
+        var dataSafetySupervisor = @Html.Raw(ViewBag.SafetySupervisor.ToString());
+        if (dataSafetySupervisor == 1)
+        {
+            safetySupervisorBox.style.fill = "cyan";
+        }
+        else if (dataSafetySupervisor == 2)
+        {
+            safetySupervisorBox.style.fill = "lime";
+        }
+
+
+        var SHESuperintendentBox = document.getElementById("boxSHESuperintendent").getElementsByTagName("svg").item(0).getElementById("box");
+        var dataSHESuperintendent = @Html.Raw(ViewBag.SHESuperintendent.ToString());
+        if (dataSHESuperintendent == 1)
+        {
+            SHESuperintendentBox.style.fill = "cyan";
+        }
+        else if (dataSHESuperintendent == 2)
+        {
+            SHESuperintendentBox.style.fill = "lime";
+        }
+
+
+        var FieldManagerBox = document.getElementById("boxFieldManager").getElementsByTagName("svg").item(0).getElementById("box");
+        var dataFieldManager = @Html.Raw(ViewBag.FieldManager.ToString());
+        if (dataFieldManager == 1)
+        {
+            FieldManagerBox.style.fill = "cyan";
+        }
+        else if (dataFieldManager == 2)
+        {
+            FieldManagerBox.style.fill = "lime";
+        }
+    });
+
+</script>
+<style>
+    .positionAbsolute {
+        position:absolute;
+    }
+
+    .fontSize {
+        font-size:16px;
+        width:100px;
+        white-space:normal;
+    }
+</style>
+<div>
+    @{
+        string status = "";
+        string sClass = "";
+        string arrow = "";
+        string detail = "";
+        string line = "";
+        string boxClass = "";
+        string lineLeft = "";
+        string lineRight = "";
+        string lineRightCustom = "";
+        string lineUp = "";
+        string lineDown = "";
+        string arrowUp = "";
+        string arrowRight = "";
+        string arrowRightCustom = "";
+        string arrowLeft = "";
+        string arrowDown = "";
+        int left = 40;
+        int top = 0;
+        int top2 = 0;
+        string stylelabel = "";
+        string style = "";
+        string style1 = "";
+        string style2 = "";
+        string style3 = "";
+        string style4 = "";
+        string style5 = "";
+        string style6 = "";
+        string style7 = "";
+        string style8 = "";
+        string style9 = "";
+        string style10 = "";
+   }
+    @*PrincipalAnalyst*@
+        @{
+            top += 50;
+
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top + 15, left + 135); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top + 13, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize"  style="@stylelabel">Principal Analyst</div>
+		<div class="positionAbsolute"  style="@style1" id="boxPrincipalAnalyst">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))     
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*Investigator*@
+    @{
+        i = 0;
+        top2 = top;
+        foreach (string x in investigatorList)
+        {
+            i++;
+            if (i == 1)
+            {
+                left += 235;
+
+                style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+                style2 = String.Format("top:{0}px; left:{1}px;", top + 15, left + 135); // arrow right
+                stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top + 18, left + 20); // box
+                arrowRight = "right-arrow.svg";
+                boxClass = "box.svg";
+
+		    @Html.Raw(String.Format(@"<div class='positionAbsolute fontSize' style='{0}'>Investigator {1}</div>
+		    <div class='positionAbsolute' id='boxInvestigator{1}'  style='{2}'>
+                {3}        
+            </div>
+            <div class='positionAbsolute' style='{4}'>
+                {5}                
+            </div>", stylelabel,
+                   i,
+                   style1,
+                   Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass))),
+                   style2,
+                   Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))));
+            }
+            else
+            {
+                top2 += 100;
+                //left += 235;
+
+                style1 = String.Format("top:{0}px; left:{1}px;", top2, left); // box
+                style2 = String.Format("top:{0}px; left:{1}px;", top2 + 16, left + 135); // line horizontal on the right
+                style3 = String.Format("top:{0}px; left:{1}px;", top2 - 70, left - 50); // straight line on the left
+                style4 = String.Format("top:{0}px; left:{1}px;", top2 + 15, left - 100); // arrow right on the left
+                style5 = String.Format("top:{0}px; left:{1}px;", top2 - 70, left + 180); // straight line on the right
+                stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top2 + 18, left + 20); // box
+                arrowRight = "right-arrow.svg";
+                boxClass = "box.svg";
+                lineDown = "line-vertical.svg";
+                lineRight = "line-horizontal.svg";
+                arrowRightCustom = "right-arrow-short.svg";
+                lineRightCustom = "line-horizontal-short.svg";
+                
+		        @Html.Raw(String.Format(@"<div class='positionAbsolute fontSize' style='{0}'>Investigator {1}</div>
+		        <div class='positionAbsolute' id='boxInvestigator{1}'  style='{2}'>
+                    {3}        
+                </div>
+                <div class='positionAbsolute' style='{4}'>
+                    {5}                
+                </div>
+                <div class='positionAbsolute' style='{6}'>
+                    {7}                
+                </div>
+                <div class='positionAbsolute' style='{8}'>
+                    {9}                
+                </div>
+                <div class='positionAbsolute' style='{10}'>
+                    {11}                
+                </div>", stylelabel,
+                       i,
+                       style1,
+                       Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass))),
+                       style2,
+                       Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + lineRightCustom))),
+                       style3,
+                       Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + lineDown))),
+                       style4,
+                       Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRightCustom))),
+                       style5,
+                       Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + lineDown)))
+                       ));
+            }
+        }
+    }
+
+    @*Safety Supervisor*@
+        @{
+            left += 235;
+
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top + 15, left + 135); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top + 18, left + 5); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">SafetySupervisor</div>
+		<div class="positionAbsolute" id="boxSafetySupervisor"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*SHE Superintendent*@
+        @{
+            left += 235;
+
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top + 15, left + 135); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top + 13, left + 20); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">SHE Superintendent</div>
+		<div class="positionAbsolute" id="boxSHESuperintendent"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*Field Manager*@
+        @{
+            left += 235;
+
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top + 15, left + 135); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top + 13, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">Field Manager</div>
+		<div class="positionAbsolute" id="boxFieldManager"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        @*<div class="positionAbsolute" class="line-full" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>*@
+</div>

@@ -1385,6 +1385,116 @@ namespace StarEnergi.Controllers.FrontEnd
             return PartialView("WorkflowContent");
         }
 
+        public string MigrateWorkflowData()
+        {
+            string sql = "Delete from workflow_node where report_type='FR-PIR'";
+            db.Database.ExecuteSqlCommand(sql);
+
+            List<pir> data = (from a in db.pirs
+                                           select a).ToList();
+
+            foreach (pir a in data)
+            {
+                if (a.status == "INITIATOR")
+                {
+                    workflow_node initiatorC = new workflow_node();
+                    initiatorC.id_report = a.id;
+                    initiatorC.report_type = "FR-PIR";
+                    initiatorC.node_name = "InitiatorC";
+                    initiatorC.status = 1;
+                    db.workflow_node.Add(initiatorC);
+
+                    workflow_node processOwner = new workflow_node();
+                    processOwner.id_report = a.id;
+                    processOwner.report_type = "FR-PIR";
+                    processOwner.node_name = "Owner";
+                    processOwner.status = 0;
+                    db.workflow_node.Add(processOwner);
+
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-PIR";
+                    workflow.node_name = "InitiatorV";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+
+                }
+                else if (a.status == "FROM INITIATOR")
+                {
+                    workflow_node initiatorC = new workflow_node();
+                    initiatorC.id_report = a.id;
+                    initiatorC.report_type = "FR-PIR";
+                    initiatorC.node_name = "InitiatorC";
+                    initiatorC.status = 2;
+                    db.workflow_node.Add(initiatorC);
+
+                    workflow_node processOwner = new workflow_node();
+                    processOwner.id_report = a.id;
+                    processOwner.report_type = "FR-PIR";
+                    processOwner.node_name = "Owner";
+                    processOwner.status = 1;
+                    db.workflow_node.Add(processOwner);
+
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-PIR";
+                    workflow.node_name = "InitiatorV";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+                }
+                else if (a.status == "FROM PROCESS")
+                {
+                    workflow_node initiatorC = new workflow_node();
+                    initiatorC.id_report = a.id;
+                    initiatorC.report_type = "FR-PIR";
+                    initiatorC.node_name = "InitiatorC";
+                    initiatorC.status = 2;
+                    db.workflow_node.Add(initiatorC);
+
+                    workflow_node processOwner = new workflow_node();
+                    processOwner.id_report = a.id;
+                    processOwner.report_type = "FR-PIR";
+                    processOwner.node_name = "Owner";
+                    processOwner.status = 2;
+                    db.workflow_node.Add(processOwner);
+
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-PIR";
+                    workflow.node_name = "InitiatorV";
+                    workflow.status = 1;
+                    db.workflow_node.Add(workflow);
+                }
+                else if (a.status == "VERIFIED")
+                {
+                    workflow_node initiatorC = new workflow_node();
+                    initiatorC.id_report = a.id;
+                    initiatorC.report_type = "FR-PIR";
+                    initiatorC.node_name = "InitiatorC";
+                    initiatorC.status = 2;
+                    db.workflow_node.Add(initiatorC);
+
+                    workflow_node processOwner = new workflow_node();
+                    processOwner.id_report = a.id;
+                    processOwner.report_type = "FR-PIR";
+                    processOwner.node_name = "Owner";
+                    processOwner.status = 2;
+                    db.workflow_node.Add(processOwner);
+
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-PIR";
+                    workflow.node_name = "InitiatorV";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                db.SaveChanges();
+            }
+
+
+            return "success";
+        }
+
         #endregion
 
 

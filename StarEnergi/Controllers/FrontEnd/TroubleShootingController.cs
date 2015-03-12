@@ -410,6 +410,13 @@ namespace StarEnergi.Controllers.FrontEnd
 
             db.Entry(ts).State = EntityState.Modified;
             db.SaveChanges();
+
+            if (ts.supervisor_approval_signature == "" || ts.supervisor_approval_signature == null)
+            {
+                this.SetWorkflowNode(troubleShooting.id, "ApproveInitiator");
+            }
+
+
             return Json(true);
         }
 
@@ -821,6 +828,123 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.Superintendent = dataSuperintendent;
 
             return PartialView("WorkflowContent");
+        }
+
+        public string MigrateWorkflowData()
+        {
+            string sql = "Delete from workflow_node where report_type='FR-TROUB'";
+            db.Database.ExecuteSqlCommand(sql);
+
+            List<trouble_shooting> data = (from a in db.trouble_shooting
+                                          select a).ToList();
+
+            foreach (trouble_shooting a in data)
+            {
+                bool initiator = true;
+                bool supervisor = false;
+                bool superintendent = false;
+                if (a.supervisor_approval_signature != "" && a.supervisor_approval_signature != null)
+                {
+                    supervisor = true;
+                }
+                if (a.supervisor_approval_signature != "" && a.supervisor_approval_signature != null)
+                {
+                    superintendent = true;
+                }
+
+                //INIATOR STATUS
+                //Tanda tangan initiator sudah pasti ada
+                if (initiator == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-TROUB";
+                    workflow.node_name = "Initiator";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                //if (supervisor == true)
+                //{
+                //    workflow_node workflow = new workflow_node();
+                //    workflow.id_report = a.id;
+                //    workflow.report_type = "FR-TROUB";
+                //    workflow.node_name = "Initiator";
+                //    workflow.status = 2;
+                //    db.workflow_node.Add(workflow);
+                //}
+                //else
+                //{
+                //    workflow_node workflow = new workflow_node();
+                //    workflow.id_report = a.id;
+                //    workflow.report_type = "FR-TROUB";
+                //    workflow.node_name = "Initiator";
+                //    workflow.status = 1;
+                //    db.workflow_node.Add(workflow);
+                //}
+
+                //Supervisor Status
+                if (superintendent == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-TROUB";
+                    workflow.node_name = "Supervisor";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                else if (initiator == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-TROUB";
+                    workflow.node_name = "Supervisor";
+                    workflow.status = 1;
+                    db.workflow_node.Add(workflow);
+                }
+                else
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-TROUB";
+                    workflow.node_name = "Supervisor";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+                }
+
+                //Superintendent Status
+                if (superintendent == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-TROUB";
+                    workflow.node_name = "Superintendent";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                else if (supervisor == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-TROUB";
+                    workflow.node_name = "Superintendent";
+                    workflow.status = 1;
+                    db.workflow_node.Add(workflow);
+                }
+                else
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-TROUB";
+                    workflow.node_name = "Superintendent";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+                }
+
+                db.SaveChanges();
+            }
+
+
+            return "success";
         }
 
         #endregion

@@ -30,12 +30,18 @@
                                 + '</a>'
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Investigation Report Log">'
                                 + '<span class="t-icon t-log"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
+                                + '<span class="t-icon t-workflow"></span>'
                                 + '</a>';
         var templateView = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="View(' + dataItem.id + ');" title="View Incident Investigation Report" >'
                                 + '<span class="t-icon t-view"></span>'
                                 + '</a>'
                                 + '<a class="t-button t-rca t-button-icon" onClick="log(' + dataItem.id + ');" title="Investigation Report Log">'
                                 + '<span class="t-icon t-log"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
+                                + '<span class="t-icon t-workflow"></span>'
                                 + '</a>';
         var i = 0;
         for (var a in row.cells) {
@@ -60,6 +66,15 @@
     function log(id) {
         $('#contentEventLog').load('Investigation/investigationLog', { 'id': id });
     }
+
+    function workflow(id) {
+        var window = $('#Workflow').data('tWindow');
+        //window.content("IncidentReport/GetWorkflowContent/"+id);
+        window.content("");
+        window.ajaxRequest("Investigation/GetWorkflowContent/" + id);
+        window.center();
+        window.open();
+    }
 </script>
 
 <style>
@@ -79,6 +94,11 @@
         background-image:url("/Content/image/view.png");
         background-size: 16px;
     }
+
+    .t-workflow {
+    background-image: url("/Content/glyphicon/glyphicons-427-git-merge.png");
+    background-size: 14px auto;
+}
 </style>
 
 @( 
@@ -117,3 +137,15 @@
         .Filterable()
         .Groupable()
 )
+
+@{  Html.Telerik().Window()
+        .Name("Workflow")
+        .Title("Workflow")
+        .Width(1500)
+        .Height(500)
+        .Resizable()
+        .Draggable(true)
+        .Modal(true)
+        .Visible(false)
+        .Render();
+}

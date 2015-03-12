@@ -422,6 +422,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 this.SendUserNotification(investigationReport, sendInvestigatorDataTemp.ToArray(), "Please Approve "+investigationReport.reference_number);
             }
 
+            this.SetWorkflowNode(investigationReport.id, "ApprovePrincipalAnalyst");
+
 
 
             
@@ -581,6 +583,13 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.investigation_report_log.Add(ir_log);
             db.SaveChanges();
+
+            if (iir.loss_control_approve == null || iir.loss_control_approve == "")
+            {
+                this.SetWorkflowNode(investigationReport.id, "ApprovePrincipalAnalyst");
+            }
+            
+
             return Json(true);
         }
         #endregion
@@ -846,6 +855,8 @@ namespace StarEnergi.Controllers.FrontEnd
                     this.SendUserNotification(iir, Int32.Parse(iir.safety_officer_delegate), "Please Approve " + iir.reference_number);
                 }
 
+                this.SetWorkflowNode(iir.id, "ApproveLossControl");
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -891,6 +902,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     this.SendUserNotification(iir, Int32.Parse(iir.field_manager_delegate), "Please Approve " + iir.reference_number);
                 }
+
+                this.SetWorkflowNode(iir.id, "ApproveSafetyOfficer");
 
                 return Json(new { success = true, path = sign });
             }
@@ -956,6 +969,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                 }
 
+
                 if (sendToLossControl == true)
                 {
                     if (iir.loss_control != null && iir.loss_control != "")
@@ -976,6 +990,11 @@ namespace StarEnergi.Controllers.FrontEnd
                     };
                     db.investigation_report_log.Add(ir_log);
                     db.SaveChanges();
+                    this.SetWorkflowNode(iir.id, "ApproveInvestigatorFull");
+                }
+                else
+                {
+                    this.SetWorkflowNode(iir.id, "ApproveInvestigatorPartial");
                 }
 
                 return Json(new { success = true, path = sign });
@@ -1015,6 +1034,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 };
                 db.investigation_report_log.Add(ir_log);
                 db.SaveChanges();
+
+                this.SetWorkflowNode(iir.id, "ApproveFieldManager");
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -1076,6 +1098,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 this.SendUserNotification(investigationReport, Int32.Parse(inves[0]), investigationReport.reference_number + " is rejected with comment: " + comment);
             }
 
+            this.SetWorkflowNode(investigationReport.id, "RejectLossControl");
 
             return Json(new { success = true });
         }
@@ -1122,6 +1145,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 this.SendUserNotification(investigationReport, Int32.Parse(investigationReport.loss_control_delegate), investigationReport.reference_number + " is rejected with comment: " + comment);
             }
 
+            this.SetWorkflowNode(investigationReport.id, "RejectSafetyOfficer");
 
             return Json(new { success = true });
         }
@@ -1168,6 +1192,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 this.SendUserNotification(investigationReport, Int32.Parse(investigationReport.safety_officer_delegate), investigationReport.reference_number + " is rejected with comment: " + comment);
             }
 
+            this.SetWorkflowNode(investigationReport.id, "RejectFieldManager");
 
             return Json(new { success = true });
 
@@ -1273,5 +1298,462 @@ namespace StarEnergi.Controllers.FrontEnd
             //Convert encoded bytes back to a 'readable' string
             return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
         }
+
+        #region workflow_node
+        private void SetWorkflowNode(int idReport, string source)
+        {
+
+            workflow_node nodePrincipalAnalyst;
+            workflow_node nodeInvestigator;
+            workflow_node nodeLossControl;
+            workflow_node nodeSafetyOfficer;
+            workflow_node nodeFieldManager;
+
+            var checkExisting = (from a in db.workflow_node
+                                 where a.id_report == idReport
+                                 && a.report_type == "FR-IIR"
+                                 select a).FirstOrDefault();
+
+            if (checkExisting == null)
+            {
+                nodePrincipalAnalyst = new workflow_node();
+                nodePrincipalAnalyst.id_report = idReport;
+                nodePrincipalAnalyst.report_type = "FR-IIR";
+                nodePrincipalAnalyst.node_name = "PrincipalAnalyst";
+                nodeInvestigator = new workflow_node();
+                nodeInvestigator.id_report = idReport;
+                nodeInvestigator.report_type = "FR-IIR";
+                nodeInvestigator.node_name = "Investigator";
+                nodeLossControl = new workflow_node();
+                nodeLossControl.id_report = idReport;
+                nodeLossControl.node_name = "LossControl";
+                nodeLossControl.report_type = "FR-IIR";
+                nodeSafetyOfficer = new workflow_node();
+                nodeSafetyOfficer.id_report = idReport;
+                nodeSafetyOfficer.node_name = "SafetyOfficer";
+                nodeSafetyOfficer.report_type = "FR-IIR";
+                nodeFieldManager = new workflow_node();
+                nodeFieldManager.id_report = idReport;
+                nodeFieldManager.node_name = "FieldManager";
+                nodeFieldManager.report_type = "FR-IIR";
+            }
+            else
+            {
+                nodePrincipalAnalyst = (from a in db.workflow_node
+                                 where a.id_report == idReport
+                                 && a.node_name == "PrincipalAnalyst" && a.report_type == "FR-IIR"
+                                 select a).FirstOrDefault();
+                if (nodePrincipalAnalyst == null)
+                {
+                    nodePrincipalAnalyst = new workflow_node();
+                    nodePrincipalAnalyst.id_report = idReport;
+                    nodePrincipalAnalyst.node_name = "PrincipalAnalyst";
+                    nodePrincipalAnalyst.report_type = "FR-IIR";
+                }
+
+                nodeInvestigator = (from a in db.workflow_node
+                                    where a.id_report == idReport
+                                    && a.node_name == "Investigator" && a.report_type == "FR-IIR"
+                                    select a).FirstOrDefault();
+                if (nodeInvestigator == null)
+                {
+                    nodeInvestigator = new workflow_node();
+                    nodeInvestigator.id_report = idReport;
+                    nodeInvestigator.node_name = "Investigator";
+                    nodeInvestigator.report_type = "FR-IIR";
+                }
+
+                nodeLossControl = (from a in db.workflow_node
+                                      where a.id_report == idReport
+                                      && a.node_name == "LossControl" && a.report_type == "FR-IIR"
+                                      select a).FirstOrDefault();
+                if (nodeLossControl == null)
+                {
+                    nodeLossControl = new workflow_node();
+                    nodeLossControl.id_report = idReport;
+                    nodeLossControl.node_name = "LossControl";
+                    nodeLossControl.report_type = "FR-IIR";
+                }
+
+                nodeSafetyOfficer = (from a in db.workflow_node
+                                         where a.id_report == idReport
+                                         && a.node_name == "SafetyOfficer" && a.report_type == "FR-IIR"
+                                         select a).FirstOrDefault();
+                if (nodeSafetyOfficer == null)
+                {
+                    nodeSafetyOfficer = new workflow_node();
+                    nodeSafetyOfficer.id_report = idReport;
+                    nodeSafetyOfficer.node_name = "SafetyOfficer";
+                    nodeSafetyOfficer.report_type = "FR-IIR";
+                }
+
+                nodeFieldManager = (from a in db.workflow_node
+                                    where a.id_report == idReport
+                                    && a.node_name == "FieldManager" && a.report_type == "FR-IIR"
+                                    select a).FirstOrDefault();
+                if (nodeFieldManager == null)
+                {
+                    nodeFieldManager = new workflow_node();
+                    nodePrincipalAnalyst.id_report = idReport;
+                    nodeFieldManager.node_name = "FieldManager";
+                    nodeFieldManager.report_type = "FR-IIR";
+                }
+            }
+
+            //0 Not Yet
+            //1 Current
+            //2 Approved
+            switch (source)
+            {
+                case "ApprovePrincipalAnalyst":
+                    nodePrincipalAnalyst.status = 2;
+                    nodeInvestigator.status = 1;
+                    nodeLossControl.status = 0;
+                    nodeSafetyOfficer.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "ApproveInvestigatorPartial":
+                    nodePrincipalAnalyst.status = 2;
+                    nodeInvestigator.status = 1;
+                    nodeLossControl.status = 0;
+                    nodeSafetyOfficer.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "ApproveInvestigatorFull":
+                    nodePrincipalAnalyst.status = 2;
+                    nodeInvestigator.status = 2;
+                    nodeLossControl.status = 1;
+                    nodeSafetyOfficer.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "ApproveLossControl":
+                    nodePrincipalAnalyst.status = 2;
+                    nodeInvestigator.status = 2;
+                    nodeLossControl.status = 2;
+                    nodeSafetyOfficer.status = 1;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "ApproveSafetyOfficer":
+                    nodePrincipalAnalyst.status = 2;
+                    nodeInvestigator.status = 2;
+                    nodeLossControl.status = 2;
+                    nodeSafetyOfficer.status = 2;
+                    nodeFieldManager.status = 1;
+                    break;
+                case "ApproveFieldManager":
+                    nodePrincipalAnalyst.status = 2;
+                    nodeInvestigator.status = 2;
+                    nodeLossControl.status = 2;
+                    nodeSafetyOfficer.status = 2;
+                    nodeFieldManager.status = 2;
+                    break;
+                case "RejectFieldManager":
+                    nodePrincipalAnalyst.status = 2;
+                    nodeInvestigator.status = 2;
+                    nodeLossControl.status = 2;
+                    nodeSafetyOfficer.status = 1;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "RejectSafetyOfficer":
+                    nodePrincipalAnalyst.status = 2;
+                    nodeInvestigator.status = 2;
+                    nodeLossControl.status = 1;
+                    nodeSafetyOfficer.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "RejectLossControl":
+                    nodePrincipalAnalyst.status = 1;
+                    nodeInvestigator.status = 0;
+                    nodeLossControl.status = 0;
+                    nodeLossControl.status = 0;
+                    nodeSafetyOfficer.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                default: Response.Write("Internal server error. Please contact administrator"); break;
+            }
+
+            if (checkExisting == null)
+            {
+                db.workflow_node.Add(nodePrincipalAnalyst);
+                db.workflow_node.Add(nodeInvestigator);
+                db.workflow_node.Add(nodeLossControl);
+                db.workflow_node.Add(nodeSafetyOfficer);
+                db.workflow_node.Add(nodeFieldManager);
+                db.SaveChanges();
+            }
+            else
+            {
+                db.workflow_node.Attach(nodePrincipalAnalyst);
+                db.Entry(nodePrincipalAnalyst).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeInvestigator);
+                db.Entry(nodeInvestigator).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeLossControl);
+                db.Entry(nodeLossControl).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeSafetyOfficer);
+                db.Entry(nodeSafetyOfficer).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeFieldManager);
+                db.Entry(nodeFieldManager).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        public ActionResult GetWorkflowContent(int id)
+        {
+            var data = (from a in db.workflow_node
+                        where a.report_type == "FR-IIR" && a.id_report == id
+                        select a).ToList();
+            var dataInvestigation = (from a in db.investigation_report
+                                     where a.id == id
+                                     select a).FirstOrDefault();
+            if (dataInvestigation == null)
+            {
+                Response.Write("Incident investigation report data not found. Please contact administrator");
+                Response.End();
+            }
+            int dataPrincipalAnalyst = 0;
+            int dataInvestigator = 0;
+            List<string> investigatorList = new List<string>();
+            List<string> investigatorApproveList = new List<string>();
+            int dataSafetySupervisor = 0;
+            int dataSHESuperintendent = 0;
+            int dataFieldManager = 0;
+
+            if (data.Count > 0)
+            {
+                foreach (workflow_node a in data)
+                {
+                    if (a.node_name == "PrincipalAnalyst")
+                    {
+                        dataPrincipalAnalyst = a.status;
+                    }
+                    else if (a.node_name == "Investigator")
+                    {
+                        dataInvestigator = a.status;
+                        string[] inves = dataInvestigation.investigator.Split(';');
+                        if (inves.Length >0)
+                        {
+                            foreach (string x in inves)
+                            {
+                                investigatorList.Add(x);
+                            }
+                            investigatorList.RemoveAt(0);
+                        }
+                        
+
+                        string[] inves_appr = dataInvestigation.investigator_approve.Split(';');
+                        if (inves_appr.Length > 0)
+                        {
+                            foreach (string x in inves_appr)
+                            {
+                                investigatorApproveList.Add(x);
+                            }
+                            investigatorApproveList.RemoveAt(0);
+                        }
+                        
+
+                    }
+                    else if (a.node_name == "LossControl")
+                    {
+                        dataSafetySupervisor = a.status;
+                    }
+                    else if (a.node_name == "SafetyOfficer")
+                    {
+                        dataSHESuperintendent = a.status;
+                    }
+                    else if (a.node_name == "FieldManager")
+                    {
+                        dataFieldManager = a.status;
+                    }
+                }
+            }
+
+            ViewBag.PrincipalAnalyst = dataPrincipalAnalyst;
+            ViewBag.Investigator = dataInvestigator;
+            ViewBag.InvestigatorList = investigatorList;
+            ViewBag.InvestigatorApproveList = investigatorApproveList;
+            ViewBag.SafetySupervisor = dataSafetySupervisor;
+            ViewBag.SHESuperintendent = dataSHESuperintendent;
+            ViewBag.FieldManager = dataFieldManager;
+
+            return PartialView("WorkflowContent");
+        }
+
+        public string MigrateWorkflowData()
+        {
+            string sql = "Delete from workflow_node where report_type='FR-IIR'";
+            db.Database.ExecuteSqlCommand(sql);
+
+            List<investigation_report> data = (from a in db.investigation_report
+                                           select a).ToList();
+
+            foreach (investigation_report a in data)
+            {
+                bool principalAnalyst = true;
+                bool investigator = false;
+                bool safetySupervisor = false;
+                bool sheSuperintendent = false;
+                bool fieldManager = false;
+
+               
+
+                if (a.investigator_approve != null)
+                {
+                    if (principalAnalyst == true)
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "PrincipalAnalyst";
+                        workflow.status = 2;
+                        db.workflow_node.Add(workflow);
+                    }
+
+                    string[] inves = a.investigator.Split(';');
+                    string[] inves_appr = a.investigator_approve.Split(';');
+                    if (inves.Length == inves_appr.Length)
+                    {
+                        investigator = true;
+                    }
+
+                    if (a.loss_control != "" && a.loss_control != null)
+                    {
+                        safetySupervisor = true;
+                    }
+                    if (a.safety_officer_approve != "" && a.safety_officer_approve != null)
+                    {
+                        sheSuperintendent = true;
+                    }
+                    if (a.field_manager_approve != "" && a.field_manager_approve != null)
+                    {
+                        fieldManager = true;
+                    }
+
+                    //Investigator Status
+                    if (safetySupervisor == true)
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "Investigator";
+                        workflow.status = 2;
+                        db.workflow_node.Add(workflow);
+                    }
+                    else
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "Investigator";
+                        workflow.status = 1;
+                        db.workflow_node.Add(workflow);
+                    }
+
+                    //safetySupervisor Status
+                    if (sheSuperintendent == true)
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "LossControl";
+                        workflow.status = 2;
+                        db.workflow_node.Add(workflow);
+                    }
+                    else if (investigator == true)
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "LossControl";
+                        workflow.status = 1;
+                        db.workflow_node.Add(workflow);
+                    }
+                    else
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "SHESuperintendent";
+                        workflow.status = 0;
+                        db.workflow_node.Add(workflow);
+                    }
+
+
+                    //SHE Superintendent Status
+                    if (fieldManager == true)
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "SafetyOfficer";
+                        workflow.status = 2;
+                        db.workflow_node.Add(workflow);
+                    }
+                    else if (safetySupervisor == true)
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "SafetyOfficer";
+                        workflow.status = 1;
+                        db.workflow_node.Add(workflow);
+                    }
+                    else
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "SafetyOfficer";
+                        workflow.status = 0;
+                        db.workflow_node.Add(workflow);
+                    }
+
+                    //FieldManager Status
+                    if (fieldManager == true)
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "FieldManager";
+                        workflow.status = 2;
+                        db.workflow_node.Add(workflow);
+                    }
+                    else if (sheSuperintendent == true)
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "FieldManager";
+                        workflow.status = 1;
+                        db.workflow_node.Add(workflow);
+                    }
+                    else
+                    {
+                        workflow_node workflow = new workflow_node();
+                        workflow.id_report = a.id;
+                        workflow.report_type = "FR-IIR";
+                        workflow.node_name = "FieldManager";
+                        workflow.status = 0;
+                        db.workflow_node.Add(workflow);
+                    }
+
+
+                    db.SaveChanges();
+                }
+                
+            }
+
+
+            return "success";
+        }
+
+        #endregion
     }
 }
