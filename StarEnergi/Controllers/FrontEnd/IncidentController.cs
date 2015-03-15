@@ -48,17 +48,21 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public ActionResult addIncident(int? id, int? id_fracas, int? id_injury, int?id_fracas_part)
         {
-            
+
             string username = (String)Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
             if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
             {
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
             }
+
+            string employeeId = Session["id"].ToString();
+            employee employee = db.employees.Find(int.Parse(employeeId));
             var has = (from employees in db.employees
                        join dept in db.employee_dept on employees.dept_id equals dept.id 
                        join users in db.users on employees.id equals users.employee_id into user_employee
                        from ue in user_employee.DefaultIfEmpty()
+                       where employees.dept_id != null || employees.employee_boss != null
                        orderby employees.dept_id
                        select new EmployeeEntity
                        {
@@ -69,6 +73,7 @@ namespace StarEnergi.Controllers.FrontEnd
                            work_location = employees.work_location,
                            dob = employees.dob,
                            dept_name = dept.dept_name,
+                           department = employees.department,
                            dept_id = employees.dept_id,
                            username = (ue.username == null ? String.Empty : ue.username),
                            employee = employees.employee2,
@@ -77,6 +82,7 @@ namespace StarEnergi.Controllers.FrontEnd
                            approval_level = employees.approval_level
                        }).ToList();
             List<EmployeeEntity> bind = has;
+            EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker();
             foreach (EmployeeEntity ee in bind)
             {
                 int level = 0;
@@ -93,6 +99,8 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                 }
                 ee.level = level;
+
+                employeeDelegationChecker.setDelegate(ee, employee);
             }
             ViewBag.facility = db.rca_facility.ToList();
 
@@ -131,7 +139,6 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.field_manager_del = String.IsNullOrWhiteSpace(ir.field_manager_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.field_manager) ? "0" : ir.field_manager)).employee_delegate : null;
 
                 bool isCanEdit = false;
-                string employeeId = Session["id"].ToString();
                 employee employeeDelegation = new employee();
                 if (employeeId == ir.prepared_by && ir.supervisor_approve == null)
                 {
@@ -166,27 +173,36 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (isCanEdit == false)
                 {
                     employeeDelegation = db.employees.Find(Int32.Parse(ir.ack_supervisor));
-                    if (employeeId == employeeDelegation.employee_delegate.ToString() && ir.supervisor_approve == null)
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (employeeDelegationChecker.isDelegateTo(employee) && ir.supervisor_approve == null)
                     {
                         isCanEdit = true;
                     }
-                    
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(ir.superintendent))).employee_delegate.ToString() && ir.superintendent_approve == null && ir.supervisor_approve != null)
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.superintendent_approve == null && ir.supervisor_approve != null)
                     {
                         isCanEdit = true;
                     }
-                    
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(ir.loss_control))).employee_delegate.ToString() && ir.loss_control_approve == null && ir.superintendent_approve != null)
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.loss_control));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.loss_control_approve == null && ir.superintendent_approve != null)
                     {
                         isCanEdit = true;
                     }
-                    
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(ir.she_superintendent))).employee_delegate.ToString() && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.she_superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
                     {
                         isCanEdit = true;
                     }
-                    
-                    if (isCanEdit == false && employeeId == (employeeDelegation = db.employees.Find(Int32.Parse(ir.field_manager))).employee_delegate.ToString() && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.field_manager));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
                     {
                         isCanEdit = true;
                     }
@@ -403,6 +419,7 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             var dataContext = new relmon_star_energiEntities();
             string idLogin = Session["id"].ToString();
+            employee employee = db.employees.Find(int.Parse(idLogin));
             IEnumerable data = GetData(command, idLogin);
             string employeeId = idLogin;
             foreach (IREntity ir in data)
@@ -442,27 +459,36 @@ namespace StarEnergi.Controllers.FrontEnd
                 if (isCanEdit == false)
                 {
                     employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.ack_supervisor));
-                    if (employeeId == employeeDelegation.employee_delegate.ToString() && ir.supervisor_approve == null)
+                    EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker(employeeDelegation);
+                    if (employeeDelegationChecker.isDelegateTo(employee) && ir.supervisor_approve == null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.superintendent))).employee_delegate.ToString() && ir.superintendent_approve == null && ir.supervisor_approve != null)
+                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.superintendent_approve == null && ir.supervisor_approve != null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.loss_control))).employee_delegate.ToString() && ir.loss_control_approve == null && ir.superintendent_approve != null)
+                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.loss_control));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.loss_control_approve == null && ir.superintendent_approve != null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.she_superintendent))).employee_delegate.ToString() && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.she_superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
                     {
                         isCanEdit = true;
                     }
 
-                    if (isCanEdit == false && employeeId == (employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.field_manager))).employee_delegate.ToString() && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.field_manager));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
                     {
                         isCanEdit = true;
                     }
@@ -614,6 +640,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.supervisor_delegate), "Please Approve "+ incidentReport.reference_number);
             }
 
+            this.SetWorkflowNode(incidentReport.id, "ApproveInitiator");
+
             // add link to fracas
             if (id_fracas != null)
             {
@@ -747,6 +775,12 @@ namespace StarEnergi.Controllers.FrontEnd
             };
             db.incident_report_log.Add(ir_log);
             db.SaveChanges();
+
+            if (ir.supervisor_approve == "" || ir.supervisor_approve == null)
+            {
+                this.SetWorkflowNode(ir.id, "ApproveInitiator");
+            }
+
             return Json(true);
         }
 
@@ -768,6 +802,259 @@ namespace StarEnergi.Controllers.FrontEnd
             return Json(new { success = true, delegates = delegates, delegate_name = emp.employee_delegate });
         }
 
+        #region workflow_node
+        private void SetWorkflowNode(int idReport, string source)
+        {
+
+            workflow_node nodeInitiator;
+            workflow_node nodeSupervisor;
+            workflow_node nodeSuperintendent;
+            workflow_node nodeSafetySupervisor;
+            workflow_node nodeSHESuperintendent;
+            workflow_node nodeFieldManager;
+
+            var checkExisting = (from a in db.workflow_node
+                                 where a.id_report == idReport
+                                 && a.report_type == "FR-IR"
+                                 select a).FirstOrDefault();
+
+            if (checkExisting == null)
+            {
+                nodeInitiator = new workflow_node();
+                nodeInitiator.id_report = idReport;
+                nodeInitiator.report_type = "FR-IR";
+                nodeInitiator.node_name = "Initiator";
+                nodeSupervisor = new workflow_node();
+                nodeSupervisor.id_report = idReport;
+                nodeSupervisor.report_type = "FR-IR";
+                nodeSupervisor.node_name = "Supervisor";
+                nodeSuperintendent = new workflow_node();
+                nodeSuperintendent.id_report = idReport;
+                nodeSuperintendent.node_name = "Superintendent";
+                nodeSuperintendent.report_type = "FR-IR";
+                nodeSafetySupervisor = new workflow_node();
+                nodeSafetySupervisor.id_report = idReport;
+                nodeSafetySupervisor.node_name = "SafetySupervisor";
+                nodeSafetySupervisor.report_type = "FR-IR";
+                nodeSHESuperintendent = new workflow_node();
+                nodeSHESuperintendent.id_report = idReport;
+                nodeSHESuperintendent.node_name = "SHESuperintendent";
+                nodeSHESuperintendent.report_type = "FR-IR";
+                nodeFieldManager = new workflow_node();
+                nodeFieldManager.id_report = idReport;
+                nodeFieldManager.node_name = "FieldManager";
+                nodeFieldManager.report_type = "FR-IR";
+            }
+            else
+            {
+                nodeInitiator = (from a in db.workflow_node
+                                                               where a.id_report == idReport
+                                                               && a.node_name=="Initiator"&& a.report_type =="FR-IR"
+                                                               select a).FirstOrDefault();
+                if (nodeInitiator == null)
+                {
+                    nodeInitiator = new workflow_node();
+                    nodeInitiator.id_report = idReport;
+                    nodeInitiator.node_name = "Initiator";
+                    nodeInitiator.report_type = "FR-IR";
+                }
+
+                nodeSupervisor = (from a in db.workflow_node
+                                                               where a.id_report == idReport
+                                                               && a.node_name == "Supervisor" && a.report_type == "FR-IR"
+                                                               select a).FirstOrDefault();
+                if (nodeSupervisor == null)
+                {
+                    nodeSupervisor = new workflow_node();
+                    nodeSupervisor.id_report = idReport;
+                    nodeSupervisor.node_name = "Supervisor";
+                    nodeSupervisor.report_type = "FR-IR";
+                }
+
+                nodeSuperintendent = (from a in db.workflow_node
+                                                                where a.id_report == idReport
+                                                                && a.node_name == "Superintendent" && a.report_type == "FR-IR"
+                                                                select a).FirstOrDefault();
+                if (nodeSuperintendent == null)
+                {
+                    nodeSuperintendent = new workflow_node();
+                    nodeSuperintendent.id_report = idReport;
+                    nodeSuperintendent.node_name = "Superintendent";
+                    nodeSuperintendent.report_type = "FR-IR";
+                }
+
+                nodeSafetySupervisor = (from a in db.workflow_node
+                                                                    where a.id_report == idReport
+                                                                    && a.node_name == "SafetySupervisor" && a.report_type == "FR-IR"
+                                                                    select a).FirstOrDefault();
+                if (nodeSafetySupervisor == null)
+                {
+                    nodeSafetySupervisor = new workflow_node();
+                    nodeSafetySupervisor.id_report = idReport;
+                    nodeSafetySupervisor.node_name = "SafetySupervisor";
+                    nodeSafetySupervisor.report_type = "FR-IR";
+                }
+
+                nodeSHESuperintendent = (from a in db.workflow_node
+                                                                      where a.id_report == idReport
+                                                                      && a.node_name == "SHESuperintendent" && a.report_type == "FR-IR"
+                                                                      select a).FirstOrDefault();
+                if (nodeSHESuperintendent == null)
+                {
+                    nodeSHESuperintendent = new workflow_node();
+                    nodeSHESuperintendent.id_report = idReport;
+                    nodeSHESuperintendent.node_name = "SHESuperintendent";
+                    nodeSHESuperintendent.report_type = "FR-IR";
+                }
+
+                nodeFieldManager = (from a in db.workflow_node
+                                    where a.id_report == idReport
+                                    && a.node_name == "FieldManager" && a.report_type == "FR-IR"
+                                    select a).FirstOrDefault();
+                if (nodeFieldManager == null)
+                {
+                    nodeFieldManager = new workflow_node();
+                    nodeInitiator.id_report = idReport;
+                    nodeFieldManager.node_name = "FieldManager";
+                    nodeFieldManager.report_type = "FR-IR";
+                }
+            }
+
+            //0 Not Yet
+            //1 Current
+            //2 Approved
+            switch (source)
+            {
+                case "ApproveInitiator":
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 1;
+                    nodeSuperintendent.status = 0;
+                    nodeSafetySupervisor.status = 0;
+                    nodeSHESuperintendent.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "ApproveSupervisor": 
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 2;
+                    nodeSuperintendent.status = 1;
+                    nodeSafetySupervisor.status = 0;
+                    nodeSHESuperintendent.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "ApproveSuperintendent": 
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 2;
+                    nodeSuperintendent.status = 2;
+                    nodeSafetySupervisor.status = 1;
+                    nodeSHESuperintendent.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "ApproveSafetySupervisor": 
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 2;
+                    nodeSuperintendent.status = 2;
+                    nodeSafetySupervisor.status = 2;
+                    nodeSHESuperintendent.status = 1;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "ApproveSHESuperintendent": 
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 2;
+                    nodeSuperintendent.status = 2;
+                    nodeSafetySupervisor.status = 2;
+                    nodeSHESuperintendent.status = 2;
+                    nodeFieldManager.status = 1;
+                    break;
+                case "ApproveFieldManager":
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 2;
+                    nodeSuperintendent.status = 2;
+                    nodeSafetySupervisor.status = 2;
+                    nodeSHESuperintendent.status = 2;
+                    nodeFieldManager.status = 2;
+                    break;
+                case "RejectFieldManager": 
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 2;
+                    nodeSuperintendent.status = 2;
+                    nodeSafetySupervisor.status = 2;
+                    nodeSHESuperintendent.status = 1;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "RejectSHESuperintendent": 
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 2;
+                    nodeSuperintendent.status = 2;
+                    nodeSafetySupervisor.status = 1;
+                    nodeSHESuperintendent.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "RejectSafetySupervisor": 
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 2;
+                    nodeSuperintendent.status = 1;
+                    nodeSafetySupervisor.status = 0;
+                    nodeSHESuperintendent.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "RejectSuperintendent": 
+                    nodeInitiator.status = 2;
+                    nodeSupervisor.status = 1;
+                    nodeSuperintendent.status = 0;
+                    nodeSafetySupervisor.status = 0;
+                    nodeSHESuperintendent.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                case "RejectSupervisor": 
+                    nodeInitiator.status = 1;
+                    nodeSupervisor.status = 0;
+                    nodeSuperintendent.status = 0;
+                    nodeSafetySupervisor.status = 0;
+                    nodeSHESuperintendent.status = 0;
+                    nodeFieldManager.status = 0;
+                    break;
+                default: Response.Write("Internal server error. Please contact administrator"); break;
+            }
+
+            if (checkExisting == null)
+            {
+                db.workflow_node.Add(nodeInitiator);
+                db.workflow_node.Add(nodeSupervisor);
+                db.workflow_node.Add(nodeSuperintendent);
+                db.workflow_node.Add(nodeSafetySupervisor);
+                db.workflow_node.Add(nodeSHESuperintendent);
+                db.workflow_node.Add(nodeFieldManager);
+                db.SaveChanges();
+            }
+            else
+            {
+                db.workflow_node.Attach(nodeInitiator);
+                db.Entry(nodeInitiator).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeSupervisor);
+                db.Entry(nodeSupervisor).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeSuperintendent);
+                db.Entry(nodeSuperintendent).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeSafetySupervisor);
+                db.Entry(nodeSafetySupervisor).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeSHESuperintendent);
+                db.Entry(nodeSHESuperintendent).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.workflow_node.Attach(nodeFieldManager);
+                db.Entry(nodeFieldManager).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        #endregion
         #region approval
 
         [HttpPost]
@@ -813,6 +1100,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     this.SendUserNotification(ir, Int32.Parse(ir.she_superintendent_delegate), "Please Approve " + ir.reference_number);
                 }
+
+                this.SetWorkflowNode(ir.id, "ApproveSafetySupervisor");
 
 
                 return Json(new { success = true, path = sign });
@@ -866,6 +1155,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     this.SendUserNotification(ir, Int32.Parse(ir.loss_control_delegate), "Please Approve " + ir.reference_number);
                 }
+
+                this.SetWorkflowNode(ir.id, "ApproveSuperintendent");
               
                 return Json(new { success = true, path = sign });
             }
@@ -920,6 +1211,8 @@ namespace StarEnergi.Controllers.FrontEnd
                     this.SendUserNotification(ir, Int32.Parse(ir.superintendent_delegate), "Please Approve " + ir.reference_number);
                 }
 
+                this.SetWorkflowNode(ir.id, "ApproveSupervisor");
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -965,7 +1258,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     this.SendUserNotification(ir, Int32.Parse(ir.lead_name), "Please Make RCA",true);
                 }
-
+                this.SetWorkflowNode(ir.id, "ApproveFieldManager");
                 return Json(new { success = true, path = sign });
             }
             else
@@ -1018,6 +1311,8 @@ namespace StarEnergi.Controllers.FrontEnd
                     this.SendUserNotification(ir, Int32.Parse(ir.field_manager_delegate), "Please Approve " + ir.reference_number);
                 }
 
+                this.SetWorkflowNode(ir.id, "ApproveSHESuperintendent");
+
                 return Json(new { success = true, path = sign });
             }
             else
@@ -1058,6 +1353,9 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.supervisor_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
+
+            this.SetWorkflowNode(incidentReport.id, "RejectSuperintendent");
+
             return Json(new { success = true });
 
         }
@@ -1086,6 +1384,8 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.prepared_by), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
+
+            this.SetWorkflowNode(incidentReport.id, "RejectSupervisor");
 
             return Json(new { success = true });
         }
@@ -1122,6 +1422,8 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.superintendent_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
+
+            this.SetWorkflowNode(incidentReport.id, "ApproveSafetySupervisor");
 
             return Json(new { success = true });
 
@@ -1160,6 +1462,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.loss_control_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
 
+            this.SetWorkflowNode(incidentReport.id, "RejectSHESuperintendent");
+
             return Json(new { success = true });
 
         }
@@ -1197,6 +1501,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.she_superintendent_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
 
+            this.SetWorkflowNode(incidentReport.id, "RejectFieldManager");
             return Json(new { success = true });
 
         }
@@ -1858,6 +2163,278 @@ namespace StarEnergi.Controllers.FrontEnd
 
             //Convert encoded bytes back to a 'readable' string
             return BitConverter.ToString(encodedBytes).Replace("-", "").ToLower();
+        }
+
+        public ActionResult GetWorkflowContent(int id)
+        {
+            var data = (from a in db.workflow_node
+                        where a.report_type == "FR-IR" && a.id_report == id
+                        select a).ToList();
+            int dataInitiator=0;
+            int dataSupervisor=0;
+            int dataSuperintendent=0;
+            int dataSafetySupervisor=0;
+            int dataSHESuperintendent=0;
+            int dataFieldManager=0;
+
+            if (data.Count>0)
+            {
+                foreach (workflow_node a in data)
+                {
+                    if (a.node_name == "Initiator")
+                    {
+                        dataInitiator = a.status;
+                    }
+                    else if (a.node_name == "Supervisor")
+                    {
+                        dataSupervisor = a.status;
+                    }
+                    else if (a.node_name == "Superintendent")
+                    {
+                        dataSuperintendent = a.status;
+                    }
+                    else if (a.node_name == "SafetySupervisor")
+                    {
+                        dataSafetySupervisor = a.status;
+                    }
+                    else if (a.node_name == "SHESuperintendent")
+                    {
+                        dataSHESuperintendent = a.status;
+                    }
+                    else if (a.node_name == "FieldManager")
+                    {
+                        dataFieldManager = a.status;
+                    }
+                }
+            }
+
+            ViewBag.Initiator = dataInitiator;
+            ViewBag.Supervisor = dataSupervisor;
+            ViewBag.Superintendent = dataSuperintendent;
+            ViewBag.SafetySupervisor = dataSafetySupervisor;
+            ViewBag.SHESuperintendent = dataSHESuperintendent;
+            ViewBag.FieldManager = dataFieldManager;
+
+            return PartialView("WorkflowContent");
+        }
+
+        public string MigrateWorkflowData()
+        {
+            string sql = "Delete from workflow_node where report_type='FR-IR'";
+            db.Database.ExecuteSqlCommand(sql);
+
+            List<incident_report> data = (from a in db.incident_report
+                        select a).ToList();
+
+            foreach (incident_report a in data)
+            {
+                bool initiator = true;
+                bool supervisor = false;
+                bool superintendent = false;
+                bool safetySupervisor = false;
+                bool sheSuperintendent = false;
+                bool fieldManager = false;
+                if (a.supervisor_approve != "" && a.supervisor_approve != null)
+                {
+                    supervisor = true;
+                }
+                if (a.superintendent_approve != "" && a.superintendent_approve != null)
+                {
+                    superintendent = true;
+                }
+                if (a.loss_control_approve != "" && a.loss_control_approve != null)
+                {
+                    safetySupervisor = true;
+                }
+                if (a.she_superintendent_approve != "" && a.she_superintendent_approve != null)
+                {
+                    sheSuperintendent = true;
+                }
+                if (a.field_manager_approve != "" && a.field_manager_approve != null)
+                {
+                    fieldManager = true;
+                }
+
+                //INIATOR STATUS
+                //Tanda Tangan Initiator Sudah pasti ada
+                if (initiator == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "Initiator";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                //if (supervisor == true)
+                //{
+                //    workflow_node workflow = new workflow_node();
+                //    workflow.id_report = a.id;
+                //    workflow.report_type = "FR-IR";
+                //    workflow.node_name = "Initiator";
+                //    workflow.status = 2;
+                //    db.workflow_node.Add(workflow);
+                //}
+                //else
+                //{
+                //    workflow_node workflow = new workflow_node();
+                //    workflow.id_report = a.id;
+                //    workflow.report_type = "FR-IR";
+                //    workflow.node_name = "Initiator";
+                //    workflow.status = 1;
+                //    db.workflow_node.Add(workflow);
+                //}
+
+                //Supervisor Status
+                if (superintendent == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "Supervisor";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                else if(initiator == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "Supervisor";
+                    workflow.status = 1;
+                    db.workflow_node.Add(workflow);
+                }
+                else
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "Supervisor";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+                }
+
+                //Superintendent Status
+                if (safetySupervisor == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "Superintendent";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                else if (supervisor == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "Superintendent";
+                    workflow.status = 1;
+                    db.workflow_node.Add(workflow);
+                }
+                else
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "Superintendent";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+                }
+
+                //SafetySupervisor Status
+                if (sheSuperintendent == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "SafetySupervisor";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                else if (superintendent == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "SafetySupervisor";
+                    workflow.status = 1;
+                    db.workflow_node.Add(workflow);
+                }
+                else
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "SafetySupervisor";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+                }
+
+                //SHESuperintendent Status
+                if (fieldManager == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "SHESuperintendent";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                else if (safetySupervisor == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "SHESuperintendent";
+                    workflow.status = 1;
+                    db.workflow_node.Add(workflow);
+                }
+                else
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "SHESuperintendent";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+                }
+
+                //FieldManager Status
+                if (fieldManager == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "FieldManager";
+                    workflow.status = 2;
+                    db.workflow_node.Add(workflow);
+                }
+                else if (sheSuperintendent == true)
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "FieldManager";
+                    workflow.status = 1;
+                    db.workflow_node.Add(workflow);
+                }
+                else
+                {
+                    workflow_node workflow = new workflow_node();
+                    workflow.id_report = a.id;
+                    workflow.report_type = "FR-IR";
+                    workflow.node_name = "FieldManager";
+                    workflow.status = 0;
+                    db.workflow_node.Add(workflow);
+                }
+
+                db.SaveChanges();
+            }
+
+
+            return "success";
         }
     } 
 }

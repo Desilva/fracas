@@ -12,7 +12,7 @@
         <input type="button" id="addSheObservation" value="Add SHE Observation" onclick="addSheObservation()"/>
         @if (li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE))
         {
-        <input type="button" id="exportExcel" value="Export Report by Person" onclick="showDateChooser('0')"/>
+            <input type="button" id="exportExcel" value="Export Report by Person" onclick="showDateChooser('0')"/>
             <input type="button" id="exportExcelContractor" value="Export Report by Person Contractor" onclick="showChooser()"/>
             <input type="button" id="exportExcelText" value="Export Report All Text" onclick="showDateChooser('1')"/>
         }

@@ -1,0 +1,98 @@
+﻿@using StarEnergi.Extensions;
+@{
+    ViewBag.Title = "Index";
+    var currentController = (StarEnergi.Controllers.Admin.WeekendDutyController)ViewContext.Controller;
+}
+<link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+<style scoped>
+    h2 {
+        font-size: 1.5em;
+        color: #000;
+    }
+</style>
+<h2>Weekend Duty</h2>
+@Html.Raw(currentController.GetMessage())
+<br />
+<div>
+    <input type="button" id="addDuty" value="Add Weekend Duty" onclick="addDuty()" />
+</div>
+<br />
+@(Html.Telerik().Grid<StarEnergi.Models.weekend_duty>()
+.Name("WeekendDuty")
+.DataKeys(keys =>
+{
+    keys.Add(p => p.id);
+})
+.DataBinding(dataBinding =>
+{
+    dataBinding.Ajax()
+        .Select("_SelectAjaxWeekendDuty", "WeekendDuty")
+        .Delete("_DeleteAjaxWeekendDuty", "WeekendDuty");
+})
+.Columns(columns =>
+{
+    columns.Bound(o => o.start_date).Title("Start").Format("{0:dd MMM yyyy}").Width(125);
+    columns.Bound(o => o.end_date).Title("End").Format("{0:dd MMM yyyy}").Width(125);
+    columns.Bound(o => o.delegationName).Title("Duty Name");
+    columns.Bound(o => o.department).Title("Department");
+    columns.Command(commands =>
+    {
+        commands.Delete().ButtonType(GridButtonType.BareImage);
+    }).Width(80).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+
+})
+.ClientEvents(  
+    events => events
+        .OnRowDataBound("OnRowDataBoundEq")
+)
+.Pageable(p => p.PageSize(15))
+.Sortable()
+.Filterable()
+.Scrollable(c => c.Enabled(true))
+.Selectable()
+)
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script type="text/javascript">
+    function OnRowDataBoundEq(e) {
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateCommand = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="edit(' + dataItem.id + ');" title=' + '"Edit"' + ' >'
+                                + '<span class="t-icon ' + 't-edit' + '"></span>'
+                                + '</a>')
+                                + '<a class="t-button t-rca t-button-icon" onClick="deleteDuty(' + dataItem.id + ');" title="Delete">'
+                                + '<span class="t-icon t-delete"></span>'
+                                + '</a>';
+
+        var i = 4;
+        var defaultBackgroundColor = row.style.background;
+
+        for (var a in row.cells) {
+            if (row.cells[a].className == "t-group-cell") {
+                i++;
+            }
+        }
+        row.cells[i].innerHTML = templateCommand;
+    }
+
+    function edit(id) {
+        window.location = "/WeekendDuty/editDuty/" + id;
+    }
+
+    function addDuty(id) {
+        window.location = "/WeekendDuty/addDuty/";
+    }
+
+    function deleteDuty(id) {
+        var r = confirm("Are you sure want to delete this data?");
+        if (r) {
+            $.post('@Url.Action("deleteDuty")', { id: id }, function (result) {
+                if (result) {
+                    $('#WeekendDuty').data('tGrid').dataSource.read();
+                    alert("Data has been deleted.");
+                } else {
+                    alert("Something gone wrong. Please try again or contact administrator.");
+                }
+            });
+        }
+    }
+</script>

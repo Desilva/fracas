@@ -1,0 +1,138 @@
+﻿
+<script>
+    $(document).ready(function () {
+
+        var initiatorCBox = document.getElementById("boxInitiatorC").getElementsByTagName("svg").item(0).getElementById("box");
+        var dataInitiatorC = @Html.Raw(ViewBag.InitiatorC.ToString());
+        if(dataInitiatorC == 1)
+        {
+            initiatorCBox.style.fill = "cyan";
+        }
+        else if(dataInitiatorC == 2)
+        {
+            initiatorCBox.style.fill = "lime";
+        }
+
+
+        var processOwnerBox = document.getElementById("boxProcessOwner").getElementsByTagName("svg").item(0).getElementById("box");
+        var dataProcessOwner = @Html.Raw(ViewBag.ProcessOwner.ToString());
+        if(dataProcessOwner == 1)
+        {
+            processOwnerBox.style.fill = "cyan";
+        }
+        else if(dataProcessOwner == 2)
+        {
+            processOwnerBox.style.fill = "lime";
+        }
+
+
+        var initiatorVBox = document.getElementById("boxInitiatorV").getElementsByTagName("svg").item(0).getElementById("box");
+        var dataInitiatorV = @Html.Raw(ViewBag.InitiatorV.ToString());
+        if(dataInitiatorV == 1)
+        {
+            initiatorVBox.style.fill = "cyan";
+        }
+        else if(dataInitiatorV== 2)
+        {
+            initiatorVBox.style.fill = "lime";
+        }
+    });
+
+</script>
+<style>
+    .positionAbsolute {
+        position:absolute;
+    }
+
+    .fontSize {
+        font-size:16px;
+        width:100px;
+        white-space:normal;
+    }
+</style>
+<div>
+    @{
+             string status = "";
+             string sClass = "";
+             string arrow = "";
+             string detail = "";
+             string line = "";
+             string boxClass = "";
+             string lineLeft = "";
+             string lineRight = "";
+             string lineUp = "";
+             string lineDown = "";
+             string arrowUp = "";
+             string arrowRight = "";
+             string arrowLeft = "";
+             string arrowDown = "";
+             int left = 40;
+             int top = 0;
+             string stylelabel = "";
+             string style = "";
+             string style1 = "";
+             string style2 = "";
+             string style3 = "";
+             string style4 = "";
+             string style5 = "";
+             string style6 = "";
+             string style7 = "";
+             string style8 = "";
+             string style9 = "";
+             string style10 = "";
+   }
+    @*Initiator*@
+        @{
+            top += 50;
+            
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top +15, left + 135); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top + 18, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize"  style="@stylelabel">Initiator Creation</div>
+		<div class="positionAbsolute"  style="@style1" id="boxInitiatorC">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))     
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*Supervisor*@
+        @{
+            left += 235;
+            
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top + 15, left + 135); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top, left + 30); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">Key Business Process Owner</div>
+		<div class="positionAbsolute" id="boxProcessOwner"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+        <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>
+
+    @*Superintendent*@
+        @{
+            left += 235;
+
+            style1 = String.Format("top:{0}px; left:{1}px;", top, left); // box
+            style2 = String.Format("top:{0}px; left:{1}px;", top + 15, left + 135); // arrow right
+            stylelabel = String.Format("top:{0}px; left:{1}px; z-index:100", top + 18, left + 20); // box
+            arrowRight = "right-arrow.svg";
+            boxClass = "box.svg";
+        }
+		<div class="positionAbsolute fontSize" style="@stylelabel">Initiator Verification</div>
+		<div class="positionAbsolute" id="boxInitiatorV"  style="@style1">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + boxClass)))        
+        </div>
+       @* <div class="positionAbsolute" style="@style2">
+            @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
+        </div>*@
+
+</div>
