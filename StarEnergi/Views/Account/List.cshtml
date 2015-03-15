@@ -19,7 +19,7 @@
         console.log(e);
         var dataItem = e.dataItem;
         var row = e.row;
-        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title="Edit Duty Manager" >'
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id_dm + ');" title="Edit Duty Manager" >'
                                 + '<span class="t-icon t-edit"></span>'
                                 + '</a>'
                                 + '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#" title="Delete Duty Manager"><span class="t-icon t-delete"></span></a>';
@@ -28,7 +28,7 @@
     }
 
     function Edit(id) {
-        console.log("edit");
+        $('#dutyManager').load('@Url.Action("EditDutyManager")' + '/'+ id);
     }
 
 </script>
@@ -44,7 +44,7 @@
         .Name("DutyManager")
         .DataKeys(keys =>
         {
-            keys.Add(p => p.id);
+            keys.Add(p => p.id_dm);
         })
         .DataBinding(dataBinding =>
         {
@@ -60,7 +60,7 @@
             }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
             columns.Bound(o => o.start_date).Title("Start Date");
             columns.Bound(o => o.end_date).Title("End Date");
-            columns.Bound(o => o.user_id).Title("Duty Manager");
+            columns.Bound(o => o.name).Title("Duty Manager");
         })
         .ClientEvents(
             events => events.OnRowDataBound("OnRowDataBoundDm")

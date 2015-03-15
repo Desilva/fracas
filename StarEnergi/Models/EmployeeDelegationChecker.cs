@@ -9,11 +9,14 @@ namespace StarEnergi.Models
     {
         private relmon_star_energiEntities db = new relmon_star_energiEntities();
         private List<weekend_duty> weekendDuties;
+        private List<duty_manager> dutyManagers;
         private employee employee;
 
         public EmployeeDelegationChecker()
         {
             weekendDuties = db.weekend_duty.Where(p => p.start_date.CompareTo(DateTime.Today) <= 0 && p.end_date.CompareTo(DateTime.Today) >= 0).ToList();
+            dutyManagers = db.duty_manager.Where(p => p.start_date.CompareTo(DateTime.Today) <= 0 && p.end_date.CompareTo(DateTime.Today) >= 0).ToList();
+        
         }
 
         public EmployeeDelegationChecker(employee employee) : this()
@@ -53,6 +56,16 @@ namespace StarEnergi.Models
                         isDelegate = true;
                     }
                 }
+
+                if (!isDelegate) { 
+                    //cek duty manager
+                    List<duty_manager> dutyManagerCheck = dutyManagers.Where(p => p.user_id == employeeCheck.id).ToList();
+                    length = dutyManagerCheck.Count;
+                    if (length > 0) {
+                        isDelegate = true;
+                    }
+                }
+
                 return isDelegate;
             }
         }
@@ -76,6 +89,18 @@ namespace StarEnergi.Models
                     isFound = true;
                 }
             }
+
+            if (!isFound)
+            {
+                //cek duty manager
+                List<duty_manager> dutyManagerCheck = dutyManagers.Where(p => p.user_id == employeeCheck.id).ToList();
+                length = dutyManagerCheck.Count;
+                if (length > 0)
+                {
+                    employee.employee_delegate = dutyManagerCheck.First().user_id;
+                    isFound = true;
+                }
+            }
         }
 
         public void setDelegate(EmployeeEntity employee, employee employeeCheck)
@@ -94,6 +119,18 @@ namespace StarEnergi.Models
                 if (weekendDuty.delegate_id == employeeCheck.id && employee.department == null || employee.department.ToUpper() == weekendDuty.department && employee.department.ToUpper() == employeeCheck.department.ToUpper())
                 {
                     employee.employee_delegate = weekendDuty.delegate_id;
+                    isFound = true;
+                }
+            }
+
+            if (!isFound)
+            {
+                //cek duty manager
+                List<duty_manager> dutyManagerCheck = dutyManagers.Where(p => p.user_id == employeeCheck.id).ToList();
+                length = dutyManagerCheck.Count;
+                if (length > 0)
+                {
+                    employee.employee_delegate = dutyManagerCheck.First().user_id;
                     isFound = true;
                 }
             }

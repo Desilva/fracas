@@ -16,6 +16,7 @@ namespace StarEnergi.Models
     {
         public employee()
         {
+            this.duty_manager = new HashSet<duty_manager>();
             this.employee1 = new HashSet<employee>();
             this.rca_implementation = new HashSet<rca_implementation>();
             this.rca_pre_task = new HashSet<rca_pre_task>();
@@ -39,6 +40,7 @@ namespace StarEnergi.Models
         public Nullable<byte> approval_level { get; set; }
         public string kbp_code { get; set; }
     
+        public virtual ICollection<duty_manager> duty_manager { get; set; }
         public virtual ICollection<employee> employee1 { get; set; }
         public virtual employee employee2 { get; set; }
         public virtual employee_dept employee_dept1 { get; set; }

@@ -16,6 +16,46 @@
         showDutyManager();
     });
 
+    function save() {
+        var values =
+        {
+            "id_dm": $('#id_dm').val(),
+            "user_id": $('#delegate_name').val(),
+            "start_date": $('#start_date').val(),
+            "end_date": $('#end_date').val(),
+        }
+
+        $('.errorM').html('');
+        $.post('@Url.Content("~/Account/AddDutyManager")', values, function (data) {
+            if (data != undefined) {
+                if (data["status"] == 0) {
+                    alert('You have updated duty manager');
+                    $('#dutyManager').load('@Url.Action("List")');
+                } else {
+                    clearError();
+                    $.each(data, function (index, value) {
+                        if (index != "status") {
+                            //error render
+                            console.log($('#' + index).parents('.editor-field'));
+                            $('#' + index).parents('.editor-field').find('.errorM').html(value);
+                        }
+                    });
+                }
+            } else {
+                alert('Error edited data');
+            }
+        });
+
+    }
+
+
+    function clearError() {
+        var field = ["delegate_name"];
+        $.each(field, function (index, value) {
+            $('#' + value).next('div').html('');
+        });
+    }
+
 </script>
 
 <h2>Duty Manager</h2>

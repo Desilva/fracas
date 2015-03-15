@@ -691,7 +691,7 @@ namespace StarEnergi.Controllers
 
             //List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
 
-            List<employee> delegations = db.employees.Where(p => p.id != id).ToList();
+            List<employee> delegations = db.employees.Where(p => p.id != id && (p.approval_level == 1 || p.approval_level == 2 || p.position.Contains("operation manager"))).ToList();
             
 
             Dictionary<int, string> delegate_name = new Dictionary<int, string>();
@@ -705,8 +705,30 @@ namespace StarEnergi.Controllers
             return View("Form",dm);
         }
 
+        public ActionResult EditDutyManager(int id)
+        {
+            //List<duty_manager> dutyManager = db.duty_manager.ToList();
+            DutyManagerPresentationStub dm = new DutyManagerPresentationStub(db.duty_manager.Find(id));
+
+            //List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
+
+            List<employee> delegations = db.employees.Where(p => p.id != id && (p.approval_level == 1 || p.approval_level == 2 || p.position.Contains("operation manager"))).ToList();
+
+
+            Dictionary<int, string> delegate_name = new Dictionary<int, string>();
+            foreach (employee e in delegations)
+            {
+                delegate_name.Add(e.id, e.alpha_name);
+            }
+
+
+            ViewBag.delegate_name = new SelectList(delegate_name, "Key", "Value",dm.user_id);
+
+            return View("Form", dm);
+        }
+
         [HttpPost]
-        public ActionResult AddDutyManager(duty_manager dm)
+        public ActionResult AddDutyManager(DutyManagerPresentationStub dm)
         {
             NameValueCollection nvc = Request.Form;
 
@@ -716,40 +738,23 @@ namespace StarEnergi.Controllers
                 {
                     if (dm.end_date.CompareTo(dm.start_date) >= 0)
                     {
-                        if (dm.id == 0)
+                        if (dm.id_dm == 0)
                         {
-                            db.employee_delegations.Add(dm);
+                            duty_manager dmInsert = new duty_manager()
+                            {
+                                start_date = dm.start_date,
+                                end_date = dm.end_date,
+                                user_id = dm.user_id
+                            };
+                            db.duty_manager.Add(dmInsert);
                         }
                         else
                         {
-                            employee_delegations delegationDb = db.employee_delegations.Find(delegation.id);
-                            if (delegation.is_active == true)
-                            {
-                                delegationDb.id_delegate = delegation.id_delegate;
-                            }
-                            delegationDb.date_start = delegation.date_start;
-                            delegationDb.date_end = delegation.date_end;
-                            delegationDb.is_active = delegation.is_active;
-                            db.Entry(delegationDb).State = EntityState.Modified;
-                        }
-
-                        if (delegation.is_active == true && DateTime.Today.CompareTo(delegation.date_start) >= 0)
-                        {
-                            employee.delagate = 1;
-                            employee.employee_delegate = delegation.id_delegate;
-                            db.Entry(employee).State = EntityState.Modified;
-                        }
-                        else if (delegation.is_active == true && DateTime.Today.CompareTo(delegation.date_start) < 0)
-                        {
-                            employee.delagate = 0;
-                            employee.employee_delegate = null;
-                            db.Entry(employee).State = EntityState.Modified;
-                        }
-                        else if (delegation.is_active == false)
-                        {
-                            employee.delagate = 0;
-                            employee.employee_delegate = null;
-                            db.Entry(employee).State = EntityState.Modified;
+                            duty_manager dutyManager = db.duty_manager.Find(dm.id_dm);
+                            dutyManager.start_date = dm.start_date;
+                            dutyManager.end_date = dm.end_date;
+                            dutyManager.user_id = dm.user_id;
+                            db.Entry(dutyManager).State = EntityState.Modified;
                         }
 
                         IEnumerable<DbEntityValidationResult> error = db.GetValidationErrors();

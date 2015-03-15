@@ -64,6 +64,7 @@
 								<div id="adminHasLogin">
 									@Html.ActionLink("Delegate", "../Account/Delegate/"+Session["id"], new { returnUrl = "" })<text> | </text>
                                     @Html.ActionLink("Weekend Duty", "../WeekendDuty")<text> | </text>
+                                    @Html.ActionLink("Duty Manager", "../Account/DutyManager/"+Session["id"])<text> | </text>
                                     @Html.ActionLink("Admin Page", "../Admin")<text> | </text>
 									@Html.ActionLink("Change Profil", "../Account/changeProfile/"+Session["id"], new { returnUrl = "" })
 								</div>
