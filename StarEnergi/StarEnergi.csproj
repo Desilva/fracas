@@ -449,6 +449,7 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ComponentEntity.cs" />
+    <Compile Include="Models\DutyManagerPresentationStub.cs" />
     <Compile Include="Models\DailyLogPresentationStub.cs" />
     <Compile Include="Models\DailyLogReportEntity.cs" />
     <Compile Include="Models\daily_log.cs">
@@ -492,6 +493,9 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DisciplineEntity.cs" />
+    <Compile Include="Models\duty_manager.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\email_error.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -3529,6 +3533,9 @@
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASIncidentInvestigationReport.cshtml" />
     <Content Include="Views\Admin\Wells\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\daily_log_to_wells.cshtml" />
+    <Content Include="Views\Account\DutyManager.cshtml" />
+    <Content Include="Views\Account\List.cshtml" />
+    <Content Include="Views\Account\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

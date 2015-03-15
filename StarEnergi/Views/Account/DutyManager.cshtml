@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+
+    function addDutyManager() {
+        $('#dutyManager').load('@Url.Action("AddDutyManager")' + '/@ViewBag.sessionId');
+    }
+
+    function showDutyManager() {
+        $('#dutyManager').load('@Url.Action("List")');
+    }
+
+    $(document).ready(function () {
+        showDutyManager();
+    });
+
+</script>
+
+<h2>Duty Manager</h2>
+
+<div id="dutyManager">
+</div>
+
+

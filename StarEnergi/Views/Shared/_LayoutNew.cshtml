@@ -31,6 +31,7 @@
 <script type="text/javascript">
     function CheckForLoadEvent() {
         if (window.main != null)
+            console.log(window.main);
             window.main();
     }
 
@@ -64,13 +65,14 @@
 								<div id="adminHasLogin">
 									@Html.ActionLink("Delegate", "../Account/Delegate/"+Session["id"], new { returnUrl = "" })<text> | </text>
                                     @Html.ActionLink("Admin Page", "../Admin")<text> | </text>
-									@Html.ActionLink("Change Profil", "../Account/changeProfile/"+Session["id"], new { returnUrl = "" })
-								</div>
+									@Html.ActionLink("Change Profil", "../Account/changeProfile/"+Session["id"], new { returnUrl = "" })<text> | </text>
+								    @Html.ActionLink("Duty Manager", "../Account/dutyManager/"+Session["id"], new { returnUrl = "" })
+                                </div>
 							}else{
 								<div id="adminHasLogin2">
                                     @Html.ActionLink("Delegate", "../Account/Delegate/"+Session["id"], new { returnUrl = "" })<text> | </text>
 									@Html.ActionLink("Change Profil", "../Account/changeProfile/"+Session["id"], new { returnUrl = "" })
-								</div>
+                                </div>
 							}							                           
                     }
 			        <div class="logo">
