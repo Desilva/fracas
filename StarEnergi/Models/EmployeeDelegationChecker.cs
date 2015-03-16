@@ -53,6 +53,11 @@ namespace StarEnergi.Models
                         isDelegate = true;
                     }
                 }
+
+                if (isDelegate == false)
+                {
+                    //checking duty manager
+                }
                 return isDelegate;
             }
         }
@@ -76,6 +81,11 @@ namespace StarEnergi.Models
                     isFound = true;
                 }
             }
+
+            if (isFound == false)
+            {
+                //checking duty manager
+            }
         }
 
         public void setDelegate(EmployeeEntity employee, employee employeeCheck)
@@ -96,6 +106,11 @@ namespace StarEnergi.Models
                     employee.employee_delegate = weekendDuty.delegate_id;
                     isFound = true;
                 }
+            }
+
+            if (isFound == false)
+            {
+                //checking duty manager
             }
         }
     }
