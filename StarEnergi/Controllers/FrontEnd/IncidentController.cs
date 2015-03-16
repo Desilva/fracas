@@ -1423,7 +1423,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.superintendent_delegate), incidentReport.reference_number + " is rejected with comment: " + comment);
             }
 
-            this.SetWorkflowNode(incidentReport.id, "ApproveSafetySupervisor");
+            this.SetWorkflowNode(incidentReport.id, "RejectSafetySupervisor");
 
             return Json(new { success = true });
 

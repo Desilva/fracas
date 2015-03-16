@@ -332,7 +332,7 @@
                          .DataRouteValues(route => route.Add(o => o.id).RouteKey("id"))
                          .Action("Log", "pir");
                 commands.Delete().ButtonType(GridButtonType.Image);
-            }).Width(100).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            }).Width(150).Title("Action").HtmlAttributes(new { style = "text-align: center" });
             columns.Bound(o => o.reference).Hidden();
         })
         .ClientEvents(events => events

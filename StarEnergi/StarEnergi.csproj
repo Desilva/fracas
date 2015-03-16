@@ -451,9 +451,6 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ComponentEntity.cs" />
-    <Compile Include="Models\DutyManagerPresentationStub.cs" />
-    <Compile Include="Models\DailyLogPresentationStub.cs" />
-    <Compile Include="Models\DailyLogReportEntity.cs" />
     <Compile Include="Models\daily_log.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -490,10 +487,13 @@
     <Compile Include="Models\daily_log_wpnb.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DashboardChartEntity.cs" />
     <Compile Include="Models\discipline.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DutyManagerPresentationStub.cs" />
+    <Compile Include="Models\DailyLogPresentationStub.cs" />
+    <Compile Include="Models\DailyLogReportEntity.cs" />
+    <Compile Include="Models\DashboardChartEntity.cs" />
     <Compile Include="Models\DisciplineEntity.cs" />
     <Compile Include="Models\duty_manager.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
@@ -3553,6 +3553,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Admin\WeekendDuty\Index.cshtml" />
+    <Content Include="Views\FrontEnd\Pir\WorkflowContent.cshtml">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

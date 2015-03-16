@@ -1367,7 +1367,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     {
                         dataInitiatorCreate = a.status;
                     }
-                    else if (a.node_name == "Owner")
+                    else if (a.node_name == "POwner")
                     {
                         dataProcessOwner = a.status;
                     }

@@ -121,7 +121,7 @@
             columns.Command(commands =>
             {
                 commands.Delete().ButtonType(GridButtonType.BareImage);
-            }).Width(80).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            }).Width(150).Title("Action").HtmlAttributes(new { style = "text-align: center" });
             columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.reference_number).Width(200).Title("Reference Number");
             columns.Bound(o => o.date_incident).Width(150).Title("Date / Time").Format("{0:dd MMM yyyy hh:mm tt}");
