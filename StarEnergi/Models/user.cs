@@ -31,6 +31,8 @@ namespace StarEnergi.Models
         public virtual employee employee { internal get; set; }
         public virtual ICollection<rca_implementation> rca_implementation { internal get; set; }
         public virtual ICollection<user_per_role> user_per_role { internal get; set; }
+        public virtual ICollection<duty_manager> duty_manager { internal get; set; }
+
     }
     
 }
