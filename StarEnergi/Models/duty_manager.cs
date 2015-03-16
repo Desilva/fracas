@@ -12,23 +12,14 @@ using System.Collections.Generic;
 
 namespace StarEnergi.Models
 {
-    public partial class user
+    public partial class duty_manager
     {
-        public user()
-        {
-            this.user_per_role = new HashSet<user_per_role>();
-        }
-    
-        public string username { get; set; }
-        public string fullname { get; set; }
-        public string password { get; set; }
-        public string jabatan { get; set; }
-        public Nullable<System.DateTime> create_date { get; set; }
-        public Nullable<int> rm_role { get; set; }
-        public Nullable<int> employee_id { get; set; }
+        public int id { get; set; }
+        public int user_id { get; set; }
+        public System.DateTime start_date { get; set; }
+        public System.DateTime end_date { get; set; }
     
         public virtual employee employee { get; set; }
-        public virtual ICollection<user_per_role> user_per_role { get; set; }
     }
     
 }

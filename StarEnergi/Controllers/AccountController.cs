@@ -12,6 +12,7 @@ using System.Data.Entity.Validation;
 using System.Data;
 using StarEnergi.Utilities;
 using System.Collections.Specialized;
+using Telerik.Web.Mvc;
 
 namespace StarEnergi.Controllers
 {
@@ -621,6 +622,175 @@ namespace StarEnergi.Controllers
             }
 
             return message;
+        }
+
+        /*
+         * 
+         * Duty Manager
+         * 
+         */
+
+
+        public ActionResult List()
+        {
+            List<duty_manager> dutyManager = db.duty_manager.ToList();
+
+            List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
+            return View(presentation);
+        }
+
+        public ViewResult Binding() {
+            List<duty_manager> dutyManager = db.duty_manager.ToList();
+
+            List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
+            return View(new GridModel<DutyManagerPresentationStub>
+            {
+                Data = presentation
+            });
+        }
+
+        //duty Manager
+        public ActionResult DutyManager(int id)
+        {
+            //List<duty_manager> dutyManager = db.duty_manager.ToList();
+            ViewBag.sessionId = id;
+            //List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
+            return View();
+        }
+
+        //
+        // Ajax select binding
+        [GridAction]
+        public ActionResult _SelectAjaxEditingDutyManager()
+        {
+            List<duty_manager> dutyManager = db.duty_manager.ToList();
+
+            List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
+            return View(new GridModel<DutyManagerPresentationStub>
+            {
+                Data = presentation
+            });
+        }
+
+        //
+        // Ajax select binding
+        [GridAction]
+        public ActionResult _DeleteAjaxEditingDutyManager(int id)
+        {
+            duty_manager dm = db.duty_manager.Find(id);
+            db.duty_manager.Remove(dm);
+            db.SaveChanges();
+            return Binding();
+        }
+
+        //duty Manager
+        public ActionResult AddDutyManager(int id)
+        {
+            //List<duty_manager> dutyManager = db.duty_manager.ToList();
+            DutyManagerPresentationStub dm = new DutyManagerPresentationStub();
+
+            //List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
+
+            List<employee> delegations = db.employees.Where(p => p.id != id && (p.approval_level == 1 || p.approval_level == 2 || p.position.Contains("operation manager"))).ToList();
+            
+
+            Dictionary<int, string> delegate_name = new Dictionary<int, string>();
+            foreach(employee e in delegations){
+                delegate_name.Add(e.id,e.alpha_name);
+            }
+            
+
+            ViewBag.delegate_name = new SelectList(delegate_name, "Key", "Value");
+
+            return View("Form",dm);
+        }
+
+        public ActionResult EditDutyManager(int id)
+        {
+            //List<duty_manager> dutyManager = db.duty_manager.ToList();
+            DutyManagerPresentationStub dm = new DutyManagerPresentationStub(db.duty_manager.Find(id));
+
+            //List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
+
+            List<employee> delegations = db.employees.Where(p => p.id != id && (p.approval_level == 1 || p.approval_level == 2 || p.position.Contains("operation manager"))).ToList();
+
+
+            Dictionary<int, string> delegate_name = new Dictionary<int, string>();
+            foreach (employee e in delegations)
+            {
+                delegate_name.Add(e.id, e.alpha_name);
+            }
+
+
+            ViewBag.delegate_name = new SelectList(delegate_name, "Key", "Value",dm.user_id);
+
+            return View("Form", dm);
+        }
+
+        [HttpPost]
+        public ActionResult AddDutyManager(DutyManagerPresentationStub dm)
+        {
+            NameValueCollection nvc = Request.Form;
+
+            if (dm.start_date != null && dm.end_date != null)
+            {
+                if (dm.end_date.CompareTo(DateTime.Today) >= 0)
+                {
+                    if (dm.end_date.CompareTo(dm.start_date) >= 0)
+                    {
+                        if (dm.id_dm == 0)
+                        {
+                            duty_manager dmInsert = new duty_manager()
+                            {
+                                start_date = dm.start_date,
+                                end_date = dm.end_date,
+                                user_id = dm.user_id
+                            };
+                            db.duty_manager.Add(dmInsert);
+                        }
+                        else
+                        {
+                            duty_manager dutyManager = db.duty_manager.Find(dm.id_dm);
+                            dutyManager.start_date = dm.start_date;
+                            dutyManager.end_date = dm.end_date;
+                            dutyManager.user_id = dm.user_id;
+                            db.Entry(dutyManager).State = EntityState.Modified;
+                        }
+
+                        IEnumerable<DbEntityValidationResult> error = db.GetValidationErrors();
+                        if (error.Count() == 0)
+                        {
+                            db.SaveChanges();
+
+                            // update delegation to each form in WW-IIS
+                            //UpdateDelegationWWIIS(employee, delegation.is_active.Value, prevDelegate);
+
+                            return Json(e.Succes("Success"));
+                        }
+                        else
+                        {
+                            //return Json(error.First().ValidationErrors.ToArray());
+                            return Json(e.Fail(error));
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("date_start", "Date end can not before date start.");
+                        return Json(e.Fail(ModelState));
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("date_start", "Date end cannot before today.");
+                    return Json(e.Fail(ModelState));
+                }
+
+            }
+            else
+            {
+                ModelState.AddModelError("date_start", "Delegation Period cannot be empty.");
+                return Json(e.Fail(ModelState));
+            }
         }
     }
 }

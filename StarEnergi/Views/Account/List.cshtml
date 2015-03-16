@@ -1,0 +1,75 @@
+﻿@model IEnumerable<StarEnergi.Models.DutyManagerPresentationStub>
+
+@{
+    Layout = null;
+    ViewBag.Title = "List";
+    //List<StarEnergi.Models.user_per_role> li = null;
+    //if (ViewData["user_role"] != null)
+    //{
+    //    li = ViewData["user_role"] as List<StarEnergi.Models.user_per_role>;
+    //}
+}
+
+<div>
+    <input type="button" id="addDutyManager" value="Add Duty Manager" onclick="addDutyManager()"/>
+</div>
+<br />
+<script type="text/javascript">
+    function OnRowDataBoundDm(e) {
+        console.log(e);
+        var dataItem = e.dataItem;
+        var row = e.row;
+        var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id_dm + ');" title="Edit Duty Manager" >'
+                                + '<span class="t-icon t-edit"></span>'
+                                + '</a>'
+                                + '<a class="t-button t-grid-delete t-button-icon t-button-icon" href="#" title="Delete Duty Manager"><span class="t-icon t-delete"></span></a>';
+
+        row.cells[0].innerHTML = templateComplete;
+    }
+
+    function Edit(id) {
+        $('#dutyManager').load('@Url.Action("EditDutyManager")' + '/'+ id);
+    }
+
+</script>
+
+<style>
+    .t-grid .t-grid-header .t-header,
+    .t-grid .t-grid-header .t-last-header {
+        white-space: normal;
+    }
+</style>
+
+@(Html.Telerik().Grid<StarEnergi.Models.DutyManagerPresentationStub>()
+        .Name("DutyManager")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id_dm);
+        })
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditingDutyManager", "Account")
+                .Delete("_DeleteAjaxEditingDutyManager", "Account");
+        })
+        .Columns(columns =>
+        {
+            columns.Command(commands =>
+            {
+                commands.Delete().ButtonType(GridButtonType.BareImage);
+            }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+            columns.Bound(o => o.start_date).Title("Start Date");
+            columns.Bound(o => o.end_date).Title("End Date");
+            columns.Bound(o => o.name).Title("Duty Manager");
+        })
+        .ClientEvents(
+            events => events.OnRowDataBound("OnRowDataBoundDm")
+        )
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+)  

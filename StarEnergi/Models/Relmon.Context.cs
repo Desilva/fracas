@@ -47,6 +47,7 @@ namespace StarEnergi.Models
         public DbSet<daily_log_wells> daily_log_wells { get; set; }
         public DbSet<daily_log_wpnb> daily_log_wpnb { get; set; }
         public DbSet<discipline> disciplines { get; set; }
+        public DbSet<duty_manager> duty_manager { get; set; }
         public DbSet<email_error> email_error { get; set; }
         public DbSet<employee> employees { get; set; }
         public DbSet<employee_delegations> employee_delegations { get; set; }
