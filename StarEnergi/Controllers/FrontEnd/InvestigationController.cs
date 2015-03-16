@@ -1083,7 +1083,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     retAppr += ";";
                 }
             }
-            retAppr.Substring(0, retAppr.Length - 1);
+            retAppr = retAppr.Substring(0, retAppr.Length - 1);
             investigationReport.investigator_approve = retAppr;
             db.Entry(investigationReport).State = EntityState.Modified;
             db.SaveChanges();

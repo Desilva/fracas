@@ -2577,6 +2577,7 @@
     <Content Include="Scripts\FusionCharts.js" />
     <Content Include="Scripts\jquery.speedo.js" />
     <Content Include="Scripts\jquery.uploadify.min.js" />
+    <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="Scripts\kendo\angular.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.af-ZA.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.af.min.js" />
