@@ -16,6 +16,7 @@ namespace StarEnergi.Models
     {
         public user()
         {
+            this.rca_implementation = new HashSet<rca_implementation>();
             this.user_per_role = new HashSet<user_per_role>();
         }
     
@@ -27,8 +28,11 @@ namespace StarEnergi.Models
         public Nullable<int> rm_role { get; set; }
         public Nullable<int> employee_id { get; set; }
     
-        public virtual employee employee { get; set; }
-        public virtual ICollection<user_per_role> user_per_role { get; set; }
+        public virtual employee employee { internal get; set; }
+        public virtual ICollection<rca_implementation> rca_implementation { internal get; set; }
+        public virtual ICollection<user_per_role> user_per_role { internal get; set; }
+        public virtual ICollection<duty_manager> duty_manager { internal get; set; }
+
     }
     
 }
