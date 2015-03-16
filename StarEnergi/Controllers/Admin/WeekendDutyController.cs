@@ -13,6 +13,7 @@ using StarEnergi.Extensions;
 
 namespace StarEnergi.Controllers.Admin
 {
+    [AuthorizeUser("~/WeekendDuty", AuthorizedRoles = new int[] { (int)Config.role.WEEKENDDUTY })]
     public class WeekendDutyController : Controller
     {
         //
@@ -108,7 +109,7 @@ namespace StarEnergi.Controllers.Admin
             employee employee = db.employees.Find(weekendDuty.employee_id);
             List<user_per_role> userRoles = Session["roles"] as List<user_per_role>;
 
-            if (weekendDuty.start_date != null && weekendDuty.end_date != null)
+            if (nvc.Get("start_date") != "" && nvc.Get("end_date") != "")
             {
                 if (weekendDuty.end_date.CompareTo(DateTime.Today) >= 0)
                 {
