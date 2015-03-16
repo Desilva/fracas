@@ -709,10 +709,10 @@
                             {
                                 if (has.Find(p => p.username == username).id == Int32.Parse(iir.investigator.Split(';').First() == null ? "0" : iir.investigator.Split(';').First()))
                                 {
-                                    if (iir.investigator_approve.Split(';').First() == null)
+                                    if (iir.investigator_approve.Split(';').First() == null || iir.investigator_approve.Split(';').First() == "")
                                     {
-                                <div id="button_investigator_approve">
-                                    <input type="button" id="approve_investigator" onclick="approveInvestigator('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                <div id="button_investigator_approve1">
+                                    <input type="button" id="approve_investigator1" onclick="approveInvestigator('@HttpContext.Current.Session["id"].ToString()',1)" value="Approve" />
                                 </div>
                                     }
                                 }

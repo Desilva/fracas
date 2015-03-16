@@ -374,6 +374,7 @@
     <Compile Include="Controllers\Admin\SubClassController.cs" />
     <Compile Include="Controllers\Admin\SubComponentController.cs" />
     <Compile Include="Controllers\Admin\SubEquipmentController.cs" />
+    <Compile Include="Controllers\Admin\WeekendDutyController.cs" />
     <Compile Include="Controllers\Admin\WellsController.cs" />
     <Compile Include="Controllers\FrontEnd\AssetRegisterController.cs" />
     <Compile Include="Controllers\FrontEnd\KpiController.cs" />
@@ -424,6 +425,7 @@
     <Compile Include="Controllers\Utilities\DownloadController.cs" />
     <Compile Include="Controllers\Utilities\SendEmailController.cs" />
     <Compile Include="Controllers\Utilities\UploadController.cs" />
+    <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -818,6 +820,7 @@
     <Compile Include="Models\user_role.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\WeekendDutyModel.cs" />
     <Compile Include="Models\weekend_duty.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -3543,6 +3546,13 @@
     <Content Include="Views\Account\DutyManager.cshtml" />
     <Content Include="Views\Account\List.cshtml" />
     <Content Include="Views\Account\Form.cshtml" />
+    <Content Include="Views\FrontEnd\Investigation\WorkflowContent.cshtml" />
+    <Content Include="Views\FrontEnd\Incident\WorkflowContent.cshtml" />
+    <Content Include="Views\FrontEnd\TroubleShooting\WorkflowContent.cshtml" />
+    <Content Include="Views\Admin\WeekendDuty\Form.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Admin\WeekendDuty\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

@@ -14,7 +14,7 @@ namespace StarEnergi.Models
 {
     public partial class workflow_node
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public int id_report { get; set; }
         public string report_type { get; set; }
         public string node_name { get; set; }

@@ -1075,7 +1075,7 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 if (isFirst)
                 {
-                    retAppr += appr + ";";
+                    retAppr += ";";
                     isFirst = false;
                 }
                 else
