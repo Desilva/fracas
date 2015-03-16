@@ -27,8 +27,8 @@ namespace StarEnergi.Models
         public Nullable<int> rm_role { get; set; }
         public Nullable<int> employee_id { get; set; }
     
-        public virtual employee employee { get; set; }
-        public virtual ICollection<user_per_role> user_per_role { get; set; }
+        public virtual employee employee { internal get; set; }
+        public virtual ICollection<user_per_role> user_per_role { internal get; set; }
     }
     
 }
