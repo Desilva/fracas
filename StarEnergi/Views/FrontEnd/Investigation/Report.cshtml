@@ -23,6 +23,7 @@
         var row = e.row;
         var username = '@HttpContext.Current.Session["id"].ToString()';
         var isCanEdit = dataItem.isCanEdit;
+        console.log(isCanEdit);
         isCanEdit = isCanEdit || isMasterAdmin == 'True';
         var isApprove = dataItem.field_manager_approve != null && username == dataItem.lead_name;
         var templateComplete = '<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="Edit(' + dataItem.id + ');" title=' + (dataItem.field_manager_approve == null ? '"Edit Incident Investigation Report"' : '"View Incident Investigation Report"') + ' >'

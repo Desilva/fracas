@@ -114,22 +114,27 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 bool isCanEdit = false;
                 employee employeeDelegation = new employee();
-                if (employeeId == incidentInvestigationReport.investigator.Split(';').First() && incidentInvestigationReport.investigator_approve.Split(';').First() == null)
+                string[] investigatorsId = incidentInvestigationReport.investigator.Split(';');
+                string[] investigatorSignature = incidentInvestigationReport.investigator_approve.Split(';');
+                for (int i = 0; i < investigatorsId.Length && !isCanEdit; i++)
+                {
+                    if (investigatorsId[i] == employeeId && (investigatorSignature[i] == null || investigatorSignature[i] == ""))
+                    {
+                        isCanEdit = true;
+                    }
+                }
+
+                if (isCanEdit == false && employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)
                 {
                     isCanEdit = true;
                 }
 
-                if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)
+                if (isCanEdit == false && employeeId == incidentInvestigationReport.safety_officer && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
                 {
                     isCanEdit = true;
                 }
 
-                if (employeeId == incidentInvestigationReport.safety_officer && incidentInvestigationReport.safety_officer_approve == null && incidentInvestigationReport.loss_control_approve != null)
-                {
-                    isCanEdit = true;
-                }
-
-                if (employeeId == incidentInvestigationReport.field_manager && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
+                if (isCanEdit == false && employeeId == incidentInvestigationReport.field_manager && incidentInvestigationReport.field_manager_approve == null && incidentInvestigationReport.safety_officer_approve != null)
                 {
                     isCanEdit = true;
                 }
@@ -283,9 +288,14 @@ namespace StarEnergi.Controllers.FrontEnd
 
                 bool isCanEdit = false;
                 employee employeeDelegation = new employee();
-                if (employeeId == incidentInvestigationReport.investigator.Split(';').First() && incidentInvestigationReport.investigator_approve.Split(';').First() == null)
+                string[] investigatorsId = incidentInvestigationReport.investigator.Split(';');
+                string[] investigatorSignature = incidentInvestigationReport.investigator_approve.Split(';');
+                for (int i = 0; i < investigatorsId.Length && !isCanEdit; i++)
                 {
-                    isCanEdit = true;
+                    if (investigatorsId[i] == employeeId && (investigatorSignature[i] == null || investigatorSignature[i] == ""))
+                    {
+                        isCanEdit = true;
+                    }
                 }
 
                 if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)

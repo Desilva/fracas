@@ -13,7 +13,7 @@ using StarEnergi.Extensions;
 
 namespace StarEnergi.Controllers.Admin
 {
-    [AuthorizeUser("~/WeekendDuty", AuthorizedRoles = new int[] { (int)Config.role.WEEKENDDUTY })]
+    [AuthorizeUser("~/WeekendDuty", AuthorizedRoles = new int[] { (int)Config.role.ADMIN, (int)Config.role.WEEKENDDUTY })]
     public class WeekendDutyController : Controller
     {
         //
