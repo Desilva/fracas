@@ -58,8 +58,8 @@
             {
                 commands.Delete().ButtonType(GridButtonType.BareImage);
             }).Width(160).Title("Action").HtmlAttributes(new { style = "text-align: center" });
-            columns.Bound(o => o.start_date).Title("Start Date");
-            columns.Bound(o => o.end_date).Title("End Date");
+            columns.Bound(o => o.start_date).Title("Start Date").Format("{0:dd MMM yyyy}");
+            columns.Bound(o => o.end_date).Title("End Date").Format("{0:dd MMM yyyy}");
             columns.Bound(o => o.name).Title("Duty Manager");
         })
         .ClientEvents(

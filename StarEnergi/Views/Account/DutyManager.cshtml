@@ -36,7 +36,8 @@
                     $.each(data, function (index, value) {
                         if (index != "status") {
                             //error render
-                            console.log($('#' + index).parents('.editor-field'));
+                            console.log(value);
+                            console.log($('#' + index).parents('.editor-field').html());
                             $('#' + index).parents('.editor-field').find('.errorM').html(value);
                         }
                     });
