@@ -126,7 +126,7 @@
             url: route,
             traditional: true,
             data: {
-                comment: $('#comment').val(), 
+                comment: $('#comment').val(),
                 id: '@id'
             },
             success: function (data) {
@@ -136,14 +136,15 @@
         });
     }
 
-    function approveInvestigator(employee_id,id) {
+    function approveInvestigator(employee_id, id) {
         $.post("/Investigation/approveInvestigator", { id: '@id', employee_id: employee_id }, function (data) {
             if (data.success) {
                 var has = data.path;
-                $('#approve_investigator'+id).hide();
-                $('#img_approve_investigator'+id).attr('src', has);
-                $('#img_approve_investigator'+id).css('display', 'block');
-                $('#investigator'+id).prop('disabled', true);
+                $('#approve_investigator' + id).hide();
+                $('#img_approve_investigator' + id).attr('src', has);
+                $('#img_approve_investigator' + id).css('display', 'block');
+                $('#investigator' + id).prop('disabled', true);
+                window.location = "/Investigation/addInvestigation/" + '@id';
             } else {
                 alert("You do not supply your signature");
             }
@@ -159,6 +160,7 @@
                 $('#img_approve_field_manager').css('display', 'block');
                 $('#field_manager').prop('disabled', true);
                 $('#date_field_manager').prop('disabled', true);
+                window.location = "/Investigation/addInvestigation/" + '@id';
             } else {
                 alert("You do not supply your signature");
             }
@@ -174,6 +176,7 @@
                 $('#img_approve_loss_control').css('display', 'block');
                 $('#loss_control').prop('disabled', true);
                 $('#date_loss_control').prop('disabled', true);
+                window.location = "/Investigation/addInvestigation/" + '@id';
             } else {
                 alert("You do not supply your signature");
             }
@@ -189,6 +192,7 @@
                 $('#img_approve_safety_officer').css('display', 'block');
                 $('#safety_officer').prop('disabled', true);
                 $('#date_safety_officer').prop('disabled', true);
+                window.location = "/Investigation/addInvestigation/" + '@id';
             } else {
                 alert("You do not supply your signature");
             }
@@ -318,13 +322,13 @@
     }
     function back() {
         if (!isSave) {
-            $.post("Investigation/DeleteAllRecommend", function (data) {});
+            $.post("Investigation/DeleteAllRecommend", function (data) { });
         }
         window.location = "/Investigation";
     }
 
     function email() {
-        $.post("/Investigation/SendEmail", {id : '@id'}, function (data) {
+        $.post("/Investigation/SendEmail", { id: '@id' }, function (data) {
             if (data != undefined) {
                 alert('Email sent.');
             } else {
@@ -355,7 +359,7 @@
                 grid.ajaxRequest();
                 clear();
                 $("#AddRecommends").data("tWindow").close();
-                
+
             }
         });
     }
@@ -381,63 +385,63 @@
         });
     }
 
-    function addInvestigator(value,appr) {
+    function addInvestigator(value, appr, paApproval) {
         value = value || "";
         var curId = parseInt($('#totalInvestigator').val());
         var newId = curId + 1;
         var docs = document.getElementsByClassName("investigators")[0];
         var a = document.createElement("div");
-        a.setAttribute("id","inves"+newId);
+        a.setAttribute("id", "inves" + newId);
 
         var root = document.createElement("select");
         root.setAttribute("id", "investigator" + newId);
         root.setAttribute("class", "investigator");
-        if (appr != "" && appr != null) root.setAttribute("disabled","disabled");
-        if (isView) root.setAttribute('disabled','disabled');
+        if (appr != "" && appr != null) root.setAttribute("disabled", "disabled");
+        if (isView) root.setAttribute('disabled', 'disabled');
 
         var opt = document.createElement("option");
-        opt.setAttribute("value","");
-        opt.setAttribute("selected","selected");
-        opt.setAttribute("value","");
-        
+        opt.setAttribute("value", "");
+        opt.setAttribute("selected", "selected");
+        opt.setAttribute("value", "");
+
         opt.innerHTML = "Choose One";
         root.appendChild(opt);
 
         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
         {
            <text>
-            var opt = document.createElement("option");
-            opt.setAttribute("value","@user.id");
-            opt.innerHTML = "@user.alpha_name";
-            if ("@user.id" == value) opt.setAttribute("selected","selected");
-            root.appendChild(opt);
+        var opt = document.createElement("option");
+        opt.setAttribute("value", "@user.id");
+        opt.innerHTML = "@user.alpha_name";
+        if ("@user.id" == value) opt.setAttribute("selected", "selected");
+        root.appendChild(opt);
         </text>
-        }        
+        }
         a.appendChild(root);
-        $('#deleteInvestigator').css('display','inline');
+        $('#deleteInvestigator').css('display', 'inline');
         if (value != "" && value == "@HttpContext.Current.Session["id"].ToString()") {
             var b = document.createElement("div");
-            b.setAttribute("id","button_investigator_approve"+newId);
+            b.setAttribute("id", "button_investigator_approve" + newId);
             if (appr != "") {
                 var c = document.createElement("img");
-                c.setAttribute("width","50");
-                c.setAttribute("height","50");
-                c.setAttribute("src",appr);
+                c.setAttribute("width", "50");
+                c.setAttribute("height", "50");
+                c.setAttribute("src", appr);
 
                 b.appendChild(c);
-            } else {
+            } else if (paApproval != null && paApproval != "") {
                 var c = document.createElement("input");
-                c.setAttribute("type","button");
-                c.setAttribute("id","approve_investigator"+newId);
-                c.setAttribute("onclick","approveInvestigator('@HttpContext.Current.Session["id"].ToString()'," + newId + ")");
+                c.setAttribute("type", "button");
+                c.setAttribute("id", "approve_investigator" + newId);
+                c.setAttribute("onclick", "approveInvestigator('@HttpContext.Current.Session["id"].ToString()'," + newId + ")");
                 c.value = "Approve";
-                
+
 
                 var d = document.createElement("img");
-                d.setAttribute("width","50");
-                d.setAttribute("height","50");
-                d.setAttribute("id","img_approve_investigator"+newId);
-                d.setAttribute("src",appr);
+                d.setAttribute("width", "50");
+                d.setAttribute("height", "50");
+                d.setAttribute("id", "img_approve_investigator" + newId);
+                d.setAttribute("src", appr);
                 d.style.display = "none";
 
                 b.appendChild(c);
@@ -446,17 +450,17 @@
             a.appendChild(b);
         } else if (value != "") {
             var b = document.createElement("div");
-            b.setAttribute("id","button_investigator_approve"+newId);
+            b.setAttribute("id", "button_investigator_approve" + newId);
             var c = document.createElement("img");
-            c.setAttribute("width","50");
-            c.setAttribute("height","50");
-            c.setAttribute("id","img_approve_investigator"+newId);
-            c.setAttribute("src",appr);
+            c.setAttribute("width", "50");
+            c.setAttribute("height", "50");
+            c.setAttribute("id", "img_approve_investigator" + newId);
+            c.setAttribute("src", appr);
             if (appr == "" || appr == null) c.style.display = "none";
             b.appendChild(c);
             a.appendChild(b);
         }
-        
+
         docs.appendChild(a);
 
         document.getElementById("totalInvestigator").value = newId;
@@ -464,7 +468,7 @@
 
     function delInvestigator() {
         var curId = parseInt($('#totalInvestigator').val());
-        
+
         if (curId != 1) {
             document.getElementsByClassName("investigators")[0].removeChild(document.getElementById("inves" + curId));
             var newId = curId - 1;
@@ -484,7 +488,7 @@
         $('#pic').val();
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         var inves = '@(isEdit ? iir.investigator : "")';
         var inves_appr = '@(isEdit ? iir.investigator_approve : "")';
         var a = inves.split(";");
@@ -492,7 +496,7 @@
         var isFirst = true;
         for (var b in a) {
             if (!isFirst)
-                addInvestigator(a[b],a_appr[b]);
+                addInvestigator(a[b], a_appr[b], a_appr[0]);
             else {
                 isFirst = false;
             }
@@ -501,7 +505,7 @@
         if ('@(investigator != null)' == 'True') {
             @if (investigator != null) {
                 foreach (string s in investigator) {
-                    <text>addInvestigator('@s',"");</text>    
+                    <text>addInvestigator('@s', "");</text>
                 }
             }
         }

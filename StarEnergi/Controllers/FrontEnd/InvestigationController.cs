@@ -115,7 +115,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 bool isCanEdit = false;
                 employee employeeDelegation = new employee();
                 string[] investigatorsId = incidentInvestigationReport.investigator.Split(';');
-                string[] investigatorSignature = incidentInvestigationReport.investigator_approve.Split(';');
+                string[] investigatorSignature = incidentInvestigationReport == null ? incidentInvestigationReport.investigator_approve.Split(';') : new string[investigatorsId.Length];
                 for (int i = 0; i < investigatorsId.Length && !isCanEdit; i++)
                 {
                     if (investigatorsId[i] == employeeId && (investigatorSignature[i] == null || investigatorSignature[i] == ""))
@@ -289,7 +289,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 bool isCanEdit = false;
                 employee employeeDelegation = new employee();
                 string[] investigatorsId = incidentInvestigationReport.investigator.Split(';');
-                string[] investigatorSignature = incidentInvestigationReport.investigator_approve.Split(';');
+                string[] investigatorSignature = incidentInvestigationReport == null ? incidentInvestigationReport.investigator_approve.Split(';') : new string[investigatorsId.Length];
                 for (int i = 0; i < investigatorsId.Length && !isCanEdit; i++)
                 {
                     if (investigatorsId[i] == employeeId && (investigatorSignature[i] == null || investigatorSignature[i] == ""))
