@@ -663,7 +663,7 @@ namespace StarEnergi.Controllers
         [GridAction]
         public ActionResult _SelectAjaxEditingDutyManager()
         {
-            List<duty_manager> dutyManager = db.duty_manager.OrderByDescending(x=>x.start_date).ToList();
+            List<duty_manager> dutyManager = db.duty_manager.OrderBy(x=>x.start_date).ToList();
 
             List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
             return View(new GridModel<DutyManagerPresentationStub>
