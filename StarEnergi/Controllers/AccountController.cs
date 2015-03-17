@@ -734,7 +734,7 @@ namespace StarEnergi.Controllers
 
             if (dm.start_date != null && dm.end_date != null)
             {
-                if(dm.start_date.CompareTo(DateTime.Today) <= 0){
+                if(dm.start_date.CompareTo(DateTime.Today) < 0){
                     ModelState.AddModelError("start_date", "Date start cannot before today.");
                     return Json(e.Fail(ModelState));
                 }
