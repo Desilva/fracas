@@ -31,14 +31,14 @@
 })
 .Columns(columns =>
 {
-    columns.Bound(o => o.start_date).Title("Start").Format("{0:dd MMM yyyy}").Width(125);
-    columns.Bound(o => o.end_date).Title("End").Format("{0:dd MMM yyyy}").Width(125);
-    columns.Bound(o => o.delegationName).Title("Duty Name");
-    columns.Bound(o => o.department).Title("Department");
     columns.Command(commands =>
     {
         commands.Delete().ButtonType(GridButtonType.BareImage);
     }).Width(80).Title("Action").HtmlAttributes(new { style = "text-align: center" });
+    columns.Bound(o => o.start_date).Title("Start").Format("{0:dd MMM yyyy}").Width(125);
+    columns.Bound(o => o.end_date).Title("End").Format("{0:dd MMM yyyy}").Width(125);
+    columns.Bound(o => o.delegationName).Title("Duty Name");
+    columns.Bound(o => o.department).Title("Department");
 
 })
 .ClientEvents(  
@@ -63,7 +63,7 @@
                                 + '<span class="t-icon t-delete"></span>'
                                 + '</a>';
 
-        var i = 4;
+        var i = 0;
         var defaultBackgroundColor = row.style.background;
 
         for (var a in row.cells) {

@@ -979,7 +979,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                 }
 
-
+                
                 if (sendToLossControl == true)
                 {
                     if (iir.loss_control != null && iir.loss_control != "")
@@ -1001,6 +1001,10 @@ namespace StarEnergi.Controllers.FrontEnd
                     db.investigation_report_log.Add(ir_log);
                     db.SaveChanges();
                     this.SetWorkflowNode(iir.id, "ApproveInvestigatorFull");
+                }
+                else if (inves_appr.Length == 1)
+                {
+                    this.SetWorkflowNode(iir.id, "ApprovePrincipalAnalyst");
                 }
                 else
                 {
