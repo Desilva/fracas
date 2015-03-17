@@ -135,7 +135,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     isCanEdit = true;
                 }
 
-                if (employeeId == troubleShootingReport.supervisor_approval_name && troubleShootingReport.supervisor_approval_signature == null)
+                if (employeeId == troubleShootingReport.supervisor_approval_name && troubleShootingReport.supervisor_approval_signature == null && troubleShootingReport.inspector_signature != null)
                 {
                     isCanEdit = true;
                 }
@@ -149,7 +149,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     employeeDelegation = db.employees.Find(Int32.Parse(troubleShootingReport.supervisor_approval_name));
                     employeeDelegationChecker.Employee = employeeDelegation;
-                    if (employeeDelegationChecker.isDelegateTo(employee) && troubleShootingReport.supervisor_approval_signature == null)
+                    if (employeeDelegationChecker.isDelegateTo(employee) && troubleShootingReport.supervisor_approval_signature == null && troubleShootingReport.inspector_signature != null)
                     {
                         isCanEdit = true;
                     }
@@ -422,6 +422,42 @@ namespace StarEnergi.Controllers.FrontEnd
 
         #region approval reject
         [HttpPost]
+        public ActionResult approveInspector(int id, int employee_id, DateTime date)
+        {
+            string sign = db.employees.Find(employee_id).signature;
+            if (sign != null)
+            {
+                trouble_shooting ts = db.trouble_shooting.Find(id);
+                if (ts.inspector_name == employee_id.ToString())
+                {
+                    ts.inspector_signature = sign;
+                }
+                ts.inspector_date = date;
+                db.Entry(ts).State = EntityState.Modified;
+                db.SaveChanges();
+
+                //SEND TO NEXT LEVEL
+                if (ts.supervisor_approval_name != null && ts.supervisor_approval_name != "")
+                {
+                    this.SendUserNotification(ts, Int32.Parse(ts.supervisor_approval_name), "Please Approve " + ts.no);
+                }
+                if (ts.supervisor_delegate != null && ts.supervisor_delegate != "")
+                {
+                    this.SendUserNotification(ts, Int32.Parse(ts.supervisor_delegate), "Please Approve " + ts.no);
+                }
+
+                this.SetWorkflowNode(ts.id, "ApproveInitiator");
+
+                return Json(new { success = true, path = sign });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+
+        }
+
+        [HttpPost]
         public ActionResult approveSuperintendent(int id, int employee_id, DateTime date)
         {
             string sign = db.employees.Find(employee_id).signature;
@@ -500,9 +536,15 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult rejectSuperintendent(int id, string comment)
         {
             trouble_shooting ts = db.trouble_shooting.Find(id);
+
+            ts.supervisor_approval_signature = null;
+            ts.supervisor_delegate = null;
+            db.Entry(ts).State = EntityState.Modified;
+            db.SaveChanges();
+
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            SendEmailToAll(ts, 2, comment);
+            this.SendEmailToAll(ts, 2, comment);
 
             if (ts.supervisor_approval_name != null && ts.supervisor_approval_name != "")
             {
@@ -523,9 +565,14 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult rejectSupervisor(int id, string comment)
         {
             trouble_shooting ts = db.trouble_shooting.Find(id);
+
+            ts.inspector_signature = null;
+            db.Entry(ts).State = EntityState.Modified;
+            db.SaveChanges();
+
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            SendEmailToAll(ts, 2, comment);
+            this.SendEmailToAll(ts, 2, comment);
 
             if (ts.inspector_name != null && ts.inspector_name != "")
             {
