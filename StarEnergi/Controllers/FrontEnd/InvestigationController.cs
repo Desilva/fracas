@@ -115,16 +115,26 @@ namespace StarEnergi.Controllers.FrontEnd
                 bool isCanEdit = false;
                 employee employeeDelegation = new employee();
                 string[] investigatorsId = incidentInvestigationReport.investigator.Split(';');
-                string[] investigatorSignature = incidentInvestigationReport == null ? incidentInvestigationReport.investigator_approve.Split(';') : new string[investigatorsId.Length];
+                string[] investigatorSignature = incidentInvestigationReport.investigator_approve != null ? incidentInvestigationReport.investigator_approve.Split(';') : new string[investigatorsId.Length];
                 for (int i = 0; i < investigatorsId.Length && !isCanEdit; i++)
                 {
                     if (investigatorsId[i] == employeeId && (investigatorSignature[i] == null || investigatorSignature[i] == ""))
                     {
-                        isCanEdit = true;
+                        if (i != 0)
+                        {
+                            if (investigatorSignature[0] != null && investigatorSignature[0] != "")
+                            {
+                                isCanEdit = true;
+                            }
+                        }
+                        else
+                        {
+                            isCanEdit = true;
+                        }
                     }
                 }
 
-                if (isCanEdit == false && employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)
+                if (isCanEdit == false && employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null && incidentInvestigationReport.investigator_approve != null && incidentInvestigationReport.investigator_approve.Replace(";", "") != "")
                 {
                     isCanEdit = true;
                 }
@@ -289,16 +299,33 @@ namespace StarEnergi.Controllers.FrontEnd
                 bool isCanEdit = false;
                 employee employeeDelegation = new employee();
                 string[] investigatorsId = incidentInvestigationReport.investigator.Split(';');
-                string[] investigatorSignature = incidentInvestigationReport == null ? incidentInvestigationReport.investigator_approve.Split(';') : new string[investigatorsId.Length];
+                string[] investigatorSignature = incidentInvestigationReport.investigator_approve != null ? (incidentInvestigationReport.investigator_approve.Split(';')) : (new string[investigatorsId.Length]);
                 for (int i = 0; i < investigatorsId.Length && !isCanEdit; i++)
                 {
                     if (investigatorsId[i] == employeeId && (investigatorSignature[i] == null || investigatorSignature[i] == ""))
                     {
-                        isCanEdit = true;
+                        if (i != 0)
+                        {
+                            if (investigatorSignature[0] != null && investigatorSignature[0] != "")
+                            {
+                                isCanEdit = true;
+                            }
+                        } else {
+                            isCanEdit = true;
+                        }
                     }
                 }
 
-                if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null)
+                bool isAllInvestigatorApproves = true;
+                foreach (string signature in investigatorSignature)
+                {
+                    if (signature == null || signature == "")
+                    {
+                        isAllInvestigatorApproves = isAllInvestigatorApproves && false;
+                    }
+                }
+
+                if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null && incidentInvestigationReport.investigator_approve != null && isAllInvestigatorApproves)
                 {
                     isCanEdit = true;
                 }
