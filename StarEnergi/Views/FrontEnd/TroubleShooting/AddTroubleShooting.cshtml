@@ -249,14 +249,24 @@ function validate() {
                 <td>
                     Inspector Signature
                     <br />
-                    @if (isEdit) {
-                        <img id="img_inspector_signature" width="50" height="50" @(ts.inspector_signature != null ? "style=display:block;" : "style=display:none;")  src="@ts.inspector_signature"/>
+                    @if (isEdit)
+                    {
+                        if (has.Find(p => p.username == username).id == Int32.Parse(ts.inspector_name == null ? "0" : ts.inspector_name) || user_id == has.Find(p => p.id.ToString() == ts.inspector_name).employee_delegate.ToString())
+                        {
+                            if (ts.inspector_signature == null)
+                            {
+                            <div id="button_inspector_approve">
+                                <input type="button" id="approve_inspector" onclick="approveInspector('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                            </div>
+                            }
+                        }
+                        <img id="img_approve_inspector" width="50" height="50" @(ts.inspector_signature != null ? "style=display:block;" : "style=display:none;")  src="@ts.inspector_signature"/>
                     }
                 </td>
                 <td>
                     Supervisor Approval Signature
                     <br />
-                    @if (isEdit)
+                    @if (isEdit && (ts.inspector_signature != null || ts.inspector_name == null))
                     {
                         if (has.Find(p => p.username == username).id == Int32.Parse(ts.supervisor_approval_name == null ? "0" : ts.supervisor_approval_name) || user_id == has.Find(p => p.id.ToString() == ts.supervisor_approval_name).employee_delegate.ToString())
                         {
@@ -481,7 +491,7 @@ function validate() {
 <br/>
 <div class="submit">
     @if (!isView) {
-	<input name="Submit" value="Save" type="submit" onclick="save()"/>
+	<input name="Submit" value="Save" type="submit" onclick="save()" id="save"/>
     }
     <input type="button" value="Cancel" onclick="back()"/>
     @if (isEdit)
@@ -551,10 +561,7 @@ function validate() {
             $.post("/TroubleShooting/approveSuperintendent", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
-                    $('#approve_superintendent').parent().hide();
-                    $('#img_approve_superintendent').attr('src', has);
-                    $('#img_approve_superintendent').css('display', 'block');
-                    $('#superintendent_approval_date').prop('disabled', true);
+                    $('#contentEventLog').load('TroubleShooting/addTroubleShooting', { 'id': '@id' });
                 } else {
                     alert("You do not supply your signature");
                 }
@@ -572,10 +579,25 @@ function validate() {
             $.post("/TroubleShooting/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
                     var has = data.path;
-                    $('#approve_supervisor').parent().hide();
-                    $('#img_approve_supervisor').attr('src', has);
-                    $('#img_approve_supervisor').css('display', 'block');
-                    $('#supervisor_approval_date').prop('disabled', true);
+                    $('#contentEventLog').load('TroubleShooting/addTroubleShooting', { 'id': '@id' });
+                } else {
+                    alert("You do not supply your signature");
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
+    function approveInspector(employee_id) {
+        var r = confirm("Are you sure want to Approve this trouble shooting report?");
+        if (r == true) {
+            var date = $('#inspector_date').val();
+            $.post("/TroubleShooting/approveInspector", { id: '@id', employee_id: employee_id, date: date }, function (data) {
+                if (data.success) {
+                    var has = data.path;
+                    $('#contentEventLog').load('TroubleShooting/addTroubleShooting', { 'id': '@id' });
                 } else {
                     alert("You do not supply your signature");
                 }
@@ -594,20 +616,21 @@ function validate() {
 
     function reject_ajax() {
         var type = $('#type_reject').val();
-        var route = type == 1 ? "@Url.Action("rejectSupervisor", "Incident")" : type == 2 ? "@Url.Action("rejectSuperintendent", "Incident")" : "";
+        var route = type == 1 ? "@Url.Action("rejectSupervisor", "TroubleShooting")" : type == 2 ? "@Url.Action("rejectSuperintendent", "TroubleShooting")" : "";
         $('#reject_ts').css("display", "inline");
         $.ajax({
             type: "POST",
             url: route,
             traditional: true,
             data: {
-                comment: $('#comment').val(), 
+                comment: $('#comment').val(),
                 id: '@id'
             },
             success: function (data) {
                 $('#reject_ts').css("display", "none");
                 alert("Comment sent!");
                 $("#RejectComment").data("tWindow").close();
+                $('#contentEventLog').load('TroubleShooting/addTroubleShooting', { 'id': '@id' });
             }
         });
     }
