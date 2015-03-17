@@ -541,7 +541,7 @@
                     </select>
                     <input type="hidden" id="sup_delegate" value="@sup_isDelegate" />
                     <input type="hidden" id="sup_delegate_name" value="@(ir != null ? sup_isDelegate ? ir.superintendent : "" : superintendent_id_del.ToString())" />
-                        if (isEdit && (ir.supervisor_approve != null || ir.ack_supervisor == null || ir.ack_supervisor == ir.superintendent))
+                        if (isEdit && (ir.supervisor_approve != null || ir.ack_supervisor == null))
                         {
                             if (has.Find(p => p.username == username).id == Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent) || user_id == has.Find(p => p.id.ToString() == ir.superintendent).employee_delegate.ToString())
                             {
