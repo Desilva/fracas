@@ -663,7 +663,7 @@ namespace StarEnergi.Controllers
         [GridAction]
         public ActionResult _SelectAjaxEditingDutyManager()
         {
-            List<duty_manager> dutyManager = db.duty_manager.ToList();
+            List<duty_manager> dutyManager = db.duty_manager.OrderByDescending(x=>x.start_date).ToList();
 
             List<DutyManagerPresentationStub> presentation = new DutyManagerPresentationStub().MapList(dutyManager);
             return View(new GridModel<DutyManagerPresentationStub>
@@ -734,6 +734,11 @@ namespace StarEnergi.Controllers
 
             if (dm.start_date != null && dm.end_date != null)
             {
+                if(dm.start_date.CompareTo(DateTime.Today) <= 0){
+                    ModelState.AddModelError("start_date", "Date start cannot before today.");
+                    return Json(e.Fail(ModelState));
+                }
+
                 if (dm.end_date.CompareTo(DateTime.Today) >= 0)
                 {
                     if (dm.end_date.CompareTo(dm.start_date) >= 0)
@@ -775,20 +780,20 @@ namespace StarEnergi.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("date_start", "Date end can not before date start.");
+                        ModelState.AddModelError("start_date", "Date end can not before date start.");
                         return Json(e.Fail(ModelState));
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("date_start", "Date end cannot before today.");
+                    ModelState.AddModelError("start_date", "Date end cannot before today.");
                     return Json(e.Fail(ModelState));
                 }
 
             }
             else
             {
-                ModelState.AddModelError("date_start", "Delegation Period cannot be empty.");
+                ModelState.AddModelError("start_date", "Delegation Period cannot be empty.");
                 return Json(e.Fail(ModelState));
             }
         }
