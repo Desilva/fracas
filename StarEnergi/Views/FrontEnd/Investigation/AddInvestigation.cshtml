@@ -381,7 +381,7 @@
         });
     }
 
-    function addInvestigator(value,appr) {
+    function addInvestigator(value,appr,paApproval) {
         value = value || "";
         var curId = parseInt($('#totalInvestigator').val());
         var newId = curId + 1;
@@ -425,7 +425,7 @@
                 c.setAttribute("src",appr);
 
                 b.appendChild(c);
-            } else {
+            } else if (paApproval != null && paApproval != "") {
                 var c = document.createElement("input");
                 c.setAttribute("type","button");
                 c.setAttribute("id","approve_investigator"+newId);
@@ -492,7 +492,7 @@
         var isFirst = true;
         for (var b in a) {
             if (!isFirst)
-                addInvestigator(a[b],a_appr[b]);
+                addInvestigator(a[b],a_appr[b],a_appr[0]);
             else {
                 isFirst = false;
             }
