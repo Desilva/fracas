@@ -566,7 +566,8 @@ namespace StarEnergi.Controllers.FrontEnd
                                                     potential_loss = p.potential_loss_severity == 1 ? "Major" : p.potential_loss_severity == 2 ? "Serious" : p.potential_loss_severity == 3 ? "Moderate" : p.potential_loss_severity == 4 ? "Minor" : "",
                                                     probability_str = p.probability == 1 ? "Frequent" : p.probability == 2 ? "Occasional" : p.probability == 3 ? "Seldom" : p.probability == 4 ? "Rare" : "",
                                                     tsr_number = ir_tsr.no != null ? ir_tsr.no : "",
-                                                    prepared_by_name = emp.alpha_name
+                                                    prepared_by_name = emp.alpha_name,
+                                                    isSuspend = p.is_suspend,
                                                 });
             //data = data.Where(p => p.prepared_by == idLogin || p.ack_supervisor == idLogin || p.superintendent == idLogin || p.loss_control == idLogin || p.she_superintendent == idLogin || p.field_manager == idLogin ||
             //    p.supervisor_delegate == idLogin || p.superintendent_delegate == idLogin || p.loss_control_delegate == idLogin || p.she_superintendent_delegate == idLogin || p.field_manager_delegate == idLogin);
@@ -2167,6 +2168,13 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public ActionResult GetWorkflowContent(int id)
         {
+            bool isSuspend = false;
+
+            var recordSuspension = db.incident_report.Find(id);
+            if (recordSuspension != null)
+            {
+                isSuspend = recordSuspension.is_suspend;
+            }
             var data = (from a in db.workflow_node
                         where a.report_type == "FR-IR" && a.id_report == id
                         select a).ToList();
@@ -2214,6 +2222,7 @@ namespace StarEnergi.Controllers.FrontEnd
             ViewBag.SafetySupervisor = dataSafetySupervisor;
             ViewBag.SHESuperintendent = dataSHESuperintendent;
             ViewBag.FieldManager = dataFieldManager;
+            ViewBag.IsSuspend = isSuspend;
 
             return PartialView("WorkflowContent");
         }
@@ -2435,6 +2444,19 @@ namespace StarEnergi.Controllers.FrontEnd
 
 
             return "success";
+        }
+
+        public JsonResult SuspendIncidentReport(int id)
+        {
+            bool status = false;
+            var data = db.incident_report.Find(id);
+            if (data != null)
+            {
+                data.is_suspend = true;
+                db.SaveChanges();
+                status = true;
+            }
+            return Json(status);
         }
     } 
 }

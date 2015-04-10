@@ -85,5 +85,6 @@ namespace StarEnergi.Models
         public string inves { get; set; }
 
         public bool isCanEdit { get; set; }
+        public bool isSuspend { get; set; }
     }
 }

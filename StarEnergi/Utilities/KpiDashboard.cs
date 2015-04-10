@@ -51,22 +51,22 @@ namespace StarEnergi.Utilities
                 //user biasa
                 if ((employee.approval_level == null ? true : employee.approval_level.Value == 0) && !employee.position.Contains("Operation Manager"))
                 {
-                    result = db.incident_report.Where(m => m.prepared_by == userIdStr && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => m.prepared_by == userIdStr && (m.reference_number.Contains(comparation) && m.is_suspend==false)).Count();
                 }
                 //supervisor
                 else if (employee.approval_level == null ? false : employee.approval_level == 1)
                 {
-                    result = db.incident_report.Where(m => ((m.ack_supervisor == userIdStr && m.supervisor_approve != null) || (m.loss_control == userIdStr && m.loss_control_approve != null)) && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => ((m.ack_supervisor == userIdStr && m.supervisor_approve != null) || (m.loss_control == userIdStr && m.loss_control_approve != null)) && (m.reference_number.Contains(comparation) && m.is_suspend == false)).Count();
                 }
                 //superintendent & she superintendent
                 else if (employee.approval_level == null ? false : employee.approval_level == 2)
                 {
-                    result = db.incident_report.Where(m => ((m.superintendent == userIdStr && m.superintendent_approve != null) || (m.she_superintendent == userIdStr && m.she_superintendent_approve != null)) && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => ((m.superintendent == userIdStr && m.superintendent_approve != null) || (m.she_superintendent == userIdStr && m.she_superintendent_approve != null)) && (m.reference_number.Contains(comparation) && m.is_suspend == false)).Count();
                 }
                 //operation manager
                 else if (employee.position.Contains("Operation Manager"))
                 {
-                    result = db.incident_report.Where(m => m.field_manager == userIdStr && m.field_manager_approve != null && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => m.field_manager == userIdStr && m.field_manager_approve != null && (m.reference_number.Contains(comparation) && m.is_suspend == false)).Count();
                 }
             }
 
@@ -92,17 +92,17 @@ namespace StarEnergi.Utilities
                 //supervisor
                 if (employee.approval_level == null ? false : employee.approval_level == 1)
                 {
-                    result = db.incident_report.Where(m => ((m.ack_supervisor == userIdStr && m.supervisor_approve == null) || (m.loss_control == userIdStr && m.loss_control_approve == null)) && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => ((m.ack_supervisor == userIdStr && m.supervisor_approve == null) || (m.loss_control == userIdStr && m.loss_control_approve == null)) && (m.reference_number.Contains(comparation) && m.is_suspend == false)).Count();
                 }
                 //superintendent & she superintendent
                 else if (employee.approval_level == null ? false : employee.approval_level == 2)
                 {
-                    result = db.incident_report.Where(m => ((m.superintendent == userIdStr && m.superintendent_approve == null) || (m.she_superintendent == userIdStr && m.she_superintendent_approve == null)) && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => ((m.superintendent == userIdStr && m.superintendent_approve == null) || (m.she_superintendent == userIdStr && m.she_superintendent_approve == null)) && (m.reference_number.Contains(comparation) && m.is_suspend == false)).Count();
                 }
                 //operation manager
                 else if (employee.position.Contains("Operation Manager"))
                 {
-                    result = db.incident_report.Where(m => m.field_manager == userIdStr && m.field_manager_approve == null && m.reference_number.Contains(comparation)).Count();
+                    result = db.incident_report.Where(m => m.field_manager == userIdStr && m.field_manager_approve == null && (m.reference_number.Contains(comparation) && m.is_suspend == false)).Count();
                 }
             }
 

@@ -225,4 +225,15 @@
         @*<div class="positionAbsolute" class="line-full" style="@style2">
             @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/svg/" + arrowRight)))
         </div>*@
+
+    @*Is Suspend*@
+    @{
+        if(ViewBag.IsSuspend == true)
+        {
+            left -= 770;
+            top += 80;
+            stylelabel = String.Format("position:absolute; top:{0}px; left:{1}px; z-index:100; color:white; font-size:24pt; border:1px solid; background-color:red; border-radius:10px", top, left);
+            <p style="@stylelabel">INCIDENT REPORT SUSPENDED</p>
+        }
+    }
 </div>
