@@ -68,6 +68,9 @@
         } else if (item.find('> .t-link').text() == "Daily Log Wells") {
             $('#content').load('Wells');
         }
+        else if (item.find('> .t-link').text() == "Security") {
+            $('#content').load('Security');
+        }
     }
 </script>
 
@@ -105,6 +108,7 @@
                     item.Add().Text("User Management");
                     item.Add().Text("Contractors");
                     item.Add().Text("Daily Log Wells");
+                    item.Add().Text("Security");
                 })
                 .Expanded(true);
             //panelBarItem.Add().Text("PTW Master Data")

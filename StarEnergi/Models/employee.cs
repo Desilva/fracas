@@ -18,6 +18,7 @@ namespace StarEnergi.Models
         {
             this.duty_manager = new HashSet<duty_manager>();
             this.employee1 = new HashSet<employee>();
+            this.master_security = new HashSet<master_security>();
             this.rca_implementation = new HashSet<rca_implementation>();
             this.rca_pre_task = new HashSet<rca_pre_task>();
             this.users = new HashSet<user>();
@@ -44,6 +45,7 @@ namespace StarEnergi.Models
         public virtual ICollection<employee> employee1 { get; set; }
         public virtual employee employee2 { get; set; }
         public virtual employee_dept employee_dept1 { get; set; }
+        public virtual ICollection<master_security> master_security { get; set; }
         public virtual ICollection<rca_implementation> rca_implementation { get; set; }
         public virtual ICollection<rca_pre_task> rca_pre_task { get; set; }
         public virtual ICollection<user> users { get; set; }

@@ -631,6 +631,7 @@ namespace StarEnergi.Controllers.FrontEnd
             db.incident_report.Add(incidentReport);
             db.SaveChanges();
 
+
             //SEND TO NEXT LEVEL
             if (incidentReport.ack_supervisor != null && incidentReport.ack_supervisor != "")
             {
@@ -642,6 +643,14 @@ namespace StarEnergi.Controllers.FrontEnd
             }
 
             this.SetWorkflowNode(incidentReport.id, "ApproveInitiator");
+
+
+            if (incidentReport.incident_type == "Theft / Crimes")
+            {
+                ProcessSecurity(incidentReport);
+            }
+
+
 
             // add link to fracas
             if (id_fracas != null)
@@ -2748,5 +2757,58 @@ namespace StarEnergi.Controllers.FrontEnd
 
             return PartialView("addIncident");
         }
+
+        private void ProcessSecurity(incident_report incidentData)
+        {
+            WWService.UserServiceClient client = new WWService.UserServiceClient();
+            var sendEmail = new SendEmailController();
+            List<master_security> data = (from a in db.master_security
+                                          select a).ToList();
+            List<employee> employeeList = (from x in db.employees
+                                           select x).ToList();
+            foreach (master_security e in data)
+            {
+                if (e.employee != null)
+                {
+                    int preparedBy = Int32.Parse(incidentData.prepared_by);
+                    var reportedBy = (from a in employeeList
+                                         where a.id == preparedBy
+                                         select a).FirstOrDefault();
+                    if (reportedBy != null)
+                    {
+                        if (e.employee.email != null)
+                        {
+                            List<string> s = new List<string>();
+                            s.Add(e.employee.email);
+                            sendEmail.Send(s, @"Bapak/Ibu,<br />
+                                            Sistem mendapat laporan insiden yang dikategorikan sebagai pencurian/tindak pidana. 
+                                            Insiden ini terjadi di " + incidentData.incident_location + @" dan dilaporkan oleh Bapak/Ibu " + reportedBy.alpha_name + @".
+                                            Harap ditindaklanjuti sesuai peraturan dan ketentuan yang berlaku.
+                                            Terima Kasih.
+                                            <br /><br />
+                                            <i>Dear Sir/Madam,<br />
+                                            The system received an incident report which is categorized as theft/crimes.
+                                            The incident occurred at " + incidentData.incident_location + @" and was reported by Mr./Mrs. " + reportedBy.alpha_name + @".
+                                            Please act accordingly as stated by the rules and regulations.
+                                            Thank you.</i>
+                                            <br /><br />
+                                            Salam,<br />
+                                            <i>Regards,</i><br /> 
+                                            System Fracas Application",
+                                                "Laporan Insiden Pencurian/Tindak Pidana. Incident Report Theft/Crimes");
+                        }
+
+                        WWService.ResponseModel response = client.CreateNotification(
+                        EncodeMd5("starenergyww"),
+                        e.id_employee,
+                        System.Configuration.ConfigurationManager.AppSettings["ApplicationName"],
+                        "Incident Report Theft/Crimes",
+                        "Incident Report Theft/Crimes reported at " + incidentData.incident_location + " by Mr./Mrs. " + reportedBy.alpha_name,
+                        "/NotificationUrlResolver/FRACAS?name=SHE_INCIDENT_REPORT&id=" + incidentData.id);
+                    }
+                }
+            }
+        }
+
     } 
 }

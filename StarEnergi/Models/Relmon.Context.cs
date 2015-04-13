@@ -78,6 +78,7 @@ namespace StarEnergi.Models
         public DbSet<ir_KPI_log> ir_KPI_log { get; set; }
         public DbSet<long_term_actions> long_term_actions { get; set; }
         public DbSet<ma> mas { get; set; }
+        public DbSet<master_security> master_security { get; set; }
         public DbSet<monthly_project_activity> monthly_project_activity { get; set; }
         public DbSet<monthly_project_outstanding_activity> monthly_project_outstanding_activity { get; set; }
         public DbSet<monthly_project_she_report> monthly_project_she_report { get; set; }

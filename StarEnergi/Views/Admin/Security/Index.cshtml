@@ -1,0 +1,51 @@
+﻿@model IEnumerable<StarEnergi.Models.SecurityEntity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2Security</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.SecurityEntity>(Model)
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("SecurityMaster")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        //.ToolBar(commands => commands
+        //    .Custom()
+        //    .HtmlAttributes(new { id = "importExcel" })
+        //    .Text("Export")
+        //    .Action("importExcel", "FailureMode")
+        //)
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "Security")
+                .Insert("_InsertAjaxEditing", "Security")
+                .Update("_SaveAjaxEditing", "Security")
+                .Delete("_DeleteAjaxEditing", "Security");
+        })
+        .Columns(columns =>
+        {
+            //columns.Bound(o => o.title).Width(100).Title("Title");
+            //columns.Bound(o => o.description).Title("Description");
+            columns.ForeignKey(o => o.id_employee, 
+                new SelectList((System.Collections.Generic.IEnumerable<StarEnergi.Models.employee>)ViewData["employee"], "id", "alpha_name")).Width(150).Title("Employee Name");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable(sorting => sorting.OrderBy(sortOrder => sortOrder.Add(o => o.employee_name)))
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

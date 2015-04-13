@@ -344,6 +344,7 @@
     <Compile Include="Controllers\Admin\AnalysisTypeController.cs" />
     <Compile Include="Controllers\Admin\BuildOfMaterialController.cs" />
     <Compile Include="Controllers\Admin\ComponentController.cs" />
+    <Compile Include="Controllers\Admin\SecurityController.cs" />
     <Compile Include="Controllers\Admin\PermitAssessorController.cs" />
     <Compile Include="Controllers\Admin\PermitFOController.cs" />
     <Compile Include="Controllers\Admin\PermitSectionController.cs" />
@@ -451,6 +452,7 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ComponentEntity.cs" />
+    <Compile Include="Models\SecurityEntity.cs" />
     <Compile Include="Models\daily_log.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -609,6 +611,9 @@
     </Compile>
     <Compile Include="Models\MaEntity.cs" />
     <Compile Include="Models\MaintenanceCost.cs" />
+    <Compile Include="Models\master_security.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MonthFilterForm.cs" />
     <Compile Include="Models\monthly_project_activity.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
@@ -3557,6 +3562,7 @@
     <Content Include="Views\FrontEnd\Pir\WorkflowContent.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Admin\Security\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />
