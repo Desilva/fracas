@@ -17,8 +17,11 @@
 }
 <script type="text/javascript">
     var isInv = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.INITIATORIR)';
+    var isAdminSHE = '@li.Exists(p => p.role == (int)StarEnergi.Config.role.ADMINMASTERSHE)';
+
     function OnRowDataBoundEq(e) {
         var dataItem = e.dataItem;
+        //console.log(dataItem);
         var row = e.row;
         var username = '@username';
         var alpha_name = '@alpha_name';
@@ -112,8 +115,25 @@
                                 + '<span class="t-icon t-workflow"></span>'
                                 + '</a>';
 
+
+        //console.log(isAdminSHE);
+        if (isAdminSHE && dataItem.field_manager_approve == null) {
+            templateComplete += '<a class="t-button t-suspend t-button-icon" onClick="suspend(' + dataItem.id + ');" title="Suspend">'
+                                + '<span class="t-icon t-suspend"></span>'
+                                + '</a>';
+            templateUnComplete += '<a class="t-button t-suspend t-button-icon" onClick="suspend(' + dataItem.id + ');" title="Suspend">'
+                                + '<span class="t-icon t-suspend"></span>'
+                                + '</a>';
+        }
+        
+
+
+
+
         var i = 0;
         var defaultBackgroundColor = row.style.background;
+
+        
 
         if (username == dataItem.ack_supervisor || username == dataItem.supervisor_delegate) {
             if (dataItem.supervisor_approve != null) {
@@ -153,6 +173,22 @@
             } else {
                 row.style.background = defaultBackgroundColor;
             }
+        }
+
+        if (dataItem.isSuspend == true) {
+            templateComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="ViewSuspend(' + dataItem.id + ');" title="View Incident Report">'
+                                + '<span class="t-icon t-view"></span>'
+                                + '</a>')
+                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
+                                + '<span class="t-icon t-workflow"></span>'
+                                + '</a>';
+            templateUnComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="ViewSuspend(' + dataItem.id + ');" title="View Incident Report">'
+                                + '<span class="t-icon t-view"></span>'
+                                + '</a>')
+                                + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
+                                + '<span class="t-icon t-workflow"></span>'
+                                + '</a>';
+            row.style.background = 'red';
         }
 
         for (var a in row.cells) {
@@ -229,6 +265,30 @@
         window.open();
     }
 
+    function suspend(id) {
+        var r = confirm("Are you sure you want to suspend selected incident report? This action cannot be reversed");
+        var values = {
+            id: id,
+        }
+        if (r) {
+            $.post("Incident/SuspendIncidentReport/", values, function (data) {
+                if (data == true) {
+                    alert("yes");
+                    var grid = $('#incidentReport').data('tGrid');
+                    grid.ajaxRequest();
+                }
+                else {
+                    alert("Internal Server Error. Please contact administrator.");
+                }
+                
+            });
+        }
+    }
+
+    function ViewSuspend(id) {
+        alert("not yet implemented");
+    }
+
 </script>
 
 <style>
@@ -266,6 +326,10 @@
     background-image: url("/Content/glyphicon/glyphicons-427-git-merge.png");
     background-size: 14px auto;
 }
+    .t-suspend {
+        background-image: url("/Content/glyphicon/glyphicons-200-ban.png");
+        background-size: 16px auto;
+    }
 </style>
 
 @( 
