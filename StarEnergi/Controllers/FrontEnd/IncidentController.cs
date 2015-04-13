@@ -2458,5 +2458,295 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             return Json(status);
         }
+
+        public ActionResult viewIncident(int? id, int? id_fracas, int? id_injury, int? id_fracas_part)
+        {
+
+            string username = (String)Session["username"].ToString();
+            li = db.user_per_role.Where(p => p.username == username).ToList();
+            if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
+            {
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
+            }
+
+            string employeeId = Session["id"].ToString();
+            employee employee = db.employees.Find(int.Parse(employeeId));
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       where employees.dept_id != null || employees.employee_boss != null
+                       orderby employees.dept_id
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           department = employees.department,
+                           dept_id = employees.dept_id,
+                           username = (ue.username == null ? String.Empty : ue.username),
+                           employee = employees.employee2,
+                           delagate = employees.delagate,
+                           employee_delegate = employees.employee_delegate,
+                           approval_level = employees.approval_level
+                       }).ToList();
+            List<EmployeeEntity> bind = has;
+            EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker();
+            foreach (EmployeeEntity ee in bind)
+            {
+                int level = 0;
+                ee.role = db.user_per_role.Where(p => p.username == (ee.username != null ? ee.username : "")).ToList();
+                if (ee.employee != null)
+                {
+                    employee temp = ee.employee;
+                    level = 1;
+
+                    while (temp.employee2 != null)
+                    {
+                        temp = temp.employee2;
+                        level++;
+                    }
+                }
+                ee.level = level;
+
+                employeeDelegationChecker.setDelegate(ee, employee);
+            }
+            ViewBag.facility = db.rca_facility.ToList();
+
+            incident_report inc = db.incident_report.OrderBy(p => p.reference_number).ToList().LastOrDefault();
+
+            if (inc == null || inc.reference_number == null || inc.reference_number.Length != 20)
+            {
+                int refs = 1;
+                int year = DateTime.Today.Year;
+                ViewBag.ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+            }
+            else
+            {
+                int refs = Int32.Parse(inc.reference_number.Substring(16));
+                refs++;
+                int reference_year = Int32.Parse(inc.reference_number.Substring(11, 4));
+                int year = DateTime.Today.Year;
+                if (year == reference_year)
+                    ViewBag.ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+                else
+                {
+                    refs = 1;
+                    ViewBag.ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+                }
+            }
+            ViewData["users"] = bind.OrderBy(p => p.alpha_name).ToList();
+            ViewData["user_role"] = li;
+            if (id != null)
+            {
+                ViewBag.mod = id;
+                incident_report ir = db.incident_report.Find(id);
+                ViewBag.datas = ir;
+                ViewBag.superintendent_del = String.IsNullOrWhiteSpace(ir.superintendent_approve) == false ? (String.IsNullOrWhiteSpace(ir.superintendent) ? null : db.employees.Find(Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent)).employee_delegate) : null;
+                ViewBag.she_superintendent_del = String.IsNullOrWhiteSpace(ir.she_superintendent_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.she_superintendent) ? "0" : ir.she_superintendent)).employee_delegate : null;
+                ViewBag.loss_control_del = String.IsNullOrWhiteSpace(ir.loss_control_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.loss_control) ? "0" : ir.loss_control)).employee_delegate : null;
+                ViewBag.field_manager_del = String.IsNullOrWhiteSpace(ir.field_manager_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.field_manager) ? "0" : ir.field_manager)).employee_delegate : null;
+
+                bool isCanEdit = false;
+                employee employeeDelegation = new employee();
+                if (employeeId == ir.prepared_by && ir.supervisor_approve == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.ack_supervisor && ir.supervisor_approve == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.superintendent && ir.superintendent_approve == null && ir.supervisor_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.loss_control && ir.loss_control_approve == null && ir.superintendent_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.she_superintendent && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.field_manager && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (isCanEdit == false)
+                {
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.ack_supervisor));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (employeeDelegationChecker.isDelegateTo(employee) && ir.supervisor_approve == null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.superintendent_approve == null && ir.supervisor_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.loss_control));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.loss_control_approve == null && ir.superintendent_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.she_superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.field_manager));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+                }
+
+                ViewBag.isCanEdit = isCanEdit;
+            }
+            else
+            {
+                int cur_user_id = Int32.Parse(HttpContext.Session["id"].ToString());
+                employee curUser = db.employees.Find(cur_user_id);
+                int? cur_dept_id = curUser.dept_id;
+                int? cur_user_del = curUser.employee_delegate;
+                employee cur_user_boss = db.employees.Find(cur_user_id).employee2;
+                int? superintendent_id = null;
+                int? superintendent_id_del = null;
+                int? supervisor_id = null;
+                int? supervisor_id_del = null;
+                string supervisor_position = null;
+                while (cur_user_boss != null)
+                {
+                    if (cur_user_boss.approval_level == 1)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (supervisor_id == null && cur_user_boss.approval_level == 2)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (cur_user_boss.approval_level == 2)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (supervisor_id == null && superintendent_id == null && cur_user_boss.employee2 == null)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+
+                    cur_user_boss = cur_user_boss.employee2;
+                }
+                if (supervisor_id == null)
+                {
+                    supervisor_id = cur_user_id;
+                    supervisor_id_del = cur_user_del;
+                }
+                if (superintendent_id == null)
+                {
+                    superintendent_id = supervisor_id;
+                    superintendent_id_del = supervisor_id_del;
+                }
+                ViewBag.superintendent_id = superintendent_id;
+                ViewBag.supervisor_id = supervisor_id;
+                ViewBag.superintendent_id_del = superintendent_id_del;
+                ViewBag.supervisor_id_del = supervisor_id_del;
+                ViewBag.supervisor_position = supervisor_position;
+                ViewBag.id_fracas = id_fracas;
+                ViewBag.id_injury = id_injury;
+                ViewBag.id_fracas_part = id_fracas_part;
+
+                ViewBag.isCanEdit = true;
+                int last_id = db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id);
+                last_id++;
+                string subPath = "~/Attachment/incident_report/" + last_id + "/signatures"; // your code goes here
+                bool IsExists = System.IO.Directory.Exists(Server.MapPath(subPath));
+                if (!IsExists)
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+
+                subPath = "~/Attachment/incident_report/" + last_id + "/atch"; // your code goes here
+                IsExists = System.IO.Directory.Exists(Server.MapPath(subPath));
+                if (!IsExists)
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+            }
+
+            ViewBag.isCanEdit = false;
+
+            return PartialView("addIncident");
+        }
     } 
 }

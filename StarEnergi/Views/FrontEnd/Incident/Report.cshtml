@@ -176,13 +176,13 @@
         }
 
         if (dataItem.isSuspend == true) {
-            templateComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="ViewSuspend(' + dataItem.id + ');" title="View Incident Report">'
+            templateComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="ViewIncident(' + dataItem.id + ');" title="View Incident Report">'
                                 + '<span class="t-icon t-view"></span>'
                                 + '</a>')
                                 + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
                                 + '<span class="t-icon t-workflow"></span>'
                                 + '</a>';
-            templateUnComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="ViewSuspend(' + dataItem.id + ');" title="View Incident Report">'
+            templateUnComplete = ('<a class="t-button t-grid-fracasedit t-button-icon t-button-icon t-ajax" onClick="ViewIncident(' + dataItem.id + ');" title="View Incident Report">'
                                 + '<span class="t-icon t-view"></span>'
                                 + '</a>')
                                 + '<a class="t-button t-workflow t-button-icon" onClick="workflow(' + dataItem.id + ');" title="Workflow">'
@@ -197,6 +197,10 @@
             }
         }
         row.cells[i].innerHTML = templateComplete;
+    }
+
+    function ViewIncident(id) {
+        $('#contentEventLog').load('Incident/viewIncident', { 'id': id });
     }
     
     function Edit(id) {
@@ -285,10 +289,6 @@
         }
     }
 
-    function ViewSuspend(id) {
-        alert("not yet implemented");
-    }
-
 </script>
 
 <style>
@@ -331,7 +331,13 @@
         background-size: 16px auto;
     }
 </style>
-
+<div>
+    <p>Legend: </p>
+    <div id="rectangle" style="width:35px; background-color:red; height:15px; float:left"></div><span style="float:left; margin-left:3px">Suspended</span>
+    <div id="rectangle2" style="width:35px; margin-left:10px; background-color:orange; height:15px; float:left"></div><span style="float:left; margin-left:3px">Approved</span>
+</div>
+<div style="clear:both" />
+<br />
 @( 
  Html.Telerik().Grid<StarEnergi.Models.incident_report>()
         .TableHtmlAttributes(new { style = "width:980px" }).HtmlAttributes(new { style = "width:980px" })
