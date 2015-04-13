@@ -249,18 +249,20 @@
         isSign = e.row.cells[24].innerHTML;
         iir_number = e.row.cells[0].innerHTML;
         var username = '@HttpContext.Current.Session["username"].ToString()';
-        console.log(isPublish + '###' + typeof isPublish);
-        console.log(pa + '####' + typeof pa);
+
+
         if (isPublish == "0" && pa == username) {
             $('.button-complete').removeAttr('disabled');
         } else {
             $('.button-complete').attr('disabled', 'disabled');
         }
+
         if (isImplement && pa == username && iir_number == "") {
             $('.button-to-iir').removeAttr('disabled');
         } else {
             $('.button-to-iir').attr('disabled', 'disabled');
         }
+
         if (pa == username) {
             $('.button-delete').show();
         } else {

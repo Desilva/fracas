@@ -1892,7 +1892,7 @@ namespace StarEnergi.Utilities
                             {
                                 sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
                                 string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
-
+                                val = val.Trim();
                                 if (val != null && val != "")
                                 {
                                     var checkWell = (from a in wellList
@@ -1975,8 +1975,9 @@ namespace StarEnergi.Utilities
                                     test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
                                     if (test == false)
                                     {
-                                        allowSave = false;
-                                        err.Add(String.Format("Flow row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        dataWell1.flow = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                        //allowSave = false;
+                                        //err.Add(String.Format("Flow row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -1998,8 +1999,9 @@ namespace StarEnergi.Utilities
                                     test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
                                     if (test == false)
                                     {
-                                        allowSave = false;
-                                        err.Add(String.Format("WHP row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        dataWell1.whp = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                        //allowSave = false;
+                                        //err.Add(String.Format("WHP row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2027,7 +2029,7 @@ namespace StarEnergi.Utilities
                             {
                                 sheet.GetRow(row).GetCell(colNum).SetCellType(CellType.String);
                                 string val = sheet.GetRow(row).GetCell(colNum).StringCellValue;
-
+                                val = val.Trim();
                                 if (val != null && val != "")
                                 {
                                     var checkWell = (from a in wellList
@@ -2111,8 +2113,9 @@ namespace StarEnergi.Utilities
                                     test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
                                     if (test == false)
                                     {
-                                        allowSave = false;
-                                        err.Add(String.Format("Flow row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        dataWell2.flow = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                        //allowSave = false;
+                                        //err.Add(String.Format("Flow row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -2134,8 +2137,9 @@ namespace StarEnergi.Utilities
                                     test = Double.TryParse(sheet.GetRow(row).GetCell(colNum).StringCellValue, out doubleValue);
                                     if (test == false)
                                     {
-                                        allowSave = false;
-                                        err.Add(String.Format("WHP row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
+                                        dataWell2.whp = sheet.GetRow(row).GetCell(colNum).StringCellValue;
+                                        //allowSave = false;
+                                        //err.Add(String.Format("WHP row {0} column {1} is invalid", row + 1, CellReference.ConvertNumToColString(colNum)));
                                     }
                                     else
                                     {
@@ -3824,6 +3828,12 @@ namespace StarEnergi.Utilities
                         {
                             db.daily_log.Add(dailyLogData);
                             db.SaveChanges();
+
+                            string subPath = "~/Attachment/daily_log/" + dailyLogData.id; // your code goes here
+                            bool IsExists = System.IO.Directory.Exists(System.Web.HttpContext.Current.Server.MapPath(subPath));
+                            if (!IsExists)
+                                System.IO.Directory.CreateDirectory(System.Web.HttpContext.Current.Server.MapPath(subPath));
+
                             foreach (daily_log_to_wells x in dailyLogWellData)
                             {
                                 x.daily_log_id = dailyLogData.id;
@@ -4131,6 +4141,11 @@ namespace StarEnergi.Utilities
                                     {
                                         db.daily_log.Add(dailyLogDataNight);
                                         db.SaveChanges();
+
+                                        string subPath = "~/Attachment/daily_log/" + dailyLogDataNight.id; // your code goes here
+                                        bool IsExists = System.IO.Directory.Exists(System.Web.HttpContext.Current.Server.MapPath(subPath));
+                                        if (!IsExists)
+                                            System.IO.Directory.CreateDirectory(System.Web.HttpContext.Current.Server.MapPath(subPath));
 
                                         checkDayRecord.id_shift2 = dailyLogDataNight.id;
                                         db.daily_log.Attach(checkDayRecord);

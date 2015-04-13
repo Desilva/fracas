@@ -1627,173 +1627,173 @@ namespace StarEnergi.Controllers.FrontEnd
             return PartialView("WorkflowContent");
         }
 
-        public string MigrateWorkflowData()
-        {
-            string sql = "Delete from workflow_node where report_type='FR-IIR'";
-            db.Database.ExecuteSqlCommand(sql);
+        //public string MigrateWorkflowData()
+        //{
+        //    string sql = "Delete from workflow_node where report_type='FR-IIR'";
+        //    db.Database.ExecuteSqlCommand(sql);
 
-            List<investigation_report> data = (from a in db.investigation_report
-                                           select a).ToList();
+        //    List<investigation_report> data = (from a in db.investigation_report
+        //                                   select a).ToList();
 
-            foreach (investigation_report a in data)
-            {
-                bool principalAnalyst = true;
-                bool investigator = false;
-                bool safetySupervisor = false;
-                bool sheSuperintendent = false;
-                bool fieldManager = false;
+        //    foreach (investigation_report a in data)
+        //    {
+        //        bool principalAnalyst = true;
+        //        bool investigator = false;
+        //        bool safetySupervisor = false;
+        //        bool sheSuperintendent = false;
+        //        bool fieldManager = false;
 
                
 
-                if (a.investigator_approve != null)
-                {
-                    if (principalAnalyst == true)
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "PrincipalAnalyst";
-                        workflow.status = 2;
-                        db.workflow_node.Add(workflow);
-                    }
+        //        if (a.investigator_approve != null)
+        //        {
+        //            if (principalAnalyst == true)
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "PrincipalAnalyst";
+        //                workflow.status = 2;
+        //                db.workflow_node.Add(workflow);
+        //            }
 
-                    string[] inves = a.investigator.Split(';');
-                    string[] inves_appr = a.investigator_approve.Split(';');
-                    if (inves.Length == inves_appr.Length)
-                    {
-                        investigator = true;
-                    }
+        //            string[] inves = a.investigator.Split(';');
+        //            string[] inves_appr = a.investigator_approve.Split(';');
+        //            if (inves.Length == inves_appr.Length)
+        //            {
+        //                investigator = true;
+        //            }
 
-                    if (a.loss_control != "" && a.loss_control != null)
-                    {
-                        safetySupervisor = true;
-                    }
-                    if (a.safety_officer_approve != "" && a.safety_officer_approve != null)
-                    {
-                        sheSuperintendent = true;
-                    }
-                    if (a.field_manager_approve != "" && a.field_manager_approve != null)
-                    {
-                        fieldManager = true;
-                    }
+        //            if (a.loss_control != "" && a.loss_control != null)
+        //            {
+        //                safetySupervisor = true;
+        //            }
+        //            if (a.safety_officer_approve != "" && a.safety_officer_approve != null)
+        //            {
+        //                sheSuperintendent = true;
+        //            }
+        //            if (a.field_manager_approve != "" && a.field_manager_approve != null)
+        //            {
+        //                fieldManager = true;
+        //            }
 
-                    //Investigator Status
-                    if (safetySupervisor == true)
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "Investigator";
-                        workflow.status = 2;
-                        db.workflow_node.Add(workflow);
-                    }
-                    else
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "Investigator";
-                        workflow.status = 1;
-                        db.workflow_node.Add(workflow);
-                    }
+        //            //Investigator Status
+        //            if (safetySupervisor == true)
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "Investigator";
+        //                workflow.status = 2;
+        //                db.workflow_node.Add(workflow);
+        //            }
+        //            else
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "Investigator";
+        //                workflow.status = 1;
+        //                db.workflow_node.Add(workflow);
+        //            }
 
-                    //safetySupervisor Status
-                    if (sheSuperintendent == true)
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "LossControl";
-                        workflow.status = 2;
-                        db.workflow_node.Add(workflow);
-                    }
-                    else if (investigator == true)
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "LossControl";
-                        workflow.status = 1;
-                        db.workflow_node.Add(workflow);
-                    }
-                    else
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "SHESuperintendent";
-                        workflow.status = 0;
-                        db.workflow_node.Add(workflow);
-                    }
-
-
-                    //SHE Superintendent Status
-                    if (fieldManager == true)
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "SafetyOfficer";
-                        workflow.status = 2;
-                        db.workflow_node.Add(workflow);
-                    }
-                    else if (safetySupervisor == true)
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "SafetyOfficer";
-                        workflow.status = 1;
-                        db.workflow_node.Add(workflow);
-                    }
-                    else
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "SafetyOfficer";
-                        workflow.status = 0;
-                        db.workflow_node.Add(workflow);
-                    }
-
-                    //FieldManager Status
-                    if (fieldManager == true)
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "FieldManager";
-                        workflow.status = 2;
-                        db.workflow_node.Add(workflow);
-                    }
-                    else if (sheSuperintendent == true)
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "FieldManager";
-                        workflow.status = 1;
-                        db.workflow_node.Add(workflow);
-                    }
-                    else
-                    {
-                        workflow_node workflow = new workflow_node();
-                        workflow.id_report = a.id;
-                        workflow.report_type = "FR-IIR";
-                        workflow.node_name = "FieldManager";
-                        workflow.status = 0;
-                        db.workflow_node.Add(workflow);
-                    }
+        //            //safetySupervisor Status
+        //            if (sheSuperintendent == true)
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "LossControl";
+        //                workflow.status = 2;
+        //                db.workflow_node.Add(workflow);
+        //            }
+        //            else if (investigator == true)
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "LossControl";
+        //                workflow.status = 1;
+        //                db.workflow_node.Add(workflow);
+        //            }
+        //            else
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "SHESuperintendent";
+        //                workflow.status = 0;
+        //                db.workflow_node.Add(workflow);
+        //            }
 
 
-                    db.SaveChanges();
-                }
+        //            //SHE Superintendent Status
+        //            if (fieldManager == true)
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "SafetyOfficer";
+        //                workflow.status = 2;
+        //                db.workflow_node.Add(workflow);
+        //            }
+        //            else if (safetySupervisor == true)
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "SafetyOfficer";
+        //                workflow.status = 1;
+        //                db.workflow_node.Add(workflow);
+        //            }
+        //            else
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "SafetyOfficer";
+        //                workflow.status = 0;
+        //                db.workflow_node.Add(workflow);
+        //            }
+
+        //            //FieldManager Status
+        //            if (fieldManager == true)
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "FieldManager";
+        //                workflow.status = 2;
+        //                db.workflow_node.Add(workflow);
+        //            }
+        //            else if (sheSuperintendent == true)
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "FieldManager";
+        //                workflow.status = 1;
+        //                db.workflow_node.Add(workflow);
+        //            }
+        //            else
+        //            {
+        //                workflow_node workflow = new workflow_node();
+        //                workflow.id_report = a.id;
+        //                workflow.report_type = "FR-IIR";
+        //                workflow.node_name = "FieldManager";
+        //                workflow.status = 0;
+        //                db.workflow_node.Add(workflow);
+        //            }
+
+
+        //            db.SaveChanges();
+        //        }
                 
-            }
+        //    }
 
 
-            return "success";
-        }
+        //    return "success";
+        //}
 
         #endregion
     }
