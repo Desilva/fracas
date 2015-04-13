@@ -988,7 +988,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_inves")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
-                        .Value(isEdit ? iir.investigator_date : DateTime.Now)
+                        .Value(iir.investigator_date != null ? iir.investigator_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.investigator_approve == null) ? true : false)
                 )
             </td>
@@ -996,7 +996,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_loss_control")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
-                        .Value(isEdit ? iir.loss_control_date : DateTime.Now)
+                        .Value(iir.loss_control_date != null ? iir.loss_control_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.loss_control_approve == null) && !isView ? true : false)
                 )
             </td>
@@ -1004,7 +1004,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_safety_officer")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
-                        .Value(isEdit ? iir.loss_control_date : DateTime.Now)
+                        .Value(iir.safety_officer_date != null ? iir.safety_officer_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.loss_control_approve == null) && !isView ? true : false)
                 )
             </td>
@@ -1012,7 +1012,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_field_manager")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
-                        .Value(isEdit ? iir.field_manager_date : DateTime.Now)
+                        .Value(iir.field_manager_date != null ? iir.field_manager_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.field_manager_approve == null) && !isView ? true : false)
                 )
             </td>
