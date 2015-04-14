@@ -297,6 +297,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 ViewBag.datas = incidentInvestigationReport;
 
                 bool isCanEdit = false;
+                bool isPA = false;
                 employee employeeDelegation = new employee();
                 string[] investigatorsId = incidentInvestigationReport.investigator.Split(';');
                 string[] investigatorSignature = incidentInvestigationReport.investigator_approve != null ? (incidentInvestigationReport.investigator_approve.Split(';')) : (new string[investigatorsId.Length]);
@@ -314,6 +315,11 @@ namespace StarEnergi.Controllers.FrontEnd
                             isCanEdit = true;
                         }
                     }
+                    else if (i == 0)
+                    {
+                        isCanEdit = true;
+                        isPA = true;
+                    }
                 }
 
                 bool isAllInvestigatorApproves = true;
@@ -323,6 +329,11 @@ namespace StarEnergi.Controllers.FrontEnd
                     {
                         isAllInvestigatorApproves = isAllInvestigatorApproves && false;
                     }
+                }
+
+                if (isPA && isAllInvestigatorApproves)
+                {
+                    isCanEdit = false;
                 }
 
                 if (employeeId == incidentInvestigationReport.loss_control && incidentInvestigationReport.loss_control_approve == null && incidentInvestigationReport.investigator_approve != null && isAllInvestigatorApproves)

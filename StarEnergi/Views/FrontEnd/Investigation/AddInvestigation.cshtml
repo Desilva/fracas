@@ -725,7 +725,7 @@
                             }
                         </div>
                     </div>
-                    if (!isView && has.Find(p => p.username == username).id == Int32.Parse(iir.investigator.Split(';').First() == null ? "0" : iir.investigator.Split(';').First()))
+                    if (!isView && (iir == null || has.Find(p => p.username == username).id == Int32.Parse(iir.investigator.Split(';').First() == null ? "0" : iir.investigator.Split(';').First())))
                     {
                         <input type="button" id="addInvestigator" onclick="addInvestigator()" value="add" />
                         <input type="button" id="deleteInvestigator" onclick="delInvestigator()" value="del" style="display:none"/>                            
@@ -988,7 +988,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_inves")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
-                        .Value(iir.investigator_date != null ? iir.investigator_date : DateTime.Now)
+                        .Value(iir != null && iir.investigator_date != null ? iir.investigator_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.investigator_approve == null) ? true : false)
                 )
             </td>
@@ -996,7 +996,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_loss_control")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
-                        .Value(iir.loss_control_date != null ? iir.loss_control_date : DateTime.Now)
+                        .Value(iir != null && iir.loss_control_date != null ? iir.loss_control_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.loss_control_approve == null) && !isView ? true : false)
                 )
             </td>
@@ -1004,7 +1004,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_safety_officer")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
-                        .Value(iir.safety_officer_date != null ? iir.safety_officer_date : DateTime.Now)
+                        .Value(iir != null && iir.safety_officer_date != null ? iir.safety_officer_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.loss_control_approve == null) && !isView ? true : false)
                 )
             </td>
@@ -1012,7 +1012,7 @@
                 @(Html.Telerik().DatePicker()
                         .Name("date_field_manager")
                         .HtmlAttributes(new { id = "DateTimePicker_wrapper", style = "width:161px" })
-                        .Value(iir.field_manager_date != null ? iir.field_manager_date : DateTime.Now)
+                        .Value(iir != null && iir.field_manager_date != null ? iir.field_manager_date : DateTime.Now)
                         .Enable(li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && (!isEdit || iir.field_manager_approve == null) && !isView ? true : false)
                 )
             </td>
