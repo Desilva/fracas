@@ -63,7 +63,7 @@
         }
 
         //$('.loadSubmit').css("display", "block");
-        $.post("/Pir/UpdateProcess", values, function (data) {
+        $.post("@Url.Action("UpdateProcess","Pir")", values, function (data) {
             //$('.loadSubmit').css("display", "none");
             alert('Data tersimpan');
             $('#contentPirInitiatorList').load('/pir/pageProcess/' + data);

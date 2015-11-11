@@ -39,11 +39,30 @@
     <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
     <script src="/Scripts/application.js"></script>	
        
+<<<<<<< HEAD
 <div>
+    @{
+        if (HttpContext.Current.Session["username"] != null) {
+            
+            <div class="notification-area">
+    <div class="notification-header">
+        <h2>Notification Center</h2>
+    </div>
+        <div class="notification-body">
+            <link href="@Url.Content("~/Content/kendo/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+            <link href="@Url.Content("~/Content/kendo/kendo.material.min.css")" rel="stylesheet" type="text/css" />
+            <div id="grid"></div>
+        </div>
+    </div>
+    }
+    }
+=======
+<body>
    
             
  
 
+>>>>>>> 835fb7eaa6522371d671bca94ff170a60bc9a49b
 @{
     if (User.Identity.IsAuthenticated)
     {
@@ -60,6 +79,7 @@
                         <div id="grid"></div>
                     </div>
        </div>
+            
             string userId = Session["id"].ToString();
             StarEnergi.Utilities.KpiDashboard dashboard = new KpiDashboard();
     <div class="kpi-area">
@@ -112,15 +132,6 @@
             <a href="javascript:" data-toggle="0" id="toggle-collapse">
                 <img src="@Url.Content("~/Content/image/new/toggle-collapse.png")" />
             </a>
-        </div>
-        <div class="top-menu" style="text-align:center">
-            <div class="menu">
-                <a href="@System.Configuration.ConfigurationManager.AppSettings["wims"]" title="WIMS">
-                    <img src="@Url.Content("~/Content/image/new/ims-link.png")" />
-                    <span class="menu-text">WIMS</span>
-                </a>
-            </div>
-            <div class="clearfix"></div>
         </div>
         <div class="menu">
             <a data-toggle="popover"  data-content='<a href="@Url.Action("Index", "FracasEventLog")">FRACAS Event Log</a><br/><a href="@Url.Action("Index", "FracasHistory")">Historical Data</a>@(li != null && li.Exists(p => p.role == (int)StarEnergi.Config.role.FRACAS) ? "<br/><a href=" + @Url.Action("Index", "Fracas") + ">FRACAS Input</a><br/><a href=" + @Url.Action("Index", "Troubleshooting") + ">Troubleshooting</a>" : "")' data-placement="top" title="FRACAS" data-original-title="Popover on top" data-html="true">
@@ -179,13 +190,6 @@
                 <span class="menu-text">PTW</span>
             </a>
         </div>
-        
-        <div class="menu">
-            <a href="@System.Configuration.ConfigurationManager.AppSettings["access"]" title="Access Control">
-                <img src="@Url.Content("~/Content/image/new/access-link.png")" />
-                @*<span class="menu-text">PTW</span>*@
-            </a>
-        </div>
     </div>
 </div>
 }
@@ -198,7 +202,7 @@
             $('#toggle-collapse').click(function () {
                 var toggleStatus = $(this).data('toggle');
                 if (toggleStatus == '0') {
-                    $('.menu-area').animate({ "bottom": "-210px" }, "slow");
+                    $('.menu-area').animate({ "bottom": "-110px" }, "slow");
                     $('.menu-area .toggle-button img').rotate({
                         duration: 1000,
                         angle: 0,
@@ -216,11 +220,12 @@
                 }
             });
 
+<<<<<<< HEAD
             $('#page').css('background', '#efefef url(content/image/new/bg-1.png) no-repeat').css('background-size', '100% 100%');
             $('#mainmenu').css('background', 'transparent');
             $('#mainmenu .t-header').css('background', 'transparent');
             $('#menu .t-item').css('background', 'transparent');
-            $('#menu .t-item .t-item').css('background', '#fff');
+=======
             var kendoFilter = {
                 filterable: {
                     operators: {
@@ -236,11 +241,11 @@
                 }
             }
 
+>>>>>>> 835fb7eaa6522371d671bca94ff170a60bc9a49b
             $("#grid").kendoGrid({
                 dataSource: {
                     error: function (e) {
-                        alert("Unable to load notification. Please wait until the page is fully loaded or try to logout then login again, if the issue persist please contact administrator.");
-                        //window.location = "@Url.Action("LogOn", "Account")";
+                        window.location = "@Url.Action("LogOn", "Account")";
                     },
                      transport: {
                          read: {
