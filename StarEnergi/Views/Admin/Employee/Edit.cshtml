@@ -24,6 +24,16 @@
             }
         }
 
+        var isContractorPtc = null;
+        if ($('#is_contractor_ptc').is(":checked"))
+        {
+            isContractorPtc = true;
+        }
+        else
+        {
+            isContractorPtc = false;
+        }
+
         var values =
         {
             "Id": $('#id').val(),
@@ -40,6 +50,7 @@
             "approval_level": approval_level,
             "delagate": '@Model.delagate',
             "employee_delegate": '@Model.employee_delegate',
+            "is_contractor_ptc":isContractorPtc
         }
 
         $.post("Employee/Edit", values, function (data) {
@@ -109,7 +120,7 @@
     };
 
     $(document).ready(function () {
-        $(":checkbox").change(function () {
+        $("#delegate").change(function () {
             if ($(this).is(':checked')) {
                 $('#delegate_name').removeAttr('disabled');
             } else {
@@ -118,7 +129,7 @@
             }
         });
 
-        if ($(":checkbox").is(':checked')) {
+        if ($("#delegate").is(':checked')) {
             $('#delegate_name').removeAttr('disabled');
         } else {
             $('#delegate_name').val('');
@@ -204,6 +215,12 @@
         </div>
         <div class="editor-field">
             <input type="checkbox" id="delegate" name="delegate" value="1" @(Model.delagate == 1 ? "checked" : "") />&nbsp;@Html.DropDownList("delegate_name")
+        </div>
+        <div class="editor-label">
+            @Html.Label("Is Contractor PTC?")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.is_contractor_ptc)
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.signature)

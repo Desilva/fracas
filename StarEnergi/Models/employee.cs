@@ -40,6 +40,7 @@ namespace StarEnergi.Models
         public string department { get; set; }
         public Nullable<byte> approval_level { get; set; }
         public string kbp_code { get; set; }
+        public bool is_contractor_ptc { get; set; }
     
         public virtual ICollection<duty_manager> duty_manager { get; set; }
         public virtual ICollection<employee> employee1 { get; set; }

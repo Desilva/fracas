@@ -452,7 +452,6 @@
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ComponentEntity.cs" />
-    <Compile Include="Models\SecurityEntity.cs" />
     <Compile Include="Models\daily_log.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -492,11 +491,6 @@
     <Compile Include="Models\discipline.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DutyManagerPresentationStub.cs" />
-    <Compile Include="Models\DailyLogPresentationStub.cs" />
-    <Compile Include="Models\DailyLogReportEntity.cs" />
-    <Compile Include="Models\DashboardChartEntity.cs" />
-    <Compile Include="Models\DisciplineEntity.cs" />
     <Compile Include="Models\duty_manager.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -506,8 +500,6 @@
     <Compile Include="Models\employee.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmployeeDelegationChecker.cs" />
-    <Compile Include="Models\EmployeeEntity.cs" />
     <Compile Include="Models\employee_delegations.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -517,9 +509,6 @@
     <Compile Include="Models\equipment.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EquipmentEntity.cs" />
-    <Compile Include="Models\EquipmentPartEntity.cs" />
-    <Compile Include="Models\EquipmentTableReportEntity.cs" />
     <Compile Include="Models\equipment_daily_report.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -547,15 +536,6 @@
     <Compile Include="Models\event_descriptions.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ExportExcel\AssetRegisterExport.cs" />
-    <Compile Include="Models\ExportExcel\EcaExport.cs" />
-    <Compile Include="Models\ExportExcel\EqRelCharExport.cs" />
-    <Compile Include="Models\ExportExcel\EquipmentReadNavExport.cs" />
-    <Compile Include="Models\ExportExcel\FracasExport.cs" />
-    <Compile Include="Models\ExportExcel\FracasLogExport.cs" />
-    <Compile Include="Models\ExportExcel\FscaExport.cs" />
-    <Compile Include="Models\ExportExcel\PlantAvailExport.cs" />
-    <Compile Include="Models\FailureModeEntity.cs" />
     <Compile Include="Models\failure_causes.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -577,22 +557,18 @@
     <Compile Include="Models\foc_target_paf.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\FracasEventModel.cs" />
-    <Compile Include="Models\HseEventEntity.cs" />
     <Compile Include="Models\iir_recommendations.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\immediate_actions.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\IncidentReportExcel.cs" />
     <Compile Include="Models\incident_report.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\incident_report_log.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\InvestigationReportModel.cs" />
     <Compile Include="Models\investigation_report.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -602,19 +578,15 @@
     <Compile Include="Models\ir_KPI_log.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\LoginEntity.cs" />
     <Compile Include="Models\long_term_actions.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ma.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MaEntity.cs" />
-    <Compile Include="Models\MaintenanceCost.cs" />
     <Compile Include="Models\master_security.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MonthFilterForm.cs" />
     <Compile Include="Models\monthly_project_activity.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -627,35 +599,15 @@
     <Compile Include="Models\monthly_she_contractor.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MPSRModel.cs" />
-    <Compile Include="Models\observationByDate_Result.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\observationByDepartmentObserver2_Result.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\observationByDepartment_Result.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\observationByMonth_Result.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\observationByObserver_Result.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Overtime.cs" />
     <Compile Include="Models\part.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PartEntity.cs" />
     <Compile Include="Models\part_unit_event.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PermitModel.cs" />
     <Compile Include="Models\pir.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PIREntity.cs" />
     <Compile Include="Models\pir_clause.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -665,21 +617,12 @@
     <Compile Include="Models\plant.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PlantAvailibilityEntity.cs" />
-    <Compile Include="Models\PmComp.cs" />
-    <Compile Include="Models\PmWorkDistribution.cs" />
-    <Compile Include="Models\PrintModel.cs" />
-    <Compile Include="Models\ProcedureReferenceList.cs" />
-    <Compile Include="Models\ProcessOwnerList.cs" />
     <Compile Include="Models\process_owner.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\rca.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RCAEntity.cs" />
-    <Compile Include="Models\RCAFacility.cs" />
-    <Compile Include="Models\RCATemplateEntity.cs" />
     <Compile Include="Models\rca_analisys_type.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -728,6 +671,72 @@
     <Compile Include="Models\rca_template.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\safe_man_hours.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\safe_man_hours_incident.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\secondary_effects.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityEntity.cs" />
+    <Compile Include="Models\DutyManagerPresentationStub.cs" />
+    <Compile Include="Models\DailyLogPresentationStub.cs" />
+    <Compile Include="Models\DailyLogReportEntity.cs" />
+    <Compile Include="Models\DashboardChartEntity.cs" />
+    <Compile Include="Models\DisciplineEntity.cs" />
+    <Compile Include="Models\EmployeeDelegationChecker.cs" />
+    <Compile Include="Models\EmployeeEntity.cs" />
+    <Compile Include="Models\EquipmentEntity.cs" />
+    <Compile Include="Models\EquipmentPartEntity.cs" />
+    <Compile Include="Models\EquipmentTableReportEntity.cs" />
+    <Compile Include="Models\ExportExcel\AssetRegisterExport.cs" />
+    <Compile Include="Models\ExportExcel\EcaExport.cs" />
+    <Compile Include="Models\ExportExcel\EqRelCharExport.cs" />
+    <Compile Include="Models\ExportExcel\EquipmentReadNavExport.cs" />
+    <Compile Include="Models\ExportExcel\FracasExport.cs" />
+    <Compile Include="Models\ExportExcel\FracasLogExport.cs" />
+    <Compile Include="Models\ExportExcel\FscaExport.cs" />
+    <Compile Include="Models\ExportExcel\PlantAvailExport.cs" />
+    <Compile Include="Models\FailureModeEntity.cs" />
+    <Compile Include="Models\FracasEventModel.cs" />
+    <Compile Include="Models\HseEventEntity.cs" />
+    <Compile Include="Models\IncidentReportExcel.cs" />
+    <Compile Include="Models\InvestigationReportModel.cs" />
+    <Compile Include="Models\LoginEntity.cs" />
+    <Compile Include="Models\MaEntity.cs" />
+    <Compile Include="Models\MaintenanceCost.cs" />
+    <Compile Include="Models\MonthFilterForm.cs" />
+    <Compile Include="Models\MPSRModel.cs" />
+    <Compile Include="Models\observationByDate_Result.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\observationByDepartmentObserver2_Result.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\observationByDepartment_Result.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\observationByMonth_Result.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\observationByObserver_Result.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Overtime.cs" />
+    <Compile Include="Models\PartEntity.cs" />
+    <Compile Include="Models\PermitModel.cs" />
+    <Compile Include="Models\PIREntity.cs" />
+    <Compile Include="Models\PlantAvailibilityEntity.cs" />
+    <Compile Include="Models\PmComp.cs" />
+    <Compile Include="Models\PmWorkDistribution.cs" />
+    <Compile Include="Models\PrintModel.cs" />
+    <Compile Include="Models\ProcedureReferenceList.cs" />
+    <Compile Include="Models\ProcessOwnerList.cs" />
+    <Compile Include="Models\RCAEntity.cs" />
+    <Compile Include="Models\RCAFacility.cs" />
+    <Compile Include="Models\RCATemplateEntity.cs" />
     <Compile Include="Models\Relmon.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -743,16 +752,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Relmon.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\safe_man_hours.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\safe_man_hours_incident.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ScheduleNonConformance.cs" />
-    <Compile Include="Models\secondary_effects.cs">
-      <DependentUpon>Relmon.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\SheObservationPersonReport.cs" />
     <Compile Include="Models\she_illness_report.cs">
       <DependentUpon>Relmon.tt</DependentUpon>

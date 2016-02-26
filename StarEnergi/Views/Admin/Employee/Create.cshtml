@@ -26,6 +26,14 @@
             }
         }
 
+        var isContractorPtc = null;
+        if ($('#is_contractor_ptc').is(":checked")) {
+            isContractorPtc = true;
+        }
+        else {
+            isContractorPtc = false;
+        }
+
         var values =
         {
             "employee_no": $('#employee_no').val(),
@@ -38,7 +46,8 @@
             "department":$('#department').val(),
             "employee_boss": eval('@ViewBag.employee_id'),
             "signature": $('#img_sign_src').val(),
-            "approval_level": approval_level
+            "approval_level": approval_level,
+            "is_contractor_ptc": isContractorPtc
         }
 
         $.post("Employee/Create", values, function (data) {
@@ -136,6 +145,12 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.email)
             <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.Label("Is Contractor PTC?")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.is_contractor_ptc)
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.signature)

@@ -129,10 +129,10 @@ namespace StarEnergi.Models
         public DbSet<unit_paf> unit_paf { get; set; }
         public DbSet<unit> units { get; set; }
         public DbSet<user_per_role> user_per_role { get; set; }
-        public DbSet<user_role> user_role { get; set; }
         public DbSet<user> users { get; set; }
         public DbSet<weekend_duty> weekend_duty { get; set; }
         public DbSet<workflow_node> workflow_node { get; set; }
+        public DbSet<user_role> user_role { get; set; }
     
         public virtual int insertUser(string username, Nullable<int> idEmployee)
         {
