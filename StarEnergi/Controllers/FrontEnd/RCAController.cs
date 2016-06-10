@@ -3279,7 +3279,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public static int Insert(RCAEntityModel analysis)
         {
-
+            
             rca anal = new rca()
             {
                 name = analysis.name,
@@ -3312,7 +3312,13 @@ namespace StarEnergi.Controllers.FrontEnd
             };
 
             db.rcas.Add(anal);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception e) { 
+            
+            }
 
             analysis.id = db.rcas.Max(p => p.id);
             analysis.type_name = db.rca_analisys_type.Where(p => p.id == analysis.id_type).FirstOrDefault().name;
@@ -3398,7 +3404,13 @@ namespace StarEnergi.Controllers.FrontEnd
 
                 rca.charter = analysis.charter;
                 rca.comment = analysis.comment;
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception e) { 
+                
+                }
             }
         }
 
@@ -3461,7 +3473,14 @@ namespace StarEnergi.Controllers.FrontEnd
                 rca.is_sign = 1;
                 rca.sign_date = DateTime.Today;
                 rca.pa_sign = employee.signature;
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception e) { 
+                
+                }
+                
             }
         }
 

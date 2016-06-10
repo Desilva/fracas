@@ -1626,7 +1626,7 @@ table .vertical {
 
 .menu-area .toggle-button {
     position: absolute;
-    left:50%;
+    left:49%;
     top:-15px;
 }
 
@@ -1747,4 +1747,12 @@ table .vertical {
     background: #fff;
     color: #808083;
     padding: 5px 10px;
+}
+
+.top-menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }

@@ -8,14 +8,14 @@
     {
         has = ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>;
     }
-    string username = HttpContext.Current.Session["username"].ToString();
+    string username = ViewBag.username;
     int? dept_id = null;
     int? superintendent_id = null;
     int? supervisor_id = null;
     int? superintendent_id_del = null;
     int? supervisor_id_del = null;
     string supervisor_position = null;
-    string user_id = HttpContext.Current.Session["id"].ToString();
+    string user_id = ViewBag.userId;
     if (ViewBag.mod != null)
     {
         id = ViewBag.mod as Nullable<Int32>;
@@ -288,7 +288,7 @@
                         <option value="" selected disabled>Choose One</option>
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            if (!isEdit && user.username == HttpContext.Current.Session["username"].ToString())
+                            if (!isEdit && user.username == username)
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
@@ -391,7 +391,7 @@
                                 if (ir.supervisor_approve == null)
                                 {
                                 <div id="button_supervisor_approve">
-                                    <input type="button" id="approve_supervisor" onclick="approveSupervisor('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                    <input type="button" id="approve_supervisor" onclick="approveSupervisor('@user_id')" value="Approve" />
                                     <input type="button" id="reject_supervisor" onclick="reject('5')" value="Reject" />
                                 </div>
                                 }
@@ -548,7 +548,7 @@
                                 if (ir.superintendent_approve == null)
                                 {
                                 <div id="button_superintendent_approve">
-                                    <input type="button" id="approve_superintendent" onclick="approveSuperintendent('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                    <input type="button" id="approve_superintendent" onclick="approveSuperintendent('@user_id')" value="Approve" />
                                     <input type="button" id="reject_superintendent" onclick="reject('1')" value="Reject" />
                                 </div>
                                 }
@@ -639,7 +639,7 @@
                                 if (ir.she_superintendent_approve == null)
                                 {
                         <div id="button_she_superintendent_approve">
-                            <input type="button" id="approve_she_superintendent" onclick="approveSS('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                            <input type="button" id="approve_she_superintendent" onclick="approveSS('@user_id')" value="Approve" />
                             <input type="button" id="reject_she_superintendent" onclick="reject('3')" value="Reject" />
                         </div>
                                 }
@@ -733,7 +733,7 @@
                                 if (ir.loss_control_approve == null)
                                 {
                                 <div id="button_loss_control_approve">
-                                    <input type="button" id="approve_loss_control" onclick="approveLC('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                                    <input type="button" id="approve_loss_control" onclick="approveLC('@user_id')" value="Approve" />
                                     <input type="button" id="reject_loss_control" onclick="reject('2')" value="Reject" />
                                 </div>
                                 }
@@ -825,7 +825,7 @@
                                 if (ir.field_manager_approve == null)
                                 {
                         <div id="button_field_manager_approve">
-                            <input type="button" id="approve_field_manager" onclick="approveFM('@HttpContext.Current.Session["id"].ToString()')" value="Approve" />
+                            <input type="button" id="approve_field_manager" onclick="approveFM('@user_id')" value="Approve" />
                             <input type="button" id="reject_field_manager" onclick="reject('4')" value="Reject" />
                         </div>
                                 }
@@ -1007,7 +1007,7 @@
             url: route,
             traditional: true,
             data: {
-                comment: $('#comment').val(), 
+                comment: $('#comment').val(),
                 id: '@id'
             },
             success: function (data) {
@@ -1045,7 +1045,7 @@
     function approveSupervisor(employee_id) {
         var r = confirm("Are you sure want to Approve this incident report?");
         if (r == true) {
-            
+
             var date = $('#date_ack').val();
             $.post("/Incident/approveSupervisor", { id: '@id', employee_id: employee_id, date: date }, function (data) {
                 if (data.success) {
@@ -1348,7 +1348,7 @@
                     values.id_fracas = '@(id_fracas != null ? id_fracas.ToString() : "")';
                     values.id_injury = '@(ViewBag.id_injury != null ? (ViewBag.id_injury as int?).ToString() : "")';
                     values.id_fracas_part = '@(ViewBag.id_fracas_part != null ? (ViewBag.id_fracas_part as int?).ToString() : "")';
-                    $.post("/Incident/Add", values, function (data) {
+                    $.post('@Url.Action("Add")', values, function (data) {
                         if (data != undefined) {
                             isSave = true;
                             $('#realmod_save').css("display", "none");

@@ -378,6 +378,7 @@
     <Compile Include="Controllers\Admin\WeekendDutyController.cs" />
     <Compile Include="Controllers\Admin\WellsController.cs" />
     <Compile Include="Controllers\FrontEnd\AssetRegisterController.cs" />
+    <Compile Include="Controllers\FrontEnd\IncidentController.cs" />
     <Compile Include="Controllers\FrontEnd\KpiController.cs" />
     <Compile Include="Controllers\FrontEnd\FieldManagerSummaryController.cs" />
     <Compile Include="Controllers\FrontEnd\HseInjuryReportController.cs" />
@@ -416,7 +417,6 @@
     <Compile Include="Controllers\FrontEnd\NotificationUrlResolverController.cs" />
     <Compile Include="Controllers\FrontEnd\SheObservationController.cs" />
     <Compile Include="Controllers\FrontEnd\HseObservationYearController.cs" />
-    <Compile Include="Controllers\FrontEnd\IncidentController.cs" />
     <Compile Include="Controllers\FrontEnd\PirController.cs" />
     <Compile Include="Controllers\FrontEnd\RCAController.cs" />
     <Compile Include="Controllers\FrontEnd\SheProjectController.cs" />
@@ -3563,6 +3563,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Admin\Security\Index.cshtml" />
+    <Content Include="Views\FrontEnd\Incident\addIncidentFromTools.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

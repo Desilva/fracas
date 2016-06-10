@@ -23,7 +23,6 @@ namespace StarEnergi.Utilities
                     Debug.WriteLine("c = " + fd.GetType().ToString());
                     if (fd is FilterDescriptor)
                     {
-                        
                         FilterDescriptor f = fd as FilterDescriptor;
 
                         data = ExpressionBuilders(data,f);

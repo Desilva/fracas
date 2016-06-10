@@ -118,7 +118,8 @@
         foreach (string[] l in list) {
             <text>var ls = Array();</text>
             foreach(string ll in l) {
-                <text>ls.push('@ll');</text>
+                string temp = ll.Replace('\n', ' ');
+                <text>ls.push('@temp');</text>
                 j++;       
             }
             <text>list.push(ls);</text>
@@ -128,7 +129,8 @@
     }
     @if (descs != null) {
         foreach (string desc in descs) {
-            <text>descs.push('@desc');</text>
+            string temp = desc.Replace('\n', ' ');
+            <text>descs.push('@temp');</text>
         }
     }
     function main() {

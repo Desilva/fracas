@@ -898,6 +898,11 @@ namespace StarEnergi.Controllers.FrontEnd
             {
                 foreach (var file in attachment)
                 {
+                    currpath = "~/Attachment/pir/" + id;
+                    if (!System.IO.Directory.Exists(Server.MapPath(currpath)))
+                    {
+                        System.IO.Directory.CreateDirectory(Server.MapPath(currpath));
+                    }
                     currpath = Path.Combine(
                     Server.MapPath("~/Attachment/pir/" + id),
                     file.FileName);

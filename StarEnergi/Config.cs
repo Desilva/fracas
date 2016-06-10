@@ -8,7 +8,7 @@ namespace StarEnergi
     public static class Config
     {
 
-        public static string conectionString = "Data Source=(local);Initial Catalog=star_energi_geo;Integrated Security=True";
+        public static string conectionString = "Data Source=.;Initial Catalog=star_energi_geo;Integrated Security=True";
         public static string EquipmentDataSheetFolder = "C:\\upload";
         public static string Title = "WW-FRACAS Application";
         public static string Area = "Wayang Windu";

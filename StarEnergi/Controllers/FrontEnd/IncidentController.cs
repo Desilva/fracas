@@ -34,7 +34,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
             }
             var has = (from users in db.users
-                      select new UserEntity { username = users.username, fullname = users.fullname, jabatan = users.jabatan }).ToList();
+                       select new UserEntity { username = users.username, fullname = users.fullname, jabatan = users.jabatan }).ToList();
             ViewData["users"] = has;
             string username = (String)Session["username"].ToString();
             li = db.user_per_role.Where(p => p.username == username).ToList();
@@ -46,10 +46,11 @@ namespace StarEnergi.Controllers.FrontEnd
             return View();
         }
 
-        public ActionResult addIncident(int? id, int? id_fracas, int? id_injury, int?id_fracas_part)
+        public ActionResult addIncident(int? id, int? id_fracas, int? id_injury, int? id_fracas_part)
         {
 
             string username = (String)Session["username"].ToString();
+            ViewBag.username = username;
             li = db.user_per_role.Where(p => p.username == username).ToList();
             if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
             {
@@ -57,9 +58,10 @@ namespace StarEnergi.Controllers.FrontEnd
             }
 
             string employeeId = Session["id"].ToString();
+            ViewBag.userId = employeeId;
             employee employee = db.employees.Find(int.Parse(employeeId));
             var has = (from employees in db.employees
-                       join dept in db.employee_dept on employees.dept_id equals dept.id 
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
                        join users in db.users on employees.id equals users.employee_id into user_employee
                        from ue in user_employee.DefaultIfEmpty()
                        where employees.dept_id != null || employees.employee_boss != null
@@ -144,27 +146,27 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     isCanEdit = true;
                 }
-                
+
                 if (employeeId == ir.ack_supervisor && ir.supervisor_approve == null)
                 {
                     isCanEdit = true;
                 }
-                
+
                 if (employeeId == ir.superintendent && ir.superintendent_approve == null && ir.supervisor_approve != null)
                 {
                     isCanEdit = true;
                 }
-                
+
                 if (employeeId == ir.loss_control && ir.loss_control_approve == null && ir.superintendent_approve != null)
                 {
                     isCanEdit = true;
                 }
-                
+
                 if (employeeId == ir.she_superintendent && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
                 {
                     isCanEdit = true;
                 }
-                
+
                 if (employeeId == ir.field_manager && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
                 {
                     isCanEdit = true;
@@ -295,7 +297,7 @@ namespace StarEnergi.Controllers.FrontEnd
                             superintendent_id = cur_user_boss.id;
                         }
                     }
-                    
+
                     cur_user_boss = cur_user_boss.employee2;
                 }
                 if (supervisor_id == null)
@@ -303,10 +305,10 @@ namespace StarEnergi.Controllers.FrontEnd
                     supervisor_id = cur_user_id;
                     supervisor_id_del = cur_user_del;
                 }
-                if (superintendent_id == null) 
-                { 
-                    superintendent_id = supervisor_id; 
-                    superintendent_id_del = supervisor_id_del; 
+                if (superintendent_id == null)
+                {
+                    superintendent_id = supervisor_id;
+                    superintendent_id_del = supervisor_id_del;
                 }
                 ViewBag.superintendent_id = superintendent_id;
                 ViewBag.supervisor_id = supervisor_id;
@@ -331,7 +333,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
             }
 
-           
+
 
             return PartialView();
         }
@@ -389,7 +391,8 @@ namespace StarEnergi.Controllers.FrontEnd
             List<incident_report> f = new List<incident_report>();
             f = db.incident_report.ToList();
 
-            foreach(incident_report i in f){
+            foreach (incident_report i in f)
+            {
                 if (i.id_rca != null)
                 {
                     var r = (from rcas in db.rcas
@@ -458,43 +461,46 @@ namespace StarEnergi.Controllers.FrontEnd
 
                 if (isCanEdit == false)
                 {
-                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.ack_supervisor));
-                    EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker(employeeDelegation);
-                    if (employeeDelegationChecker.isDelegateTo(employee) && ir.supervisor_approve == null)
+                    if (ir.ack_supervisor != "")
                     {
-                        isCanEdit = true;
-                    }
+                        employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.ack_supervisor));
+                        EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker(employeeDelegation);
+                        if (employeeDelegationChecker.isDelegateTo(employee) && ir.supervisor_approve == null)
+                        {
+                            isCanEdit = true;
+                        }
 
-                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.superintendent));
-                    employeeDelegationChecker.Employee = employeeDelegation;
-                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.superintendent_approve == null && ir.supervisor_approve != null)
-                    {
-                        isCanEdit = true;
-                    }
+                        employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.superintendent));
+                        employeeDelegationChecker.Employee = employeeDelegation;
+                        if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.superintendent_approve == null && ir.supervisor_approve != null)
+                        {
+                            isCanEdit = true;
+                        }
 
-                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.loss_control));
-                    employeeDelegationChecker.Employee = employeeDelegation;
-                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.loss_control_approve == null && ir.superintendent_approve != null)
-                    {
-                        isCanEdit = true;
-                    }
+                        employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.loss_control));
+                        employeeDelegationChecker.Employee = employeeDelegation;
+                        if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.loss_control_approve == null && ir.superintendent_approve != null)
+                        {
+                            isCanEdit = true;
+                        }
 
-                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.she_superintendent));
-                    employeeDelegationChecker.Employee = employeeDelegation;
-                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
-                    {
-                        isCanEdit = true;
-                    }
+                        employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.she_superintendent));
+                        employeeDelegationChecker.Employee = employeeDelegation;
+                        if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+                        {
+                            isCanEdit = true;
+                        }
 
-                    employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.field_manager));
-                    employeeDelegationChecker.Employee = employeeDelegation;
-                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
-                    {
-                        isCanEdit = true;
+                        employeeDelegation = dataContext.employees.Find(Int32.Parse(ir.field_manager));
+                        employeeDelegationChecker.Employee = employeeDelegation;
+                        if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+                        {
+                            isCanEdit = true;
+                        }
                     }
                 }
 
-                ir.isCanEdit = isCanEdit;   
+                ir.isCanEdit = isCanEdit;
             }
             return View(new GridModel
             {
@@ -507,72 +513,72 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             var dataContext = new relmon_star_energiEntities();
             IQueryable<IREntity> data = (from p in dataContext.incident_report
-                                                join rcass in dataContext.rcas
-                                                on p.id_rca equals rcass.id into pr
-                                                from ir_rca in pr.DefaultIfEmpty()
-                                                join employeei in dataContext.employees
-                                                on p.prepared_by equals SqlFunctions.StringConvert((double)employeei.id).Trim() into ps
-                                                from emp in ps.DefaultIfEmpty()
-                                                join tsr in dataContext.trouble_shooting
-                                                on p.id_tsr equals tsr.id into pt
-                                                from ir_tsr in pt.DefaultIfEmpty()
-                                                select new IREntity
-                                                {
-                                                    id = p.id,
-                                                    facility = p.facility,
-                                                    incident_location = p.incident_location,
-                                                    reference_number = p.reference_number,
-                                                    type_of_report = p.type_of_report,
-                                                    date_incident = p.date_incident,
-                                                    title = p.title,
-                                                    incident_type = p.incident_type,
-                                                    actual_loss_severity = p.actual_loss_severity,
-                                                    potential_loss_severity = p.potential_loss_severity,
-                                                    probability = p.probability,
-                                                    factual_information = p.factual_information,
-                                                    cost_estimate = p.cost_estimate,
-                                                    immediate_action = p.immediate_action,
-                                                    ack_supervisor = p.ack_supervisor,
-                                                    prepare_date = p.prepare_date,
-                                                    ack_date = p.ack_date,
-                                                    superintendent = p.superintendent,
-                                                    loss_control = p.loss_control,
-                                                    field_manager = p.field_manager,
-                                                    she_superintendent = p.she_superintendent,
-                                                    superintendent_date = p.superintendent_date,
-                                                    loss_date = p.loss_date,
-                                                    field_manager_date = p.field_manager_date,
-                                                    she_superintendent_date = p.she_superintendent_date,
-                                                    investigation = p.investigation,
-                                                    investigation_req = p.investigation_req,
-                                                    id_rca = p.id_rca,
-                                                    superintendent_approve = p.superintendent_approve,
-                                                    field_manager_approve = p.field_manager_approve,
-                                                    loss_control_approve = p.loss_control_approve,
-                                                    she_superintendent_approve = p.she_superintendent_approve,
-                                                    lead_name = p.lead_name,
-                                                    superintendent_delegate = p.superintendent_delegate,
-                                                    field_manager_delegate = p.field_manager_delegate,
-                                                    loss_control_delegate = p.loss_control_delegate,
-                                                    she_superintendent_delegate = p.she_superintendent_delegate,
-                                                    supervisor_approve = p.supervisor_approve,
-                                                    supervisor_delegate = p.supervisor_delegate,
-                                                    kontraktor_seg = p.kontraktor_seg,
-                                                    prepared_by = p.prepared_by,
-                                                    rca_number = ir_rca.rca_code != null ? ir_rca.rca_code : "",
-                                                    inves = p.investigation == 1 ? "Yes" : "No",
-                                                    type_report = p.type_of_report == 1 ? "On the job" : p.type_of_report == 0 ? "Off the job" : "",
-                                                    actual_loss = p.actual_loss_severity == 1 ? "Major" : p.actual_loss_severity == 2 ? "Serious" : p.actual_loss_severity == 3 ? "Moderate" : p.actual_loss_severity == 4 ? "Minor" : "",
-                                                    potential_loss = p.potential_loss_severity == 1 ? "Major" : p.potential_loss_severity == 2 ? "Serious" : p.potential_loss_severity == 3 ? "Moderate" : p.potential_loss_severity == 4 ? "Minor" : "",
-                                                    probability_str = p.probability == 1 ? "Frequent" : p.probability == 2 ? "Occasional" : p.probability == 3 ? "Seldom" : p.probability == 4 ? "Rare" : "",
-                                                    tsr_number = ir_tsr.no != null ? ir_tsr.no : "",
-                                                    prepared_by_name = emp.alpha_name,
-                                                    isSuspend = p.is_suspend,
-                                                });
+                                         join rcass in dataContext.rcas
+                                         on p.id_rca equals rcass.id into pr
+                                         from ir_rca in pr.DefaultIfEmpty()
+                                         join employeei in dataContext.employees
+                                         on p.prepared_by equals SqlFunctions.StringConvert((double)employeei.id).Trim() into ps
+                                         from emp in ps.DefaultIfEmpty()
+                                         join tsr in dataContext.trouble_shooting
+                                         on p.id_tsr equals tsr.id into pt
+                                         from ir_tsr in pt.DefaultIfEmpty()
+                                         select new IREntity
+                                         {
+                                             id = p.id,
+                                             facility = p.facility,
+                                             incident_location = p.incident_location,
+                                             reference_number = p.reference_number,
+                                             type_of_report = p.type_of_report,
+                                             date_incident = p.date_incident,
+                                             title = p.title,
+                                             incident_type = p.incident_type,
+                                             actual_loss_severity = p.actual_loss_severity,
+                                             potential_loss_severity = p.potential_loss_severity,
+                                             probability = p.probability,
+                                             factual_information = p.factual_information,
+                                             cost_estimate = p.cost_estimate,
+                                             immediate_action = p.immediate_action,
+                                             ack_supervisor = p.ack_supervisor,
+                                             prepare_date = p.prepare_date,
+                                             ack_date = p.ack_date,
+                                             superintendent = p.superintendent,
+                                             loss_control = p.loss_control,
+                                             field_manager = p.field_manager,
+                                             she_superintendent = p.she_superintendent,
+                                             superintendent_date = p.superintendent_date,
+                                             loss_date = p.loss_date,
+                                             field_manager_date = p.field_manager_date,
+                                             she_superintendent_date = p.she_superintendent_date,
+                                             investigation = p.investigation,
+                                             investigation_req = p.investigation_req,
+                                             id_rca = p.id_rca,
+                                             superintendent_approve = p.superintendent_approve,
+                                             field_manager_approve = p.field_manager_approve,
+                                             loss_control_approve = p.loss_control_approve,
+                                             she_superintendent_approve = p.she_superintendent_approve,
+                                             lead_name = p.lead_name,
+                                             superintendent_delegate = p.superintendent_delegate,
+                                             field_manager_delegate = p.field_manager_delegate,
+                                             loss_control_delegate = p.loss_control_delegate,
+                                             she_superintendent_delegate = p.she_superintendent_delegate,
+                                             supervisor_approve = p.supervisor_approve,
+                                             supervisor_delegate = p.supervisor_delegate,
+                                             kontraktor_seg = p.kontraktor_seg,
+                                             prepared_by = p.prepared_by,
+                                             rca_number = ir_rca.rca_code != null ? ir_rca.rca_code : "",
+                                             inves = p.investigation == 1 ? "Yes" : "No",
+                                             type_report = p.type_of_report == 1 ? "On the job" : p.type_of_report == 0 ? "Off the job" : "",
+                                             actual_loss = p.actual_loss_severity == 1 ? "Major" : p.actual_loss_severity == 2 ? "Serious" : p.actual_loss_severity == 3 ? "Moderate" : p.actual_loss_severity == 4 ? "Minor" : "",
+                                             potential_loss = p.potential_loss_severity == 1 ? "Major" : p.potential_loss_severity == 2 ? "Serious" : p.potential_loss_severity == 3 ? "Moderate" : p.potential_loss_severity == 4 ? "Minor" : "",
+                                             probability_str = p.probability == 1 ? "Frequent" : p.probability == 2 ? "Occasional" : p.probability == 3 ? "Seldom" : p.probability == 4 ? "Rare" : "",
+                                             tsr_number = ir_tsr.no != null ? ir_tsr.no : "",
+                                             prepared_by_name = emp.alpha_name,
+                                             isSuspend = p.is_suspend,
+                                         });
             //data = data.Where(p => p.prepared_by == idLogin || p.ack_supervisor == idLogin || p.superintendent == idLogin || p.loss_control == idLogin || p.she_superintendent == idLogin || p.field_manager == idLogin ||
             //    p.supervisor_delegate == idLogin || p.superintendent_delegate == idLogin || p.loss_control_delegate == idLogin || p.she_superintendent_delegate == idLogin || p.field_manager_delegate == idLogin);
             data = data.ApplyFiltering(command.FilterDescriptors);
-            count = data.FirstOrDefault() == null ? 0 : data.Count();
+            count = data.ToList().Count();
             //Apply sorting
             data = data.ApplySorting(command.GroupDescriptors, command.SortDescriptors);
             //Apply paging
@@ -601,7 +607,7 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             int id_before = (db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id)) + 1;
 
-           
+
 
             incident_report inc = db.incident_report.OrderBy(p => p.reference_number).ToList().LastOrDefault();
             string ir_ref = "";
@@ -639,7 +645,7 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             if (incidentReport.supervisor_delegate != null && incidentReport.supervisor_delegate != "")
             {
-                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.supervisor_delegate), "Please Approve "+ incidentReport.reference_number);
+                this.SendUserNotification(incidentReport, Int32.Parse(incidentReport.supervisor_delegate), "Please Approve " + incidentReport.reference_number);
             }
 
             this.SetWorkflowNode(incidentReport.id, "ApproveInitiator");
@@ -678,7 +684,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 db.Entry(injury).State = EntityState.Modified;
                 db.SaveChanges();
             }
-            
+
             //send email
             SendEmailToAll(incidentReport);
 
@@ -858,9 +864,9 @@ namespace StarEnergi.Controllers.FrontEnd
             else
             {
                 nodeInitiator = (from a in db.workflow_node
-                                                               where a.id_report == idReport
-                                                               && a.node_name=="Initiator"&& a.report_type =="FR-IR"
-                                                               select a).FirstOrDefault();
+                                 where a.id_report == idReport
+                                 && a.node_name == "Initiator" && a.report_type == "FR-IR"
+                                 select a).FirstOrDefault();
                 if (nodeInitiator == null)
                 {
                     nodeInitiator = new workflow_node();
@@ -870,9 +876,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
 
                 nodeSupervisor = (from a in db.workflow_node
-                                                               where a.id_report == idReport
-                                                               && a.node_name == "Supervisor" && a.report_type == "FR-IR"
-                                                               select a).FirstOrDefault();
+                                  where a.id_report == idReport
+                                  && a.node_name == "Supervisor" && a.report_type == "FR-IR"
+                                  select a).FirstOrDefault();
                 if (nodeSupervisor == null)
                 {
                     nodeSupervisor = new workflow_node();
@@ -882,9 +888,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
 
                 nodeSuperintendent = (from a in db.workflow_node
-                                                                where a.id_report == idReport
-                                                                && a.node_name == "Superintendent" && a.report_type == "FR-IR"
-                                                                select a).FirstOrDefault();
+                                      where a.id_report == idReport
+                                      && a.node_name == "Superintendent" && a.report_type == "FR-IR"
+                                      select a).FirstOrDefault();
                 if (nodeSuperintendent == null)
                 {
                     nodeSuperintendent = new workflow_node();
@@ -894,9 +900,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
 
                 nodeSafetySupervisor = (from a in db.workflow_node
-                                                                    where a.id_report == idReport
-                                                                    && a.node_name == "SafetySupervisor" && a.report_type == "FR-IR"
-                                                                    select a).FirstOrDefault();
+                                        where a.id_report == idReport
+                                        && a.node_name == "SafetySupervisor" && a.report_type == "FR-IR"
+                                        select a).FirstOrDefault();
                 if (nodeSafetySupervisor == null)
                 {
                     nodeSafetySupervisor = new workflow_node();
@@ -906,9 +912,9 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
 
                 nodeSHESuperintendent = (from a in db.workflow_node
-                                                                      where a.id_report == idReport
-                                                                      && a.node_name == "SHESuperintendent" && a.report_type == "FR-IR"
-                                                                      select a).FirstOrDefault();
+                                         where a.id_report == idReport
+                                         && a.node_name == "SHESuperintendent" && a.report_type == "FR-IR"
+                                         select a).FirstOrDefault();
                 if (nodeSHESuperintendent == null)
                 {
                     nodeSHESuperintendent = new workflow_node();
@@ -943,7 +949,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 0;
                     nodeFieldManager.status = 0;
                     break;
-                case "ApproveSupervisor": 
+                case "ApproveSupervisor":
                     nodeInitiator.status = 2;
                     nodeSupervisor.status = 2;
                     nodeSuperintendent.status = 1;
@@ -951,7 +957,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 0;
                     nodeFieldManager.status = 0;
                     break;
-                case "ApproveSuperintendent": 
+                case "ApproveSuperintendent":
                     nodeInitiator.status = 2;
                     nodeSupervisor.status = 2;
                     nodeSuperintendent.status = 2;
@@ -959,7 +965,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 0;
                     nodeFieldManager.status = 0;
                     break;
-                case "ApproveSafetySupervisor": 
+                case "ApproveSafetySupervisor":
                     nodeInitiator.status = 2;
                     nodeSupervisor.status = 2;
                     nodeSuperintendent.status = 2;
@@ -967,7 +973,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 1;
                     nodeFieldManager.status = 0;
                     break;
-                case "ApproveSHESuperintendent": 
+                case "ApproveSHESuperintendent":
                     nodeInitiator.status = 2;
                     nodeSupervisor.status = 2;
                     nodeSuperintendent.status = 2;
@@ -983,7 +989,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 2;
                     nodeFieldManager.status = 2;
                     break;
-                case "RejectFieldManager": 
+                case "RejectFieldManager":
                     nodeInitiator.status = 2;
                     nodeSupervisor.status = 2;
                     nodeSuperintendent.status = 2;
@@ -991,7 +997,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 1;
                     nodeFieldManager.status = 0;
                     break;
-                case "RejectSHESuperintendent": 
+                case "RejectSHESuperintendent":
                     nodeInitiator.status = 2;
                     nodeSupervisor.status = 2;
                     nodeSuperintendent.status = 2;
@@ -999,7 +1005,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 0;
                     nodeFieldManager.status = 0;
                     break;
-                case "RejectSafetySupervisor": 
+                case "RejectSafetySupervisor":
                     nodeInitiator.status = 2;
                     nodeSupervisor.status = 2;
                     nodeSuperintendent.status = 1;
@@ -1007,7 +1013,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 0;
                     nodeFieldManager.status = 0;
                     break;
-                case "RejectSuperintendent": 
+                case "RejectSuperintendent":
                     nodeInitiator.status = 2;
                     nodeSupervisor.status = 1;
                     nodeSuperintendent.status = 0;
@@ -1015,7 +1021,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     nodeSHESuperintendent.status = 0;
                     nodeFieldManager.status = 0;
                     break;
-                case "RejectSupervisor": 
+                case "RejectSupervisor":
                     nodeInitiator.status = 1;
                     nodeSupervisor.status = 0;
                     nodeSuperintendent.status = 0;
@@ -1104,7 +1110,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 //SEND TO NEXT LEVEL
                 if (ir.she_superintendent != null && ir.she_superintendent != "")
                 {
-                    this.SendUserNotification(ir, Int32.Parse(ir.she_superintendent), "Please Approve "+ ir.reference_number);
+                    this.SendUserNotification(ir, Int32.Parse(ir.she_superintendent), "Please Approve " + ir.reference_number);
                 }
                 if (ir.she_superintendent_delegate != null && ir.she_superintendent_delegate != "")
                 {
@@ -1161,20 +1167,20 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     this.SendUserNotification(ir, Int32.Parse(ir.loss_control), "Please Approve " + ir.reference_number);
                 }
-                if (ir.loss_control_delegate != null && ir.loss_control_delegate !="")
+                if (ir.loss_control_delegate != null && ir.loss_control_delegate != "")
                 {
                     this.SendUserNotification(ir, Int32.Parse(ir.loss_control_delegate), "Please Approve " + ir.reference_number);
                 }
 
                 this.SetWorkflowNode(ir.id, "ApproveSuperintendent");
-              
+
                 return Json(new { success = true, path = sign });
             }
             else
             {
-                return Json(new { success = false});
+                return Json(new { success = false });
             }
-            
+
         }
 
         [HttpPost]
@@ -1266,7 +1272,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 //SEND TO INVESTIGATION LEAD
                 if (ir.lead_name != null && ir.lead_name != "")
                 {
-                    this.SendUserNotification(ir, Int32.Parse(ir.lead_name), "Please Make RCA",true);
+                    this.SendUserNotification(ir, Int32.Parse(ir.lead_name), "Please Make RCA", true);
                 }
                 this.SetWorkflowNode(ir.id, "ApproveFieldManager");
                 return Json(new { success = true, path = sign });
@@ -1310,7 +1316,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     SendEmailApprove(ir, Int32.Parse(ir.field_manager));
                 else if (ir.field_manager_delegate != null)
                     SendEmailApprove(ir, Int32.Parse(ir.field_manager_delegate));
-                
+
                 //SEND TO NEXT LEVEL
                 if (ir.field_manager != null && ir.field_manager != "")
                 {
@@ -1337,7 +1343,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            
+
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -1376,7 +1382,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            
+
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -1406,7 +1412,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            
+
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -1445,7 +1451,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            
+
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -1484,7 +1490,7 @@ namespace StarEnergi.Controllers.FrontEnd
             incident_report incidentReport = db.incident_report.Find(id);
             List<String> s = new List<string>();
             var sendEmail = new SendEmailController();
-            
+
             incident_report_log ir_log = new incident_report_log
             {
                 id_ir = id,
@@ -1525,7 +1531,7 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             return Json(true);
         }
-        
+
         [HttpPost]
         public ActionResult attachment(IEnumerable<HttpPostedFileBase> attachment, int? id)
         {
@@ -1566,7 +1572,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     Debug.WriteLine(PathEx.Message);
                 }
             }
-            return Json(new { success = true, path = currpath, files=st });
+            return Json(new { success = true, path = currpath, files = st });
         }
 
         [HttpPost]
@@ -1729,7 +1735,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 pim.ack_supervisor_jabatan = has.Find(p => p.id == Int32.Parse(ir.ack_supervisor)).position;
             }
 
-            if (ir.superintendent != null && ir.superintendent != "null" && (ir.superintendent_approve == null || ir.superintendent_approve.Substring(0,1) == "a"))
+            if (ir.superintendent != null && ir.superintendent != "null" && (ir.superintendent_approve == null || ir.superintendent_approve.Substring(0, 1) == "a"))
                 pim.superintendent = has.Find(p => p.id == Int32.Parse(ir.superintendent)).alpha_name;
             else
                 pim.superintendent = has.Find(p => p.id == Int32.Parse(ir.superintendent_delegate)).alpha_name;
@@ -1798,13 +1804,24 @@ namespace StarEnergi.Controllers.FrontEnd
                          prepared_by = ir.prepared_by,
                          title = ir.title,
                          incident_type = ir.incident_type,
-                         reference_number = ir.reference_number
+                         reference_number = ir.reference_number,
+                         investigation = ir.investigation == 1 ? "Yes" : "No",
+                         investigation_req = ir.investigation_req,
+                         lead_name = ir.lead_name,
                      }).OrderBy(p => p.date_incident).ToList();
             result = r;
             foreach (incident_report_e ire in result)
             {
                 if (ire.prepared_by != null && ire.prepared_by != "")
                     ire.prepared_by = db.employees.Find(Int32.Parse(ire.prepared_by)).alpha_name;
+                if (ire.investigation_req != null && ire.investigation_req != "")
+                    ire.investigation_req = db.employees.Find(Int32.Parse(ire.investigation_req)).alpha_name;
+                if (ire.lead_name != null && ire.lead_name != "")
+                    ire.lead_name = db.employees.Find(Int32.Parse(ire.lead_name)).alpha_name;
+            }
+            if (result.Count == 0)
+            {
+                result.Add(new incident_report_e());
             }
             GridView gv = new GridView();
             gv.Caption = "Incident Report Data From " + fromD.ToShortDateString() + " To " + toD.ToShortDateString();
@@ -1816,7 +1833,10 @@ namespace StarEnergi.Controllers.FrontEnd
             gv.HeaderRow.Cells[3].Text = "Description";
             gv.HeaderRow.Cells[4].Text = "Type";
             gv.HeaderRow.Cells[5].Text = "Value";
-            gv.HeaderRow.Cells[6].Text = "Person By";
+            gv.HeaderRow.Cells[6].Text = "Prepared By";
+            gv.HeaderRow.Cells[7].Text = "Investigation";
+            gv.HeaderRow.Cells[8].Text = "Investigation Request By";
+            gv.HeaderRow.Cells[9].Text = "Investigation Lead By";
             if (gv != null)
             {
                 return new DownloadFileActionResult(gv, "incident report data.xls");
@@ -1834,7 +1854,8 @@ namespace StarEnergi.Controllers.FrontEnd
             double total_cost = 0;
             double cost_kon = 0;
             double cost_seg = 0;
-            foreach(incident_report ir in list_ir) {
+            foreach (incident_report ir in list_ir)
+            {
                 if (ir.cost_estimate != null && ir.cost_estimate != "")
                 {
                     total_cost += double.Parse(ir.cost_estimate);
@@ -1848,7 +1869,7 @@ namespace StarEnergi.Controllers.FrontEnd
                     }
                 }
             }
-            result.Add(new incident_report_r { type = "Injury / Illness", cases = list_ir.Count, total_cost = total_cost , cost_kon = cost_kon, cost_seg = cost_seg});
+            result.Add(new incident_report_r { type = "Injury / Illness", cases = list_ir.Count, total_cost = total_cost, cost_kon = cost_kon, cost_seg = cost_seg });
             list_ir = db.incident_report.Where(p => p.incident_type == "Environmental Loss").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
             total_cost = 0;
             cost_kon = 0;
@@ -2034,7 +2055,8 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
-        public void SendEmailApprove(incident_report ir, int employeeId) {
+        public void SendEmailApprove(incident_report ir, int employeeId)
+        {
             var sendEmail = new SendEmailController();
             employee e = db.employees.Find(employeeId);
             if (e.email != null)
@@ -2133,7 +2155,7 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
-        private void SendUserNotification(incident_report data, int sendUserId,string message, bool isInvestigationLead=false)
+        private void SendUserNotification(incident_report data, int sendUserId, string message, bool isInvestigationLead = false)
         {
             WWService.UserServiceClient client = new WWService.UserServiceClient();
             if (isInvestigationLead == true)
@@ -2156,7 +2178,7 @@ namespace StarEnergi.Controllers.FrontEnd
                 message,
                 "/NotificationUrlResolver/FRACAS?name=SHE_INCIDENT_REPORT&id=" + data.id);
             }
-            
+
         }
 
         private string EncodeMd5(string originalText)
@@ -2187,14 +2209,14 @@ namespace StarEnergi.Controllers.FrontEnd
             var data = (from a in db.workflow_node
                         where a.report_type == "FR-IR" && a.id_report == id
                         select a).ToList();
-            int dataInitiator=0;
-            int dataSupervisor=0;
-            int dataSuperintendent=0;
-            int dataSafetySupervisor=0;
-            int dataSHESuperintendent=0;
-            int dataFieldManager=0;
+            int dataInitiator = 0;
+            int dataSupervisor = 0;
+            int dataSuperintendent = 0;
+            int dataSafetySupervisor = 0;
+            int dataSHESuperintendent = 0;
+            int dataFieldManager = 0;
 
-            if (data.Count>0)
+            if (data.Count > 0)
             {
                 foreach (workflow_node a in data)
                 {
@@ -2772,8 +2794,8 @@ namespace StarEnergi.Controllers.FrontEnd
                 {
                     int preparedBy = Int32.Parse(incidentData.prepared_by);
                     var reportedBy = (from a in employeeList
-                                         where a.id == preparedBy
-                                         select a).FirstOrDefault();
+                                      where a.id == preparedBy
+                                      select a).FirstOrDefault();
                     if (reportedBy != null)
                     {
                         if (e.employee.email != null)
@@ -2810,5 +2832,338 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
-    } 
+        public ActionResult addIncidentFromTools(int? id, int? id_fracas, int? id_injury, int? id_fracas_part)
+        {
+
+            //string username = (String)Session["username"].ToString();
+            string username = "Saiful Hidayat";
+            string employeeId = "278";
+            ViewBag.username = username;
+            li = db.user_per_role.Where(p => p.username == username).ToList();
+            if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
+            {
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
+            }
+
+            //string employeeId = Session["id"].ToString();
+            ViewBag.userId = employeeId;
+            employee employee = db.employees.Find(int.Parse(employeeId));
+            var has = (from employees in db.employees
+                       join dept in db.employee_dept on employees.dept_id equals dept.id
+                       join users in db.users on employees.id equals users.employee_id into user_employee
+                       from ue in user_employee.DefaultIfEmpty()
+                       where employees.dept_id != null || employees.employee_boss != null
+                       orderby employees.dept_id
+                       select new EmployeeEntity
+                       {
+                           id = employees.id,
+                           alpha_name = employees.alpha_name,
+                           employee_no = employees.employee_no,
+                           position = employees.position,
+                           work_location = employees.work_location,
+                           dob = employees.dob,
+                           dept_name = dept.dept_name,
+                           department = employees.department,
+                           dept_id = employees.dept_id,
+                           username = (ue.username == null ? String.Empty : ue.username),
+                           employee = employees.employee2,
+                           delagate = employees.delagate,
+                           employee_delegate = employees.employee_delegate,
+                           approval_level = employees.approval_level
+                       }).ToList();
+            List<EmployeeEntity> bind = has;
+            EmployeeDelegationChecker employeeDelegationChecker = new EmployeeDelegationChecker();
+            foreach (EmployeeEntity ee in bind)
+            {
+                int level = 0;
+                ee.role = db.user_per_role.Where(p => p.username == (ee.username != null ? ee.username : "")).ToList();
+                if (ee.employee != null)
+                {
+                    employee temp = ee.employee;
+                    level = 1;
+
+                    while (temp.employee2 != null)
+                    {
+                        temp = temp.employee2;
+                        level++;
+                    }
+                }
+                ee.level = level;
+
+                employeeDelegationChecker.setDelegate(ee, employee);
+            }
+            ViewBag.facility = db.rca_facility.ToList();
+
+            incident_report inc = db.incident_report.OrderBy(p => p.reference_number).ToList().LastOrDefault();
+
+            if (inc == null || inc.reference_number == null || inc.reference_number.Length != 20)
+            {
+                int refs = 1;
+                int year = DateTime.Today.Year;
+                ViewBag.ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+            }
+            else
+            {
+                int refs = Int32.Parse(inc.reference_number.Substring(16));
+                refs++;
+                int reference_year = Int32.Parse(inc.reference_number.Substring(11, 4));
+                int year = DateTime.Today.Year;
+                if (year == reference_year)
+                    ViewBag.ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+                else
+                {
+                    refs = 1;
+                    ViewBag.ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+                }
+            }
+            ViewData["users"] = bind.OrderBy(p => p.alpha_name).ToList();
+            ViewData["user_role"] = li;
+            if (id != null)
+            {
+                ViewBag.mod = id;
+                incident_report ir = db.incident_report.Find(id);
+                ViewBag.datas = ir;
+                ViewBag.superintendent_del = String.IsNullOrWhiteSpace(ir.superintendent_approve) == false ? (String.IsNullOrWhiteSpace(ir.superintendent) ? null : db.employees.Find(Int32.Parse(ir.superintendent == null ? "0" : ir.superintendent)).employee_delegate) : null;
+                ViewBag.she_superintendent_del = String.IsNullOrWhiteSpace(ir.she_superintendent_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.she_superintendent) ? "0" : ir.she_superintendent)).employee_delegate : null;
+                ViewBag.loss_control_del = String.IsNullOrWhiteSpace(ir.loss_control_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.loss_control) ? "0" : ir.loss_control)).employee_delegate : null;
+                ViewBag.field_manager_del = String.IsNullOrWhiteSpace(ir.field_manager_approve) == false ? db.employees.Find(Int32.Parse(String.IsNullOrWhiteSpace(ir.field_manager) ? "0" : ir.field_manager)).employee_delegate : null;
+
+                bool isCanEdit = false;
+                employee employeeDelegation = new employee();
+                if (employeeId == ir.prepared_by && ir.supervisor_approve == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.ack_supervisor && ir.supervisor_approve == null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.superintendent && ir.superintendent_approve == null && ir.supervisor_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.loss_control && ir.loss_control_approve == null && ir.superintendent_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.she_superintendent && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (employeeId == ir.field_manager && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+                {
+                    isCanEdit = true;
+                }
+
+                if (isCanEdit == false)
+                {
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.ack_supervisor));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (employeeDelegationChecker.isDelegateTo(employee) && ir.supervisor_approve == null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.superintendent_approve == null && ir.supervisor_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.loss_control));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.loss_control_approve == null && ir.superintendent_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.she_superintendent));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.she_superintendent_approve == null && ir.loss_control_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+
+                    employeeDelegation = db.employees.Find(Int32.Parse(ir.field_manager));
+                    employeeDelegationChecker.Employee = employeeDelegation;
+                    if (isCanEdit == false && employeeDelegationChecker.isDelegateTo(employee) && ir.field_manager_approve == null && ir.she_superintendent_approve != null)
+                    {
+                        isCanEdit = true;
+                    }
+                }
+
+                ViewBag.isCanEdit = isCanEdit;
+            }
+            else
+            {
+                int cur_user_id = Int32.Parse(employeeId);
+                employee curUser = db.employees.Find(cur_user_id);
+                int? cur_dept_id = curUser.dept_id;
+                int? cur_user_del = curUser.employee_delegate;
+                employee cur_user_boss = db.employees.Find(cur_user_id).employee2;
+                int? superintendent_id = null;
+                int? superintendent_id_del = null;
+                int? supervisor_id = null;
+                int? supervisor_id_del = null;
+                string supervisor_position = null;
+                while (cur_user_boss != null)
+                {
+                    if (cur_user_boss.approval_level == 1)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (supervisor_id == null && cur_user_boss.approval_level == 2)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (cur_user_boss.approval_level == 2)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+                    else if (supervisor_id == null && superintendent_id == null && cur_user_boss.employee2 == null)
+                    {
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            supervisor_id = cur_user_boss.id;
+                            supervisor_id_del = cur_user_boss.employee_delegate;
+                            supervisor_position = cur_user_boss.position;
+                        }
+                        else
+                        {
+                            supervisor_id = cur_user_boss.id;
+                        }
+
+                        if (cur_user_boss.delagate == 1)
+                        {
+                            superintendent_id = cur_user_boss.id;
+                            superintendent_id_del = cur_user_boss.employee_delegate;
+                        }
+                        else
+                        {
+                            superintendent_id = cur_user_boss.id;
+                        }
+                    }
+
+                    cur_user_boss = cur_user_boss.employee2;
+                }
+                if (supervisor_id == null)
+                {
+                    supervisor_id = cur_user_id;
+                    supervisor_id_del = cur_user_del;
+                }
+                if (superintendent_id == null)
+                {
+                    superintendent_id = supervisor_id;
+                    superintendent_id_del = supervisor_id_del;
+                }
+                ViewBag.superintendent_id = superintendent_id;
+                ViewBag.supervisor_id = supervisor_id;
+                ViewBag.superintendent_id_del = superintendent_id_del;
+                ViewBag.supervisor_id_del = supervisor_id_del;
+                ViewBag.supervisor_position = supervisor_position;
+                ViewBag.id_fracas = id_fracas;
+                ViewBag.id_injury = id_injury;
+                ViewBag.id_fracas_part = id_fracas_part;
+
+                ViewBag.isCanEdit = true;
+                int last_id = db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id);
+                last_id++;
+                string subPath = "~/Attachment/incident_report/" + last_id + "/signatures"; // your code goes here
+                bool IsExists = System.IO.Directory.Exists(Server.MapPath(subPath));
+                if (!IsExists)
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+
+                subPath = "~/Attachment/incident_report/" + last_id + "/atch"; // your code goes here
+                IsExists = System.IO.Directory.Exists(Server.MapPath(subPath));
+                if (!IsExists)
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+            }
+
+
+
+            return PartialView("addIncidentFromTools");
+        }
+
+
+        ///new function
+        [HttpPost]
+        public JsonResult AddFromTools(incident_report incidentReport, int? id_fracas, int? id_injury, int? id_fracas_part)        
+        {
+            int id_before = (db.incident_report.ToList().Count == 0 ? 0 : db.incident_report.Max(p => p.id)) + 1;
+            incident_report inc = db.incident_report.OrderBy(p => p.reference_number).ToList().LastOrDefault();
+            string ir_ref = "";
+            if (inc == null || inc.reference_number == null || inc.reference_number.Length != 20)
+            {
+                int refs = 1;
+                int year = DateTime.Today.Year;
+                ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+            }
+            else
+            {
+                int refs = Int32.Parse(inc.reference_number.Substring(16));
+                refs++;
+                int reference_year = Int32.Parse(inc.reference_number.Substring(11, 4));
+                int year = DateTime.Today.Year;
+                if (year == reference_year)
+                    ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+                else
+                {
+                    refs = 1;
+                    ir_ref = "W-O-SPE-IR-" + year + "-" + refs.ToString().PadLeft(4, '0');
+                }
+            }
+            incidentReport.reference_number = ir_ref;
+            //string sign = db.employees.Find(Int32.Parse(incidentReport.prepared_by)).signature;
+            //incidentReport.requestor_approve = "a" + sign;                        
+            db.incident_report.Add(incidentReport);
+            db.SaveChanges();            
+            //return Redirect("http://localhost/ww-tools/Loaner/Loan/SaveIncident?irReport=" + irReport + "&&irTools=" + irTool);
+            var irReport = Json(incidentReport);            
+            return Json(new { ref_num = incidentReport.reference_number });
+            //return Json(new { ref_num = incidentReport.reference_number, urlrefresh = "http://localhost/ww-tools/Loaner/Loan/SaveIncident?irReport=" + irReport + "&&irTools=" + irTool });
+        }
+
+    }
 }

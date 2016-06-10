@@ -90,7 +90,6 @@ namespace StarEnergi.Models
         public DbSet<pir_log> pir_log { get; set; }
         public DbSet<plant> plants { get; set; }
         public DbSet<process_owner> process_owner { get; set; }
-        public DbSet<rca> rcas { get; set; }
         public DbSet<rca_analisys_type> rca_analisys_type { get; set; }
         public DbSet<rca_building> rca_building { get; set; }
         public DbSet<rca_csf> rca_csf { get; set; }
@@ -133,6 +132,7 @@ namespace StarEnergi.Models
         public DbSet<weekend_duty> weekend_duty { get; set; }
         public DbSet<workflow_node> workflow_node { get; set; }
         public DbSet<user_role> user_role { get; set; }
+        public DbSet<rca> rcas { get; set; }
     
         public virtual int insertUser(string username, Nullable<int> idEmployee)
         {
