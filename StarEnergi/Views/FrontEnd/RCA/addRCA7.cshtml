@@ -200,9 +200,9 @@
                 .Columns(columns =>
                 {
                     columns.ForeignKey(o => o.id_category, (System.Collections.IEnumerable)ViewData["category"],
-                           "id", "name").Width(75).Title("Data Category");
-                    columns.Bound(o => o.data_to_collect).Title("Data To Collect");
-                    columns.Bound(o => o.task).Title("Collection Strategy");
+                           "id", "name").Width(175).Title("Data Category");
+                    columns.Bound(o => o.data_to_collect).Width(175).Title("Data To Collect");
+                    columns.Bound(o => o.task).Width(175).Title("Collection Strategy");
                     columns.ForeignKey(o => o.pic, (System.Collections.IEnumerable)ViewData["users"],
                            "id", "alpha_name").Width(75).Title("PIC");
                     columns.Bound(o => o.target_date).Width(100).Title("Target Date");

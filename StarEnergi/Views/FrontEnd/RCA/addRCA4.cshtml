@@ -126,11 +126,11 @@
         <div class="infoAbove white">
             <div class="up">What are the team's Critical Success Factors (CSF)?</div>
         </div>
-        <div class="addField blue" style="height: 200px;">
+        <div class="addField blue" style="height: 335px;">
             <input type="hidden" name="isPublish" id="isPublish" value="@(ViewBag.isPublish == null ? "0" : ViewBag.isPublish)" />
             <input type="hidden" name="types" id="types" value="@ViewBag.types" />
             <div class="TA">
-                <div class="availableTA" style="overflow-y:scroll;height:200px">
+                <div class="availableTA" style="overflow-y:auto;height:300px">
                     <div class="center">Available Critical Success Factors</div>
                     @if ((isPublish == null || isPublish == 0) && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) && ViewBag.isView != null)
                     {
@@ -201,7 +201,7 @@
                         }
                     </div>
                 </div>
-                <div class="chosenTA" style="overflow-y:scroll;height:200px">
+                <div class="chosenTA" style="overflow-y:auto;height:300px">
                     <div class="center">Chosen Critical Success Factors</div>
                     <ul id="chosenList"></ul>
                 </div>

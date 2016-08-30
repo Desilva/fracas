@@ -200,13 +200,13 @@
         .Columns(columns =>
         {
 
-            columns.Bound(o => o.next_action).Title("Next Action");
+            columns.Bound(o => o.next_action).Width(250).Title("Next Action");
             columns.ForeignKey(o => o.pic, (System.Collections.IEnumerable)ViewData["users"],
-                   "id", "alpha_name").Width(100).Title("PIC");
-            columns.Bound(o => o.due_date).Width(100).Title("Due Date");
-            columns.Bound(o => o.dampak).Width(80).Title("Effect");
-            columns.Bound(o => o.usaha).Width(80).Title("Priority");
-            columns.Bound(o => o.id).Width(100).ClientTemplate("<#= status(is_complete,due_date,complete_date) #>").Title("Status").HtmlAttributes(new { align = "center" });
+                   "id", "alpha_name").Width(150).Title("PIC");
+            columns.Bound(o => o.due_date).Width(150).Title("Due Date");
+            columns.Bound(o => o.dampak).Width(150).Title("Effect");
+            columns.Bound(o => o.usaha).Width(150).Title("Priority");
+            columns.Bound(o => o.id).Width(80).ClientTemplate("<#= status(is_complete,due_date,complete_date) #>").Title("Status").HtmlAttributes(new { align = "center" });
             columns.Command(commands =>
             {
                 if (li.Exists(p => p.role == 2) && ViewBag.isView != null)
