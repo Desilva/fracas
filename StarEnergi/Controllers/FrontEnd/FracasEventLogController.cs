@@ -284,22 +284,46 @@ namespace StarEnergi.Controllers.FrontEnd
                         };
             List<FracasLogExport> result = model.ToList();
 
-            var modelPart = from o in db.part_unit_event
-                            where o.datetime_stop != null && o.status == 0
-                            select new FracasLogExport
-                            {
-                                dateTimeStop = o.datetime_stop,
-                                dateTimeStart = o.datetime_ops,
-                                unitName = o.equipment_part.equipment.equipment_groups.system.unit.nama,
-                                areaName = o.equipment_part.equipment.equipment_groups.system.unit.foc.nama,
-                                durasi = o.durasi,
-                                downtime = o.downtime
-                            };
+            List<part_unit_event> temp = db.part_unit_event.Where(o => o.datetime_stop != null && o.status == 0).ToList();
 
-            foreach (var item in modelPart)
+            foreach (part_unit_event item in temp)
             {
-                result.Add(item);
+                incident_report ir = db.incident_report.ToList().Find(p => p.id == item.id_ir);
+                trouble_shooting tsr = db.trouble_shooting.ToList().Find(p => p.id_ir == item.id);
+
+                FracasLogExport fr = new FracasLogExport();
+                fr.dateTimeStop = item.datetime_stop;
+                fr.dateTimeStart = item.datetime_ops;
+                fr.areaName = item.equipment_part.equipment.equipment_groups.system.unit.foc.nama;
+                fr.unitName = item.equipment_part.equipment.equipment_groups.system.unit.nama;
+                fr.tagNumber = item.equipment_part.equipment.tag_num;
+                fr.description = item.event_description;
+                fr.durasi = item.durasi;
+                fr.downtime = item.downtime;
+                fr.irNumber = ir != null ? ir.reference_number : "";
+                fr.tsrNumber = tsr != null ? tsr.no : "";
+                
+                result.Add(fr);
             }
+
+            //var modelPart = from o in db.part_unit_event
+            //                where o.datetime_stop != null && o.status == 0
+            //                select new FracasLogExport
+            //                {
+            //                    dateTimeStop = o.datetime_stop,
+            //                    dateTimeStart = o.datetime_ops,
+            //                    areaName = o.equipment_part.equipment.equipment_groups.system.unit.foc.nama,
+            //                    unitName = o.equipment_part.equipment.equipment_groups.system.unit.nama,
+            //                    tagNumber = o.equipment_part.equipment.tag_num,
+            //                    description = o.event_description,
+            //                    durasi = o.durasi,
+            //                    downtime = o.downtime
+            //                };
+
+            //foreach (var item in modelPart)
+            //{
+            //    result.Add(item);
+            //}
 
             if (result.Count > 0)
             {
@@ -309,10 +333,14 @@ namespace StarEnergi.Controllers.FrontEnd
                 gv.DataBind();
                 gv.HeaderRow.Cells[0].Text = "Date/Time Stop";
                 gv.HeaderRow.Cells[1].Text = "Date/Time Ops";
-                gv.HeaderRow.Cells[2].Text = "Unit";
-                gv.HeaderRow.Cells[3].Text = "Area";
-                gv.HeaderRow.Cells[4].Text = "Time To Repair";
-                gv.HeaderRow.Cells[5].Text = "Dowtime";
+                gv.HeaderRow.Cells[2].Text = "Area";
+                gv.HeaderRow.Cells[3].Text = "Unit";
+                gv.HeaderRow.Cells[4].Text = "Tag Number";
+                gv.HeaderRow.Cells[5].Text = "Description";
+                gv.HeaderRow.Cells[6].Text = "Time To Repair";
+                gv.HeaderRow.Cells[7].Text = "Dowtime";
+                gv.HeaderRow.Cells[8].Text = "IR Number";
+                gv.HeaderRow.Cells[9].Text = "TSR Number";
 
                 if (gv != null)
                 {

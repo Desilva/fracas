@@ -2832,22 +2832,40 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
-        public ActionResult addIncidentFromTools(int? id, int? id_fracas, int? id_injury, int? id_fracas_part)
+        public ActionResult addIncidentFromTools(string userid, int? id, int? id_fracas, int? id_injury, int? id_fracas_part)
         {
 
             //string username = (String)Session["username"].ToString();
-            string username = "Saiful Hidayat";
-            string employeeId = "278";
-            ViewBag.username = username;
-            li = db.user_per_role.Where(p => p.username == username).ToList();
-            if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
+
+            ///new code
+            ///
+            string employeeId = userid;
+            string username ="";
+            int empId = 0;
+            int.TryParse(userid, out empId);
+            employee employee = db.employees.Find(empId);
+            List<user> dataUsers = db.users.Where(n => n.employee_id == empId).ToList();
+            ViewBag.EmployeeId = userid;
+            ViewBag.EmployeeName = employee.alpha_name;
+            if (dataUsers.Count() > 0)
             {
-                return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
+                username = dataUsers.FirstOrDefault().username;
+                ViewBag.username = username;
             }
+            li = db.user_per_role.Where(p => p.username == username).ToList();
+            //string username = Session["UserName"].ToString();
+            //string employeeId = Session["Id"].ToString();
+            //ViewBag.username = username;
+            //li = db.user_per_role.Where(p => p.username == username).ToList();
+            //if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
+            //{
+            //    //return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
+            //    return RedirectToAction("LogOn", "Account", new { returnUrl = "ww-fracas/Incident" });
+            //}
 
             //string employeeId = Session["id"].ToString();
             ViewBag.userId = employeeId;
-            employee employee = db.employees.Find(int.Parse(employeeId));
+            //employee employee = db.employees.Find(int.Parse(employeeId));
             var has = (from employees in db.employees
                        join dept in db.employee_dept on employees.dept_id equals dept.id
                        join users in db.users on employees.id equals users.employee_id into user_employee
@@ -3020,7 +3038,7 @@ namespace StarEnergi.Controllers.FrontEnd
                         {
                             supervisor_id = cur_user_boss.id;
                             supervisor_id_del = cur_user_boss.employee_delegate;
-                            supervisor_position = cur_user_boss.position;
+                            supervisor_position = cur_user_boss.position;                            
                         }
                         else
                         {

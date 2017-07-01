@@ -81,6 +81,12 @@
   <wsdl:message name="IUserService_CreateUser_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateUserResponse" />
   </wsdl:message>
+  <wsdl:message name="IUserService_CreateUserLogin_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUserLogin" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_CreateUserLogin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUserLoginResponse" />
+  </wsdl:message>
   <wsdl:message name="IUserService_RemoveUser_InputMessage">
     <wsdl:part name="parameters" element="tns:RemoveUser" />
   </wsdl:message>
@@ -116,6 +122,42 @@
   </wsdl:message>
   <wsdl:message name="IUserService_GetUserNotification_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUserNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetWorkflowNode_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowNode" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetWorkflowNode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowNodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeCreate" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeUpdate_InputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeUpdate" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeUpdate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeDeleteByReportType_InputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeDeleteByReportType" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeDeleteByReportType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeDeleteByReportTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeCreateBulk_InputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeCreateBulk" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeCreateBulk_OutputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeCreateBulkResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeUpdateBulk_InputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeUpdateBulk" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_WorkflowNodeUpdateBulk_OutputMessage">
+    <wsdl:part name="parameters" element="tns:WorkflowNodeUpdateBulkResponse" />
   </wsdl:message>
   <wsdl:portType name="IUserService">
     <wsdl:operation name="listUser">
@@ -166,6 +208,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/CreateUser" message="tns:IUserService_CreateUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/CreateUserResponse" message="tns:IUserService_CreateUser_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="CreateUserLogin">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/CreateUserLogin" message="tns:IUserService_CreateUserLogin_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/CreateUserLoginResponse" message="tns:IUserService_CreateUserLogin_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="RemoveUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/RemoveUser" message="tns:IUserService_RemoveUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/RemoveUserResponse" message="tns:IUserService_RemoveUser_OutputMessage" />
@@ -189,6 +235,30 @@
     <wsdl:operation name="GetUserNotification">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetUserNotification" message="tns:IUserService_GetUserNotification_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetUserNotificationResponse" message="tns:IUserService_GetUserNotification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowNode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetWorkflowNode" message="tns:IUserService_GetWorkflowNode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetWorkflowNodeResponse" message="tns:IUserService_GetWorkflowNode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeCreate" message="tns:IUserService_WorkflowNodeCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeCreateResponse" message="tns:IUserService_WorkflowNodeCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeUpdate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeUpdate" message="tns:IUserService_WorkflowNodeUpdate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeUpdateResponse" message="tns:IUserService_WorkflowNodeUpdate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeDeleteByReportType">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeDeleteByReportType" message="tns:IUserService_WorkflowNodeDeleteByReportType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeDeleteByReportTypeResponse" message="tns:IUserService_WorkflowNodeDeleteByReportType_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeCreateBulk">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeCreateBulk" message="tns:IUserService_WorkflowNodeCreateBulk_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeCreateBulkResponse" message="tns:IUserService_WorkflowNodeCreateBulk_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeUpdateBulk">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeUpdateBulk" message="tns:IUserService_WorkflowNodeUpdateBulk_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/WorkflowNodeUpdateBulkResponse" message="tns:IUserService_WorkflowNodeUpdateBulk_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IUserService" type="tns:IUserService">
@@ -301,6 +371,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="CreateUserLogin">
+      <soap:operation soapAction="http://tempuri.org/IUserService/CreateUserLogin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="RemoveUser">
       <soap:operation soapAction="http://tempuri.org/IUserService/RemoveUser" style="document" />
       <wsdl:input>
@@ -348,6 +427,60 @@
     </wsdl:operation>
     <wsdl:operation name="GetUserNotification">
       <soap:operation soapAction="http://tempuri.org/IUserService/GetUserNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowNode">
+      <soap:operation soapAction="http://tempuri.org/IUserService/GetWorkflowNode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeCreate">
+      <soap:operation soapAction="http://tempuri.org/IUserService/WorkflowNodeCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeUpdate">
+      <soap:operation soapAction="http://tempuri.org/IUserService/WorkflowNodeUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeDeleteByReportType">
+      <soap:operation soapAction="http://tempuri.org/IUserService/WorkflowNodeDeleteByReportType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeCreateBulk">
+      <soap:operation soapAction="http://tempuri.org/IUserService/WorkflowNodeCreateBulk" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WorkflowNodeUpdateBulk">
+      <soap:operation soapAction="http://tempuri.org/IUserService/WorkflowNodeUpdateBulk" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

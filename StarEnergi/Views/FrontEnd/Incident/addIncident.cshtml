@@ -668,7 +668,7 @@
                 <h5>Safety Supervisor</h5>
             </td>
             <td style="width:20%" class="right">
-                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) && (ir.loss_control_approve == null ? true : ir.loss_control_approve.Substring(0, 1) == "a"))
+                @if (isEdit && has.Find(p => p.username == username).id == Int32.Parse(ir.loss_control == null || ir.loss_control == "" ? "0" : ir.loss_control) && (ir.loss_control_approve == null ? true : ir.   _approve.Substring(0, 1) == "a"))
                 {
                 }
                 else if (ir != null && ir.loss_control_delegate != null && (ir.loss_control_approve != null && ir.loss_control_approve.Substring(0, 1) == "d"))

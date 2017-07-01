@@ -655,7 +655,7 @@
             columns.Bound(o => o.description).Title("Description");
             columns.Bound(o => o.PIC).Width(150).Title("Who / PIC / Dept / Sect");
             columns.Bound(o => o.completion_date).Width(150).Title("Completion Date");
-            columns.Bound(o => o.pir_number).Width(80).Title("PIR No.");
+            columns.Bound(o => o.pir_number_string).Width(80).Title("PIR No.");
             if (li.Exists(p => p.role == (int)StarEnergi.Config.role.IIR) && !isView)
             {
                 columns.Command(commands =>

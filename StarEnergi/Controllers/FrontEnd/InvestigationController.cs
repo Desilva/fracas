@@ -680,6 +680,15 @@ namespace StarEnergi.Controllers.FrontEnd
                 }
             }
 
+            foreach (iir_recommendations iir in f)
+            {
+                pir temp = db.pirs.Where(x => x.id == iir.pir_number).FirstOrDefault();
+                if (temp != null)
+                    iir.pir_number_string = temp.no;
+                else
+                    iir.pir_number_string = "";
+            }
+
             return View(new GridModel<iir_recommendations>
             {
                 Data = f.OrderBy(p => p.id)

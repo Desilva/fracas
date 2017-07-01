@@ -2470,7 +2470,6 @@
     <Content Include="Scripts\Filemanager\images\upload.png" />
     <Content Include="Scripts\Filemanager\images\wait30trans.gif" />
     <Content Include="Scripts\Filemanager\index.html" />
-    <Content Include="Scripts\Filemanager\scripts\filemanager.config.js" />
     <Content Include="Scripts\Filemanager\scripts\filemanager.js" />
     <Content Include="Scripts\Filemanager\scripts\filemanager.liveSearch.js" />
     <Content Include="Scripts\Filemanager\scripts\filemanager.liveSearch.min.js" />
@@ -3472,13 +3471,14 @@
     <Content Include="Scripts\kendo\kendo.view.min.js.map" />
     <Content Include="Scripts\kendo\kendo.web.min.js.map" />
     <Content Include="Scripts\kendo\kendo.window.min.js.map" />
-    <None Include="Service References\WWService\UserService.disco" />
+    <None Include="Properties\PublishProfiles\fracas.pubxml" />
     <None Include="Service References\WWService\configuration91.svcinfo" />
     <None Include="Service References\WWService\configuration.svcinfo" />
     <None Include="Service References\WWService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\WWService\UserService.disco" />
     <Content Include="Views\Admin\Reporting\AvailibilityReport.aspx" />
     <Content Include="Views\Admin\Reporting\EquipmentReport.aspx" />
     <Content Include="Views\Admin\Reporting\PartReport.aspx" />
@@ -3531,16 +3531,6 @@
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Service References\WWService\UserService.wsdl" />
-    <None Include="Service References\WWService\UserService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\WWService\UserService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\WWService\UserService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Views\FrontEnd\Dashboard\kpi.cshtml" />
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASSHEIncidentReport.cshtml" />
     <Content Include="Views\FrontEnd\NotificationUrlResolver\FRACASTroubleshootingReport.cshtml" />
@@ -3564,6 +3554,22 @@
     </Content>
     <Content Include="Views\Admin\Security\Index.cshtml" />
     <Content Include="Views\FrontEnd\Incident\addIncidentFromTools.cshtml" />
+    <None Include="Service References\WWService\UserService.wsdl" />
+    <None Include="Service References\WWService\UserService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WWService\UserService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WWService\UserService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WWService\UserService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WWService\UserService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />
@@ -4233,12 +4239,6 @@
     <Content Include="Views\FrontEnd\Fracas\ViewEventP.cshtml" />
     <Content Include="Views\Shared\_LayoutNew.cshtml" />
     <Content Include="Views\FrontEnd\Dashboard\DashboardNew.cshtml" />
-    <None Include="Service References\WWService\UserService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\WWService\UserService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

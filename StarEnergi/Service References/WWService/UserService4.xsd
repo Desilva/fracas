@@ -197,6 +197,21 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="CreateUserLogin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="passKey" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateUserLoginResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="CreateUserLoginResult" nillable="true" type="q13:ResponseModel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="RemoveUser">
     <xs:complexType>
       <xs:sequence>
@@ -209,14 +224,14 @@
   <xs:element name="RemoveUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="RemoveUserResult" nillable="true" type="q13:ResponseModel" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="RemoveUserResult" nillable="true" type="q14:ResponseModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SetScheduleTraining">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="nameList" nillable="true" type="q14:ArrayOfstring" />
+        <xs:element xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="nameList" nillable="true" type="q15:ArrayOfstring" />
         <xs:element minOccurs="0" name="company" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="room" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="start" type="xs:dateTime" />
@@ -227,7 +242,7 @@
   <xs:element name="SetScheduleTrainingResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="SetScheduleTrainingResult" nillable="true" type="q15:ResponseModel" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="SetScheduleTrainingResult" nillable="true" type="q16:ResponseModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -246,7 +261,7 @@
   <xs:element name="CreateNotificationResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="CreateNotificationResult" nillable="true" type="q16:ResponseModel" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="CreateNotificationResult" nillable="true" type="q17:ResponseModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -254,7 +269,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="passKey" nillable="true" type="xs:string" />
-        <xs:element xmlns:q17="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="listIdLogin" nillable="true" type="q17:ArrayOfint" />
+        <xs:element xmlns:q18="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="listIdLogin" nillable="true" type="q18:ArrayOfint" />
         <xs:element minOccurs="0" name="applicationName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="reportName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="remarks" nillable="true" type="xs:string" />
@@ -265,7 +280,7 @@
   <xs:element name="CreateNotificationListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="CreateNotificationListResult" nillable="true" type="q18:ResponseModel" />
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="CreateNotificationListResult" nillable="true" type="q19:ResponseModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -281,7 +296,7 @@
   <xs:element name="NotifactionIsSeenResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="NotifactionIsSeenResult" nillable="true" type="q19:ResponseModel" />
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/StarEnergyService.Helper" minOccurs="0" name="NotifactionIsSeenResult" nillable="true" type="q20:ResponseModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -298,6 +313,98 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="GetUserNotificationResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWorkflowNode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id_report" type="xs:int" />
+        <xs:element minOccurs="0" name="report_type" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWorkflowNodeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetWorkflowNodeResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id_report" type="xs:int" />
+        <xs:element minOccurs="0" name="report_type" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="node_name" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="status" type="xs:unsignedByte" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="WorkflowNodeCreateResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeUpdate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id_report" type="xs:int" />
+        <xs:element minOccurs="0" name="report_type" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="node_name" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="status" type="xs:unsignedByte" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeUpdateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="WorkflowNodeUpdateResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeDeleteByReportType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="token" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="report_type" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeDeleteByReportTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="WorkflowNodeDeleteByReportTypeResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeCreateBulk">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="list" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeCreateBulkResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="WorkflowNodeCreateBulkResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeUpdateBulk">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="list" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkflowNodeUpdateBulkResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="WorkflowNodeUpdateBulkResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

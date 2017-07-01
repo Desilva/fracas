@@ -14,7 +14,7 @@ onLoad = function (e) {
         ]
     });
 
-    //EQUIPMENT
+    //SUBCOMPONENT
     $('#TreeSBS').data('tTreeView').addContextMenu({
         evaluateNode: function (treeview, node) {
             var nodeValue = treeview.getItemValue(node);
@@ -56,17 +56,18 @@ onLoad = function (e) {
             var nodeValue = treeview.getItemValue(node);
             return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 6) == 'SYSTEM'));
         },
-        menuItems: CreateContextMenu('Equipment-Group')
+        //menuItems: CreateContextMenu('Equipment-Group')
+        menuItems: CreateContextMenu('Equipment')
     });
 
     //EQUIPMENT GROUP
-    $('#TreeSBS').data('tTreeView').addContextMenu({
-        evaluateNode: function (treeview, node) {
-            var nodeValue = treeview.getItemValue(node);
-            return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 15) == 'EQUIPMENT_GROUP'));
-        },
-        menuItems: CreateContextMenu('Equipment')
-    });
+    //$('#TreeSBS').data('tTreeView').addContextMenu({
+    //    evaluateNode: function (treeview, node) {
+    //        var nodeValue = treeview.getItemValue(node);
+    //        return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 15) == 'EQUIPMENT_GROUP'));
+    //    },
+    //    menuItems: CreateContextMenu('Equipment')
+    //});
 
     //EQUIPMENT
     $('#TreeSBS').data('tTreeView').addContextMenu({
@@ -74,17 +75,27 @@ onLoad = function (e) {
             var nodeValue = treeview.getItemValue(node);
             return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 10) == 'EQUIPMENTS'));
         },
-        menuItems: CreateContextMenu('Sub-Equipment')
+        //menuItems: CreateContextMenu('Sub-Equipment')
+        menuItems: CreateContextMenu('Component')
     });
 
     //PART
-    $('#TreeSBS').data('tTreeView').addContextMenu({
-        evaluateNode: function (treeview, node) {
-            var nodeValue = treeview.getItemValue(node);
-            return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 4) == 'PART'));
-        },
-        menuItems: CreateContextMenu('Component')
-    });
+    //$('#TreeSBS').data('tTreeView').addContextMenu({
+    //    evaluateNode: function (treeview, node) {
+    //        var nodeValue = treeview.getItemValue(node);
+    //        return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 4) == 'PART'));
+    //    },
+    //    menuItems: CreateContextMenu('Component')
+    //});
+
+    //COMPONENT
+    //$('#TreeSBS').data('tTreeView').addContextMenu({
+    //    evaluateNode: function (treeview, node) {
+    //        var nodeValue = treeview.getItemValue(node);
+    //        return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 9) == 'COMPONENT'));
+    //    },
+    //    menuItems: CreateContextMenu('Sub-Component')
+    //});
 
     //COMPONENT
     $('#TreeSBS').data('tTreeView').addContextMenu({
@@ -92,7 +103,16 @@ onLoad = function (e) {
             var nodeValue = treeview.getItemValue(node);
             return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 9) == 'COMPONENT'));
         },
-        menuItems: CreateContextMenu('Sub-Component')
+        menuItems: [
+            {
+                text: 'Edit',
+                onclick: MyTreeView_OnEdit
+            },
+            {
+                text: 'Delete',
+                onclick: MyTreeView_OnDelete
+            },
+        ]
     });
 }
 
@@ -139,6 +159,51 @@ MyTreeView_OnDelete = function (e) {
 }
 
 //REDIRECT LINK WHEN CONTEXT MENU SELECTED
+//function ReturnLink(value, action) {
+//    if (action == 'Create') {
+//        if (value[0] == 'PLANT') {
+//            return 'Foc/' + action + '/' + value[1];
+//        } else if (value[0] == 'AREA') {
+//            return 'Unit/' + action + '/' + value[1];
+//        } else if (value[0] == 'UNIT') {
+//            return 'System/' + action + '/' + value[1];
+//        } else if (value[0] == 'SYSTEM') {
+//            return 'EquipmentGroup/' + action + '/' + value[1];
+//        } else if (value[0] == 'EQUIPMENT_GROUP') {
+//            return 'Equipment/' + action + '/' + value[1];
+//        } else if (value[0] == 'EQUIPMENTS') {
+//            return 'SubEquipment/' + action + '/' + value[1];
+//        } else if (value[0] == 'PART') {
+//            return 'Component/' + action + '/' + value[1];
+//        } else if (value[0] == 'COMPONENT') {
+//            return 'SubComponent/' + action + '/' + value[1];
+//        } 
+//        return;
+//    } else {
+//        if (value[0] == 'PLANT') {
+//            return 'Plant/' + action + '/';
+//        } else if (value[0] == 'AREA') {
+//            return 'Foc/' + action + '/';
+//        } else if (value[0] == 'UNIT') {
+//            return 'Unit/' + action + '/';
+//        } else if (value[0] == 'SYSTEM') {
+//            return 'System/' + action + '/';
+//        } else if (value[0] == 'EQUIPMENT_GROUP') {
+//            return 'EquipmentGroup/' + action + '/';
+//        } else if (value[0] == 'EQUIPMENTS') {
+//            return 'Equipment/' + action + '/';
+//        } else if (value[0] == 'PART') {
+//            return 'SubEquipment/' + action + '/';
+//        } else if (value[0] == 'COMPONENT') {
+//            return 'Component/' + action + '/';
+//        } else if (value[0] == 'SUBCOMPONENT') {
+//            return 'SubComponent/' + action + '/';
+//        } 
+//        return '';
+//    }
+//}
+
+//REDIRECT LINK WHEN CONTEXT MENU SELECTED UPDATED
 function ReturnLink(value, action) {
     if (action == 'Create') {
         if (value[0] == 'PLANT') {
@@ -148,15 +213,9 @@ function ReturnLink(value, action) {
         } else if (value[0] == 'UNIT') {
             return 'System/' + action + '/' + value[1];
         } else if (value[0] == 'SYSTEM') {
-            return 'EquipmentGroup/' + action + '/' + value[1];
-        } else if (value[0] == 'EQUIPMENT_GROUP') {
-            return 'Equipment/' + action + '/' + value[1];
+            return 'Equipment/' + action + '/' + value[1]; // Value system
         } else if (value[0] == 'EQUIPMENTS') {
-            return 'SubEquipment/' + action + '/' + value[1];
-        } else if (value[0] == 'PART') {
-            return 'Component/' + action + '/' + value[1];
-        } else if (value[0] == 'COMPONENT') {
-            return 'SubComponent/' + action + '/' + value[1];
+            return 'Component/' + action + '/' + value[1]; // value equipment
         } 
         return;
     } else {
@@ -168,20 +227,13 @@ function ReturnLink(value, action) {
             return 'Unit/' + action + '/';
         } else if (value[0] == 'SYSTEM') {
             return 'System/' + action + '/';
-        } else if (value[0] == 'EQUIPMENT_GROUP') {
-            return 'EquipmentGroup/' + action + '/';
-        } else if (value[0] == 'EQUIPMENTS') {
+        }  else if (value[0] == 'EQUIPMENTS') {
             return 'Equipment/' + action + '/';
-        } else if (value[0] == 'PART') {
-            return 'SubEquipment/' + action + '/';
-        } else if (value[0] == 'COMPONENT') {
+        }  else if (value[0] == 'COMPONENT') {
             return 'Component/' + action + '/';
-        } else if (value[0] == 'SUBCOMPONENT') {
-            return 'SubComponent/' + action + '/';
         } 
         return '';
     }
-    return '';
 }
 
 //REMOVE NODE FROM TREE

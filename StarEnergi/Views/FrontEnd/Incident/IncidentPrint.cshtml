@@ -547,8 +547,8 @@
 <np />
 <table>
     <tr>
-        <td style="font-size:10px">
-            Attachment(s):
+        <td style="font-size:12px">
+            <b>Attachment(s):</b>
         </td>
     </tr>
     @foreach (string s in Model.attach)
@@ -570,14 +570,17 @@
         else
         {
             <tr style="font-size:10px">
-            <td>
-                @s
-            </td>
+                <td>
+                    @s
+                </td>
             </tr>
             <tr style="font-size:10px">
                 <td>
-                    <img src="@Server.MapPath("~/Attachment/incident_report/" + Model.id + "/atch/" + s)" width="500"/>
+                    <img src="@Server.MapPath("~/Attachment/incident_report/" + Model.id + "/atch/" + s)" width="300"/>
                 </td>
+            </tr>
+            <tr>
+                <td><br /></td>
             </tr>
         }
         
