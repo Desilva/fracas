@@ -22,7 +22,7 @@ namespace StarEnergi
             UNIT,
             SYSTEM,
             EQUIPMENT_GROUP,
-            EQUIPMENTS,
+            EQUIPMENT,
             PART,
             COMPONENT,
             SUBCOMPONENT

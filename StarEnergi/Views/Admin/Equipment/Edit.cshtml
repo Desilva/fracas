@@ -52,17 +52,20 @@
         $(".input-dropdown").change(function () {
             var ocr = $("#id_ocr").find('option:selected');
             var ocrScore = parseFloat(ocr.data('score'));
-            var ocrValue = parseFloat(ocr.data('value'));       
-            if(@ViewBag.scr > 0)
-            {
-                var totalAcr = @double.Parse(ViewBag.scr.ToString()) * ocrValue;
-                $("#acr_label").val(totalAcr)
-            }
+            var ocrValue = parseFloat(ocr.data('value'));
+            var scrValue = '@ViewBag.scr.ToString()';
+            if(scrValue == null)            
+                scr = 0;            
+            var totalAcr = parseFloat(scrValue) * ocrValue;
+            $("#acr_label").val(totalAcr)
 
             var afp = $("#id_afp").find('option:selected');
             var afpScore = parseFloat(afp.data('score'));
             var afpValue = parseFloat(afp.data('value'));
-            var totalMpi = parseFloat($("#acr_label").val())* afpValue;
+            var acr = $("#acr_label").val();
+            if(acr == "")
+                acr = 0;
+            var totalMpi = parseFloat(acr)* afpValue;
             $("#mpi_label").val(totalMpi)
         });
     });
@@ -187,130 +190,130 @@
     @Html.HiddenFor(model => model.equipment.mpi)
 
     @*<div class="editor-label">
-        @Html.LabelFor(model => model.equipment.tag_num)<a class="bintang">*</a>
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.equipment.tag_num)
-        <div class="errorM"></div>
-    </div>
+            @Html.LabelFor(model => model.equipment.tag_num)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.equipment.tag_num)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.pnid_tag_num)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.equipment.pnid_tag_num)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.pnid_tag_num)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.equipment.pnid_tag_num)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.nama)<a class="bintang">*</a>
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.equipment.nama)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.nama)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.equipment.nama)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.econ)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.equipment.econ)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.econ)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.equipment.econ)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.ram_crit)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.equipment.ram_crit)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.ram_crit)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.equipment.ram_crit)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.id_tag_type)
-    </div>
-    <div class="editor-field">
-        @Html.DropDownList("id_tag_type", string.Empty)
-        <span id="loading-class" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.id_tag_type)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("id_tag_type", string.Empty)
+            <span id="loading-class" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.id_discipline)
-    </div>
-    <div class="editor-field">
-        <select name="id_discipline" id="id_discipline">
-            <option value="">-- Select Class First --</option>
-        </select>
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.id_discipline)
+        </div>
+        <div class="editor-field">
+            <select name="id_discipline" id="id_discipline">
+                <option value="">-- Select Class First --</option>
+            </select>
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.installed_date)
-    </div>
-    <div class="editor-field">
-        @(Html.Telerik().DateTimePickerFor(model => model.equipment.installed_date)
-              .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" })
-        )
-        <div class="errorM"></div>
-    </div>
-
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.sertifikasi)
-    </div>
-    <div class="editor-field">
-        @(Html.Telerik().DateTimePickerFor(model => model.equipment.sertifikasi)
-              .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" })
-        )
-       <div class="errorM"></div>
-    </div>
-
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.warranty)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.equipment.warranty)
-        <div class="errorM"></div>
-    </div>
-
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.vendor)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.equipment.vendor)
-        <div class="errorM"></div>
-    </div>
-
-    <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.data_sheet_path)<br />
-    </div>
-    <div class="editor-field">
-        @{
-            if (Model.equipment.data_sheet_path == null)
-            {
-                <span>-</span>
-            }
-            else
-            {
-                @Html.DisplayFor(model => model.equipment.data_sheet_path)
-            }
-
-         }
-    </div>
-
-    <div >
-        @(Html.Telerik().Upload()
-            .Name("attachments")
-            .Multiple(false)
-            .Async(async => async
-                .Save("Save", "Upload")
-                .Remove("Remove", "Upload")
-                .AutoUpload(true)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.installed_date)
+        </div>
+        <div class="editor-field">
+            @(Html.Telerik().DateTimePickerFor(model => model.equipment.installed_date)
+                  .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" })
             )
-        )
-        <!--@Html.EditorFor(model => model.equipment.data_sheet_path)-->
-        <div class="errorM"></div>
-    </div>
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.sertifikasi)
+        </div>
+        <div class="editor-field">
+            @(Html.Telerik().DateTimePickerFor(model => model.equipment.sertifikasi)
+                  .HtmlAttributes(new { id = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "_wrapper" })
+            )
+           <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.warranty)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.equipment.warranty)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.vendor)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.equipment.vendor)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.equipment.data_sheet_path)<br />
+        </div>
+        <div class="editor-field">
+            @{
+                if (Model.equipment.data_sheet_path == null)
+                {
+                    <span>-</span>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.equipment.data_sheet_path)
+                }
+
+             }
+        </div>
+
+        <div >
+            @(Html.Telerik().Upload()
+                .Name("attachments")
+                .Multiple(false)
+                .Async(async => async
+                    .Save("Save", "Upload")
+                    .Remove("Remove", "Upload")
+                    .AutoUpload(true)
+                )
+            )
+            <!--@Html.EditorFor(model => model.equipment.data_sheet_path)-->
+            <div class="errorM"></div>
+        </div>
     *@
 
     <div class="editor-label">
@@ -404,7 +407,7 @@
         <div class="errorM"></div>
     </div>
     <p>
-        <input type="submit" value="Save" onclick="save()"/>
+        <input type="submit" value="Save" onclick="save()" />
     </p>
 </fieldset>
 <div id="updateBOM">

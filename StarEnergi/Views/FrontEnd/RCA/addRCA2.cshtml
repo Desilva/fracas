@@ -301,7 +301,7 @@
                          .ItemDataBound((items, equipment) =>
                          {
                              items.Text = equipment.nama;
-                             items.Value = Config.TreeType.EQUIPMENTS + ";" + equipment.id.ToString();
+                             items.Value = Config.TreeType.EQUIPMENT + ";" + equipment.id.ToString();
                                   items.ImageUrl = ("~/Content/image/file.png");
                          }));
             
@@ -399,7 +399,7 @@
 
             var treeview = $('#TreeSBS').data('tTreeView');
             var value = treeview.getItemValue(node).split(';');
-            if (value[0] == '@Config.TreeType.EQUIPMENTS') {
+            if (value[0] == '@Config.TreeType.EQUIPMENT') {
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("getFuncLocation", "RCA")",

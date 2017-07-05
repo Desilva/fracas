@@ -118,6 +118,7 @@ onLoad = function (e) {
 
 MyTreeView_OnAdd = function (e) {
     var value = e.treeview.getItemValue(e.node);
+    console.log(value)
     DeselectNode();
     SelectNode(value);
     value = value.split(';');
@@ -127,6 +128,7 @@ MyTreeView_OnAdd = function (e) {
 
 MyTreeView_OnEdit = function (e) {
     var value = e.treeview.getItemValue(e.node);
+    console.log(value)
     DeselectNode();
     SelectNode(value);
     value = value.split(';');
@@ -135,8 +137,8 @@ MyTreeView_OnEdit = function (e) {
 }
 
 MyTreeView_OnDelete = function (e) {
-    //alert('You Clicked ' + e.item.text() + ' for ' + e.treeview.getItemText(e.node) + ' with a value of ' + e.treeview.getItemValue(e.node));
-    var value = e.treeview.getItemValue(e.node);
+    //alert('You Clicked ' + e.item.text() + ' for ' + e.treeview.getItemText(e.node) + ' with a value of ' + e.treeview.getItemValue(e.node));    
+    var value = e.treeview.getItemValue(e.node);    
     DeselectNode();
     SelectNode(value);
     value = value.split(';');
@@ -205,6 +207,8 @@ MyTreeView_OnDelete = function (e) {
 
 //REDIRECT LINK WHEN CONTEXT MENU SELECTED UPDATED
 function ReturnLink(value, action) {
+    console.log(value)
+    console.log(action)
     if (action == 'Create') {
         if (value[0] == 'PLANT') {
             return 'Foc/' + action + '/' + value[1];
@@ -214,7 +218,7 @@ function ReturnLink(value, action) {
             return 'System/' + action + '/' + value[1];
         } else if (value[0] == 'SYSTEM') {
             return 'Equipment/' + action + '/' + value[1]; // Value system
-        } else if (value[0] == 'EQUIPMENTS') {
+        } else if (value[0] == 'EQUIPMENT') {
             return 'Component/' + action + '/' + value[1]; // value equipment
         } 
         return;
@@ -227,7 +231,7 @@ function ReturnLink(value, action) {
             return 'Unit/' + action + '/';
         } else if (value[0] == 'SYSTEM') {
             return 'System/' + action + '/';
-        }  else if (value[0] == 'EQUIPMENTS') {
+        }  else if (value[0] == 'EQUIPMENT') {
             return 'Equipment/' + action + '/';
         }  else if (value[0] == 'COMPONENT') {
             return 'Component/' + action + '/';
@@ -248,7 +252,7 @@ function AppendItem(text,value) {
     var itemData = { Text: text ,Value:value, ImageUrl :"../Content/image/file.png"};
     var selected = GetNode('#TreeSBS .t-state-selected');
     treeView.append(itemData, selected.length != 0 ? selected : null);
-    var select = treeView.findByText(text);
+    var select = treeView.findByText(text);    
     //getSelectNode().removeClass("t-state-selected");
     //select.next('input').addClass("t-state-selected");
 }
@@ -277,8 +281,19 @@ function CreateContextMenu(name) {
 }
 
 //SELECT NODE IN TREE
-function SelectNode(value) {
+function SelectNode(value) {    
     $("#TreeSBS").find('input.t-input[name="itemValue"][value="' + value + '"]').prev().addClass("t-state-selected");
+
+    if (value.split(';')[0] == "EQUIPMENT") {
+        $('#TreeSBS').data('tTreeView').addContextMenu({
+            evaluateNode: function (treeview, node) {
+                var nodeValue = treeview.getItemValue(node);
+                return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 9) == 'EQUIPMENT'));
+            },
+            //menuItems: CreateContextMenu('Sub-Equipment')
+            menuItems: CreateContextMenu('Component')
+        });
+    }
     //$("#TreeSBSEmployee").find('input.t-input[name="itemValue"][value="' + value + '"]').prev().addClass("t-state-selected");
 }
 

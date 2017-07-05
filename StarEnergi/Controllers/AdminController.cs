@@ -170,7 +170,7 @@ namespace StarEnergi.Controllers
                 //                        ImageUrl = item.equipments.Count > 0 ? ("/Content/image/folder.png") : ("/Content/image/file.png")
                 //                    };
                 //return new JsonResult { Data = nodes };
-                string equipment = Config.TreeType.EQUIPMENTS.ToString();
+                string equipment = Config.TreeType.EQUIPMENT.ToString();
                 IEnumerable nodes = from item in db.equipments
                                     join eg in db.equipment_groups on item.id_equipment_group equals eg.id
                                     where eg.id_system == parentId || (parentId == null)
@@ -201,7 +201,7 @@ namespace StarEnergi.Controllers
             //                        };
             //    return new JsonResult { Data = nodes };
             //}
-            else if (value[0] == Config.TreeType.EQUIPMENTS.ToString())
+            else if (value[0] == Config.TreeType.EQUIPMENT.ToString())
             {
                 //string part = Config.TreeType.PART.ToString();
                 //IEnumerable nodes = from item in db.equipment_part

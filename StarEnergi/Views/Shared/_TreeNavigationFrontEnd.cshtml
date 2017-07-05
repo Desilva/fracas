@@ -33,7 +33,7 @@
                 $('#content').load('Fsca/DetailsArea/' + value[1]);
             }
         } else if ('@Config.menu' == '@Config.MenuFrontEnd.FRACAS') {
-            if (value[0] == '@Config.TreeType.EQUIPMENTS') {
+            if (value[0] == '@Config.TreeType.EQUIPMENT') {
                 $('#content').load('FracasHistory/DetailsEquipment/' + value[1]);
             }
         }
@@ -207,7 +207,7 @@
                      .ItemDataBound((item, equipment) =>
                      {
                          item.Text = equipment.tag_num;
-                         item.Value = Config.TreeType.EQUIPMENTS + ";" + equipment.id.ToString();
+                         item.Value = Config.TreeType.EQUIPMENT + ";" + equipment.id.ToString();
                          item.ImageUrl = ("~/Content/image/file.png");
                      }));
             }

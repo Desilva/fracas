@@ -226,7 +226,7 @@ namespace StarEnergi.Controllers.Admin
                     CalculateSertificate cs = new CalculateSertificate(edited.id);
 
                     //return RedirectToAction("Index");
-                    string result = Config.TreeType.EQUIPMENTS + ";" + equipment.id;
+                    string result = Config.TreeType.EQUIPMENT + ";" + equipment.id;
                     return Json(e.Succes(result));
                 }
                 else
