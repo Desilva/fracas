@@ -30,7 +30,7 @@
 <fieldset>
     <legend>Equipment</legend>
 
-    <div class="display-label">Tag Number</div>
+    @*<div class="display-label">Tag Number</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.equipment.tag_num)
     </div>
@@ -121,7 +121,75 @@
                @Html.ActionLink(Model.equipment.data_sheet_path, "Download" + "/" + Model.equipment.id, "Download")
             }
          }
+    </div>*@
+
+    <div class="display-label">@Html.LabelFor(model => model.equipment.nama)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.nama)
     </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.equipment.tag_num)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.tag_num)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.equipment.functional_code)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.functional_code)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.equipment.installed_date)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.installed_date)
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.equipment.id_ocr)
+    </div>
+    <div class="display-field">
+        @ViewBag.ocr
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.equipment.acr)
+    </div>
+    <div class="display-field">
+        @ViewBag.acr
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.equipment.id_afp)
+    </div>
+    <div class="display-field">
+        @ViewBag.afp
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.equipment.mpi)
+    </div>
+    <div class="display-field">
+        @ViewBag.mpi
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.equipment.id_tag_type)
+    </div>
+    <div class="display-field">
+        @ViewBag.tagType
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.equipment.id_discipline)
+    </div>
+    <div class="display-field">
+        @ViewBag.dicipline
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.equipment.sertifikasi)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipment.sertifikasi)
+    </div>
+
    <p>
         <input type="button" value="Edit" onclick="edit()" />
     </p>

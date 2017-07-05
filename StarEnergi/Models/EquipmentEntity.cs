@@ -32,7 +32,9 @@ namespace StarEnergi.Models
                          tag_num = x.part.tag_number,
                          nama = x.part.nama,
                          vendor = x.part.vendor,
-                         warranty = x.part.warranty,
+                         warranty = x.part.warranty,                           
+                         acr = e.acr,
+                         mpi = e.mpi,
                      };
             equipment = e;
             if (e.id_discipline != null)
@@ -72,7 +74,6 @@ namespace StarEnergi.Models
                 idParts.Add(x.id_parts);  
             }
             partsNotInEquipment = db.parts.Where(x => !idParts.Contains(x.id));
-        }
-        
+        }        
     }
 }

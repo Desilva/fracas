@@ -10,10 +10,90 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        $.post("System/GetPT",
+            function (data) {
+                hasil = eval(data);
+                $("#id_pt").html("");
+                $('<option data-score="0" data-value="0" value="">-- Select PT --</option>').appendTo("#id_pt");
+                for (var i = 0; i < hasil.length; i++) {
+                    $("<option data-value='" + hasil[i]['pt_value'] + "'  data-score='" + hasil[i]['pt_score'] + "' value='" + hasil[i]['id'] + "'>" + hasil[i]['pt_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_pt");
+                }
+            }
+        );
+        $.post("System/GetPE",
+           function (data) {
+               hasil = eval(data);
+               $("#id_pe").html("");
+               $('<option data-score="0" data-value="0" value="">-- Select PE --</option>').appendTo("#id_pe");
+               for (var i = 0; i < hasil.length; i++) {
+                   $("<option data-value='" + hasil[i]['pe_value'] + "' data-score='" + hasil[i]['pe_score'] + "'  value='" + hasil[i]['id'] + "'>" + hasil[i]['pe_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_pe");
+               }
+           }
+       );
+        $.post("System/GetOC",
+           function (data) {
+               hasil = eval(data);
+               $("#id_oc").html("");
+               $('<option data-score="0" data-value="0" value="">-- Select OC --</option>').appendTo("#id_oc");
+               for (var i = 0; i < hasil.length; i++) {
+                   $("<option  data-value='" + hasil[i]['oc_value'] + "' data-score='" + hasil[i]['oc_score'] + "'  value='" + hasil[i]['id'] + "'>" + hasil[i]['oc_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_oc");
+               }
+           }
+       );
+        $.post("System/GetRC",
+           function (data) {
+               hasil = eval(data);
+               $("#id_rc").html("");
+               $('<option data-score="0" data-value="0" value="">-- Select RC --</option>').appendTo("#id_rc");
+               for (var i = 0; i < hasil.length; i++) {
+                   $("<option  data-value='" + hasil[i]['rc_value'] + "' data-score='" + hasil[i]['rc_score'] + "'  value='" + hasil[i]['id'] + "'>" + hasil[i]['rc_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_rc");
+               }
+           }
+       );
+        $.post("System/GetSF",
+           function (data) {
+               hasil = eval(data);
+               $("#id_sf").html("");
+               $('<option data-score="0" data-value="0" value="">-- Select SF --</option>').appendTo("#id_sf");
+               for (var i = 0; i < hasil.length; i++) {
+                   $("<option  data-value='" + hasil[i]['sf_value'] + "' data-score='" + hasil[i]['sf_score'] + "'  value='" + hasil[i]['id'] + "'>" + hasil[i]['sf_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_sf");
+               }
+           }
+       );
+
+        $(".input-dropdown").change(function (e) {
+            var pt = $("#id_pt").find('option:selected');
+            var ptScore = parseFloat(pt.data('score'));
+            var ptValue = parseFloat(pt.data('value'));
+
+            var pe = $("#id_pe").find('option:selected');
+            var peScore = parseFloat(pe.data('score'));
+            var peValue = parseFloat(pe.data('value'));
+
+            var oc = $("#id_oc").find('option:selected');
+            var ocScore = parseFloat(oc.data('score'));
+            var ocValue = parseFloat(oc.data('value'));
+
+            var rc = $("#id_rc").find('option:selected');
+            var rcScore = parseFloat(rc.data('score'));
+            var rcValue = parseFloat(rc.data('value'));
+
+            var sf = $("#id_sf").find('option:selected');
+            var sfScore = parseFloat(sf.data('score'));
+            var sfValue = parseFloat(sf.data('value'));
+
+
+            var totalScr = Math.pow(ptScore * ptValue, 2) + Math.pow(ocScore * ocValue, 2) + Math.pow(sfScore * sfValue, 2) + Math.pow(rcScore * rcValue, 2) + Math.pow(peScore * peValue, 2);            
+            totalScr = Math.sqrt(totalScr) / 100;
+            $("#scr_label").val(totalScr);
+        });
+    });
+
     function save() {
         var values =
         {
-            "id_unit"           : eval('@ViewBag.id_unit'),
+            @*"id_unit"           : eval('@ViewBag.id_unit'),
             "nama"              : $('#nama').val(),
             "kode"              : $('#kode').val(),
             "funct_description" : $('#funct_description').val(),
@@ -34,7 +114,18 @@
             "prob"              : $('#prob').attr("title"),
             "ram_crit_1"        : $('#ram_crit_1').attr("title"),
             "ram_crit_2"        : $('#ram_crit_2').attr("title"),
-            "ram_crit_3"        : $('#ram_crit_3').attr("title")
+            "ram_crit_3"        : $('#ram_crit_3').attr("title")*@
+
+            "id_unit": eval('@ViewBag.id_unit'),
+            "nama": $('#nama').val(),
+            "kode": $('#kode').val(),
+            "system_description": $('#system_description').val(),
+            "id_oc": $('#id_oc').val(),
+            "id_pt": $('#id_pt').val(),
+            "id_pe": $('#id_pe').val(),
+            "id_sf": $('#id_sf').val(),
+            "id_rc": $('#id_rc').val(),
+            "scr": $('#scr_label').val()
         }
 
         $.post("system/Create", values, function (data) {
@@ -53,7 +144,7 @@
                             $('#' + index).next('div').html(value);
                         }
                     });
-                }else {
+                } else {
                     alert("Data system sudah terdaftar");
                 }
             } else {
@@ -64,7 +155,8 @@
     }
 
     function clearError() {
-        var field = ["nama", "kode", "funct_description", "failure_scenario", "primary_impact", "secondary_impact", "cons_econ", "cons_hs", "cons_env", "cons_total", "likelihood", "likelihood", "crit_code", "ram_crit", "exist_crit", "h", "e", "prob", "ram_crit_1", "ram_crit_2", "ram_crit_3"];
+        //var field = ["nama", "kode", "funct_description", "failure_scenario", "primary_impact", "secondary_impact", "cons_econ", "cons_hs", "cons_env", "cons_total", "likelihood", "likelihood", "crit_code", "ram_crit", "exist_crit", "h", "e", "prob", "ram_crit_1", "ram_crit_2", "ram_crit_3"];
+        var field = ["nama", "kode", "system_description", "id_oc", "id_pt", "id_pe", "id_sf", "id_rc"];
         $.each(field, function (index, value) {
             $('#' + value).next('div').html('');
         });
@@ -75,8 +167,7 @@
 
 @Html.ValidationSummary(true)
 <fieldset>
-    <legend>System</legend>
-
+    <legend>System</legend>    
     <div class="editor-label">
         @Html.LabelFor(model => model.nama)<a class="bintang">*</a>
     </div>
@@ -94,159 +185,218 @@
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.funct_description)
+        @Html.LabelFor(model => model.system_description)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.funct_description)
+        @Html.EditorFor(model => model.system_description)
         <div class="errorM"></div>
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.failure_scenario)
+        @Html.LabelFor(model => model.id_pt)
+    </div>
+    <div class="editor-field">        
+            <select name="id_pt" id="id_pt" class="input-dropdown">
+                <option value="">-- Pilih PT --</option>
+            </select>
+        </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.id_oc)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.failure_scenario)
-        <div class="errorM"></div>
+        <select name="id_oc" id="id_oc" class="input-dropdown">
+            <option value="">-- Pilih OC --</option>
+        </select>
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.primary_impact)
+        @Html.LabelFor(model => model.id_sf)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.primary_impact)
-        <div class="errorM"></div>
+        <select name="id_sf" id="id_sf" class="input-dropdown">
+            <option value="">-- Pilih SF --</option>
+        </select>
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.secondary_impact)
+        @Html.LabelFor(model => model.id_rc)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.secondary_impact)
-        <div class="errorM"></div>
+        <select name="id_rc" id="id_rc" class="input-dropdown">
+            <option value="">-- Pilih RC --</option>
+        </select>
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.cons_econ)
+        @Html.LabelFor(model => model.id_pe)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.cons_econ)
-        <div class="errorM"></div>
+        <select name="id_pe" id="id_pe" class="input-dropdown">
+            <option value="">-- Pilih PE --</option>
+        </select>
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.cons_hs)
+        @Html.LabelFor(model => model.scr)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.cons_hs)
-        <div class="errorM"></div>
+        <input id="scr_label" class="input-dropdown" disabled></input>
     </div>
+    @*<div class="editor-label">
+            @Html.LabelFor(model => model.funct_description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.funct_description)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.cons_env)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.cons_env)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.failure_scenario)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.failure_scenario)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.cons_total)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.cons_total)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.primary_impact)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.primary_impact)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.likelihood)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.likelihood)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.secondary_impact)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.secondary_impact)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.crit_code)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.crit_code)
-        <div class="errorM"></div>
-    </div>
-    <div class="errorM"></div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cons_econ)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cons_econ)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.ram_crit)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.ram_crit)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cons_hs)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cons_hs)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.exist_crit)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.exist_crit)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cons_env)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cons_env)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.h)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.h)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.cons_total)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.cons_total)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.e)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.e)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.likelihood)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.likelihood)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.econ)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.econ)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.crit_code)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.crit_code)
+            <div class="errorM"></div>
+        </div>
         <div class="errorM"></div>
-    </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.prob)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.prob)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ram_crit)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ram_crit)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.ram_crit_1)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.ram_crit_1)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.exist_crit)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.exist_crit)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.ram_crit_2)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.ram_crit_2)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.h)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.h)
+            <div class="errorM"></div>
+        </div>
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.ram_crit_3)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.ram_crit_3)
-        <div class="errorM"></div>
-    </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.e)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.e)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.econ)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.econ)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.prob)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.prob)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ram_crit_1)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ram_crit_1)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ram_crit_2)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ram_crit_2)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ram_crit_3)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ram_crit_3)
+            <div class="errorM"></div>
+        </div>*@
 
     <p>
-        <input type="submit" value="Create" onclick="save()"/>
+        <input type="submit" value="Create" onclick="save()" />
     </p>
 </fieldset>

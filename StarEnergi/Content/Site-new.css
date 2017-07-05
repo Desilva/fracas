@@ -1756,3 +1756,8 @@ table .vertical {
     justify-content: center;
     align-items: center;
 }
+
+.input-dropdown
+{
+    width: 200px;
+}

@@ -17,7 +17,7 @@
 <fieldset>
     <legend>Component</legend>
 
-    <div class="display-label">No Key Map</div>
+    @*<div class="display-label">No Key Map</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.tag_number)
     </div>
@@ -25,8 +25,27 @@
     <div class="display-label">Description</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.description)
+    </div>*@
+
+    <div class="display-label">@Html.LabelFor(model => model.component_name)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.component_name)
     </div>
 
+    <div class="display-label">@Html.LabelFor(model => model.tag_number)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.tag_number)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.functional_code)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.functional_code)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.description)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
     <p>
         <input type="button" value="Edit" onclick="edit()" />
     </p>

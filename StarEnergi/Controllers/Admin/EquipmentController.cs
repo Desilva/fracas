@@ -34,15 +34,33 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Details(int id)
         {
             equipment equipment = db.equipments.Find(id);
+            string tag = ""; string disc = "";
+            tag_types tagType = db.tag_types.Find(equipment.id_tag_type);
+            discipline dicipline = db.disciplines.Find(equipment.id_discipline);
+            if (tagType != null)
+                tag = tagType.title;
+            if (dicipline != null)
+                disc = dicipline.title;
+
             if (equipment.status == 1)
             {
                 ViewBag.status = "running";
             }
-            else {
+            else
+            {
                 ViewBag.status = "down";
             }
             EquipmentEntity epe = new EquipmentEntity(equipment);
             PopulateTagNumberEquipment();
+
+            if(equipment.id_ocr != null)
+                ViewBag.ocr = equipment.ocr.ocr_value + "-" + equipment.ocr.ocr_description;            
+            ViewBag.acr = equipment.acr;
+            if(equipment.id_afp != null)
+                ViewBag.afp = equipment.afp.afp_value + "-" + equipment.afp.afp_description;
+            ViewBag.mpi = equipment.mpi;
+            ViewBag.tagType = tag;
+            ViewBag.dicipline = disc;
             return PartialView(epe);
         }
 
@@ -51,10 +69,22 @@ namespace StarEnergi.Controllers.Admin
 
         public ActionResult Create(int id)
         {
+            system sys = db.systems.Find(id);
+            var listGroup = db.equipment_groups.Where(n => n.id_system == id).ToList();
+            var idGroup = 0;
+            if (listGroup.Count > 0)
+                idGroup = listGroup.FirstOrDefault().id;
+
             //ViewBag.id_equipment_group = new SelectList(db.equipment_groups, "id", "nama");
-            ViewBag.id_discipline = new SelectList(db.disciplines, "id","title");
+            ViewBag.id_discipline = new SelectList(db.disciplines, "id", "title");
             ViewBag.id_tag_type = new SelectList(db.tag_types, "id", "title");
-            ViewBag.id_equipment_group = id;
+            //ViewBag.id_equipment_group = id;
+
+            if (sys.scr != null)
+                ViewBag.scr = sys.scr;
+            else
+                ViewBag.scr = 0;
+            ViewBag.id_equipment_group = idGroup;
             return PartialView();
         }
 
@@ -63,22 +93,42 @@ namespace StarEnergi.Controllers.Admin
 
         [HttpPost]
         public ActionResult Create(equipment equipment)
-        {        
+        {
             if (ModelState.IsValid)
             {
-
                 if (db.equipments.Where(x => x.tag_num == equipment.tag_num).ToList().Count > 0)
                 {
                     return Json(e.Fail());
                 }
 
-                DateTime installedDate =(DateTime)equipment.installed_date;
-                equipment.obsolete_date = installedDate.Add(new TimeSpan((int)equipment.warranty, 0, 0));
+                equipment_groups equipGroup = db.equipment_groups.Find(equipment.id_equipment_group);
+                equipment.equipment_groups = equipGroup;
+                DateTime installedDate = DateTime.Now;
+                if(equipment.installed_date != null)
+                    installedDate = (DateTime)equipment.installed_date;
+                //equipment.obsolete_date = installedDate.Add(new TimeSpan((int)equipment.warranty, 0, 0));
                 db.equipments.Add(equipment);
                 IEnumerable<DbEntityValidationResult> error = db.GetValidationErrors();
                 if (error.Count() == 0)
                 {
                     db.SaveChanges();
+
+                    ///dummy data part and equipmeent part
+                    ///
+                    part part = new part();
+                    equipment_part ePart = new equipment_part();
+
+                    part.tag_number = equipment.tag_num;
+                    db.parts.Add(part);
+                    db.SaveChanges();
+
+                    ePart.id_equipment = equipment.id;
+                    ePart.id_parts = part.id;
+
+                    var hasEPart = db.equipment_part.Any(n => n.id_equipment == equipment.id && n.id_parts == part.id);
+                    if (!hasEPart)
+                        db.equipment_part.Add(ePart);
+
                     equipment_readiness_nav eqReadNav = new equipment_readiness_nav()
                     {
                         id_equipment = equipment.id
@@ -98,15 +148,18 @@ namespace StarEnergi.Controllers.Admin
                     db.equipment_event.Add(eqEvent);
 
                     db.SaveChanges();
+
                     return Json(e.Succes(equipment.id.ToString()));
                 }
-                else {
+                else
+                {
                     //return Json(error.First().ValidationErrors.ToArray());
                     return Json(e.Fail(error));
                 }
-                
+
+
                 //return RedirectToAction("Index");  
-                
+
             }
             ViewBag.id_discipline = new SelectList(db.disciplines, "id", "title");
             ViewBag.id_tag_type = new SelectList(db.tag_types, "id", "title");
@@ -122,6 +175,12 @@ namespace StarEnergi.Controllers.Admin
             ViewBag.id_discipline = new SelectList(db.disciplines, "id", "title", equipment.id_discipline);
             ViewBag.id_tag_type = new SelectList(db.tag_types, "id", "title", equipment.id_tag_type);
             ViewBag.id_equipment_group = equipment.id_equipment_group;
+            ViewBag.ocr = equipment.id_ocr;
+            ViewBag.afp = equipment.id_afp;
+            if (equipment.equipment_groups.system.scr != null)
+                ViewBag.scr = equipment.equipment_groups.system.scr;
+            else
+                ViewBag.scr = 0;
 
             EquipmentEntity epe = new EquipmentEntity(equipment);
             PopulateTagNumberEquipment();
@@ -135,7 +194,7 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Edit(equipment equipment)
         {
 
-            equipment edited = db.equipments.Find(equipment.id);
+            equipment edited = db.equipments.Find(equipment.id);            
             edited.tag_num = equipment.tag_num;
             edited.nama = equipment.nama;
             edited.econ = equipment.econ;
@@ -150,6 +209,12 @@ namespace StarEnergi.Controllers.Admin
             edited.id_equipment_group = equipment.id_equipment_group;
             edited.pnid_tag_num = equipment.pnid_tag_num;
 
+            edited.functional_code = equipment.functional_code;
+            edited.mpi = equipment.mpi;
+            edited.acr = equipment.acr;
+            edited.id_ocr = equipment.id_ocr;
+            edited.id_afp = equipment.id_afp;
+
             if (ModelState.IsValid)
             {
                 db.Entry(edited).State = EntityState.Modified;
@@ -163,14 +228,16 @@ namespace StarEnergi.Controllers.Admin
                     //return RedirectToAction("Index");
                     string result = Config.TreeType.EQUIPMENTS + ";" + equipment.id;
                     return Json(e.Succes(result));
-                }else {
+                }
+                else
+                {
                     //return Json(error.First().ValidationErrors.ToArray());
                     return Json(e.Fail(error));
                 }
             }
             ViewBag.id_discipline = new SelectList(db.disciplines, "id", "title");
             ViewBag.id_tag_type = new SelectList(db.tag_types, "id", "title");
-            
+
             return Json(e.Fail(ModelState));
         }
 
@@ -207,7 +274,7 @@ namespace StarEnergi.Controllers.Admin
             return File(Config.EquipmentDataSheetFolder+"\\" + id, "application/pdf", id);
         }*/
 
-        
+
 
         //
         // Ajax select binding
@@ -236,7 +303,8 @@ namespace StarEnergi.Controllers.Admin
                 {
                     create_part(equipmentPartEntity);
                 }
-                else {
+                else
+                {
                     return binding(id_equipment);
                 }
             }
@@ -330,13 +398,15 @@ namespace StarEnergi.Controllers.Admin
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult CheckPart(int id_eq, int id_part) {
+        public JsonResult CheckPart(int id_eq, int id_part)
+        {
 
             if (ListPart(id_eq, id_part).Count == 0)
             {
                 return Json(true);
             }
-            else {
+            else
+            {
                 return Json(false);
             }
 
@@ -345,13 +415,13 @@ namespace StarEnergi.Controllers.Admin
         private List<equipment_part> ListPart(int id_eq, int id_part)
         {
             return db.equipment_part.Where(a => a.id_equipment == id_eq).Where(a => a.id_parts == id_part).ToList();
-        
+
         }
 
         [GridAction]
         public ActionResult _PartsForComponentHierarchyAjax(int idEquipment, int idPart)
         {
-            return bindingPartsForComponent(idEquipment,idPart);
+            return bindingPartsForComponent(idEquipment, idPart);
         }
 
         private ViewResult bindingPartsForComponent(int idEquipment, int idPart)
@@ -420,7 +490,7 @@ namespace StarEnergi.Controllers.Admin
             {
                 updateComponent(ce);
             }
-            return bindingPartsForComponent(idEquipment,idPart);
+            return bindingPartsForComponent(idEquipment, idPart);
         }
 
         private void updateComponent(ComponentEntity ce)
@@ -521,7 +591,8 @@ namespace StarEnergi.Controllers.Admin
             var subClass = db.disciplines.Where(x => x.id_tag_type == id_class);
 
             List<DisciplineEntity> send = new List<DisciplineEntity>();
-            foreach (discipline d in subClass) {
+            foreach (discipline d in subClass)
+            {
                 DisciplineEntity dt = new DisciplineEntity
                 {
                     id = d.id,
@@ -532,6 +603,32 @@ namespace StarEnergi.Controllers.Admin
             }
 
             return Json(send);
+        }
+
+        public JsonResult GetOCR()
+        {
+            var model = from o in db.ocrs
+                        select new OCREntity
+                        {
+                            id = o.id,
+                            nama = o.ocr_description,
+                            ocr_value = o.ocr_value,
+                            ocr_score = o.ocr_score
+                        };
+            return Json(model.ToList());
+        }
+
+        public JsonResult GetAFP()
+        {
+            var model = from o in db.afps
+                        select new AFPEntity
+                        {
+                            id = o.id,
+                            nama = o.afp_description,
+                            afp_value = o.afp_value,
+                            afp_score = o.afp_score
+                        };
+            return Json(model.ToList());
         }
     }
 }

@@ -105,6 +105,21 @@ namespace StarEnergi.Models
         [StringLength(255,ErrorMessage="P&ID Tag Number cannot more than 255 characters.")]
         public string pnid_tag_num { get; set; }
 
+        [Display(Name = "Func Code")]
+        public string functional_code { get; set; }
+
+        [Display(Name = "MPI")]
+        public Nullable<double> mpi { get; set; }
+
+        [Display(Name = "ACR")]
+        public Nullable<double> acr { get; set; }
+
+        [Display(Name = "AFP")]
+        public Nullable<int> id_afp { get; set; }
+
+        [Display(Name = "OCR")]
+        public Nullable<int> id_ocr { get; set; }
+
         public virtual discipline discipline { get; set; }
         public virtual ICollection<equipment_event> equipment_event { get; set; }
         public virtual equipment_groups equipment_groups { get; set; }
@@ -112,6 +127,10 @@ namespace StarEnergi.Models
         public virtual ICollection<equipment_part> equipment_part { get; set; }
         public virtual ICollection<equipment_readiness_nav> equipment_readiness_nav { get; set; }
         public virtual tag_types tag_types { get; set; }
+
+        public virtual afp afp { get; set; }
+
+        public virtual ocr ocr { get; set; }
     }
     
 }

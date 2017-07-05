@@ -71,9 +71,9 @@ onLoad = function (e) {
 
     //EQUIPMENT
     $('#TreeSBS').data('tTreeView').addContextMenu({
-        evaluateNode: function (treeview, node) {
-            var nodeValue = treeview.getItemValue(node);
-            return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 10) == 'EQUIPMENTS'));
+        evaluateNode: function (treeview, node) {            
+            var nodeValue = treeview.getItemValue(node);            
+            return ((node.find('ul').length >= 0) && (nodeValue.substring(0, 9) == 'EQUIPMENT'));
         },
         //menuItems: CreateContextMenu('Sub-Equipment')
         menuItems: CreateContextMenu('Component')

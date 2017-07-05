@@ -14,8 +14,13 @@
     function save() {
         var values =
         {
-            "Nama": $('#nama').val(),
-            "Id_foc": eval('@ViewBag.id_foc')
+            @*"Nama": $('#nama').val(),
+            "Id_foc": eval('@ViewBag.id_foc')*@
+
+            "nama": $('#nama').val(),
+            "id_foc": eval('@ViewBag.id_foc'),
+            "functional_code": $('#functional_code').val(),
+            "unit_description": $('#unit_description').val(),
         }
 
         $.post("Unit/Create", values, function (data) {
@@ -63,7 +68,20 @@
             @Html.EditorFor(model => model.nama)
             <div class="errorM"></div>
         </div>
-        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.functional_code)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.functional_code)
+            <div class="errorM"></div>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.unit_description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.unit_description)
+            <div class="errorM"></div>
+        </div>
         <p>
             <input type="submit" value="Create" onclick="save()"/>
         </p>

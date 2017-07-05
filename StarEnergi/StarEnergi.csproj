@@ -430,6 +430,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\afp.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AssetRegisterEntity.cs" />
     <Compile Include="Models\audit.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
@@ -599,6 +602,28 @@
     <Compile Include="Models\monthly_she_contractor.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AFPEntity.cs" />
+    <Compile Include="Models\oc.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ocr.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\pe.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\pt.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\rc.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sf.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SFEntity.cs" />
+    <Compile Include="Models\RCEntity.cs" />
+    <Compile Include="Models\OCREntity.cs" />
     <Compile Include="Models\part.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -620,6 +645,8 @@
     <Compile Include="Models\process_owner.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PEEntity.cs" />
+    <Compile Include="Models\OCEntity.cs" />
     <Compile Include="Models\rca.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -811,6 +838,7 @@
     <Compile Include="Models\unit.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PTEntity.cs" />
     <Compile Include="Models\UnitEntity.cs" />
     <Compile Include="Models\unit_paf.cs">
       <DependentUpon>Relmon.tt</DependentUpon>

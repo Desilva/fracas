@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<script type="text/javascript">
+<script type="text/javascript">    
     function edit() {
         $('#content').load('system/edit/'+ @Model.id);
     }
@@ -15,7 +15,7 @@
 <fieldset>
     <legend>System</legend>
 
-    <div class="display-label">Nama</div>
+    @*<div class="display-label">Nama</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.nama)
     </div>
@@ -118,6 +118,69 @@
     <div class="display-label">Ram Crit 3</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.ram_crit_3)
+    </div>*@
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.nama)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nama)
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.kode)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.kode)
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.system_description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.system_description)
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.id_pt)
+    </div>
+    <div class="display-field">
+        @ViewBag.pt
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.id_oc)
+    </div>
+    <div class="display-field">
+        @ViewBag.oc
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.id_sf)
+    </div>
+    <div class="display-field">
+        @ViewBag.sf
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.id_rc)
+    </div>
+    <div class="display-field">
+        @ViewBag.rc
+    </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.id_pe)
+    </div>
+    <div class="display-field">
+        @ViewBag.pe
+    </div>  
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.scr)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.scr)
     </div>
     <p>
         <input type="button" value="Edit" onclick="edit()" />

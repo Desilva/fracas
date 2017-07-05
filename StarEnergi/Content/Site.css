@@ -1535,3 +1535,8 @@ table .vertical {
 {
     background:#DAE2E8;    
 }
+
+.input-dropdown
+{
+    width: 200px;
+}

@@ -16,10 +16,60 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        $("#equipment_installed_date").prop('disabled', true);
+        $("#equipment_sertifikasi").prop('disabled', true);
+        $("#id_tag_type").addClass('input-dropdown');
+        var oldAcr = $("#equipment_acr").val();
+        var oldMpi = $("#equipment_mpi").val();
+        $("#acr_label").val(oldAcr);
+        $("#mpi_label").val(oldMpi);
+
+        $.post("Equipment/GetOCR",
+           function (data) {
+               hasil = eval(data);
+               $("#id_ocr").html("");
+               $('<option data-score="0" data-value="0" value="">-- Select OCR --</option>').appendTo("#id_ocr");
+               for (var i = 0; i < hasil.length; i++) {
+                   $("<option data-value='" + hasil[i]['ocr_value'] + "'  data-score='" + hasil[i]['ocr_score'] + "' value='" + hasil[i]['id'] + "'>" + hasil[i]['ocr_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_ocr");
+               }
+               $("#id_ocr").val('@ViewBag.ocr');
+           }
+       );
+
+        $.post("Equipment/GetAFP",
+           function (data) {
+               hasil = eval(data);
+               $("#id_afp").html("");
+               $('<option data-score="0" data-value="0" value="">-- Select AFP --</option>').appendTo("#id_afp");
+               for (var i = 0; i < hasil.length; i++) {
+                   $("<option data-value='" + hasil[i]['afp_value'] + "'  data-score='" + hasil[i]['afp_score'] + "' value='" + hasil[i]['id'] + "'>" + hasil[i]['afp_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_afp");
+               }
+               $("#id_afp").val('@ViewBag.afp');
+           }
+       );
+
+        $(".input-dropdown").change(function () {
+            var ocr = $("#id_ocr").find('option:selected');
+            var ocrScore = parseFloat(ocr.data('score'));
+            var ocrValue = parseFloat(ocr.data('value'));       
+            if(@ViewBag.scr > 0)
+            {
+                var totalAcr = @double.Parse(ViewBag.scr.ToString()) * ocrValue;
+                $("#acr_label").val(totalAcr)
+            }
+
+            var afp = $("#id_afp").find('option:selected');
+            var afpScore = parseFloat(afp.data('score'));
+            var afpValue = parseFloat(afp.data('value'));
+            var totalMpi = parseFloat($("#acr_label").val())* afpValue;
+            $("#mpi_label").val(totalMpi)
+        });
+    });
     function save() {
         var values =
         {
-            "Id": $('#equipment_id').val(),
+            @*"Id": $('#equipment_id').val(),
             "Tag_num": $('#equipment_tag_num').val(),
             "pnid_tag_num": $('#equipment_pnid_tag_num').val(),
             "Nama": $('#equipment_nama').val(),
@@ -32,6 +82,20 @@
             "Vendor": $('#equipment_vendor').val(),
             "Id_tag_type": $('#id_tag_type').val(),
             "Data_sheet_path": $('.t-filename').attr("title"),
+            "id_equipment_group": eva('@ViewBag.id_equipment_group')*@
+
+            "id": $('#equipment_id').val(),
+            "nama": $('#equipment_nama').val(),
+            "tag_num": $('#equipment_tag_num').val(),
+            "functional_code": $('#equipment_functional_code').val(),
+            "installed_date": $('#equipment_installed_date').val(),
+            "id_ocr": $('#id_ocr').val(),
+            "acr": $('#acr_label').val(),
+            "id_afp": $('#id_afp').val(),
+            "mpi": $('#mpi_label').val(),
+            "id_tag_type": $('#id_tag_type').val(),
+            "id_discipline": $('#id_discipline').val(),
+            "sertifikasi": $('#equipment_sertifikasi').val(),
             "id_equipment_group": eval('@ViewBag.id_equipment_group')
         }
         console.log(values);
@@ -40,7 +104,7 @@
                 if (data["status"] == 0) {
                     var html = $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().find('img').attr('src');
                     var image = '<img class="t-image" src="' + html + '" alt="image">';
-                    $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().html(image + $('#equipment_tag_num').val());
+                    $('#TreeSBS').find('input.t-input[name="itemValue"][value="' + data["message"] + '"]').prev().html(image + $('#equipment_nama').val());
                     $('#content').load('Equipment/details/' + $('#equipment_id').val());
                 } else {
                     clearError();
@@ -62,7 +126,8 @@
     }
 
     function clearError() {
-        var field = ["tag_num", "nama", "pnid_tag_num", "econ", "ram_crit", "id_discipline", "installed_date", "sertifikasi", "warranty", "vendor", "id_tag_type", "data_sheet_path"];
+        //var field = ["tag_num", "nama", "econ", "ram_crit", "id_discipline", "installed_date", "sertifikasi", "warranty", "vendor", "id_tag_type", "data_sheet_path"];
+        var field = ["nama", "tag_num", "functional_code", "installed_date", "id_ocr", "acr", "id_afp", "mpi", "id_tag_type", "id_discipline", "sertifikasi"];
         $.each(field, function (index, value) {
             $('#' + value).next('div').html('');
         });
@@ -118,8 +183,10 @@
     <legend>Equipment</legend>
 
     @Html.HiddenFor(model => model.equipment.id)
+    @Html.HiddenFor(model => model.equipment.acr)
+    @Html.HiddenFor(model => model.equipment.mpi)
 
-    <div class="editor-label">
+    @*<div class="editor-label">
         @Html.LabelFor(model => model.equipment.tag_num)<a class="bintang">*</a>
     </div>
     <div class="editor-field">
@@ -213,9 +280,9 @@
         @Html.EditorFor(model => model.equipment.vendor)
         <div class="errorM"></div>
     </div>
-    
+
     <div class="editor-label">
-        @Html.LabelFor(model => model.equipment.data_sheet_path)<br />       
+        @Html.LabelFor(model => model.equipment.data_sheet_path)<br />
     </div>
     <div class="editor-field">
         @{
@@ -225,13 +292,13 @@
             }
             else
             {
-                @Html.DisplayFor(model => model.equipment.data_sheet_path)    
+                @Html.DisplayFor(model => model.equipment.data_sheet_path)
             }
-           
+
          }
     </div>
 
-    <div >       
+    <div >
         @(Html.Telerik().Upload()
             .Name("attachments")
             .Multiple(false)
@@ -244,7 +311,98 @@
         <!--@Html.EditorFor(model => model.equipment.data_sheet_path)-->
         <div class="errorM"></div>
     </div>
+    *@
 
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.nama)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.nama)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.tag_num)<a class="bintang">*</a>
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.tag_num)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.functional_code)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.functional_code)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.installed_date)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.installed_date)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.id_ocr)
+    </div>
+    <div class="editor-field">
+        <select name="id_ocr" id="id_ocr" class="input-dropdown">
+            <option value="">-- Pilih OCR --</option>
+        </select>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.acr)
+    </div>
+    <div class="editor-field">
+        <input id="acr_label" class="input-dropdown" disabled></input>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.id_afp)
+    </div>
+    <div class="editor-field">
+        <select name="id_afp" id="id_afp" class="input-dropdown">
+            <option value="">-- Pilih AFP --</option>
+        </select>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.mpi)
+    </div>
+    <div class="editor-field">
+        <input id="mpi_label" class="input-dropdown" disabled></input>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.id_tag_type)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("id_tag_type", String.Empty)
+        <span id="loading-class" style="display:none;"><img src="../../../Content/image/loading.gif"></span>
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.id_discipline)
+    </div>
+    <div class="editor-field">
+        <select name="id_discipline" id="id_discipline" class="input-dropdown">
+            <option value="">-- Select Class First --</option>
+        </select>
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.sertifikasi)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.sertifikasi)
+        <div class="errorM"></div>
+    </div>
     <p>
         <input type="submit" value="Save" onclick="save()"/>
     </p>

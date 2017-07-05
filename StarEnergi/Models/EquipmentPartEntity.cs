@@ -35,5 +35,12 @@ namespace StarEnergi.Models
         public Nullable<double> assurance_level { get; set; }
         //public Nullable<double> avail_inherent { get; set; }
         //public Nullable<double> avail_measured { get; set; }
+
+        public string functional_code { get; set; }
+
+        public Nullable<int> id_ocr { get; set; }
+        public Nullable<double> acr { get; set; }
+        public Nullable<int> id_afp { get; set; }
+        public Nullable<double> mpi { get; set; }
     }
 }

@@ -18,7 +18,7 @@
         @Html.DisplayFor(model => model.nama)
     </div>
 
-    <div class="display-label">MA</div>
+    @*<div class="display-label">MA</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.ma)
     </div>
@@ -26,6 +26,16 @@
     <div class="display-label">MASD</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.masd)
+    </div>*@
+
+    <div class="display-label">Func Code</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.functional_code)
+    </div>
+
+    <div class="display-label">Deskripsi</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.unit_description)
     </div>
     <p>
         <input type="button" value="Edit" onclick="edit()" />

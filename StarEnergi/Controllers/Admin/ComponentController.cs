@@ -32,7 +32,10 @@ namespace StarEnergi.Controllers.Admin
 
         public ActionResult Create(int id)
         {
-            ViewBag.id_equipment_part = id;
+            //ViewBag.id_equipment_part = id;            
+            var listEPart = db.equipment_part.Where(n => n.id_equipment == id).ToList();
+            if (listEPart.Count > 0)
+                ViewBag.id_equipment_part = listEPart.FirstOrDefault().id;
             return PartialView();
         }
 
@@ -48,12 +51,14 @@ namespace StarEnergi.Controllers.Admin
                 {
                     return Json(e.Fail());
                 }
-
+                equipment_part ePart = db.equipment_part.Find(component.id_equipment_part);
+                component.equipment_part = ePart;
                 db.components.Add(component);
                 IEnumerable<DbEntityValidationResult> error = db.GetValidationErrors();
                 if (error.Count() == 0)
                 {
                     db.SaveChanges();
+
                     return Json(e.Succes(component.id.ToString()));
                 }
                 else

@@ -11,20 +11,35 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        $("#installed_date").val('@DateTime.Now');
+        $("#installed_date").prop('disabled', true);
+    });
     function save() {
         var values =
         {
-            "tag_number": $('#tag_number').val(),
+            @*"tag_number": $('#tag_number').val(),
             "id_equipment_part": eval('@ViewBag.id_equipment_part'),
-            "description": $('#descriptions').val()
+            "description": $('#descriptions').val()*@
+
+            "id_equipment_part": eval('@ViewBag.id_equipment_part'),
+            "component_name": $('#component_name').val(),
+            "tag_number": $('#tag_number').val(),
+            "functional_code": $('#functional_code').val(),
+            "installed_date": $('#installed_date').val(),
+            "description": $('#descriptions').val(),
+
+
         }
 
         $.post("Component/Create", values, function (data) {
+            console.log(data)
              if (data != undefined) {
                 if (data["status"] == 0) {
                     var value = 'COMPONENT;' + data["message"];
                     $('#content').load('component/details/' + data["message"]);
-                    AppendItem($('#tag_number').val(), value);
+                    //AppendItem($('#tag_number').val(), value);                    
+                    AppendItem($('#component_name').val(), value);
                     DeselectNode();
                     SelectNode(value);
                 } else if (data["status"] == 1) {
@@ -46,7 +61,8 @@
     }
 
     function clearError() {
-        var field = ["tag_number"];
+        //var field = ["tag_number"];
+        var field = ["component_name", "tag_number", "functional_code", "installed_date","description"];
         $.each(field, function (index, value) {
             $('#' + value).next('div').html('');
         });
@@ -57,7 +73,7 @@
     <fieldset>
         <legend>Component</legend>
 
-        <div class="editor-label">
+        @*<div class="editor-label">
             @Html.LabelFor(model => model.tag_number)<a class="bintang">*</a>
         </div>
         <div class="editor-field">
@@ -71,8 +87,47 @@
         <div class="editor-field">
             @Html.TextBoxFor(model => model.description, new { id = "descriptions"})
             <div class="errorM"></div>
+        </div>*@
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.component_name)<a class="bintang">*</a>
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.component_name)
+            <div class="errorM"></div>
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.tag_number)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.tag_number)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.functional_code)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.functional_code)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.installed_date)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.installed_date)
+            <div class="errorM"></div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.description)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.description, new { id = "descriptions" })
+            <div class="errorM"></div>
+        </div>
         <p>
             <input type="submit" value="Create" onclick="save()"/>
         </p>

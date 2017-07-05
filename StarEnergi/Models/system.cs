@@ -20,77 +20,71 @@ namespace StarEnergi.Models
             this.equipment_groups = new HashSet<equipment_groups>();
             this.system_paf = new HashSet<system_paf>();
         }
-
+    
         public int id { get; set; }
         public int id_unit { get; set; }
 
         [Required]
-        [Display(Name = "Nama")]
+        [Display(Name = "Nama Sistem")]
         public string nama { get; set; }
-
+        
         [Display(Name = "Func Code")]
         public string kode { get; set; }
-
-        [Display(Name = "Func Description")]
         public string funct_description { get; set; }
-
-        [Display(Name = "Failure Scenario")]
         public string failure_scenario { get; set; }
-
-        [Display(Name = "Primary Impact")]
         public string primary_impact { get; set; }
-
-        [Display(Name = "Secondary Impact")]
         public string secondary_impact { get; set; }
-
-        [Display(Name = "Cons Econ")]
         public string cons_econ { get; set; }
-
-        [Display(Name = "Cons HS")]
         public string cons_hs { get; set; }
-
-        [Display(Name = "Cons Env")]
         public string cons_env { get; set; }
-
-        [Display(Name = "Cons Total")]
         public string cons_total { get; set; }
-
-        [Display(Name = "Likelihood")]
         public string likelihood { get; set; }
-
-        [Display(Name = "Crit Code")]
         public string crit_code { get; set; }
-
-        [Display(Name = "Ram Crit")]
         public string ram_crit { get; set; }
-
-        [Display(Name = "Exist Crit")]
         public string exist_crit { get; set; }
-
-        [Display(Name = "H")]
         public string h { get; set; }
-
-        [Display(Name = "E")]
         public string e { get; set; }
-
-        [Display(Name = "Economic")]
         public string econ { get; set; }
-
-        [Display(Name = "Prob")]
-        public string prob { get; set; }
-
-        [Display(Name = "Ram Crit 1")]
         public string ram_crit_1 { get; set; }
-
-        [Display(Name = "Ram Crit 2")]
+        public string prob { get; set; }
         public string ram_crit_2 { get; set; }
-
-        [Display(Name = "Ram Crit 3")]
         public string ram_crit_3 { get; set; }
 
+        [Display(Name = "OCR")]
+        public Nullable<int> id_ocr { get; set; }
+
+        [Display(Name = "OC")]
+        public Nullable<int> id_oc { get; set; }
+
+        [Display(Name = "AFP")]
+        public Nullable<int> id_afp { get; set; }
+
+        [Display(Name = "SF")]
+        public Nullable<int> id_sf { get; set; }
+
+        [Display(Name = "RC")]
+        public Nullable<int> id_rc { get; set; }
+
+        [Display(Name = "PE")]
+        public Nullable<int> id_pe { get; set; }
+
+        [Display(Name = "PT")]
+        public Nullable<int> id_pt { get; set; }
+
+        [Display(Name = "Deskripsi")]
+        public string system_description { get; set; }
+        public Nullable<double> scr { get; set; }
+            
         public virtual ICollection<equipment_groups> equipment_groups { get; set; }
-        public virtual unit unit { get; set; }
+        public virtual oc oc { get; set; }        
+        public virtual pe pe { get; set; }
+        public virtual pt pt { get; set; }
+        public virtual rc rc { get; set; }
+        public virtual sf sf { get; set; }
         public virtual ICollection<system_paf> system_paf { get; set; }
+        public virtual unit unit { get; set; }
+        public virtual system systems1 { get; set; }
+        public virtual system system1 { get; set; }
     }
     
 }

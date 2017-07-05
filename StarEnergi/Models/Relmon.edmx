@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="relmon_star_energiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="afp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="afp_value" Type="float" />
+          <Property Name="afp_description" Type="varchar(max)" />
+          <Property Name="afp_score" Type="float" />
+        </EntityType>
         <EntityType Name="audit">
           <Key>
             <PropertyRef Name="id" />
@@ -63,7 +72,10 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_equipment_part" Type="int" />
           <Property Name="tag_number" Type="varchar" MaxLength="255" />
-          <Property Name="description" Type="varchar" MaxLength="255" />
+          <Property Name="description" Type="varchar(max)" />
+          <Property Name="component_name" Type="varchar" MaxLength="255" />
+          <Property Name="functional_code" Type="varchar" MaxLength="255" />
+          <Property Name="installed_date" Type="datetime" />
         </EntityType>
         <EntityType Name="daily_log">
           <Key>
@@ -617,8 +629,8 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_equipment_group" Type="int" Nullable="false" />
-          <Property Name="tag_num" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="nama" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="tag_num" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nama" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="id_category" Type="tinyint" />
           <Property Name="pdf" Type="varchar" MaxLength="50" />
           <Property Name="tetha" Type="float" />
@@ -643,6 +655,11 @@
           <Property Name="data_sheet_path" Type="varchar" MaxLength="50" />
           <Property Name="sertifikasi" Type="datetime" />
           <Property Name="pnid_tag_num" Type="varchar" MaxLength="255" />
+          <Property Name="functional_code" Type="varchar" MaxLength="100" />
+          <Property Name="mpi" Type="float" />
+          <Property Name="acr" Type="float" />
+          <Property Name="id_ocr" Type="int" />
+          <Property Name="id_afp" Type="int" />
         </EntityType>
         <EntityType Name="event_descriptions">
           <Key>
@@ -1058,6 +1075,24 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="oc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="oc_value" Type="float" />
+          <Property Name="oc_description" Type="varchar(max)" />
+          <Property Name="oc_score" Type="float" />
+        </EntityType>
+        <EntityType Name="ocr">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ocr_value" Type="float" />
+          <Property Name="ocr_description" Type="varchar(max)" />
+          <Property Name="ocr_score" Type="float" />
+        </EntityType>
         <EntityType Name="part_unit_event">
           <Key>
             <PropertyRef Name="id" />
@@ -1095,6 +1130,15 @@
           <Property Name="vendor" Type="varchar" MaxLength="100" />
           <Property Name="warranty" Type="int" />
           <Property Name="key_map" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="pe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="pe_value" Type="float" />
+          <Property Name="pe_description" Type="varchar(max)" />
+          <Property Name="pe_score" Type="float" />
         </EntityType>
         <EntityType Name="pir">
           <Key>
@@ -1170,6 +1214,24 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pt">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="pt_value" Type="float" />
+          <Property Name="pt_description" Type="varchar(max)" />
+          <Property Name="pt_score" Type="float" />
+        </EntityType>
+        <EntityType Name="rc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rc_value" Type="float" />
+          <Property Name="rc_description" Type="varchar(max)" />
+          <Property Name="rc_score" Type="float" />
         </EntityType>
         <EntityType Name="rca">
           <Key>
@@ -1402,6 +1464,15 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="title" Type="varchar(max)" />
           <Property Name="description" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="sf">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sf_value" Type="float" />
+          <Property Name="sf_description" Type="varchar(max)" />
+          <Property Name="sf_score" Type="float" />
         </EntityType>
         <EntityType Name="she_illness_report">
           <Key>
@@ -1739,7 +1810,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_unit" Type="int" Nullable="false" />
-          <Property Name="nama" Type="varchar" MaxLength="100" />
+          <Property Name="nama" Type="varchar" MaxLength="255" />
           <Property Name="kode" Type="varchar" MaxLength="100" />
           <Property Name="funct_description" Type="text" />
           <Property Name="failure_scenario" Type="text" />
@@ -1760,6 +1831,13 @@
           <Property Name="prob" Type="varchar" MaxLength="50" />
           <Property Name="ram_crit_2" Type="varchar" MaxLength="50" />
           <Property Name="ram_crit_3" Type="varchar" MaxLength="50" />
+          <Property Name="id_oc" Type="int" />
+          <Property Name="id_sf" Type="int" />
+          <Property Name="id_rc" Type="int" />
+          <Property Name="id_pe" Type="int" />
+          <Property Name="id_pt" Type="int" />
+          <Property Name="system_description" Type="varchar(max)" />
+          <Property Name="scr" Type="float" />
         </EntityType>
         <EntityType Name="tag_types">
           <Key>
@@ -1816,9 +1894,11 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_foc" Type="int" Nullable="false" />
-          <Property Name="nama" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="ma" Type="float" Nullable="false" />
-          <Property Name="masd" Type="float" Nullable="false" />
+          <Property Name="nama" Type="varchar" MaxLength="255" />
+          <Property Name="ma" Type="float" />
+          <Property Name="masd" Type="float" />
+          <Property Name="functional_code" Type="varchar" MaxLength="100" />
+          <Property Name="unit_description" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="user_per_role">
           <Key>
@@ -2184,6 +2264,18 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_equipments_afp">
+          <End Role="afp" Type="Self.afp" Multiplicity="0..1" />
+          <End Role="equipments" Type="Self.equipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="afp">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="equipments">
+              <PropertyRef Name="id_afp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_equipments_equipment_groups">
           <End Role="equipment_groups" Type="Self.equipment_groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2195,6 +2287,18 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
             </Principal>
             <Dependent Role="equipments">
               <PropertyRef Name="id_equipment_group" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_equipments_ocr">
+          <End Role="ocr" Type="Self.ocr" Multiplicity="0..1" />
+          <End Role="equipments" Type="Self.equipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ocr">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="equipments">
+              <PropertyRef Name="id_ocr" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2608,6 +2712,78 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_systems_oc">
+          <End Role="oc" Type="Self.oc" Multiplicity="0..1" />
+          <End Role="systems" Type="Self.systems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oc">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="systems">
+              <PropertyRef Name="id_oc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_pe">
+          <End Role="pe" Type="Self.pe" Multiplicity="0..1" />
+          <End Role="systems" Type="Self.systems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pe">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="systems">
+              <PropertyRef Name="id_pe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_pt">
+          <End Role="pt" Type="Self.pt" Multiplicity="0..1" />
+          <End Role="systems" Type="Self.systems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pt">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="systems">
+              <PropertyRef Name="id_pt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_rc">
+          <End Role="rc" Type="Self.rc" Multiplicity="0..1" />
+          <End Role="systems" Type="Self.systems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rc">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="systems">
+              <PropertyRef Name="id_rc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_sf">
+          <End Role="sf" Type="Self.sf" Multiplicity="0..1" />
+          <End Role="systems" Type="Self.systems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sf">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="systems">
+              <PropertyRef Name="id_sf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_systems">
+          <End Role="systems" Type="Self.systems" Multiplicity="1" />
+          <End Role="systems1" Type="Self.systems" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="systems">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="systems1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_unit_paf_units">
           <End Role="units" Type="Self.units" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2680,6 +2856,7 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
           <Parameter Name="year" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="relmon_star_energiModelStoreContainer">
+          <EntitySet Name="afp" EntityType="Self.afp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="audit" EntityType="Self.audit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="audit_log" EntityType="Self.audit_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="audit_log_clause" EntityType="Self.audit_log_clause" Schema="dbo" store:Type="Tables" />
@@ -2735,13 +2912,18 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
           <EntitySet Name="monthly_project_outstanding_activity" EntityType="Self.monthly_project_outstanding_activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="monthly_project_she_report" EntityType="Self.monthly_project_she_report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="monthly_she_contractor" EntityType="Self.monthly_she_contractor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="oc" EntityType="Self.oc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ocr" EntityType="Self.ocr" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="part_unit_event" EntityType="Self.part_unit_event" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="parts" EntityType="Self.parts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pe" EntityType="Self.pe" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="pir" EntityType="Self.pir" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="pir_clause" EntityType="Self.pir_clause" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="pir_log" EntityType="Self.pir_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="plants" EntityType="Self.plants" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="process_owner" EntityType="Self.process_owner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pt" EntityType="Self.pt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rc" EntityType="Self.rc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="rca" EntityType="Self.rca" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="rca_analisys_type" EntityType="Self.rca_analisys_type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="rca_building" EntityType="Self.rca_building" Schema="dbo" store:Type="Tables" />
@@ -2762,6 +2944,7 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
           <EntitySet Name="safe_man_hours" EntityType="Self.safe_man_hours" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="safe_man_hours_incident" EntityType="Self.safe_man_hours_incident" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="secondary_effects" EntityType="Self.secondary_effects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sf" EntityType="Self.sf" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="she_illness_report" EntityType="Self.she_illness_report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="she_injury_report" EntityType="Self.she_injury_report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="she_KPI_target" EntityType="Self.she_KPI_target" Schema="dbo" store:Type="Tables" />
@@ -2882,8 +3065,16 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             <End Role="equipments" EntitySet="equipments" />
             <End Role="equipment_readiness_nav" EntitySet="equipment_readiness_nav" />
           </AssociationSet>
+          <AssociationSet Name="FK_equipments_afp" Association="Self.FK_equipments_afp">
+            <End Role="afp" EntitySet="afp" />
+            <End Role="equipments" EntitySet="equipments" />
+          </AssociationSet>
           <AssociationSet Name="FK_equipments_equipment_groups" Association="Self.FK_equipments_equipment_groups">
             <End Role="equipment_groups" EntitySet="equipment_groups" />
+            <End Role="equipments" EntitySet="equipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_equipments_ocr" Association="Self.FK_equipments_ocr">
+            <End Role="ocr" EntitySet="ocr" />
             <End Role="equipments" EntitySet="equipments" />
           </AssociationSet>
           <AssociationSet Name="FK_equipments_tag_types" Association="Self.FK_equipments_tag_types">
@@ -3005,6 +3196,30 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <AssociationSet Name="FK_system_paf_systems" Association="Self.FK_system_paf_systems">
             <End Role="systems" EntitySet="systems" />
             <End Role="system_paf" EntitySet="system_paf" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_oc" Association="Self.FK_systems_oc">
+            <End Role="oc" EntitySet="oc" />
+            <End Role="systems" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_pe" Association="Self.FK_systems_pe">
+            <End Role="pe" EntitySet="pe" />
+            <End Role="systems" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_pt" Association="Self.FK_systems_pt">
+            <End Role="pt" EntitySet="pt" />
+            <End Role="systems" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_rc" Association="Self.FK_systems_rc">
+            <End Role="rc" EntitySet="rc" />
+            <End Role="systems" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_sf" Association="Self.FK_systems_sf">
+            <End Role="sf" EntitySet="sf" />
+            <End Role="systems" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_systems" Association="Self.FK_systems_systems">
+            <End Role="systems" EntitySet="systems" />
+            <End Role="systems1" EntitySet="systems" />
           </AssociationSet>
           <AssociationSet Name="FK_unit_paf_units" Association="Self.FK_unit_paf_units">
             <End Role="units" EntitySet="units" />
@@ -3147,11 +3362,9 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <EntitySet Name="she_observation_undian_winner" EntityType="relmon_star_energiModel.she_observation_undian_winner" />
           <EntitySet Name="sub_component" EntityType="relmon_star_energiModel.sub_component" />
           <EntitySet Name="system_paf" EntityType="relmon_star_energiModel.system_paf" />
-          <EntitySet Name="systems" EntityType="relmon_star_energiModel.system" />
           <EntitySet Name="tag_types" EntityType="relmon_star_energiModel.tag_types" />
           <EntitySet Name="trouble_shooting" EntityType="relmon_star_energiModel.trouble_shooting" />
           <EntitySet Name="unit_paf" EntityType="relmon_star_energiModel.unit_paf" />
-          <EntitySet Name="units" EntityType="relmon_star_energiModel.unit" />
           <EntitySet Name="user_per_role" EntityType="relmon_star_energiModel.user_per_role" />
           <EntitySet Name="users" EntityType="relmon_star_energiModel.user" />
           <EntitySet Name="weekend_duty" EntityType="relmon_star_energiModel.weekend_duty" />
@@ -3257,10 +3470,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             <End Role="equipment_groups" EntitySet="equipment_groups" />
             <End Role="equipment" EntitySet="equipments" />
           </AssociationSet>
-          <AssociationSet Name="FK_rm_equipment_group_rm_system" Association="relmon_star_energiModel.FK_rm_equipment_group_rm_system">
-            <End Role="system" EntitySet="systems" />
-            <End Role="equipment_groups" EntitySet="equipment_groups" />
-          </AssociationSet>
           <AssociationSet Name="FK_equipment_paf_equipments" Association="relmon_star_energiModel.FK_equipment_paf_equipments">
             <End Role="equipment" EntitySet="equipments" />
             <End Role="equipment_paf" EntitySet="equipment_paf" />
@@ -3309,10 +3518,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             <End Role="foc" EntitySet="focs" />
             <End Role="ma" EntitySet="mas" />
           </AssociationSet>
-          <AssociationSet Name="FK_rm_unit_rm_foc" Association="relmon_star_energiModel.FK_rm_unit_rm_foc">
-            <End Role="foc" EntitySet="focs" />
-            <End Role="unit" EntitySet="units" />
-          </AssociationSet>
           <AssociationSet Name="FK_iir_recommendations_investigation_report" Association="relmon_star_energiModel.FK_iir_recommendations_investigation_report">
             <End Role="investigation_report" EntitySet="investigation_report" />
             <End Role="iir_recommendations" EntitySet="iir_recommendations" />
@@ -3336,18 +3541,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <AssociationSet Name="FK_rca_pre_task_rca_preserve_category" Association="relmon_star_energiModel.FK_rca_pre_task_rca_preserve_category">
             <End Role="rca_preserve_category" EntitySet="rca_preserve_category" />
             <End Role="rca_pre_task" EntitySet="rca_pre_task" />
-          </AssociationSet>
-          <AssociationSet Name="FK_system_paf_systems" Association="relmon_star_energiModel.FK_system_paf_systems">
-            <End Role="system" EntitySet="systems" />
-            <End Role="system_paf" EntitySet="system_paf" />
-          </AssociationSet>
-          <AssociationSet Name="FK_rm_system_rm_unit" Association="relmon_star_energiModel.FK_rm_system_rm_unit">
-            <End Role="unit" EntitySet="units" />
-            <End Role="system" EntitySet="systems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_unit_paf_units" Association="relmon_star_energiModel.FK_unit_paf_units">
-            <End Role="unit" EntitySet="units" />
-            <End Role="unit_paf" EntitySet="unit_paf" />
           </AssociationSet>
           <AssociationSet Name="FK_user_per_role_users" Association="relmon_star_energiModel.FK_user_per_role_users">
             <End Role="user" EntitySet="users" />
@@ -3385,6 +3578,67 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <AssociationSet Name="FK_rca_team_connector_rca" Association="relmon_star_energiModel.FK_rca_team_connector_rca">
             <End Role="rca" EntitySet="rcas" />
             <End Role="rca_team_connector" EntitySet="rca_team_connector" />
+          </AssociationSet>
+          <EntitySet Name="units" EntityType="relmon_star_energiModel.unit" />
+          <AssociationSet Name="FK_rm_unit_rm_foc" Association="relmon_star_energiModel.FK_rm_unit_rm_foc">
+            <End Role="foc" EntitySet="focs" />
+            <End Role="unit" EntitySet="units" />
+          </AssociationSet>
+          <AssociationSet Name="FK_unit_paf_units" Association="relmon_star_energiModel.FK_unit_paf_units">
+            <End Role="unit" EntitySet="units" />
+            <End Role="unit_paf" EntitySet="unit_paf" />
+          </AssociationSet>
+          <EntitySet Name="ocs" EntityType="relmon_star_energiModel.oc" />
+          <EntitySet Name="pes" EntityType="relmon_star_energiModel.pe" />
+          <EntitySet Name="pts" EntityType="relmon_star_energiModel.pt" />
+          <EntitySet Name="rcs" EntityType="relmon_star_energiModel.rc" />
+          <EntitySet Name="sfs" EntityType="relmon_star_energiModel.sf" />
+          <EntitySet Name="systems" EntityType="relmon_star_energiModel.system" />
+          <AssociationSet Name="FK_rm_equipment_group_rm_system" Association="relmon_star_energiModel.FK_rm_equipment_group_rm_system">
+            <End Role="system" EntitySet="systems" />
+            <End Role="equipment_groups" EntitySet="equipment_groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_oc" Association="relmon_star_energiModel.FK_systems_oc">
+            <End Role="oc" EntitySet="ocs" />
+            <End Role="system" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_pe" Association="relmon_star_energiModel.FK_systems_pe">
+            <End Role="pe" EntitySet="pes" />
+            <End Role="system" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_pt" Association="relmon_star_energiModel.FK_systems_pt">
+            <End Role="pt" EntitySet="pts" />
+            <End Role="system" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_rc" Association="relmon_star_energiModel.FK_systems_rc">
+            <End Role="rc" EntitySet="rcs" />
+            <End Role="system" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_sf" Association="relmon_star_energiModel.FK_systems_sf">
+            <End Role="sf" EntitySet="sfs" />
+            <End Role="system" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_system_paf_systems" Association="relmon_star_energiModel.FK_system_paf_systems">
+            <End Role="system" EntitySet="systems" />
+            <End Role="system_paf" EntitySet="system_paf" />
+          </AssociationSet>
+          <AssociationSet Name="FK_rm_system_rm_unit" Association="relmon_star_energiModel.FK_rm_system_rm_unit">
+            <End Role="unit" EntitySet="units" />
+            <End Role="system" EntitySet="systems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_systems_systems" Association="relmon_star_energiModel.FK_systems_systems">
+            <End Role="system" EntitySet="systems" />
+            <End Role="system1" EntitySet="systems" />
+          </AssociationSet>
+          <EntitySet Name="afps" EntityType="relmon_star_energiModel.afp" />
+          <EntitySet Name="ocrs" EntityType="relmon_star_energiModel.ocr" />
+          <AssociationSet Name="FK_equipments_afp" Association="relmon_star_energiModel.FK_equipments_afp">
+            <End Role="afp" EntitySet="afps" />
+            <End Role="equipment" EntitySet="equipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_equipments_ocr" Association="relmon_star_energiModel.FK_equipments_ocr">
+            <End Role="ocr" EntitySet="ocrs" />
+            <End Role="equipment" EntitySet="equipments" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="observationByDate_Result">
@@ -4046,9 +4300,12 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_equipment_part" Type="Int32" />
           <Property Name="tag_number" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="equipment_part" Relationship="relmon_star_energiModel.FK_component_equipment_part" FromRole="component" ToRole="equipment_part" />
           <NavigationProperty Name="sub_component" Relationship="relmon_star_energiModel.FK_sub_component_component" FromRole="component" ToRole="sub_component" />
+          <Property Name="component_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="functional_code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="installed_date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="daily_log">
           <Key>
@@ -4641,8 +4898,8 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_equipment_group" Type="Int32" Nullable="false" />
-          <Property Name="tag_num" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="nama" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="tag_num" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nama" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="id_category" Type="Byte" />
           <Property Name="pdf" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="tetha" Type="Double" />
@@ -4673,6 +4930,13 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <NavigationProperty Name="equipment_part" Relationship="relmon_star_energiModel.FK_equipment_part_equipments" FromRole="equipment" ToRole="equipment_part" />
           <NavigationProperty Name="equipment_readiness_nav" Relationship="relmon_star_energiModel.FK_equipment_readiness_nav_equipments" FromRole="equipment" ToRole="equipment_readiness_nav" />
           <NavigationProperty Name="tag_types" Relationship="relmon_star_energiModel.FK_equipments_tag_types" FromRole="equipment" ToRole="tag_types" />
+          <Property Name="functional_code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="mpi" Type="Double" />
+          <Property Name="acr" Type="Double" />
+          <Property Name="id_ocr" Type="Int32" />
+          <Property Name="id_afp" Type="Int32" />
+          <NavigationProperty Name="afp" Relationship="relmon_star_energiModel.FK_equipments_afp" FromRole="equipment" ToRole="afp" />
+          <NavigationProperty Name="ocr" Relationship="relmon_star_energiModel.FK_equipments_ocr" FromRole="equipment" ToRole="ocr" />
         </EntityType>
         <EntityType Name="event_descriptions">
           <Key>
@@ -5760,37 +6024,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <Property Name="calculated_paf" Type="Double" Nullable="false" />
           <NavigationProperty Name="system" Relationship="relmon_star_energiModel.FK_system_paf_systems" FromRole="system_paf" ToRole="system" />
         </EntityType>
-        <EntityType Name="system">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_unit" Type="Int32" Nullable="false" />
-          <Property Name="nama" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="kode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="funct_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="failure_scenario" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="primary_impact" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="secondary_impact" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="cons_econ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cons_hs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cons_env" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cons_total" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="likelihood" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="crit_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ram_crit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="exist_crit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="h" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="e" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="econ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ram_crit_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="prob" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ram_crit_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ram_crit_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="equipment_groups" Relationship="relmon_star_energiModel.FK_rm_equipment_group_rm_system" FromRole="system" ToRole="equipment_groups" />
-          <NavigationProperty Name="system_paf" Relationship="relmon_star_energiModel.FK_system_paf_systems" FromRole="system" ToRole="system_paf" />
-          <NavigationProperty Name="unit" Relationship="relmon_star_energiModel.FK_rm_system_rm_unit" FromRole="system" ToRole="unit" />
-        </EntityType>
         <EntityType Name="tag_types">
           <Key>
             <PropertyRef Name="id" />
@@ -5843,19 +6076,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <Property Name="measured_paf" Type="Double" />
           <Property Name="calculated_paf" Type="Double" />
           <NavigationProperty Name="unit" Relationship="relmon_star_energiModel.FK_unit_paf_units" FromRole="unit_paf" ToRole="unit" />
-        </EntityType>
-        <EntityType Name="unit">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_foc" Type="Int32" Nullable="false" />
-          <Property Name="nama" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ma" Type="Double" Nullable="false" />
-          <Property Name="masd" Type="Double" Nullable="false" />
-          <NavigationProperty Name="foc" Relationship="relmon_star_energiModel.FK_rm_unit_rm_foc" FromRole="unit" ToRole="foc" />
-          <NavigationProperty Name="systems" Relationship="relmon_star_energiModel.FK_rm_system_rm_unit" FromRole="unit" ToRole="system" />
-          <NavigationProperty Name="unit_paf" Relationship="relmon_star_energiModel.FK_unit_paf_units" FromRole="unit" ToRole="unit_paf" />
         </EntityType>
         <EntityType Name="user_per_role">
           <Key>
@@ -6248,20 +6468,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_rm_equipment_group_rm_system">
-          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="relmon_star_energiModel.equipment_groups" Role="equipment_groups" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="system">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="equipment_groups">
-              <PropertyRef Name="id_system" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_equipment_paf_equipments">
           <End Type="relmon_star_energiModel.equipment" Role="equipment" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6428,20 +6634,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_rm_unit_rm_foc">
-          <End Type="relmon_star_energiModel.foc" Role="foc" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="relmon_star_energiModel.unit" Role="unit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="foc">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="unit">
-              <PropertyRef Name="id_foc" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_iir_recommendations_investigation_report">
           <End Type="relmon_star_energiModel.investigation_report" Role="investigation_report" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -6521,48 +6713,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             </Principal>
             <Dependent Role="rca_pre_task">
               <PropertyRef Name="id_category" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_system_paf_systems">
-          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="relmon_star_energiModel.system_paf" Role="system_paf" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="system">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="system_paf">
-              <PropertyRef Name="id_system" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_rm_system_rm_unit">
-          <End Type="relmon_star_energiModel.unit" Role="unit" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="unit">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="system">
-              <PropertyRef Name="id_unit" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_unit_paf_units">
-          <End Type="relmon_star_energiModel.unit" Role="unit" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="relmon_star_energiModel.unit_paf" Role="unit_paf" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="unit">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="unit_paf">
-              <PropertyRef Name="id_unit" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6738,6 +6888,302 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             </Principal>
             <Dependent Role="rca_team_connector">
               <PropertyRef Name="id_rca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="unit">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_foc" Type="Int32" Nullable="false" />
+          <Property Name="nama" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ma" Type="Double" />
+          <Property Name="masd" Type="Double" />
+          <Property Name="functional_code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="unit_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="foc" Relationship="relmon_star_energiModel.FK_rm_unit_rm_foc" FromRole="unit" ToRole="foc" />
+          <NavigationProperty Name="unit_paf" Relationship="relmon_star_energiModel.FK_unit_paf_units" FromRole="unit" ToRole="unit_paf" />
+          <NavigationProperty Name="systems" Relationship="relmon_star_energiModel.FK_rm_system_rm_unit" FromRole="unit" ToRole="system" />
+        </EntityType>
+        <Association Name="FK_rm_unit_rm_foc">
+          <End Type="relmon_star_energiModel.foc" Role="foc" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="relmon_star_energiModel.unit" Role="unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="foc">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="unit">
+              <PropertyRef Name="id_foc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_unit_paf_units">
+          <End Type="relmon_star_energiModel.unit" Role="unit" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="relmon_star_energiModel.unit_paf" Role="unit_paf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unit">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="unit_paf">
+              <PropertyRef Name="id_unit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="oc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="oc_value" Type="Double" />
+          <Property Name="oc_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="oc_score" Type="Double" />
+          <NavigationProperty Name="systems" Relationship="relmon_star_energiModel.FK_systems_oc" FromRole="oc" ToRole="system" />
+        </EntityType>
+        <EntityType Name="pe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="pe_value" Type="Double" />
+          <Property Name="pe_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="pe_score" Type="Double" />
+          <NavigationProperty Name="systems" Relationship="relmon_star_energiModel.FK_systems_pe" FromRole="pe" ToRole="system" />
+        </EntityType>
+        <EntityType Name="pt">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="pt_value" Type="Double" />
+          <Property Name="pt_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="pt_score" Type="Double" />
+          <NavigationProperty Name="systems" Relationship="relmon_star_energiModel.FK_systems_pt" FromRole="pt" ToRole="system" />
+        </EntityType>
+        <EntityType Name="rc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rc_value" Type="Double" />
+          <Property Name="rc_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="rc_score" Type="Double" />
+          <NavigationProperty Name="systems" Relationship="relmon_star_energiModel.FK_systems_rc" FromRole="rc" ToRole="system" />
+        </EntityType>
+        <EntityType Name="sf">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sf_value" Type="Double" />
+          <Property Name="sf_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="sf_score" Type="Double" />
+          <NavigationProperty Name="systems" Relationship="relmon_star_energiModel.FK_systems_sf" FromRole="sf" ToRole="system" />
+        </EntityType>
+        <EntityType Name="system">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_unit" Type="Int32" Nullable="false" />
+          <Property Name="nama" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="kode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="funct_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="failure_scenario" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="primary_impact" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="secondary_impact" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="cons_econ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cons_hs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cons_env" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cons_total" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="likelihood" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="crit_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ram_crit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="exist_crit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="h" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="e" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="econ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ram_crit_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prob" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ram_crit_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ram_crit_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_oc" Type="Int32" />
+          <Property Name="id_sf" Type="Int32" />
+          <Property Name="id_rc" Type="Int32" />
+          <Property Name="id_pe" Type="Int32" />
+          <Property Name="id_pt" Type="Int32" />
+          <Property Name="system_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="scr" Type="Double" />
+          <NavigationProperty Name="equipment_groups" Relationship="relmon_star_energiModel.FK_rm_equipment_group_rm_system" FromRole="system" ToRole="equipment_groups" />
+          <NavigationProperty Name="oc" Relationship="relmon_star_energiModel.FK_systems_oc" FromRole="system" ToRole="oc" />
+          <NavigationProperty Name="pe" Relationship="relmon_star_energiModel.FK_systems_pe" FromRole="system" ToRole="pe" />
+          <NavigationProperty Name="pt" Relationship="relmon_star_energiModel.FK_systems_pt" FromRole="system" ToRole="pt" />
+          <NavigationProperty Name="rc" Relationship="relmon_star_energiModel.FK_systems_rc" FromRole="system" ToRole="rc" />
+          <NavigationProperty Name="sf" Relationship="relmon_star_energiModel.FK_systems_sf" FromRole="system" ToRole="sf" />
+          <NavigationProperty Name="system_paf" Relationship="relmon_star_energiModel.FK_system_paf_systems" FromRole="system" ToRole="system_paf" />
+          <NavigationProperty Name="unit" Relationship="relmon_star_energiModel.FK_rm_system_rm_unit" FromRole="system" ToRole="unit" />
+          <NavigationProperty Name="systems1" Relationship="relmon_star_energiModel.FK_systems_systems" FromRole="system" ToRole="system1" />
+          <NavigationProperty Name="system1" Relationship="relmon_star_energiModel.FK_systems_systems" FromRole="system1" ToRole="system" />
+        </EntityType>
+        <Association Name="FK_rm_equipment_group_rm_system">
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="relmon_star_energiModel.equipment_groups" Role="equipment_groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="system">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="equipment_groups">
+              <PropertyRef Name="id_system" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_oc">
+          <End Type="relmon_star_energiModel.oc" Role="oc" Multiplicity="0..1" />
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oc">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="system">
+              <PropertyRef Name="id_oc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_pe">
+          <End Type="relmon_star_energiModel.pe" Role="pe" Multiplicity="0..1" />
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pe">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="system">
+              <PropertyRef Name="id_pe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_pt">
+          <End Type="relmon_star_energiModel.pt" Role="pt" Multiplicity="0..1" />
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pt">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="system">
+              <PropertyRef Name="id_pt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_rc">
+          <End Type="relmon_star_energiModel.rc" Role="rc" Multiplicity="0..1" />
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rc">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="system">
+              <PropertyRef Name="id_rc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_sf">
+          <End Type="relmon_star_energiModel.sf" Role="sf" Multiplicity="0..1" />
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sf">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="system">
+              <PropertyRef Name="id_sf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_system_paf_systems">
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="relmon_star_energiModel.system_paf" Role="system_paf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="system">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="system_paf">
+              <PropertyRef Name="id_system" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_rm_system_rm_unit">
+          <End Type="relmon_star_energiModel.unit" Role="unit" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unit">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="system">
+              <PropertyRef Name="id_unit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_systems_systems">
+          <End Type="relmon_star_energiModel.system" Role="system" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.system" Role="system1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="system">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="system1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="afp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="afp_value" Type="Double" />
+          <Property Name="afp_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="afp_score" Type="Double" />
+          <NavigationProperty Name="equipments" Relationship="relmon_star_energiModel.FK_equipments_afp" FromRole="afp" ToRole="equipment" />
+        </EntityType>
+        <EntityType Name="ocr">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ocr_value" Type="Double" />
+          <Property Name="ocr_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ocr_score" Type="Double" />
+          <NavigationProperty Name="equipments" Relationship="relmon_star_energiModel.FK_equipments_ocr" FromRole="ocr" ToRole="equipment" />
+        </EntityType>
+        <Association Name="FK_equipments_afp">
+          <End Type="relmon_star_energiModel.afp" Role="afp" Multiplicity="0..1" />
+          <End Type="relmon_star_energiModel.equipment" Role="equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="afp">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="equipment">
+              <PropertyRef Name="id_afp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_equipments_ocr">
+          <End Type="relmon_star_energiModel.ocr" Role="ocr" Multiplicity="0..1" />
+          <End Type="relmon_star_energiModel.equipment" Role="equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ocr">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="equipment">
+              <PropertyRef Name="id_ocr" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7426,6 +7872,9 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <EntitySetMapping Name="components">
             <EntityTypeMapping TypeName="relmon_star_energiModel.component">
               <MappingFragment StoreEntitySet="component">
+                <ScalarProperty Name="installed_date" ColumnName="installed_date" />
+                <ScalarProperty Name="functional_code" ColumnName="functional_code" />
+                <ScalarProperty Name="component_name" ColumnName="component_name" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="tag_number" ColumnName="tag_number" />
                 <ScalarProperty Name="id_equipment_part" ColumnName="id_equipment_part" />
@@ -8007,6 +8456,11 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <EntitySetMapping Name="equipments">
             <EntityTypeMapping TypeName="relmon_star_energiModel.equipment">
               <MappingFragment StoreEntitySet="equipments">
+                <ScalarProperty Name="id_afp" ColumnName="id_afp" />
+                <ScalarProperty Name="id_ocr" ColumnName="id_ocr" />
+                <ScalarProperty Name="acr" ColumnName="acr" />
+                <ScalarProperty Name="mpi" ColumnName="mpi" />
+                <ScalarProperty Name="functional_code" ColumnName="functional_code" />
                 <ScalarProperty Name="pnid_tag_num" ColumnName="pnid_tag_num" />
                 <ScalarProperty Name="sertifikasi" ColumnName="sertifikasi" />
                 <ScalarProperty Name="data_sheet_path" ColumnName="data_sheet_path" />
@@ -9143,35 +9597,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="systems">
-            <EntityTypeMapping TypeName="relmon_star_energiModel.system">
-              <MappingFragment StoreEntitySet="systems">
-                <ScalarProperty Name="ram_crit_3" ColumnName="ram_crit_3" />
-                <ScalarProperty Name="ram_crit_2" ColumnName="ram_crit_2" />
-                <ScalarProperty Name="prob" ColumnName="prob" />
-                <ScalarProperty Name="ram_crit_1" ColumnName="ram_crit_1" />
-                <ScalarProperty Name="econ" ColumnName="econ" />
-                <ScalarProperty Name="e" ColumnName="e" />
-                <ScalarProperty Name="h" ColumnName="h" />
-                <ScalarProperty Name="exist_crit" ColumnName="exist_crit" />
-                <ScalarProperty Name="ram_crit" ColumnName="ram_crit" />
-                <ScalarProperty Name="crit_code" ColumnName="crit_code" />
-                <ScalarProperty Name="likelihood" ColumnName="likelihood" />
-                <ScalarProperty Name="cons_total" ColumnName="cons_total" />
-                <ScalarProperty Name="cons_env" ColumnName="cons_env" />
-                <ScalarProperty Name="cons_hs" ColumnName="cons_hs" />
-                <ScalarProperty Name="cons_econ" ColumnName="cons_econ" />
-                <ScalarProperty Name="secondary_impact" ColumnName="secondary_impact" />
-                <ScalarProperty Name="primary_impact" ColumnName="primary_impact" />
-                <ScalarProperty Name="failure_scenario" ColumnName="failure_scenario" />
-                <ScalarProperty Name="funct_description" ColumnName="funct_description" />
-                <ScalarProperty Name="kode" ColumnName="kode" />
-                <ScalarProperty Name="nama" ColumnName="nama" />
-                <ScalarProperty Name="id_unit" ColumnName="id_unit" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tag_types">
             <EntityTypeMapping TypeName="relmon_star_energiModel.tag_types">
               <MappingFragment StoreEntitySet="tag_types">
@@ -9220,17 +9645,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
                 <ScalarProperty Name="measured_paf" ColumnName="measured_paf" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />
                 <ScalarProperty Name="id_unit" ColumnName="id_unit" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="units">
-            <EntityTypeMapping TypeName="relmon_star_energiModel.unit">
-              <MappingFragment StoreEntitySet="units">
-                <ScalarProperty Name="masd" ColumnName="masd" />
-                <ScalarProperty Name="ma" ColumnName="ma" />
-                <ScalarProperty Name="nama" ColumnName="nama" />
-                <ScalarProperty Name="id_foc" ColumnName="id_foc" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -9334,6 +9748,125 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="units">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.unit">
+              <MappingFragment StoreEntitySet="units">
+                <ScalarProperty Name="unit_description" ColumnName="unit_description" />
+                <ScalarProperty Name="functional_code" ColumnName="functional_code" />
+                <ScalarProperty Name="masd" ColumnName="masd" />
+                <ScalarProperty Name="ma" ColumnName="ma" />
+                <ScalarProperty Name="nama" ColumnName="nama" />
+                <ScalarProperty Name="id_foc" ColumnName="id_foc" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ocs">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.oc">
+              <MappingFragment StoreEntitySet="oc">
+                <ScalarProperty Name="oc_score" ColumnName="oc_score" />
+                <ScalarProperty Name="oc_description" ColumnName="oc_description" />
+                <ScalarProperty Name="oc_value" ColumnName="oc_value" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pes">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.pe">
+              <MappingFragment StoreEntitySet="pe">
+                <ScalarProperty Name="pe_score" ColumnName="pe_score" />
+                <ScalarProperty Name="pe_description" ColumnName="pe_description" />
+                <ScalarProperty Name="pe_value" ColumnName="pe_value" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pts">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.pt">
+              <MappingFragment StoreEntitySet="pt">
+                <ScalarProperty Name="pt_score" ColumnName="pt_score" />
+                <ScalarProperty Name="pt_description" ColumnName="pt_description" />
+                <ScalarProperty Name="pt_value" ColumnName="pt_value" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rcs">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.rc">
+              <MappingFragment StoreEntitySet="rc">
+                <ScalarProperty Name="rc_score" ColumnName="rc_score" />
+                <ScalarProperty Name="rc_description" ColumnName="rc_description" />
+                <ScalarProperty Name="rc_value" ColumnName="rc_value" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sfs">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.sf">
+              <MappingFragment StoreEntitySet="sf">
+                <ScalarProperty Name="sf_score" ColumnName="sf_score" />
+                <ScalarProperty Name="sf_description" ColumnName="sf_description" />
+                <ScalarProperty Name="sf_value" ColumnName="sf_value" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="systems">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.system">
+              <MappingFragment StoreEntitySet="systems">
+                <ScalarProperty Name="scr" ColumnName="scr" />
+                <ScalarProperty Name="system_description" ColumnName="system_description" />
+                <ScalarProperty Name="id_pt" ColumnName="id_pt" />
+                <ScalarProperty Name="id_pe" ColumnName="id_pe" />
+                <ScalarProperty Name="id_rc" ColumnName="id_rc" />
+                <ScalarProperty Name="id_sf" ColumnName="id_sf" />
+                <ScalarProperty Name="id_oc" ColumnName="id_oc" />
+                <ScalarProperty Name="ram_crit_3" ColumnName="ram_crit_3" />
+                <ScalarProperty Name="ram_crit_2" ColumnName="ram_crit_2" />
+                <ScalarProperty Name="prob" ColumnName="prob" />
+                <ScalarProperty Name="ram_crit_1" ColumnName="ram_crit_1" />
+                <ScalarProperty Name="econ" ColumnName="econ" />
+                <ScalarProperty Name="e" ColumnName="e" />
+                <ScalarProperty Name="h" ColumnName="h" />
+                <ScalarProperty Name="exist_crit" ColumnName="exist_crit" />
+                <ScalarProperty Name="ram_crit" ColumnName="ram_crit" />
+                <ScalarProperty Name="crit_code" ColumnName="crit_code" />
+                <ScalarProperty Name="likelihood" ColumnName="likelihood" />
+                <ScalarProperty Name="cons_total" ColumnName="cons_total" />
+                <ScalarProperty Name="cons_env" ColumnName="cons_env" />
+                <ScalarProperty Name="cons_hs" ColumnName="cons_hs" />
+                <ScalarProperty Name="cons_econ" ColumnName="cons_econ" />
+                <ScalarProperty Name="secondary_impact" ColumnName="secondary_impact" />
+                <ScalarProperty Name="primary_impact" ColumnName="primary_impact" />
+                <ScalarProperty Name="failure_scenario" ColumnName="failure_scenario" />
+                <ScalarProperty Name="funct_description" ColumnName="funct_description" />
+                <ScalarProperty Name="kode" ColumnName="kode" />
+                <ScalarProperty Name="nama" ColumnName="nama" />
+                <ScalarProperty Name="id_unit" ColumnName="id_unit" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="afps">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.afp">
+              <MappingFragment StoreEntitySet="afp">
+                <ScalarProperty Name="afp_score" ColumnName="afp_score" />
+                <ScalarProperty Name="afp_description" ColumnName="afp_description" />
+                <ScalarProperty Name="afp_value" ColumnName="afp_value" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ocrs">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.ocr">
+              <MappingFragment StoreEntitySet="ocr">
+                <ScalarProperty Name="ocr_score" ColumnName="ocr_score" />
+                <ScalarProperty Name="ocr_description" ColumnName="ocr_description" />
+                <ScalarProperty Name="ocr_value" ColumnName="ocr_value" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -9356,7 +9889,7 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Relmon" ZoomLevel="48">
+      <Diagram Name="Relmon" ZoomLevel="72">
         <EntityTypeShape EntityType="relmon_star_energiModel.audit" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.audit_log" Width="1.5" PointX="3" PointY="12.375" />
         <EntityTypeShape EntityType="relmon_star_energiModel.audit_log_clause" Width="1.5" PointX="5.25" PointY="13" />
@@ -9451,11 +9984,9 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
         <EntityTypeShape EntityType="relmon_star_energiModel.she_observation_undian_winner" Width="1.5" PointX="24.75" PointY="6.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.sub_component" Width="1.5" PointX="31.75" PointY="28.625" />
         <EntityTypeShape EntityType="relmon_star_energiModel.system_paf" Width="1.5" PointX="22.75" PointY="34.5" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.system" Width="1.5" PointX="20.5" PointY="31.125" />
         <EntityTypeShape EntityType="relmon_star_energiModel.tag_types" Width="1.5" PointX="22.75" PointY="28.625" />
         <EntityTypeShape EntityType="relmon_star_energiModel.trouble_shooting" Width="1.5" PointX="24.75" PointY="9.75" />
         <EntityTypeShape EntityType="relmon_star_energiModel.unit_paf" Width="1.5" PointX="20.5" PointY="37.875" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.unit" Width="1.5" PointX="18.25" PointY="34.375" />
         <EntityTypeShape EntityType="relmon_star_energiModel.user_per_role" Width="1.5" PointX="22.75" PointY="48.5" />
         <EntityTypeShape EntityType="relmon_star_energiModel.user" Width="1.5" PointX="20.5" PointY="48" />
         <EntityTypeShape EntityType="relmon_star_energiModel.weekend_duty" Width="1.5" PointX="24.75" PointY="16.75" />
@@ -9486,7 +10017,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
         <AssociationConnector Association="relmon_star_energiModel.FK_equipment_daily_report_table_equipment_daily_report" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipment_event_equipments" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipments_equipment_groups" />
-        <AssociationConnector Association="relmon_star_energiModel.FK_rm_equipment_group_rm_system" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipment_paf_equipments" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipment_part_equipments" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipment_part_parts" />
@@ -9499,16 +10029,12 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
         <AssociationConnector Association="relmon_star_energiModel.FK_foc_target_paf_focs" />
         <AssociationConnector Association="relmon_star_energiModel.FK_focs_plants" />
         <AssociationConnector Association="relmon_star_energiModel.FK_masd_focs" />
-        <AssociationConnector Association="relmon_star_energiModel.FK_rm_unit_rm_foc" />
         <AssociationConnector Association="relmon_star_energiModel.FK_iir_recommendations_investigation_report" />
         <AssociationConnector Association="relmon_star_energiModel.FK_iir_recommendations_pir" />
         <AssociationConnector Association="relmon_star_energiModel.FK_pir_log_pir" />
         <AssociationConnector Association="relmon_star_energiModel.FK_rca_division_rca_facility" />
         <AssociationConnector Association="relmon_star_energiModel.FK_rca_section_rca_department" />
         <AssociationConnector Association="relmon_star_energiModel.FK_rca_pre_task_rca_preserve_category" />
-        <AssociationConnector Association="relmon_star_energiModel.FK_system_paf_systems" />
-        <AssociationConnector Association="relmon_star_energiModel.FK_rm_system_rm_unit" />
-        <AssociationConnector Association="relmon_star_energiModel.FK_unit_paf_units" />
         <AssociationConnector Association="relmon_star_energiModel.FK_user_per_role_users" />
         <EntityTypeShape EntityType="relmon_star_energiModel.rca" Width="1.5" PointX="9" PointY="7.25" />
         <AssociationConnector Association="relmon_star_energiModel.FK_rca_pir" />
@@ -9519,6 +10045,28 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
         <AssociationConnector Association="relmon_star_energiModel.FK_rca_rca_floor" />
         <AssociationConnector Association="relmon_star_energiModel.FK_rca_rca_section" />
         <AssociationConnector Association="relmon_star_energiModel.FK_rca_team_connector_rca" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.unit" Width="1.5" PointX="18.25" PointY="31.375" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_rm_unit_rm_foc" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_unit_paf_units" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.oc" Width="1.5" PointX="18.25" PointY="40.875" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.pe" Width="1.5" PointX="18.25" PointY="38.125" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.pt" Width="1.5" PointX="18.25" PointY="53.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.rc" Width="1.5" PointX="18.25" PointY="35.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.sf" Width="1.5" PointX="18.25" PointY="50.625" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.system" Width="1.5" PointX="20.5" PointY="27.5" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_rm_equipment_group_rm_system" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_systems_oc" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_systems_pe" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_systems_pt" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_systems_rc" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_systems_sf" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_system_paf_systems" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_rm_system_rm_unit" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_systems_systems" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.afp" Width="1.5" PointX="22.75" PointY="38.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.ocr" Width="1.5" PointX="27.375" PointY="0.875" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_equipments_afp" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_equipments_ocr" />
       </Diagram>
     </Diagrams>
   </Designer>

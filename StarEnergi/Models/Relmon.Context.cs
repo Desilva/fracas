@@ -133,7 +133,15 @@ namespace StarEnergi.Models
         public DbSet<workflow_node> workflow_node { get; set; }
         public DbSet<user_role> user_role { get; set; }
         public DbSet<rca> rcas { get; set; }
-    
+
+        public DbSet<oc> ocs { get; set; }
+        public DbSet<pt> pts { get; set; }
+        public DbSet<pe> pes { get; set; }
+        public DbSet<rc> rcs { get; set; }
+        public DbSet<sf> sfs { get; set; }
+
+        public DbSet<afp> afps { get; set; }
+        public DbSet<ocr> ocrs { get; set; }
         public virtual int insertUser(string username, Nullable<int> idEmployee)
         {
             var usernameParameter = username != null ?

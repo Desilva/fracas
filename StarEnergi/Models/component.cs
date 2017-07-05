@@ -26,7 +26,16 @@ namespace StarEnergi.Models
         [Display(Name = "No Key Map")]
         public string tag_number { get; set; }
         public string description { get; set; }
-    
+
+        [Display(Name = "Nama Komponen")]
+        public string component_name { get; set; }
+
+        [Display(Name = "Func Code")]
+        public string functional_code { get; set; }
+
+        [Display(Name = "Tanggal Instalasi")]
+        public Nullable<DateTime> installed_date { get; set; }
+
         public virtual equipment_part equipment_part { get; set; }
         public virtual ICollection<sub_component> sub_component { get; set; }
     }
