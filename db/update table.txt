@@ -1,0 +1,89 @@
+Update table
+
+dbo.units
+id			int		Not Null
+id_foc			int		Not Null
+nama			varchar(255)	Allows Null
+ma			float		Allows Null
+masd			float		Allows Null
+functional_code		varchar(100)	Allows Null
+unit_description	varchar(MAX)	Allows Null
+
+
+dbo.systems
+id			int		Not Null
+id_unit			int		Not Null
+nama			varchar(255)	Allows Null
+kode			varchar(100)	Allows Null
+funct_description	text		Allows Null
+failure_scenario	text		Allows Null
+primary_impact		text		Allows Null
+secondary_impact	text		Allows Null
+cons_econ		varchar(50)	Allows Null
+cons_hs			varchar(50)	Allows Null
+cons_env		varchar(50)	Allows Null
+cons_total		varchar(50)	Allows Null
+likelihood		varchar(50)	Allows Null
+crit_code		varchar(50)	Allows Null
+ram_crit		varchar(50)	Allows Null
+exist_crit		varchar(50)	Allows Null
+h			varchar(50)	Allows Null
+e			varchar(50)	Allows Null
+econ			varchar(50)	Allows Null
+ram_crit_1		varchar(50)	Allows Null
+prob			varchar(50)	Allows Null
+ram_crit_2		varchar(50)	Allows Null
+ram_crit_3		varchar(50)	Allows Null
+id_oc			int		Allows Null (new FK to dbo.OC)
+id_sf			int		Allows Null (new FK to dbo.SF)
+id_rc			int		Allows Null (new FK to dbo.RC)
+id_pe			int		Allows Null (new FK to dbo.PE)
+id_pt			int		Allows Null (new FK to dbo.PT)
+system_description	varchar(MAX)	Allows Null
+scr			float		Allows Null
+
+
+dbo.equipments
+id			int		Not Null
+id_equipment_group	int		Not Null
+tag_num			varchar(255)	Not Null
+nama			varchar(255)	Not Null
+id_category		tinyint		Allows Null
+pdf			varchar(50)	Allows Null
+tetha			float		Allows Null
+beta			float		Allows Null
+mean			float		Allows Null
+varian			float		Allows Null
+lamda			float		Allows Null
+id_discipline		int		Allows Null
+mtbf			int		Allows Null
+mttr			int		Allows Null
+mdt			int		Allows Null
+status			tinyint		Allows Null
+method			varchar(100)	Allows Null
+econ			int		Allows Null
+ram_crit		varchar(50)	Allows Null
+installed_date		datetime	Allows Null
+obsolete_date		datetime	Allows Null
+warranty		int		Allows Null
+vendor			varchar(100)	Allows Null
+id_tag_type		int		Allows Null
+status_read_nav		tinyint		Allows Null
+data_sheet_path		varchar(50)	Allows Null
+sertifikasi		datetime	Allows Null
+pnid_tag_num		varchar(255)	Allows Null
+functional_code		varchar(100)	Allows Null
+mpi			float		Allows Null
+acr			float		Allows Null
+id_ocr			int		Allows Null (New FK to dbo.ocr)
+id_afp			int		Allows Null (New FK to dbo.afp)
+
+
+dbo.component
+id			int		Not Null
+id_equipment_part	int		Allows Null
+tag_number		varchar(255)	Allows Null
+description		varchar(MAX)	Allows Null
+component_name		varchar(255)	Allows Null
+functional_code		varchar(255)	Allows Null
+installed_date		datetime	Allows Null
