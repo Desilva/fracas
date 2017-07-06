@@ -44,7 +44,7 @@ namespace StarEnergi.Controllers.Admin
             if (sys.rc != null)
                 ViewBag.rc = sys.rc.rc_value + "-" + sys.rc.rc_description;
             if (sys.scr != null)
-                ViewBag.scr = sys.scr;
+                ViewBag.scr = sys.scr.Value.ToString().Replace(',','.');            
             return PartialView(sys);
         }
 
@@ -113,6 +113,7 @@ namespace StarEnergi.Controllers.Admin
             ViewBag.oc = system.id_oc;
             ViewBag.sf = system.id_sf;            
             ViewBag.rc = system.id_rc;
+            ViewBag.scr = system.scr.Value.ToString().Replace(',', '.');            
             return PartialView(system);
         }
 

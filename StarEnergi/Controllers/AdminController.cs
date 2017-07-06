@@ -221,7 +221,7 @@ namespace StarEnergi.Controllers
                                     where ep.id_equipment == parentId || (parentId == null)
                                     select new TreeViewItemModel
                                     {
-                                        Text = item.component_name,
+                                        Text = item.component_name == null ? item.tag_number : item.component_name,
                                         Value = part + ";" + SqlFunctions.StringConvert((double)item.id).Trim(),
                                         //LoadOnDemand = item.Count > 0,
                                         Enabled = true,
