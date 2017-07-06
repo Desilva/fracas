@@ -62,7 +62,7 @@ namespace StarEnergi.Controllers.Admin
 
         [HttpPost]
         public ActionResult Create(system system)
-        {
+        {                   
             if (ModelState.IsValid)
             {
                 if (db.systems.Where(x => x.nama == system.nama).ToList().Count > 0)

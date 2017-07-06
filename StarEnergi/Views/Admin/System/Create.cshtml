@@ -90,7 +90,7 @@
         });
     });
 
-    function save() {
+    function save() {               
         var values =
         {
             @*"id_unit"           : eval('@ViewBag.id_unit'),
@@ -125,10 +125,11 @@
             "id_pe": $('#id_pe').val(),
             "id_sf": $('#id_sf').val(),
             "id_rc": $('#id_rc').val(),
-            "scr": $('#scr_label').val()
+            "scr": $('#scr_label').val(),
         }
-
+        console.log(values);
         $.post("system/Create", values, function (data) {
+            console.log(data);
             if (data != undefined) {
                 if (data["status"] == 0) {
                     var value = 'SYSTEM;' + data["message"];
