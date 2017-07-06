@@ -41,7 +41,8 @@
             var ocr = $("#id_ocr").find('option:selected');
             var ocrScore = parseFloat(ocr.data('score'));
             var ocrValue = parseFloat(ocr.data('value'));
-            var totalAcr = @double.Parse(ViewBag.scr.ToString()) * ocrValue;
+            console.log(parseFloat('@ViewBag.scr'))
+            var totalAcr = parseFloat('@ViewBag.scr'.replace(',','.')) * ocrValue;
             $("#acr_label").val(totalAcr)
         });
 
@@ -76,9 +77,9 @@
             "functional_code": $('#functional_code').val(),
             "installed_date": $('#installed_date').val(),
             "id_ocr": $('#id_ocr').val(),
-            "acr": $('#acr_label').val(),
+            "acr": $('#acr_label').val().replace('.',','),
             "id_afp": $('#id_afp').val(),
-            "mpi": $('#mpi_label').val(),
+            "mpi": $('#mpi_label').val().replace('.', ','),
             "id_tag_type": $('#id_tag_type').val(),
             "id_discipline": $('#id_discipline').val(),
             "sertifikasi": $('#sertifikasi').val(),

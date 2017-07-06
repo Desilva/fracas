@@ -65,7 +65,7 @@
                $("#id_sf").val('@ViewBag.sf');
            }
        );
-        var oldValue = $("#scr").val();
+        var oldValue = '@ViewBag.scr';
         $("#scr_label").val(oldValue);
         $(".input-dropdown").change(function (e) {
             var pt = $("#id_pt").find('option:selected');
@@ -130,7 +130,7 @@
                "id_pe": $('#id_pe').val(),
                "id_sf": $('#id_sf').val(),
                "id_rc": $('#id_rc').val(),
-               "scr": $('#scr_label').val()
+               "scr": $('#scr_label').val().replace('.', ',')
            }
 
            $.post("system/edit", values, function (data) {

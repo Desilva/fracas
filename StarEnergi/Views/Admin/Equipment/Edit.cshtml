@@ -22,8 +22,8 @@
         $("#id_tag_type").addClass('input-dropdown');
         var oldAcr = $("#equipment_acr").val();
         var oldMpi = $("#equipment_mpi").val();
-        $("#acr_label").val(oldAcr);
-        $("#mpi_label").val(oldMpi);
+        $("#acr_label").val(oldAcr.replace(',', '.'));
+        $("#mpi_label").val(oldMpi.replace(',', '.'));
 
         $.post("Equipment/GetOCR",
            function (data) {
@@ -45,7 +45,7 @@
                for (var i = 0; i < hasil.length; i++) {
                    $("<option data-value='" + hasil[i]['afp_value'] + "'  data-score='" + hasil[i]['afp_score'] + "' value='" + hasil[i]['id'] + "'>" + hasil[i]['afp_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_afp");
                }
-               $("#id_afp").val('@ViewBag.afp');
+               $("#id_afp").val('@ViewBag.afp.ToString().Replace(',', '.')');
            }
        );
 
@@ -53,7 +53,7 @@
             var ocr = $("#id_ocr").find('option:selected');
             var ocrScore = parseFloat(ocr.data('score'));
             var ocrValue = parseFloat(ocr.data('value'));
-            var scrValue = '@ViewBag.scr.ToString()';
+            var scrValue = '@ViewBag.scr.ToString().Replace(',', '.')';
             if(scrValue == null)            
                 scr = 0;            
             var totalAcr = parseFloat(scrValue) * ocrValue;
@@ -93,9 +93,9 @@
             "functional_code": $('#equipment_functional_code').val(),
             "installed_date": $('#equipment_installed_date').val(),
             "id_ocr": $('#id_ocr').val(),
-            "acr": $('#acr_label').val(),
+            "acr": $('#acr_label').val().replace('.', ','),
             "id_afp": $('#id_afp').val(),
-            "mpi": $('#mpi_label').val(),
+            "mpi": $('#mpi_label').val().replace('.', ','),
             "id_tag_type": $('#id_tag_type').val(),
             "id_discipline": $('#id_discipline').val(),
             "sertifikasi": $('#equipment_sertifikasi').val(),

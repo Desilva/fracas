@@ -154,7 +154,7 @@
         @Html.LabelFor(model => model.equipment.acr)
     </div>
     <div class="display-field">
-        @ViewBag.acr
+        @ViewBag.acr.ToString().Replace(',', '.')
     </div>
 
     <div class="display-label">
@@ -168,7 +168,7 @@
         @Html.LabelFor(model => model.equipment.mpi)
     </div>
     <div class="display-field">
-        @ViewBag.mpi
+        @ViewBag.mpi.ToString().Replace(',', '.')
     </div>
 
     <div class="display-label">

@@ -9,6 +9,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
@@ -21,6 +23,9 @@ namespace StarEnergi.Models
         }
     
         public int id { get; set; }
+        
+        [Required]
+        [DisplayName("Area Name")]
         public string nama { get; set; }
     
         public virtual ICollection<foc> focs { get; set; }
