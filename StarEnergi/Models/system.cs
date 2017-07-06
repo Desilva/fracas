@@ -73,6 +73,7 @@ namespace StarEnergi.Models
 
         [Display(Name = "Description")]
         public string system_description { get; set; }
+        
         public Nullable<double> scr { get; set; }
             
         public virtual ICollection<equipment_groups> equipment_groups { get; set; }
