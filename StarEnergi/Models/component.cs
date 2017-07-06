@@ -27,13 +27,13 @@ namespace StarEnergi.Models
         public string tag_number { get; set; }
         public string description { get; set; }
 
-        [Display(Name = "Nama Komponen")]
+        [Display(Name = "Component Name")]
         public string component_name { get; set; }
 
         [Display(Name = "Func Code")]
         public string functional_code { get; set; }
 
-        [Display(Name = "Tanggal Instalasi")]
+        [Display(Name = "Installed Date")]
         public Nullable<DateTime> installed_date { get; set; }
 
         public virtual equipment_part equipment_part { get; set; }

@@ -26,7 +26,7 @@ namespace StarEnergi.Models
         public int id_foc { get; set; }
 
         [Required]
-        [Display(Name = "Nama Unit")]
+        [Display(Name = "Unit Name")]
         public string nama { get; set; }
 
         [Display(Name = "MA")]
@@ -38,7 +38,7 @@ namespace StarEnergi.Models
         [Display(Name = "Func Code")]
         public string functional_code { get; set; }
 
-        [Display(Name = "Deskripsi")]
+        [Display(Name = "Description")]
         public string unit_description { get; set; }
 
         public virtual foc foc { get; set; }

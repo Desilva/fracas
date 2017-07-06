@@ -179,10 +179,10 @@ namespace StarEnergi.Controllers
                                         Text = item.nama,
                                         Value = equipment + ";" + SqlFunctions.StringConvert((double)item.id).Trim(),
                                         //LoadOnDemand = item.equipment_part.Count > 0,
-                                        LoadOnDemand = item.equipment_part.Any(m => m.components.Count > 1),
+                                        LoadOnDemand = item.equipment_part.Any(m => m.components.Count > 0),
                                         Enabled = true,
                                         //ImageUrl = item.equipment_part.Count > 0 ? ("/Content/image/folder.png") : ("/Content/image/file.png")
-                                        ImageUrl = item.equipment_part.Any(m=>m.components.Count > 1) ? ("/Content/image/folder.png") : ("/Content/image/file.png")
+                                        ImageUrl = item.equipment_part.Any(m=>m.components.Count > 0) ? ("/Content/image/folder.png") : ("/Content/image/file.png")
                                     };
                 return new JsonResult { Data = nodes };
             }

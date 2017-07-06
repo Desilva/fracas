@@ -25,7 +25,7 @@ namespace StarEnergi.Models
         public int id_unit { get; set; }
 
         [Required]
-        [Display(Name = "Nama Sistem")]
+        [Display(Name = "System Name")]
         public string nama { get; set; }
         
         [Display(Name = "Func Code")]
@@ -71,7 +71,7 @@ namespace StarEnergi.Models
         [Display(Name = "PT")]
         public Nullable<int> id_pt { get; set; }
 
-        [Display(Name = "Deskripsi")]
+        [Display(Name = "Description")]
         public string system_description { get; set; }
         public Nullable<double> scr { get; set; }
             

@@ -38,7 +38,7 @@ namespace StarEnergi.Models
         public string tag_num { get; set; }
 
         [Required]
-        [Display(Name = "Nama")]
+        [Display(Name = "Equipment Name")]
         public string nama { get; set; }
 
         [Display(Name = "PDF")]
@@ -98,7 +98,7 @@ namespace StarEnergi.Models
         [Display(Name = "Data Sheet")]
         public string data_sheet_path { get; set; }
 
-        [Display(Name = "Sertifikasi")]
+        [Display(Name = "Certification")]
         public Nullable<System.DateTime> sertifikasi { get; set; }
 
         [Display(Name = "P&ID Tag Num")]
