@@ -142,6 +142,9 @@ namespace StarEnergi.Models
 
         public DbSet<afp> afps { get; set; }
         public DbSet<ocr> ocrs { get; set; }
+        public DbSet<build_of_material> build_of_materials { get; set; }
+        public DbSet<bom_equipment> bom_equipments { get; set; }
+        public DbSet<bom_component> bom_components { get; set; }
         public virtual int insertUser(string username, Nullable<int> idEmployee)
         {
             var usernameParameter = username != null ?

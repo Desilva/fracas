@@ -56,6 +56,31 @@
           <Property Name="no_key_map" Type="varchar" MaxLength="50" />
           <Property Name="description" Type="text" />
         </EntityType>
+        <EntityType Name="bom_component">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_bom" Type="int" Nullable="false" />
+          <Property Name="id_component" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bom_equipment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_bom" Type="int" Nullable="false" />
+          <Property Name="id_equipment" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="build_of_material">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="functional_location" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="no_keymap" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="is_delete" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="comms_rbi">
           <Key>
             <PropertyRef Name="id" />
@@ -1990,6 +2015,54 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_bom_component_build_of_material">
+          <End Role="build_of_material" Type="Self.build_of_material" Multiplicity="1" />
+          <End Role="bom_component" Type="Self.bom_component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="build_of_material">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bom_component">
+              <PropertyRef Name="id_bom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bom_component_component">
+          <End Role="component" Type="Self.component" Multiplicity="1" />
+          <End Role="bom_component" Type="Self.bom_component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="component">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bom_component">
+              <PropertyRef Name="id_component" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bom_equipment_build_of_material">
+          <End Role="build_of_material" Type="Self.build_of_material" Multiplicity="1" />
+          <End Role="bom_equipment" Type="Self.bom_equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="build_of_material">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bom_equipment">
+              <PropertyRef Name="id_bom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bom_equipment_equipments">
+          <End Role="equipments" Type="Self.equipments" Multiplicity="1" />
+          <End Role="bom_equipment" Type="Self.bom_equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipments">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bom_equipment">
+              <PropertyRef Name="id_equipment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_component_equipment_part">
           <End Role="equipment_part" Type="Self.equipment_part" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2861,6 +2934,9 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
           <EntitySet Name="audit_log" EntityType="Self.audit_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="audit_log_clause" EntityType="Self.audit_log_clause" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bom" EntityType="Self.bom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bom_component" EntityType="Self.bom_component" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bom_equipment" EntityType="Self.bom_equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="build_of_material" EntityType="Self.build_of_material" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="comms_rbi" EntityType="Self.comms_rbi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="component" EntityType="Self.component" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="daily_log" EntityType="Self.daily_log" Schema="dbo" store:Type="Tables" />
@@ -2984,6 +3060,22 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <AssociationSet Name="FK_audit_log_pir" Association="Self.FK_audit_log_pir">
             <End Role="pir" EntitySet="pir" />
             <End Role="audit_log" EntitySet="audit_log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bom_component_build_of_material" Association="Self.FK_bom_component_build_of_material">
+            <End Role="build_of_material" EntitySet="build_of_material" />
+            <End Role="bom_component" EntitySet="bom_component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bom_component_component" Association="Self.FK_bom_component_component">
+            <End Role="component" EntitySet="component" />
+            <End Role="bom_component" EntitySet="bom_component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bom_equipment_build_of_material" Association="Self.FK_bom_equipment_build_of_material">
+            <End Role="build_of_material" EntitySet="build_of_material" />
+            <End Role="bom_equipment" EntitySet="bom_equipment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bom_equipment_equipments" Association="Self.FK_bom_equipment_equipments">
+            <End Role="equipments" EntitySet="equipments" />
+            <End Role="bom_equipment" EntitySet="bom_equipment" />
           </AssociationSet>
           <AssociationSet Name="FK_component_equipment_part" Association="Self.FK_component_equipment_part">
             <End Role="equipment_part" EntitySet="equipment_part" />
@@ -3639,6 +3731,25 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <AssociationSet Name="FK_equipments_ocr" Association="relmon_star_energiModel.FK_equipments_ocr">
             <End Role="ocr" EntitySet="ocrs" />
             <End Role="equipment" EntitySet="equipments" />
+          </AssociationSet>
+          <EntitySet Name="bom_component" EntityType="relmon_star_energiModel.bom_component" />
+          <EntitySet Name="bom_equipment" EntityType="relmon_star_energiModel.bom_equipment" />
+          <EntitySet Name="build_of_material" EntityType="relmon_star_energiModel.build_of_material" />
+          <AssociationSet Name="FK_bom_component_build_of_material" Association="relmon_star_energiModel.FK_bom_component_build_of_material">
+            <End Role="build_of_material" EntitySet="build_of_material" />
+            <End Role="bom_component" EntitySet="bom_component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bom_component_component" Association="relmon_star_energiModel.FK_bom_component_component">
+            <End Role="component" EntitySet="components" />
+            <End Role="bom_component" EntitySet="bom_component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bom_equipment_build_of_material" Association="relmon_star_energiModel.FK_bom_equipment_build_of_material">
+            <End Role="build_of_material" EntitySet="build_of_material" />
+            <End Role="bom_equipment" EntitySet="bom_equipment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bom_equipment_equipments" Association="relmon_star_energiModel.FK_bom_equipment_equipments">
+            <End Role="equipment" EntitySet="equipments" />
+            <End Role="bom_equipment" EntitySet="bom_equipment" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="observationByDate_Result">
@@ -4306,6 +4417,7 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <Property Name="component_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="functional_code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="installed_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="bom_component" Relationship="relmon_star_energiModel.FK_bom_component_component" FromRole="component" ToRole="bom_component" />
         </EntityType>
         <EntityType Name="daily_log">
           <Key>
@@ -4937,6 +5049,7 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <Property Name="id_afp" Type="Int32" />
           <NavigationProperty Name="afp" Relationship="relmon_star_energiModel.FK_equipments_afp" FromRole="equipment" ToRole="afp" />
           <NavigationProperty Name="ocr" Relationship="relmon_star_energiModel.FK_equipments_ocr" FromRole="equipment" ToRole="ocr" />
+          <NavigationProperty Name="bom_equipment" Relationship="relmon_star_energiModel.FK_bom_equipment_equipments" FromRole="equipment" ToRole="bom_equipment" />
         </EntityType>
         <EntityType Name="event_descriptions">
           <Key>
@@ -7184,6 +7297,85 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             </Principal>
             <Dependent Role="equipment">
               <PropertyRef Name="id_ocr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bom_component">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_bom" Type="Int32" Nullable="false" />
+          <Property Name="id_component" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="build_of_material" Relationship="relmon_star_energiModel.FK_bom_component_build_of_material" FromRole="bom_component" ToRole="build_of_material" />
+          <NavigationProperty Name="component" Relationship="relmon_star_energiModel.FK_bom_component_component" FromRole="bom_component" ToRole="component" />
+        </EntityType>
+        <EntityType Name="bom_equipment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_bom" Type="Int32" Nullable="false" />
+          <Property Name="id_equipment" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="build_of_material" Relationship="relmon_star_energiModel.FK_bom_equipment_build_of_material" FromRole="bom_equipment" ToRole="build_of_material" />
+          <NavigationProperty Name="equipment" Relationship="relmon_star_energiModel.FK_bom_equipment_equipments" FromRole="bom_equipment" ToRole="equipment" />
+        </EntityType>
+        <EntityType Name="build_of_material">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="functional_location" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="no_keymap" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="is_delete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="bom_component" Relationship="relmon_star_energiModel.FK_bom_component_build_of_material" FromRole="build_of_material" ToRole="bom_component" />
+          <NavigationProperty Name="bom_equipment" Relationship="relmon_star_energiModel.FK_bom_equipment_build_of_material" FromRole="build_of_material" ToRole="bom_equipment" />
+        </EntityType>
+        <Association Name="FK_bom_component_build_of_material">
+          <End Type="relmon_star_energiModel.build_of_material" Role="build_of_material" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.bom_component" Role="bom_component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="build_of_material">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bom_component">
+              <PropertyRef Name="id_bom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bom_component_component">
+          <End Type="relmon_star_energiModel.component" Role="component" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.bom_component" Role="bom_component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="component">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bom_component">
+              <PropertyRef Name="id_component" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bom_equipment_build_of_material">
+          <End Type="relmon_star_energiModel.build_of_material" Role="build_of_material" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.bom_equipment" Role="bom_equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="build_of_material">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bom_equipment">
+              <PropertyRef Name="id_bom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bom_equipment_equipments">
+          <End Type="relmon_star_energiModel.equipment" Role="equipment" Multiplicity="1" />
+          <End Type="relmon_star_energiModel.bom_equipment" Role="bom_equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bom_equipment">
+              <PropertyRef Name="id_equipment" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9867,6 +10059,34 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="bom_component">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.bom_component">
+              <MappingFragment StoreEntitySet="bom_component">
+                <ScalarProperty Name="id_component" ColumnName="id_component" />
+                <ScalarProperty Name="id_bom" ColumnName="id_bom" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bom_equipment">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.bom_equipment">
+              <MappingFragment StoreEntitySet="bom_equipment">
+                <ScalarProperty Name="id_equipment" ColumnName="id_equipment" />
+                <ScalarProperty Name="id_bom" ColumnName="id_bom" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="build_of_material">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.build_of_material">
+              <MappingFragment StoreEntitySet="build_of_material">
+                <ScalarProperty Name="is_delete" ColumnName="is_delete" />
+                <ScalarProperty Name="no_keymap" ColumnName="no_keymap" />
+                <ScalarProperty Name="functional_location" ColumnName="functional_location" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -10067,6 +10287,13 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
         <EntityTypeShape EntityType="relmon_star_energiModel.ocr" Width="1.5" PointX="27.375" PointY="0.875" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipments_afp" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipments_ocr" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.bom_component" Width="1.5" PointX="31.75" PointY="17.5" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.bom_equipment" Width="1.5" PointX="29.625" PointY="20.625" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.build_of_material" Width="1.5" PointX="27.375" PointY="5.375" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_bom_component_build_of_material" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_bom_component_component" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_bom_equipment_build_of_material" />
+        <AssociationConnector Association="relmon_star_energiModel.FK_bom_equipment_equipments" />
       </Diagram>
     </Diagrams>
   </Designer>

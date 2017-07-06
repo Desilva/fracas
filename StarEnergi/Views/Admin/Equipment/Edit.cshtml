@@ -102,8 +102,7 @@
             "id_discipline": $('#id_discipline').val(),
             "sertifikasi": $('#equipment_sertifikasi').val(),
             "id_equipment_group": eval('@ViewBag.id_equipment_group')
-        }
-        console.log(values);
+        }        
         $.post("Equipment/Edit", values, function (data) {
             if (data != undefined) {
                 if (data["status"] == 0) {

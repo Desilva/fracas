@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using StarEnergi.Models;
 using Telerik.Web.Mvc;
+using System.Data;
 
 namespace StarEnergi.Controllers.Admin
 {
@@ -15,10 +16,11 @@ namespace StarEnergi.Controllers.Admin
         private relmon_star_energiEntities db = new relmon_star_energiEntities();
         public ActionResult Index()
         {
-            return View();
+            return PartialView();
         }
 
-        public ActionResult RenderDetails(int id, int level) {
+        public ActionResult RenderDetails(int id, int level)
+        {
             ViewBag.id = id;
             ViewBag.level = level;
             return PartialView();
@@ -57,7 +59,7 @@ namespace StarEnergi.Controllers.Admin
         // Ajax insert binding
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _SaveAjaxEditing(int id,int id_reference, int level)
+        public ActionResult _SaveAjaxEditing(int id, int id_reference, int level)
         {
             bom editable = db.boms.Find(id);
             if (TryUpdateModel(editable))
@@ -84,7 +86,62 @@ namespace StarEnergi.Controllers.Admin
         {
             return View(new GridModel<bom>
             {
-                Data = db.boms.Where(x => x.id_reference == id).Where(x =>x.level_equip == level).ToList()
+                Data = db.boms.Where(x => x.id_reference == id).Where(x => x.level_equip == level).ToList()
+            });
+        }
+
+
+
+        [GridAction]
+        public ActionResult _SelectGridEditing()
+        {
+            return BindingBuildOfMaterial();
+        }
+
+        // Ajax insert binding
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _InsertGridEditing()
+        {
+            build_of_material bom = new build_of_material();
+            if (TryUpdateModel(bom))
+            {
+                db.build_of_materials.Add(bom);
+                db.SaveChanges();
+            }
+
+            return BindingBuildOfMaterial();
+        }
+
+        // Ajax insert binding
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _SaveGridEditing(int id)
+        {
+            build_of_material editable = db.build_of_materials.Find(id);
+            if (TryUpdateModel(editable))
+            {
+                db.Entry(editable).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return BindingBuildOfMaterial();
+        }
+
+        [GridAction]
+        public ActionResult _DeleteGridEditing(int id)
+        {
+            build_of_material bom = db.build_of_materials.Find(id);
+            bom.is_delete = true;
+            db.Entry(bom).State = EntityState.Modified;
+            db.SaveChanges();
+            return BindingBuildOfMaterial();
+        }
+
+        private ActionResult BindingBuildOfMaterial()
+        {
+            return View(new GridModel<build_of_material>
+            {
+                Data = db.build_of_materials.Where(n => n.is_delete == false).ToList()
             });
         }
     }

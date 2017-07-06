@@ -447,6 +447,15 @@
     <Compile Include="Models\bom.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\bom_component.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bom_equipment.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\build_of_material.cs">
+      <DependentUpon>Relmon.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CategoryEntity.cs" />
     <Compile Include="Models\comms_rbi.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
@@ -3598,6 +3607,7 @@
     <None Include="Service References\WWService\UserService4.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Views\Admin\BuildOfMaterial\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />
