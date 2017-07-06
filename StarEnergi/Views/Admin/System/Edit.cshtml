@@ -66,6 +66,8 @@
            }
        );
         var oldValue = '@ViewBag.scr';
+        if (oldValue !== null)
+            oldValue = oldValue.replace(',', '.');
         $("#scr_label").val(oldValue);
         $(".input-dropdown").change(function (e) {
             var pt = $("#id_pt").find('option:selected');

@@ -22,8 +22,10 @@
         $("#id_tag_type").addClass('input-dropdown');
         var oldAcr = $("#equipment_acr").val();
         var oldMpi = $("#equipment_mpi").val();
-        $("#acr_label").val(oldAcr.replace(',', '.'));
-        $("#mpi_label").val(oldMpi.replace(',', '.'));
+        if(oldAcr !== null)
+            $("#acr_label").val(oldAcr.replace(',', '.'));
+        if(oldMpi !== null)
+            $("#mpi_label").val(oldMpi.replace(',', '.'));
 
         $.post("Equipment/GetOCR",
            function (data) {
@@ -45,7 +47,7 @@
                for (var i = 0; i < hasil.length; i++) {
                    $("<option data-value='" + hasil[i]['afp_value'] + "'  data-score='" + hasil[i]['afp_score'] + "' value='" + hasil[i]['id'] + "'>" + hasil[i]['afp_value'] + "-" + hasil[i]['nama'] + "</option>").appendTo("#id_afp");
                }
-               $("#id_afp").val('@ViewBag.afp.ToString().Replace(',', '.')');
+               $("#id_afp").val('@ViewBag.afp');
            }
        );
 

@@ -13,7 +13,7 @@
 <fieldset>
     <legend>unit</legend>
 
-    <div class="display-label">Nama</div>
+    <div class="display-label">@Html.LabelFor(model => model.nama)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.nama)
     </div>
@@ -28,12 +28,12 @@
         @Html.DisplayFor(model => model.masd)
     </div>*@
 
-    <div class="display-label">Func Code</div>
+    <div class="display-label">@Html.LabelFor(model => model.functional_code)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.functional_code)
     </div>
 
-    <div class="display-label">Deskripsi</div>
+    <div class="display-label">@Html.LabelFor(model => model.unit_description)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.unit_description)
     </div>

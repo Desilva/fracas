@@ -5,7 +5,17 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#detailsBOM').load('BuildOfMAterial/RenderDetails/?id='+'@Model.equipment.id'+'&level=5');
+        $('#detailsBOM').load('BuildOfMAterial/RenderDetails/?id=' + '@Model.equipment.id' + '&level=5');
+        var acr = '@ViewBag.acr';
+        var mpi = '@ViewBag.mpi';
+
+        if(acr !== null)
+            acr = acr.replace(',', '.');
+        $("#acr_label").text(acr);
+
+        if (mpi !== null)
+            mpi = mpi.replace(',', '.');
+        $("#mpi_label").text(mpi);
     })
 
     function edit() {
@@ -154,7 +164,7 @@
         @Html.LabelFor(model => model.equipment.acr)
     </div>
     <div class="display-field">
-        @ViewBag.acr.ToString().Replace(',', '.')
+        <label id="acr_label"/>        
     </div>
 
     <div class="display-label">
@@ -168,7 +178,7 @@
         @Html.LabelFor(model => model.equipment.mpi)
     </div>
     <div class="display-field">
-        @ViewBag.mpi.ToString().Replace(',', '.')
+        <label id="mpi_label" />  
     </div>
 
     <div class="display-label">
