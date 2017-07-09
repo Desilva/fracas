@@ -5,11 +5,11 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#detailsBOM').load('BuildOfMAterial/RenderDetails/?id='+'@Model.id'+'&level=7');
+        $('#detailsBOM').load('BuildOfMAterial/RenderDetailsComponent/?id=' + '@Model.id' + '&type=comp');
     })
 
     function edit() {
-        $('#content').load('component/edit/'+ '@Model.id');
+        $('#content').load('component/edit/' + '@Model.id');
     }
 </script>
 <h2>Details</h2>

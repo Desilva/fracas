@@ -1,7 +1,8 @@
 ﻿@model StarEnergi.Models.EquipmentEntity
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#updateBOM').load('BuildOfMAterial/RenderUpdate/?id='+'@Model.equipment.id'+'&level=5');
+        @*$('#updateBOM').load('BuildOfMAterial/RenderUpdate/?id='+'@Model.equipment.id'+'&level=5');*@
+        $('#updateBOM').load('BuildOfMAterial/RenderUpdate/?id=' + '@Model.equipment.id' + '&type=equip');
     })
 
 </script>

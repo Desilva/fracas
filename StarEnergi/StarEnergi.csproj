@@ -503,6 +503,7 @@
     <Compile Include="Models\discipline.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BomEquipmentEntity.cs" />
     <Compile Include="Models\duty_manager.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -3608,6 +3609,8 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Admin\BuildOfMaterial\Index.cshtml" />
+    <Content Include="Views\Admin\BuildOfMaterial\RenderDetailsComponent.cshtml" />
+    <Content Include="Views\Admin\BuildOfMaterial\RenderUpdateComponent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

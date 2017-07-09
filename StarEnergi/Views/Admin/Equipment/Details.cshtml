@@ -5,7 +5,7 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#detailsBOM').load('BuildOfMAterial/RenderDetails/?id=' + '@Model.equipment.id' + '&level=5');
+        $('#detailsBOM').load('BuildOfMAterial/RenderDetails/?id=' + '@Model.equipment.id' + '&type=equip');
         var acr = '@ViewBag.acr';
         var mpi = '@ViewBag.mpi';
 

@@ -32,10 +32,34 @@ namespace StarEnergi.Controllers.Admin
 
         public ActionResult Create(int id)
         {
-            //ViewBag.id_equipment_part = id;            
+            //ViewBag.id_equipment_part = id;         
+            equipment equipment = db.equipments.Find(id);
             var listEPart = db.equipment_part.Where(n => n.id_equipment == id).ToList();
             if (listEPart.Count > 0)
                 ViewBag.id_equipment_part = listEPart.FirstOrDefault().id;
+            else
+            {
+                ///dummy data part and equipmeent part
+                ///
+                part part = new part();
+                equipment_part ePart = new equipment_part();
+
+                part.tag_number = equipment.tag_num;
+                db.parts.Add(part);
+                db.SaveChanges();
+
+                ePart.id_equipment = equipment.id;
+                ePart.id_parts = part.id;
+
+                var hasEPart = db.equipment_part.Any(n => n.id_equipment == equipment.id && n.id_parts == part.id);
+                if (!hasEPart)
+                {
+                    db.equipment_part.Add(ePart);
+                    db.SaveChanges();
+                }
+
+                ViewBag.id_equipment_part = ePart.id;
+            }
             return PartialView();
         }
 
