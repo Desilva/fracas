@@ -14,5 +14,7 @@ namespace StarEnergi.Models
         public string functional_location { get; set; }
         [UIHint("NoKeyMap")]
         public string no_keymap { get; set; }
+        [UIHint("Remark")]
+        public string remark { get; set; }
     }
 }

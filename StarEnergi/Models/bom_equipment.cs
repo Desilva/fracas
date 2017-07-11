@@ -17,7 +17,7 @@ namespace StarEnergi.Models
         public int id { get; set; }
         public int id_bom { get; set; }
         public int id_equipment { get; set; }
-    
+        public string remark { get; set; }
         public virtual build_of_material build_of_material { get; set; }
         public virtual equipment equipment { get; set; }
     }

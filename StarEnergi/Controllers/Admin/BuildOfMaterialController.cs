@@ -136,7 +136,7 @@ namespace StarEnergi.Controllers.Admin
         // Ajax insert binding
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _InsertAjaxEditing(int id_reference, string type, int? idbom)
+        public ActionResult _InsertAjaxEditing(int id_reference, string type, string rk, int? idbom)
         {
             if (idbom != null)
             {
@@ -147,6 +147,7 @@ namespace StarEnergi.Controllers.Admin
                     {
                         be.id_equipment = id_reference;
                         be.id_bom = idbom.Value;
+                        be.remark = rk;
                         db.bom_equipments.Add(be);
                         db.SaveChanges();
                     }
@@ -158,6 +159,7 @@ namespace StarEnergi.Controllers.Admin
                     {
                         bc.id_component = id_reference;
                         bc.id_bom = idbom.Value;
+                        bc.remark = rk;
                         db.bom_components.Add(bc);
                         db.SaveChanges();
                     }
@@ -199,7 +201,7 @@ namespace StarEnergi.Controllers.Admin
 
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _UpdateAjaxEditing(int id, int id_reference, string type, int idBom)
+        public ActionResult _UpdateAjaxEditing(int id, int id_reference, string type, string rk, int idBom)
         {
             if (type == equip)
             {
@@ -208,6 +210,7 @@ namespace StarEnergi.Controllers.Admin
                 {
                     bom_equipment target = db.bom_equipments.Where(p => p.id == be.id).FirstOrDefault();
                     target.id_bom = idBom;
+                    target.remark = rk;
                     db.SaveChanges();
                 }
             }
@@ -218,6 +221,7 @@ namespace StarEnergi.Controllers.Admin
                 {
                     bom_component target = db.bom_components.Where(p => p.id == bc.id).FirstOrDefault();
                     target.id_bom = idBom;
+                    target.remark = rk;
                     db.SaveChanges();
                 }
             }
@@ -256,7 +260,7 @@ namespace StarEnergi.Controllers.Admin
                     if (listBom.Count > 0)
                     {
                         keymap = listBom.FirstOrDefault().no_keymap;
-                        location = listBom.FirstOrDefault().functional_location;
+                        location = listBom.FirstOrDefault().functional_location;                        
                     }
                     BomEquipmentEntity temp = new BomEquipmentEntity
                     {
@@ -264,6 +268,7 @@ namespace StarEnergi.Controllers.Admin
                         id_bom = be.id_bom,
                         no_keymap = keymap,
                         functional_location = location,
+                        remark = be.remark,
                     };
                     beEntity.Add(temp);
                 }
@@ -292,6 +297,7 @@ namespace StarEnergi.Controllers.Admin
                         id_bom = bc.id_bom,
                         no_keymap = keymap,
                         functional_location = location,
+                        remark = bc.remark,
                     };
                     bcEntity.Add(temp);
                 }

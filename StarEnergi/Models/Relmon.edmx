@@ -63,6 +63,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_bom" Type="int" Nullable="false" />
           <Property Name="id_component" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="bom_equipment">
           <Key>
@@ -71,6 +72,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_bom" Type="int" Nullable="false" />
           <Property Name="id_equipment" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="build_of_material">
           <Key>
@@ -97,7 +99,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_equipment_part" Type="int" />
           <Property Name="tag_number" Type="varchar" MaxLength="255" />
-          <Property Name="description" Type="varchar(max)" />
+          <Property Name="description" Type="varchar" MaxLength="255" />
           <Property Name="component_name" Type="varchar" MaxLength="255" />
           <Property Name="functional_code" Type="varchar" MaxLength="255" />
           <Property Name="installed_date" Type="datetime" />
@@ -654,8 +656,8 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_equipment_group" Type="int" Nullable="false" />
-          <Property Name="tag_num" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="nama" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="tag_num" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nama" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="id_category" Type="tinyint" />
           <Property Name="pdf" Type="varchar" MaxLength="50" />
           <Property Name="tetha" Type="float" />
@@ -1835,7 +1837,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_unit" Type="int" Nullable="false" />
-          <Property Name="nama" Type="varchar" MaxLength="255" />
+          <Property Name="nama" Type="varchar" MaxLength="100" />
           <Property Name="kode" Type="varchar" MaxLength="100" />
           <Property Name="funct_description" Type="text" />
           <Property Name="failure_scenario" Type="text" />
@@ -1919,7 +1921,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_foc" Type="int" Nullable="false" />
-          <Property Name="nama" Type="varchar" MaxLength="255" />
+          <Property Name="nama" Type="varchar" MaxLength="100" />
           <Property Name="ma" Type="float" />
           <Property Name="masd" Type="float" />
           <Property Name="functional_code" Type="varchar" MaxLength="100" />
@@ -2845,18 +2847,6 @@ warning 6002: The table/view 'star_energi_geo.dbo.user_role' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_systems_systems">
-          <End Role="systems" Type="Self.systems" Multiplicity="1" />
-          <End Role="systems1" Type="Self.systems" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="systems">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="systems1">
-              <PropertyRef Name="id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_unit_paf_units">
           <End Role="units" Type="Self.units" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -3309,10 +3299,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             <End Role="sf" EntitySet="sf" />
             <End Role="systems" EntitySet="systems" />
           </AssociationSet>
-          <AssociationSet Name="FK_systems_systems" Association="Self.FK_systems_systems">
-            <End Role="systems" EntitySet="systems" />
-            <End Role="systems1" EntitySet="systems" />
-          </AssociationSet>
           <AssociationSet Name="FK_unit_paf_units" Association="Self.FK_unit_paf_units">
             <End Role="units" EntitySet="units" />
             <End Role="unit_paf" EntitySet="unit_paf" />
@@ -3732,9 +3718,9 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             <End Role="ocr" EntitySet="ocrs" />
             <End Role="equipment" EntitySet="equipments" />
           </AssociationSet>
+          <EntitySet Name="build_of_material" EntityType="relmon_star_energiModel.build_of_material" />
           <EntitySet Name="bom_component" EntityType="relmon_star_energiModel.bom_component" />
           <EntitySet Name="bom_equipment" EntityType="relmon_star_energiModel.bom_equipment" />
-          <EntitySet Name="build_of_material" EntityType="relmon_star_energiModel.build_of_material" />
           <AssociationSet Name="FK_bom_component_build_of_material" Association="relmon_star_energiModel.FK_bom_component_build_of_material">
             <End Role="build_of_material" EntitySet="build_of_material" />
             <End Role="bom_component" EntitySet="bom_component" />
@@ -4411,7 +4397,7 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_equipment_part" Type="Int32" />
           <Property Name="tag_number" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="equipment_part" Relationship="relmon_star_energiModel.FK_component_equipment_part" FromRole="component" ToRole="equipment_part" />
           <NavigationProperty Name="sub_component" Relationship="relmon_star_energiModel.FK_sub_component_component" FromRole="component" ToRole="sub_component" />
           <Property Name="component_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -5010,8 +4996,8 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_equipment_group" Type="Int32" Nullable="false" />
-          <Property Name="tag_num" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="nama" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tag_num" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nama" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="id_category" Type="Byte" />
           <Property Name="pdf" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="tetha" Type="Double" />
@@ -7010,7 +6996,7 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_foc" Type="Int32" Nullable="false" />
-          <Property Name="nama" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nama" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ma" Type="Double" />
           <Property Name="masd" Type="Double" />
           <Property Name="functional_code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -7103,7 +7089,7 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_unit" Type="Int32" Nullable="false" />
-          <Property Name="nama" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nama" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="kode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="funct_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="failure_scenario" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -7300,26 +7286,6 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="bom_component">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_bom" Type="Int32" Nullable="false" />
-          <Property Name="id_component" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="build_of_material" Relationship="relmon_star_energiModel.FK_bom_component_build_of_material" FromRole="bom_component" ToRole="build_of_material" />
-          <NavigationProperty Name="component" Relationship="relmon_star_energiModel.FK_bom_component_component" FromRole="bom_component" ToRole="component" />
-        </EntityType>
-        <EntityType Name="bom_equipment">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_bom" Type="Int32" Nullable="false" />
-          <Property Name="id_equipment" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="build_of_material" Relationship="relmon_star_energiModel.FK_bom_equipment_build_of_material" FromRole="bom_equipment" ToRole="build_of_material" />
-          <NavigationProperty Name="equipment" Relationship="relmon_star_energiModel.FK_bom_equipment_equipments" FromRole="bom_equipment" ToRole="equipment" />
-        </EntityType>
         <EntityType Name="build_of_material">
           <Key>
             <PropertyRef Name="id" />
@@ -7330,6 +7296,28 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <Property Name="is_delete" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="bom_component" Relationship="relmon_star_energiModel.FK_bom_component_build_of_material" FromRole="build_of_material" ToRole="bom_component" />
           <NavigationProperty Name="bom_equipment" Relationship="relmon_star_energiModel.FK_bom_equipment_build_of_material" FromRole="build_of_material" ToRole="bom_equipment" />
+        </EntityType>
+        <EntityType Name="bom_component">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_bom" Type="Int32" Nullable="false" />
+          <Property Name="id_component" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="build_of_material" Relationship="relmon_star_energiModel.FK_bom_component_build_of_material" FromRole="bom_component" ToRole="build_of_material" />
+          <NavigationProperty Name="component" Relationship="relmon_star_energiModel.FK_bom_component_component" FromRole="bom_component" ToRole="component" />
+        </EntityType>
+        <EntityType Name="bom_equipment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_bom" Type="Int32" Nullable="false" />
+          <Property Name="id_equipment" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="build_of_material" Relationship="relmon_star_energiModel.FK_bom_equipment_build_of_material" FromRole="bom_equipment" ToRole="build_of_material" />
+          <NavigationProperty Name="equipment" Relationship="relmon_star_energiModel.FK_bom_equipment_equipments" FromRole="bom_equipment" ToRole="equipment" />
         </EntityType>
         <Association Name="FK_bom_component_build_of_material">
           <End Type="relmon_star_energiModel.build_of_material" Role="build_of_material" Multiplicity="1" />
@@ -10059,9 +10047,20 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="build_of_material">
+            <EntityTypeMapping TypeName="relmon_star_energiModel.build_of_material">
+              <MappingFragment StoreEntitySet="build_of_material">
+                <ScalarProperty Name="is_delete" ColumnName="is_delete" />
+                <ScalarProperty Name="no_keymap" ColumnName="no_keymap" />
+                <ScalarProperty Name="functional_location" ColumnName="functional_location" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="bom_component">
             <EntityTypeMapping TypeName="relmon_star_energiModel.bom_component">
               <MappingFragment StoreEntitySet="bom_component">
+                <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="id_component" ColumnName="id_component" />
                 <ScalarProperty Name="id_bom" ColumnName="id_bom" />
                 <ScalarProperty Name="id" ColumnName="id" />
@@ -10071,18 +10070,9 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
           <EntitySetMapping Name="bom_equipment">
             <EntityTypeMapping TypeName="relmon_star_energiModel.bom_equipment">
               <MappingFragment StoreEntitySet="bom_equipment">
+                <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="id_equipment" ColumnName="id_equipment" />
                 <ScalarProperty Name="id_bom" ColumnName="id_bom" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="build_of_material">
-            <EntityTypeMapping TypeName="relmon_star_energiModel.build_of_material">
-              <MappingFragment StoreEntitySet="build_of_material">
-                <ScalarProperty Name="is_delete" ColumnName="is_delete" />
-                <ScalarProperty Name="no_keymap" ColumnName="no_keymap" />
-                <ScalarProperty Name="functional_location" ColumnName="functional_location" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -10287,14 +10277,14 @@ FROM [dbo].[user_role] AS [user_role]</DefiningQuery>
         <EntityTypeShape EntityType="relmon_star_energiModel.ocr" Width="1.5" PointX="27.375" PointY="0.875" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipments_afp" />
         <AssociationConnector Association="relmon_star_energiModel.FK_equipments_ocr" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.bom_component" Width="1.5" PointX="31.75" PointY="17.5" />
-        <EntityTypeShape EntityType="relmon_star_energiModel.bom_equipment" Width="1.5" PointX="29.625" PointY="20.625" />
         <EntityTypeShape EntityType="relmon_star_energiModel.build_of_material" Width="1.5" PointX="27.375" PointY="5.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.bom_component" Width="1.5" PointX="31.75" PointY="17.375" />
+        <EntityTypeShape EntityType="relmon_star_energiModel.bom_equipment" Width="1.5" PointX="29.625" PointY="20.625" />
         <AssociationConnector Association="relmon_star_energiModel.FK_bom_component_build_of_material" />
         <AssociationConnector Association="relmon_star_energiModel.FK_bom_component_component" />
         <AssociationConnector Association="relmon_star_energiModel.FK_bom_equipment_build_of_material" />
         <AssociationConnector Association="relmon_star_energiModel.FK_bom_equipment_equipments" />
-      </Diagram>
+        </Diagram>
     </Diagrams>
   </Designer>
 </edmx:Edmx>

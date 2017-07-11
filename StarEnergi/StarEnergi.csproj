@@ -3614,6 +3614,7 @@
     <Content Include="Views\Admin\BuildOfMaterial\RenderUpdateComponent.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\BomDropDownList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\NoKeyMap.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Remark.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />
