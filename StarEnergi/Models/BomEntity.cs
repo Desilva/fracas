@@ -6,13 +6,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
-    public class BomEquipmentEntity
+    public class BomEntity
     {
-        public int id { get; set; }        
-        public int id_bom { get; set; }
-        [UIHint("BomDropDownList")]
+        public int id { get; set; }
+        public bool is_delete { get; set; }
         public string functional_location { get; set; }
-        [UIHint("NoKeyMap")]
         public string no_keymap { get; set; }
     }
 }

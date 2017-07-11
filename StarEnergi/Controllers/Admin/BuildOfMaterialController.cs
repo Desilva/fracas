@@ -97,16 +97,17 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult RenderDetails(int id, string type)
         {
             ViewBag.id = id;
-            ViewBag.type = type;
-            ViewData["build_of_material"] = db.build_of_materials.ToList();
+            ViewBag.type = type;            
+            ViewData["build_of_material"] = db.build_of_materials.Where(n => n.is_delete == false).ToList();
             return PartialView();
         }
 
         public ActionResult RenderUpdate(int id, string type)
         {
             ViewBag.id = id;
-            ViewBag.type = type;
-            ViewData["build_of_material"] = db.build_of_materials.ToList();
+            ViewBag.type = type;            
+            var listData = db.build_of_materials.Where(n => n.is_delete == false).ToList();
+            ViewData["build_of_material"] = listData;
             return PartialView();
         }
 
@@ -114,7 +115,7 @@ namespace StarEnergi.Controllers.Admin
         {
             ViewBag.id = id;
             ViewBag.type = type;
-            ViewData["build_of_material"] = db.build_of_materials.ToList();
+            ViewData["build_of_material"] = db.build_of_materials.Where(n => n.is_delete == false).ToList();
             return PartialView();
         }
 
@@ -122,7 +123,7 @@ namespace StarEnergi.Controllers.Admin
         {
             ViewBag.id = id;
             ViewBag.type = type;
-            ViewData["build_of_material"] = db.build_of_materials.ToList();
+            ViewData["build_of_material"] = db.build_of_materials.Where(n => n.is_delete == false).ToList();
             return PartialView();
         }
 
@@ -135,36 +136,70 @@ namespace StarEnergi.Controllers.Admin
         // Ajax insert binding
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _InsertAjaxEditing(int id_reference, string type)
+        public ActionResult _InsertAjaxEditing(int id_reference, string type, int? idbom)
         {
-            if (type == equip)
+            if (idbom != null)
             {
-                bom_equipment be = new bom_equipment();
-                if (TryUpdateModel(be))
+                if (type == equip)
                 {
-                    be.id_equipment = id_reference;
-                    db.bom_equipments.Add(be);
-                    db.SaveChanges();
+                    bom_equipment be = new bom_equipment();
+                    if (TryUpdateModel(be))
+                    {
+                        be.id_equipment = id_reference;
+                        be.id_bom = idbom.Value;
+                        db.bom_equipments.Add(be);
+                        db.SaveChanges();
+                    }
+                }
+                else if (type == comp)
+                {
+                    bom_component bc = new bom_component();
+                    if (TryUpdateModel(bc))
+                    {
+                        bc.id_component = id_reference;
+                        bc.id_bom = idbom.Value;
+                        db.bom_components.Add(bc);
+                        db.SaveChanges();
+                    }
                 }
             }
-            else if (type == comp)
-            {
-                bom_component bc = new bom_component();
-                if (TryUpdateModel(bc))
-                {
-                    bc.id_component = id_reference;
-                    db.bom_components.Add(bc);
-                    db.SaveChanges();
-                }
-            }
-
             return bindingBom(id_reference, type);
         }
 
         // Ajax insert binding
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
-        public ActionResult _SaveAjaxEditing(int id, int id_reference, string type)
+        public ActionResult _SaveAjaxEditing(int id, int id_reference, string type, int? idbom)
+        {
+            if (idbom != null)
+            {
+                if (type == equip)
+                {
+                    bom_equipment be = db.bom_equipments.Find(id);
+                    if (TryUpdateModel(be))
+                    {
+                        bom_equipment target = db.bom_equipments.Where(p => p.id == be.id).FirstOrDefault();
+                        target.id_bom = be.id_bom;
+                        db.SaveChanges();
+                    }
+                }
+                else if (type == comp)
+                {
+                    bom_component bc = db.bom_components.Find(id);
+                    if (TryUpdateModel(bc))
+                    {
+                        bom_component target = db.bom_components.Where(p => p.id == bc.id).FirstOrDefault();
+                        target.id_bom = bc.id_bom;
+                        db.SaveChanges();
+                    }
+                }
+            }
+            return bindingBom(id_reference, type);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [GridAction]
+        public ActionResult _UpdateAjaxEditing(int id, int id_reference, string type, int idBom)
         {
             if (type == equip)
             {
@@ -172,7 +207,7 @@ namespace StarEnergi.Controllers.Admin
                 if (TryUpdateModel(be))
                 {
                     bom_equipment target = db.bom_equipments.Where(p => p.id == be.id).FirstOrDefault();
-                    target.id_bom = be.id_bom;
+                    target.id_bom = idBom;
                     db.SaveChanges();
                 }
             }
@@ -182,7 +217,7 @@ namespace StarEnergi.Controllers.Admin
                 if (TryUpdateModel(bc))
                 {
                     bom_component target = db.bom_components.Where(p => p.id == bc.id).FirstOrDefault();
-                    target.id_bom = bc.id_bom;
+                    target.id_bom = idBom;
                     db.SaveChanges();
                 }
             }
@@ -216,10 +251,19 @@ namespace StarEnergi.Controllers.Admin
                 List<bom_equipment> listData = db.bom_equipments.Where(x => x.build_of_material.is_delete == false && x.id_equipment == id).ToList();
                 foreach (bom_equipment be in listData)
                 {
+                    List<build_of_material> listBom = db.build_of_materials.Where(n => n.id == be.id_bom).ToList();
+                    string keymap = ""; string location="";
+                    if (listBom.Count > 0)
+                    {
+                        keymap = listBom.FirstOrDefault().no_keymap;
+                        location = listBom.FirstOrDefault().functional_location;
+                    }
                     BomEquipmentEntity temp = new BomEquipmentEntity
                     {
                         id = be.id,
                         id_bom = be.id_bom,
+                        no_keymap = keymap,
+                        functional_location = location,
                     };
                     beEntity.Add(temp);
                 }
@@ -235,10 +279,19 @@ namespace StarEnergi.Controllers.Admin
                 component component = db.components.Find(id);
                 foreach (bom_component bc in listData)
                 {
+                    List<build_of_material> listBom = db.build_of_materials.Where(n => n.id == bc.id_bom).ToList();
+                    string keymap = ""; string location = "";
+                    if (listBom.Count > 0)
+                    {
+                        keymap = listBom.FirstOrDefault().no_keymap;
+                        location = listBom.FirstOrDefault().functional_location;
+                    }
                     BomEquipmentEntity temp = new BomEquipmentEntity
                     {
                         id = bc.id,
                         id_bom = bc.id_bom,
+                        no_keymap = keymap,
+                        functional_location = location,
                     };
                     bcEntity.Add(temp);
                 }
@@ -297,10 +350,34 @@ namespace StarEnergi.Controllers.Admin
 
         private ActionResult BindingBuildOfMaterial()
         {
-            return View(new GridModel<build_of_material>
+            List<BomEntity> bomEntity = new List<BomEntity>();
+            List<build_of_material> listData = db.build_of_materials.Where(n => n.is_delete == false).ToList();
+            foreach (build_of_material bm in listData)
             {
-                Data = db.build_of_materials.Where(n => n.is_delete == false).ToList()
+                BomEntity temp = new BomEntity
+                {
+                    id = bm.id,
+                    is_delete = bm.is_delete,
+                    functional_location = bm.functional_location,
+                    no_keymap = bm.no_keymap
+                };
+                bomEntity.Add(temp);
+            }
+            return View(new GridModel<BomEntity>
+            {
+                Data = bomEntity
             });
+        }
+        public string GetKeyMap(int id)
+        {
+            var result = "";
+            if (id > 0)
+            {
+                build_of_material data = db.build_of_materials.Find(id);
+                result = data.no_keymap;
+            }
+            ViewBag.idBom = id;
+            return result;
         }
     }
 }

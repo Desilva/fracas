@@ -447,6 +447,7 @@
     <Compile Include="Models\bom.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BomEntity.cs" />
     <Compile Include="Models\bom_component.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
@@ -3611,6 +3612,8 @@
     <Content Include="Views\Admin\BuildOfMaterial\Index.cshtml" />
     <Content Include="Views\Admin\BuildOfMaterial\RenderDetailsComponent.cshtml" />
     <Content Include="Views\Admin\BuildOfMaterial\RenderUpdateComponent.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\BomDropDownList.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\NoKeyMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

@@ -1,0 +1,5 @@
+﻿@(Html.Telerik().DropDownList()
+            .Name("BomDropDownList") // The name of the widget should be the same as the name of the property.
+                .BindTo(new SelectList((System.Collections.IEnumerable)ViewData["build_of_material"], "id", "functional_location"))
+                     .ClientEvents(events => events.OnClose("ddl_change"))
+)
