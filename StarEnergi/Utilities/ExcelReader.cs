@@ -277,13 +277,16 @@ namespace StarEnergi.Utilities
                     foc foc = db.focs.Where(x => x.nama == temp).SingleOrDefault();
                     if (foc != null)
                     {
-                        unit unit = new unit();
-                        unit.id_foc = foc.id;
-                        unit.nama = data[1].ToString();
-                        unit.functional_code = data[2].ToString();
-                        unit.unit_description = data[3].ToString();
-                        db.units.Add(unit);
-                        db.SaveChanges();
+                        if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
+                        {
+                            unit unit = new unit();
+                            unit.id_foc = foc.id;
+                            unit.nama = data[1].ToString();
+                            unit.functional_code = data[2].ToString();
+                            unit.unit_description = data[3].ToString();
+                            db.units.Add(unit);
+                            db.SaveChanges();
+                        }
                     }
                     else
                     {
@@ -299,11 +302,14 @@ namespace StarEnergi.Utilities
                     foc foc = db.focs.Where(x => x.nama == temp).SingleOrDefault();
                     if (foc != null)
                     {
-                        old.id_foc = foc.id;
-                        old.nama = data[1].ToString();
-                        old.functional_code = data[2].ToString();
-                        old.unit_description = data[3].ToString();                        
-                        db.SaveChanges();
+                        if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
+                        {
+                            old.id_foc = foc.id;
+                            old.nama = data[1].ToString();
+                            old.functional_code = data[2].ToString();
+                            old.unit_description = data[3].ToString();
+                            db.SaveChanges();
+                        }
                     }
                     else
                     {
@@ -333,93 +339,96 @@ namespace StarEnergi.Utilities
                 unit = db.units.Where(x => x.functional_code == temp).SingleOrDefault();
                 if (unit != null)
                 {
-                    system system = new system();
-                    system.id_unit = unit.id;
-                    system.kode = data[1].ToString();
-                    system.nama = data[2].ToString();
-                    system.funct_description = data[3].ToString();
-
-                    if (data[4].ToString() != string.Empty)
+                    if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
                     {
-                        val = 0;
-                        int.TryParse(data[4].ToString(), out val);
-                        oc oc = db.ocs.Where(n => n.oc_value.Value == val).SingleOrDefault();
-                        if (oc != null)
+                        system system = new system();
+                        system.id_unit = unit.id;
+                        system.kode = data[1].ToString();
+                        system.nama = data[2].ToString();
+                        system.funct_description = data[3].ToString();
+
+                        if (data[4].ToString() != string.Empty)
                         {
-                            system.id_oc = oc.id;
-                            ocVal = oc.oc_value.Value;
-                            ocScore = oc.oc_score.Value;
+                            val = 0;
+                            int.TryParse(data[4].ToString(), out val);
+                            oc oc = db.ocs.Where(n => n.oc_value.Value == val).SingleOrDefault();
+                            if (oc != null)
+                            {
+                                system.id_oc = oc.id;
+                                ocVal = oc.oc_value.Value;
+                                ocScore = oc.oc_score.Value;
+                            }
                         }
-                    }
 
-                    if (data[5].ToString() != string.Empty)
-                    {
-                        val = 0;
-                        int.TryParse(data[5].ToString(), out val);
-                        pt pt = db.pts.Where(n => n.pt_value.Value == val).SingleOrDefault();
-                        if (pt != null)
+                        if (data[5].ToString() != string.Empty)
                         {
-                            system.id_pt = pt.id;
-                            ptVal = pt.pt_value.Value;
-                            ptScore = pt.pt_score.Value;
+                            val = 0;
+                            int.TryParse(data[5].ToString(), out val);
+                            pt pt = db.pts.Where(n => n.pt_value.Value == val).SingleOrDefault();
+                            if (pt != null)
+                            {
+                                system.id_pt = pt.id;
+                                ptVal = pt.pt_value.Value;
+                                ptScore = pt.pt_score.Value;
+                            }
                         }
-                    }
 
-                    if (data[6].ToString() != string.Empty)
-                    {
-                        val = 0;
-                        int.TryParse(data[6].ToString(), out val);
-                        sf sf = db.sfs.Where(n => n.sf_value.Value == val).SingleOrDefault();
-                        if (sf != null)
+                        if (data[6].ToString() != string.Empty)
                         {
-                            system.id_sf = sf.id;
-                            sfVal = sf.sf_value.Value;
-                            sfScore = sf.sf_score.Value;
+                            val = 0;
+                            int.TryParse(data[6].ToString(), out val);
+                            sf sf = db.sfs.Where(n => n.sf_value.Value == val).SingleOrDefault();
+                            if (sf != null)
+                            {
+                                system.id_sf = sf.id;
+                                sfVal = sf.sf_value.Value;
+                                sfScore = sf.sf_score.Value;
+                            }
                         }
-                    }
 
-                    if (data[7].ToString() != string.Empty)
-                    {
-                        val = 0;
-                        int.TryParse(data[7].ToString(), out val);
-                        rc rc = db.rcs.Where(n => n.rc_value.Value == val).SingleOrDefault();
-                        if (rc != null)
+                        if (data[7].ToString() != string.Empty)
                         {
-                            system.id_rc = rc.id;
-                            rcVal = rc.rc_value.Value;
-                            rcScore = rc.rc_score.Value;
+                            val = 0;
+                            int.TryParse(data[7].ToString(), out val);
+                            rc rc = db.rcs.Where(n => n.rc_value.Value == val).SingleOrDefault();
+                            if (rc != null)
+                            {
+                                system.id_rc = rc.id;
+                                rcVal = rc.rc_value.Value;
+                                rcScore = rc.rc_score.Value;
+                            }
                         }
-                    }
 
-                    if (data[8].ToString() != string.Empty)
-                    {
-                        val = 0;
-                        int.TryParse(data[6].ToString(), out val);
-                        pe pe = db.pes.Where(n => n.pe_value.Value == val).SingleOrDefault();
-                        if (pe != null)
+                        if (data[8].ToString() != string.Empty)
                         {
-                            system.id_pe = pe.id;
-                            peVal = pe.pe_value.Value;
-                            peScore = pe.pe_score.Value;
+                            val = 0;
+                            int.TryParse(data[6].ToString(), out val);
+                            pe pe = db.pes.Where(n => n.pe_value.Value == val).SingleOrDefault();
+                            if (pe != null)
+                            {
+                                system.id_pe = pe.id;
+                                peVal = pe.pe_value.Value;
+                                peScore = pe.pe_score.Value;
+                            }
                         }
+
+                        scr = Math.Pow(ptScore * ptVal, 2) + Math.Pow(ocScore * ocVal, 2) + Math.Pow(sfScore * sfVal, 2) + Math.Pow(rcScore * rcVal, 2) + Math.Pow(peScore * peVal, 2);
+                        system.scr = Math.Sqrt(scr) / 100;
+
+                        db.systems.Add(system);
+                        db.SaveChanges();
+
+                        ///dummy data equipment group
+                        ///
+                        equipment_groups equipGroup = new equipment_groups();
+                        equipGroup.id_system = system.id;
+                        equipGroup.nama = string.Empty;
+
+                        var hasGroup = db.equipment_groups.Any(n => n.id_system == system.id);
+                        if (!hasGroup)
+                            db.equipment_groups.Add(equipGroup);
+                        db.SaveChanges();
                     }
-
-                    scr = Math.Pow(ptScore * ptVal, 2) + Math.Pow(ocScore * ocVal, 2) + Math.Pow(sfScore * sfVal, 2) + Math.Pow(rcScore * rcVal, 2) + Math.Pow(peScore * peVal, 2);
-                    system.scr = Math.Sqrt(scr) / 100;
-
-                    db.systems.Add(system);
-                    db.SaveChanges();
-
-                    ///dummy data equipment group
-                    ///
-                    equipment_groups equipGroup = new equipment_groups();
-                    equipGroup.id_system = system.id;
-                    equipGroup.nama = string.Empty;
-
-                    var hasGroup = db.equipment_groups.Any(n => n.id_system == system.id);
-                    if (!hasGroup)
-                        db.equipment_groups.Add(equipGroup);
-                    db.SaveChanges();
                 }
                 else
                 {
@@ -434,91 +443,94 @@ namespace StarEnergi.Utilities
                 temp = data[0].ToString();
                 unit = db.units.Where(x => x.functional_code == temp).SingleOrDefault();
                 if (unit != null)
-                {                    
-                    old.id_unit = unit.id;
-                    old.kode = data[1].ToString();
-                    old.nama = data[2].ToString();
-                    old.funct_description = data[3].ToString();
-
-                    if (data[4].ToString() != string.Empty)
+                {
+                    if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
                     {
-                        val = 0;
-                        int.TryParse(data[4].ToString(), out val);
-                        oc oc = db.ocs.Where(n => n.oc_value.Value == val).SingleOrDefault();
-                        if (oc != null)
+                        old.id_unit = unit.id;
+                        old.kode = data[1].ToString();
+                        old.nama = data[2].ToString();
+                        old.funct_description = data[3].ToString();
+
+                        if (data[4].ToString() != string.Empty)
                         {
-                            old.id_oc = oc.id;
-                            ocVal = oc.oc_value.Value;
-                            ocScore = oc.oc_score.Value;
+                            val = 0;
+                            int.TryParse(data[4].ToString(), out val);
+                            oc oc = db.ocs.Where(n => n.oc_value.Value == val).SingleOrDefault();
+                            if (oc != null)
+                            {
+                                old.id_oc = oc.id;
+                                ocVal = oc.oc_value.Value;
+                                ocScore = oc.oc_score.Value;
+                            }
                         }
-                    }
 
-                    if (data[5].ToString() != string.Empty)
-                    {
-                        val = 0;
-                        int.TryParse(data[5].ToString(), out val);
-                        pt pt = db.pts.Where(n => n.pt_value.Value == val).SingleOrDefault();
-                        if (pt != null)
+                        if (data[5].ToString() != string.Empty)
                         {
-                            old.id_pt = pt.id;
-                            ptVal = pt.pt_value.Value;
-                            ptScore = pt.pt_score.Value;
+                            val = 0;
+                            int.TryParse(data[5].ToString(), out val);
+                            pt pt = db.pts.Where(n => n.pt_value.Value == val).SingleOrDefault();
+                            if (pt != null)
+                            {
+                                old.id_pt = pt.id;
+                                ptVal = pt.pt_value.Value;
+                                ptScore = pt.pt_score.Value;
+                            }
                         }
-                    }
 
-                    if (data[6].ToString() != string.Empty)
-                    {
-                        val = 0;
-                        int.TryParse(data[6].ToString(), out val);
-                        sf sf = db.sfs.Where(n => n.sf_value.Value == val).SingleOrDefault();
-                        if (sf != null)
+                        if (data[6].ToString() != string.Empty)
                         {
-                            old.id_sf = sf.id;
-                            sfVal = sf.sf_value.Value;
-                            sfScore = sf.sf_score.Value;
+                            val = 0;
+                            int.TryParse(data[6].ToString(), out val);
+                            sf sf = db.sfs.Where(n => n.sf_value.Value == val).SingleOrDefault();
+                            if (sf != null)
+                            {
+                                old.id_sf = sf.id;
+                                sfVal = sf.sf_value.Value;
+                                sfScore = sf.sf_score.Value;
+                            }
                         }
-                    }
 
-                    if (data[7].ToString() != string.Empty)
-                    {
-                        val = 0;
-                        int.TryParse(data[7].ToString(), out val);
-                        rc rc = db.rcs.Where(n => n.rc_value.Value == val).SingleOrDefault();
-                        if (rc != null)
+                        if (data[7].ToString() != string.Empty)
                         {
-                            old.id_rc = rc.id;
-                            rcVal = rc.rc_value.Value;
-                            rcScore = rc.rc_score.Value;
+                            val = 0;
+                            int.TryParse(data[7].ToString(), out val);
+                            rc rc = db.rcs.Where(n => n.rc_value.Value == val).SingleOrDefault();
+                            if (rc != null)
+                            {
+                                old.id_rc = rc.id;
+                                rcVal = rc.rc_value.Value;
+                                rcScore = rc.rc_score.Value;
+                            }
                         }
-                    }
 
-                    if (data[8].ToString() != string.Empty)
-                    {
-                        val = 0;
-                        int.TryParse(data[6].ToString(), out val);
-                        pe pe = db.pes.Where(n => n.pe_value.Value == val).SingleOrDefault();
-                        if (pe != null)
+                        if (data[8].ToString() != string.Empty)
                         {
-                            old.id_pe = pe.id;
-                            peVal = pe.pe_value.Value;
-                            peScore = pe.pe_score.Value;
+                            val = 0;
+                            int.TryParse(data[6].ToString(), out val);
+                            pe pe = db.pes.Where(n => n.pe_value.Value == val).SingleOrDefault();
+                            if (pe != null)
+                            {
+                                old.id_pe = pe.id;
+                                peVal = pe.pe_value.Value;
+                                peScore = pe.pe_score.Value;
+                            }
                         }
+
+                        scr = Math.Pow(ptScore * ptVal, 2) + Math.Pow(ocScore * ocVal, 2) + Math.Pow(sfScore * sfVal, 2) + Math.Pow(rcScore * rcVal, 2) + Math.Pow(peScore * peVal, 2);
+                        old.scr = Math.Sqrt(scr) / 100;
+                        db.SaveChanges();
+
+                        /////dummy data equipment group
+                        /////
+                        //equipment_groups equipGroup = new equipment_groups();
+                        //equipGroup.id_system = old.id;
+                        //equipGroup.nama = string.Empty;
+
+                        //var hasGroup = db.equipment_groups.Any(n => n.id_system == system.id);
+                        //if (!hasGroup)
+                        //    db.equipment_groups.Add(equipGroup);
+                        //db.SaveChanges();
                     }
-
-                    scr = Math.Pow(ptScore * ptVal, 2) + Math.Pow(ocScore * ocVal, 2) + Math.Pow(sfScore * sfVal, 2) + Math.Pow(rcScore * rcVal, 2) + Math.Pow(peScore * peVal, 2);
-                    old.scr = Math.Sqrt(scr) / 100;                    
-                    db.SaveChanges();
-
-                    /////dummy data equipment group
-                    /////
-                    //equipment_groups equipGroup = new equipment_groups();
-                    //equipGroup.id_system = old.id;
-                    //equipGroup.nama = string.Empty;
-
-                    //var hasGroup = db.equipment_groups.Any(n => n.id_system == system.id);
-                    //if (!hasGroup)
-                    //    db.equipment_groups.Add(equipGroup);
-                    //db.SaveChanges();
                 }
                 else
                 {
@@ -580,113 +592,116 @@ namespace StarEnergi.Utilities
                         List<equipment_groups> listGroup = db.equipment_groups.Where(n => n.id_system == syst.id).ToList();
                         if (listGroup.Count > 0)
                         {
-                            equipment_groups equipGroup = listGroup.First();
-                            DateTime installedDate = DateTime.Now;
-                            DateTime certificationDate = DateTime.Now;
-                            if (syst.scr != null)
-                                scr = syst.scr.Value;
-
-                            equipment.equipment_groups = equipGroup;
-                            equipment.id_equipment_group = equipGroup.id;
-                            equipment.functional_code = data[1].ToString();
-                            equipment.tag_num = data[2].ToString();
-                            equipment.nama = data[3].ToString();
-                            if (data[4].ToString() != string.Empty)
+                            if (data[1].ToString() != string.Empty && data[3].ToString() != string.Empty)
                             {
-                                if (data[4].ToString().Contains("/") || data[4].ToString().Contains("-"))
-                                    installedDate = DateTime.Parse(data[4].ToString());
-                                else
+                                equipment_groups equipGroup = listGroup.First();
+                                DateTime installedDate = DateTime.Now;
+                                DateTime certificationDate = DateTime.Now;
+                                if (syst.scr != null)
+                                    scr = syst.scr.Value;
+
+                                equipment.equipment_groups = equipGroup;
+                                equipment.id_equipment_group = equipGroup.id;
+                                equipment.functional_code = data[1].ToString();
+                                equipment.tag_num = data[2].ToString();
+                                equipment.nama = data[3].ToString();
+                                if (data[4].ToString() != string.Empty)
                                 {
-                                    oDate = 0;
-                                    double.TryParse(data[4].ToString(), out oDate);
-                                    installedDate = DateTime.FromOADate(oDate);
+                                    if (data[4].ToString().Contains("/") || data[4].ToString().Contains("-"))
+                                        installedDate = DateTime.Parse(data[4].ToString());
+                                    else
+                                    {
+                                        oDate = 0;
+                                        double.TryParse(data[4].ToString(), out oDate);
+                                        installedDate = DateTime.FromOADate(oDate);
+                                    }
                                 }
-                            }
-                            equipment.installed_date = installedDate;
+                                equipment.installed_date = installedDate;
 
-                            if (data[5].ToString() != string.Empty)
-                            {
-                                val = 0;
-                                int.TryParse(data[5].ToString(), out val);
-                                ocr ocr = db.ocrs.Where(n => n.ocr_value.Value == val).SingleOrDefault();
-                                if (ocr != null)
+                                if (data[5].ToString() != string.Empty)
                                 {
-                                    equipment.id_ocr = ocr.id;
-                                    ocrVal = ocr.ocr_value.Value;
-                                    ocrScore = ocr.ocr_score.Value;
+                                    val = 0;
+                                    int.TryParse(data[5].ToString(), out val);
+                                    ocr ocr = db.ocrs.Where(n => n.ocr_value.Value == val).SingleOrDefault();
+                                    if (ocr != null)
+                                    {
+                                        equipment.id_ocr = ocr.id;
+                                        ocrVal = ocr.ocr_value.Value;
+                                        ocrScore = ocr.ocr_score.Value;
+                                    }
                                 }
-                            }
 
-                            if (data[6].ToString() != string.Empty)
-                            {
-                                val = 0;
-                                int.TryParse(data[6].ToString(), out val);
-                                afp afp = db.afps.Where(n => n.afp_value.Value == val).SingleOrDefault();
-                                if (afp != null)
+                                if (data[6].ToString() != string.Empty)
                                 {
-                                    equipment.id_afp = afp.id;
-                                    afpVal = afp.afp_value.Value;
-                                    afpScore = afp.afp_score.Value;
+                                    val = 0;
+                                    int.TryParse(data[6].ToString(), out val);
+                                    afp afp = db.afps.Where(n => n.afp_value.Value == val).SingleOrDefault();
+                                    if (afp != null)
+                                    {
+                                        equipment.id_afp = afp.id;
+                                        afpVal = afp.afp_value.Value;
+                                        afpScore = afp.afp_score.Value;
+                                    }
                                 }
-                            }
 
-                            if (data[7].ToString() != string.Empty)
-                            {
-                                val = 0;
-                                int.TryParse(data[7].ToString(), out val);
-                                tag_types tag = db.tag_types.Where(n => n.id == val).SingleOrDefault();
-                                if (tag != null)
+                                if (data[7].ToString() != string.Empty)
                                 {
-                                    equipment.id_tag_type = tag.id;
+                                    val = 0;
+                                    int.TryParse(data[7].ToString(), out val);
+                                    tag_types tag = db.tag_types.Where(n => n.id == val).SingleOrDefault();
+                                    if (tag != null)
+                                    {
+                                        equipment.id_tag_type = tag.id;
+                                    }
                                 }
-                            }
 
-                            if (data[8].ToString() != string.Empty)
-                            {
-                                val = 0;
-                                int.TryParse(data[8].ToString(), out val);
-                                discipline disp = db.disciplines.Where(n => n.id == val).SingleOrDefault();
-                                if (disp != null)
+                                if (data[8].ToString() != string.Empty)
                                 {
-                                    equipment.id_discipline = disp.id;
+                                    val = 0;
+                                    int.TryParse(data[8].ToString(), out val);
+                                    discipline disp = db.disciplines.Where(n => n.id == val).SingleOrDefault();
+                                    if (disp != null)
+                                    {
+                                        equipment.id_discipline = disp.id;
+                                    }
                                 }
-                            }
 
-                            if (data[9].ToString() != string.Empty)
-                            {
-                                if (data[9].ToString().Contains("/") || data[9].ToString().Contains("-"))
-                                    certificationDate = DateTime.Parse(data[9].ToString());
-                                else
+                                if (data[9].ToString() != string.Empty)
                                 {
-                                    oDate = 0;
-                                    double.TryParse(data[9].ToString(), out oDate);
-                                    certificationDate = DateTime.FromOADate(oDate);
+                                    if (data[9].ToString().Contains("/") || data[9].ToString().Contains("-"))
+                                        certificationDate = DateTime.Parse(data[9].ToString());
+                                    else
+                                    {
+                                        oDate = 0;
+                                        double.TryParse(data[9].ToString(), out oDate);
+                                        certificationDate = DateTime.FromOADate(oDate);
+                                    }
+                                    equipment.sertifikasi = certificationDate;
                                 }
-                                equipment.sertifikasi = certificationDate;
+                                acr = scr * ocrVal;
+                                equipment.acr = acr;
+                                equipment.mpi = acr * afpVal;
+
+                                db.equipments.Add(equipment);
+                                db.SaveChanges();
+
+                                ///dummy data part and equipmeent part
+                                ///
+                                part part = new part();
+                                equipment_part ePart = new equipment_part();
+
+                                part.tag_number = equipment.tag_num;
+                                db.parts.Add(part);
+                                db.SaveChanges();
+
+                                ePart.id_equipment = equipment.id;
+                                ePart.id_parts = part.id;
+
+                                var hasEPart = db.equipment_part.Any(n => n.id_equipment == equipment.id && n.id_parts == part.id);
+                                if (!hasEPart)
+                                    db.equipment_part.Add(ePart);
+                                db.SaveChanges();
                             }
-                            acr = scr * ocrVal;
-                            equipment.acr = acr;
-                            equipment.mpi = acr * afpVal;
-
-                            db.equipments.Add(equipment);
-                            db.SaveChanges();
-
-                            ///dummy data part and equipmeent part
-                            ///
-                            part part = new part();
-                            equipment_part ePart = new equipment_part();
-
-                            part.tag_number = equipment.tag_num;
-                            db.parts.Add(part);
-                            db.SaveChanges();
-
-                            ePart.id_equipment = equipment.id;
-                            ePart.id_parts = part.id;
-
-                            var hasEPart = db.equipment_part.Any(n => n.id_equipment == equipment.id && n.id_parts == part.id);
-                            if (!hasEPart)
-                                db.equipment_part.Add(ePart);
-                            db.SaveChanges();
                         }
                     }
                     else
@@ -702,94 +717,97 @@ namespace StarEnergi.Utilities
                         List<equipment_groups> listGroup = db.equipment_groups.Where(n => n.id_system == syst.id).ToList();
                         if (listGroup.Count > 0)
                         {
-                            equipment_groups equipGroup = listGroup.First();
-                            DateTime installedDate = DateTime.Now;
-                            DateTime certificationDate = DateTime.Now;
-                            if (syst.scr != null)
-                                scr = syst.scr.Value;
-
-                            old.equipment_groups = equipGroup;
-                            old.id_equipment_group = equipGroup.id;
-                            old.functional_code = data[1].ToString();
-                            old.tag_num = data[2].ToString();
-                            old.nama = data[3].ToString();
-                            if (data[4].ToString() != string.Empty)
+                            if (data[1].ToString() != string.Empty && data[3].ToString() != string.Empty)
                             {
-                                if (data[4].ToString().Contains("/") || data[4].ToString().Contains("-"))
-                                    installedDate = DateTime.Parse(data[4].ToString());
-                                else
-                                {
-                                    oDate = 0;
-                                    double.TryParse(data[4].ToString(), out oDate);
-                                    installedDate = DateTime.FromOADate(oDate);
-                                }
-                            }
-                            old.installed_date = installedDate;
+                                equipment_groups equipGroup = listGroup.First();
+                                DateTime installedDate = DateTime.Now;
+                                DateTime certificationDate = DateTime.Now;
+                                if (syst.scr != null)
+                                    scr = syst.scr.Value;
 
-                            if (data[5].ToString() != string.Empty)
-                            {
-                                val = 0;
-                                int.TryParse(data[5].ToString(), out val);
-                                ocr ocr = db.ocrs.Where(n => n.ocr_value.Value == val).SingleOrDefault();
-                                if (ocr != null)
+                                old.equipment_groups = equipGroup;
+                                old.id_equipment_group = equipGroup.id;
+                                old.functional_code = data[1].ToString();
+                                old.tag_num = data[2].ToString();
+                                old.nama = data[3].ToString();
+                                if (data[4].ToString() != string.Empty)
                                 {
-                                    old.id_ocr = ocr.id;
-                                    ocrVal = ocr.ocr_value.Value;
-                                    ocrScore = ocr.ocr_score.Value;
+                                    if (data[4].ToString().Contains("/") || data[4].ToString().Contains("-"))
+                                        installedDate = DateTime.Parse(data[4].ToString());
+                                    else
+                                    {
+                                        oDate = 0;
+                                        double.TryParse(data[4].ToString(), out oDate);
+                                        installedDate = DateTime.FromOADate(oDate);
+                                    }
                                 }
-                            }
+                                old.installed_date = installedDate;
 
-                            if (data[6].ToString() != string.Empty)
-                            {
-                                val = 0;
-                                int.TryParse(data[6].ToString(), out val);
-                                afp afp = db.afps.Where(n => n.afp_value.Value == val).SingleOrDefault();
-                                if (afp != null)
+                                if (data[5].ToString() != string.Empty)
                                 {
-                                    old.id_afp = afp.id;
-                                    afpVal = afp.afp_value.Value;
-                                    afpScore = afp.afp_score.Value;
+                                    val = 0;
+                                    int.TryParse(data[5].ToString(), out val);
+                                    ocr ocr = db.ocrs.Where(n => n.ocr_value.Value == val).SingleOrDefault();
+                                    if (ocr != null)
+                                    {
+                                        old.id_ocr = ocr.id;
+                                        ocrVal = ocr.ocr_value.Value;
+                                        ocrScore = ocr.ocr_score.Value;
+                                    }
                                 }
-                            }
 
-                            if (data[7].ToString() != string.Empty)
-                            {
-                                val = 0;
-                                int.TryParse(data[7].ToString(), out val);
-                                tag_types tag = db.tag_types.Where(n => n.id == val).SingleOrDefault();
-                                if (tag != null)
+                                if (data[6].ToString() != string.Empty)
                                 {
-                                    old.id_tag_type = tag.id;
+                                    val = 0;
+                                    int.TryParse(data[6].ToString(), out val);
+                                    afp afp = db.afps.Where(n => n.afp_value.Value == val).SingleOrDefault();
+                                    if (afp != null)
+                                    {
+                                        old.id_afp = afp.id;
+                                        afpVal = afp.afp_value.Value;
+                                        afpScore = afp.afp_score.Value;
+                                    }
                                 }
-                            }
 
-                            if (data[8].ToString() != string.Empty)
-                            {
-                                val = 0;
-                                int.TryParse(data[8].ToString(), out val);
-                                discipline disp = db.disciplines.Where(n => n.id == val).SingleOrDefault();
-                                if (disp != null)
+                                if (data[7].ToString() != string.Empty)
                                 {
-                                    old.id_discipline = disp.id;
+                                    val = 0;
+                                    int.TryParse(data[7].ToString(), out val);
+                                    tag_types tag = db.tag_types.Where(n => n.id == val).SingleOrDefault();
+                                    if (tag != null)
+                                    {
+                                        old.id_tag_type = tag.id;
+                                    }
                                 }
-                            }
 
-                            if (data[9].ToString() != string.Empty)
-                            {
-                                if (data[9].ToString().Contains("/") || data[9].ToString().Contains("-"))
-                                    certificationDate = DateTime.Parse(data[9].ToString());
-                                else
+                                if (data[8].ToString() != string.Empty)
                                 {
-                                    oDate = 0;
-                                    double.TryParse(data[9].ToString(), out oDate);
-                                    certificationDate = DateTime.FromOADate(oDate);
+                                    val = 0;
+                                    int.TryParse(data[8].ToString(), out val);
+                                    discipline disp = db.disciplines.Where(n => n.id == val).SingleOrDefault();
+                                    if (disp != null)
+                                    {
+                                        old.id_discipline = disp.id;
+                                    }
                                 }
-                                old.sertifikasi = certificationDate;
+
+                                if (data[9].ToString() != string.Empty)
+                                {
+                                    if (data[9].ToString().Contains("/") || data[9].ToString().Contains("-"))
+                                        certificationDate = DateTime.Parse(data[9].ToString());
+                                    else
+                                    {
+                                        oDate = 0;
+                                        double.TryParse(data[9].ToString(), out oDate);
+                                        certificationDate = DateTime.FromOADate(oDate);
+                                    }
+                                    old.sertifikasi = certificationDate;
+                                }
+                                acr = scr * ocrVal;
+                                old.acr = acr;
+                                old.mpi = acr * afpVal;
+                                db.SaveChanges();
                             }
-                            acr = scr * ocrVal;
-                            old.acr = acr;
-                            old.mpi = acr * afpVal;                            
-                            db.SaveChanges();                           
                         }
                     }
                     else
@@ -876,26 +894,29 @@ namespace StarEnergi.Utilities
                     equipment_part ep = db.equipment_part.Where(n => n.id_equipment == equip.id).SingleOrDefault();
                     if (ep != null)
                     {
-                        component co = new component();
-                        co.id_equipment_part = ep.id;
-                        co.component_name = data[1].ToString();
-                        co.functional_code = data[2].ToString();
-                        co.description = data[4].ToString();
-                        if (data[5].ToString() != string.Empty)
+                        if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
                         {
-                            if (data[5].ToString().Contains("/") || data[5].ToString().Contains("-"))
-                                installedDate = DateTime.Parse(data[5].ToString());
-                            else
+                            component co = new component();
+                            co.id_equipment_part = ep.id;
+                            co.component_name = data[1].ToString();
+                            co.functional_code = data[2].ToString();
+                            co.description = data[4].ToString();
+                            if (data[5].ToString() != string.Empty)
                             {
-                                oDate = 0;
-                                double.TryParse(data[5].ToString(), out oDate);
-                                installedDate = DateTime.FromOADate(oDate);
+                                if (data[5].ToString().Contains("/") || data[5].ToString().Contains("-"))
+                                    installedDate = DateTime.Parse(data[5].ToString());
+                                else
+                                {
+                                    oDate = 0;
+                                    double.TryParse(data[5].ToString(), out oDate);
+                                    installedDate = DateTime.FromOADate(oDate);
+                                }
+                                co.installed_date = installedDate;
                             }
-                            co.installed_date = installedDate;
-                        }
 
-                        db.components.Add(co);
-                        db.SaveChanges();
+                            db.components.Add(co);
+                            db.SaveChanges();
+                        }
                     }
                 }
                 else
@@ -915,23 +936,26 @@ namespace StarEnergi.Utilities
                     equipment_part ep = db.equipment_part.Where(n => n.id_equipment == equip.id).SingleOrDefault();
                     if (ep != null)
                     {
-                        old.id_equipment_part = ep.id;
-                        old.component_name = data[1].ToString();
-                        old.functional_code = data[2].ToString();
-                        old.description = data[4].ToString();
-                        if (data[5].ToString() != string.Empty)
+                        if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
                         {
-                            if (data[5].ToString().Contains("/") || data[5].ToString().Contains("-"))
-                                installedDate = DateTime.Parse(data[5].ToString());
-                            else
+                            old.id_equipment_part = ep.id;
+                            old.component_name = data[1].ToString();
+                            old.functional_code = data[2].ToString();
+                            old.description = data[4].ToString();
+                            if (data[5].ToString() != string.Empty)
                             {
-                                oDate = 0;
-                                double.TryParse(data[5].ToString(), out oDate);
-                                installedDate = DateTime.FromOADate(oDate);
+                                if (data[5].ToString().Contains("/") || data[5].ToString().Contains("-"))
+                                    installedDate = DateTime.Parse(data[5].ToString());
+                                else
+                                {
+                                    oDate = 0;
+                                    double.TryParse(data[5].ToString(), out oDate);
+                                    installedDate = DateTime.FromOADate(oDate);
+                                }
+                                old.installed_date = installedDate;
                             }
-                            old.installed_date = installedDate;
-                        }                        
-                        db.SaveChanges();
+                            db.SaveChanges();
+                        }
                     }
                 }
                 else
