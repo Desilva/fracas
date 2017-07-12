@@ -517,7 +517,7 @@ namespace StarEnergi
         //color BEC read nav
         public const double BEC = 50;
 
-        public static string fileExcelSBSTemplate = "SBS_template.xls";
+        public static string fileExcelSBSTemplate = "SBS Template";
         public static string fileExcelDataMaster = "Data_Master_Template.xls";
         public static string fileExcelReadNav = "Readiness_Navigator.xls";
         public static string fileMA = "MA_template.xls";

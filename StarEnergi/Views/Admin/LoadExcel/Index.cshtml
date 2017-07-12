@@ -10,7 +10,8 @@
 		 </div>
 		 <br />
 		 <input type="button" value="Upload" onclick="javascript:if(document.formUpload.userfile.value.length==0) { alert('You must specify a file first'); return; }; submit();" />
-		 <input type="button" value="Download template" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.fileExcelSBSTemplate'" />
+		 @*<input type="button" value="Download template" onclick="window.location = 'LoadExcel/template?file=@StarEnergi.Config.fileExcelSBSTemplate'" />*@
+         <input type="button" value="Download template" onclick="window.location = 'LoadExcel/DownloadTemplate'" />
 }
 <br/>
 <iframe id="upload_target" name="upload_target" src="" width="715" height="350" style="border:0px solid #fff;"></iframe>
