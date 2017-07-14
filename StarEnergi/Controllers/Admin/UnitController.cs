@@ -53,7 +53,7 @@ namespace StarEnergi.Controllers.Admin
         {
             if (ModelState.IsValid)
             {
-                if(db.units.Where(x => x.nama == unit.nama).ToList().Count > 0){
+                if(db.units.Where(x => x.functional_code == unit.functional_code).ToList().Count > 0){
                     return Json(e.Fail());
                 }
 

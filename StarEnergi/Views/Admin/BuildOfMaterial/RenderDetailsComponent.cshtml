@@ -13,7 +13,7 @@
         {
             dataBinding.Ajax()
                 //.Select("_SelectAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, level = ViewBag.level });
-                .Select("_SelectAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, type = "equip" });
+                .Select("_SelectAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, type = "comp" });
 
         })
         .Columns(columns =>
@@ -22,8 +22,8 @@
             columns.ForeignKey(o => o.id_bom, (System.Collections.IEnumerable)ViewData["build_of_material"],
                    "id", "functional_location").Width(250).Title("Functional Location");
             columns.ForeignKey(o => o.id_bom, (System.Collections.IEnumerable)ViewData["build_of_material"],
-                   "id", "no_keymap").Width(250).Title("No Key Map");
-            columns.Bound(o => o.remark).Width(300).Title("Remark");
+                    "id", "no_keymap").Width(250).Title("No Key Map");
+            columns.Bound(o => o.remark).Width(300).Title("Remark");  
 
         })
         .Pageable(p => p.PageSize(10))

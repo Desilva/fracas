@@ -22,14 +22,120 @@ namespace StarEnergi.Utilities
         private relmon_star_energiEntities db = new relmon_star_energiEntities();
 
         #region region SBS
+        //public List<string> LoadSBS(string filename)
+        //{
+        //    Excel.Application app;
+        //    Excel.Workbook book;
+        //    Excel.Range ShtRange;
+        //    List<object> temp;
+        //    List<string> err;
+        //    int i,j,k = 0;
+
+        //    app = new Excel.Application();
+        //    book = app.Workbooks.Open(Filename: filename);
+
+        //    err = new List<string>();
+        //    try
+        //    {
+        //        foreach (Excel.Worksheet sheet in book.Sheets)
+        //        {
+        //            ShtRange = sheet.UsedRange;
+        //            string a = sheet.Name;
+        //            for (i = 2; i <= ShtRange.Rows.Count; i++)
+        //            {
+        //                temp = new List<object>();
+        //                for (j = 1; j <= ShtRange.Columns.Count; j++)
+        //                {
+        //                    if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
+        //                        temp.Add("");
+        //                    else
+        //                        temp.Add((ShtRange.Cells[i, j] as Excel.Range).Value2.ToString());
+        //                }
+
+        //                string errTemp;
+        //                if (k == 0)
+        //                { //insert unit
+        //                    errTemp = saveUnit(temp);
+        //                    if (errTemp != "")
+        //                    {
+        //                        err.Add(errTemp);
+        //                    };
+        //                }
+        //                else if (k == 1)
+        //                {//insert system
+        //                    errTemp = saveSystem(temp);
+        //                    if (errTemp != "")
+        //                    {
+        //                        err.Add(errTemp);
+        //                    };
+        //                }
+        //                else if (k == 2)
+        //                {//insert equipment group
+        //                    errTemp = saveEquipmentGroup(temp);
+        //                    if (errTemp != "")
+        //                    {
+        //                        err.Add(errTemp);
+        //                    };
+        //                }
+        //                else if (k == 3)
+        //                {//insert equipment
+        //                    errTemp = saveEquipment(temp);
+        //                    if (errTemp != "")
+        //                    {
+        //                        err.Add(errTemp);
+        //                    };
+        //                }
+        //                else if (k == 4)
+        //                {//insert part
+        //                    errTemp = savePart(temp);
+        //                    if (errTemp != "")
+        //                    {
+        //                        err.Add(errTemp);
+        //                    };
+        //                }
+        //                else if (k == 5)//insert component
+        //                {
+        //                    errTemp = saveComponent(temp);
+        //                    if (errTemp != "")
+        //                    {
+        //                        err.Add(errTemp);
+        //                    };
+        //                }
+        //                else if (k == 6)//insert subcomponent
+        //                {
+        //                    errTemp = saveSubComponent(temp);
+        //                    if (errTemp != "")
+        //                    {
+        //                        err.Add(errTemp);
+        //                    };
+        //                }
+
+        //            }
+        //            k++;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+
+        //    }
+        //    finally
+        //    {
+        //        book.Close(true, Missing.Value, Missing.Value);
+        //        app.Quit();
+        //    }
+
+        //    return err;
+        //}
+
         public List<string> LoadSBS(string filename)
         {
             Excel.Application app;
             Excel.Workbook book;
             Excel.Range ShtRange;
             List<object> temp;
+
             List<string> err;
-            int i,j,k = 0;
+            int i, j, k = 0;
 
             app = new Excel.Application();
             book = app.Workbooks.Open(Filename: filename);
@@ -39,79 +145,84 @@ namespace StarEnergi.Utilities
             {
                 foreach (Excel.Worksheet sheet in book.Sheets)
                 {
-                    ShtRange = sheet.UsedRange;
-                    string a = sheet.Name;
-                    for (i = 2; i <= ShtRange.Rows.Count; i++)
+                    if (sheet.Name == "Unit" || sheet.Name == "System" || sheet.Name == "Equipment" || sheet.Name == "Component")
                     {
-                        temp = new List<object>();
-                        for (j = 1; j <= ShtRange.Columns.Count; j++)
+                        ShtRange = sheet.UsedRange;
+                        string a = sheet.Name;
+                        for (i = 2; i <= ShtRange.Rows.Count; i++)
                         {
-                            if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
-                                temp.Add("");
-                            else
-                                temp.Add((ShtRange.Cells[i, j] as Excel.Range).Value2.ToString());
-                        }
+                            temp = new List<object>();
+                            for (j = 1; j <= ShtRange.Columns.Count; j++)
+                            {
+                                if ((ShtRange.Cells[i, j] as Excel.Range).Value2 == null)
+                                    temp.Add("");
+                                else
+                                {
+                                    temp.Add((ShtRange.Cells[i, j] as Excel.Range).Value2.ToString());
+                                }
+                            }
 
-                        string errTemp;
-                        if (k == 0)
-                        { //insert unit
-                            errTemp = saveUnit(temp);
-                            if (errTemp != "")
+                            string errTemp;
+                            if (k == 0)
                             {
-                                err.Add(errTemp);
-                            };
-                        }
-                        else if (k == 1)
-                        {//insert system
-                            errTemp = saveSystem(temp);
-                            if (errTemp != "")
+                                if (temp.Count(n => n == string.Empty) < 4)
+                                {
+                                    //insert unit
+                                    errTemp = saveUnit(temp);
+                                    if (errTemp != "")
+                                    {
+                                        err.Add("Sheet " + a + " - " + errTemp);
+                                    };
+                                }
+                                else
+                                    break;
+                            }
+                            else if (k == 1)
                             {
-                                err.Add(errTemp);
-                            };
-                        }
-                        else if (k == 2)
-                        {//insert equipment group
-                            errTemp = saveEquipmentGroup(temp);
-                            if (errTemp != "")
+                                if (temp.Count(n => n == string.Empty) < 9)
+                                {
+                                    //insert system
+                                    errTemp = saveSystem(temp);
+                                    if (errTemp != "")
+                                    {
+                                        err.Add("Sheet " + a + " - " + errTemp);
+                                    };
+                                }
+                                else
+                                    break;
+                            }
+                            else if (k == 2)
                             {
-                                err.Add(errTemp);
-                            };
-                        }
-                        else if (k == 3)
-                        {//insert equipment
-                            errTemp = saveEquipment(temp);
-                            if (errTemp != "")
+                                if (temp.Count(n => n == string.Empty) < 11)
+                                {
+                                    //insert equipment
+                                    errTemp = saveEquipment(temp);
+                                    if (errTemp != "")
+                                    {
+                                        err.Add("Sheet " + a + " - " + errTemp);
+                                    };
+                                }
+                                else
+                                    break;
+                            }
+                            else if (k == 3)
                             {
-                                err.Add(errTemp);
-                            };
-                        }
-                        else if (k == 4)
-                        {//insert part
-                            errTemp = savePart(temp);
-                            if (errTemp != "")
-                            {
-                                err.Add(errTemp);
-                            };
-                        }
-                        else if (k == 5)//insert component
-                        {
-                            errTemp = saveComponent(temp);
-                            if (errTemp != "")
-                            {
-                                err.Add(errTemp);
-                            };
-                        }
-                        else if (k == 6)//insert subcomponent
-                        {
-                            errTemp = saveSubComponent(temp);
-                            if (errTemp != "")
-                            {
-                                err.Add(errTemp);
-                            };
-                        }
+                                if (temp.Count(n => n == string.Empty) < 6)
+                                {
+                                    //insert component
+                                    errTemp = saveComponent(temp);
+                                    if (errTemp != "")
+                                    {
+                                        err.Add(errTemp);
+                                    };
+                                }
+                                else
+                                    break;
+                            }
 
+                        }
+                        k++;
                     }
-                    k++;
                 }
             }
             catch (Exception e)
@@ -127,29 +238,84 @@ namespace StarEnergi.Utilities
             return err;
         }
 
-        private string saveUnit(List<object> data) {
+        //private string saveUnit(List<object> data) {
+        //    string err = "";
+        //    string temp = data[1].ToString();
+        //    List<unit> exist = db.units.Where(x => x.nama == temp).ToList();
+        //    if (exist.Count == 0)
+        //    {
+        //        temp = data[0].ToString();
+        //        foc foc = db.focs.Where(x => x.nama == temp).SingleOrDefault();
+        //        if (foc != null)
+        //        {
+        //            unit unit = new unit();
+        //            unit.id_foc = foc.id;
+        //            unit.nama = data[1].ToString();
+        //            db.units.Add(unit);
+        //            db.SaveChanges();
+        //        }
+        //        else {
+        //            err = "Area " + data[0] + " tidak terdaftar di dalam database";
+        //        }
+
+        //    }
+        //    else {
+        //        err = "Unit " + data[1] + " sudah terdapat di dalam database";
+        //    }
+        //    return err;
+        //}
+        private string saveUnit(List<object> data)
+        {
             string err = "";
-            string temp = data[1].ToString();
-            List<unit> exist = db.units.Where(x => x.nama == temp).ToList();
-            if (exist.Count == 0)
+            string temp = data[2].ToString();
+            if (temp != "")
             {
-                temp = data[0].ToString();
-                foc foc = db.focs.Where(x => x.nama == temp).SingleOrDefault();
-                if (foc != null)
+                List<unit> exist = db.units.Where(x => x.functional_code == temp).ToList();
+                if (exist.Count == 0)
                 {
-                    unit unit = new unit();
-                    unit.id_foc = foc.id;
-                    unit.nama = data[1].ToString();
-                    db.units.Add(unit);
-                    db.SaveChanges();
+                    temp = data[0].ToString();
+                    foc foc = db.focs.Where(x => x.nama == temp).SingleOrDefault();
+                    if (foc != null)
+                    {
+                        if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
+                        {
+                            unit unit = new unit();
+                            unit.id_foc = foc.id;
+                            unit.nama = data[1].ToString();
+                            unit.functional_code = data[2].ToString();
+                            unit.unit_description = data[3].ToString();
+                            db.units.Add(unit);
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        err = "Area " + data[0] + " tidak terdaftar di dalam database";
+                    }
+
                 }
-                else {
-                    err = "Area " + data[0] + " tidak terdaftar di dalam database";
+                else
+                {
+                    //err = "Unit " + data[2] + " sudah terdapat di dalam database";
+                    unit old = exist.FirstOrDefault();
+                    temp = data[0].ToString();
+                    foc foc = db.focs.Where(x => x.nama == temp).SingleOrDefault();
+                    if (foc != null)
+                    {
+                        if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
+                        {
+                            old.id_foc = foc.id;
+                            old.nama = data[1].ToString();
+                            old.functional_code = data[2].ToString();
+                            old.unit_description = data[3].ToString();
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        err = "Area " + data[0] + " tidak terdaftar di dalam database";
+                    }
                 }
-                
-            }
-            else {
-                err = "Unit " + data[1] + " sudah terdapat di dalam database";
             }
             return err;
         }
@@ -158,36 +324,111 @@ namespace StarEnergi.Utilities
         {
             string err = "";
             string temp = data[1].ToString();
+            double ocVal = 0; double ocScore = 0;
+            double ptVal = 0; double ptScore = 0;
+            double sfVal = 0; double sfScore = 0;
+            double rcVal = 0; double rcScore = 0;
+            double peVal = 0; double peScore = 0;
+            double scr = 0;
+            int val = 0;
             List<system> exist = db.systems.Where(x => x.kode == temp).ToList();
+            unit unit = new unit();
             if (exist.Count == 0)
             {
                 temp = data[0].ToString();
-                unit unit = db.units.Where(x => x.nama == temp).SingleOrDefault();
+                unit = db.units.Where(x => x.functional_code == temp).SingleOrDefault();
                 if (unit != null)
                 {
-                    system system = new system();
-                    system.id_unit = unit.id;
-                    system.nama = data[2].ToString();
-                    system.kode = data[1].ToString();
-                    system.funct_description = data[3].ToString();
-                    system.failure_scenario = data[4].ToString();
-                    system.primary_impact = data[5].ToString();
-                    system.secondary_impact = data[6].ToString();
-                    system.cons_econ = data[7].ToString();
-                    system.cons_hs = data[8].ToString();
-                    system.cons_env = data[9].ToString();
-                    system.cons_total = data[10].ToString();
-                    system.likelihood = data[11].ToString();
-                    system.crit_code = data[12].ToString();
-                    system.ram_crit = data[13].ToString();
-                    system.exist_crit = data[14].ToString();
-                    system.h = data[15].ToString();
-                    system.e = data[16].ToString();
-                    system.econ = data[17].ToString();
-                    system.prob = data[18].ToString();
-                    
-                    db.systems.Add(system);
-                    db.SaveChanges();
+                    if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
+                    {
+                        system system = new system();
+                        system.id_unit = unit.id;
+                        system.kode = data[1].ToString();
+                        system.nama = data[2].ToString();
+                        system.funct_description = data[3].ToString();
+
+                        if (data[4].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[4].ToString(), out val);
+                            oc oc = db.ocs.Where(n => n.oc_value.Value == val).SingleOrDefault();
+                            if (oc != null)
+                            {
+                                system.id_oc = oc.id;
+                                ocVal = oc.oc_value.Value;
+                                ocScore = oc.oc_score.Value;
+                            }
+                        }
+
+                        if (data[5].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[5].ToString(), out val);
+                            pt pt = db.pts.Where(n => n.pt_value.Value == val).SingleOrDefault();
+                            if (pt != null)
+                            {
+                                system.id_pt = pt.id;
+                                ptVal = pt.pt_value.Value;
+                                ptScore = pt.pt_score.Value;
+                            }
+                        }
+
+                        if (data[6].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[6].ToString(), out val);
+                            sf sf = db.sfs.Where(n => n.sf_value.Value == val).SingleOrDefault();
+                            if (sf != null)
+                            {
+                                system.id_sf = sf.id;
+                                sfVal = sf.sf_value.Value;
+                                sfScore = sf.sf_score.Value;
+                            }
+                        }
+
+                        if (data[7].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[7].ToString(), out val);
+                            rc rc = db.rcs.Where(n => n.rc_value.Value == val).SingleOrDefault();
+                            if (rc != null)
+                            {
+                                system.id_rc = rc.id;
+                                rcVal = rc.rc_value.Value;
+                                rcScore = rc.rc_score.Value;
+                            }
+                        }
+
+                        if (data[8].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[6].ToString(), out val);
+                            pe pe = db.pes.Where(n => n.pe_value.Value == val).SingleOrDefault();
+                            if (pe != null)
+                            {
+                                system.id_pe = pe.id;
+                                peVal = pe.pe_value.Value;
+                                peScore = pe.pe_score.Value;
+                            }
+                        }
+
+                        scr = Math.Pow(ptScore * ptVal, 2) + Math.Pow(ocScore * ocVal, 2) + Math.Pow(sfScore * sfVal, 2) + Math.Pow(rcScore * rcVal, 2) + Math.Pow(peScore * peVal, 2);
+                        system.scr = Math.Sqrt(scr) / 100;
+
+                        db.systems.Add(system);
+                        db.SaveChanges();
+
+                        ///dummy data equipment group
+                        ///
+                        equipment_groups equipGroup = new equipment_groups();
+                        equipGroup.id_system = system.id;
+                        equipGroup.nama = string.Empty;
+
+                        var hasGroup = db.equipment_groups.Any(n => n.id_system == system.id);
+                        if (!hasGroup)
+                            db.equipment_groups.Add(equipGroup);
+                        db.SaveChanges();
+                    }
                 }
                 else
                 {
@@ -197,7 +438,104 @@ namespace StarEnergi.Utilities
             }
             else
             {
-                err = "System " + data[2] + " sudah terdapat di dalam database";
+                //err = "System " + data[1] + " sudah terdapat di dalam database";
+                system old = exist.First();
+                temp = data[0].ToString();
+                unit = db.units.Where(x => x.functional_code == temp).SingleOrDefault();
+                if (unit != null)
+                {
+                    if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
+                    {
+                        old.id_unit = unit.id;
+                        old.kode = data[1].ToString();
+                        old.nama = data[2].ToString();
+                        old.funct_description = data[3].ToString();
+
+                        if (data[4].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[4].ToString(), out val);
+                            oc oc = db.ocs.Where(n => n.oc_value.Value == val).SingleOrDefault();
+                            if (oc != null)
+                            {
+                                old.id_oc = oc.id;
+                                ocVal = oc.oc_value.Value;
+                                ocScore = oc.oc_score.Value;
+                            }
+                        }
+
+                        if (data[5].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[5].ToString(), out val);
+                            pt pt = db.pts.Where(n => n.pt_value.Value == val).SingleOrDefault();
+                            if (pt != null)
+                            {
+                                old.id_pt = pt.id;
+                                ptVal = pt.pt_value.Value;
+                                ptScore = pt.pt_score.Value;
+                            }
+                        }
+
+                        if (data[6].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[6].ToString(), out val);
+                            sf sf = db.sfs.Where(n => n.sf_value.Value == val).SingleOrDefault();
+                            if (sf != null)
+                            {
+                                old.id_sf = sf.id;
+                                sfVal = sf.sf_value.Value;
+                                sfScore = sf.sf_score.Value;
+                            }
+                        }
+
+                        if (data[7].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[7].ToString(), out val);
+                            rc rc = db.rcs.Where(n => n.rc_value.Value == val).SingleOrDefault();
+                            if (rc != null)
+                            {
+                                old.id_rc = rc.id;
+                                rcVal = rc.rc_value.Value;
+                                rcScore = rc.rc_score.Value;
+                            }
+                        }
+
+                        if (data[8].ToString() != string.Empty)
+                        {
+                            val = 0;
+                            int.TryParse(data[6].ToString(), out val);
+                            pe pe = db.pes.Where(n => n.pe_value.Value == val).SingleOrDefault();
+                            if (pe != null)
+                            {
+                                old.id_pe = pe.id;
+                                peVal = pe.pe_value.Value;
+                                peScore = pe.pe_score.Value;
+                            }
+                        }
+
+                        scr = Math.Pow(ptScore * ptVal, 2) + Math.Pow(ocScore * ocVal, 2) + Math.Pow(sfScore * sfVal, 2) + Math.Pow(rcScore * rcVal, 2) + Math.Pow(peScore * peVal, 2);
+                        old.scr = Math.Sqrt(scr) / 100;
+                        db.SaveChanges();
+
+                        /////dummy data equipment group
+                        /////
+                        //equipment_groups equipGroup = new equipment_groups();
+                        //equipGroup.id_system = old.id;
+                        //equipGroup.nama = string.Empty;
+
+                        //var hasGroup = db.equipment_groups.Any(n => n.id_system == system.id);
+                        //if (!hasGroup)
+                        //    db.equipment_groups.Add(equipGroup);
+                        //db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    err = "Unit " + data[0] + " tidak terdaftar di dalam database";
+                }
             }
             return err;
         }
@@ -237,171 +575,250 @@ namespace StarEnergi.Utilities
         {
             string err = "";
             string temp = data[1].ToString();
-            List<equipment> exist = db.equipments.Where(x => x.tag_num == temp).ToList();
+            double scr = 0; double mpi = 0; double acr = 0;
+            double ocrVal = 0; double ocrScore = 0;
+            double afpVal = 0; double afpScore = 0;
+            int val = 0; double oDate = 0;
+            List<equipment> exist = db.equipments.Where(x => x.functional_code == temp).ToList();
             try
             {
                 if (exist.Count == 0)
                 {
                     temp = data[0].ToString();
-                    equipment_groups equipment_group = db.equipment_groups.Where(x => x.nama == temp).SingleOrDefault();
-                    if (equipment_group != null)
+                    system syst = db.systems.Where(n => n.kode == temp).SingleOrDefault();
+                    if (syst != null)
                     {
-
-                        //check discipline and tag_type
-                        temp = data[8].ToString(); //tag_types
-                        tag_types t = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
-
-                        temp = data[9].ToString(); //discipline
-                        discipline d = db.disciplines.Where(x => x.title == temp).SingleOrDefault();
-
-                        if (t == null)
-                        {
-                            t = new tag_types();
-                            t.title = data[8].ToString();
-                            db.tag_types.Add(t);
-                        }
-
-                        if (d == null)
-                        {
-                            d = new discipline();
-                            d.title = data[9].ToString();
-                            d.id_tag_type = t.id;
-                            db.disciplines.Add(d);
-                        }
-
-                        db.SaveChanges();
-                        float result = 0;
-                        DateTime resDate = DateTime.Now;
-                        //equipment
                         equipment equipment = new equipment();
-                        equipment.id_equipment_group = equipment_group.id;
-                        equipment.tag_num = data[1].ToString();
-                        equipment.nama = data[2].ToString();
-                        equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
-                        equipment.installed_date = data[4].ToString() == "" || !(DateTime.TryParse(data[4].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[4].ToString());
-                        equipment.vendor = data[5].ToString();
-                        equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
-                        equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
-                        equipment.ram_crit = data[7].ToString();
-                        equipment.sertifikasi = data[10].ToString() == "" || !(DateTime.TryParse(data[10].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[10].ToString());
-                        equipment.pnid_tag_num = data[11].ToString();
-                        equipment.id_discipline = d.id;
-                        equipment.id_tag_type = t.id;
-                        equipment.status_read_nav = 0;
-                        db.equipments.Add(equipment);
-                        db.SaveChanges();
-
-                        //insert equipment detail
-                        equipment_readiness_nav eqReadNav = new equipment_readiness_nav()
+                        List<equipment_groups> listGroup = db.equipment_groups.Where(n => n.id_system == syst.id).ToList();
+                        if (listGroup.Count > 0)
                         {
-                            id_equipment = equipment.id
-                        };
-                        equipment_paf eqPaf = new equipment_paf()
-                        {
-                            id_equipment = equipment.id
-                        };
-                        equipment_event eqEvent = new equipment_event()
-                        {
-                            id_equipment = equipment.id,
-                            datetime_ops = equipment.installed_date.Value
-                        };
+                            if (data[1].ToString() != string.Empty && data[3].ToString() != string.Empty)
+                            {
+                                equipment_groups equipGroup = listGroup.First();
+                                DateTime installedDate = DateTime.Now;
+                                DateTime certificationDate = DateTime.Now;
+                                if (syst.scr != null)
+                                    scr = syst.scr.Value;
 
-                        db.equipment_readiness_nav.Add(eqReadNav);
-                        db.equipment_paf.Add(eqPaf);
-                        db.equipment_event.Add(eqEvent);
+                                equipment.equipment_groups = equipGroup;
+                                equipment.id_equipment_group = equipGroup.id;
+                                equipment.functional_code = data[1].ToString();
+                                equipment.tag_num = data[2].ToString();
+                                equipment.nama = data[3].ToString();
+                                if (data[4].ToString() != string.Empty)
+                                {
+                                    if (data[4].ToString().Contains("/") || data[4].ToString().Contains("-"))
+                                        installedDate = DateTime.Parse(data[4].ToString());
+                                    else
+                                    {
+                                        oDate = 0;
+                                        double.TryParse(data[4].ToString(), out oDate);
+                                        installedDate = DateTime.FromOADate(oDate);
+                                    }
+                                }
+                                equipment.installed_date = installedDate;
 
-                        db.SaveChanges();
+                                if (data[5].ToString() != string.Empty)
+                                {
+                                    val = 0;
+                                    int.TryParse(data[5].ToString(), out val);
+                                    ocr ocr = db.ocrs.Where(n => n.ocr_value.Value == val).SingleOrDefault();
+                                    if (ocr != null)
+                                    {
+                                        equipment.id_ocr = ocr.id;
+                                        ocrVal = ocr.ocr_value.Value;
+                                        ocrScore = ocr.ocr_score.Value;
+                                    }
+                                }
+
+                                if (data[6].ToString() != string.Empty)
+                                {
+                                    val = 0;
+                                    int.TryParse(data[6].ToString(), out val);
+                                    afp afp = db.afps.Where(n => n.afp_value.Value == val).SingleOrDefault();
+                                    if (afp != null)
+                                    {
+                                        equipment.id_afp = afp.id;
+                                        afpVal = afp.afp_value.Value;
+                                        afpScore = afp.afp_score.Value;
+                                    }
+                                }
+
+                                if (data[7].ToString() != string.Empty)
+                                {
+                                    val = 0;
+                                    int.TryParse(data[7].ToString(), out val);
+                                    tag_types tag = db.tag_types.Where(n => n.id == val).SingleOrDefault();
+                                    if (tag != null)
+                                    {
+                                        equipment.id_tag_type = tag.id;
+                                    }
+                                }
+
+                                if (data[8].ToString() != string.Empty)
+                                {
+                                    val = 0;
+                                    int.TryParse(data[8].ToString(), out val);
+                                    discipline disp = db.disciplines.Where(n => n.id == val).SingleOrDefault();
+                                    if (disp != null)
+                                    {
+                                        equipment.id_discipline = disp.id;
+                                    }
+                                }
+
+                                if (data[9].ToString() != string.Empty)
+                                {
+                                    if (data[9].ToString().Contains("/") || data[9].ToString().Contains("-"))
+                                        certificationDate = DateTime.Parse(data[9].ToString());
+                                    else
+                                    {
+                                        oDate = 0;
+                                        double.TryParse(data[9].ToString(), out oDate);
+                                        certificationDate = DateTime.FromOADate(oDate);
+                                    }
+                                    equipment.sertifikasi = certificationDate;
+                                }
+                                acr = scr * ocrVal;
+                                equipment.acr = acr;
+                                equipment.mpi = acr * afpVal;
+
+                                db.equipments.Add(equipment);
+                                db.SaveChanges();
+
+                                ///dummy data part and equipmeent part
+                                ///
+                                part part = new part();
+                                equipment_part ePart = new equipment_part();
+
+                                part.tag_number = equipment.tag_num;
+                                db.parts.Add(part);
+                                db.SaveChanges();
+
+                                ePart.id_equipment = equipment.id;
+                                ePart.id_parts = part.id;
+
+                                var hasEPart = db.equipment_part.Any(n => n.id_equipment == equipment.id && n.id_parts == part.id);
+                                if (!hasEPart)
+                                    db.equipment_part.Add(ePart);
+                                db.SaveChanges();
+                            }
+                        }
                     }
                     else
-                    {
-                        err = "Equipment Group " + data[0] + " tidak terdaftar di dalam database";
-                    }
-
+                        err = "System" + data[0] + " tidak terdaftar di dalam database";
                 }
                 else
                 {
+                    equipment old = exist.FirstOrDefault();
                     temp = data[0].ToString();
-                    equipment_groups equipment_group = db.equipment_groups.Where(x => x.nama == temp).SingleOrDefault();
-                    if (equipment_group != null)
-                    {
-
-                        //check discipline and tag_type
-                        temp = data[8].ToString(); //tag_types
-                        tag_types t = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
-
-                        temp = data[9].ToString(); //discipline
-                        discipline d = db.disciplines.Where(x => x.title == temp).SingleOrDefault();
-
-                        if (t == null)
+                    system syst = db.systems.Where(n => n.kode == temp).SingleOrDefault();
+                    if (syst != null)
+                    {                        
+                        List<equipment_groups> listGroup = db.equipment_groups.Where(n => n.id_system == syst.id).ToList();
+                        if (listGroup.Count > 0)
                         {
-                            t = new tag_types();
-                            t.title = data[8].ToString();
-                            db.tag_types.Add(t);
+                            if (data[1].ToString() != string.Empty && data[3].ToString() != string.Empty)
+                            {
+                                equipment_groups equipGroup = listGroup.First();
+                                DateTime installedDate = DateTime.Now;
+                                DateTime certificationDate = DateTime.Now;
+                                if (syst.scr != null)
+                                    scr = syst.scr.Value;
+
+                                old.equipment_groups = equipGroup;
+                                old.id_equipment_group = equipGroup.id;
+                                old.functional_code = data[1].ToString();
+                                old.tag_num = data[2].ToString();
+                                old.nama = data[3].ToString();
+                                if (data[4].ToString() != string.Empty)
+                                {
+                                    if (data[4].ToString().Contains("/") || data[4].ToString().Contains("-"))
+                                        installedDate = DateTime.Parse(data[4].ToString());
+                                    else
+                                    {
+                                        oDate = 0;
+                                        double.TryParse(data[4].ToString(), out oDate);
+                                        installedDate = DateTime.FromOADate(oDate);
+                                    }
+                                }
+                                old.installed_date = installedDate;
+
+                                if (data[5].ToString() != string.Empty)
+                                {
+                                    val = 0;
+                                    int.TryParse(data[5].ToString(), out val);
+                                    ocr ocr = db.ocrs.Where(n => n.ocr_value.Value == val).SingleOrDefault();
+                                    if (ocr != null)
+                                    {
+                                        old.id_ocr = ocr.id;
+                                        ocrVal = ocr.ocr_value.Value;
+                                        ocrScore = ocr.ocr_score.Value;
+                                    }
+                                }
+
+                                if (data[6].ToString() != string.Empty)
+                                {
+                                    val = 0;
+                                    int.TryParse(data[6].ToString(), out val);
+                                    afp afp = db.afps.Where(n => n.afp_value.Value == val).SingleOrDefault();
+                                    if (afp != null)
+                                    {
+                                        old.id_afp = afp.id;
+                                        afpVal = afp.afp_value.Value;
+                                        afpScore = afp.afp_score.Value;
+                                    }
+                                }
+
+                                if (data[7].ToString() != string.Empty)
+                                {
+                                    val = 0;
+                                    int.TryParse(data[7].ToString(), out val);
+                                    tag_types tag = db.tag_types.Where(n => n.id == val).SingleOrDefault();
+                                    if (tag != null)
+                                    {
+                                        old.id_tag_type = tag.id;
+                                    }
+                                }
+
+                                if (data[8].ToString() != string.Empty)
+                                {
+                                    val = 0;
+                                    int.TryParse(data[8].ToString(), out val);
+                                    discipline disp = db.disciplines.Where(n => n.id == val).SingleOrDefault();
+                                    if (disp != null)
+                                    {
+                                        old.id_discipline = disp.id;
+                                    }
+                                }
+
+                                if (data[9].ToString() != string.Empty)
+                                {
+                                    if (data[9].ToString().Contains("/") || data[9].ToString().Contains("-"))
+                                        certificationDate = DateTime.Parse(data[9].ToString());
+                                    else
+                                    {
+                                        oDate = 0;
+                                        double.TryParse(data[9].ToString(), out oDate);
+                                        certificationDate = DateTime.FromOADate(oDate);
+                                    }
+                                    old.sertifikasi = certificationDate;
+                                }
+                                acr = scr * ocrVal;
+                                old.acr = acr;
+                                old.mpi = acr * afpVal;
+                                db.SaveChanges();
+                            }
                         }
-
-                        if (d == null)
-                        {
-                            d = new discipline();
-                            d.title = data[9].ToString();
-                            d.id_tag_type = t.id;
-                            db.disciplines.Add(d);
-                        }
-
-                        db.SaveChanges();
-                        float result = 0;
-                        DateTime resDate = DateTime.Now;
-                        //equipment
-                        equipment equipment = exist.FirstOrDefault();
-                        equipment.id_equipment_group = equipment_group.id;
-                        equipment.tag_num = data[1].ToString();
-                        equipment.nama = data[2].ToString();
-                        equipment.econ = (int)((data[3].ToString() == "" || !(float.TryParse(data[3].ToString(), out result))) ? 0 : float.Parse(data[3].ToString()));
-                        equipment.installed_date = data[4].ToString() == "" || !(DateTime.TryParse(data[4].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[4].ToString());
-                        equipment.vendor = data[5].ToString();
-                        equipment.warranty = (data[6].ToString() == "" || !(float.TryParse(data[6].ToString(), out result))) ? 0 : int.Parse(data[6].ToString());
-                        equipment.obsolete_date = equipment.installed_date.Value.Add(new TimeSpan((int)equipment.warranty, 0, 0));
-                        equipment.ram_crit = data[7].ToString();
-                        equipment.sertifikasi = data[10].ToString() == "" || !(DateTime.TryParse(data[10].ToString(), out resDate)) ? DateTime.Now : DateTime.Parse(data[10].ToString());
-                        equipment.pnid_tag_num = data[11].ToString();
-                        equipment.id_discipline = d.id;
-                        equipment.id_tag_type = t.id;
-                        equipment.status_read_nav = 0;
-                        db.Entry(equipment).State = EntityState.Modified;
-                        db.SaveChanges();
-
-                        //insert equipment detail
-                        equipment_readiness_nav eqReadNav = new equipment_readiness_nav()
-                        {
-                            id_equipment = equipment.id
-                        };
-                        equipment_paf eqPaf = new equipment_paf()
-                        {
-                            id_equipment = equipment.id
-                        };
-                        equipment_event eqEvent = new equipment_event()
-                        {
-                            id_equipment = equipment.id,
-                            datetime_ops = equipment.installed_date.Value
-                        };
-
-                        db.equipment_readiness_nav.Add(eqReadNav);
-                        db.equipment_paf.Add(eqPaf);
-                        db.equipment_event.Add(eqEvent);
-
-                        db.SaveChanges();
                     }
                     else
-                    {
-                        err = "Equipment Group " + data[0] + " tidak terdaftar di dalam database";
-                    }
-                    err = "Equipment " + data[1] + " sudah terdapat di dalam database";
+                        err = "System" + data[0] + " tidak terdaftar di dalam database";
                 }
             }
             catch (Exception e)
             {
                 err = "Equipment " + data[1] + " has some data that is larger than allowed size. Please check the data again.";
             }
-            
+
             return err;
         }
 
@@ -410,7 +827,8 @@ namespace StarEnergi.Utilities
             string err = "";
             string temp = data[1].ToString();
             part part = db.parts.Where(x => x.tag_number == temp).SingleOrDefault();
-            if(part == null){
+            if (part == null)
+            {
                 part = new part();
                 part.tag_number = data[1].ToString();
                 part.nama = data[2].ToString();
@@ -463,30 +881,87 @@ namespace StarEnergi.Utilities
         private string saveComponent(List<object> data)
         {
             string err = "";
-            string temp = data[1].ToString();
-            List<component> exist = db.components.Where(x => x.tag_number == temp).ToList();
+            string temp = data[2].ToString();
+            double oDate = 0;
+            DateTime installedDate = DateTime.Now;
+            List<component> exist = db.components.Where(x => x.functional_code == temp).ToList();
             if (exist.Count == 0)
             {
                 temp = data[0].ToString();
-                equipment_part ep = db.equipment_part.Where(x => x.part.tag_number == temp).SingleOrDefault();
-                if (ep != null)
+                equipment equip = db.equipments.Where(x => x.functional_code == temp).SingleOrDefault();
+                if (equip != null)
                 {
-                    component co = new component();
-                    co.id_equipment_part = ep.id;
-                    co.tag_number = data[1].ToString();
-                    co.description = data[2].ToString();
-                    db.components.Add(co);
-                    db.SaveChanges();
+                    equipment_part ep = db.equipment_part.Where(n => n.id_equipment == equip.id).SingleOrDefault();
+                    if (ep != null)
+                    {
+                        if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
+                        {
+                            component co = new component();
+                            co.id_equipment_part = ep.id;
+                            co.component_name = data[1].ToString();
+                            co.functional_code = data[2].ToString();
+                            co.description = data[4].ToString();
+                            if (data[5].ToString() != string.Empty)
+                            {
+                                if (data[5].ToString().Contains("/") || data[5].ToString().Contains("-"))
+                                    installedDate = DateTime.Parse(data[5].ToString());
+                                else
+                                {
+                                    oDate = 0;
+                                    double.TryParse(data[5].ToString(), out oDate);
+                                    installedDate = DateTime.FromOADate(oDate);
+                                }
+                                co.installed_date = installedDate;
+                            }
+
+                            db.components.Add(co);
+                            db.SaveChanges();
+                        }
+                    }
                 }
                 else
                 {
-                    err = "Sub Equipment " + data[0] + " tidak terdaftar di dalam database";
+                    err = "Equipment " + data[0] + " tidak terdaftar di dalam database";
                 }
 
             }
             else
             {
-                err = "Component " + data[1] + " sudah terdapat di dalam database";
+                //err = "Component " + data[2] + " sudah terdapat di dalam database";
+                component old = exist.FirstOrDefault();
+                temp = data[0].ToString();
+                equipment equip = db.equipments.Where(x => x.functional_code == temp).SingleOrDefault();
+                if (equip != null)
+                {
+                    equipment_part ep = db.equipment_part.Where(n => n.id_equipment == equip.id).SingleOrDefault();
+                    if (ep != null)
+                    {
+                        if (data[1].ToString() != string.Empty && data[2].ToString() != string.Empty)
+                        {
+                            old.id_equipment_part = ep.id;
+                            old.component_name = data[1].ToString();
+                            old.functional_code = data[2].ToString();
+                            old.description = data[4].ToString();
+                            if (data[5].ToString() != string.Empty)
+                            {
+                                if (data[5].ToString().Contains("/") || data[5].ToString().Contains("-"))
+                                    installedDate = DateTime.Parse(data[5].ToString());
+                                else
+                                {
+                                    oDate = 0;
+                                    double.TryParse(data[5].ToString(), out oDate);
+                                    installedDate = DateTime.FromOADate(oDate);
+                                }
+                                old.installed_date = installedDate;
+                            }
+                            db.SaveChanges();
+                        }
+                    }
+                }
+                else
+                {
+                    err = "Equipment " + data[0] + " tidak terdaftar di dalam database";
+                }
             }
             return err;
         }
@@ -494,8 +969,8 @@ namespace StarEnergi.Utilities
         private string saveSubComponent(List<object> data)
         {
             string err = "";
-            string temp = data[1].ToString();
-            List<sub_component> exist = db.sub_component.Where(x => x.tag_number == temp).ToList();
+            string temp = data[1].ToString().ToLower();
+            List<sub_component> exist = db.sub_component.Where(x => x.tag_number.ToLower() == temp).ToList();
             if (exist.Count == 0)
             {
                 temp = data[0].ToString();
@@ -562,7 +1037,7 @@ namespace StarEnergi.Utilities
                             err.Add(errTemp);
                         };
                     }
-                    else 
+                    else
                     {//insert other
                         errTemp = saveOther(temp, k);
                         if (errTemp != "")
@@ -590,13 +1065,14 @@ namespace StarEnergi.Utilities
                 temp = data[2].ToString();
                 tag_types tagType = db.tag_types.Where(x => x.title == temp).SingleOrDefault();
 
-                if (tagType == null) {
+                if (tagType == null)
+                {
                     tagType = new tag_types();
                     tagType.title = temp;
                     db.tag_types.Add(tagType);
                     db.SaveChanges();
                 }
-           
+
                 failure_modes failureMode = new failure_modes();
                 failureMode.title = data[0].ToString();
                 failureMode.description = data[1].ToString();
@@ -615,21 +1091,25 @@ namespace StarEnergi.Utilities
         {
             string err = "";
             string temp = data[0].ToString();
-            if (type == 1) {//cause
+            if (type == 1)
+            {//cause
                 List<failure_causes> exist = db.failure_causes.Where(x => x.title == temp).ToList();
                 if (exist.Count == 0)
                 {
-                    failure_causes x = new failure_causes{
+                    failure_causes x = new failure_causes
+                    {
                         title = data[0].ToString(),
-                        description = data[1].ToString()                    
+                        description = data[1].ToString()
                     };
                     db.failure_causes.Add(x);
                 }
-                else {
+                else
+                {
                     err = "Failure Cause " + temp + " sudah terdapat di dalam database";
                 }
             }
-            else if (type == 2) { //effect
+            else if (type == 2)
+            { //effect
                 List<failure_effects> exist = db.failure_effects.Where(x => x.title == temp).ToList();
                 if (exist.Count == 0)
                 {
@@ -838,7 +1318,7 @@ namespace StarEnergi.Utilities
                     {
                         err.Add(errTemp);
                     };
-                   
+
                 }
             }
             book.Close(true, Missing.Value, Missing.Value);
@@ -855,13 +1335,13 @@ namespace StarEnergi.Utilities
             if (exist != null)
             {
                 equipment_paf last = db.equipment_paf.Where(x => x.id_equipment == exist.id).OrderByDescending(x => x.tanggal).FirstOrDefault();
-                double operation = (double.Parse(data[1].ToString())/100 * double.Parse(data[2].ToString())/100) * 100;
-                double performance = (double.Parse(data[3].ToString())/100 * double.Parse(data[4].ToString())/100 * last.avail_measured/100) * 100;
-                double maintenace = (double.Parse(data[7].ToString())/100 * double.Parse(data[8].ToString())/100) * 100;
-               
-                double spares = (double.Parse(data[9].ToString())/100 * double.Parse(data[10].ToString())/100) * 100;
-                double safe_operation = (double.Parse(data[11].ToString())/100 * double.Parse(data[12].ToString())/100) * 100;
-                double monitoring = (double.Parse(data[5].ToString())/100 * double.Parse(data[6].ToString())/100 * performance/100) * 100;
+                double operation = (double.Parse(data[1].ToString()) / 100 * double.Parse(data[2].ToString()) / 100) * 100;
+                double performance = (double.Parse(data[3].ToString()) / 100 * double.Parse(data[4].ToString()) / 100 * last.avail_measured / 100) * 100;
+                double maintenace = (double.Parse(data[7].ToString()) / 100 * double.Parse(data[8].ToString()) / 100) * 100;
+
+                double spares = (double.Parse(data[9].ToString()) / 100 * double.Parse(data[10].ToString()) / 100) * 100;
+                double safe_operation = (double.Parse(data[11].ToString()) / 100 * double.Parse(data[12].ToString()) / 100) * 100;
+                double monitoring = (double.Parse(data[5].ToString()) / 100 * double.Parse(data[6].ToString()) / 100 * performance / 100) * 100;
 
                 double score = (operation + maintenace + spares + safe_operation + monitoring) / 5;
 
@@ -979,12 +1459,14 @@ namespace StarEnergi.Utilities
         }
 
         //Convert Category and Type in MA excel template
-        private int[] ConvertData(string[] data){
+        private int[] ConvertData(string[] data)
+        {
             int[] result = new int[2];
 
             result[0] = 0;
             result[1] = 0;
-            if(data[0] == "Tahunan"){
+            if (data[0] == "Tahunan")
+            {
                 result[0] = 1;
             }
 
@@ -1162,7 +1644,8 @@ namespace StarEnergi.Utilities
                     db.SaveChanges();
                     CalculateEventData ca = new CalculateEventData(e.id_equipment);
                 }
-                else { //insert part
+                else
+                { //insert part
                     equipment_part part = db.equipment_part.Where(x => x.part.tag_number == temp).SingleOrDefault();
                     if (part != null)
                     {//part ga kosong
@@ -1218,7 +1701,8 @@ namespace StarEnergi.Utilities
                         db.SaveChanges();
                         CalculateEventData ca = new CalculateEventData(e.id);
                     }
-                    else {
+                    else
+                    {
                         err = "Tag Number Part" + data[0] + " tidak terdaftar di dalam database";
                     }
                 }
@@ -1367,15 +1851,15 @@ namespace StarEnergi.Utilities
                     if (isFirst)
                     {
                         string s = temp.ElementAt(8).ToString();
-                        s = s.Remove(0,1);
+                        s = s.Remove(0, 1);
                         //string[] dateArray = s.Split('/');
                         //s = dateArray[1] + "-" + dateArray[2] + "-" + dateArray[0];
                         date = Convert.ToDateTime(s);
                         id_report = saveEquipmentReport(date);
                         isFirst = false;
                     }
-                    
-                    if (add) errTemp = saveEquipmentTableReport(id_report,temp, date, ref date);
+
+                    if (add) errTemp = saveEquipmentTableReport(id_report, temp, date, ref date);
                     if (errTemp != "")
                     {
                         err.Add(errTemp);
@@ -1418,7 +1902,7 @@ namespace StarEnergi.Utilities
                     max_limit = data[5].ToString(),
                     tag_value = data[6].ToString(),
                     unit = data[7].ToString(),
-                    date = data[8].ToString() == "" ? null : (data[8].ToString().Remove(0, 1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().ElementAt(0) == '\'' ? data[8].ToString().Remove(0,1)  : data[8].ToString())),
+                    date = data[8].ToString() == "" ? null : (data[8].ToString().Remove(0, 1) == "" ? null : (Nullable<DateTime>)Convert.ToDateTime(data[8].ToString().ElementAt(0) == '\'' ? data[8].ToString().Remove(0, 1) : data[8].ToString())),
                     time = data[9].ToString() == "" ? "" : data[9].ToString().Remove(0, 1),
                     name_operator = data[12].ToString(),
                     keterangan = data[13].ToString()
@@ -1474,7 +1958,7 @@ namespace StarEnergi.Utilities
 
             db.equipment_daily_report.Add(eq);
             db.SaveChanges();
-            int retVal = db.equipment_daily_report.Max(p =>p.id);
+            int retVal = db.equipment_daily_report.Max(p => p.id);
 
             return retVal;
         }
@@ -1815,8 +2299,8 @@ namespace StarEnergi.Utilities
                                 }
 
 
-                              
-                                
+
+
                             }
                         }
 
@@ -1865,10 +2349,10 @@ namespace StarEnergi.Utilities
                             wellEndRow -= 1;
 
                         }
-                        
+
                         for (int i = 0; i < 100; i++)
                         {
-                            string finalRow = sheet.GetRow(wellEndRow+1).GetCell(1).StringCellValue;
+                            string finalRow = sheet.GetRow(wellEndRow + 1).GetCell(1).StringCellValue;
                             if (finalRow == "U1 NCG")
                             {
                                 break;
@@ -2259,7 +2743,7 @@ namespace StarEnergi.Utilities
 
                                     }
                                 }
-                                    
+
 
                             }
 
@@ -3822,7 +4306,7 @@ namespace StarEnergi.Utilities
                             dailyLogData = checkExistingRecord;
                         }
 
-                       
+
 
                         if (dailyLogData.id == 0)
                         {
@@ -3878,7 +4362,7 @@ namespace StarEnergi.Utilities
                                     data.flow = x.flow;
                                     data.is_text = x.is_text;
                                     data.whp = x.whp;
-                                    
+
                                     db.daily_log_to_wells.Attach(data);
 
                                     var entry2 = db.Entry(data);
@@ -3904,7 +4388,7 @@ namespace StarEnergi.Utilities
                             dayRecordExist = false;
                         }
 
-                        
+
 
                         if (dayRecordExist == false)
                         {
@@ -4169,10 +4653,10 @@ namespace StarEnergi.Utilities
                                 }
                             }
 
-                            
+
                         }
                     }
-                    
+
                 }
                 else
                 {
@@ -4733,7 +5217,7 @@ namespace StarEnergi.Utilities
                     // To-do : add all data
                 };
 
-            if (shift == 1)
+                if (shift == 1)
                 {
                     dl.uti_active_1 = data[29][4] == null ? null : data[29][4].ToString();
                     dl.uti_reactive_1 = data[30][4] == null ? null : data[30][4].ToString();
@@ -4807,7 +5291,7 @@ namespace StarEnergi.Utilities
             List<object> temp;
             List<string> err;
             int i, j = 0;
-            int[] datecolumn = new int[5]{3,5,17,18,19}; //columns with date as its value
+            int[] datecolumn = new int[5] { 3, 5, 17, 18, 19 }; //columns with date as its value
             DateTime? dateconvert = new DateTime?();
             app = new Excel.Application();
             book = app.Workbooks.Open(Filename: filename);
@@ -5000,7 +5484,7 @@ namespace StarEnergi.Utilities
             {
                 err = "Tag number " + data[0].ToString() + " not found.";
             }
-            
+
             return err;
         }
 
@@ -5161,7 +5645,7 @@ namespace StarEnergi.Utilities
             mpsr.last_date_time_lti = data[26][2] != null && data[26][2].ToString() != "" ? DateTime.FromOADate(Double.Parse(data[26][2].ToString())) as Nullable<DateTime> : null;
             mpsr.light_vehicle_travel_mh = data[27][2] != null && data[27][2].ToString() != "" ? Int32.Parse(data[27][2].ToString()) : 0;
             mpsr.local_workers = data[29][2] != null && data[29][2].ToString() != "" ? Int32.Parse(data[29][2].ToString()) : 0;
-            mpsr.non_local_workers =  data[30][2] != null && data[30][2].ToString() != "" ? Int32.Parse(data[30][2].ToString()) : 0;
+            mpsr.non_local_workers = data[30][2] != null && data[30][2].ToString() != "" ? Int32.Parse(data[30][2].ToString()) : 0;
             mpsr.expatriates_workers = data[31][2] != null && data[31][2].ToString() != "" ? Int32.Parse(data[31][2].ToString()) : 0;
             mpsr.local_lead = data[29][3] != null && data[29][3].ToString() != "" ? Int32.Parse(data[29][3].ToString()) : 0;
             mpsr.non_local_lead = data[30][3] != null && data[30][3].ToString() != "" ? Int32.Parse(data[30][3].ToString()) : 0;
@@ -5235,13 +5719,16 @@ namespace StarEnergi.Utilities
 
         #endregion
 
-        public string generateError(List<string> err) {
+        public string generateError(List<string> err)
+        {
             string html = "";
-            if(err.Count > 0){
+            if (err.Count > 0)
+            {
                 html += "<b>LOG</b>";
                 html += "<br/>";
                 html += "<ul>";
-                foreach (string x in err) {
+                foreach (string x in err)
+                {
                     html += "<li>";
                     html += x;
                     html += "</li>";
@@ -5249,6 +5736,949 @@ namespace StarEnergi.Utilities
                 html += "</ul>";
             }
             return html;
+        }
+
+        public byte[] GenerateExcelTemplate()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); //supaya file tidak corrupt                                   
+            //kamus
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFCellStyle style, headerStyle, dateStyle;
+            XSSFFont font;
+            CellRangeAddressList addressList = new CellRangeAddressList(); XSSFDataValidationHelper dvHelper; XSSFDataValidationConstraint dvConstraint; XSSFDataValidation validation;
+            MemoryStream ms;
+            EnumHelper eh = new EnumHelper();
+
+            BorderStyle borderStyle = BorderStyle.Thin;
+            FillPattern fillPatern = FillPattern.SolidForeground;
+            short borderColor = IndexedColors.Black.Index;
+
+            XSSFSheet sheet; XSSFRow row; XSSFCell cell;
+            int colIndex = 0; int rowIndex = 0;
+            int lastRow = 200;
+
+            IDataFormat idf = workbook.CreateDataFormat();
+            style = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            style.WrapText = true;
+            style.VerticalAlignment = VerticalAlignment.Center;
+            style.SetFont(font);
+            style.BorderRight = style.BorderTop = style.BorderLeft = style.BorderBottom = borderStyle;
+            style.RightBorderColor = style.TopBorderColor = style.LeftBorderColor = style.BottomBorderColor = borderColor;
+
+            headerStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+            font = (XSSFFont)workbook.CreateFont();
+            headerStyle.Alignment = HorizontalAlignment.Center;
+            headerStyle.VerticalAlignment = VerticalAlignment.Top;
+            headerStyle.WrapText = true;
+            font.IsBold = true;
+            headerStyle.SetFont(font);
+            headerStyle.BorderRight = headerStyle.BorderTop = headerStyle.BorderLeft = headerStyle.BorderBottom = borderStyle;
+            headerStyle.RightBorderColor = headerStyle.TopBorderColor = headerStyle.LeftBorderColor = headerStyle.BottomBorderColor = borderColor;
+
+            dateStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+            dateStyle.DataFormat = idf.GetFormat("dd-MMM-yy");
+            dateStyle.BorderRight = dateStyle.BorderTop = dateStyle.BorderLeft = dateStyle.BorderBottom = borderStyle;
+            dateStyle.RightBorderColor = dateStyle.TopBorderColor = dateStyle.LeftBorderColor = dateStyle.BottomBorderColor = borderColor;
+
+            #region unit
+            sheet = (XSSFSheet)workbook.CreateSheet("Unit");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Area Name");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 10000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Unit Name");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Func Code");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 10000);
+
+            cell = (XSSFCell)row.CreateCell(3);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(3, 10000);
+
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            for (short i = 1; i <= lastRow; i++)
+            {
+                row = (XSSFRow)sheet.CreateRow(i);
+                for (int j = 0; j < 4; j++)
+                {
+                    cell = (XSSFCell)row.CreateCell(j);
+                    cell.CellStyle = style;
+                }
+            }
+            List<foc> listFoc = db.focs.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 0, 0);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listFoc).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+            #endregion
+
+            #region System
+            sheet = (XSSFSheet)workbook.CreateSheet("System");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("FS Code Unit");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 10000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("FS Code");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("System Name");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 10000);
+
+            cell = (XSSFCell)row.CreateCell(3);
+            cell.SetCellValue("Functional Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(3, 10000);
+
+            cell = (XSSFCell)row.CreateCell(4);
+            cell.SetCellValue("OC");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(4, 3000);
+
+            cell = (XSSFCell)row.CreateCell(5);
+            cell.SetCellValue("PT");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(5, 3000);
+
+            cell = (XSSFCell)row.CreateCell(6);
+            cell.SetCellValue("SF");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(6, 3000);
+
+            cell = (XSSFCell)row.CreateCell(7);
+            cell.SetCellValue("RC");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(7, 3000);
+
+            cell = (XSSFCell)row.CreateCell(8);
+            cell.SetCellValue("PE");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(8, 3000);
+
+            cell = (XSSFCell)row.CreateCell(9);
+            cell.SetCellValue("* Notes SCR otomatis dihitung sistem");
+            //cell.CellStyle = headerStyle;
+
+            //for (int i = 0; i < 9; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            for (short i = 1; i <= lastRow; i++)
+            {
+                row = (XSSFRow)sheet.CreateRow(i);
+                for (int j = 0; j < 9; j++)
+                {
+                    cell = (XSSFCell)row.CreateCell(j);
+                    cell.CellStyle = style;
+                }
+            }
+
+            //List<unit> listUnit = db.units.ToList();
+            //addressList = new CellRangeAddressList(1, lastRow, 0, 0);
+            //dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listUnit).ToArray());
+            //validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            //validation.SuppressDropDownArrow = true;
+            //validation.ShowErrorBox = true;
+            //sheet.AddValidationData(validation);
+
+            List<oc> listOC = db.ocs.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 4, 4);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listOC).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+
+            List<pt> listPT = db.pts.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 5, 5);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listPT).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+
+            List<sf> listsf = db.sfs.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 6, 6);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listsf).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+
+            List<rc> listrc = db.rcs.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 7, 7);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listrc).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+
+            List<pe> listpe = db.pes.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 8, 8);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listpe).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+            #endregion
+
+            #region Equipment
+            sheet = (XSSFSheet)workbook.CreateSheet("Equipment");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("FS Code System");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 10000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Func Code");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Tag Number Equipment");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 10000);
+
+            cell = (XSSFCell)row.CreateCell(3);
+            cell.SetCellValue("Equipment Name");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(3, 10000);
+
+            cell = (XSSFCell)row.CreateCell(4);
+            cell.SetCellValue("Installed Date");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(4, 10000);
+
+            cell = (XSSFCell)row.CreateCell(5);
+            cell.SetCellValue("OCR");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(5, 3000);
+
+            cell = (XSSFCell)row.CreateCell(6);
+            cell.SetCellValue("AFPF");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(6, 3000);
+
+            cell = (XSSFCell)row.CreateCell(7);
+            cell.SetCellValue("Equipment Class");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(7, 3000);
+
+            cell = (XSSFCell)row.CreateCell(8);
+            cell.SetCellValue("Equipment Sub Class");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(8, 3000);
+
+            cell = (XSSFCell)row.CreateCell(9);
+            cell.SetCellValue("Certification");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(9, 10000);
+
+            cell = (XSSFCell)row.CreateCell(10);
+            cell.SetCellValue("Drawing No");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(10, 10000);
+
+            cell = (XSSFCell)row.CreateCell(11);
+            cell.SetCellValue("* Notes ACR dan MPI otomatis oleh sistem");
+
+            //for (int i = 0; i < 11; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            for (short i = 1; i <= lastRow; i++)
+            {
+                row = (XSSFRow)sheet.CreateRow(i);
+                for (int j = 0; j < 11; j++)
+                {
+                    cell = (XSSFCell)row.CreateCell(j);
+                    cell.CellStyle = style;
+
+                    if (j == 4 || j == 9)
+                        cell.CellStyle = dateStyle;
+                }
+            }
+
+            //List<system> listSystem = db.systems.ToList();
+            //addressList = new CellRangeAddressList(1, lastRow, 0, 0);
+            //dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listSystem).ToArray());
+            //validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            //validation.SuppressDropDownArrow = true;
+            //validation.ShowErrorBox = true;
+            //sheet.AddValidationData(validation);
+
+            List<ocr> listOCR = db.ocrs.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 5, 5);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listOCR).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+
+            List<afp> listAFP = db.afps.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 6, 6);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listAFP).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+
+            List<tag_types> listClass = db.tag_types.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 7, 7);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listClass).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+
+            List<discipline> listSubClass = db.disciplines.ToList();
+            addressList = new CellRangeAddressList(1, lastRow, 8, 8);
+            dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listSubClass).ToArray());
+            validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            validation.SuppressDropDownArrow = true;
+            validation.ShowErrorBox = true;
+            sheet.AddValidationData(validation);
+            #endregion
+
+            #region Component
+            sheet = (XSSFSheet)workbook.CreateSheet("Component");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("FS Code Equipment");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 10000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Component Name");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Func Code");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 10000);
+
+            cell = (XSSFCell)row.CreateCell(3);
+            cell.SetCellValue("No Key Map");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(3, 10000);
+
+            cell = (XSSFCell)row.CreateCell(4);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(4, 10000);
+
+            cell = (XSSFCell)row.CreateCell(5);
+            cell.SetCellValue("Installed Date");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(5, 10000);
+
+            //for (int i = 0; i < 6; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            for (short i = 1; i <= lastRow; i++)
+            {
+                row = (XSSFRow)sheet.CreateRow(i);
+                for (int j = 0; j < 6; j++)
+                {
+                    cell = (XSSFCell)row.CreateCell(j);
+                    cell.CellStyle = style;
+
+                    if (j == 6)
+                        cell.CellStyle = dateStyle;
+                }
+            }
+
+            //List<equipment> listEquip = db.equipments.Where(n => n.functional_code != null).ToList();
+            //if (listEquip.Count > 0)
+            //{
+            //    addressList = new CellRangeAddressList(1, lastRow, 0, 0);
+            //    dvConstraint = (XSSFDataValidationConstraint)dvHelper.CreateExplicitListConstraint(MapData(listEquip).ToArray());
+            //    validation = (XSSFDataValidation)dvHelper.CreateValidation(dvConstraint, addressList);
+            //    validation.SuppressDropDownArrow = true;
+            //    validation.ShowErrorBox = true;
+            //    sheet.AddValidationData(validation);
+            //}
+            #endregion
+
+            #region Master OC
+            List<oc> dataOC = db.ocs.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master OC");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Value");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Score");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 2000);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (oc data in dataOC)
+            {
+                row = (XSSFRow)sheet.CreateRow(rowIndex);
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue(data.oc_value.Value);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(1);
+                cell.SetCellValue(data.oc_description);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(2);
+                cell.SetCellValue(data.oc_score.Value);
+                cell.CellStyle = style;
+                rowIndex++;
+            }
+            #endregion
+
+            #region Master PT
+            List<pt> dataPT = db.pts.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master PT");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Value");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Score");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 2000);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (pt data in dataPT)
+            {
+                row = (XSSFRow)sheet.CreateRow(rowIndex);
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue(data.pt_value.Value);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(1);
+                cell.SetCellValue(data.pt_description);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(2);
+                cell.SetCellValue(data.pt_score.Value);
+                cell.CellStyle = style;
+                rowIndex++;
+            }
+            #endregion
+
+            #region Master SF
+            List<sf> dataSF = db.sfs.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master SF");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Value");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Score");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 2000);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (sf data in dataSF)
+            {
+                row = (XSSFRow)sheet.CreateRow(rowIndex);
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue(data.sf_value.Value);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(1);
+                cell.SetCellValue(data.sf_description);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(2);
+                cell.SetCellValue(data.sf_score.Value);
+                cell.CellStyle = style;
+                rowIndex++;
+            }
+            #endregion
+
+            #region Master RC
+            List<rc> dataRC = db.rcs.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master RC");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Value");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Score");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 2000);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (rc data in dataRC)
+            {
+                row = (XSSFRow)sheet.CreateRow(rowIndex);
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue(data.rc_value.Value);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(1);
+                cell.SetCellValue(data.rc_description);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(2);
+                cell.SetCellValue(data.rc_score.Value);
+                cell.CellStyle = style;
+                rowIndex++;
+            }
+            #endregion
+
+            #region Master PE
+            List<pe> dataPE = db.pes.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master PE");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Value");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Score");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 2000);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (pe data in dataPE)
+            {
+                row = (XSSFRow)sheet.CreateRow(rowIndex);
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue(data.pe_value.Value);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(1);
+                cell.SetCellValue(data.pe_description);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(2);
+                cell.SetCellValue(data.pe_score.Value);
+                cell.CellStyle = style;
+                rowIndex++;
+            }
+            #endregion
+
+            #region Master OCR
+            List<ocr> dataOCR = db.ocrs.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master OCR");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Value");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Score");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 2000);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (ocr data in dataOCR)
+            {
+                row = (XSSFRow)sheet.CreateRow(rowIndex);
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue(data.ocr_value.Value);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(1);
+                cell.SetCellValue(data.ocr_description);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(2);
+                cell.SetCellValue(data.ocr_score.Value);
+                cell.CellStyle = style;
+                rowIndex++;
+            }
+            #endregion
+
+            #region Master AFPF
+            List<afp> dataAFP = db.afps.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master AFPF");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Value");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Description");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Score");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 2000);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (afp data in dataAFP)
+            {
+                row = (XSSFRow)sheet.CreateRow(rowIndex);
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue(data.afp_value.Value);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(1);
+                cell.SetCellValue(data.afp_description);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(2);
+                cell.SetCellValue(data.afp_score.Value);
+                cell.CellStyle = style;
+                rowIndex++;
+            }
+            #endregion
+
+            #region Master Class
+            List<tag_types> dataClass = db.tag_types.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master Class");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Id");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Title");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            //for (int i = 0; i < 2; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (tag_types data in dataClass)
+            {
+                row = (XSSFRow)sheet.CreateRow(rowIndex);
+                cell = (XSSFCell)row.CreateCell(0);
+                cell.SetCellValue(data.id);
+                cell.CellStyle = style;
+
+                cell = (XSSFCell)row.CreateCell(1);
+                cell.SetCellValue(data.title);
+                cell.CellStyle = style;
+                rowIndex++;
+            }
+            #endregion
+
+            #region Master Sub Class
+            List<discipline> dataSubClass = db.disciplines.ToList();
+
+            sheet = (XSSFSheet)workbook.CreateSheet("Master Sub Class");
+            dvHelper = new XSSFDataValidationHelper(sheet);
+            row = (XSSFRow)sheet.CreateRow((short)0);
+
+            cell = (XSSFCell)row.CreateCell(0);
+            cell.SetCellValue("Id");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(0, 2000);
+
+            cell = (XSSFCell)row.CreateCell(1);
+            cell.SetCellValue("Class");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(1, 10000);
+
+            cell = (XSSFCell)row.CreateCell(2);
+            cell.SetCellValue("Title");
+            cell.CellStyle = headerStyle;
+            sheet.SetColumnWidth(2, 10000);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sheet.AutoSizeColumn(i);
+            //}
+
+            rowIndex = 1;
+            foreach (discipline data in dataSubClass)
+            {
+                if (data.title != null)
+                {
+                    row = (XSSFRow)sheet.CreateRow(rowIndex);
+                    cell = (XSSFCell)row.CreateCell(0);
+                    cell.SetCellValue(data.id);
+                    cell.CellStyle = style;
+
+                    cell = (XSSFCell)row.CreateCell(1);
+                    cell.SetCellValue(data.tag_types.title);
+                    cell.CellStyle = style;
+
+                    cell = (XSSFCell)row.CreateCell(2);
+                    cell.SetCellValue(data.title);
+                    cell.CellStyle = style;
+                    rowIndex++;
+                }
+            }
+            #endregion
+
+            //write to file
+            ms = new MemoryStream();
+            workbook.Write(ms);
+
+            return ms.ToArray();
+        }
+
+        public List<string> MapData(List<foc> list)
+        {
+            List<string> result = new List<string>();
+            foreach (foc data in list)
+            {
+                result.Add(data.nama);
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<unit> list)
+        {
+            List<string> result = new List<string>();
+            foreach (unit data in list)
+            {
+                result.Add(data.functional_code);
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<oc> list)
+        {
+            List<string> result = new List<string>();
+            foreach (oc data in list)
+            {
+                result.Add(data.oc_value.Value.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<pt> list)
+        {
+            List<string> result = new List<string>();
+            foreach (pt data in list)
+            {
+                result.Add(data.pt_value.Value.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<sf> list)
+        {
+            List<string> result = new List<string>();
+            foreach (sf data in list)
+            {
+                result.Add(data.sf_value.Value.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<rc> list)
+        {
+            List<string> result = new List<string>();
+            foreach (rc data in list)
+            {
+                result.Add(data.rc_value.Value.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<pe> list)
+        {
+            List<string> result = new List<string>();
+            foreach (pe data in list)
+            {
+                result.Add(data.pe_value.Value.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<system> list)
+        {
+            List<string> result = new List<string>();
+            foreach (system data in list)
+            {
+                if (data.kode != null)
+                    result.Add(data.kode);
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<ocr> list)
+        {
+            List<string> result = new List<string>();
+            foreach (ocr data in list)
+            {
+                result.Add(data.ocr_value.Value.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<afp> list)
+        {
+            List<string> result = new List<string>();
+            foreach (afp data in list)
+            {
+                result.Add(data.afp_value.Value.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<tag_types> list)
+        {
+            List<string> result = new List<string>();
+            foreach (tag_types data in list)
+            {
+                result.Add(data.id.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<discipline> list)
+        {
+            List<string> result = new List<string>();
+            foreach (discipline data in list)
+            {
+                result.Add(data.id.ToString());
+            }
+            return result;
+        }
+
+        public List<string> MapData(List<equipment> list)
+        {
+            List<string> result = new List<string>();
+            foreach (equipment data in list)
+            {
+                //if(data.functional_code != null)
+                result.Add(data.functional_code);
+            }
+            return result;
         }
     }
 

@@ -96,7 +96,7 @@ namespace StarEnergi.Controllers.Admin
         {
             if (ModelState.IsValid)
             {
-                if (db.equipments.Where(x => x.tag_num == equipment.tag_num).ToList().Count > 0)
+                if (db.equipments.Where(x => x.functional_code == equipment.functional_code).ToList().Count > 0)
                 {
                     return Json(e.Fail());
                 }

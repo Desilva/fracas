@@ -38,6 +38,7 @@ namespace StarEnergi.Models
 
         public virtual equipment_part equipment_part { get; set; }
         public virtual ICollection<sub_component> sub_component { get; set; }
+        public virtual ICollection<bom_component> bom_component { get; set; }
     }
     
 }

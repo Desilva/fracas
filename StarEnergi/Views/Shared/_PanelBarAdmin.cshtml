@@ -71,6 +71,9 @@
         else if (item.find('> .t-link').text() == "Security") {
             $('#content').load('Security');
         }
+        else if (item.find('> .t-link').text() == "Build Of Material") {
+            $('#content').load('BuildOfMaterial');
+        }
     }
 </script>
 
@@ -109,6 +112,7 @@
                     item.Add().Text("Contractors");
                     item.Add().Text("Daily Log Wells");
                     item.Add().Text("Security");
+                    item.Add().Text("Build Of Material");
                 })
                 .Expanded(true);
             //panelBarItem.Add().Text("PTW Master Data")

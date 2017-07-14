@@ -19,7 +19,7 @@
                 //.Delete("_DeleteAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, level = ViewBag.level });
                 .Select("_SelectAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, type = ViewBag.type })
                 .Insert("_InsertAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, type = ViewBag.type })
-                .Update("_SaveAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, type = ViewBag.type, idbom ="" })
+                .Update("_SaveAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, type = ViewBag.type, idBom = "" })
                 .Delete("_DeleteAjaxEditing", "BuildOfMaterial", new { id_reference = ViewBag.id, type = ViewBag.type });
 
         })
@@ -29,9 +29,9 @@
             //columns.Bound(o => o.no_key_map).Width(190).Title("No Key Map");
             //columns.Bound(o => o.description).Title("Description");
             columns.Bound(o => o.id).Hidden();
-            //columns.Bound(o => o.id_bom).Hidden();
             //columns.ForeignKey(o => o.id_bom, (System.Collections.IEnumerable)ViewData["build_of_material"],
             //       "id", "functional_location").Width(250).Title("Functional Location");
+            //columns.Bound(o => o.build_of_material.no_keymap).Width(200).Title("No Key Map");
             columns.Bound(o => o.functional_location).Width(190).Title("Functional Location");
             columns.Bound(o => o.no_keymap).Width(190).Title("No Key Map");
             columns.Bound(o => o.remark).Width(300).Title("Remark");
@@ -42,9 +42,9 @@
             }).Width(80).Title("Commands");
 
         })
-        .ClientEvents(events => events     
-            .OnCommand("Grid_onCommand")       
-               .OnEdit("Grid_onEdit")
+        .ClientEvents(events => events
+            .OnCommand("Grid_onCommand")
+            .OnEdit("Grid_onEdit")
         )
         .Pageable(p => p.PageSize(10))
         .Sortable()
@@ -55,9 +55,8 @@
 </fieldset>
 <script type="text/javascript">
 
-    function Grid_onCommand(e) {
-        console.log(e.name)
-        if (e.name == 'update') {
+    function Grid_onCommand(e) {        
+        if (e.name == 'update') {            
             var grid = $("#bom").data("tGrid");
             var data = grid.data;
             var col = $($(e.row)[0]).find("#id");
@@ -70,22 +69,22 @@
             }            
             $.post('@Url.Action("_UpdateAjaxEditing", "BuildOfMaterial")?id=' + e.dataItem.id + '&id_reference=' +@ViewBag.id +'&type=' + '@ViewBag.type' + '&rk='+remark+'&idbom=' + e.dataItem.id_bom);
         }
-        else if (e.name == "insert") {            
+        else if (e.name == "insert") {
             var col = $(e.row)[0].children[1];
             var idBom = $(col)[0].value;
-            var colRemark = $($(e.row)[0]).find("#remark");
-            var remark = $(colRemark)[0].value;                        
-            $.post('@Url.Action("_InsertAjaxEditing", "BuildOfMaterial")?id_reference=' +@ViewBag.id +'&type=' + '@ViewBag.type' + '&rk='+remark+'&idbom=' + idBom);
+            var colRemark = $($(e.row)[0]).find("#remark");            
+            var remark = $(colRemark)[0].value;           
+            $.post('@Url.Action("_InsertAjaxEditing", "BuildOfMaterial")?id_reference=' +@ViewBag.id +'&type=' + '@ViewBag.type' + '&rk=' + remark + '&idbom=' + idBom);
         }
     }
     function Grid_onEdit(e) {
         var ddl = $(e.form).find("#BomDropDownList")[0];
         var spanVal = $(e.form).find("span.t-input")[0];
+        var id = $(e.form).find("#id")[0];
         var keymap = $(e.form).find("#keymap")[0];
         var remark = $(e.form).find("#remark")[0];
         var idBom = e.dataItem.id_bom;
-        if (idBom == 0)
-        {
+        if (idBom == 0) {
             spanVal.innerHTML = "-- Select Func. Location --";
             $(keymap)[0].textContent = "";
         }
@@ -104,11 +103,10 @@
         var id = $(this).val();
         var idBem = $(elBem).find("#id").val();
         var data = grid.data;
-        for (var i = 0; i < data.length; i++)
-        {
+        for (var i = 0; i < data.length; i++) {
             if (data[i].id == idBem)
-                data[i].id_bom = id;
-        }        
+                data[i].id_bom = id;            
+        }
         $(idBom).val(id);
         $.post('@Url.Action("GetKeyMap","BuildOfMaterial")?id=' + id, function (data) {
             keymap.innerHTML = data;

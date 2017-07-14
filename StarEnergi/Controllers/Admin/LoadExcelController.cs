@@ -42,9 +42,9 @@ namespace StarEnergi.Controllers.Admin
                 err = "The file format must be xls.";
             } else {
                 // store the file inside ~/App_Data/uploads folder
-                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);           
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);                
                 userfile.SaveAs(path);
-                if (fileName == Config.fileExcelSBSTemplate)
+                if (fileName.Contains(Config.fileExcelSBSTemplate))
                     err = SaveExcel(path);
                 else if (fileName == Config.fileExcelDataMaster)
                     err = SaveExcelDataMaster(path);
@@ -90,6 +90,8 @@ namespace StarEnergi.Controllers.Admin
         {
             ExcelReader excel = new ExcelReader();
             List<string> err = excel.LoadSBS(path);
+            if (err.Count == 0)
+                err.Add("Data Berhasil di Upload");
             return excel.generateError(err);
         }
 
@@ -180,6 +182,14 @@ namespace StarEnergi.Controllers.Admin
             string contentType = "application/" + filenameArray[1];
 
             return File(path, contentType, fileName);
+        }
+
+        public ActionResult DownloadTemplate()
+        {
+            byte[] excel = null;
+            excel = new ExcelReader().GenerateExcelTemplate();
+            string filename = "SBS Template.xls";
+            return File(excel, "application/vns.ms-excel", filename);
         }
     }
     

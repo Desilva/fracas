@@ -131,6 +131,9 @@ namespace StarEnergi.Models
         public virtual afp afp { get; set; }
 
         public virtual ocr ocr { get; set; }
+
+        public virtual ICollection<bom_equipment> bom_equipment { get; set; }
+        
     }
     
 }

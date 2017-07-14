@@ -2,7 +2,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#updateBOM').load('BuildOfMAterial/RenderUpdate/?id=' + '@Model.id' + '&level=7');
+        @*$('#updateBOM').load('BuildOfMAterial/RenderUpdate/?id=' + '@Model.id' + '&level=7');*@
+        $('#updateBOM').load('BuildOfMAterial/RenderUpdateComponent/?id=' + '@Model.id' + '&type=comp');
     })
 
 </script>
