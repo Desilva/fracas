@@ -30,7 +30,7 @@
 
     <div class="display-label">@Html.LabelFor(model => model.functional_code)</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.functional_code)
+        <span class="font-monospace">@Model.foc.nama</span>@Html.DisplayFor(model => model.functional_code)
     </div>
 
     <div class="display-label">@Html.LabelFor(model => model.unit_description)</div>
@@ -43,7 +43,7 @@
 </fieldset>
 <script>
     $(document).ready(function () {
-        if (src != undefined) {
+        if (typeof src !== 'undefined') {
             if (src == "asset-register") {
                 $('#edit-button').hide();
             }

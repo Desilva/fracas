@@ -24,6 +24,10 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Details(int id)
         {
             component c = db.components.Find(id);
+
+            ViewBag.equipmentFuncCode = c.equipment_part.equipment.functional_code;
+            ViewBag.systemFuncCode = c.equipment_part.equipment.equipment_groups.system.kode;
+            ViewBag.unitFuncCode = c.equipment_part.equipment.equipment_groups.system.unit.functional_code;
             return PartialView(c);
         }
 
@@ -60,6 +64,11 @@ namespace StarEnergi.Controllers.Admin
 
                 ViewBag.id_equipment_part = ePart.id;
             }
+
+            ViewBag.equipmentFuncCode = equipment.functional_code;
+            ViewBag.systemFuncCode = equipment.equipment_groups.system.kode;
+            ViewBag.unitFuncCode = equipment.equipment_groups.system.unit.functional_code;
+
             return PartialView();
         }
 
@@ -100,6 +109,10 @@ namespace StarEnergi.Controllers.Admin
         {
             component component = db.components.Find(id);
             ViewBag.id_equipment_part = component.id_equipment_part;
+
+            ViewBag.equipmentFuncCode = component.equipment_part.equipment.functional_code;
+            ViewBag.systemFuncCode = component.equipment_part.equipment.equipment_groups.system.kode;
+            ViewBag.unitFuncCode = component.equipment_part.equipment.equipment_groups.system.unit.functional_code;
             return PartialView(component);
         }
 

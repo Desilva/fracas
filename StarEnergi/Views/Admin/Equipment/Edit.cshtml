@@ -338,7 +338,7 @@
         @Html.LabelFor(model => model.equipment.functional_code)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.equipment.functional_code)
+        @ViewBag.unitFuncCode@ViewBag.systemFuncCode@Html.EditorFor(model => model.equipment.functional_code)
         <div class="errorM"></div>
     </div>
 

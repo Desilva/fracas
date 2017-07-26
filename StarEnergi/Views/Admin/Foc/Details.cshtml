@@ -29,7 +29,7 @@
 </fieldset>
 <script>
     $(document).ready(function () {
-        if (src != undefined) {
+        if (typeof src !== 'undefined') {
             if (src == "asset-register") {
                 $('#edit-button').hide();
             }

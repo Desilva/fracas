@@ -61,6 +61,10 @@ namespace StarEnergi.Controllers.Admin
             ViewBag.mpi = equipment.mpi;
             ViewBag.tagType = tag;
             ViewBag.dicipline = disc;
+
+            ViewBag.systemFuncCode = equipment.equipment_groups.system.kode;
+            ViewBag.unitFuncCode = equipment.equipment_groups.system.unit.functional_code;
+
             return PartialView(epe);
         }
 
@@ -85,6 +89,10 @@ namespace StarEnergi.Controllers.Admin
             else
                 ViewBag.scr = 0;
             ViewBag.id_equipment_group = idGroup;
+
+            ViewBag.systemFuncCode = sys.kode;
+            ViewBag.unitFuncCode = sys.unit.functional_code;
+
             return PartialView();
         }
 
@@ -163,6 +171,10 @@ namespace StarEnergi.Controllers.Admin
             }
             ViewBag.id_discipline = new SelectList(db.disciplines, "id", "title");
             ViewBag.id_tag_type = new SelectList(db.tag_types, "id", "title");
+
+            ViewBag.systemFuncCode = equipment.equipment_groups.system.kode;
+            ViewBag.unitFuncCode = equipment.equipment_groups.system.unit.functional_code;
+
             return Json(e.Fail(ModelState));
         }
 
@@ -184,6 +196,10 @@ namespace StarEnergi.Controllers.Admin
 
             EquipmentEntity epe = new EquipmentEntity(equipment);
             PopulateTagNumberEquipment();
+
+            ViewBag.systemFuncCode = equipment.equipment_groups.system.kode;
+            ViewBag.unitFuncCode = equipment.equipment_groups.system.unit.functional_code;
+
             return PartialView(epe);
         }
 
@@ -238,6 +254,9 @@ namespace StarEnergi.Controllers.Admin
             ViewBag.id_discipline = new SelectList(db.disciplines, "id", "title");
             ViewBag.id_tag_type = new SelectList(db.tag_types, "id", "title");
 
+            ViewBag.systemFuncCode = equipment.equipment_groups.system.kode;
+            ViewBag.unitFuncCode = equipment.equipment_groups.system.unit.functional_code;
+
             return Json(e.Fail(ModelState));
         }
 
@@ -247,6 +266,9 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Delete(int id)
         {
             equipment equipment = db.equipments.Find(id);
+            ViewBag.systemFuncCode = equipment.equipment_groups.system.kode;
+            ViewBag.unitFuncCode = equipment.equipment_groups.system.unit.functional_code;
+
             return PartialView(equipment);
         }
 
@@ -259,6 +281,7 @@ namespace StarEnergi.Controllers.Admin
             equipment equipment = db.equipments.Find(id);
             db.equipments.Remove(equipment);
             db.SaveChanges();
+
             return Json(true);
             //return RedirectToAction("Index");
         }

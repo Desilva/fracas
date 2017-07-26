@@ -72,7 +72,7 @@
             @Html.LabelFor(model => model.functional_code)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.functional_code)
+            <span class="font-monospace">@ViewBag.areaFuncCode</span>@Html.TextBoxFor(model => model.functional_code,new {@class= "admin-unit-fixed-width-box" })
             <div class="errorM"></div>
         </div>
         <div class="editor-label">

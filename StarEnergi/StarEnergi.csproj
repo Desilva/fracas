@@ -26,6 +26,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -342,6 +343,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\Admin\AnalysisTypeController.cs" />
+    <Compile Include="Controllers\Admin\MasterOCController.cs" />
     <Compile Include="Controllers\Admin\BuildOfMaterialController.cs" />
     <Compile Include="Controllers\Admin\ComponentController.cs" />
     <Compile Include="Controllers\Admin\SecurityController.cs" />
@@ -447,6 +449,7 @@
     <Compile Include="Models\bom.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MasterOCEntity.cs" />
     <Compile Include="Models\BomEntity.cs" />
     <Compile Include="Models\bom_component.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
@@ -3615,6 +3618,7 @@
     <Content Include="Views\Shared\EditorTemplates\BomDropDownList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\NoKeyMap.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Remark.cshtml" />
+    <Content Include="Views\Admin\MasterOC\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />

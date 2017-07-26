@@ -23,6 +23,8 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Index()
         {
             var units = db.units.Include(u => u.foc);
+
+            ViewBag.areaFuncCode = units.First().foc.nama;
             return PartialView(units.ToList());
         }
 
@@ -32,6 +34,7 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Details(int id)
         {
             unit unit = db.units.Find(id);
+            ViewBag.areaFuncCode = unit.foc.nama;
             return PartialView(unit);
         }
 
@@ -42,6 +45,10 @@ namespace StarEnergi.Controllers.Admin
         {
             //ViewBag.id_foc = new SelectList(db.focs, "id", "nama");
             ViewBag.id_foc = id;
+
+            foc f = db.focs.Find(id);
+
+            ViewBag.areaFuncCode = f.nama;
             return PartialView();
         } 
 
@@ -85,6 +92,7 @@ namespace StarEnergi.Controllers.Admin
         {
             unit unit = db.units.Find(id);
             ViewBag.id_foc = unit.id_foc;
+            ViewBag.areaFuncCode = unit.foc.nama;
             return PartialView(unit);
         }
 
@@ -120,6 +128,7 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Delete(int id)
         {
             unit unit = db.units.Find(id);
+            ViewBag.areaFuncCode = unit.foc.nama;
             return PartialView(unit);
         }
 

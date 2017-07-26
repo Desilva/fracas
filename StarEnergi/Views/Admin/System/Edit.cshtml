@@ -355,7 +355,7 @@
             @Html.LabelFor(model => model.kode)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.kode)
+            @Model.unit.functional_code@Html.EditorFor(model => model.kode)
             <div class="errorM"></div>
         </div>
 

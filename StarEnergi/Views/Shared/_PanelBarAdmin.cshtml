@@ -74,6 +74,33 @@
         else if (item.find('> .t-link').text() == "Material Master") {
             $('#content').load('BuildOfMaterial');
         }
+        else if (item.find('> .t-link').text() == "Master OC") {
+            $('#content').load('MasterOC');
+        }
+        else if (item.find('> .t-link').text() == "Master PT") {
+            $('#content').load('MasterPT');
+        }
+        else if (item.find('> .t-link').text() == "Master PQ") {
+            $('#content').load('MasterPQ');
+        }
+        else if (item.find('> .t-link').text() == "Master SF") {
+            $('#content').load('MasterSF');
+        }
+        else if (item.find('> .t-link').text() == "Master RC") {
+            $('#content').load('MasterRC');
+        }
+        else if (item.find('> .t-link').text() == "Master PE") {
+            $('#content').load('MasterPE');
+        }
+        else if (item.find('> .t-link').text() == "Master RT") {
+            $('#content').load('MasterRT');
+        }
+        else if (item.find('> .t-link').text() == "Master ORC") {
+            $('#content').load('MasterORC');
+        }
+        else if (item.find('> .t-link').text() == "Master AFPF") {
+            $('#content').load('MasterAFPF');
+        }
     }
 </script>
 
@@ -113,6 +140,15 @@
                     item.Add().Text("Daily Log Wells");
                     item.Add().Text("Security");
                     item.Add().Text("Material Master");
+                    item.Add().Text("Master OC");
+                    item.Add().Text("Master PT");
+                    item.Add().Text("Master PQ");
+                    item.Add().Text("Master SF");
+                    item.Add().Text("Master RC");
+                    item.Add().Text("Master PE");
+                    item.Add().Text("Master RT");
+                    item.Add().Text("Master ORC");
+                    item.Add().Text("Master AFPF");
                 })
                 .Expanded(true);
             //panelBarItem.Add().Text("PTW Master Data")

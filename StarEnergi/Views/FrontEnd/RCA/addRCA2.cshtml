@@ -239,7 +239,7 @@
                                     items.ImageUrl = ("~/Content/image/file.png");
                             })
                             .Children(plants => plants.focs));
-            
+
                     mappings.For<StarEnergi.Models.foc>(binding => binding
                             .ItemDataBound((items, foc) =>
                             {
@@ -251,7 +251,7 @@
                                 }
                                 else
                                     items.ImageUrl = ("~/Content/image/file.png");
-                       
+
                             })
                             .Children(foc => foc.units));
 
@@ -268,7 +268,7 @@
                                     items.ImageUrl = ("~/Content/image/file.png");
                             })
                             .Children(unit => unit.systems));
-            
+
                     mappings.For<StarEnergi.Models.system>(binding => binding
                            .ItemDataBound((items, system) =>
                            {
@@ -282,11 +282,12 @@
                                    items.ImageUrl = ("~/Content/image/file.png");
                            })
                            .Children(system => system.equipment_groups));
-            
+
                     mappings.For<StarEnergi.Models.equipment_groups>(binding => binding
                           .ItemDataBound((items, equipment_groups) =>
                           {
-                              items.Text = equipment_groups.description == null ? equipment_groups.nama : equipment_groups.description;
+                              items.Text = equipment_groups.description == null ? ((equipment_groups.nama == String.Empty)?"-":equipment_groups.nama) : equipment_groups.description;
+                              //items.Text = equipment_groups.description == null ? equipment_groups.nama : equipment_groups.description;
                               items.Value = Config.TreeType.EQUIPMENT_GROUP + ";" + equipment_groups.id.ToString();
                               if (equipment_groups.equipments.Count != 0)
                               {
@@ -296,15 +297,15 @@
                                   items.ImageUrl = ("~/Content/image/file.png");
                           })
                           .Children(equipment_groups => equipment_groups.equipments));
-            
+
                     mappings.For<StarEnergi.Models.equipment>(binding => binding
                          .ItemDataBound((items, equipment) =>
                          {
                              items.Text = equipment.nama;
                              items.Value = Config.TreeType.EQUIPMENT + ";" + equipment.id.ToString();
-                                  items.ImageUrl = ("~/Content/image/file.png");
+                             items.ImageUrl = ("~/Content/image/file.png");
                          }));
-            
+
                 })
                 .ClientEvents(eventsTree =>
                            eventsTree.OnLoad("onLoadTree")

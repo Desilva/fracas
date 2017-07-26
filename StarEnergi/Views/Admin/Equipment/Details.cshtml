@@ -145,7 +145,7 @@
 
     <div class="display-label">@Html.LabelFor(model => model.equipment.functional_code)</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.equipment.functional_code)
+        @ViewBag.unitFuncCode@ViewBag.systemFuncCode@Html.DisplayFor(model => model.equipment.functional_code)
     </div>
 
     <div class="display-label">@Html.LabelFor(model => model.equipment.installed_date)</div>
@@ -209,7 +209,7 @@
 </div>
 <script>
     $(document).ready(function () {
-        if (src != undefined) {
+        if (typeof src !== 'undefined') {
             if (src == "asset-register") {
                 $('#edit-button').hide();
             }

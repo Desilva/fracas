@@ -1,4 +1,12 @@
-﻿@font-face {
+﻿.font-monospace {
+    font-family: Courier New, Courier, monospace;
+}
+
+.admin-unit-fixed-width-box {
+    width: 168px !important;
+}
+
+@font-face {
     font-family: 'PT Sans';
     src: url(fonts/PT_Sans-Web-Regular.ttf) format('truetype');
     src: url(fonts/PT_Sans-Web-Regular.woff) format('woff');
@@ -1761,3 +1769,4 @@ table .vertical {
 {
     width: 200px;
 }
+

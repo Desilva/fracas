@@ -48,6 +48,53 @@ namespace StarEnergi.Controllers.Admin
             return PartialView(sys);
         }
 
+        private void ReCalculcateComponentValues(int idSystem)
+        {
+            system sys = db.systems.Where(x => x.id == idSystem).FirstOrDefault();
+            if(sys!=null)
+            {
+                List<equipment_groups> listEquipmentGroup = db.equipment_groups.Where(x => x.id_system == idSystem).ToList();
+                if (listEquipmentGroup.Count > 0)
+                {
+                    foreach (var a in listEquipmentGroup)
+                    {
+                        if(sys.scr.HasValue)
+                        {
+                            ProcessReCalculate(a.id, sys.scr);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ProcessReCalculate(int idEquipmentGroup,double? systemScr)
+        {
+            List<equipment> listEquipment = db.equipments.Where(x => x.id_equipment_group == idEquipmentGroup).ToList();
+            if(listEquipment.Count > 0)
+            {
+                foreach(var a in listEquipment)
+                {
+                    bool saveChanges = false;
+                    if(a.id_ocr.HasValue)
+                    {
+                        saveChanges = true;
+                        a.acr = systemScr.Value * a.ocr.ocr_value;
+                    }
+
+                    if(a.id_afp.HasValue)
+                    {
+                        saveChanges = true;
+                        a.mpi = a.acr * a.afp.afp_value;
+                    }
+
+                    if(saveChanges == true)
+                    {
+                        db.Entry(a).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
         //
         // GET: /System/Create
 
@@ -91,6 +138,7 @@ namespace StarEnergi.Controllers.Admin
                     };
                     db.system_paf.Add(systemPaf);
                     db.SaveChanges();
+                    ReCalculcateComponentValues(system.id);
                     return Json(e.Succes(system.id.ToString()));
                 }
                 else
@@ -130,6 +178,7 @@ namespace StarEnergi.Controllers.Admin
                 if (error.Count() == 0)
                 {
                     db.SaveChanges();
+                    ReCalculcateComponentValues(system.id);
                     string result = Config.TreeType.SYSTEM + ";" + system.id;
                     return Json(e.Succes(result));
                 }

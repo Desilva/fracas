@@ -136,7 +136,7 @@
         @Html.LabelFor(model => model.kode)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.kode)
+        <label>@Model.unit.functional_code@Model.kode</label>
     </div>
 
     <div class="display-label">
@@ -193,7 +193,7 @@
 </fieldset>
 <script>
     $(document).ready(function () {
-        if (src != undefined) {
+        if (typeof src !== 'undefined') {
             if (src == "asset-register") {
                 $('#edit-button').hide();
             }
