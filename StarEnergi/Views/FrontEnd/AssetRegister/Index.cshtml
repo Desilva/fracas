@@ -1,5 +1,8 @@
-﻿<div id = "contentAssetRegister">
-@model IEnumerable<StarEnergi.Models.AssetRegisterEntity>
+﻿@using StarEnergi
+@model IEnumerable<StarEnergi.Models.plant>
+
+<div id = "contentAssetRegister">
+@*@model IEnumerable<StarEnergi.Models.AssetRegisterEntity>*@
 <h2>@ViewBag.nama
     <img src='@Url.Content("~/Content/image/icon/help.png")' alt="" style="cursor:pointer" onclick="openHelp();" />
 </h2>
@@ -14,8 +17,30 @@
         $('#contentAssetRegister').load('AssetRegister/DetailEquipment/' + row.cells[0].innerHTML);
     }
 </script>
+    <script type="text/javascript">
+        var src = "asset-register";
+    function onSelectTree(e) {
+        var treeview = $('#TreeSBS').data('tTreeView');
+        var value = treeview.getItemValue(e.item).split(';');
 
-@(Html.Telerik().Grid<StarEnergi.Models.AssetRegisterEntity>()
+        if (value[0] == '@Config.TreeType.AREA') {
+            //$('#content').load('foc/Create', { 'id': value[1]} );
+            $('#content').load('Foc/Details/' + value[1]);
+        } else if (value[0] == '@Config.TreeType.UNIT') {
+            $('#content').load('Unit/Details/' + value[1]);
+        } else if (value[0] == '@Config.TreeType.SYSTEM') {
+            $('#content').load('System/Details/' + value[1]);
+        }  else if (value[0] == '@Config.TreeType.EQUIPMENT') {
+            $('#content').load('Equipment/Details/' + value[1]);
+        }  else if (value[0] == '@Config.TreeType.COMPONENT') {
+            $('#content').load('Component/Details/' + value[1]);
+        }  else {
+
+        }
+    }
+    </script>
+
+@*@(Html.Telerik().Grid<StarEnergi.Models.AssetRegisterEntity>()
         //.HtmlAttributes(new { style = "padding:0 0 0 10px;" })
         .Name("AssetRegister")
         .DataKeys(keys =>
@@ -54,5 +79,44 @@
         .Selectable()
         .Resizable(resizing => resizing.Columns(true))
 
-) 
+)*@ 
+
+
+
+
+    <div id="tree" style="width:270px">
+        @(Html.Telerik().TreeView()
+        .Name("TreeSBS")
+        .BindTo(Model, mappings =>
+        {
+            mappings.For<StarEnergi.Models.plant>(binding => binding
+                    .ItemDataBound((item, plant) =>
+                    {
+                        item.Text = plant.nama;
+                        item.Value = Config.TreeType.PLANT + ";" + plant.id.ToString();
+                        item.Expanded = true;
+                        item.LoadOnDemand = plant.focs.Count > 0;
+                        if (plant.focs.Count != 0)
+                        {
+                            item.ImageUrl = ("~/Content/image/folder.png");
+                        }
+                        else
+                            item.ImageUrl = ("~/Content/image/file.png");
+                    }));
+
+
+        })
+        .DataBinding(dataBinding => dataBinding
+                .Ajax().Select("_AjaxLoadingTreeView", "Admin")
+        )
+        .ClientEvents(eventsTree =>
+                   eventsTree.OnSelect("onSelectTree")
+                  .OnLoad("onLoad")
+        )
+        )
+    </div>
+    <div id="content" style="float:left;margin-left: 290px;">
+
+    </div>
+
 </div>

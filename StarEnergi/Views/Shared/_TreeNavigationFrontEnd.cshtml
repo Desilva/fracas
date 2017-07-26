@@ -192,7 +192,7 @@
                 mappings.For<StarEnergi.Models.equipment_groups>(binding => binding
                       .ItemDataBound((item, equipment_groups) =>
                       {
-                          item.Text = equipment_groups.nama;
+                          item.Text = (equipment_groups.nama == String.Empty)?"-":equipment_groups.nama;
                           item.Value = Config.TreeType.EQUIPMENT_GROUP + ";" + equipment_groups.id.ToString();
                           if (equipment_groups.equipments.Count != 0)
                           {

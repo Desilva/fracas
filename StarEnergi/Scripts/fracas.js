@@ -98,7 +98,16 @@
 				        }
 
 //				        $('#detailEquipmentContent').empty().append("<h3>" + hasil[3][0]['nama'] + "</h3><p>PDF:<input type=\"text\" readonly=\"readonly\" value=" + hasil[3][0]['pdf'] + "></input></p><p>MTBF:" + hasil[3][0]['mtbf'] + "</p><p>MTTR:" + hasil[3][0]['mttr'] + "</p>");
-				        $('#detailEquipmentContent').empty().append("<h3>" + hasil[3][0]['nama'] + "</h3><table cellspacing=\"0\" border=\"0\" cellpadding=\"0\" width=\"300px\" style=\"margin-top: -15px; border-collapse:collapse; \"><tr><td style=\"font-weight:normal; font-size:11pt;\">PDF</td><td><input type=\"text\" readonly=\"readonly\" value=" + hasil[3][0]['pdf'] + "></input></td></tr><tr><td style=\"font-weight:normal; font-size:11pt;\">MTBF</td><td><input type=\"text\" style=\"width:30px\" readonly=\"readonly\" value=" + hasil[3][0]['mtbf'] + "></input></td></tr><tr><td style=\"font-weight:normal; font-size:11pt;\">MTTR</td><td><input type=\"text\" style=\"width:30px\" readonly=\"readonly\" value=" + hasil[3][0]['mttr'] + "></input></td></tr></table>");
+                        $('#detailEquipmentContent').empty().append("<h3>" + ParseNullValue(hasil[3][0]['nama']) +
+                            "</h3><table cellspacing=\"0\" border=\"0\" cellpadding=\"0\" width=\"300px\" style=\"margin-top: -15px; border-collapse:collapse; \">" +
+                            //"<tr><td style=\"font-weight:normal; font-size:11pt;\">PDF</td><td><input type=\"text\" readonly=\"readonly\" value=" + ParseNullValue(hasil[3][0]['pdf']) + "></input></td></tr>" +
+                            //"<tr><td style=\"font-weight:normal; font-size:11pt;\">MTBF</td><td><input type=\"text\" style=\"width:80px\" readonly=\"readonly\" value=" + hasil[3][0]['mtbf'] + "></input></td></tr>" +
+                            //"<tr><td style=\"font-weight:normal; font-size:11pt;\">MTTR</td><td><input type=\"text\" style=\"width:80px\" readonly=\"readonly\" value=" + hasil[3][0]['mttr'] + "></input></td></tr>" +
+                            "<tr><td style=\"font-weight:normal; font-size:11pt;\">OCR</td><td><input type=\"text\" style=\"width:80px\" readonly=\"readonly\" value=" + RoundUpFloat(ParseNullValue(hasil[4])) + "></input></td></tr>" +
+                            "<tr><td style=\"font-weight:normal; font-size:11pt;\">ACR</td><td><input type=\"text\" style=\"width:80px\" readonly=\"readonly\" value=" + RoundUpFloat(ParseNullValue(hasil[3][0]['acr'])) + "></input></td></tr>" +
+                            "<tr><td style=\"font-weight:normal; font-size:11pt;\">AFP</td><td><input type=\"text\" style=\"width:80px\" readonly=\"readonly\" value=" + RoundUpFloat(ParseNullValue(hasil[5])) + "></input></td></tr>" +
+                            "<tr><td style=\"font-weight:normal; font-size:11pt;\">MPI</td><td><input type=\"text\" style=\"width:80px\" readonly=\"readonly\" value=" + RoundUpFloat(ParseNullValue(hasil[3][0]['mpi'])) + "></input></td></tr>" +
+                            "</table > ");
 				        $('#realmod_checker_equipment').css("display", "none");
 				        $('.hideFracas').css("display", "block");
 				        $('#batalFracas').css("display", "none");
@@ -133,6 +142,27 @@
     });
 
 });
+
+function ParseNullValue(a)
+{
+    if (a == null || a == "")
+    {
+        return "";
+    }
+    else
+    {
+        return a;
+    }
+}
+
+function RoundUpFloat(a)
+{
+    if (a != "")
+    {
+       a= a.toFixed(2);
+    }
+    return a;
+}
 
 
 function back() {

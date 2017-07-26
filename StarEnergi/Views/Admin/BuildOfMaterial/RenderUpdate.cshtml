@@ -1,5 +1,5 @@
 ﻿<fieldset>
-    <legend>Build of Material</legend>
+    <legend>Material Master</legend>
     <br />
     @*@(Html.Telerik().Grid<StarEnergi.Models.bom>()*@
     @(Html.Telerik().Grid<StarEnergi.Models.BomEquipmentEntity>()
@@ -32,8 +32,8 @@
             //columns.Bound(o => o.id_bom).Hidden();
             //columns.ForeignKey(o => o.id_bom, (System.Collections.IEnumerable)ViewData["build_of_material"],
             //       "id", "functional_location").Width(250).Title("Functional Location");
-            columns.Bound(o => o.functional_location).Width(190).Title("Functional Location");
-            columns.Bound(o => o.no_keymap).Width(190).Title("No Key Map");
+            columns.Bound(o => o.functional_location).Width(190).Title("No Key Map");
+            columns.Bound(o => o.no_keymap).Width(190).Title("Description");
             columns.Bound(o => o.remark).Width(300).Title("Remark");
             columns.Command(commands =>
             {
@@ -42,8 +42,8 @@
             }).Width(80).Title("Commands");
 
         })
-        .ClientEvents(events => events     
-            .OnCommand("Grid_onCommand")       
+        .ClientEvents(events => events
+            .OnCommand("Grid_onCommand")
                .OnEdit("Grid_onEdit")
         )
         .Pageable(p => p.PageSize(10))

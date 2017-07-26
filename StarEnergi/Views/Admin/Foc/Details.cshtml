@@ -24,7 +24,17 @@
     </div>-->
     <p>
         <!--@Html.ActionLink("Edit", "Edit", new { id=Model.id }) -->
-        <input type="button" value="Edit" onclick="edit()" />
+        <input id="edit-button" type="button" value="Edit" onclick="edit()" />
     </p>
 </fieldset>
+<script>
+    $(document).ready(function () {
+        if (src != undefined) {
+            if (src == "asset-register") {
+                $('#edit-button').hide();
+            }
+        }
 
+    });
+    
+</script>

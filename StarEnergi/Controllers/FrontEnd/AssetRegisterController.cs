@@ -23,22 +23,29 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             Config.menu = Config.MenuFrontEnd.ASSETREGISTER;
             ViewBag.Nama = "Asset Register";
-            var model = from o in db.equipments
-                        select new AssetRegisterEntity
-                        {
-                            id_equipment = o.id,
-                            tag_number = o.tag_num,
-                            system_name = o.equipment_groups.system.nama,
-                            unit_name = o.equipment_groups.system.unit.nama,
-                            area_name = o.equipment_groups.system.unit.foc.nama,
-                            id_discipline = o.id_discipline,
-                            mtbf = o.mtbf,
-                            mttr = o.mttr
-                        };
-            foreach(AssetRegisterEntity a in model ){
-                a.discipline = a.id_discipline != null ? (db.disciplines.Find(a.id_discipline) != null ? db.disciplines.Find(a.id_discipline).title : "") : "";
+            //var model = from o in db.equipments
+            //            select new AssetRegisterEntity
+            //            {
+            //                id_equipment = o.id,
+            //                tag_number = o.tag_num,
+            //                system_name = o.equipment_groups.system.nama,
+            //                unit_name = o.equipment_groups.system.unit.nama,
+            //                area_name = o.equipment_groups.system.unit.foc.nama,
+            //                id_discipline = o.id_discipline,
+            //                mtbf = o.mtbf,
+            //                mttr = o.mttr
+            //            };
+            //foreach(AssetRegisterEntity a in model ){
+            //    a.discipline = a.id_discipline != null ? (db.disciplines.Find(a.id_discipline) != null ? db.disciplines.Find(a.id_discipline).title : "") : "";
+            //}
+            //return View(model.ToList());
+            List<plant> plant = db.plants.ToList();
+            plant = plant.OrderBy(a => a.nama).ToList();
+            foreach (plant p in plant)
+            {
+                p.focs = p.focs.OrderBy(a => a.nama).ToList();
             }
-            return View(model.ToList());
+            return View(plant);
         }
 
         public ActionResult Back()

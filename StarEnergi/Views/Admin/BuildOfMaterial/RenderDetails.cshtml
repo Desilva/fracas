@@ -1,5 +1,5 @@
 ﻿<fieldset>
-    <legend>Build of Material @ViewBag.TagNumber</legend>
+    <legend>Material Master @ViewBag.TagNumber</legend>
     <br/>
     @*@(Html.Telerik().Grid<StarEnergi.Models.bom>()*@
     @(Html.Telerik().Grid<StarEnergi.Models.BomEquipmentEntity>()
@@ -20,9 +20,9 @@
         {
             columns.Bound(o => o.id).Hidden();
             columns.ForeignKey(o => o.id_bom, (System.Collections.IEnumerable)ViewData["build_of_material"],
-                   "id", "functional_location").Width(250).Title("Functional Location");
+       "id", "functional_location").Width(250).Title("No Key Map");
             columns.ForeignKey(o => o.id_bom, (System.Collections.IEnumerable)ViewData["build_of_material"],
-                   "id", "no_keymap").Width(250).Title("No Key Map");
+       "id", "no_keymap").Width(250).Title("Description");
             columns.Bound(o => o.remark).Width(300).Title("Remark");
 
         })

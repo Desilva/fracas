@@ -827,7 +827,7 @@ namespace StarEnergi.Controllers.FrontEnd
 
         public JsonResult GetDataEquipment(int id_equipment)
         {
-            object[] result = new object[4];
+            object[] result = new object[6];
 
             var partEvent = from o in db.part_unit_event
                             where o.datetime_ops == null
@@ -859,13 +859,38 @@ namespace StarEnergi.Controllers.FrontEnd
 
             var detailEquipment = from o in db.equipments
                                   where o.id == id_equipment
-                                  select new { o.nama, o.pdf, o.mtbf, o.mttr };
+                                  select new { o.nama, o.pdf, o.mtbf, o.mttr,o.mpi,o.acr,o.id_afp,o.id_ocr };
 
+            var detailEquipmentList = detailEquipment.ToList();
 
             result[0] = part.ToList();
             result[1] = temp.ToString();
             result[2] = failureMode.ToList();
-            result[3] = detailEquipment.ToList();
+            result[3] = detailEquipmentList;// nama, pdf, mtbf,mttr,mpi,acr
+            result[4] = "";//OCR
+            result[5] = "";//AFP
+            if(detailEquipmentList.Count>0)
+            {
+                var eq = detailEquipmentList.First();
+                if (eq.id_ocr.HasValue)
+                {
+                    var a = db.ocrs.Where(x => x.id == eq.id_ocr).FirstOrDefault();
+                    if(a !=null)
+                    {
+                        result[4] = a.ocr_value;
+                    }
+                }
+                if (eq.id_afp.HasValue)
+                {
+                    var a = db.afps.Where(x => x.id == eq.id_afp).FirstOrDefault();
+                    if (a != null)
+                    {
+                        result[5] = a.afp_value;
+                    }
+                }
+
+            }
+
             return Json(result);
         }
 

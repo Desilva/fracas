@@ -4,7 +4,7 @@
         ViewBag.Title = "Index";
     }
 
-    <h2>Build Of Material</h2>    
+    <h2>Material Master</h2>    
     @(Html.Telerik().Grid<StarEnergi.Models.BomEntity>()
         .TableHtmlAttributes(new { style = "width:695px" })
         .Name("BOM")
@@ -25,15 +25,15 @@
         {
             columns.Bound(o => o.id).Hidden();
             columns.Bound(o => o.is_delete).Hidden();
-            columns.Bound(o => o.no_keymap).Width(200).Title("No Key Map");
-            columns.Bound(o => o.functional_location).Width(250).Title("Functional Location");
+            columns.Bound(o => o.functional_location).Width(250).Title("No Keymap");
+            columns.Bound(o => o.no_keymap).Width(200).Title("Description");
             columns.Command(commands =>
             {
                 commands.Edit().ButtonType(GridButtonType.Image);
                 commands.Delete().ButtonType(GridButtonType.Image);
             }).Width(80).Title("Commands");
 
-        })        
+        })
         //.ClientEvents(events => events.OnCommand("Grid_onCommand"))
         .Pageable(p => p.PageSize(10))
         .Sortable()
