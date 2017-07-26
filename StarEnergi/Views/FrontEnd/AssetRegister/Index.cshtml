@@ -20,7 +20,7 @@
     <script type="text/javascript">
         var src = "asset-register";
     function onSelectTree(e) {
-        var treeview = $('#TreeSBS').data('tTreeView');
+        var treeview = $('#TreeSBSAssetRegister').data('tTreeView');
         var value = treeview.getItemValue(e.item).split(';');
 
         if (value[0] == '@Config.TreeType.AREA') {
@@ -86,7 +86,7 @@
 
     <div id="tree" style="width:270px">
         @(Html.Telerik().TreeView()
-        .Name("TreeSBS")
+        .Name("TreeSBSAssetRegister")
         .BindTo(Model, mappings =>
         {
             mappings.For<StarEnergi.Models.plant>(binding => binding
@@ -111,7 +111,7 @@
         )
         .ClientEvents(eventsTree =>
                    eventsTree.OnSelect("onSelectTree")
-                  .OnLoad("onLoad")
+                  
         )
         )
     </div>
