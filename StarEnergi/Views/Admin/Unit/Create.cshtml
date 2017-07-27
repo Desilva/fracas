@@ -1,4 +1,19 @@
-﻿@using StarEnergi 
+﻿@{
+    //calculate width
+    int baseWidth = 200;
+    int length = (((ViewBag.areaFuncCode == null) ? 0 : ViewBag.areaFuncCode.Length)) * 8;
+    int width = baseWidth - length;
+    <text>
+        <style>
+        .text-box-width {
+        width: @(width)px !important;
+    }
+        </style>
+
+    </text>
+}
+
+@using StarEnergi 
 @model StarEnergi.Models.unit
 
 @{
@@ -72,7 +87,7 @@
             @Html.LabelFor(model => model.functional_code)
         </div>
         <div class="editor-field">
-            <span class="font-monospace">@ViewBag.areaFuncCode</span>@Html.TextBoxFor(model => model.functional_code, new { @class = "admin-unit-fixed-width-box" })
+            <span class="font-monospace">@ViewBag.areaFuncCode</span>@Html.TextBoxFor(model => model.functional_code, new { @class = "text-box-width" })
             <div class="errorM"></div>
         </div>
         <div class="editor-label">

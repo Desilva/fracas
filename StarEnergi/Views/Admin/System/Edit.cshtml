@@ -1,4 +1,19 @@
-﻿@model StarEnergi.Models.system
+﻿@{
+    //calculate width
+    int baseWidth = 200;
+    int length = (((ViewBag.areaFuncCode == null) ? 0 : ViewBag.areaFuncCode.Length) +
+       ((ViewBag.unitFuncCode == null) ? 0 : ViewBag.unitFuncCode.Length)) * 8;
+    int width = baseWidth - length;
+    <text>
+        <style>
+        .text-box-width {
+        width: @(width)px !important;
+    }
+        </style>
+
+    </text>
+}
+@model StarEnergi.Models.system
 
 @{
     ViewBag.Title = "Edit";
@@ -355,7 +370,7 @@
             @Html.LabelFor(model => model.kode)
         </div>
         <div class="editor-field">
-            @Model.unit.functional_code@Html.EditorFor(model => model.kode)
+            <span class="font-monospace">@ViewBag.areaFuncCode@ViewBag.unitFuncCode</span>@Html.TextBoxFor(model => model.kode,new {@class="text-box-width" })
             <div class="errorM"></div>
         </div>
 

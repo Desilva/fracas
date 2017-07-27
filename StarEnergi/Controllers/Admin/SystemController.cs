@@ -44,7 +44,11 @@ namespace StarEnergi.Controllers.Admin
             if (sys.rc != null)
                 ViewBag.rc = sys.rc.rc_value + "-" + sys.rc.rc_description;
             if (sys.scr != null)
-                ViewBag.scr = sys.scr.Value;            
+                ViewBag.scr = sys.scr.Value;
+
+            ViewBag.areaFuncCode = sys.unit.foc.nama;
+            ViewBag.unitFuncCode = sys.unit.functional_code;
+
             return PartialView(sys);
         }
 
@@ -101,6 +105,12 @@ namespace StarEnergi.Controllers.Admin
         public ActionResult Create(int id)
         {
             ViewBag.id_unit = id;
+
+            unit unit = db.units.Find(id);
+
+            ViewBag.areaFuncCode = unit.foc.nama;
+            ViewBag.unitFuncCode = unit.functional_code;
+
             return PartialView();
         }
 
@@ -161,7 +171,11 @@ namespace StarEnergi.Controllers.Admin
             ViewBag.oc = system.id_oc;
             ViewBag.sf = system.id_sf;            
             ViewBag.rc = system.id_rc;
-            ViewBag.scr = system.scr;            
+            ViewBag.scr = system.scr;
+
+            ViewBag.areaFuncCode = system.unit.foc.nama;
+            ViewBag.unitFuncCode = system.unit.functional_code;
+
             return PartialView(system);
         }
 

@@ -2,9 +2,21 @@
     font-family: Courier New, Courier, monospace;
 }
 
-.admin-unit-fixed-width-box {
+/*.admin-unit-fixed-width-box {
     width: 168px !important;
 }
+
+.admin-system-fixed-width-box {
+    width: 152px !important;
+}
+
+.admin-equipment-fixed-width-box {
+    width: 120px !important;
+}
+
+.admin-component-fixed-width-box {
+    width: 88px !important;
+}*/
 
 @font-face {
     font-family: 'PT Sans';

@@ -136,7 +136,7 @@
         @Html.LabelFor(model => model.kode)
     </div>
     <div class="display-field">
-        <label>@Model.unit.functional_code@Model.kode</label>
+        <span class="font-monospace">@ViewBag.areaFuncCode@ViewBag.unitFuncCode</span>@Model.kode
     </div>
 
     <div class="display-label">

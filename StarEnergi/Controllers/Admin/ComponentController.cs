@@ -25,6 +25,7 @@ namespace StarEnergi.Controllers.Admin
         {
             component c = db.components.Find(id);
 
+            ViewBag.areaFuncCode = c.equipment_part.equipment.equipment_groups.system.unit.foc.nama;
             ViewBag.equipmentFuncCode = c.equipment_part.equipment.functional_code;
             ViewBag.systemFuncCode = c.equipment_part.equipment.equipment_groups.system.kode;
             ViewBag.unitFuncCode = c.equipment_part.equipment.equipment_groups.system.unit.functional_code;
@@ -65,6 +66,7 @@ namespace StarEnergi.Controllers.Admin
                 ViewBag.id_equipment_part = ePart.id;
             }
 
+            ViewBag.areaFuncCode = equipment.equipment_groups.system.unit.foc.nama;
             ViewBag.equipmentFuncCode = equipment.functional_code;
             ViewBag.systemFuncCode = equipment.equipment_groups.system.kode;
             ViewBag.unitFuncCode = equipment.equipment_groups.system.unit.functional_code;
@@ -110,6 +112,7 @@ namespace StarEnergi.Controllers.Admin
             component component = db.components.Find(id);
             ViewBag.id_equipment_part = component.id_equipment_part;
 
+            ViewBag.areaFuncCode = component.equipment_part.equipment.equipment_groups.system.unit.foc.nama;
             ViewBag.equipmentFuncCode = component.equipment_part.equipment.functional_code;
             ViewBag.systemFuncCode = component.equipment_part.equipment.equipment_groups.system.kode;
             ViewBag.unitFuncCode = component.equipment_part.equipment.equipment_groups.system.unit.functional_code;
