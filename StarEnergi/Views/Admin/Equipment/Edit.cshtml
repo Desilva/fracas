@@ -119,6 +119,7 @@
             "id_tag_type": $('#id_tag_type').val(),
             "id_discipline": $('#id_discipline').val(),
             "sertifikasi": $('#equipment_sertifikasi').val(),
+            "assessment_date":$('#equipment_assessment_date').val(),
             "id_equipment_group": eval('@ViewBag.id_equipment_group')
         }        
         $.post("Equipment/Edit", values, function (data) {
@@ -423,6 +424,13 @@
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.equipment.sertifikasi)
+        <div class="errorM"></div>
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.equipment.assessment_date)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.equipment.assessment_date)
         <div class="errorM"></div>
     </div>
     <p>

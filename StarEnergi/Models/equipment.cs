@@ -120,6 +120,10 @@ namespace StarEnergi.Models
         [Display(Name = "OCR")]
         public Nullable<int> id_ocr { get; set; }
 
+        [UIHint("Date")]
+        [Display(Name = "Assessment Date")]
+        public Nullable<System.DateTime> assessment_date { get; set; }
+
         public virtual discipline discipline { get; set; }
         public virtual ICollection<equipment_event> equipment_event { get; set; }
         public virtual equipment_groups equipment_groups { get; set; }

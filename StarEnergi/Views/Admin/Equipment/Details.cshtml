@@ -200,6 +200,16 @@
         @Html.DisplayFor(model => model.equipment.sertifikasi)
     </div>
 
+    <div class="display-label">@Html.LabelFor(model => model.equipment.assessment_date)</div>
+    <div class="display-field">
+        @{ 
+            if(Model.equipment.assessment_date !=null)
+            {
+                @Model.equipment.assessment_date.Value.ToShortDateString();
+            }
+        }
+    </div>
+
    <p>
         <input id="edit-button" type="button" value="Edit" onclick="edit()" />
     </p>

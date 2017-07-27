@@ -98,7 +98,7 @@ namespace StarEnergi.Controllers.Admin
         {
             ViewBag.id = id;
             ViewBag.type = type;            
-            ViewData["build_of_material"] = db.build_of_materials.Where(n => n.is_delete == false).ToList();
+            ViewData["build_of_material"] = db.build_of_material.Where(n => n.is_delete == false).ToList();
             return PartialView();
         }
 
@@ -106,7 +106,7 @@ namespace StarEnergi.Controllers.Admin
         {
             ViewBag.id = id;
             ViewBag.type = type;            
-            var listData = db.build_of_materials.Where(n => n.is_delete == false).ToList();
+            var listData = db.build_of_material.Where(n => n.is_delete == false).ToList();
             ViewData["build_of_material"] = listData;
             return PartialView();
         }
@@ -115,7 +115,7 @@ namespace StarEnergi.Controllers.Admin
         {
             ViewBag.id = id;
             ViewBag.type = type;
-            ViewData["build_of_material"] = db.build_of_materials.Where(n => n.is_delete == false).ToList();
+            ViewData["build_of_material"] = db.build_of_material.Where(n => n.is_delete == false).ToList();
             return PartialView();
         }
 
@@ -123,7 +123,7 @@ namespace StarEnergi.Controllers.Admin
         {
             ViewBag.id = id;
             ViewBag.type = type;
-            ViewData["build_of_material"] = db.build_of_materials.Where(n => n.is_delete == false).ToList();
+            ViewData["build_of_material"] = db.build_of_material.Where(n => n.is_delete == false).ToList();
             return PartialView();
         }
 
@@ -148,7 +148,7 @@ namespace StarEnergi.Controllers.Admin
                         be.id_equipment = id_reference;
                         be.id_bom = idbom.Value;
                         be.remark = rk;
-                        db.bom_equipments.Add(be);
+                        db.bom_equipment.Add(be);
                         db.SaveChanges();
                     }
                 }
@@ -160,7 +160,7 @@ namespace StarEnergi.Controllers.Admin
                         bc.id_component = id_reference;
                         bc.id_bom = idbom.Value;
                         bc.remark = rk;
-                        db.bom_components.Add(bc);
+                        db.bom_component.Add(bc);
                         db.SaveChanges();
                     }
                 }
@@ -177,20 +177,20 @@ namespace StarEnergi.Controllers.Admin
             {
                 if (type == equip)
                 {
-                    bom_equipment be = db.bom_equipments.Find(id);
+                    bom_equipment be = db.bom_equipment.Find(id);
                     if (TryUpdateModel(be))
                     {
-                        bom_equipment target = db.bom_equipments.Where(p => p.id == be.id).FirstOrDefault();
+                        bom_equipment target = db.bom_equipment.Where(p => p.id == be.id).FirstOrDefault();
                         target.id_bom = be.id_bom;
                         db.SaveChanges();
                     }
                 }
                 else if (type == comp)
                 {
-                    bom_component bc = db.bom_components.Find(id);
+                    bom_component bc = db.bom_component.Find(id);
                     if (TryUpdateModel(bc))
                     {
-                        bom_component target = db.bom_components.Where(p => p.id == bc.id).FirstOrDefault();
+                        bom_component target = db.bom_component.Where(p => p.id == bc.id).FirstOrDefault();
                         target.id_bom = bc.id_bom;
                         db.SaveChanges();
                     }
@@ -205,10 +205,10 @@ namespace StarEnergi.Controllers.Admin
         {
             if (type == equip)
             {
-                bom_equipment be = db.bom_equipments.Find(id);
+                bom_equipment be = db.bom_equipment.Find(id);
                 if (TryUpdateModel(be))
                 {
-                    bom_equipment target = db.bom_equipments.Where(p => p.id == be.id).FirstOrDefault();
+                    bom_equipment target = db.bom_equipment.Where(p => p.id == be.id).FirstOrDefault();
                     target.id_bom = idBom;
                     target.remark = rk;
                     db.SaveChanges();
@@ -216,10 +216,10 @@ namespace StarEnergi.Controllers.Admin
             }
             else if (type == comp)
             {
-                bom_component bc = db.bom_components.Find(id);
+                bom_component bc = db.bom_component.Find(id);
                 if (TryUpdateModel(bc))
                 {
-                    bom_component target = db.bom_components.Where(p => p.id == bc.id).FirstOrDefault();
+                    bom_component target = db.bom_component.Where(p => p.id == bc.id).FirstOrDefault();
                     target.id_bom = idBom;
                     target.remark = rk;
                     db.SaveChanges();
@@ -233,14 +233,14 @@ namespace StarEnergi.Controllers.Admin
         {
             if (type == equip)
             {
-                bom_equipment be = db.bom_equipments.Find(id);
-                db.bom_equipments.Remove(be);
+                bom_equipment be = db.bom_equipment.Find(id);
+                db.bom_equipment.Remove(be);
                 db.SaveChanges();
             }
             else if (type == comp)
             {
-                bom_component bc = db.bom_components.Find(id);
-                db.bom_components.Remove(bc);
+                bom_component bc = db.bom_component.Find(id);
+                db.bom_component.Remove(bc);
                 db.SaveChanges();
             }
             return bindingBom(id_reference, type);
@@ -252,10 +252,10 @@ namespace StarEnergi.Controllers.Admin
             if (type == equip)
             {
                 List<BomEquipmentEntity> beEntity = new List<BomEquipmentEntity>();
-                List<bom_equipment> listData = db.bom_equipments.Where(x => x.build_of_material.is_delete == false && x.id_equipment == id).ToList();
+                List<bom_equipment> listData = db.bom_equipment.Where(x => x.build_of_material.is_delete == false && x.id_equipment == id).ToList();
                 foreach (bom_equipment be in listData)
                 {
-                    List<build_of_material> listBom = db.build_of_materials.Where(n => n.id == be.id_bom).ToList();
+                    List<build_of_material> listBom = db.build_of_material.Where(n => n.id == be.id_bom).ToList();
                     string keymap = ""; string location="";
                     if (listBom.Count > 0)
                     {
@@ -280,11 +280,11 @@ namespace StarEnergi.Controllers.Admin
             else
             {
                 List<BomEquipmentEntity> bcEntity = new List<BomEquipmentEntity>();
-                List<bom_component> listData = db.bom_components.Where(x => x.build_of_material.is_delete == false && x.id_component == id).ToList();
+                List<bom_component> listData = db.bom_component.Where(x => x.build_of_material.is_delete == false && x.id_component == id).ToList();
                 component component = db.components.Find(id);
                 foreach (bom_component bc in listData)
                 {
-                    List<build_of_material> listBom = db.build_of_materials.Where(n => n.id == bc.id_bom).ToList();
+                    List<build_of_material> listBom = db.build_of_material.Where(n => n.id == bc.id_bom).ToList();
                     string keymap = ""; string location = "";
                     if (listBom.Count > 0)
                     {
@@ -323,7 +323,7 @@ namespace StarEnergi.Controllers.Admin
             build_of_material bom = new build_of_material();
             if (TryUpdateModel(bom))
             {
-                db.build_of_materials.Add(bom);
+                db.build_of_material.Add(bom);
                 db.SaveChanges();
             }
 
@@ -335,7 +335,7 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _SaveGridEditing(int id)
         {
-            build_of_material editable = db.build_of_materials.Find(id);
+            build_of_material editable = db.build_of_material.Find(id);
             if (TryUpdateModel(editable))
             {
                 db.Entry(editable).State = EntityState.Modified;
@@ -347,7 +347,7 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _DeleteGridEditing(int id)
         {
-            build_of_material bom = db.build_of_materials.Find(id);
+            build_of_material bom = db.build_of_material.Find(id);
             bom.is_delete = true;
             db.Entry(bom).State = EntityState.Modified;
             db.SaveChanges();
@@ -357,7 +357,7 @@ namespace StarEnergi.Controllers.Admin
         private ActionResult BindingBuildOfMaterial()
         {
             List<BomEntity> bomEntity = new List<BomEntity>();
-            List<build_of_material> listData = db.build_of_materials.Where(n => n.is_delete == false).ToList();
+            List<build_of_material> listData = db.build_of_material.Where(n => n.is_delete == false).ToList();
             foreach (build_of_material bm in listData)
             {
                 BomEntity temp = new BomEntity
@@ -379,7 +379,7 @@ namespace StarEnergi.Controllers.Admin
             var result = "";
             if (id > 0)
             {
-                build_of_material data = db.build_of_materials.Find(id);
+                build_of_material data = db.build_of_material.Find(id);
                 result = data.no_keymap;
             }
             ViewBag.idBom = id;

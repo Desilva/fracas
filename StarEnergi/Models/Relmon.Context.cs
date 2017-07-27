@@ -28,10 +28,14 @@ namespace StarEnergi.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<afp> afps { get; set; }
         public DbSet<audit> audits { get; set; }
         public DbSet<audit_log> audit_log { get; set; }
         public DbSet<audit_log_clause> audit_log_clause { get; set; }
         public DbSet<bom> boms { get; set; }
+        public DbSet<bom_component> bom_component { get; set; }
+        public DbSet<bom_equipment> bom_equipment { get; set; }
+        public DbSet<build_of_material> build_of_material { get; set; }
         public DbSet<comms_rbi> comms_rbi { get; set; }
         public DbSet<component> components { get; set; }
         public DbSet<daily_log> daily_log { get; set; }
@@ -83,13 +87,19 @@ namespace StarEnergi.Models
         public DbSet<monthly_project_outstanding_activity> monthly_project_outstanding_activity { get; set; }
         public DbSet<monthly_project_she_report> monthly_project_she_report { get; set; }
         public DbSet<monthly_she_contractor> monthly_she_contractor { get; set; }
+        public DbSet<oc> ocs { get; set; }
+        public DbSet<ocr> ocrs { get; set; }
         public DbSet<part_unit_event> part_unit_event { get; set; }
         public DbSet<part> parts { get; set; }
+        public DbSet<pe> pes { get; set; }
         public DbSet<pir> pirs { get; set; }
         public DbSet<pir_clause> pir_clause { get; set; }
         public DbSet<pir_log> pir_log { get; set; }
         public DbSet<plant> plants { get; set; }
         public DbSet<process_owner> process_owner { get; set; }
+        public DbSet<pt> pts { get; set; }
+        public DbSet<rc> rcs { get; set; }
+        public DbSet<rca> rcas { get; set; }
         public DbSet<rca_analisys_type> rca_analisys_type { get; set; }
         public DbSet<rca_building> rca_building { get; set; }
         public DbSet<rca_csf> rca_csf { get; set; }
@@ -109,6 +119,7 @@ namespace StarEnergi.Models
         public DbSet<safe_man_hours> safe_man_hours { get; set; }
         public DbSet<safe_man_hours_incident> safe_man_hours_incident { get; set; }
         public DbSet<secondary_effects> secondary_effects { get; set; }
+        public DbSet<sf> sfs { get; set; }
         public DbSet<she_illness_report> she_illness_report { get; set; }
         public DbSet<she_injury_report> she_injury_report { get; set; }
         public DbSet<she_KPI_target> she_KPI_target { get; set; }
@@ -132,19 +143,7 @@ namespace StarEnergi.Models
         public DbSet<weekend_duty> weekend_duty { get; set; }
         public DbSet<workflow_node> workflow_node { get; set; }
         public DbSet<user_role> user_role { get; set; }
-        public DbSet<rca> rcas { get; set; }
-
-        public DbSet<oc> ocs { get; set; }
-        public DbSet<pt> pts { get; set; }
-        public DbSet<pe> pes { get; set; }
-        public DbSet<rc> rcs { get; set; }
-        public DbSet<sf> sfs { get; set; }
-
-        public DbSet<afp> afps { get; set; }
-        public DbSet<ocr> ocrs { get; set; }
-        public DbSet<build_of_material> build_of_materials { get; set; }
-        public DbSet<bom_equipment> bom_equipments { get; set; }
-        public DbSet<bom_component> bom_components { get; set; }
+    
         public virtual int insertUser(string username, Nullable<int> idEmployee)
         {
             var usernameParameter = username != null ?

@@ -73,8 +73,14 @@ namespace StarEnergi.Models
 
         [Display(Name = "Description")]
         public string system_description { get; set; }
-        
+
+        [Display(Name = "SCR")]
         public Nullable<double> scr { get; set; }
+
+        [UIHint("Date")]
+        [Display(Name = "Assessment Date")]
+        public Nullable<System.DateTime> asessment_date { get; set; }
+
             
         public virtual ICollection<equipment_groups> equipment_groups { get; set; }
         public virtual oc oc { get; set; }        

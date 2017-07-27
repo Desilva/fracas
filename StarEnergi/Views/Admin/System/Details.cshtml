@@ -187,9 +187,20 @@
     <div class="display-field">
         <label id="scr_label"></label>
     </div>
-    <p>
-        <input id="edit-button" type="button" value="Edit" onclick="edit()" />
-    </p>
+    <div class="display-label">
+        @Html.LabelFor(model => model.asessment_date)
+    </div>
+    <div class="display-field">
+        @{
+            if (Model.asessment_date != null)
+            {
+                @Model.asessment_date.Value.ToShortDateString();
+            }
+        }
+    </div>
+        <p>
+            <input id="edit-button" type="button" value="Edit" onclick="edit()" />
+        </p>
 </fieldset>
 <script>
     $(document).ready(function () {

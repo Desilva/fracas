@@ -140,6 +140,7 @@
             "id_pe": $('#id_pe').val(),
             "id_sf": $('#id_sf').val(),
             "id_rc": $('#id_rc').val(),
+            "asessment_date": $('#asessment_date').val(),
             "scr": $('#scr_label').val().replace('.',','),
         }
         console.log(values);
@@ -258,6 +259,13 @@
     </div>
     <div class="editor-field">
         <input id="scr_label" class="input-dropdown" disabled></input>
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.asessment_date)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.asessment_date)
+        <div class="errorM"></div>
     </div>
     @*<div class="editor-label">
             @Html.LabelFor(model => model.funct_description)

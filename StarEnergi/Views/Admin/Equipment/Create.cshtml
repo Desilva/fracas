@@ -99,6 +99,7 @@
             "id_tag_type": $('#id_tag_type').val(),
             "id_discipline": $('#id_discipline').val(),
             "sertifikasi": $('#sertifikasi').val(),
+            "assessment_date":$('#assessment_date').val(),
             "id_equipment_group": eval('@ViewBag.id_equipment_group')
         }
 
@@ -350,6 +351,14 @@
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.sertifikasi)
+        <div class="errorM"></div>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.assessment_date)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.assessment_date)
         <div class="errorM"></div>
     </div>
 

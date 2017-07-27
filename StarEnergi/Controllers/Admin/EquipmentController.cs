@@ -231,6 +231,7 @@ namespace StarEnergi.Controllers.Admin
             edited.acr = equipment.acr;
             edited.id_ocr = equipment.id_ocr;
             edited.id_afp = equipment.id_afp;
+            edited.assessment_date = equipment.assessment_date;
 
             if (ModelState.IsValid)
             {
