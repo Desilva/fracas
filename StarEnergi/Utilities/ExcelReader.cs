@@ -330,7 +330,7 @@ namespace StarEnergi.Utilities
             double rcVal = 0; double rcScore = 0;
             double peVal = 0; double peScore = 0;
             double scr = 0;
-            int val = 0;
+            double val = 0;
             List<system> exist = db.systems.Where(x => x.kode == temp).ToList();
             unit unit = new unit();
             if (exist.Count == 0)
@@ -346,11 +346,12 @@ namespace StarEnergi.Utilities
                         system.kode = data[1].ToString();
                         system.nama = data[2].ToString();
                         system.funct_description = data[3].ToString();
+                        system.system_description = data[3].ToString();
 
                         if (data[4].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[4].ToString(), out val);
+                            Double.TryParse(data[4].ToString(), out val);
                             oc oc = db.ocs.Where(n => n.oc_value.Value == val).SingleOrDefault();
                             if (oc != null)
                             {
@@ -363,7 +364,7 @@ namespace StarEnergi.Utilities
                         if (data[5].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[5].ToString(), out val);
+                            Double.TryParse(data[5].ToString(), out val);
                             pt pt = db.pts.Where(n => n.pt_value.Value == val).SingleOrDefault();
                             if (pt != null)
                             {
@@ -376,7 +377,7 @@ namespace StarEnergi.Utilities
                         if (data[6].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[6].ToString(), out val);
+                            Double.TryParse(data[6].ToString(), out val);
                             sf sf = db.sfs.Where(n => n.sf_value.Value == val).SingleOrDefault();
                             if (sf != null)
                             {
@@ -389,7 +390,7 @@ namespace StarEnergi.Utilities
                         if (data[7].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[7].ToString(), out val);
+                            Double.TryParse(data[7].ToString(), out val);
                             rc rc = db.rcs.Where(n => n.rc_value.Value == val).SingleOrDefault();
                             if (rc != null)
                             {
@@ -402,7 +403,7 @@ namespace StarEnergi.Utilities
                         if (data[8].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[6].ToString(), out val);
+                            Double.TryParse(data[6].ToString(), out val);
                             pe pe = db.pes.Where(n => n.pe_value.Value == val).SingleOrDefault();
                             if (pe != null)
                             {
@@ -450,11 +451,12 @@ namespace StarEnergi.Utilities
                         old.kode = data[1].ToString();
                         old.nama = data[2].ToString();
                         old.funct_description = data[3].ToString();
+                        old.system_description = data[3].ToString();
 
                         if (data[4].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[4].ToString(), out val);
+                            Double.TryParse(data[4].ToString(), out val);
                             oc oc = db.ocs.Where(n => n.oc_value.Value == val).SingleOrDefault();
                             if (oc != null)
                             {
@@ -467,7 +469,7 @@ namespace StarEnergi.Utilities
                         if (data[5].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[5].ToString(), out val);
+                            Double.TryParse(data[5].ToString(), out val);
                             pt pt = db.pts.Where(n => n.pt_value.Value == val).SingleOrDefault();
                             if (pt != null)
                             {
@@ -480,7 +482,7 @@ namespace StarEnergi.Utilities
                         if (data[6].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[6].ToString(), out val);
+                            Double.TryParse(data[6].ToString(), out val);
                             sf sf = db.sfs.Where(n => n.sf_value.Value == val).SingleOrDefault();
                             if (sf != null)
                             {
@@ -493,7 +495,7 @@ namespace StarEnergi.Utilities
                         if (data[7].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[7].ToString(), out val);
+                            Double.TryParse(data[7].ToString(), out val);
                             rc rc = db.rcs.Where(n => n.rc_value.Value == val).SingleOrDefault();
                             if (rc != null)
                             {
@@ -506,7 +508,7 @@ namespace StarEnergi.Utilities
                         if (data[8].ToString() != string.Empty)
                         {
                             val = 0;
-                            int.TryParse(data[6].ToString(), out val);
+                            Double.TryParse(data[6].ToString(), out val);
                             pe pe = db.pes.Where(n => n.pe_value.Value == val).SingleOrDefault();
                             if (pe != null)
                             {
@@ -578,7 +580,7 @@ namespace StarEnergi.Utilities
             double scr = 0; double mpi = 0; double acr = 0;
             double ocrVal = 0; double ocrScore = 0;
             double afpVal = 0; double afpScore = 0;
-            int val = 0; double oDate = 0;
+            double val = 0; double oDate = 0;
             List<equipment> exist = db.equipments.Where(x => x.functional_code == temp).ToList();
             try
             {
@@ -621,7 +623,7 @@ namespace StarEnergi.Utilities
                                 if (data[5].ToString() != string.Empty)
                                 {
                                     val = 0;
-                                    int.TryParse(data[5].ToString(), out val);
+                                    Double.TryParse(data[5].ToString(), out val);
                                     ocr ocr = db.ocrs.Where(n => n.ocr_value.Value == val).SingleOrDefault();
                                     if (ocr != null)
                                     {
@@ -634,7 +636,7 @@ namespace StarEnergi.Utilities
                                 if (data[6].ToString() != string.Empty)
                                 {
                                     val = 0;
-                                    int.TryParse(data[6].ToString(), out val);
+                                    Double.TryParse(data[6].ToString(), out val);
                                     afp afp = db.afps.Where(n => n.afp_value.Value == val).SingleOrDefault();
                                     if (afp != null)
                                     {
@@ -646,9 +648,10 @@ namespace StarEnergi.Utilities
 
                                 if (data[7].ToString() != string.Empty)
                                 {
-                                    val = 0;
-                                    int.TryParse(data[7].ToString(), out val);
-                                    tag_types tag = db.tag_types.Where(n => n.id == val).SingleOrDefault();
+                                    int val2;
+                                    val2 = 0;
+                                    int.TryParse(data[7].ToString(), out val2);
+                                    tag_types tag = db.tag_types.Where(n => n.id == val2).SingleOrDefault();
                                     if (tag != null)
                                     {
                                         equipment.id_tag_type = tag.id;
@@ -657,9 +660,10 @@ namespace StarEnergi.Utilities
 
                                 if (data[8].ToString() != string.Empty)
                                 {
-                                    val = 0;
-                                    int.TryParse(data[8].ToString(), out val);
-                                    discipline disp = db.disciplines.Where(n => n.id == val).SingleOrDefault();
+                                    int val2;
+                                    val2 = 0;
+                                    int.TryParse(data[8].ToString(), out val2);
+                                    discipline disp = db.disciplines.Where(n => n.id == val2).SingleOrDefault();
                                     if (disp != null)
                                     {
                                         equipment.id_discipline = disp.id;
@@ -746,7 +750,7 @@ namespace StarEnergi.Utilities
                                 if (data[5].ToString() != string.Empty)
                                 {
                                     val = 0;
-                                    int.TryParse(data[5].ToString(), out val);
+                                    Double.TryParse(data[5].ToString(), out val);
                                     ocr ocr = db.ocrs.Where(n => n.ocr_value.Value == val).SingleOrDefault();
                                     if (ocr != null)
                                     {
@@ -759,7 +763,7 @@ namespace StarEnergi.Utilities
                                 if (data[6].ToString() != string.Empty)
                                 {
                                     val = 0;
-                                    int.TryParse(data[6].ToString(), out val);
+                                    Double.TryParse(data[6].ToString(), out val);
                                     afp afp = db.afps.Where(n => n.afp_value.Value == val).SingleOrDefault();
                                     if (afp != null)
                                     {
@@ -771,9 +775,10 @@ namespace StarEnergi.Utilities
 
                                 if (data[7].ToString() != string.Empty)
                                 {
-                                    val = 0;
-                                    int.TryParse(data[7].ToString(), out val);
-                                    tag_types tag = db.tag_types.Where(n => n.id == val).SingleOrDefault();
+                                    int val2;
+                                    val2 = 0;
+                                    int.TryParse(data[7].ToString(), out val2);
+                                    tag_types tag = db.tag_types.Where(n => n.id == val2).SingleOrDefault();
                                     if (tag != null)
                                     {
                                         old.id_tag_type = tag.id;
@@ -782,9 +787,10 @@ namespace StarEnergi.Utilities
 
                                 if (data[8].ToString() != string.Empty)
                                 {
-                                    val = 0;
-                                    int.TryParse(data[8].ToString(), out val);
-                                    discipline disp = db.disciplines.Where(n => n.id == val).SingleOrDefault();
+                                    int val2;
+                                    val2 = 0;
+                                    int.TryParse(data[8].ToString(), out val2);
+                                    discipline disp = db.disciplines.Where(n => n.id == val2).SingleOrDefault();
                                     if (disp != null)
                                     {
                                         old.id_discipline = disp.id;
@@ -900,6 +906,7 @@ namespace StarEnergi.Utilities
                             co.id_equipment_part = ep.id;
                             co.component_name = data[1].ToString();
                             co.functional_code = data[2].ToString();
+                            co.tag_number = data[3].ToString();
                             co.description = data[4].ToString();
                             if (data[5].ToString() != string.Empty)
                             {
@@ -941,6 +948,7 @@ namespace StarEnergi.Utilities
                             old.id_equipment_part = ep.id;
                             old.component_name = data[1].ToString();
                             old.functional_code = data[2].ToString();
+                            old.tag_number = data[3].ToString();
                             old.description = data[4].ToString();
                             if (data[5].ToString() != string.Empty)
                             {
