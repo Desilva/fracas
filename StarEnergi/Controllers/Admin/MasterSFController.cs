@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace StarEnergi.Controllers.Admin
 {
-    public class MasterOCController : Controller
+    public class MasterSFController : Controller
     {
         //
         // GET: /BuildOfMaterial/
@@ -34,10 +34,10 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _InsertAjaxEditing()
         {
-            oc data = new oc();
+            sf data = new sf();
             if (TryUpdateModel(data))
             {
-                db.ocs.Add(data);
+                db.sfs.Add(data);
                 db.SaveChanges();
             }
 
@@ -49,7 +49,7 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _SaveAjaxEditing(int id)
         {
-            oc data = db.ocs.Find(id);
+            sf data = db.sfs.Find(id);
             if (TryUpdateModel(data))
             {
                 db.Entry(data).State = EntityState.Modified;
@@ -61,8 +61,9 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _DeleteAjaxEditing(int id)
         {
-            oc data = db.ocs.Find(id);
-            db.ocs.Remove(data);
+            unit a;
+            sf data = db.sfs.Find(id);
+            db.sfs.Remove(data);
             
             db.SaveChanges();
             return Binding();
@@ -71,20 +72,20 @@ namespace StarEnergi.Controllers.Admin
         //select equipment
         private ActionResult Binding()
         {
-            List<MasterOCEntity> entity = new List<MasterOCEntity>();
-            List<oc> listData = db.ocs.ToList();
-            foreach (oc a in listData)
+            List<MasterSFEntity> entity = new List<MasterSFEntity>();
+            List<sf> listData = db.sfs.ToList();
+            foreach (sf a in listData)
             {
-                var temp = new MasterOCEntity
+                var temp = new MasterSFEntity
                 {
                     id = a.id,
-                    oc_description = a.oc_description,
-                    oc_score = a.oc_score,
-                    oc_value = a.oc_value
+                    sf_description = a.sf_description,
+                    sf_score = a.sf_score,
+                    sf_value = a.sf_value
                 };
                 entity.Add(temp);
             }
-            return View(new GridModel<MasterOCEntity>
+            return View(new GridModel<MasterSFEntity>
             {
                 Data = entity
             });

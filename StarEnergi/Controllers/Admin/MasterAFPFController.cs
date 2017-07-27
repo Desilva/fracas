@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace StarEnergi.Controllers.Admin
 {
-    public class MasterOCController : Controller
+    public class MasterAFPFController : Controller
     {
         //
         // GET: /BuildOfMaterial/
@@ -34,10 +34,10 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _InsertAjaxEditing()
         {
-            oc data = new oc();
+            afp data = new afp();
             if (TryUpdateModel(data))
             {
-                db.ocs.Add(data);
+                db.afps.Add(data);
                 db.SaveChanges();
             }
 
@@ -49,7 +49,7 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _SaveAjaxEditing(int id)
         {
-            oc data = db.ocs.Find(id);
+            afp data = db.afps.Find(id);
             if (TryUpdateModel(data))
             {
                 db.Entry(data).State = EntityState.Modified;
@@ -61,8 +61,8 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _DeleteAjaxEditing(int id)
         {
-            oc data = db.ocs.Find(id);
-            db.ocs.Remove(data);
+            afp data = db.afps.Find(id);
+            db.afps.Remove(data);
             
             db.SaveChanges();
             return Binding();
@@ -71,20 +71,20 @@ namespace StarEnergi.Controllers.Admin
         //select equipment
         private ActionResult Binding()
         {
-            List<MasterOCEntity> entity = new List<MasterOCEntity>();
-            List<oc> listData = db.ocs.ToList();
-            foreach (oc a in listData)
+            List<MasterAFPFEntity> entity = new List<MasterAFPFEntity>();
+            List<afp> listData = db.afps.ToList();
+            foreach (afp a in listData)
             {
-                var temp = new MasterOCEntity
+                var temp = new MasterAFPFEntity
                 {
                     id = a.id,
-                    oc_description = a.oc_description,
-                    oc_score = a.oc_score,
-                    oc_value = a.oc_value
+                    afp_description = a.afp_description,
+                    afp_score = a.afp_score,
+                    afp_value = a.afp_value
                 };
                 entity.Add(temp);
             }
-            return View(new GridModel<MasterOCEntity>
+            return View(new GridModel<MasterAFPFEntity>
             {
                 Data = entity
             });

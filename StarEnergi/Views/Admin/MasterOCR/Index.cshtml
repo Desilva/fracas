@@ -1,0 +1,44 @@
+﻿@model IEnumerable<StarEnergi.Models.MasterOCREntity>
+
+@{
+    ViewBag.Title = "OCR";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@(Html.Telerik().Grid<StarEnergi.Models.MasterOCREntity>()
+        .TableHtmlAttributes(new { style = "width:695px" })
+        .Name("OCR")
+        .DataKeys(keys =>
+        {
+            keys.Add(p => p.id);
+        })
+        .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Select("_SelectAjaxEditing", "MasterOCR")
+                .Insert("_InsertAjaxEditing", "MasterOCR")
+                .Update("_SaveAjaxEditing", "MasterOCR")
+                .Delete("_DeleteAjaxEditing", "MasterOCR");
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.ocr_description).Title("Description");
+            columns.Bound(o => o.ocr_value).Title("Value");
+            columns.Bound(o => o.ocr_score).Title("Score");
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Image);
+                commands.Delete().ButtonType(GridButtonType.Image);
+            }).Width(80).Title("Commands");
+
+        })
+        .Pageable(p => p.PageSize(15))
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Scrollable(c => c.Enabled(true))
+        .Selectable()
+) 

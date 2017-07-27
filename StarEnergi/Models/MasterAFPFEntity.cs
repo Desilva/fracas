@@ -6,13 +6,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StarEnergi.Models
 {
-    public class MasterOCEntity
+    public class MasterAFPFEntity
     {
         public int id { get; set; }
         [UIHint("Double")]
-        public Nullable<double> oc_value { get; set; }
-        public string oc_description { get; set; }
+        public Nullable<double> afp_value { get; set; }
+        public string afp_description { get; set; }
         [UIHint("Double")]
-        public Nullable<double> oc_score { get; set; }
+        public Nullable<double> afp_score { get; set; }
     }
 }

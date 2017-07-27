@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace StarEnergi.Controllers.Admin
 {
-    public class MasterOCController : Controller
+    public class MasterPEController : Controller
     {
         //
         // GET: /BuildOfMaterial/
@@ -34,10 +34,10 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _InsertAjaxEditing()
         {
-            oc data = new oc();
+            pe data = new pe();
             if (TryUpdateModel(data))
             {
-                db.ocs.Add(data);
+                db.pes.Add(data);
                 db.SaveChanges();
             }
 
@@ -49,7 +49,7 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _SaveAjaxEditing(int id)
         {
-            oc data = db.ocs.Find(id);
+            pe data = db.pes.Find(id);
             if (TryUpdateModel(data))
             {
                 db.Entry(data).State = EntityState.Modified;
@@ -61,8 +61,9 @@ namespace StarEnergi.Controllers.Admin
         [GridAction]
         public ActionResult _DeleteAjaxEditing(int id)
         {
-            oc data = db.ocs.Find(id);
-            db.ocs.Remove(data);
+            unit a;
+            pe data = db.pes.Find(id);
+            db.pes.Remove(data);
             
             db.SaveChanges();
             return Binding();
@@ -71,20 +72,20 @@ namespace StarEnergi.Controllers.Admin
         //select equipment
         private ActionResult Binding()
         {
-            List<MasterOCEntity> entity = new List<MasterOCEntity>();
-            List<oc> listData = db.ocs.ToList();
-            foreach (oc a in listData)
+            List<MasterPEEntity> entity = new List<MasterPEEntity>();
+            List<pe> listData = db.pes.ToList();
+            foreach (pe a in listData)
             {
-                var temp = new MasterOCEntity
+                var temp = new MasterPEEntity
                 {
                     id = a.id,
-                    oc_description = a.oc_description,
-                    oc_score = a.oc_score,
-                    oc_value = a.oc_value
+                    pe_description = a.pe_description,
+                    pe_score = a.pe_score,
+                    pe_value = a.pe_value
                 };
                 entity.Add(temp);
             }
-            return View(new GridModel<MasterOCEntity>
+            return View(new GridModel<MasterPEEntity>
             {
                 Data = entity
             });

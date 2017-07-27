@@ -343,6 +343,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\Admin\AnalysisTypeController.cs" />
+    <Compile Include="Controllers\Admin\MasterAFPFController.cs" />
+    <Compile Include="Controllers\Admin\MasterPEController.cs" />
+    <Compile Include="Controllers\Admin\MasterRCController.cs" />
+    <Compile Include="Controllers\Admin\MasterOCRController.cs" />
+    <Compile Include="Controllers\Admin\MasterSFController.cs" />
+    <Compile Include="Controllers\Admin\MasterPTController.cs" />
     <Compile Include="Controllers\Admin\MasterOCController.cs" />
     <Compile Include="Controllers\Admin\BuildOfMaterialController.cs" />
     <Compile Include="Controllers\Admin\ComponentController.cs" />
@@ -449,6 +455,12 @@
     <Compile Include="Models\bom.cs">
       <DependentUpon>Relmon.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MasterAFPFEntity.cs" />
+    <Compile Include="Models\MasterRCEntity.cs" />
+    <Compile Include="Models\MasterPEEntity.cs" />
+    <Compile Include="Models\MasterOCREntity.cs" />
+    <Compile Include="Models\MasterSFEntity.cs" />
+    <Compile Include="Models\MasterPTEntity.cs" />
     <Compile Include="Models\MasterOCEntity.cs" />
     <Compile Include="Models\BomEntity.cs" />
     <Compile Include="Models\bom_component.cs">
@@ -3619,6 +3631,13 @@
     <Content Include="Views\Shared\EditorTemplates\NoKeyMap.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Remark.cshtml" />
     <Content Include="Views\Admin\MasterOC\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Double.cshtml" />
+    <Content Include="Views\Admin\MasterPT\Index.cshtml" />
+    <Content Include="Views\Admin\MasterSF\Index.cshtml" />
+    <Content Include="Views\Admin\MasterRC\Index.cshtml" />
+    <Content Include="Views\Admin\MasterPE\Index.cshtml" />
+    <Content Include="Views\Admin\MasterAFPF\Index.cshtml" />
+    <Content Include="Views\Admin\MasterOCR\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\xml\" />
