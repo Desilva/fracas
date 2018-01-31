@@ -18,7 +18,7 @@ namespace StarEnergi.Models
         {
             this.iir_recommendations = new HashSet<iir_recommendations>();
         }
-    
+
         public int id { get; set; }
         public string facility { get; set; }
         public string title { get; set; }
@@ -50,8 +50,8 @@ namespace StarEnergi.Models
         public Nullable<System.DateTime> safety_officer_date { get; set; }
         public string safety_officer_approve { get; set; }
         public string safety_officer_delegate { get; set; }
-    
+
         public virtual ICollection<iir_recommendations> iir_recommendations { get; set; }
     }
-    
+
 }

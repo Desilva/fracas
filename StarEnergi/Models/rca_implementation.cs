@@ -21,7 +21,7 @@ namespace StarEnergi.Models
 
         [DefaultValue("")]
         public string next_action { get; set; }
-		
+
         public Nullable<int> pic { get; set; }
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> due_date { get; set; }
@@ -36,8 +36,8 @@ namespace StarEnergi.Models
 
         [UIHint("Usaha")]
         public Nullable<byte> usaha { get; set; }
-    
+
         public virtual employee employee { internal get; set; }
     }
-    
+
 }
