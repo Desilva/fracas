@@ -2832,12 +2832,24 @@ namespace StarEnergi.Controllers.FrontEnd
             }
         }
 
-        public ActionResult addIncidentFromTools(int? id, int? id_fracas, int? id_injury, int? id_fracas_part)
+        public ActionResult addIncidentFromTools(int? userId, int? id, int? id_fracas, int? id_injury, int? id_fracas_part)
         {
 
             //string username = (String)Session["username"].ToString();
-            string username = "Saiful Hidayat";
-            string employeeId = "278";
+            //string username = "Saiful Hidayat";
+            //string employeeId = "278";
+
+            if(!userId.HasValue)
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
+
+            li = db.user_per_role.Where(n => n.user.employee_id == userId.Value).ToList();
+
+            if (!li.Any())
+                return RedirectToAction("LogOn", "Account", new { returnUrl = "/Incident" });
+
+            string username = li.FirstOrDefault().username;
+            string employeeId = userId.Value.ToString();
+
             ViewBag.username = username;
             li = db.user_per_role.Where(p => p.username == username).ToList();
             if (!li.Exists(p => p.role == (int)Config.role.INITIATORIR))
@@ -2918,6 +2930,7 @@ namespace StarEnergi.Controllers.FrontEnd
             }
             ViewData["users"] = bind.OrderBy(p => p.alpha_name).ToList();
             ViewData["user_role"] = li;
+            
             if (id != null)
             {
                 ViewBag.mod = id;
