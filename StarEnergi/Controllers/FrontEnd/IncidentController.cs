@@ -1795,7 +1795,7 @@ namespace StarEnergi.Controllers.FrontEnd
         {
             List<incident_report_e> result = new List<incident_report_e>();
             var r = (from ir in db.incident_report
-                     where ir.prepare_date >= fromD && ir.prepare_date <= toD
+                     where ir.prepare_date >= fromD && ir.prepare_date <= toD && ir.is_suspend == false
                      select new incident_report_e
                      {
                          prepare_date = ir.prepare_date,
@@ -1850,7 +1850,7 @@ namespace StarEnergi.Controllers.FrontEnd
         public ActionResult ExportExcelTotal(DateTime from, DateTime to)
         {
             List<incident_report_r> result = new List<incident_report_r>();
-            List<incident_report> list_ir = db.incident_report.Where(p => p.incident_type == "Injury / Illness").Where(p => p.prepare_date >= from && p.prepare_date <= to).ToList();
+            List<incident_report> list_ir = db.incident_report.Where(p => p.incident_type == "Injury / Illness").Where(p => p.prepare_date >= from && p.prepare_date <= to).Where(x=>x.is_suspend==false).ToList();
             double total_cost = 0;
             double cost_kon = 0;
             double cost_seg = 0;
