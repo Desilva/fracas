@@ -1567,7 +1567,7 @@ namespace StarEnergi.Report
             this.textBox74.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
             this.textBox74.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox74.StyleName = "";
-            this.textBox74.Value = "= Fields.count_fire_sa";
+            this.textBox74.Value = "= Fields.count_fire_sc";
             // 
             // textBox75
             // 
