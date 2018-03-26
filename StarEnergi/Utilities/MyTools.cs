@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StarEnergi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -29,6 +30,18 @@ namespace StarEnergi.Utilities
             {
                 return new JavaScriptResult();
             }
+        }
+
+        public static string GetOperationManager()
+        {
+            string name = "";
+            relmon_star_energiEntities db = new relmon_star_energiEntities();
+            var employee = db.employees.Where(x => x.employee_dept == 21 && x.employee_boss == null && (x.signature != null || x.signature != "")).FirstOrDefault();
+            if(employee != null)
+            {
+                name = employee.alpha_name;
+            }
+            return name;
         }
 
         public static string generatePirNumber(string number) {

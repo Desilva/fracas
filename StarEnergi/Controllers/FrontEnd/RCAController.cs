@@ -2781,6 +2781,7 @@ namespace StarEnergi.Controllers.FrontEnd
         //
         // Post: RCA/implementasi
         //
+        [ValidateInput(false)]
         [HttpPost]
         public ActionResult implementation(string id, [FromJson]string[][] list)
         {
