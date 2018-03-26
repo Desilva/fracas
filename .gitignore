@@ -42,3 +42,8 @@ packages/
 StarEnergi/Models - Copy (2)/
 StarEnergi/App_Data/uploads/
 StarEnergi/bak/
+/.vs/StarEnergi/v15/Server/sqlite3
+/.vs/StarEnergi/v15/sqlite3/db.lock
+/.vs/StarEnergi/v15/sqlite3/storage.ide-shm
+/.vs/StarEnergi/v15/sqlite3/storage.ide-wal
+/StarEnergi/Properties/PublishProfiles
