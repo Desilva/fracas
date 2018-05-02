@@ -191,8 +191,13 @@ namespace StarEnergi.Report
                         WHERE num = " + (Int64)this.ReportParameters[3].Value;
                 }
             }
-            SqlDataAdapter adapter = new SqlDataAdapter(sql
-                 , ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommand cmd = new SqlCommand(sql);
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["starenergygeo"].ConnectionString);
+            cmd.Connection = connection;
+            cmd.CommandTimeout = 1800;
+
+            adapter.SelectCommand = cmd;            
             adapter.Fill(table);
             Telerik.Reporting.Processing.Chart procChart = (Telerik.Reporting.Processing.Chart)sender;
             Telerik.Reporting.Chart defChart = (Telerik.Reporting.Chart)procChart.ItemDefinition;
