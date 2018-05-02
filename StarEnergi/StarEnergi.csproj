@@ -2473,7 +2473,6 @@
     <Content Include="Scripts\Filemanager\images\upload.png" />
     <Content Include="Scripts\Filemanager\images\wait30trans.gif" />
     <Content Include="Scripts\Filemanager\index.html" />
-    <Content Include="Scripts\Filemanager\scripts\filemanager.config.js" />
     <Content Include="Scripts\Filemanager\scripts\filemanager.js" />
     <Content Include="Scripts\Filemanager\scripts\filemanager.liveSearch.js" />
     <Content Include="Scripts\Filemanager\scripts\filemanager.liveSearch.min.js" />
@@ -3475,6 +3474,7 @@
     <Content Include="Scripts\kendo\kendo.view.min.js.map" />
     <Content Include="Scripts\kendo\kendo.web.min.js.map" />
     <Content Include="Scripts\kendo\kendo.window.min.js.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Service References\WWService\UserService.disco" />
     <None Include="Service References\WWService\configuration91.svcinfo" />
     <None Include="Service References\WWService\configuration.svcinfo" />
