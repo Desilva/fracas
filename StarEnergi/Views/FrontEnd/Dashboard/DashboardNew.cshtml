@@ -193,6 +193,20 @@
                 <span class="menu-text">Tools Management</span>
             </a>
         </div>
+
+        <div class="menu">
+            <a href="@System.Configuration.ConfigurationManager.AppSettings["cbt"]" title="CBT">
+                <img src="@Url.Content("~/Content/image/new/icon-cbt.png")" />
+                <span class="menu-text">CBT</span>
+            </a>
+        </div>
+
+        <div class="menu">
+            <a href="@System.Configuration.ConfigurationManager.AppSettings["kiosk"]" title="KIOSK">
+                <img src="@Url.Content("~/Content/image/new/icon-kiosk.png")" />
+                <span class="menu-text">KIOSK</span>
+            </a>
+        </div>
     </div>
 </div>
 }
