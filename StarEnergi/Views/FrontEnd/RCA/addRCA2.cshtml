@@ -198,11 +198,11 @@
                 }
             </div>
             <br />-->*@
-            <div class="info_new_left"><div>Functional Location</div><div> (ID Number)</div></div>
+            @*<div class="info_new_left"><div>Functional Location</div><div> (ID Number)</div></div>
             <div class="infonewinput">
                 <input id="functional_location" type="text" name="functional_location" value="@Model.functional_location" @((isPublish == null || isPublish == 0) && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) && ViewBag.isView != null ? "" : "disabled")/>
                 <input id="browse" name="browse" type="button" style="@((isPublish == null || isPublish == 0) && li.Exists(p => p.role == (int)StarEnergi.Config.role.RCA) && ViewBag.isView != null ? "display:inline" : "display:none;")" onclick="browseEquipment()" value="Browse" />
-            </div>
+            </div>*@
             <br />
             <div class="addSubmit">
 	            <input name="cancel" value="Cancel" type="submit"/>
@@ -286,7 +286,7 @@
                     mappings.For<StarEnergi.Models.equipment_groups>(binding => binding
                           .ItemDataBound((items, equipment_groups) =>
                           {
-                              items.Text = equipment_groups.description == null ? equipment_groups.nama : equipment_groups.description;
+                              items.Text = equipment_groups.description == null ? (equipment_groups.nama == "" ? "-" : equipment_groups.nama)  : equipment_groups.description;
                               items.Value = Config.TreeType.EQUIPMENT_GROUP + ";" + equipment_groups.id.ToString();
                               if (equipment_groups.equipments.Count != 0)
                               {
