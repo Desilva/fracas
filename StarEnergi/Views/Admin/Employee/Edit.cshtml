@@ -65,9 +65,20 @@
                         "delagate": $('#delegate').is(':checked') == true ? 1 : 0,
                         "employee_delegate": $('#delegate').is(':checked') == true ? $('#delegate_name').val() : ""
                     }
+
+                    var valuesPost =
+                    {
+                        "Id": 0,
+                        "id_employee": value.Id,
+                        "is_active": true,
+                        "id_delegate": value.employee_delegate,
+                        "date_start": '@DateTime.Now.ToString("dd/MM/yyyy")',
+                        "date_end": '@DateTime.Now.AddMonths(2).ToString("dd/MM/yyyy")',
+                    }
+                    console.log(valuesPost);
                     console.log(value.employee_delegate != '@Model.employee_delegate');
                     if (value.delagate != '@Model.delagate' || value.employee_delegate != '@Model.employee_delegate') {
-                        $.post('@Url.Content("~/Account/Delegate")', value, function (data) {
+                        $.post('@Url.Content("~/Account/Delegate")', valuesPost, function (data) {
                             if (data != undefined) {
                                 if (data["status"] == 0) {
                                     if (value.delagate == 1)
