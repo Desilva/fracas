@@ -779,11 +779,11 @@
                         @{bool field_manager_delegate = false; string field_manager_delegate_name = ""; }
                         @foreach (StarEnergi.Models.EmployeeEntity user in ViewData["users"] as List<StarEnergi.Models.EmployeeEntity>)
                         {
-                            @*if (!isEdit && user.position != null && user.position.ToLower().Contains("operation manager") && user.delagate != 1)
+                            @*if (!isEdit && user.position != null && user.position.ToLower().Contains("ww operation manager") && user.delagate != 1)
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }
-                            else if (!isEdit && user.position != null && user.position.ToLower().Contains("operation manager") && user.delagate == 1)
+                            else if (!isEdit && user.position != null && user.position.ToLower().Contains("ww operation manager") && user.delagate == 1)
                             {
                                 field_manager_delegate = true;
                                 field_manager_delegate_name = user.employee_delegate.ToString();
@@ -802,7 +802,7 @@
                                 field_manager_delegate = true;
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             }*@
-                            if (!isEdit && user.position != null && user.position.ToLower().Contains("operation manager"))
+                            if (!isEdit && user.position != null && user.position.ToLower().Contains("ww operation manager"))
                             {
                                 <option value="@user.id" selected>@user.alpha_name</option>
                             } 
